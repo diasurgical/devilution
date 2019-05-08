@@ -3263,87 +3263,64 @@ void MAI_Fat(int i)
 
 void MAI_Sneak(int i)
 {
-	int v1;            // edi
-	MonsterStruct *v2; // esi
-	int v3;            // ebx
-	int v4;            // ebx
-	int v6;            // edi
-	int v7;            // eax
-	//int v8; // ST04_4
-	int v9; // eax
-	//int v10; // ST04_4
-	int v11;        // eax
-	int v12;        // edi
-	signed int v13; // ecx
-	int v14;        // eax
-	int v15;        // [esp+Ch] [ebp-10h]
-	int arglist;    // [esp+10h] [ebp-Ch]
-	int v17;        // [esp+14h] [ebp-8h]
-	int md;         // [esp+18h] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my, md;
+	int dist, v;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS) {
 		app_fatal("MAI_Sneak: Invalid monster %d", i);
 	}
 
-	v2 = &monster[v1];
-	if (v2->_mmode == MM_STAND) {
-		v3 = v2->_my;
-		if (dLight[v2->_mx][v3] != lightmax) {
-			v17 = v2->_mx - (unsigned char)v2->_menemyx;
-			v4 = v3 - (unsigned char)v2->_menemyy;
-			md = M_GetDir(v1);
-			v6 = 5 - (unsigned char)v2->_mint;
-			if (v2->_mVar1 == MM_GOTHIT) {
-				v2->_mgoalvar1 = 0;
-				_LOBYTE(v2->_mgoal) = MGOAL_RETREAT;
+	Monst = monster + i;
+	if (Monst->_mmode == MM_STAND) {
+		mx = Monst->_mx;
+		my = Monst->_my;
+		if (dLight[mx][my] != lightmax) {
+			mx -= Monst->_menemyx;
+			my -= Monst->_menemyy;
+
+			md = M_GetDir(i);
+			dist = 5 - Monst->_mint;
+			if (Monst->_mVar1 == MM_GOTHIT) {
+				Monst->_mgoalvar1 = 0;
+				Monst->_mgoal = MGOAL_RETREAT;
 			} else {
-				v7 = abs(v17);
-				//v5 = v8;
-				if (v7 >= v6 + 3 || (v9 = abs(v4), v9 >= v6 + 3) || v2->_mgoalvar1 > 8) /* v5 = v10,  */
-				{
-					v2->_mgoalvar1 = 0;
-					_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
+				if (abs(mx) >= dist + 3 || abs(my) >= dist + 3 || Monst->_mgoalvar1 > 8) {
+					Monst->_mgoalvar1 = 0;
+					Monst->_mgoal = MGOAL_NORMAL;
 				}
 			}
-			if (_LOBYTE(v2->_mgoal) == MGOAL_RETREAT) {
-				if (v2->_mFlags & MFLAG_TARGETS_MONSTER)
-					md = GetDirection(v2->_mx, v2->_my, plr[v2->_menemy]._pownerx, plr[v2->_menemy]._pownery);
+			if (Monst->_mgoal == MGOAL_RETREAT) {
+				if (Monst->_mFlags & MFLAG_TARGETS_MONSTER)
+					md = GetDirection(Monst->_mx, Monst->_my, plr[Monst->_menemy]._pownerx, plr[Monst->_menemy]._pownery);
 				md = opposite[md];
-				if (v2->MType->mtype == MT_UNSEEN) {
+				if (Monst->MType->mtype == MT_UNSEEN) {
 					if (random(112, 2))
-						v11 = left[md];
+						md = left[md];
 					else
-						v11 = right[md];
-					md = v11;
+						md = right[md];
 				}
 			}
-			v2->_mdir = md;
-			v15 = random(112, 100);
-			if (abs(v17) < v6 && abs(v4) < v6 && v2->_mFlags & MFLAG_HIDDEN) {
-				M_StartFadein(arglist, md, FALSE);
+			Monst->_mdir = md;
+			v = random(112, 100);
+			if (abs(mx) < dist && abs(my) < dist && Monst->_mFlags & MFLAG_HIDDEN) {
+				M_StartFadein(i, md, FALSE);
 			} else {
-				v12 = v6 + 1;
-				if (abs(v17) < v12 && abs(v4) < v12 || v2->_mFlags & MFLAG_HIDDEN) {
-					if (_LOBYTE(v2->_mgoal) == MGOAL_RETREAT
-					    || (abs(v17) >= 2 || abs(v4) >= 2)
-					        && ((v13 = v2->_mVar2, v13 > 20) && v15 < 4 * (unsigned char)v2->_mint + 14
-					               || ((v14 = v2->_mVar1, v14 == MM_WALK) || v14 == MM_WALK2 || v14 == MM_WALK3)
-					                   && !v13
-					                   && v15 < 4 * (unsigned char)v2->_mint + 64)) {
-						++v2->_mgoalvar1;
-						M_CallWalk(arglist, md);
-					}
+				if ((abs(mx) >= dist + 1 || abs(my) >= dist + 1) && !(Monst->_mFlags & MFLAG_HIDDEN)) {
+					M_StartFadeout(i, md, TRUE);
 				} else {
-					M_StartFadeout(arglist, md, TRUE);
+					if (Monst->_mgoal == MGOAL_RETREAT
+					    || (abs(mx) >= 2 || abs(my) >= 2) && (Monst->_mVar2 > 20 && v < 4 * Monst->_mint + 14 || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3) && Monst->_mVar2 == 0 && v < 4 * Monst->_mint + 64)) {
+						Monst->_mgoalvar1++;
+						M_CallWalk(i, md);
+					}
 				}
 			}
-			if (v2->_mmode == MM_STAND) {
-				if (abs(v17) >= 2 || abs(v4) >= 2 || v15 >= 4 * (unsigned char)v2->_mint + 10)
-					v2->_mAnimData = v2->MType->Anims[MA_STAND].Data[md];
+			if (Monst->_mmode == MM_STAND) {
+				if (abs(mx) >= 2 || abs(my) >= 2 || v >= 4 * Monst->_mint + 10)
+					Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 				else
-					M_StartAttack(arglist);
+					M_StartAttack(i);
 			}
 		}
 	}
