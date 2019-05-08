@@ -4,10 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Diablo", "Diablo.vcxproj", "{23114A83-7D81-4F17-A6B8-2FC51F3D72F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6} = {C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiabloUI", "DiabloUI\DiabloUI.vcxproj", "{8408E35E-3CF5-4D4E-B873-AF3952CDABD4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Storm", "3rdParty\Storm\Source\Storm.vcxproj", "{B28F69CE-15A1-424D-BBB5-2727258D675B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PKWare", "3rdParty\PKWare\PKWare.vcxproj", "{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +32,10 @@ Global
 		{B28F69CE-15A1-424D-BBB5-2727258D675B}.Debug|x86.Build.0 = Debug|Win32
 		{B28F69CE-15A1-424D-BBB5-2727258D675B}.Release|x86.ActiveCfg = Release|Win32
 		{B28F69CE-15A1-424D-BBB5-2727258D675B}.Release|x86.Build.0 = Release|Win32
+		{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}.Debug|x86.ActiveCfg = Debug|Win32
+		{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}.Debug|x86.Build.0 = Debug|Win32
+		{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}.Release|x86.ActiveCfg = Release|Win32
+		{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

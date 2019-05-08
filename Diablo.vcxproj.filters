@@ -13,10 +13,6 @@
       <UniqueIdentifier>{8003aed2-27a6-444b-8fb0-bb8a59530005}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
-    <Filter Include="PKWare">
-      <UniqueIdentifier>{5dbacde9-4fc8-4776-ba59-92912e0c8ab5}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\appfat.cpp">
@@ -237,12 +233,6 @@
     </ClCompile>
     <ClCompile Include="Source\render.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="3rdParty\PKWare\explode.cpp">
-      <Filter>PKWare</Filter>
-    </ClCompile>
-    <ClCompile Include="3rdParty\PKWare\implode.cpp">
-      <Filter>PKWare</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -489,9 +479,6 @@
     </ClInclude>
     <ClInclude Include="types.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="3rdParty\PKWare\pkware.h">
-      <Filter>PKWare</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
