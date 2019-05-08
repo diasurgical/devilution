@@ -499,6 +499,7 @@ void DrawAutomapPlr()
 		DrawLine(x, y, x - AutoMapYPos, y - AMPlayerX, COLOR_PLAYER);
 		DrawLine(x - AutoMapYPos, y - AMPlayerX, x - AMPlayerX, y - AMPlayerX, COLOR_PLAYER);
 		DrawLine(x - AutoMapYPos, y - AMPlayerX, x - AMPlayerY - AMPlayerX, y, COLOR_PLAYER);
+		break;
 	}
 }
 

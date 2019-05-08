@@ -101,8 +101,8 @@ void InitTownTriggers()
 
 	numtrigs = 1;
 
-	if(gbMaxPlayers == 4) {
-		for(i = 0; i < 3; i++) {
+	if(gbMaxPlayers == MAX_PLRS) {
+		for(i = 0; i < sizeof(townwarps) / sizeof(townwarps[0]); i++) {
 			townwarps[i] = TRUE;
 		}
 		trigs[1]._tx = 49;
