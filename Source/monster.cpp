@@ -1696,6 +1696,8 @@ void M2MStartKill(int i, int mid)
 
 	if ((DWORD)i >= MAXMONSTERS) {
 		app_fatal("M2MStartKill: Invalid monster (attacker) %d", i);
+	}
+	if ((DWORD)i >= MAXMONSTERS) { /// BUGFIX: should check `mid`
 		app_fatal("M2MStartKill: Invalid monster (killed) %d", mid);
 	}
 	if (!monster[i].MType)
