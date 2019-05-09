@@ -3618,138 +3618,91 @@ void MAI_AcidUniq(int i)
 
 void MAI_Scav(int i)
 {
-	int v1;            // edi
-	int v2;            // esi
-	unsigned char *v3; // eax
-	int v4;            // ecx
-	int v5;            // ecx
-	signed int v6;     // ebx
-	signed int v7;     // edi
-	int v8;            // edx
-	int v9;            // eax
-	BOOLEAN v10;       // eax
-	int v11;           // ebx
-	int v12;           // edi
-	signed int v13;    // edi
-	int v14;           // edx
-	int v15;           // eax
-	BOOLEAN v16;       // eax
-	int v17;           // eax
-	int v18;           // eax
-	int arglist;       // [esp+Ch] [ebp-8h]
-	BOOL v20;          // [esp+10h] [ebp-4h]
+	BOOL done;
+	int x, y;
+	int _mx, _my;
+	MonsterStruct *Monst;
+	int _goalvar1;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Scav: Invalid monster %d", i);
-	v2 = v1;
-	v20 = 0;
-	if (monster[v1]._mmode == MM_STAND) {
-		if (monster[v2]._mhitpoints<monster[v2]._mmaxhp>> 1) {
-			if (_LOBYTE(monster[v2]._mgoal) == MGOAL_HEALING)
-				goto LABEL_10;
-			if (monster[v2].leaderflag) {
-				v3 = &monster[(unsigned char)monster[v2].leader].packsize;
-				--*v3;
-				monster[v2].leaderflag = 0;
-			}
-			_LOBYTE(monster[v2]._mgoal) = MGOAL_HEALING;
-			monster[v2]._mgoalvar3 = 10;
+	Monst = monster + i;
+	_mx = Monst->_mx;
+	_my = Monst->_my;
+	done = FALSE;
+	if (monster[i]._mmode != MM_STAND)
+		return;
+	if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1) && Monst->_mgoal != MGOAL_HEALING) {
+		if (Monst->leaderflag) {
+			monster[Monst->leader].packsize--;
+			Monst->leaderflag = 0;
 		}
-		if (_LOBYTE(monster[v2]._mgoal) != MGOAL_HEALING) {
-		LABEL_52:
-			if (monster[v2]._mmode == MM_STAND)
-				MAI_SkelSd(arglist);
-			return;
-		}
-	LABEL_10:
-		v4 = monster[v2]._mgoalvar3;
-		if (v4) {
-			monster[v2]._mgoalvar3 = v4 - 1;
-			v5 = monster[v2]._my;
-			if (dDead[monster[v2]._mx][v5]) {
-				M_StartEat(v1);
-				if (!(monster[v2]._mFlags & MFLAG_NOHEAL))
-					monster[v2]._mhitpoints += 64;
-				if (monster[v2]._mhitpoints >= (monster[v2]._mmaxhp >> 1) + (monster[v2]._mmaxhp >> 2)) {
-					_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-					monster[v2]._mgoalvar1 = 0;
-					monster[v2]._mgoalvar2 = 0;
-				}
-			} else {
-				if (!monster[v2]._mgoalvar1) {
-					v6 = arglist;
-					if (random(120, 2)) {
-						v7 = -4;
-						do {
-							if (v20)
-								break;
-							v6 = -4;
-							do {
-								if (v20)
-									break;
-								if (v7 >= 0 && v7 < MAXDUNY && v6 >= 0 && v6 < MAXDUNX) {
-									v8 = monster[v2]._mx;
-									v9 = monster[v2]._my;
-									v20 = dDead[v8 + v6][v9 + v7]
-									    && (v10 = LineClearF(
-									            CheckNoSolid,
-									            v8,
-									            v9,
-									            v8 + v6,
-									            v9 + v7),
-									           v10);
-								}
-								++v6;
-							} while (v6 <= 4);
-							++v7;
-						} while (v7 <= 4);
-						v11 = v6 - 1;
-						v12 = v7 - 1;
-					} else {
-						v13 = 4;
-						do {
-							if (v20)
-								break;
-							v6 = 4;
-							do {
-								if (v20)
-									break;
-								if (v13 >= 0 && v13 < MAXDUNY && v6 >= 0 && v6 < MAXDUNX) {
-									v14 = monster[v2]._mx;
-									v15 = monster[v2]._my;
-									v20 = dDead[v14 + v6][v15 + v13]
-									    && (v16 = LineClearF(
-									            CheckNoSolid,
-									            v14,
-									            v15,
-									            v14 + v6,
-									            v15 + v13),
-									           v16);
-								}
-								--v6;
-							} while (v6 >= -4);
-							--v13;
-						} while (v13 >= -4);
-						v11 = v6 + 1;
-						v12 = v13 + 1;
-					}
-					if (v20) {
-						monster[v2]._mgoalvar1 = monster[v2]._mx + v11 + 1;
-						monster[v2]._mgoalvar2 = monster[v2]._my + v12 + 1;
-					}
-				}
-				v17 = monster[v2]._mgoalvar1;
-				if (v17) {
-					v18 = GetDirection(monster[v2]._mx, monster[v2]._my, v17 - 1, monster[v2]._mgoalvar2 - 1);
-					monster[v2]._mdir = v18;
-					M_CallWalk(arglist, v18);
-				}
-			}
-		}
-		goto LABEL_52;
+		Monst->_mgoal = MGOAL_HEALING;
+		Monst->_mgoalvar3 = 10;
 	}
+	if (Monst->_mgoal == MGOAL_HEALING && Monst->_mgoalvar3 != 0) {
+		Monst->_mgoalvar3--;
+		if (dDead[Monst->_mx][Monst->_my]) {
+			M_StartEat(i);
+			if (!(Monst->_mFlags & MFLAG_NOHEAL))
+				Monst->_mhitpoints += 64;
+			if (Monst->_mhitpoints >= (Monst->_mmaxhp >> 1) + (Monst->_mmaxhp >> 2)) {
+				Monst->_mgoal = MGOAL_NORMAL;
+				Monst->_mgoalvar1 = 0;
+				Monst->_mgoalvar2 = 0;
+			}
+		} else {
+			if (Monst->_mgoalvar1 == 0) {
+				if (random(120, 2) != 0) {
+					for (y = -4; y <= 4 && !done; y++) {
+						for (x = -4; x <= 4 && !done; x++) {
+							// BUGFIX: incorrect check of offset against limits of the dungeon
+							if (y < 0 || y >= MAXDUNY || x < 0 || x >= MAXDUNX)
+								continue;
+							done = dDead[Monst->_mx + x][Monst->_my + y] != 0
+							    && LineClearF(
+							           CheckNoSolid,
+							           Monst->_mx,
+							           Monst->_my,
+							           Monst->_mx + x,
+							           Monst->_my + y);
+						}
+					}
+					x--;
+					y--;
+				} else {
+					for (y = 4; y >= -4 && !done; y--) {
+						for (x = 4; x >= -4 && !done; x--) {
+							// BUGFIX: incorrect check of offset against limits of the dungeon
+							if (y < 0 || y >= MAXDUNY || x < 0 || x >= MAXDUNX)
+								continue;
+							done = dDead[Monst->_mx + x][Monst->_my + y] != 0
+							    && LineClearF(
+							           CheckNoSolid,
+							           Monst->_mx,
+							           Monst->_my,
+							           Monst->_mx + x,
+							           Monst->_my + y);
+						}
+					}
+					x++;
+					y++;
+				}
+				if (done) {
+					Monst->_mgoalvar1 = x + Monst->_mx + 1;
+					Monst->_mgoalvar2 = y + Monst->_my + 1;
+				}
+			}
+			if (Monst->_mgoalvar1) {
+				x = Monst->_mgoalvar1 - 1;
+				y = Monst->_mgoalvar2 - 1;
+				Monst->_mdir = GetDirection(Monst->_mx, Monst->_my, x, y);
+				M_CallWalk(i, Monst->_mdir);
+			}
+		}
+	}
+	if (Monst->_mmode == MM_STAND)
+		MAI_SkelSd(i);
 }
 
 void MAI_Garg(int i)
