@@ -1269,8 +1269,8 @@ void AddWeaponRack(int i)
 void AddTorturedBody(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
-	object[i]._oPreFlag = TRUE;
 	object[i]._oAnimFrame = random(0, 4) + 1;
+	object[i]._oPreFlag = TRUE;
 }
 
 void GetRndObjLoc(int randarea, int *xx, int *yy)
@@ -1512,12 +1512,17 @@ void Obj_Circle(int i)
 			object[i]._oAnimFrame = 2;
 		if (object[i]._otype == OBJ_MCIRCLE2)
 			object[i]._oAnimFrame = 4;
-		if (ox == 45 && oy == 47) {
-			object[i]._oVar6 = 2;
-			return;
-		} else if (object[i]._ox == 26 && object[i]._oy == 46) {
+		if (ox == 45) {
+			if (oy == 47) {
+				object[i]._oVar6 = 2;
+				return;
+			}
+		}
+		else {
+			if (object[i]._ox == 26 && object[i]._oy == 46) {
 			object[i]._oVar6 = 1;
 			return;
+			}
 		}
 		object[i]._oVar6 = 0;
 		if (ox == 35 && object[i]._oy == 36 && object[i]._oVar5 == 3) {
@@ -1574,9 +1579,9 @@ void ActivateTrapLine(int ttype, int tid)
 {
 	int i, oi;
 
-	for (i = ttype; i < nobjects; i++) {
+	for (i = 0; i < nobjects; i++) {
 		oi = objectactive[i];
-		if (object[oi]._otype == i && object[oi]._oVar1 == tid) {
+		if (object[oi]._otype == ttype && object[oi]._oVar1 == tid) {
 			object[oi]._oVar4 = 1;
 			object[oi]._oAnimFlag = 1;
 			object[oi]._oAnimDelay = 1;
@@ -2382,7 +2387,7 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	}
 }
 
-void OperateL1Door(int pnum, int i, unsigned char sendflag)
+void OperateL1Door(int pnum, int i, BOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -2742,7 +2747,7 @@ void OperateSarc(int pnum, int i, BOOL sendmsg)
 	}
 }
 
-void OperateL2Door(int pnum, int i, unsigned char sendflag)
+void OperateL2Door(int pnum, int i, BOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -2754,7 +2759,7 @@ void OperateL2Door(int pnum, int i, unsigned char sendflag)
 		OperateL2RDoor(pnum, i, sendflag);
 }
 
-void OperateL3Door(int pnum, int i, unsigned char sendflag)
+void OperateL3Door(int pnum, int i, BOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -3764,37 +3769,37 @@ void OperateObject(int pnum, int i, BOOL TeleFlag)
 	case OBJ_L1RDOOR:
 		if (TeleFlag) {
 			if (object[i]._otype == OBJ_L1LDOOR)
-				OperateL1LDoor(pnum, i, 1);
+				OperateL1LDoor(pnum, i, TRUE);
 			if (object[i]._otype == OBJ_L1RDOOR)
-				OperateL1RDoor(pnum, i, 1);
+				OperateL1RDoor(pnum, i, TRUE);
 			break;
 		}
 		if (pnum == myplr)
-			OperateL1Door(pnum, i, 1);
+			OperateL1Door(pnum, i, TRUE);
 		break;
 	case OBJ_L2LDOOR:
 	case OBJ_L2RDOOR:
 		if (TeleFlag) {
 			if (object[i]._otype == OBJ_L2LDOOR)
-				OperateL2LDoor(pnum, i, 1);
+				OperateL2LDoor(pnum, i, TRUE);
 			if (object[i]._otype == OBJ_L2RDOOR)
-				OperateL2RDoor(pnum, i, 1);
+				OperateL2RDoor(pnum, i, TRUE);
 			break;
 		}
 		if (pnum == myplr)
-			OperateL2Door(pnum, i, 1);
+			OperateL2Door(pnum, i, TRUE);
 		break;
 	case OBJ_L3LDOOR:
 	case OBJ_L3RDOOR:
 		if (TeleFlag) {
 			if (object[i]._otype == OBJ_L3LDOOR)
-				OperateL3LDoor(pnum, i, 1);
+				OperateL3LDoor(pnum, i, TRUE);
 			if (object[i]._otype == OBJ_L3RDOOR)
-				OperateL3RDoor(pnum, i, 1);
+				OperateL3RDoor(pnum, i, TRUE);
 			break;
 		}
 		if (pnum == myplr)
-			OperateL3Door(pnum, i, 1);
+			OperateL3Door(pnum, i, TRUE);
 		break;
 	case OBJ_LEVER:
 	case OBJ_SWITCHSKL:

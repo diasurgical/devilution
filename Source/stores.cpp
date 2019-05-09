@@ -1820,19 +1820,19 @@ void S_SmithEnter()
 		gossipstart = QUEST_GRISWOLD2;
 		gossipend = QUEST_GRISWOLD13;
 		StartStore(STORE_GOSSIP);
-		return;
+		break;
 	case 12:
 		StartStore(STORE_SBUY);
-		return;
+		break;
 	case 14:
 		StartStore(STORE_SPBUY);
-		return;
+		break;
 	case 16:
 		StartStore(STORE_SSELL);
-		return;
+		break;
 	case 18:
 		StartStore(STORE_SREPAIR);
-		return;
+		break;
 	case 20:
 		stextflag = STORE_NONE;
 		break;
@@ -2538,20 +2538,20 @@ void S_HealerEnter()
 		gossipstart = QUEST_PEPIN2;
 		gossipend = QUEST_PEPIN11;
 		StartStore(STORE_GOSSIP);
-		return;
+		break;
 	case 14:
 		if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
 			PlaySFX(IS_CAST8);
 		drawhpflag = TRUE;
 		plr[myplr]._pHitPoints = plr[myplr]._pMaxHP;
 		plr[myplr]._pHPBase = plr[myplr]._pMaxHPBase;
-		return;
+		break;
 	case 16:
 		StartStore(STORE_HBUY);
-		return;
+		break;
 	case 18:
 		stextflag = STORE_NONE;
-		return;
+		break;
 	}
 }
 

@@ -85,7 +85,7 @@ void CheckBtnUp();
 void FreeControlPan();
 BOOL control_WriteStringToBuffer(BYTE *str);
 void DrawInfoBox();
-void control_print_info_str(int y, char *str, BOOLEAN center, int lines);
+void control_print_info_str(int y, char *str, BOOL center, int lines);
 void PrintGameStr(int x, int y, char *str, int color);
 void DrawChr();
 void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col);

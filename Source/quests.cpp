@@ -302,10 +302,10 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		for (j = 0; j < 112; j++) {
 			for (i = 0; i < 112; i++) {
 				if (dPiece[i][j] == 370) {
-					trigs[trigflag_4]._tx = i;
-					trigs[trigflag_4]._ty = j;
-					trigs[trigflag_4]._tmsg = 1026;
-					trigflag_4++;
+					trigs[numtrigs]._tx = i;
+					trigs[numtrigs]._ty = j;
+					trigs[numtrigs]._tmsg = 1026;
+					numtrigs++;
 				}
 			}
 		}
@@ -612,7 +612,7 @@ void ResyncQuests()
 		else
 			LoadPalette("Levels\\L3Data\\L3pfoul.pal");
 
-		for (i = 0; i < 32; i++)
+		for (i = 0; i <= 32; i++)
 			palette_update_quest_palette(i);
 	}
 

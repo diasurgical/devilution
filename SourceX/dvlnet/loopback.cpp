@@ -63,20 +63,20 @@ int loopback::SNetGetProviderCaps(struct _SNETCAPS* caps)
 	return 1;
 }
 
-void* loopback::SNetRegisterEventHandler(event_type evtype,
-                                         snet_event_func func)
+bool loopback::SNetRegisterEventHandler(event_type evtype,
+                                         SEVTHANDLER func)
 {
 	// not called in real singleplayer mode
 	// not needed in pseudo multiplayer mode (?)
-	return this;
+	return true;
 }
 
-void* loopback::SNetUnregisterEventHandler(event_type evtype,
-                                           snet_event_func func)
+bool loopback::SNetUnregisterEventHandler(event_type evtype,
+                                           SEVTHANDLER func)
 {
 	// not called in real singleplayer mode
 	// not needed in pseudo multiplayer mode (?)
-	return this;
+	return true;
 }
 
 bool loopback::SNetLeaveGame(int type)

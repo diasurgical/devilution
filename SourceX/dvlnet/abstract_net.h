@@ -11,7 +11,6 @@ namespace dvl {
 namespace net {
 
 typedef std::vector<unsigned char> buffer_t;
-typedef void(*snet_event_func)(struct _SNETEVENT*);
 typedef unsigned long provider_t;
 class dvlnet_exception : public std::exception {};
 
@@ -27,10 +26,10 @@ public:
 	                              DWORD* status) = 0;
 	virtual bool SNetSendTurn(char* data, unsigned int size) = 0;
 	virtual int SNetGetProviderCaps(struct _SNETCAPS* caps) = 0;
-	virtual void* SNetRegisterEventHandler(event_type evtype,
-	                                       snet_event_func func) = 0;
-	virtual void* SNetUnregisterEventHandler(event_type evtype,
-	                                         snet_event_func func) = 0;
+	virtual bool SNetRegisterEventHandler(event_type evtype,
+	                                       SEVTHANDLER func) = 0;
+	virtual bool SNetUnregisterEventHandler(event_type evtype,
+	                                         SEVTHANDLER func) = 0;
 	virtual bool SNetLeaveGame(int type) = 0;
 	virtual bool SNetDropPlayer(int playerid, DWORD flags) = 0;
 	virtual bool SNetGetOwnerTurnsWaiting(DWORD *turns) = 0;

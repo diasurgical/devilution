@@ -501,6 +501,7 @@ void DrawAutomapPlr()
 		DrawLine(x, y, x - AutoMapYPos, y - AMPlayerX, COLOR_PLAYER);
 		DrawLine(x - AutoMapYPos, y - AMPlayerX, x - AMPlayerX, y - AMPlayerX, COLOR_PLAYER);
 		DrawLine(x - AutoMapYPos, y - AMPlayerX, x - AMPlayerY - AMPlayerX, y, COLOR_PLAYER);
+		break;
 	}
 }
 
@@ -591,7 +592,7 @@ void SetAutomapView(int x, int y)
 		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
 		}
-		return;
+		break;
 	case 3:
 		if (solid) {
 			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
@@ -599,7 +600,7 @@ void SetAutomapView(int x, int y)
 		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
 			automapview[xx][yy - 1] = 1;
 		}
-		return;
+		break;
 	case 4:
 		if (solid) {
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
@@ -614,7 +615,7 @@ void SetAutomapView(int x, int y)
 			if (GetAutomapType(xx - 1, yy - 1, FALSE) & 0x4000)
 				automapview[xx - 1][yy - 1] = 1;
 		}
-		return;
+		break;
 	case 5:
 		if (solid) {
 			if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
@@ -624,7 +625,7 @@ void SetAutomapView(int x, int y)
 		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
 		}
-		return;
+		break;
 	case 6:
 		if (solid) {
 			if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
@@ -634,7 +635,7 @@ void SetAutomapView(int x, int y)
 		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
 			automapview[xx][yy - 1] = 1;
 		}
-		return;
+		break;
 	}
 }
 

@@ -7,8 +7,8 @@ BOOLEAN mouseNavigation; // weak
 void *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 void *BigTGold_cel;
-int dword_634474; // weak
-char byte_634478; // weak
+int PentSpin_tick; // weak
+char PentSpin_frame; // weak
 void(*dword_63447C)(TMenuItem *);
 TMenuItem *sgpCurrentMenu; // idb
 void *option_cel;
@@ -74,7 +74,7 @@ void FreeGMenu()
 
 void gmenu_init_menu()
 {
-	byte_634478 = 1;
+	PentSpin_frame = 1;
 	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
 	dword_63447C = 0;
@@ -87,7 +87,7 @@ void gmenu_init_menu()
 	optbar_cel = LoadFileInMem("Data\\optbar.CEL", 0);
 }
 // 634464: using guessed type char mouseNavigation;
-// 634478: using guessed type char byte_634478;
+// 634478: using guessed type char PentSpin_frame;
 // 63448C: using guessed type int sgCurrentMenuIdx;
 
 BOOL gmenu_exception()
@@ -161,29 +161,33 @@ void gmenu_up_down(BOOL isDown)
 
 void gmenu_draw()
 {
-	int v0;       // edi
-	TMenuItem *i; // esi
-	DWORD v2;     // eax
+	int y;
+	TMenuItem *i;
+	DWORD ticks;
 
 	if (sgpCurrentMenu) {
 		if (dword_63447C)
 			dword_63447C(sgpCurrentMenu);
 		CelDecodeOnly(236, 262, (BYTE *)sgpLogo, 1, 296);
-		v0 = 320;
-		for (i = sgpCurrentMenu; i->fnMenu; v0 += 45) {
-			gmenu_draw_menu_item(i, v0);
-			++i;
+		y = 320;
+		i = sgpCurrentMenu;
+		if (sgpCurrentMenu->fnMenu) {
+			while (i->fnMenu) {
+				gmenu_draw_menu_item(i, y);
+				i++;
+				y += 45;
+			}
 		}
-		v2 = GetTickCount();
-		if ((signed int)(v2 - dword_634474) > 25) {
-			if (++byte_634478 == 9)
-				byte_634478 = 1;
-			dword_634474 = v2;
+
+		ticks = GetTickCount();
+		if ((int)(ticks - PentSpin_tick) > 25) {
+			PentSpin_frame++;
+			if (PentSpin_frame == 9)
+				PentSpin_frame = 1;
+			PentSpin_tick = ticks;
 		}
 	}
 }
-// 634474: using guessed type int dword_634474;
-// 634478: using guessed type char byte_634478;
 
 void gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 {
@@ -226,11 +230,11 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 	gmenu_print_text(384 - (v5 >> 1), v2, v3->pszStr);
 	if (v3 == sgpCurrItem) {
 		v13 = v2 + 1;
-		CelDecodeOnly(v11 - 54, v13, (BYTE *)PentSpin_cel, (unsigned char)byte_634478, 48);
-		CelDecodeOnly(v11 + v5 + 4, v13, (BYTE *)PentSpin_cel, (unsigned char)byte_634478, 48);
+		CelDecodeOnly(v11 - 54, v13, (BYTE *)PentSpin_cel, (unsigned char)PentSpin_frame, 48);
+		CelDecodeOnly(v11 + v5 + 4, v13, (BYTE *)PentSpin_cel, (unsigned char)PentSpin_frame, 48);
 	}
 }
-// 634478: using guessed type char byte_634478;
+// 634478: using guessed type char PentSpin_frame;
 // 69BEF8: using guessed type int light_table_index;
 
 void gmenu_clear_buffer(int x, int y, int width, int height)

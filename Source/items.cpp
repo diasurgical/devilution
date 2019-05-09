@@ -1992,24 +1992,23 @@ void SpawnUnique(int uid, int x, int y)
 {
 	int ii, itype;
 
-	if (numitems < MAXITEMS) {
-		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itype = 0;
-		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+	if (numitems >= MAXITEMS)
+		return;
 
-		if (AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId) {
-			while (AllItemsList[itype].iItemId != UniqueItemList[uid].UIItemId) {
-				itype++;
-			}
-		}
+	ii = itemavail[0];
+	GetSuperItemSpace(x, y, ii);
+	itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+	itemactive[numitems] = ii;
 
-		GetItemAttrs(ii, itype, currlevel);
-		GetUniqueItem(ii, uid);
-		SetupItem(ii);
-		numitems++;
+	itype = 0;
+	while (AllItemsList[itype].iItemId != UniqueItemList[uid].UIItemId) {
+		itype++;
 	}
+
+	GetItemAttrs(ii, itype, currlevel);
+	GetUniqueItem(ii, uid);
+	SetupItem(ii);
+	numitems++;
 }
 
 void ItemRndDur(int ii)
@@ -2356,7 +2355,7 @@ void SpawnRock()
 		item[i]._ix = xx;
 		item[i]._iy = yy;
 		dItem[xx][item[i]._iy] = i + 1;
-		GetItemAttrs(i, 7, currlevel);
+		GetItemAttrs(i, IDI_ROCK, currlevel);
 		SetupItem(i);
 		item[i]._iSelFlag = 2;
 		item[i]._iPostDraw = 1;
@@ -2372,10 +2371,10 @@ void RespawnItem(int i, BOOL FlipFlag)
 	it = ItemCAnimTbl[item[i]._iCurs];
 	item[i]._iAnimData = itemanims[it];
 	item[i]._iAnimLen = ItemAnimLs[it];
-	item[i]._iRequest = FALSE;
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
 	item[i]._iPostDraw = FALSE;
+	item[i]._iRequest = FALSE;
 	if (FlipFlag) {
 		item[i]._iAnimFrame = 1;
 		item[i]._iAnimFlag = TRUE;
@@ -2470,10 +2469,10 @@ void GetItemStr(int i)
 	int nGold;
 
 	if (item[i]._itype != ITYPE_GOLD) {
-		if (!item[i]._iIdentified)
-			strcpy(infostr, item[i]._iName);
-		else
+		if (item[i]._iIdentified)
 			strcpy(infostr, item[i]._iIName);
+		else
+			strcpy(infostr, item[i]._iName);
 
 		if (item[i]._iMagical == ITEM_QUALITY_MAGIC)
 			infoclr = COL_BLUE;

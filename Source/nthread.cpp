@@ -27,18 +27,19 @@ static HANDLE sghThread = INVALID_HANDLE_VALUE;
 
 void nthread_terminate_game(const char *pszFcn)
 {
-	DWORD sErr; // eax
+	DWORD sErr;
 
 	sErr = SErrGetLastError();
-	if (sErr != STORM_ERROR_INVALID_PLAYER) {
-		if (sErr == STORM_ERROR_GAME_TERMINATED || sErr == STORM_ERROR_NOT_IN_GAME) {
-			gbGameDestroyed = 1;
-		} else {
-			app_fatal("%s:\n%s", pszFcn, TraceLastError());
-		}
+	if (sErr == STORM_ERROR_INVALID_PLAYER) {
+		return;
+	} else if (sErr == STORM_ERROR_GAME_TERMINATED) {
+		gbGameDestroyed = TRUE;
+	} else if (sErr == STORM_ERROR_NOT_IN_GAME) {
+		gbGameDestroyed = TRUE;
+	} else {
+		app_fatal("%s:\n%s", pszFcn, TraceLastError());
 	}
 }
-// 67862D: using guessed type char gbGameDestroyed;
 
 int nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 {
@@ -120,7 +121,6 @@ void nthread_set_turn_upper_bit()
 {
 	turn_upper_bit = 0x80000000;
 }
-// 679754: using guessed type int turn_upper_bit;
 
 void nthread_start(BOOL set_turn_upper_bit)
 {
@@ -198,8 +198,8 @@ void nthread_start(BOOL set_turn_upper_bit)
 
 unsigned int __stdcall nthread_handler(void *a1)
 {
-	signed int delta; // esi
-	int received;     // [esp+Ch] [ebp-4h]
+	int delta;
+	int received;
 
 	if (nthread_should_run) {
 		while (1) {
@@ -227,8 +227,6 @@ unsigned int __stdcall nthread_handler(void *a1)
 	}
 	return 0;
 }
-// 679734: using guessed type char nthread_should_run;
-// 679764: using guessed type int last_tick;
 
 void nthread_cleanup()
 {
@@ -248,11 +246,6 @@ void nthread_cleanup()
 		sghThread = (HANDLE)-1;
 	}
 }
-// 679734: using guessed type char nthread_should_run;
-// 679738: using guessed type int gdwTurnsInTransit;
-// 67975A: using guessed type char sgbThreadIsRunning;
-// 67975C: using guessed type int gdwLargestMsgSize;
-// 679760: using guessed type int gdwNormalMsgSize;
 
 void nthread_ignore_mutex(BOOL bStart)
 {
@@ -266,12 +259,11 @@ void nthread_ignore_mutex(BOOL bStart)
 		sgbThreadIsRunning = bStart;
 	}
 }
-// 67975A: using guessed type char sgbThreadIsRunning;
 
 BOOL nthread_has_500ms_passed(BOOL unused)
 {
-	DWORD currentTickCount; // eax
-	int ticksElapsed;       // ecx
+	DWORD currentTickCount;
+	int ticksElapsed;
 
 	currentTickCount = GetTickCount();
 	ticksElapsed = currentTickCount - last_tick;
@@ -281,7 +273,5 @@ BOOL nthread_has_500ms_passed(BOOL unused)
 	}
 	return ticksElapsed >= 0;
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 679764: using guessed type int last_tick;
 
 DEVILUTION_END_NAMESPACE

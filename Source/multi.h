@@ -43,7 +43,7 @@ void multi_handle_all_packets(int players, TPkt *packet, int a3);
 void multi_process_tmsgs();
 void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen);
 void NetClose();
-char multi_event_handler(int a1);
+void multi_event_handler(BOOL add);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
 BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram);
 void buffer_init(TBuffer *pBuf);

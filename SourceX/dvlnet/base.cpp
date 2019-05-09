@@ -195,13 +195,13 @@ int base::SNetGetProviderCaps(struct _SNETCAPS* caps)
 	return 1;
 }
 
-void* base::SNetUnregisterEventHandler(event_type evtype, snet_event_func func)
+bool base::SNetUnregisterEventHandler(event_type evtype, SEVTHANDLER func)
 {
 	registered_handlers.erase(evtype);
-	return (void*)func;
+	return true;
 }
 
-void* base::SNetRegisterEventHandler(event_type evtype, snet_event_func func)
+bool base::SNetRegisterEventHandler(event_type evtype, SEVTHANDLER func)
 {
 	/*
 	  engine registers handler for:
@@ -212,7 +212,7 @@ void* base::SNetRegisterEventHandler(event_type evtype, snet_event_func func)
 	  (engine uses same function for all three)
 	*/
 	registered_handlers[evtype] = func;
-	return (void*)func;
+	return true;
 }
 
 bool base::SNetLeaveGame(int type)

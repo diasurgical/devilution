@@ -1247,8 +1247,6 @@ typedef struct _uiheroinfo {
 // storm
 //////////////////////////////////////////////////
 
-// TPDEF PTR FCN VOID SEVTHANDLER
-
 // TPDEF PTR FCN UCHAR SMSGIDLEPROC
 // TPDEF PTR FCN VOID SMSGHANDLER
 

@@ -24,10 +24,10 @@ public:
 	                              DWORD* status);
 	virtual bool SNetSendTurn(char* data, unsigned int size);
 	virtual int SNetGetProviderCaps(struct _SNETCAPS* caps);
-	virtual void *SNetRegisterEventHandler(event_type evtype,
-	                                       snet_event_func func);
-	virtual void *SNetUnregisterEventHandler(event_type evtype,
-	                                         snet_event_func func);
+	virtual bool SNetRegisterEventHandler(event_type evtype,
+	                                       SEVTHANDLER func);
+	virtual bool SNetUnregisterEventHandler(event_type evtype,
+	                                         SEVTHANDLER func);
 	virtual bool SNetLeaveGame(int type);
 	virtual bool SNetDropPlayer(int playerid, DWORD flags);
 	virtual bool SNetGetOwnerTurnsWaiting(DWORD *turns);
