@@ -178,7 +178,7 @@ void nthread_start(BOOL set_turn_upper_bit)
 #endif
 		nthread_should_run = 1;
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &glpNThreadId);
-		if (sghThread == (HANDLE)-1) {
+		if (sghThread == INVALID_HANDLE_VALUE) {
 			err2 = TraceLastError();
 			app_fatal("nthread2:\n%s", err2);
 		}
@@ -237,7 +237,7 @@ void nthread_cleanup()
 	gdwTurnsInTransit = 0;
 	gdwNormalMsgSize = 0;
 	gdwLargestMsgSize = 0;
-	if (sghThread != (HANDLE)-1 && glpNThreadId != GetCurrentThreadId()) {
+	if (sghThread != INVALID_HANDLE_VALUE && glpNThreadId != GetCurrentThreadId()) {
 #ifdef __cplusplus
 		if (!sgbThreadIsRunning)
 			sgMemCrit.Leave();
@@ -246,13 +246,13 @@ void nthread_cleanup()
 			app_fatal("nthread3:\n(%s)", TraceLastError());
 		}
 		CloseHandle(sghThread);
-		sghThread = (HANDLE)-1;
+		sghThread = INVALID_HANDLE_VALUE;
 	}
 }
 
 void nthread_ignore_mutex(BOOL bStart)
 {
-	if (sghThread != (HANDLE)-1) {
+	if (sghThread != INVALID_HANDLE_VALUE) {
 #ifdef __cplusplus
 		if (bStart)
 			sgMemCrit.Leave();

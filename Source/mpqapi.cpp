@@ -12,7 +12,7 @@ BOOLEAN save_archive_open; // weak
 
 /* data */
 
-HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
+HANDLE sghArchive = INVALID_HANDLE_VALUE;
 
 BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 {
@@ -43,7 +43,7 @@ void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
 		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != (HANDLE)-1) {
+		if (v4 != INVALID_HANDLE_VALUE) {
 			FindClose(v4);
 			v5 = 16 * v2;
 			*(_DWORD *)&dst[v5] = FindFileData.ftCreationTime.dwLowDateTime;
@@ -99,7 +99,7 @@ void mpqapi_xor_buf(char *pbData)
 
 void mpqapi_store_default_time(DWORD dwChar)
 {
-/*
+	/*
 	DWORD idx;
 	char dst[160];
 
@@ -504,9 +504,9 @@ BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // Ope
 	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
 	save_archive_open = 0;
 	sghArchive = CreateFile(v3, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
-	if (sghArchive == (HANDLE)-1) {
+	if (sghArchive == INVALID_HANDLE_VALUE) {
 		sghArchive = CreateFile(lpFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
-		if (sghArchive == (HANDLE)-1)
+		if (sghArchive == INVALID_HANDLE_VALUE)
 			return 0;
 		save_archive_open = 1;
 		save_archive_modified = 1;
@@ -623,7 +623,7 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
 		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != (HANDLE)-1) {
+		if (v4 != INVALID_HANDLE_VALUE) {
 			FindClose(v4);
 			v5 = 16 * v2;
 			*(_DWORD *)&dst[v5 + 8] = FindFileData.ftLastWriteTime.dwLowDateTime;
@@ -636,7 +636,7 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 
 void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
 {
-	if (sghArchive != (HANDLE)-1) {
+	if (sghArchive != INVALID_HANDLE_VALUE) {
 		if (save_archive_modified) {
 			if (mpqapi_can_seek()) {
 				if (mpqapi_write_header()) {
