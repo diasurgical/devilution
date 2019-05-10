@@ -3553,7 +3553,7 @@ void MAI_Round(int i, BOOL special)
 
 void MAI_GoatMc(int i)
 {
-	MAI_Round(i, 1u);
+	MAI_Round(i, TRUE);
 }
 
 void MAI_Ranged(int i, int missile_type, BOOL special)
@@ -3622,7 +3622,6 @@ void MAI_Scav(int i)
 	int x, y;
 	int _mx, _my;
 	MonsterStruct *Monst;
-	int _goalvar1;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Scav: Invalid monster %d", i);
@@ -3741,136 +3740,70 @@ void MAI_Garg(int i)
 			Monst->_mgoal = MGOAL_NORMAL;
 		}
 	}
-	MAI_Round(i, 0);
+	MAI_Round(i, FALSE);
 }
 
-void MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam, int lessmissiles)
+void MAI_RoundRanged(int i, int missile_type, BOOL checkdoors, int dam, int lessmissiles)
 {
-	int v5;            // esi
-	MonsterStruct *v6; // esi
-	int v7;            // edx
-	int v8;            // ebx
-	int v9;            // edi
-	int v11;           // eax
-	//int v12; // ST04_4
-	int v13; // ecx
-	int v14; // eax
-	//int v15; // ST04_4
-	int v16; // eax
-	//int v17; // ST04_4
-	int v18;     // ecx
-	int v19;     // ebx
-	int v20;     // eax
-	int v21;     // ecx
-	BOOLEAN v22; // eax
-	BOOLEAN v23; // eax
-	BOOLEAN v24; // eax
-	int v25;     // eax
-	//int v26; // ST04_4
-	int v27; // eax
-	//int v28; // ST04_4
-	int v29;           // eax
-	int v30;           // edx
-	int v31;           // eax
-	int missile_typea; // [esp+4h] [ebp-18h]
-	int v33;           // [esp+8h] [ebp-14h]
-	int x2;            // [esp+Ch] [ebp-10h]
-	int md;            // [esp+10h] [ebp-Ch]
-	int y2;            // [esp+14h] [ebp-8h]
-	int arglist;       // [esp+18h] [ebp-4h]
-	int checkdoorsa;   // [esp+24h] [ebp+8h]
+	MonsterStruct *Monst;
+	int mx, my;
+	int fx, fy;
+	int md, dist, v;
 
-	v5 = i;
-	missile_typea = missile_type;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_RoundRanged: Invalid monster %d", i);
-	v6 = &monster[v5];
-	if (v6->_mmode == MM_STAND && v6->_msquelch != 0) {
-		v7 = v6->_my;
-		y2 = (unsigned char)v6->_menemyy;
-		v8 = v7 - y2;
-		x2 = (unsigned char)v6->_menemyx;
-		v9 = v6->_mx - x2;
-		v33 = v7 - y2;
-		md = GetDirection(v6->_mx, v7, v6->_lastx, v6->_lasty);
-		if (checkdoors && v6->_msquelch < UCHAR_MAX)
-			MonstCheckDoors(arglist);
-		checkdoorsa = random(121, 10000);
-		v11 = abs(v9);
-		//v13 = v12;
-		if (v11 < 2) {
-			v14 = abs(v8);
-			//v13 = v15;
-			if (v14 < 2)
-				goto LABEL_50;
-		}
-		if (v6->_msquelch != UCHAR_MAX)
-			goto LABEL_50;
-		//v13 = y2;
-		if (dTransVal[v6->_mx][v6->_my] != dTransVal[x2][y2])
-			goto LABEL_50;
-		if (_LOBYTE(v6->_mgoal) != MGOAL_MOVE) {
-			if (abs(v9) < 3) {
-				v16 = abs(v8);
-				//v13 = v17;
-				if (v16 < 3)
-					goto LABEL_28;
-			}
-			v18 = lessmissiles;
-			if (random(122, 4 << lessmissiles))
-				goto LABEL_28;
-			if (_LOBYTE(v6->_mgoal) != MGOAL_MOVE) {
-				v6->_mgoalvar1 = 0;
-				v6->_mgoalvar2 = random(123, 2);
-			}
-		}
-		_LOBYTE(v6->_mgoal) = MGOAL_MOVE;
-		v19 = abs(v8);
-		if (abs(v9) <= v19) {
-			v8 = v33;
-			v20 = abs(v33);
-		} else {
-			v20 = abs(v9);
-			v8 = v33;
-		}
-		v21 = v6->_mgoalvar1;
-		v6->_mgoalvar1 = v21 + 1;
-		if (v21 >= 2 * v20 && (v22 = DirOK(arglist, md), v22)) {
-		LABEL_50:
-			_LOBYTE(v6->_mgoal) = MGOAL_NORMAL;
-		} else if (checkdoorsa<500 * ((unsigned char)v6->_mint + 1)>> lessmissiles
-		    && (v23 = LineClear(v6->_mx, v6->_my, x2, y2), v23)) {
-			M_StartRSpAttack(arglist, missile_typea, dam);
-		} else {
-			M_RoundWalk(arglist, md, &v6->_mgoalvar2);
-		}
-	LABEL_28:
-		if (_LOBYTE(v6->_mgoal) == MGOAL_NORMAL) {
-			if (((abs(v9) >= 3 || abs(v8) >= 3) && checkdoorsa<500 * ((unsigned char)v6->_mint + 2)>> lessmissiles
-			        || checkdoorsa<500 * ((unsigned char)v6->_mint + 1)>> lessmissiles)
-			    && (v24 = LineClear(v6->_mx, v6->_my, x2, y2), v24)) {
-				M_StartRSpAttack(arglist, missile_typea, dam);
-			} else {
-				v25 = abs(v9);
-				//v13 = v26;
-				if (v25 >= 2 || (v27 = abs(v8), v27 >= 2)) /* v13 = v28,  */
-				{
-					v29 = random(124, 100);
-					v30 = (unsigned char)v6->_mint;
-					if (v29 < 1000 * (v30 + 5)
-					    || ((v13 = v6->_mVar1, v13 == MM_WALK) || v13 == MM_WALK2 || v13 == MM_WALK3) && !v6->_mVar2 && v29 < 1000 * (v30 + 8)) {
-						M_CallWalk(arglist, md);
-					}
-				} else if (checkdoorsa < 1000 * ((unsigned char)v6->_mint + 6)) {
-					v6->_mdir = md;
-					M_StartAttack(arglist);
+	Monst = monster + i;
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch != 0) {
+		fx = Monst->_menemyx;
+		fy = Monst->_menemyy;
+		mx = Monst->_mx - fx;
+		my = Monst->_my - fy;
+		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+		if (checkdoors && Monst->_msquelch < UCHAR_MAX)
+			MonstCheckDoors(i);
+		v = random(121, 10000);
+		if ((abs(mx) >= 2 || abs(my) >= 2) && Monst->_msquelch == UCHAR_MAX && dTransVal[Monst->_mx][Monst->_my] == dTransVal[fx][fy]) {
+			if (Monst->_mgoal == MGOAL_MOVE || ((abs(mx) >= 3 || abs(my) >= 3) && random(122, 4 << lessmissiles) == 0)) {
+				if (Monst->_mgoal != MGOAL_MOVE) {
+					Monst->_mgoalvar1 = 0;
+					Monst->_mgoalvar2 = random(123, 2);
+				}
+				Monst->_mgoal = MGOAL_MOVE;
+				if (abs(mx) > abs(my)) {
+					dist = abs(mx);
+				} else {
+					dist = abs(my);
+				}
+				if (Monst->_mgoalvar1++ >= 2 * dist && DirOK(i, md)) {
+					Monst->_mgoal = MGOAL_NORMAL;
+				} else if (v<500 * (Monst->_mint + 1)>> lessmissiles
+				    && (LineClear(Monst->_mx, Monst->_my, fx, fy))) {
+					M_StartRSpAttack(i, missile_type, dam);
+				} else {
+					M_RoundWalk(i, md, &Monst->_mgoalvar2);
 				}
 			}
+		} else {
+			Monst->_mgoal = MGOAL_NORMAL;
 		}
-		if (v6->_mmode == MM_STAND) {
-			v31 = random(125, 10);
-			M_StartDelay(arglist, v31 + 5);
+		if (Monst->_mgoal == MGOAL_NORMAL) {
+			if (((abs(mx) >= 3 || abs(my) >= 3) && v < ((500 * (Monst->_mint + 2)) >> lessmissiles)
+			        || v < ((500 * (Monst->_mint + 1)) >> lessmissiles))
+			    && LineClear(Monst->_mx, Monst->_my, fx, fy)) {
+				M_StartRSpAttack(i, missile_type, dam);
+			} else if (abs(mx) >= 2 || abs(my) >= 2) {
+				v = random(124, 100);
+				if (v < 1000 * (Monst->_mint + 5)
+				    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3) && Monst->_mVar2 == 0 && v < 1000 * (Monst->_mint + 8)) {
+					M_CallWalk(i, md);
+				}
+			} else if (v < 1000 * (Monst->_mint + 6)) {
+				Monst->_mdir = md;
+				M_StartAttack(i);
+			}
+		}
+		if (Monst->_mmode == MM_STAND) {
+			M_StartDelay(i, random(125, 10) + 5);
 		}
 	}
 }
