@@ -226,8 +226,8 @@ BYTE *DeltaExportItem(BYTE *dst, TCmdPItem *src)
 	int i;
 
 	for (i = 0; i < MAXITEMS; i++) {
-		if (src->bCmd == 0xFF) {
-			*dst = 0xFF;
+		if (src->bCmd == UCHAR_MAX) {
+			*dst = UCHAR_MAX;
 			dst++;
 		} else {
 			memcpy(dst, src, sizeof(TCmdPItem));
@@ -250,8 +250,8 @@ BYTE *DeltaExportMonster(BYTE *dst, DMonsterStr *src)
 	int i;
 
 	for (i = 0; i < MAXMONSTERS; i++) {
-		if (*(BYTE *)src == 0xFF) {
-			*dst = 0xFF;
+		if (*(BYTE *)src == UCHAR_MAX) {
+			*dst = UCHAR_MAX;
 			dst++;
 		} else {
 			memcpy(dst, src, sizeof(DMonsterStr));
@@ -271,8 +271,8 @@ BYTE *DeltaExportJunk(BYTE *dst)
 
 	for (i = 0; i < MAXPORTAL; i++) {
 		pD = &sgJunk.portal[i];
-		if (pD->x == 0xFF) {
-			*dst = 0xFF;
+		if (pD->x == UCHAR_MAX) {
+			*dst = UCHAR_MAX;
 			dst++;
 		} else {
 			memcpy(dst, pD, sizeof(*pD));
@@ -309,8 +309,8 @@ int msg_comp_level(BYTE *buffer, BYTE *end)
 void delta_init()
 {
 	sgbDeltaChanged = FALSE;
-	memset(&sgJunk, 0xFF, sizeof(sgJunk));
-	memset(sgLevels, 0xFF, sizeof(sgLevels));
+	memset(&sgJunk, UCHAR_MAX, sizeof(sgJunk));
+	memset(sgLevels, UCHAR_MAX, sizeof(sgLevels));
 	memset(sgLocals, 0, sizeof(sgLocals));
 	deltaload = FALSE;
 }
@@ -415,12 +415,12 @@ void delta_leave_sync(BYTE bLevel)
 
 BOOL delta_portal_inited(int i)
 {
-	return sgJunk.portal[i].x == 0xFF;
+	return sgJunk.portal[i].x == UCHAR_MAX;
 }
 
 BOOL delta_quest_inited(int i)
 {
-	return sgJunk.quests[i].qstate != 0xFF;
+	return sgJunk.quests[i].qstate != UCHAR_MAX;
 }
 
 void DeltaAddItem(int ii)
@@ -432,8 +432,8 @@ void DeltaAddItem(int ii)
 		return;
 	}
 	pD = sgLevels[currlevel].item;
-	for (i = 0; i < MAXITEMS; i++,pD++) {
-		if (pD->bCmd != 0xFF
+	for (i = 0; i < MAXITEMS; i++, pD++) {
+		if (pD->bCmd != UCHAR_MAX
 		    && pD->wIndx == item[ii].IDidx
 		    && pD->wCI == item[ii]._iCreateInfo
 		    && pD->dwSeed == item[ii]._iSeed
@@ -444,7 +444,7 @@ void DeltaAddItem(int ii)
 
 	pD = sgLevels[currlevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
-		if (pD->bCmd == 0xFF) {
+		if (pD->bCmd == UCHAR_MAX) {
 			pD->bCmd = CMD_STAND;
 			sgbDeltaChanged = TRUE;
 			pD->x = item[ii]._ix;
@@ -492,7 +492,7 @@ void DeltaLoadLevel()
 	deltaload = TRUE;
 	if (currlevel != 0) {
 		for (i = 0; i < nummonsters; i++) {
-			if (sgLevels[currlevel].monster[i]._mx != 0xFF) {
+			if (sgLevels[currlevel].monster[i]._mx != UCHAR_MAX) {
 				M_ClearSquares(i);
 				x = sgLevels[currlevel].monster[i]._mx;
 				y = sgLevels[currlevel].monster[i]._my;
@@ -535,7 +535,7 @@ void DeltaLoadLevel()
 	}
 
 	for (i = 0; i < MAXITEMS; i++) {
-		if (sgLevels[currlevel].item[i].bCmd != 0xFF) {
+		if (sgLevels[currlevel].item[i].bCmd != UCHAR_MAX) {
 			if (sgLevels[currlevel].item[i].bCmd == CMD_WALKXY) {
 				ii = FindGetItem(
 				    sgLevels[currlevel].item[i].wIndx,
@@ -992,7 +992,7 @@ void NetSendCmdString(int pmask, const char *pszStr)
 
 void RemovePlrPortal(int pnum)
 {
-	memset(&sgJunk.portal[pnum], 0xFF, sizeof(sgJunk.portal[pnum]));
+	memset(&sgJunk.portal[pnum], UCHAR_MAX, sizeof(sgJunk.portal[pnum]));
 	sgbDeltaChanged = TRUE;
 }
 
@@ -1232,8 +1232,8 @@ BYTE *DeltaImportItem(BYTE *src, TCmdPItem *dst)
 	int i;
 
 	for (i = 0; i < MAXITEMS; i++) {
-		if (*src == 0xFF) {
-			memset(dst, 0xFF, sizeof(TCmdPItem));
+		if (*src == UCHAR_MAX) {
+			memset(dst, UCHAR_MAX, sizeof(TCmdPItem));
 			src++;
 		} else {
 			memcpy(dst, src, sizeof(TCmdPItem));
@@ -1256,8 +1256,8 @@ BYTE *DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 	int i;
 
 	for (i = 0; i < MAXMONSTERS; i++) {
-		if (*src == 0xFF) {
-			memset(dst, 0xFF, sizeof(DMonsterStr));
+		if (*src == UCHAR_MAX) {
+			memset(dst, UCHAR_MAX, sizeof(DMonsterStr));
 			src++;
 		} else {
 			memcpy(dst, src, sizeof(DMonsterStr));
@@ -1275,8 +1275,8 @@ void DeltaImportJunk(BYTE *src)
 	MultiQuests *mq;
 
 	for (i = 0; i < MAXPORTAL; i++) {
-		if (*src == 0xFF) {
-			memset(&sgJunk.portal[i], 0xFF, sizeof(DPortal));
+		if (*src == UCHAR_MAX) {
+			memset(&sgJunk.portal[i], UCHAR_MAX, sizeof(DPortal));
 			src++;
 			SetPortalStats(i, 0, 0, 0, 0, 0);
 		} else {
@@ -1474,7 +1474,7 @@ BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 	if (gbMaxPlayers != 1) {
 		for (i = 0; i < MAXITEMS; i++) {
 			pD = &sgLevels[bLevel].item[i];
-			if (*(BYTE *)pD != 0xFF
+			if (*(BYTE *)pD != UCHAR_MAX
 			    && pD->wIndx == pI->wIndx
 			    && pD->wCI == pI->wCI
 			    && pD->dwSeed == pI->dwSeed) {
@@ -1485,7 +1485,7 @@ BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 				} else if (pD->bCmd == CMD_WALKXY) {
 					return TRUE;
 				} else if (pD->bCmd == CMD_ACK_PLRINFO) {
-					*(BYTE *)pD = 0xFF;
+					*(BYTE *)pD = UCHAR_MAX;
 					sgbDeltaChanged = 1;
 					return TRUE;
 				} else {
@@ -1500,7 +1500,7 @@ BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 
 		for (i = 0; i < MAXITEMS; i++) {
 			pD = &sgLevels[bLevel].item[i];
-			if (*(BYTE *)pD == 0xFF) {
+			if (*(BYTE *)pD == UCHAR_MAX) {
 				sgbDeltaChanged = 1;
 				pD->bCmd = CMD_WALKXY;
 				pD->x = pI->x;
@@ -1628,7 +1628,7 @@ void delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 	pD = sgLevels[bLevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != CMD_WALKXY
-		    && pD->bCmd != 0xFF
+		    && pD->bCmd != UCHAR_MAX
 		    && pD->wIndx == pI->wIndx
 		    && pD->wCI == pI->wCI
 		    && pD->dwSeed == pI->dwSeed) {
@@ -1640,7 +1640,7 @@ void delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 
 	pD = sgLevels[bLevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
-		if (pD->bCmd == 0xFF) {
+		if (pD->bCmd == UCHAR_MAX) {
 			sgbDeltaChanged = TRUE;
 			memcpy(pD, pI, sizeof(TCmdPItem));
 			pD->bCmd = CMD_ACK_PLRINFO;
@@ -1656,7 +1656,6 @@ void check_update_plr(int pnum)
 	if (gbMaxPlayers != 1 && pnum == myplr)
 		pfile_update(1);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int On_SYNCPUTITEM(TCmdPItem *pCmd, int pnum)
 {
