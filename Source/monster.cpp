@@ -3830,152 +3830,76 @@ void MAI_Diablo(int i)
 
 void MAI_RR2(int i, int mistype, int dam)
 {
-	int v3;            // ebx
-	MonsterStruct *v4; // esi
-	int v5;            // edi
-	int v6;            // edx
-	int v7;            // ebx
-	int v8;            // edi
-	int v10;           // eax
-	//int v11; // ST04_4
-	int v12; // ecx
-	int v13; // eax
-	//int v14; // ST04_4
-	int v15; // eax
-	//int v16; // ST04_4
-	int v17; // eax
-	//int v18; // ST04_4
-	int v19;     // ebx
-	int v20;     // eax
-	BOOLEAN v21; // eax
-	BOOLEAN v22; // eax
-	int v23;     // ecx
-	int v24;     // eax
-	//int v25; // ST04_4
-	int v27; // eax
-	//int v28; // ST04_4
-	int v29;          // eax
-	int v30;          // eax
-	int v31;          // eax
-	int v32;          // edx
-	int v33;          // eax
-	int missile_type; // [esp+Ch] [ebp-1Ch]
-	int x2;           // [esp+10h] [ebp-18h]
-	int v36;          // [esp+14h] [ebp-14h]
-	int y2;           // [esp+18h] [ebp-10h]
-	int v38;          // [esp+1Ch] [ebp-Ch]
-	int md;           // [esp+20h] [ebp-8h]
-	int arglist;      // [esp+24h] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my, fx, fy;
+	int dist, v, md;
 
-	v3 = i;
-	missile_type = mistype;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_RR2: Invalid monster %d", i);
-	v4 = &monster[v3];
-	v5 = v4->_my - (unsigned char)v4->_menemyy;
-	if (abs(v4->_mx - (unsigned char)v4->_menemyx) >= 5 || abs(v5) >= 5) {
-		MAI_SkelSd(v3);
+
+	Monst = monster + i;
+	mx = Monst->_mx - Monst->_menemyx;
+	my = Monst->_my - Monst->_menemyy;
+	if (abs(mx) >= 5 || abs(my) >= 5) {
+		MAI_SkelSd(i);
 		return;
 	}
-	if (v4->_mmode == MM_STAND && v4->_msquelch != 0) {
-		v6 = v4->_my;
-		y2 = (unsigned char)v4->_menemyy;
-		v7 = v6 - y2;
-		x2 = (unsigned char)v4->_menemyx;
-		v8 = v4->_mx - x2;
-		v36 = v6 - y2;
-		md = GetDirection(v4->_mx, v6, v4->_lastx, v4->_lasty);
-		if (v4->_msquelch < UCHAR_MAX) /* check sign */
-			MonstCheckDoors(arglist);
-		v38 = random(121, 100);
-		v10 = abs(v8);
-		//v12 = v11;
-		if (v10 >= 2 || (v13 = abs(v7), v13 >= 2)) /* v12 = v14,  */
-		{
-			if (v4->_msquelch == UCHAR_MAX) {
-				//v12 = y2;
-				if (dTransVal[v4->_mx][v4->_my] == dTransVal[x2][y2]) {
-					if (_LOBYTE(v4->_mgoal) != MGOAL_MOVE) {
-						v15 = abs(v8);
-						//v12 = v16;
-						if (v15 < 3) {
-							v17 = abs(v7);
-							//v12 = v18;
-							if (v17 < 3)
-								goto LABEL_26;
-						}
-						if (_LOBYTE(v4->_mgoal) != MGOAL_MOVE) {
-							v4->_mgoalvar1 = 0;
-							v4->_mgoalvar2 = random(123, 2);
-						}
-					}
-					_LOBYTE(v4->_mgoal) = MGOAL_MOVE;
-					v4->_mgoalvar3 = 4;
-					v19 = abs(v7);
-					if (abs(v8) <= v19) {
-						v7 = v36;
-						v20 = abs(v36);
-					} else {
-						v20 = abs(v8);
-						v7 = v36;
-					}
-					v12 = v4->_mgoalvar1;
-					v4->_mgoalvar1 = v12 + 1;
-					if (v12 < 2 * v20 || (v21 = DirOK(arglist, md), !v21)) {
-						if (v38 < 5 * ((unsigned char)v4->_mint + 16))
-							M_RoundWalk(arglist, md, &v4->_mgoalvar2);
-					LABEL_26:
-						if (_LOBYTE(v4->_mgoal) != MGOAL_NORMAL)
-							goto LABEL_48;
-						if (((abs(v8) >= 3 || abs(v7) >= 3) && v38 < 5 * ((unsigned char)v4->_mint + 2)
-						        || v38 < 5 * ((unsigned char)v4->_mint + 1)
-						        || v4->_mgoalvar3 == 4)
-						    && (v22 = LineClear(v4->_mx, v4->_my, x2, y2), v22)) {
-							v23 = arglist;
-						} else {
-							v24 = abs(v8);
-							//v26 = v25;
-							if (v24 >= 2 || (v27 = abs(v7), v27 >= 2)) /* v26 = v28,  */
-							{
-								v31 = random(124, 100);
-								v12 = (unsigned char)v4->_mint;
-								if (v31 < 2 * (5 * v12 + 25)
-								    || ((v32 = v4->_mVar1, v32 == MM_WALK) || v32 == MM_WALK2 || v32 == MM_WALK3)
-								        && !v4->_mVar2
-								        && (v12 = 2 * (5 * v12 + 40), v31 < v12)) {
-									M_CallWalk(arglist, md);
-								}
-								goto LABEL_47;
-							}
-							v29 = random(124, 100);
-							v12 = 10 * ((unsigned char)v4->_mint + 4);
-							if (v29 >= v12) {
-							LABEL_47:
-								v4->_mgoalvar3 = 1;
-							LABEL_48:
-								if (v4->_mmode == MM_STAND) {
-									v33 = random(125, 10);
-									M_StartDelay(arglist, v33 + 5);
-								}
-								return;
-							}
-							v4->_mdir = md;
-							v30 = random(124, 2);
-							v23 = arglist;
-							if (v30) {
-								M_StartAttack(arglist);
-								goto LABEL_47;
-							}
-						}
-						M_StartRSpAttack(v23, missile_type, dam);
-						goto LABEL_47;
-					}
+
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch != 0) {
+		fx = Monst->_menemyx;
+		fy = Monst->_menemyy;
+		mx = Monst->_mx - fx;
+		my = Monst->_my - fy;
+		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+		if (Monst->_msquelch < UCHAR_MAX)
+			MonstCheckDoors(i);
+		v = random(121, 100);
+		if ((abs(mx) >= 2 || abs(my) >= 2) && Monst->_msquelch == UCHAR_MAX && dTransVal[Monst->_mx][Monst->_my] == dTransVal[fx][fy]) {
+			if (Monst->_mgoal == MGOAL_MOVE || (abs(mx) >= 3 || abs(my) >= 3)) {
+				if (Monst->_mgoal != MGOAL_MOVE) {
+					Monst->_mgoalvar1 = 0;
+					Monst->_mgoalvar2 = random(123, 2);
+				}
+				Monst->_mgoal = MGOAL_MOVE;
+				Monst->_mgoalvar3 = 4;
+				if (abs(mx) > abs(my)) {
+					dist = abs(mx);
+				} else {
+					dist = abs(my);
+				}
+				if (Monst->_mgoalvar1++ < 2 * dist || !DirOK(i, md)) {
+					if (v < 5 * (Monst->_mint + 16))
+						M_RoundWalk(i, md, &Monst->_mgoalvar2);
+				} else
+					Monst->_mgoal = MGOAL_NORMAL;
+			}
+		} else
+			Monst->_mgoal = MGOAL_NORMAL;
+		if (Monst->_mgoal == MGOAL_NORMAL) {
+			if (((abs(mx) >= 3 || abs(my) >= 3) && v < 5 * (Monst->_mint + 2) || v < 5 * (Monst->_mint + 1) || Monst->_mgoalvar3 == 4) && LineClear(Monst->_mx, Monst->_my, fx, fy)) {
+				M_StartRSpAttack(i, mistype, dam);
+			} else if (abs(mx) >= 2 || abs(my) >= 2) {
+				v = random(124, 100);
+				if (v < 2 * (5 * Monst->_mint + 25)
+				    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
+				        && Monst->_mVar2 == 0
+				        && v < 2 * (5 * Monst->_mint + 40)) {
+					M_CallWalk(i, md);
+				}
+			} else {
+				if (random(124, 100) < 10 * (Monst->_mint + 4)) {
+					Monst->_mdir = md;
+					if (random(124, 2) != 0)
+						M_StartAttack(i);
+					else
+						M_StartRSpAttack(i, mistype, dam);
 				}
 			}
+			Monst->_mgoalvar3 = 1;
 		}
-		_LOBYTE(v4->_mgoal) = MGOAL_NORMAL;
-		goto LABEL_26;
+		if (Monst->_mmode == MM_STAND) {
+			M_StartDelay(i, random(125, 10) + 5);
+		}
 	}
 }
 
