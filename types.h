@@ -14,6 +14,7 @@
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
+#include <limits.h>
 #include <math.h>
 #include <time.h>
 #include <process.h>
