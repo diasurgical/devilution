@@ -781,7 +781,7 @@ BOOLEAN MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, in
 		M_StartKill(arglist, v21);
 	}
 	if (!monster[v7]._msquelch) {
-		monster[v7]._msquelch = -1;
+		monster[v7]._msquelch = UCHAR_MAX;
 		monster[v7]._lastx = plr[v12].WorldX;
 		monster[v7]._lasty = plr[v12].WorldY;
 	}

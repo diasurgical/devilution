@@ -2447,7 +2447,7 @@ int M_DoTalk(int i)
 	if (Monst->mName == UniqMonst[UMT_WARLORD].mName)
 		quests[QTYPE_WARLRD]._qvar1 = 2;
 	if (Monst->mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) {
-		Monst->_msquelch = -1;
+		Monst->_msquelch = UCHAR_MAX;
 		Monst->mtalkmsg = 0;
 		quests[QTYPE_VB]._qvar1 = 6;
 		Monst->_mgoal = MGOAL_NORMAL;
@@ -2775,7 +2775,7 @@ void GroupUnity(int i)
 	}
 
 	if (monster[i].leaderflag == 1) {
-		if ((BYTE)monster[i]._msquelch > (BYTE)monster[leader]._msquelch) {
+		if (monster[i]._msquelch > monster[leader]._msquelch) {
 			monster[leader]._lastx = monster[i]._mx;
 			monster[leader]._lasty = monster[i]._my;
 			monster[leader]._msquelch = monster[i]._msquelch - 1;
@@ -2793,7 +2793,7 @@ void GroupUnity(int i)
 			for (j = 0; j < nummonsters; j++) {
 				m = monstactive[j];
 				if (monster[m].leaderflag == 1 && monster[m].leader == i) {
-					if ((BYTE)monster[i]._msquelch > (BYTE)monster[m]._msquelch) {
+					if (monster[i]._msquelch > monster[m]._msquelch) {
 						monster[m]._lastx = monster[i]._mx;
 						monster[m]._lasty = monster[i]._my;
 						monster[m]._msquelch = monster[i]._msquelch - 1;
@@ -2967,7 +2967,7 @@ void MAI_SkelSd(int i)
 		app_fatal("MAI_SkelSd: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -3005,7 +3005,7 @@ BOOL MAI_Path(int i)
 
 	Monst = &monster[i];
 	if (Monst->MType->mtype != MT_GOLEM) {
-		if (!Monst->_msquelch)
+		if (Monst->_msquelch == 0)
 			return FALSE;
 		if (Monst->_mmode != MM_STAND)
 			return FALSE;
@@ -3050,7 +3050,7 @@ void MAI_Snake(int i)
 	char pattern[6] = { 1, 1, 0, -1, -1, 0 };
 	Monst = monster + i;
 	pnum = Monst->_menemy;
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch)
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0)
 		return;
 	fx = Monst->_menemyx;
 	fy = Monst->_menemyy;
@@ -3131,7 +3131,7 @@ void MAI_Bat(int i)
 
 	Monst = &monster[i];
 	pnum = Monst->_menemy;
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -3195,7 +3195,7 @@ void MAI_SkelBow(int i)
 		app_fatal("MAI_SkelBow: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -3237,7 +3237,7 @@ void MAI_Fat(int i)
 		app_fatal("MAI_Fat: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -3340,7 +3340,7 @@ void MAI_Fireman(int i)
 		app_fatal("MAI_Fireman: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (monster[i]._mmode != MM_STAND || !Monst->_msquelch)
+	if (monster[i]._mmode != MM_STAND || Monst->_msquelch == 0)
 		return;
 
 	pnum = monster[i]._menemy;
@@ -3407,7 +3407,7 @@ void MAI_Fallen(int i)
 	}
 
 	Monst = &monster[i];
-	if (monster[i]._mmode != MM_STAND || !monster[i]._msquelch) {
+	if (monster[i]._mmode != MM_STAND || monster[i]._msquelch == 0) {
 		return;
 	}
 
@@ -3471,7 +3471,7 @@ void MAI_Cleaver(int i)
 		app_fatal("MAI_Cleaver: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -3502,16 +3502,16 @@ void MAI_Round(int i, BOOL special)
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Round: Invalid monster %d", i);
 	Monst = monster + i;
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch != 0) {
 		fy = Monst->_menemyy;
 		fx = Monst->_menemyx;
 		mx = Monst->_mx - fx;
 		my = Monst->_my - fy;
 		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
-		if ((BYTE)Monst->_msquelch < 255)
+		if (Monst->_msquelch < UCHAR_MAX)
 			MonstCheckDoors(i);
 		v = random(114, 100);
-		if ((abs(mx) >= 2 || abs(my) >= 2) && Monst->_msquelch == -1 && dTransVal[Monst->_mx][Monst->_my] == dTransVal[fx][fy]) {
+		if ((abs(mx) >= 2 || abs(my) >= 2) && Monst->_msquelch == UCHAR_MAX && dTransVal[Monst->_mx][Monst->_my] == dTransVal[fx][fy]) {
 			if (Monst->_mgoal == MGOAL_MOVE || (abs(mx) >= 4 || abs(my) >= 4) && random(115, 4) == 0) {
 				if (Monst->_mgoal != MGOAL_MOVE) {
 					Monst->_mgoalvar1 = 0;
@@ -3570,13 +3570,13 @@ void MAI_Ranged(int i, int missile_type, BOOL special)
 		return;
 	}
 
-	if (Monst->_msquelch == -1 || Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
+	if (Monst->_msquelch == UCHAR_MAX || Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
 		mx = Monst->_menemyx;
 		my = Monst->_menemyy;
 		fx = Monst->_mx - mx;
 		fy = Monst->_my - my;
 		md = M_GetDir(i);
-		if ((DWORD)Monst->_msquelch < -1) /* check sign */
+		if (Monst->_msquelch < UCHAR_MAX)
 			MonstCheckDoors(i);
 		Monst->_mdir = md;
 		if (Monst->_mVar1 == MM_RATTACK) {
@@ -3595,7 +3595,7 @@ void MAI_Ranged(int i, int missile_type, BOOL special)
 				Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 			}
 		}
-	} else if (Monst->_msquelch) {
+	} else if (Monst->_msquelch != 0) {
 		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
 		M_CallWalk(i, md);
 	}
@@ -3717,7 +3717,7 @@ void MAI_Garg(int i)
 	dx = Monst->_mx - Monst->_lastx;
 	dy = Monst->_my - Monst->_lasty;
 	md = M_GetDir(i);
-	if (Monst->_msquelch && Monst->_mFlags & MFLAG_ALLOW_SPECIAL) {
+	if (Monst->_msquelch != 0 && Monst->_mFlags & MFLAG_ALLOW_SPECIAL) {
 		M_Enemy(i);
 		mx = Monst->_mx - Monst->_menemyx;
 		my = Monst->_my - Monst->_menemyy;
@@ -3727,7 +3727,7 @@ void MAI_Garg(int i)
 		return;
 	}
 
-	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -3786,7 +3786,7 @@ void MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam,
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_RoundRanged: Invalid monster %d", i);
 	v6 = &monster[v5];
-	if (v6->_mmode == MM_STAND && v6->_msquelch) {
+	if (v6->_mmode == MM_STAND && v6->_msquelch != 0) {
 		v7 = v6->_my;
 		y2 = (unsigned char)v6->_menemyy;
 		v8 = v7 - y2;
@@ -3794,7 +3794,7 @@ void MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam,
 		v9 = v6->_mx - x2;
 		v33 = v7 - y2;
 		md = GetDirection(v6->_mx, v7, v6->_lastx, v6->_lasty);
-		if (checkdoors && v6->_msquelch < 0xFFu) /* check sign */
+		if (checkdoors && v6->_msquelch < UCHAR_MAX)
 			MonstCheckDoors(arglist);
 		checkdoorsa = random(121, 10000);
 		v11 = abs(v9);
@@ -3805,7 +3805,7 @@ void MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam,
 			if (v14 < 2)
 				goto LABEL_50;
 		}
-		if (v6->_msquelch != -1)
+		if (v6->_msquelch != UCHAR_MAX)
 			goto LABEL_50;
 		//v13 = y2;
 		if (dTransVal[v6->_mx][v6->_my] != dTransVal[x2][y2])
@@ -3945,7 +3945,7 @@ void MAI_RR2(int i, int mistype, int dam)
 		MAI_SkelSd(v3);
 		return;
 	}
-	if (v4->_mmode == MM_STAND && v4->_msquelch) {
+	if (v4->_mmode == MM_STAND && v4->_msquelch != 0) {
 		v6 = v4->_my;
 		y2 = (unsigned char)v4->_menemyy;
 		v7 = v6 - y2;
@@ -3953,14 +3953,14 @@ void MAI_RR2(int i, int mistype, int dam)
 		v8 = v4->_mx - x2;
 		v36 = v6 - y2;
 		md = GetDirection(v4->_mx, v6, v4->_lastx, v4->_lasty);
-		if (v4->_msquelch < 0xFFu) /* check sign */
+		if (v4->_msquelch < UCHAR_MAX) /* check sign */
 			MonstCheckDoors(arglist);
 		v38 = random(121, 100);
 		v10 = abs(v8);
 		//v12 = v11;
 		if (v10 >= 2 || (v13 = abs(v7), v13 >= 2)) /* v12 = v14,  */
 		{
-			if (v4->_msquelch == -1) {
+			if (v4->_msquelch == UCHAR_MAX) {
 				//v12 = y2;
 				if (dTransVal[v4->_mx][v4->_my] == dTransVal[x2][y2]) {
 					if (_LOBYTE(v4->_mgoal) != MGOAL_MOVE) {
@@ -4096,15 +4096,15 @@ void MAI_Golum(int i)
 		_menemy = monster[i]._menemy;
 		monster[i]._menemyx = monster[_menemy]._mx;
 		monster[i]._menemyy = monster[_menemy]._my;
-		if (!monster[_menemy]._msquelch) {
-			monster[_menemy]._msquelch = -1;
+		if (monster[_menemy]._msquelch == 0) {
+			monster[_menemy]._msquelch = UCHAR_MAX;
 			monster[monster[i]._menemy]._lastx = monster[i]._mx;
 			monster[monster[i]._menemy]._lasty = monster[i]._my;
 			for (j = 0; j < 5; j++) {
 				for (k = 0; k < 5; k++) {
 					_menemy = dMonster[monster[i]._mx + k - 2][monster[i]._my + j - 2];
 					if (_menemy > 0)
-						monster[_menemy]._msquelch = -1;
+						monster[_menemy]._msquelch = UCHAR_MAX;
 				}
 			}
 		}
@@ -4171,7 +4171,7 @@ void MAI_SkelKing(int i)
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_SkelKing: Invalid monster %d", i);
 	v2 = &monster[v1];
-	if (v2->_mmode == MM_STAND && v2->_msquelch) {
+	if (v2->_mmode == MM_STAND && v2->_msquelch != 0) {
 		v3 = v2->_my;
 		y2 = (unsigned char)v2->_menemyy;
 		v4 = v3 - y2;
@@ -4179,10 +4179,10 @@ void MAI_SkelKing(int i)
 		v5 = v2->_mx - x2;
 		v34 = v3 - y2;
 		md = GetDirection(v2->_mx, v3, v2->_lastx, v2->_lasty);
-		if (v2->_msquelch < 0xFFu) /* check sign */
+		if (v2->_msquelch < UCHAR_MAX) /* check sign */
 			MonstCheckDoors(arglist);
 		v35 = random(126, 100);
-		if ((abs(v5) >= 2 || abs(v4) >= 2) && v2->_msquelch == -1) {
+		if ((abs(v5) >= 2 || abs(v4) >= 2) && v2->_msquelch == UCHAR_MAX) {
 			v32 = &dTransVal[x2][y2];
 			if (dTransVal[v2->_mx][v2->_my] == *v32) {
 				if (_LOBYTE(v2->_mgoal) != MGOAL_MOVE) {
@@ -4300,7 +4300,7 @@ void MAI_Rhino(int i)
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Rhino: Invalid monster %d", i);
 	esi3 = &monster[esi1];
-	if (esi3->_mmode == MM_STAND && esi3->_msquelch) {
+	if (esi3->_mmode == MM_STAND && esi3->_msquelch != 0) {
 		v3 = esi3->_my;
 		v2 = (unsigned char)esi3->_menemyy;
 		v4 = v3 - v2;
@@ -4308,7 +4308,7 @@ void MAI_Rhino(int i)
 		v5 = esi3->_mx - v1;
 		v31 = v3 - v2;
 		midir = GetDirection(esi3->_mx, v3, esi3->_lastx, esi3->_lasty);
-		if (esi3->_msquelch < 0xFFu) /* check sign */
+		if (esi3->_msquelch < UCHAR_MAX) /* check sign */
 			MonstCheckDoors(arglist);
 		v30 = random(131, 100);
 		if (abs(v5) >= 2 || abs(v4) >= 2) {
@@ -4439,7 +4439,7 @@ void MAI_Counselor(int i)
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Counselor: Invalid monster %d", i);
 	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND && monster[v2]._msquelch) {
+	if (monster[v1]._mmode == MM_STAND && monster[v2]._msquelch != 0) {
 		v3 = monster[v2]._mx;
 		x2 = (unsigned char)monster[v2]._menemyx;
 		v4 = v3 - x2;
@@ -4447,7 +4447,7 @@ void MAI_Counselor(int i)
 		y2 = (unsigned char)monster[v2]._menemyy;
 		v6 = v5 - y2;
 		md = GetDirection(v3, v5, monster[v2]._lastx, monster[v2]._lasty);
-		if (monster[v2]._msquelch < 0xFFu) /* check sign */
+		if (monster[v2]._msquelch < UCHAR_MAX) /* check sign */
 			MonstCheckDoors(v1);
 		v39 = random(121, 100);
 		v9 = monster[v2]._mgoal;
@@ -4473,7 +4473,7 @@ void MAI_Counselor(int i)
 				v17 = abs(v4);
 			v18 = v17;
 			if (abs(v4) < 2 && abs(v6) < 2
-			    || monster[v2]._msquelch != -1
+			    || monster[v2]._msquelch != UCHAR_MAX
 			    || dTransVal[monster[v2]._mx][monster[v2]._my] != dTransVal[x2][y2]) {
 				v1 = arglist;
 			LABEL_20:
@@ -4582,7 +4582,7 @@ void MAI_Garbud(int i)
 		if (Monst->mtalkmsg == QUEST_GARBUD4) {
 			if (!effect_is_playing(USFX_GARBUD4) && Monst->_mgoal == MGOAL_TALKING) {
 				Monst->_mgoal = MGOAL_NORMAL;
-				Monst->_msquelch = -1;
+				Monst->_msquelch = UCHAR_MAX;
 				Monst->mtalkmsg = 0;
 			}
 		}
@@ -4627,7 +4627,7 @@ void MAI_Zhar(int i)
 			abs(_my);
 		if (Monst->mtalkmsg == QUEST_ZHAR2) {
 			if (!effect_is_playing(USFX_ZHAR2) && Monst->_mgoal == MGOAL_TALKING) {
-				Monst->_msquelch = -1;
+				Monst->_msquelch = UCHAR_MAX;
 				Monst->mtalkmsg = 0;
 				Monst->_mgoal = MGOAL_NORMAL;
 			}
@@ -4676,7 +4676,7 @@ void MAI_SnotSpil(int i)
 				ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
 				quests[QTYPE_BOL]._qvar1 = 3;
 				RedoPlayerVision();
-				Monst->_msquelch = -1;
+				Monst->_msquelch = UCHAR_MAX;
 				Monst->mtalkmsg = 0;
 				Monst->_mgoal = MGOAL_NORMAL;
 			}
@@ -4722,7 +4722,7 @@ void MAI_Lazurus(int i)
 			if (Monst->mtalkmsg == QUEST_VILE13 && !effect_is_playing(USFX_LAZ1) && Monst->_mgoal == MGOAL_TALKING) {
 				ObjChangeMapResync(1, 18, 20, 24);
 				RedoPlayerVision();
-				Monst->_msquelch = -1;
+				Monst->_msquelch = UCHAR_MAX;
 				Monst->mtalkmsg = 0;
 				quests[QTYPE_VB]._qvar1 = 6;
 				Monst->_mgoal = MGOAL_NORMAL;
@@ -4841,7 +4841,7 @@ void MAI_Warlord(int i)
 		if (Monst->mtalkmsg == QUEST_WARLRD9 && Monst->_mgoal == MGOAL_INQUIRING)
 			Monst->_mmode = MM_TALK;
 		if (Monst->mtalkmsg == QUEST_WARLRD9 && !effect_is_playing(USFX_WARLRD1) && Monst->_mgoal == MGOAL_TALKING) {
-			Monst->_msquelch = -1;
+			Monst->_msquelch = UCHAR_MAX;
 			Monst->mtalkmsg = 0;
 			Monst->_mgoal = MGOAL_NORMAL;
 		}
@@ -4900,7 +4900,7 @@ void ProcessMonsters()
 	char *v13;       // eax
 	int v14;         // ecx
 	int v15;         // eax
-	char v16;        // al
+	BYTE v16;        // al
 	int v17;         // ecx
 	BOOLEAN v18;     // eax
 	int v19;         // eax
@@ -4934,7 +4934,7 @@ void ProcessMonsters()
 			}
 		}
 		v4 = &dFlags[monster[v1]._mx][monster[v1]._my];
-		if (*v4 & DFLAG_VISIBLE && !monster[v1]._msquelch && monster[v1].MType->mtype == MT_CLEAVER)
+		if (*v4 & DFLAG_VISIBLE && monster[v1]._msquelch == 0 && monster[v1].MType->mtype == MT_CLEAVER)
 			PlaySFX(USFX_CLEAVER);
 		if (monster[v1]._mFlags & MFLAG_TARGETS_MONSTER) {
 			v5 = monster[v1]._menemy;
@@ -4959,12 +4959,12 @@ void ProcessMonsters()
 			monster[v1]._menemyy = *v13;
 			if (v11) {
 				v16 = monster[v1]._msquelch;
-				if (v16 && monster[v1]._mAi != MT_DIABLO) /// BUGFIX: test `MT_DIABLO` with 'MType->mtype' instead of '_mAi'
+				if (v16 != 0 && monster[v1]._mAi != MT_DIABLO) /// BUGFIX: test `MT_DIABLO` with 'MType->mtype' instead of '_mAi'
 					monster[v1]._msquelch = v16 - 1;
 			} else {
 				v14 = *(_DWORD *)v12;
 				v15 = *(_DWORD *)v13;
-				monster[v1]._msquelch = -1;
+				monster[v1]._msquelch = UCHAR_MAX;
 				monster[v1]._lastx = v14;
 				monster[v1]._lasty = v15;
 			}
