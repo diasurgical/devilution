@@ -26,7 +26,7 @@ int mpqapi_find_free_block(int size, int *block_size);
 void mpqapi_rename(char *pszOld, char *pszNew);
 BOOL mpqapi_has_file(const char *pszName);
 BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar);
-BOOLEAN mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart);
+BOOL mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart);
 void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar);
 void mpqapi_store_modified_time(const char *pszArchive, int dwChar);
 void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar);
