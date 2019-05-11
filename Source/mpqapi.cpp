@@ -234,30 +234,17 @@ int mpqapi_get_hash_index_of_path(const char *pszName) // FetchHandle
 
 int mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
 {
-	int v4;         // ecx
-	signed int v5;  // eax
-	signed int v6;  // edx
-	_HASHENTRY *v7; // ecx
-	int v8;         // edi
-	int v10;        // [esp+Ch] [ebp-8h]
-	int i;          // [esp+10h] [ebp-4h]
+	int idx, i;
 
-	v4 = index & 0x7FF;
-	v10 = hash_a;
-	v5 = 2048;
-	for (i = v4;; i = (i + 1) & 0x7FF) {
-		v7 = &sgpHashTbl[v4];
-		v8 = v7->block;
-		if (v8 == -1)
-			return -1;
-		v6 = v5--;
-		if (!v6)
-			return -1;
-		if (v7->hashcheck[0] == v10 && v7->hashcheck[1] == hash_b && v7->lcid == locale && v8 != -2)
+	i = 2048;
+	for (idx = index & 0x7FF; sgpHashTbl[idx].block != -1; idx = (idx + 1) & 0x7FF) {
+		if (!i--)
 			break;
-		v4 = (i + 1) & 0x7FF;
+		if (sgpHashTbl[idx].hashcheck[0] == hash_a && sgpHashTbl[idx].hashcheck[1] == hash_b && sgpHashTbl[idx].lcid == locale && sgpHashTbl[idx].block != -2)
+			return idx;
 	}
-	return i;
+
+	return -1;
 }
 
 void mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, char *))
