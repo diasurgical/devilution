@@ -2688,17 +2688,21 @@ void control_reset_talk_msg()
 
 void control_type_message()
 {
-	if (gbMaxPlayers != 1) {
-		sgszTalkMsg[0] = 0;
-		talkflag = 1;
-		frame = 1;
-		talkbtndown[0] = FALSE;
-		talkbtndown[1] = FALSE;
-		talkbtndown[2] = FALSE;
-		sgbPlrTalkTbl = 144;
-		drawpanflag = 255;
-		sgbTalkSavePos = sgbNextTalkSave;
+	int i;
+
+	if (gbMaxPlayers == 1) {
+		return;
 	}
+
+	talkflag = 1;
+	sgszTalkMsg[0] = 0;
+	frame = 1;
+	for (i = 0; i < 3; i++) {
+		talkbtndown[i] = FALSE;
+	}
+	sgbPlrTalkTbl = 144;
+	drawpanflag = 255;
+	sgbTalkSavePos = sgbNextTalkSave;
 }
 
 void control_reset_talk()
