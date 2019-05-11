@@ -4394,39 +4394,36 @@ void MAI_Lazurus(int i)
 
 void MAI_Lazhelp(int i)
 {
-	int v1; // esi
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edi
-	int v5; // [esp+4h] [ebp-8h]
-	int ia; // [esp+8h] [ebp-4h]
+	int _mx, _my;
+	volatile int md; // BUGFIX: very questionable volatile
+	MonsterStruct *Monst;
 
-	v1 = i;
-	ia = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Lazhelp: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v2]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v5 = M_GetDir(ia);
-		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
-			if (gbMaxPlayers == 1) {
-				if (quests[QTYPE_VB]._qvar1 <= 5u) {
-					_LOBYTE(monster[v2]._mgoal) = MGOAL_INQUIRING;
-					goto LABEL_10;
-				}
-				monster[v2].mtalkmsg = 0;
+	if (monster[i]._mmode != MM_STAND)
+		return;
+
+	Monst = monster + i;
+	_mx = Monst->_mx;
+	_my = Monst->_my;
+	md = M_GetDir(i);
+
+	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
+		if (gbMaxPlayers == 1) {
+			if (quests[QTYPE_VB]._qvar1 <= 5) {
+				Monst->_mgoal = MGOAL_INQUIRING;
+			} else {
+				Monst->mtalkmsg = 0;
+				Monst->_mgoal = MGOAL_NORMAL;
 			}
-			_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-		}
-	LABEL_10:
-		if (_LOBYTE(monster[v2]._mgoal) == MGOAL_NORMAL)
-			MAI_Succ(ia);
-		monster[v2]._mdir = v5;
-		if (monster[v2]._mmode == MM_STAND)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v5];
+		} else
+			Monst->_mgoal = MGOAL_NORMAL;
 	}
+	if (Monst->_mgoal == MGOAL_NORMAL)
+		MAI_Succ(i);
+	Monst->_mdir = md;
+	if (monster[i]._mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 // 679660: using guessed type char gbMaxPlayers;
 
