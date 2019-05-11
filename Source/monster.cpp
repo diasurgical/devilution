@@ -3559,34 +3559,34 @@ void MAI_GoatMc(int i)
 void MAI_Ranged(int i, int missile_type, BOOL special)
 {
 	int md;
-	int mx, my, fx, fy;
+	int fx, fy, mx, my;
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Ranged: Invalid monster %d", i);
 
-	Monst = &monster[i];
 	if (monster[i]._mmode != MM_STAND) {
 		return;
 	}
 
+	Monst = monster + i;
 	if (Monst->_msquelch == UCHAR_MAX || Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
-		mx = Monst->_menemyx;
-		my = Monst->_menemyy;
-		fx = Monst->_mx - mx;
-		fy = Monst->_my - my;
+		fx = Monst->_menemyx;
+		fy = Monst->_menemyy;
+		mx = Monst->_mx - fx;
+		my = Monst->_my - fy;
 		md = M_GetDir(i);
 		if (Monst->_msquelch < UCHAR_MAX)
 			MonstCheckDoors(i);
 		Monst->_mdir = md;
 		if (Monst->_mVar1 == MM_RATTACK) {
 			M_StartDelay(i, random(118, 20));
-		} else if (abs(fx) < 4 && abs(fy) < 4) {
+		} else if (abs(mx) < 4 && abs(my) < 4) {
 			if (random(119, 100) < 10 * (Monst->_mint + 7))
 				M_CallWalk(i, opposite[md]);
 		}
 		if (Monst->_mmode == MM_STAND) {
-			if (LineClear(Monst->_mx, Monst->_my, mx, my)) {
+			if (LineClear(Monst->_mx, Monst->_my, fx, fy)) {
 				if (special)
 					M_StartRSpAttack(i, missile_type, 4);
 				else
@@ -3596,7 +3596,9 @@ void MAI_Ranged(int i, int missile_type, BOOL special)
 			}
 		}
 	} else if (Monst->_msquelch != 0) {
-		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+		fx = Monst->_lastx;
+		fy = Monst->_lasty;
+		md = GetDirection(Monst->_mx, Monst->_my, fx, fy);
 		M_CallWalk(i, md);
 	}
 }
