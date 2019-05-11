@@ -5392,29 +5392,28 @@ void PrintMonstHistory(int mt)
 
 void PrintUniqueHistory()
 {
-	char v0; // bl
+	int res;
 
-	v0 = monster[pcursmonst].mMagicRes & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
-	if (v0) {
-		if (monster[pcursmonst].mMagicRes & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING))
+	res = monster[pcursmonst].mMagicRes & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
+	if (!res) {
+		strcpy(tempstr, "No resistances");
+		AddPanelString(tempstr, 1);
+		strcpy(tempstr, "No Immunities");
+	} else {
+		if (res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING))
 			strcpy(tempstr, "Some Magic Resistances");
 		else
 			strcpy(tempstr, "No resistances");
 		AddPanelString(tempstr, 1);
-		if (v0 & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
+		if (res & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
 			strcpy(tempstr, "Some Magic Immunities");
-			goto LABEL_4;
+		} else {
+			strcpy(tempstr, "No Immunities");
 		}
-	} else {
-		strcpy(tempstr, "No resistances");
-		AddPanelString(tempstr, 1);
 	}
-	strcpy(tempstr, "No Immunities");
-LABEL_4:
 	AddPanelString(tempstr, 1);
-	pinfoflag = 1;
+	pinfoflag = TRUE;
 }
-// 4B8824: using guessed type int pinfoflag;
 
 void MissToMonst(int i, int x, int y)
 {
