@@ -650,13 +650,12 @@ void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-BOOLEAN mpqapi_write_header() // WriteMPQHeader
+BOOL mpqapi_write_header() // WriteMPQHeader
 {
-	BOOLEAN result;             // al
-	_FILEHEADER fhdr;           // [esp+8h] [ebp-6Ch]
-	DWORD NumberOfBytesWritten; // [esp+70h] [ebp-4h]
+	_FILEHEADER fhdr;
+	DWORD NumberOfBytesWritten;
 
-	memset(&fhdr, 0, 0x68u);
+	memset(&fhdr, 0, 0x68);
 	fhdr.signature = '\x1AQPM';
 	fhdr.headersize = 32;
 	fhdr.filesize = GetFileSize(sghArchive, 0);
@@ -666,11 +665,13 @@ BOOLEAN mpqapi_write_header() // WriteMPQHeader
 	fhdr.blockoffset = 104;
 	fhdr.hashcount = 2048;
 	fhdr.blockcount = 2048;
-	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) != -1 && WriteFile(sghArchive, &fhdr, 0x68u, &NumberOfBytesWritten, 0))
-		result = NumberOfBytesWritten == 104;
-	else
-		result = 0;
-	return result;
+
+	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
+		return 0;
+	if (!WriteFile(sghArchive, &fhdr, 0x68, &NumberOfBytesWritten, 0))
+		return 0;
+
+	return NumberOfBytesWritten == 104;
 }
 
 BOOL mpqapi_write_block_table()
