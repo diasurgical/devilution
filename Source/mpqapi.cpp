@@ -545,47 +545,45 @@ BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // Ope
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOLEAN mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
+BOOL mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
 {
-	int *v2;                 // ebp
-	_FILEHEADER *v3;         // esi
-	DWORD v4;                // eax
-	DWORD v5;                // edi
-	DWORD NumberOfBytesRead; // [esp+10h] [ebp-4h]
+	DWORD size;
+	DWORD NumberOfBytesRead;
 
-	v2 = pdwNextFileStart;
-	v3 = pHdr;
-	v4 = GetFileSize(sghArchive, 0);
-	v5 = v4;
-	*v2 = v4;
-	if (v4 == -1
-	    || v4 < 0x68
-	    || !ReadFile(sghArchive, v3, 0x68u, &NumberOfBytesRead, NULL)
+	size = GetFileSize(sghArchive, 0);
+	*pdwNextFileStart = size;
+
+	if (size == -1
+	    || size < 0x68
+	    || !ReadFile(sghArchive, pHdr, 0x68u, &NumberOfBytesRead, NULL)
 	    || NumberOfBytesRead != 104
-	    || v3->signature != '\x1AQPM'
-	    || v3->headersize != 32
-	    || v3->version > 0u
-	    || v3->sectorsizeid != 3
-	    || v3->filesize != v5
-	    || v3->hashoffset != 32872
-	    || v3->blockoffset != 104
-	    || v3->hashcount != 2048
-	    || v3->blockcount != 2048) {
-		if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1 || !SetEndOfFile(sghArchive))
-			return 0;
-		memset(v3, 0, 0x68u);
-		v3->signature = '\x1AQPM';
-		v3->headersize = 32;
-		v3->sectorsizeid = 3;
-		v3->version = 0;
-		*v2 = 0x10068;
+	    || pHdr->signature != '\x1AQPM'
+	    || pHdr->headersize != 32
+	    || pHdr->version > 0u
+	    || pHdr->sectorsizeid != 3
+	    || pHdr->filesize != size
+	    || pHdr->hashoffset != 32872
+	    || pHdr->blockoffset != 104
+	    || pHdr->hashcount != 2048
+	    || pHdr->blockcount != 2048) {
+
+		if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
+			return FALSE;
+		if (!SetEndOfFile(sghArchive))
+			return FALSE;
+
+		memset(pHdr, 0, 0x68u);
+		pHdr->signature = '\x1AQPM';
+		pHdr->headersize = 32;
+		pHdr->sectorsizeid = 3;
+		pHdr->version = 0;
+		*pdwNextFileStart = 0x10068;
 		save_archive_modified = 1;
 		save_archive_open = 1;
 	}
-	return 1;
+
+	return TRUE;
 }
-// 65AB0C: using guessed type int save_archive_modified;
-// 65AB14: using guessed type char save_archive_open;
 
 void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // CloseMPQ
 {
@@ -606,8 +604,6 @@ void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // Clo
 		mpqapi_store_creation_time(pszArchive, dwChar);
 	}
 }
-// 65AB0C: using guessed type int save_archive_modified;
-// 65AB14: using guessed type char save_archive_open;
 
 void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 {
