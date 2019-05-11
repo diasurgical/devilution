@@ -11,8 +11,8 @@ extern int glpMsgTbl[MAX_PLRS];
 extern unsigned int glpNThreadId;
 extern int turn_upper_bit;    // weak
 extern char byte_679758;      // weak
-extern int gdwLargestMsgSize; // weak
-extern int gdwNormalMsgSize;  // weak
+extern DWORD gdwLargestMsgSize; // weak
+extern DWORD gdwNormalMsgSize;  // weak
 extern int last_tick;         // weak
 
 void nthread_terminate_game(const char *pszFcn);

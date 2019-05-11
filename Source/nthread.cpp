@@ -16,8 +16,8 @@ int turn_upper_bit;      // weak
 char byte_679758;        // weak
 char sgbPacketCountdown; // weak
 char sgbThreadIsRunning; // weak
-int gdwLargestMsgSize;   // weak
-int gdwNormalMsgSize;    // weak
+DWORD gdwLargestMsgSize;   // weak
+DWORD gdwNormalMsgSize;    // weak
 int last_tick;           // weak
 
 /* data */
@@ -153,18 +153,17 @@ void nthread_start(BOOL set_turn_upper_bit)
 		largestMsgSize = caps.maxmessagesize;
 	gdwDeltaBytesSec = (unsigned int)caps.bytessec >> 2;
 	gdwLargestMsgSize = largestMsgSize;
+	gdwNormalMsgSize = caps.bytessec * (unsigned int)(unsigned char)byte_679704 / 0x14;
+	gdwNormalMsgSize *= 3;
+	gdwNormalMsgSize = gdwNormalMsgSize >> 2;
 	if (caps.maxplayers > 4u)
 		caps.maxplayers = 4;
-	normalMsgSize = (3 * (caps.bytessec * (unsigned int)(unsigned char)byte_679704 / 0x14) >> 2) / caps.maxplayers;
-	gdwNormalMsgSize = normalMsgSize;
-	if (normalMsgSize < 0x80) {
-		do {
+	gdwNormalMsgSize /= caps.maxplayers;
+	while (gdwNormalMsgSize < 0x80){
+			gdwNormalMsgSize *= 2;
 			byte_679704 *= 2;
-			normalMsgSize *= 2;
-		} while (normalMsgSize < 0x80);
-		gdwNormalMsgSize = normalMsgSize;
 	}
-	if (normalMsgSize > largestMsgSize)
+	if (gdwNormalMsgSize > largestMsgSize)
 		gdwNormalMsgSize = largestMsgSize;
 	if ((unsigned char)gbMaxPlayers > 1u) {
 		sgbThreadIsRunning = 0;
@@ -180,19 +179,6 @@ void nthread_start(BOOL set_turn_upper_bit)
 		SetThreadPriority(sghThread, THREAD_PRIORITY_HIGHEST);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 679704: using guessed type char byte_679704;
-// 679730: using guessed type int gdwDeltaBytesSec;
-// 679734: using guessed type char nthread_should_run;
-// 679738: using guessed type int gdwTurnsInTransit;
-// 679750: using guessed type char sgbSyncCountdown;
-// 679754: using guessed type int turn_upper_bit;
-// 679758: using guessed type char byte_679758;
-// 679759: using guessed type char sgbPacketCountdown;
-// 67975A: using guessed type char sgbThreadIsRunning;
-// 67975C: using guessed type int gdwLargestMsgSize;
-// 679760: using guessed type int gdwNormalMsgSize;
-// 679764: using guessed type int last_tick;
 
 unsigned int __stdcall nthread_handler(void *a1)
 {
@@ -246,11 +232,6 @@ void nthread_cleanup()
 		sghThread = (HANDLE)-1;
 	}
 }
-// 679734: using guessed type char nthread_should_run;
-// 679738: using guessed type int gdwTurnsInTransit;
-// 67975A: using guessed type char sgbThreadIsRunning;
-// 67975C: using guessed type int gdwLargestMsgSize;
-// 679760: using guessed type int gdwNormalMsgSize;
 
 void nthread_ignore_mutex(BOOL bStart)
 {
