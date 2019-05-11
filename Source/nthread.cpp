@@ -76,37 +76,42 @@ int nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 // 679738: using guessed type int gdwTurnsInTransit;
 // 679754: using guessed type int turn_upper_bit;
 
-int nthread_recv_turns(int *pfSendAsync)
+BOOL nthread_recv_turns(BOOL *pfSendAsync)
 {
-	BOOLEAN hasCountedDown; // zf
-
-	*pfSendAsync = 0;
-	if (--sgbPacketCountdown) {
+	*pfSendAsync = FALSE;
+	sgbPacketCountdown--;
+	if (sgbPacketCountdown) {
 		last_tick += 50;
-		return 1;
+		return TRUE;
 	}
-	hasCountedDown = sgbSyncCountdown-- == 1;
+	sgbSyncCountdown--;
 	sgbPacketCountdown = byte_679704;
-	if (!hasCountedDown)
-		goto LABEL_11;
-	if (SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
+	if (sgbSyncCountdown != 0) {
+	
+		*pfSendAsync = TRUE;
+		last_tick += 50;
+		return TRUE;
+	}
+	if (!SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
+		if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
+			nthread_terminate_game("SNetReceiveTurns");
+		byte_679758 = 0;
+		sgbSyncCountdown = 1;
+		sgbPacketCountdown = 1;
+		return 0;
+		}
+	else{
+
 		if (!byte_679758) {
 			byte_679758 = 1;
 			last_tick = GetTickCount();
 		}
 		sgbSyncCountdown = 4;
 		multi_msg_countdown();
-	LABEL_11:
-		*pfSendAsync = 1;
+		*pfSendAsync = TRUE;
 		last_tick += 50;
-		return 1;
+		return TRUE;
 	}
-	if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
-		nthread_terminate_game("SNetReceiveTurns");
-	byte_679758 = 0;
-	sgbSyncCountdown = 1;
-	sgbPacketCountdown = 1;
-	return 0;
 }
 // 679704: using guessed type char byte_679704;
 // 679750: using guessed type char sgbSyncCountdown;
