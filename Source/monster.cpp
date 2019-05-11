@@ -4129,159 +4129,73 @@ void MAI_Rhino(int i)
 
 void MAI_Counselor(int i)
 {
-	int v1;      // ebx
-	int v2;      // esi
-	int v3;      // ecx
-	int v4;      // edi
-	int v5;      // edx
-	int v6;      // ebp
-	char v9;     // al
-	int v10;     // ecx
-	BOOLEAN v11; // zf
-	BOOLEAN v12; // sf
-	//unsigned char v13; // of
-	int v14; // edx
-	int v15; // ecx
-	int v16; // ebx
-	int v17; // eax
-	int v18; // ebx
-	int v19; // edx
-	int v20; // ecx
-	//int v21; // eax
-	int v22; // eax
-	//int v23; // ST1C_4
-	int v25; // eax
-	//int v26; // ST1C_4
-	int v27; // edx
-	int v28; // eax
-	int v29; // eax
-	int v30; // ecx
-	//int v31; // eax
-	int v32;     // eax
-	int v33;     // eax
-	int v34;     // eax
-	int md;      // [esp+8h] [ebp-14h]
-	int arglist; // [esp+Ch] [ebp-10h]
-	int y2;      // [esp+10h] [ebp-Ch]
-	int x2;      // [esp+14h] [ebp-8h]
-	int v39;     // [esp+18h] [ebp-4h]
+	int mx, my, fx, fy;
+	int dist, md, v;
+	MonsterStruct *Monst;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Counselor: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND && monster[v2]._msquelch != 0) {
-		v3 = monster[v2]._mx;
-		x2 = (unsigned char)monster[v2]._menemyx;
-		v4 = v3 - x2;
-		v5 = monster[v2]._my;
-		y2 = (unsigned char)monster[v2]._menemyy;
-		v6 = v5 - y2;
-		md = GetDirection(v3, v5, monster[v2]._lastx, monster[v2]._lasty);
-		if (monster[v2]._msquelch < UCHAR_MAX) /* check sign */
-			MonstCheckDoors(v1);
-		v39 = random(121, 100);
-		v9 = monster[v2]._mgoal;
-		if (v9 == MGOAL_RETREAT) {
-			v10 = monster[v2]._mgoalvar1;
-			//v13 = __OFSUB__(v10, 3);
-			v11 = v10 == 3;
-			v12 = v10 - 3 < 0;
-			v14 = v10 + 1;
-			v15 = v1;
-			monster[v2]._mgoalvar1 = v14;
-			if (v12 | v11) { //if ((unsigned char)(v12 ^ v13) | v11) {
-				M_CallWalk(v1, opposite[md]);
-				goto LABEL_39;
+	if (monster[i]._mmode == MM_STAND && monster[i]._msquelch != 0) {
+		Monst = monster + i;
+		fx = Monst->_menemyx;
+		fy = Monst->_menemyy;
+		mx = Monst->_mx - fx;
+		my = Monst->_my - fy;
+		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+		if (Monst->_msquelch < UCHAR_MAX)
+			MonstCheckDoors(i);
+		v = random(121, 100);
+		if (Monst->_mgoal == MGOAL_RETREAT) {
+			if (Monst->_mgoalvar1++ <= 3)
+				M_CallWalk(i, opposite[md]);
+			else {
+				Monst->_mgoal = MGOAL_NORMAL;
+				M_StartFadein(i, md, TRUE);
 			}
-			goto LABEL_21;
-		}
-		if (v9 == MGOAL_MOVE) {
-			v16 = abs(v6);
-			if (abs(v4) <= v16)
-				v17 = abs(v6);
+		} else if (Monst->_mgoal == MGOAL_MOVE) {
+			if (abs(mx) > abs(my))
+				dist = abs(mx);
 			else
-				v17 = abs(v4);
-			v18 = v17;
-			if (abs(v4) < 2 && abs(v6) < 2
-			    || monster[v2]._msquelch != UCHAR_MAX
-			    || dTransVal[monster[v2]._mx][monster[v2]._my] != dTransVal[x2][y2]) {
-				v1 = arglist;
-			LABEL_20:
-				v15 = v1;
-			LABEL_21:
-				_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-				M_StartFadein(v15, md, TRUE);
-				goto LABEL_39;
-			}
-			v19 = 2 * v18;
-			v1 = arglist;
-			v20 = monster[v2]._mgoalvar1;
-			monster[v2]._mgoalvar1 = v20 + 1;
-			if (v20 >= v19) {
-				//_LOBYTE(v21) = DirOK(arglist, md);
-				if (DirOK(arglist, md))
-					goto LABEL_20;
-			}
-			M_RoundWalk(arglist, md, &monster[v2]._mgoalvar2);
-		LABEL_39:
-			if (monster[v2]._mmode == MM_STAND) {
-				v34 = random(125, 10);
-				M_StartDelay(v1, v34 + 5);
-			}
-			return;
-		}
-		if (v9 != MGOAL_NORMAL)
-			goto LABEL_39;
-		v22 = abs(v4);
-		//v24 = v23;
-		if (v22 >= 2 || (v25 = abs(v6), v25 >= 2)) /* v24 = v26,  */
-		{
-			if (v39 < 5 * ((unsigned char)monster[v2]._mint + 10)) {
-				//_LOBYTE(v31) = LineClear(monster[v2]._mx, monster[v2]._my, x2, y2);
-				if (LineClear(monster[v2]._mx, monster[v2]._my, x2, y2)) {
-					v32 = random(
-					    77,
-					    (unsigned char)monster[v2].mMaxDamage - (unsigned char)monster[v2].mMinDamage + 1);
-					M_StartRAttack(
-					    v1,
-					    (unsigned char)counsmiss[(unsigned char)monster[v2]._mint], /* counsmiss is local */
-					    (unsigned char)monster[v2].mMinDamage + v32);
-					goto LABEL_39;
+				dist = abs(my);
+			if ((abs(mx) >= 2 || abs(my) >= 2) && Monst->_msquelch == UCHAR_MAX && dTransVal[Monst->_mx][Monst->_my] == dTransVal[fx][fy]) {
+				if (Monst->_mgoalvar1++ < 2 * dist || !DirOK(i, md)) {
+					M_RoundWalk(i, md, &Monst->_mgoalvar2);
+				} else {
+					Monst->_mgoal = MGOAL_NORMAL;
+					M_StartFadein(i, md, TRUE);
 				}
+			} else {
+				Monst->_mgoal = MGOAL_NORMAL;
+				M_StartFadein(i, md, TRUE);
 			}
-			if (random(124, 100) < 30) {
-				v27 = md;
-				_LOBYTE(monster[v2]._mgoal) = MGOAL_MOVE;
-				goto LABEL_29;
-			}
-		} else {
-			v27 = md;
-			v28 = monster[v2]._mmaxhp >> 1;
-			//v13 = __OFSUB__(monster[v2]._mhitpoints, v28);
-			v12 = monster[v2]._mhitpoints - v28 < 0;
-			monster[v2]._mdir = md;
-			if (v12) { //if (v12 ^ v13) {
-				_LOBYTE(monster[v2]._mgoal) = MGOAL_RETREAT;
-			LABEL_29:
-				monster[v2]._mgoalvar1 = 0;
-				M_StartFadeout(v1, v27, FALSE);
-				goto LABEL_39;
-			}
-			if (monster[v2]._mVar1 == MM_DELAY
-			    || (v29 = random(105, 100),
-			           v30 = 2 * (unsigned char)monster[v2]._mint + 20,
-			           v29 < v30)) {
-				M_StartRAttack(v1, -1, 0);
-				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, MIS_FLASH, 1, v1, 4, 0);
-				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, MIS_FLASH2, 1, v1, 4, 0);
-				goto LABEL_39;
+		} else if (Monst->_mgoal == MGOAL_NORMAL) {
+			if (abs(mx) >= 2 || abs(my) >= 2) {
+				if (v < 5 * (Monst->_mint + 10) && LineClear(Monst->_mx, Monst->_my, fx, fy)) {
+					M_StartRAttack(i, counsmiss[Monst->_mint], Monst->mMinDamage + random(77, Monst->mMaxDamage - Monst->mMinDamage + 1));
+				} else if (random(124, 100) < 30) {
+					Monst->_mgoal = MGOAL_MOVE;
+					Monst->_mgoalvar1 = 0;
+					M_StartFadeout(i, md, FALSE);
+				} else
+					M_StartDelay(i, random(105, 10) + 2 * (5 - Monst->_mint));
+			} else {
+				Monst->_mdir = md;
+				if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1)) {
+					Monst->_mgoal = MGOAL_RETREAT;
+					Monst->_mgoalvar1 = 0;
+					M_StartFadeout(i, md, FALSE);
+				} else if (Monst->_mVar1 == MM_DELAY
+				    || random(105, 100) < 2 * Monst->_mint + 20) {
+					M_StartRAttack(i, -1, 0);
+					AddMissile(Monst->_mx, Monst->_my, 0, 0, Monst->_mdir, MIS_FLASH, 1, i, 4, 0);
+					AddMissile(Monst->_mx, Monst->_my, 0, 0, Monst->_mdir, MIS_FLASH2, 1, i, 4, 0);
+				} else
+					M_StartDelay(i, random(105, 10) + 2 * (5 - Monst->_mint));
 			}
 		}
-		v33 = random(105, 10);
-		M_StartDelay(v1, v33 + 2 * (5 - (unsigned char)monster[v2]._mint));
-		goto LABEL_39;
+		if (Monst->_mmode == MM_STAND) {
+				M_StartDelay(i, random(125, 10) + 5);
+			}
 	}
 }
 
