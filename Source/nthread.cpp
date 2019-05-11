@@ -47,34 +47,34 @@ int nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 	int curTurnsInTransit;     // [esp+10h] [ebp-4h]
 
 	new_cur_turn = cur_turn;
-	if (SNetGetTurnsInTransit(&curTurnsInTransit)) {
+	if (!SNetGetTurnsInTransit(&curTurnsInTransit)) {
+		lastStormFn = "SNetGetTurnsInTransit";
+	} else{
 		if (curTurnsInTransit >= (unsigned int)gdwTurnsInTransit)
 			return new_cur_turn;
 		while (1) {
-			++curTurnsInTransit;
+			curTurnsInTransit++;
 
 			turn_tmp = turn_upper_bit | new_cur_turn & 0x7FFFFFFF;
 			turn_upper_bit = 0;
 			turn = turn_tmp;
 
-			if (!SNetSendTurn((char *)&turn, sizeof(turn)))
+			if (!SNetSendTurn((char *)&turn, sizeof(turn))) {
 				break;
+			}
 
 			new_cur_turn += turn_delta;
 			if (new_cur_turn >= 0x7FFFFFFF)
-				new_cur_turn = (unsigned short)new_cur_turn;
+				new_cur_turn &= 0xFFFF;
 			if (curTurnsInTransit >= (unsigned int)gdwTurnsInTransit)
 				return new_cur_turn;
 		}
 		lastStormFn = "SNetSendTurn";
-	} else {
-		lastStormFn = "SNetGetTurnsInTransit";
 	}
+
 	nthread_terminate_game(lastStormFn);
 	return 0;
 }
-// 679738: using guessed type int gdwTurnsInTransit;
-// 679754: using guessed type int turn_upper_bit;
 
 int nthread_recv_turns(int *pfSendAsync)
 {
