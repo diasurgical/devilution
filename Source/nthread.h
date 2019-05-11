@@ -17,7 +17,7 @@ extern int last_tick;         // weak
 
 void nthread_terminate_game(const char *pszFcn);
 int nthread_send_and_recv_turn(int cur_turn, int turn_delta);
-int nthread_recv_turns(int *pfSendAsync);
+BOOL nthread_recv_turns(BOOL *pfSendAsync);
 void nthread_set_turn_upper_bit();
 void nthread_start(BOOL set_turn_upper_bit);
 unsigned int __stdcall nthread_handler(void *a1);
