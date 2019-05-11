@@ -137,25 +137,22 @@ BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 
 void mpqapi_remove_hash_entry(const char *pszName)
 {
-	int v1;          // eax
-	_HASHENTRY *v2;  // ecx
-	_BLOCKENTRY *v3; // eax
-	int v4;          // esi
-	int v5;          // edi
+	_HASHENTRY *pHashTbl;
+	_BLOCKENTRY *blockEntry;
+	int hIdx, block_offset, block_size;
 
-	v1 = mpqapi_get_hash_index_of_path(pszName);
-	if (v1 != -1) {
-		v2 = &sgpHashTbl[v1];
-		v3 = &sgpBlockTbl[v2->block];
-		v2->block = -2;
-		v4 = v3->offset;
-		v5 = v3->sizealloc;
-		memset(v3, 0, 0x10u);
-		mpqapi_free_block(v4, v5);
+	hIdx = mpqapi_get_hash_index_of_path(pszName);
+	if (hIdx != -1) {
+		pHashTbl = &sgpHashTbl[hIdx];
+		blockEntry = &sgpBlockTbl[pHashTbl->block];
+		pHashTbl->block = -2;
+		block_offset = blockEntry->offset;
+		block_size = blockEntry->sizealloc;
+		memset(blockEntry, 0, sizeof(*blockEntry));
+		mpqapi_free_block(block_offset, block_size);
 		save_archive_modified = 1;
 	}
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 void mpqapi_free_block(int block_offset, int block_size)
 {
@@ -277,7 +274,7 @@ BOOL mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen)
 _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_index)
 {
 	DWORD h1, h2, h3;
-	int i, hi;
+	int i, hIdx;
 
 	h1 = Hash(pszName, 0);
 	h2 = Hash(pszName, 1);
@@ -285,12 +282,12 @@ _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_i
 	if (mpqapi_get_hash_index(h1, h2, h3, 0) != -1)
 		app_fatal("Hash collision between \"%s\" and existing file\n", pszName);
 	i = 2048;
-	hi = h1 & 0x7FF;
+	hIdx = h1 & 0x7FF;
 	while (1) {
 		i--;
-		if (sgpHashTbl[hi].block == -1 || sgpHashTbl[hi].block == -2)
+		if (sgpHashTbl[hIdx].block == -1 || sgpHashTbl[hIdx].block == -2)
 			break;
-		hi = (hi + 1) & 0x7FF;
+		hIdx = (hIdx + 1) & 0x7FF;
 		if (!i) {
 			i = -1;
 			break;
@@ -301,10 +298,10 @@ _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_i
 	if (!pBlk)
 		pBlk = mpqapi_new_block(&block_index);
 
-	sgpHashTbl[hi].hashcheck[0] = h2;
-	sgpHashTbl[hi].hashcheck[1] = h3;
-	sgpHashTbl[hi].lcid = 0;
-	sgpHashTbl[hi].block = block_index;
+	sgpHashTbl[hIdx].hashcheck[0] = h2;
+	sgpHashTbl[hIdx].hashcheck[1] = h3;
+	sgpHashTbl[hIdx].lcid = 0;
+	sgpHashTbl[hIdx].block = block_index;
 
 	return pBlk;
 }
