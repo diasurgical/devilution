@@ -38,42 +38,35 @@ void nthread_terminate_game(const char *pszFcn)
 }
 // 67862D: using guessed type char gbGameDestroyed;
 
-int nthread_send_and_recv_turn(int cur_turn, int turn_delta)
+DWORD nthread_send_and_recv_turn(DWORD cur_turn, int turn_delta)
 {
-	unsigned int new_cur_turn; // edi
-	const char *lastStormFn;   // ecx
-	int turn_tmp;              // eax
-	int turn;                  // [esp+Ch] [ebp-8h]
-	int curTurnsInTransit;     // [esp+10h] [ebp-4h]
+	unsigned int new_cur_turn;
+	int turn_tmp;
+	int turn;
+	int curTurnsInTransit;
 
 	new_cur_turn = cur_turn;
 	if (!SNetGetTurnsInTransit(&curTurnsInTransit)) {
-		lastStormFn = "SNetGetTurnsInTransit";
-	} else{
-		if (curTurnsInTransit >= (unsigned int)gdwTurnsInTransit)
-			return new_cur_turn;
-		while (1) {
-			curTurnsInTransit++;
-
-			turn_tmp = turn_upper_bit | new_cur_turn & 0x7FFFFFFF;
-			turn_upper_bit = 0;
-			turn = turn_tmp;
-
-			if (!SNetSendTurn((char *)&turn, sizeof(turn))) {
-				break;
-			}
-
-			new_cur_turn += turn_delta;
-			if (new_cur_turn >= 0x7FFFFFFF)
-				new_cur_turn &= 0xFFFF;
-			if (curTurnsInTransit >= (unsigned int)gdwTurnsInTransit)
-				return new_cur_turn;
-		}
-		lastStormFn = "SNetSendTurn";
+		nthread_terminate_game("SNetGetTurnsInTransit");
+		return 0;
 	}
+	while (curTurnsInTransit < gdwTurnsInTransit) {
+		curTurnsInTransit++;
 
-	nthread_terminate_game(lastStormFn);
-	return 0;
+		turn_tmp = turn_upper_bit | new_cur_turn & 0x7FFFFFFF;
+		turn_upper_bit = 0;
+		turn = turn_tmp;
+
+		if (!SNetSendTurn((char *)&turn, sizeof(turn))) {
+			nthread_terminate_game("SNetSendTurn");
+			return 0;
+		}
+
+		new_cur_turn += turn_delta;
+		if (new_cur_turn >= 0x7FFFFFFF)
+			new_cur_turn &= 0xFFFF;
+	}
+	return new_cur_turn;
 }
 
 int nthread_recv_turns(int *pfSendAsync)

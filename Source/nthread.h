@@ -16,7 +16,7 @@ extern int gdwNormalMsgSize;  // weak
 extern int last_tick;         // weak
 
 void nthread_terminate_game(const char *pszFcn);
-int nthread_send_and_recv_turn(int cur_turn, int turn_delta);
+DWORD nthread_send_and_recv_turn(DWORD cur_turn, int turn_delta);
 int nthread_recv_turns(int *pfSendAsync);
 void nthread_set_turn_upper_bit();
 void nthread_start(BOOL set_turn_upper_bit);
