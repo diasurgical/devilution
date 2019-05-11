@@ -429,36 +429,33 @@ BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwL
 
 int mpqapi_find_free_block(int size, int *block_size)
 {
-	_BLOCKENTRY *v2; // eax
-	signed int v3;   // esi
-	int result;      // eax
-	int v5;          // esi
-	BOOLEAN v6;      // zf
+	_BLOCKENTRY *pBlockTbl;
+	int i, result;
 
-	v2 = sgpBlockTbl;
-	v3 = 2048;
+	pBlockTbl = sgpBlockTbl;
+	i = 2048;
 	while (1) {
-		--v3;
-		if (v2->offset) {
-			if (!v2->flags && !v2->sizefile && v2->sizealloc >= (unsigned int)size)
-				break;
-		}
-		++v2;
-		if (!v3) {
+		i--;
+		if (pBlockTbl->offset && !pBlockTbl->flags && !pBlockTbl->sizefile && (DWORD)pBlockTbl->sizealloc >= size)
+			break;
+		pBlockTbl++;
+		if (!i) {
 			*block_size = size;
 			result = sgdwMpqOffset;
 			sgdwMpqOffset += size;
 			return result;
 		}
 	}
-	v5 = v2->offset;
+
+	result = pBlockTbl->offset;
 	*block_size = size;
-	v2->offset += size;
-	v6 = v2->sizealloc == size;
-	v2->sizealloc -= size;
-	if (v6)
-		memset(v2, 0, 0x10u);
-	return v5;
+	pBlockTbl->offset += size;
+	pBlockTbl->sizealloc -= size;
+
+	if (!pBlockTbl->sizealloc)
+		memset(pBlockTbl, 0, 0x10u);
+
+	return result;
 }
 
 void mpqapi_rename(char *pszOld, char *pszNew)
@@ -477,7 +474,6 @@ void mpqapi_rename(char *pszOld, char *pszNew)
 		save_archive_modified = TRUE;
 	}
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 BOOL mpqapi_has_file(const char *pszName)
 {
