@@ -262,8 +262,7 @@ int mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
 
 void mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, char *))
 {
-	DWORD dwIndex;
-	BOOL i;
+	DWORD dwIndex, i;
 	char pszFileName[MAX_PATH];
 
 	dwIndex = 1;
@@ -285,50 +284,40 @@ BOOL mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen)
 	}
 	return TRUE;
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_index)
 {
-	const char *v3;   // edi
-	short v4;         // si
-	int v5;           // ebx
-	signed int v6;    // edx
-	int v7;           // esi
-	int v8;           // ecx
-	int v9;           // esi
-	int v11;          // [esp+Ch] [ebp-8h]
-	_BLOCKENTRY *v12; // [esp+10h] [ebp-4h]
+	DWORD h1, h2, h3;
+	int i, hi;
 
-	v12 = pBlk;
-	v3 = pszName;
-	v4 = Hash(pszName, 0);
-	v5 = Hash(v3, 1);
-	v11 = Hash(v3, 2);
-	if (mpqapi_get_hash_index(v4, v5, v11, 0) != -1)
-		app_fatal("Hash collision between \"%s\" and existing file\n", v3);
-	v6 = 2048;
-	v7 = v4 & 0x7FF;
+	h1 = Hash(pszName, 0);
+	h2 = Hash(pszName, 1);
+	h3 = Hash(pszName, 2);
+	if (mpqapi_get_hash_index(h1, h2, h3, 0) != -1)
+		app_fatal("Hash collision between \"%s\" and existing file\n", pszName);
+	i = 2048;
+	hi = h1 & 0x7FF;
 	while (1) {
-		--v6;
-		v8 = sgpHashTbl[v7].block;
-		if (v8 == -1 || v8 == -2)
+		i--;
+		if (sgpHashTbl[hi].block == -1 || sgpHashTbl[hi].block == -2)
 			break;
-		v7 = (v7 + 1) & 0x7FF;
-		if (!v6) {
-			v6 = -1;
+		hi = (hi + 1) & 0x7FF;
+		if (!i) {
+			i = -1;
 			break;
 		}
 	}
-	if (v6 < 0)
+	if (i < 0)
 		app_fatal("Out of hash space");
-	if (!v12)
-		v12 = mpqapi_new_block(&block_index);
-	v9 = v7;
-	sgpHashTbl[v9].hashcheck[0] = v5;
-	sgpHashTbl[v9].hashcheck[1] = v11;
-	sgpHashTbl[v9].lcid = 0;
-	sgpHashTbl[v9].block = block_index;
-	return v12;
+	if (!pBlk)
+		pBlk = mpqapi_new_block(&block_index);
+
+	sgpHashTbl[hi].hashcheck[0] = h2;
+	sgpHashTbl[hi].hashcheck[1] = h3;
+	sgpHashTbl[hi].lcid = 0;
+	sgpHashTbl[hi].block = block_index;
+
+	return pBlk;
 }
 
 BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
