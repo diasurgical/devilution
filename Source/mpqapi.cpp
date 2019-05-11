@@ -56,22 +56,20 @@ void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 
 BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 {
-	unsigned int iSize;
 	char *pszDst;
 	char *pbData;
-	int nbytes_read;
+	DWORD nbytes_read;
 
-	iSize = size;
 	pszDst = dst;
 	memset(dst, 0, size);
-	if (!SRegLoadData("Diablo", "Video Player ", 0, (unsigned char *)pszDst, iSize, (LPDWORD)&nbytes_read)) {
+	if (!SRegLoadData("Diablo", "Video Player ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
 		return FALSE;
 	}
 
 	if (nbytes_read != size)
 		return FALSE;
 
-	for (; iSize >= 8; iSize -= 8) {
+	for (; size >= 8u; size -= 8) {
 		pbData = pszDst;
 		pszDst += 8;
 		mpqapi_xor_buf(pbData);
@@ -82,19 +80,18 @@ BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 
 void mpqapi_xor_buf(char *pbData)
 {
-	signed int v1; // eax
-	char *v2;      // esi
-	signed int v3; // edi
+	DWORD mask;
+	char *pbCurrentData;
+	int i;
 
-	v1 = 0xF0761AB;
-	v2 = pbData;
-	v3 = 8;
-	do {
-		*v2 ^= v1;
-		++v2;
-		v1 = _rotl(v1, 1);
-		--v3;
-	} while (v3);
+	mask = 0xF0761AB;
+	pbCurrentData = pbData;
+
+	for (i = 0; i < 8; i++) {
+		*pbCurrentData ^= mask;
+		pbCurrentData++;
+		mask = _rotl(mask, 1);
+	}
 }
 
 void mpqapi_store_default_time(DWORD dwChar)
@@ -117,9 +114,8 @@ void mpqapi_store_default_time(DWORD dwChar)
 
 BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 {
-	char *pbCurrentData;
+	char *pbCurrentData, *pbDataToXor;
 	DWORD i;
-	char *pbDataToXor;
 
 	pbCurrentData = pbData;
 	if (dwLen >= 8) {
@@ -128,7 +124,7 @@ BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 			pbDataToXor = pbCurrentData;
 			pbCurrentData += 8;
 			mpqapi_xor_buf(pbDataToXor);
-			--i;
+			i--;
 		} while (i);
 	}
 
