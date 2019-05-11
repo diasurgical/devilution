@@ -209,22 +209,24 @@ LABEL_2:
 
 _BLOCKENTRY *mpqapi_new_block(int *block_index)
 {
-	_BLOCKENTRY *result; // eax
-	unsigned int v2;     // edx
+	_BLOCKENTRY *blockEntry;
+	DWORD i;
 
-	result = sgpBlockTbl;
-	v2 = 0;
-	while (result->offset || result->sizealloc || result->flags || result->sizefile) {
-		++v2;
-		++result;
-		if (v2 >= 0x800) {
+	blockEntry = sgpBlockTbl;
+
+	i = 0;
+	while (blockEntry->offset || blockEntry->sizealloc || blockEntry->flags || blockEntry->sizefile) {
+		i++;
+		blockEntry++;
+		if (i >= 2048) {
 			app_fatal("Out of free block entries");
 			return 0;
 		}
 	}
 	if (block_index)
-		*block_index = v2;
-	return result;
+		*block_index = i;
+
+	return blockEntry;
 }
 
 int mpqapi_get_hash_index_of_path(const char *pszName) // FetchHandle
