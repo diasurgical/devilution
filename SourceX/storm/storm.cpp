@@ -155,7 +155,7 @@ BOOL SFileOpenFile(const char *filename, HANDLE *phFile)
 {
 	//eprintf("%s: %s\n", __FUNCTION__, filename);
 
-	BOOL result;
+	bool result = false;
 
 	if (directFileAccess) {
 		char directPath[DVL_MAX_PATH] = "\0";
