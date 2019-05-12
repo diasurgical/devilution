@@ -5894,68 +5894,40 @@ void SyncMonsterAnim(int i)
 
 void M_FallenFear(int x, int y)
 {
-	int v2;         // eax
-	int *v3;        // ebx
-	int v4;         // edi
-	int v5;         // esi
-	signed int v6;  // eax
-	int v7;         // eax
-	BOOLEAN v8;     // zf
-	int v9;         // eax
-	int v10;        // eax
-	signed int v11; // [esp-10h] [ebp-1Ch]
-	int v12;        // [esp+0h] [ebp-Ch]
-	int x1;         // [esp+4h] [ebp-8h]
-	int y1;         // [esp+8h] [ebp-4h]
+	int i, mi, rundist, aitype;
 
-	v2 = 0;
-	y1 = y;
-	x1 = x;
-	v12 = 0;
-	if (nummonsters > 0) {
-		v3 = &monster[0]._mx;
-		do {
-			v4 = 0;
-			v5 = monstactive[v2];
-			v6 = monster[v5].MType->mtype;
-			if (v6 > MT_RFALLSD) {
-				v9 = v6 - 13;
-				v8 = v9 == 0;
-			} else {
-				if (v6 == MT_RFALLSD || (v7 = v6 - 4) == 0) {
-					v11 = 7;
-					goto LABEL_15;
-				}
-				v9 = v7 - 1;
-				v8 = v9 == 0;
-			}
-			if (v8) {
-				v11 = 5;
-			} else {
-				v10 = v9 - 1;
-				if (v10) {
-					if (v10 != 1)
-						goto LABEL_16;
-					v11 = 2;
-				} else {
-					v11 = 3;
-				}
-			}
-		LABEL_15:
-			v4 = v11;
-		LABEL_16:
-			if (monster[v5]._mAi == AI_FALLEN
-			    && v4
-			    && abs(x1 - monster[v5]._mx) < 5
-			    && abs(y1 - monster[v5]._my) < 5
-			    && monster[v5]._mhitpoints >> 6 > 0) {
-				_LOBYTE(monster[v5]._mgoal) = MGOAL_RETREAT;
-				monster[v5]._mgoalvar1 = v4;
-				monster[v5]._mdir = GetDirection(x1, y1, *v3, v3[1]);
-			}
-			v3 += 57;
-			v2 = v12++ + 1;
-		} while (v12 < nummonsters);
+	for (i = 0; i < nummonsters; i++) {
+		rundist = 0;
+		mi = monstactive[i];
+
+		switch (monster[mi].MType->mtype) {
+		case MT_RFALLSP:
+		case MT_RFALLSD:
+			rundist = 7;
+			break;
+		case MT_DFALLSP:
+		case MT_DFALLSD:
+			rundist = 5;
+			break;
+		case MT_YFALLSP:
+		case MT_YFALLSD:
+			rundist = 3;
+			break;
+		case MT_BFALLSP:
+		case MT_BFALLSD:
+			rundist = 2;
+			break;
+		}
+		aitype = monster[mi]._mAi;
+		if (aitype == AI_FALLEN
+		    && rundist
+		    && abs(x - monster[mi]._mx) < 5
+		    && abs(y - monster[mi]._my) < 5
+		    && monster[mi]._mhitpoints >> 6 > 0) {
+			monster[mi]._mgoal = MGOAL_RETREAT;
+			monster[mi]._mgoalvar1 = rundist;
+			monster[mi]._mdir = GetDirection(x, y, monster[i]._mx, monster[i]._my);
+		}
 	}
 }
 
