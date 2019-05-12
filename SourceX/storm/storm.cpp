@@ -157,7 +157,7 @@ BOOL SFileOpenFile(const char *filename, HANDLE *phFile)
 
 	BOOL result;
 
-	if (directFileAccess || 1) {
+	if (directFileAccess) {
 		char directPath[DVL_MAX_PATH] = "\0";
 		for (int i = 0; i < strlen(filename); i++) {
 			directPath[i] = AsciiToLowerTable_Path[filename[i]];

@@ -21,6 +21,8 @@ SDL_Surface *surface;
 /** 8-bit surface wrapper around #gpBuffer */
 SDL_Surface *pal_surface;
 
+bool bufferUpdated = false;
+
 ULONG StubDraw::Release()
 {
 	DUMMY();
@@ -147,6 +149,8 @@ HRESULT StubSurface::BltFast(DWORD dwX, DWORD dwY, LPDIRECTDRAWSURFACE lpDDSrcSu
 		return DVL_E_FAIL;
 	}
 
+	bufferUpdated = true;
+
 	return DVL_S_OK;
 }
 
@@ -205,6 +209,10 @@ HRESULT StubSurface::Unlock(LPVOID lpSurfaceData)
 	DUMMY_ONCE();
 	assert(!SDL_MUSTLOCK(surface));
 
+	if (!bufferUpdated) {
+		return DVL_S_OK;
+	}
+
 	if (renderer) {
 		if (SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch) != 0) { //pitch is 2560
 			SDL_Log("SDL_UpdateTexture: %s\n", SDL_GetError());
@@ -221,6 +229,8 @@ HRESULT StubSurface::Unlock(LPVOID lpSurfaceData)
 	} else {
 		SDL_UpdateWindowSurface(window);
 	}
+
+	bufferUpdated = false;
 
 	return DVL_S_OK;
 }
