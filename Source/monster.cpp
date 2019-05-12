@@ -4530,183 +4530,142 @@ void DeleteMonsterList()
 
 void ProcessMonsters()
 {
-	int v0;          // edi
-	int v1;          // esi
-	int v2;          // ecx
-	int v3;          // eax
-	char *v4;        // ebx
-	unsigned int v5; // eax
-	int v6;          // eax
-	int v7;          // edx
-	int v8;          // eax
-	unsigned int v9; // eax
-	int v10;         // eax
-	BOOLEAN v11;     // zf
-	char *v12;       // ecx
-	char *v13;       // eax
-	int v14;         // ecx
-	int v15;         // eax
-	BYTE v16;        // al
-	int v17;         // ecx
-	BOOLEAN v18;     // eax
-	int v19;         // eax
-	int v20;         // ecx
-	int *v21;        // eax
-	int *v22;        // eax
-	int v23;         // [esp+0h] [ebp-Ch]
-	int v24;         // [esp+4h] [ebp-8h]
-	int v25;         // [esp+8h] [ebp-4h]
+	int i, mi, mx, my, _menemy;
+	BOOL raflag;
+	MonsterStruct *Monst;
 
 	DeleteMonsterList();
-	v24 = 0;
-	if (nummonsters <= 0)
-		goto LABEL_60;
-	do {
-		v25 = 0;
-		v23 = monstactive[v24];
-		v0 = v23;
-		v1 = v23;
-		if ((unsigned char)gbMaxPlayers > 1u) {
-			SetRndSeed(monster[v1]._mAISeed);
-			monster[v1]._mAISeed = GetRndSeed();
+
+	/// ASSERT: assert((DWORD)nummonsters <= MAXMONSTERS);
+	for(i = 0; i < nummonsters; i++) {
+		mi = monstactive[i];
+		Monst = &monster[mi];
+		raflag = FALSE;
+		if(gbMaxPlayers > 1) {
+			SetRndSeed(Monst->_mAISeed);
+			Monst->_mAISeed = GetRndSeed();
 		}
-		if (!(monster[v1]._mFlags & MFLAG_NOHEAL)) {
-			v2 = monster[v1]._mhitpoints;
-			if (v2 < monster[v1]._mmaxhp && v2 >> 6 > 0) {
-				v3 = SLOBYTE(monster[v1].mLevel);
-				if ((char)v3 > 1)
-					v3 = (char)v3 >> 1;
-				monster[v1]._mhitpoints = v2 + v3;
-			}
-		}
-		v4 = &dFlags[monster[v1]._mx][monster[v1]._my];
-		if (*v4 & DFLAG_VISIBLE && monster[v1]._msquelch == 0 && monster[v1].MType->mtype == MT_CLEAVER)
-			PlaySFX(USFX_CLEAVER);
-		if (monster[v1]._mFlags & MFLAG_TARGETS_MONSTER) {
-			v5 = monster[v1]._menemy;
-			if (v5 >= MAXMONSTERS)
-				app_fatal("Illegal enemy monster %d for monster \"%s\"", v5, monster[v1].mName);
-			v6 = monster[v1]._menemy;
-			v7 = monster[v6]._mfutx;
-			monster[v1]._lastx = v7;
-			monster[v1]._menemyx = v7;
-			v8 = monster[v6]._mfuty;
-			monster[v1]._menemyy = v8;
-			monster[v1]._lasty = v8;
-		} else {
-			v9 = monster[v1]._menemy;
-			if (v9 >= MAX_PLRS)
-				app_fatal("Illegal enemy player %d for monster \"%s\"", v9, monster[v1].mName);
-			v10 = monster[v1]._menemy;
-			v11 = (*v4 & DFLAG_VISIBLE) == 0;
-			v12 = (char *)&plr[v10]._px;
-			v13 = (char *)&plr[v10]._py;
-			monster[v1]._menemyx = *v12;
-			monster[v1]._menemyy = *v13;
-			if (v11) {
-				v16 = monster[v1]._msquelch;
-				if (v16 != 0 && monster[v1]._mAi != MT_DIABLO) /// BUGFIX: test `MT_DIABLO` with 'MType->mtype' instead of '_mAi'
-					monster[v1]._msquelch = v16 - 1;
+		if(!(monster[mi]._mFlags & MFLAG_NOHEAL) && Monst->_mhitpoints < Monst->_mmaxhp && Monst->_mhitpoints >> 6 > 0) {
+			if(Monst->mLevel <= 1) {
+				Monst->_mhitpoints += Monst->mLevel;
 			} else {
-				v14 = *(_DWORD *)v12;
-				v15 = *(_DWORD *)v13;
-				monster[v1]._msquelch = UCHAR_MAX;
-				monster[v1]._lastx = v14;
-				monster[v1]._lasty = v15;
+				Monst->_mhitpoints += Monst->mLevel >> 1;
 			}
-			v0 = v23;
 		}
-		while (1) {
-			v17 = v0;
-			if (monster[v1]._mFlags & MFLAG_SEARCH) {
-				v18 = MAI_Path(v0);
-				if (v18)
-					goto LABEL_30;
-				v17 = v0;
+		mx = Monst->_mx;
+		my = Monst->_my;
+		if(dFlags[mx][my] & DFLAG_VISIBLE && Monst->_msquelch == 0 && Monst->MType->mtype == MT_CLEAVER) {
+			PlaySFX(USFX_CLEAVER);
+		}
+		if(Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
+			_menemy = Monst->_menemy;
+			if((DWORD)_menemy >= MAXMONSTERS) {
+				app_fatal("Illegal enemy monster %d for monster \"%s\"", _menemy, Monst->mName);
 			}
-			AiProc[(unsigned char)monster[v1]._mAi](v17);
-		LABEL_30:
-			switch (monster[v1]._mmode) {
+			Monst->_lastx = monster[Monst->_menemy]._mfutx;
+			Monst->_menemyx = Monst->_lastx;
+			Monst->_lasty = monster[Monst->_menemy]._mfuty;
+			Monst->_menemyy = Monst->_lasty;
+		} else {
+			_menemy = Monst->_menemy;
+			if((DWORD)_menemy >= MAX_PLRS) {
+				app_fatal("Illegal enemy player %d for monster \"%s\"", _menemy, Monst->mName);
+			}
+			Monst->_menemyx = plr[Monst->_menemy]._px;
+			Monst->_menemyy = plr[Monst->_menemy]._py;
+			if(dFlags[mx][my] & DFLAG_VISIBLE) {
+				Monst->_msquelch = 255;
+				Monst->_lastx = plr[Monst->_menemy]._px;
+				Monst->_lasty = plr[Monst->_menemy]._py;
+			} else if(Monst->_msquelch != 0 && Monst->_mAi != MT_DIABLO) { /// BUGFIX: change '_mAi' to 'MType->mtype'
+				Monst->_msquelch--;
+			}
+		}
+		do {
+			if(!(Monst->_mFlags & MFLAG_SEARCH)) {
+				AiProc[Monst->_mAi](mi);
+			} else if(!MAI_Path(mi)) {
+				AiProc[Monst->_mAi](mi);
+			}
+			switch(Monst->_mmode) {
 			case MM_STAND:
-				v19 = M_DoStand(v0);
-				goto LABEL_48;
+				raflag = M_DoStand(mi);
+				break;
 			case MM_WALK:
-				v19 = M_DoWalk(v0);
-				goto LABEL_48;
+				raflag = M_DoWalk(mi);
+				break;
 			case MM_WALK2:
-				v19 = M_DoWalk2(v0);
-				goto LABEL_48;
+				raflag = M_DoWalk2(mi);
+				break;
 			case MM_WALK3:
-				v19 = M_DoWalk3(v0);
-				goto LABEL_48;
+				raflag = M_DoWalk3(mi);
+				break;
 			case MM_ATTACK:
-				v19 = M_DoAttack(v0);
-				goto LABEL_48;
+				raflag = M_DoAttack(mi);
+				break;
 			case MM_GOTHIT:
-				v19 = M_DoGotHit(v0);
-				goto LABEL_48;
+				raflag = M_DoGotHit(mi);
+				break;
 			case MM_DEATH:
-				v19 = M_DoDeath(v0);
-				goto LABEL_48;
+				raflag = M_DoDeath(mi);
+				break;
 			case MM_SATTACK:
-				v19 = M_DoSAttack(v0);
-				goto LABEL_48;
+				raflag = M_DoSAttack(mi);
+				break;
 			case MM_FADEIN:
-				v19 = M_DoFadein(v0);
-				goto LABEL_48;
+				raflag = M_DoFadein(mi);
+				break;
 			case MM_FADEOUT:
-				v19 = M_DoFadeout(v0);
-				goto LABEL_48;
+				raflag = M_DoFadeout(mi);
+				break;
 			case MM_RATTACK:
-				v19 = M_DoRAttack(v0);
-				goto LABEL_48;
+				raflag = M_DoRAttack(mi);
+				break;
 			case MM_SPSTAND:
-				v19 = M_DoSpStand(v0);
-				goto LABEL_48;
+				raflag = M_DoSpStand(mi);
+				break;
 			case MM_RSPATTACK:
-				v19 = M_DoRSpAttack(v0);
-				goto LABEL_48;
+				raflag = M_DoRSpAttack(mi);
+				break;
 			case MM_DELAY:
-				v19 = M_DoDelay(v0);
-				goto LABEL_48;
+				raflag = M_DoDelay(mi);
+				break;
 			case MM_CHARGE:
-				goto LABEL_51;
+				raflag = FALSE;
+				break;
 			case MM_STONE:
-				v19 = M_DoStone(v0);
-				goto LABEL_48;
+				raflag = M_DoStone(mi);
+				break;
 			case MM_HEAL:
-				v19 = M_DoHeal(v0);
-				goto LABEL_48;
+				raflag = M_DoHeal(mi);
+				break;
 			case MM_TALK:
-				v19 = M_DoTalk(v0);
-			LABEL_48:
-				v25 = v19;
+				raflag = M_DoTalk(mi);
 				break;
 			}
-			if (!v25)
-				break;
-			GroupUnity(v0);
-		}
-	LABEL_51:
-		if (monster[v1]._mmode != MM_STONE) {
-			v20 = monster[v1]._mFlags;
-			v21 = &monster[v1]._mAnimCnt;
-			++*v21;
-			if (!(v20 & MFLAG_ALLOW_SPECIAL) && monster[v1]._mAnimCnt >= monster[v1]._mAnimDelay) {
-				*v21 = 0;
-				v22 = &monster[v1]._mAnimFrame;
-				if (v20 & MFLAG_LOCK_ANIMATION) {
-					v11 = (*v22)-- == 1;
-					if (v11)
-						*v22 = monster[v1]._mAnimLen;
-				} else if (++*v22 > monster[v1]._mAnimLen) {
-					*v22 = 1;
+			if(raflag) {
+				GroupUnity(mi);
+			}
+		} while(raflag);
+		if(Monst->_mmode != MM_STONE) {
+			Monst->_mAnimCnt++;
+			if(!(Monst->_mFlags & MFLAG_ALLOW_SPECIAL) && Monst->_mAnimCnt >= Monst->_mAnimDelay) {
+				Monst->_mAnimCnt = 0;
+				if(Monst->_mFlags & MFLAG_LOCK_ANIMATION) {
+					Monst->_mAnimFrame--;
+					if(Monst->_mAnimFrame == 0) {
+						Monst->_mAnimFrame = Monst->_mAnimLen;
+					}
+				} else {
+					Monst->_mAnimFrame++;
+					if(Monst->_mAnimFrame > Monst->_mAnimLen) {
+						Monst->_mAnimFrame = 1;
+					}
 				}
 			}
 		}
-		++v24;
-	} while (v24 < nummonsters);
-LABEL_60:
+	}
+
 	DeleteMonsterList();
 }
 // 679660: using guessed type char gbMaxPlayers;
