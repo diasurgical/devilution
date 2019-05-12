@@ -303,6 +303,7 @@ void dx_cleanup()
 #else
 		lpDDSBackBuf->lpVtbl->Release(lpDDSBackBuf);
 #endif
+		delete lpDDSBackBuf;
 		lpDDSBackBuf = NULL;
 	}
 	sgdwLockCount = 0;
@@ -316,6 +317,7 @@ void dx_cleanup()
 #else
 		lpDDSPrimary->lpVtbl->Release(lpDDSPrimary);
 #endif
+		delete lpDDSPrimary;
 		lpDDSPrimary = NULL;
 	}
 	if (lpDDPalette) {

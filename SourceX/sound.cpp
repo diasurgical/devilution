@@ -15,6 +15,10 @@ HMODULE hDsound_dll;
 HANDLE sgpMusicTrack;
 LPDIRECTSOUNDBUFFER sglpDSB;
 
+Mix_Music *music;
+SDL_RWops *musicRw;
+char *musicBuffer;
+
 /* data */
 
 BYTE gbMusicOn = true;
@@ -430,6 +434,7 @@ void sound_cleanup()
 	if (sglpDS) {
 #ifdef __cplusplus
 		sglpDS->Release();
+		delete sglpDS;
 #else
 		sglpDS->lpVtbl->Release(sglpDS);
 #endif
@@ -454,6 +459,10 @@ void music_stop()
 		Mix_HaltMusic();
 		SFileCloseFile(sgpMusicTrack);
 		sgpMusicTrack = NULL;
+		Mix_FreeMusic(music);
+		music = NULL;
+		musicRw = NULL;
+		mem_free_dbg(musicBuffer);
 		sgnMusicTrack = 6;
 	}
 }
@@ -476,14 +485,14 @@ void music_start(int nTrack)
 		if (!success) {
 			sgpMusicTrack = NULL;
 		} else {
-			int bytestoread = (int)SFileGetFileSize((HANDLE)sgpMusicTrack, 0);
-			char *buffer = (char *)DiabloAllocPtr(bytestoread);
-			SFileReadFile(sgpMusicTrack, buffer, bytestoread, NULL, 0);
+			int bytestoread = SFileGetFileSize(sgpMusicTrack, 0);
+			musicBuffer = (char *)DiabloAllocPtr(bytestoread);
+			SFileReadFile(sgpMusicTrack, musicBuffer, bytestoread, NULL, 0);
 
-			SDL_RWops *rw = SDL_RWFromConstMem(buffer, bytestoread);
-			Mix_Music *Song = Mix_LoadMUS_RW(rw, 1);
+			musicRw = SDL_RWFromConstMem(musicBuffer, bytestoread);
+			music = Mix_LoadMUS_RW(musicRw, 1);
 			Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * sglMusicVolume / VOLUME_MIN);
-			Mix_PlayMusic(Song, -1);
+			Mix_PlayMusic(music, -1);
 
 			sgnMusicTrack = nTrack;
 		}
