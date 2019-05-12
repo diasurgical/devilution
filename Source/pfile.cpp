@@ -100,7 +100,7 @@ BOOL pfile_open_archive(BOOL a1, DWORD save_num)
 	char FileName[MAX_PATH];
 
 	pfile_get_save_path(FileName, sizeof(FileName), save_num);
-	if (mpqapi_open_archive(FileName, FALSE, save_num))
+	if (OpenMPQ(FileName, FALSE, save_num))
 		return TRUE;
 
 	if (a1 && gbMaxPlayers > 1)

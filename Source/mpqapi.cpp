@@ -137,7 +137,7 @@ void mpqapi_remove_hash_entry(const char *pszName)
 	_BLOCKENTRY *blockEntry;
 	int hIdx, block_offset, block_size;
 
-	hIdx = mpqapi_get_hash_index_of_path(pszName);
+	hIdx = FetchHandle(pszName);
 	if (hIdx != -1) {
 		pHashTbl = &sgpHashTbl[hIdx];
 		blockEntry = &sgpBlockTbl[pHashTbl->block];
@@ -222,7 +222,7 @@ _BLOCKENTRY *mpqapi_new_block(int *block_index)
 	return blockEntry;
 }
 
-int mpqapi_get_hash_index_of_path(const char *pszName) // FetchHandle
+int FetchHandle(const char *pszName)
 {
 	return mpqapi_get_hash_index(Hash(pszName, 0), Hash(pszName, 1), Hash(pszName, 2), 0);
 }
@@ -435,7 +435,7 @@ void mpqapi_rename(char *pszOld, char *pszNew)
 	_HASHENTRY *hashEntry;
 	_BLOCKENTRY *blockEntry;
 
-	index = mpqapi_get_hash_index_of_path(pszOld);
+	index = FetchHandle(pszOld);
 	if (index != -1) {
 		hashEntry = &sgpHashTbl[index];
 		block = hashEntry->block;
@@ -448,10 +448,10 @@ void mpqapi_rename(char *pszOld, char *pszNew)
 
 BOOL mpqapi_has_file(const char *pszName)
 {
-	return mpqapi_get_hash_index_of_path(pszName) != -1;
+	return FetchHandle(pszName) != -1;
 }
 
-BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // OpenMPQ
+BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 {
 	const char *v3;         // ebp
 	BOOL v4;                // esi
@@ -479,10 +479,10 @@ BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // Ope
 		save_archive_modified = 1;
 	}
 	if (!sgpBlockTbl || !sgpHashTbl) {
-		memset(&fhdr, 0, 0x68u);
-		if (!mpqapi_parse_archive_header(&fhdr, &sgdwMpqOffset)) {
+		memset(&fhdr, 0, sizeof(fhdr));
+		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
 		LABEL_15:
-			mpqapi_close_archive(lpFileName, 1, dwChar);
+			CloseMPQ(lpFileName, 1, dwChar);
 			return 0;
 		}
 		sgpBlockTbl = (_BLOCKENTRY *)DiabloAllocPtr(0x8000);
@@ -512,7 +512,7 @@ BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // Ope
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
+BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 {
 	DWORD size;
 	DWORD NumberOfBytesRead;
@@ -521,12 +521,12 @@ BOOL mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // Pa
 	*pdwNextFileStart = size;
 
 	if (size == -1
-	    || size < 0x68
-	    || !ReadFile(sghArchive, pHdr, 0x68u, &NumberOfBytesRead, NULL)
+	    || size < sizeof(pHdr)
+	    || !ReadFile(sghArchive, pHdr, sizeof(pHdr), &NumberOfBytesRead, NULL)
 	    || NumberOfBytesRead != 104
 	    || pHdr->signature != '\x1AQPM'
 	    || pHdr->headersize != 32
-	    || pHdr->version > 0u
+	    || pHdr->version > 0
 	    || pHdr->sectorsizeid != 3
 	    || pHdr->filesize != size
 	    || pHdr->hashoffset != 32872
@@ -539,7 +539,7 @@ BOOL mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // Pa
 		if (!SetEndOfFile(sghArchive))
 			return FALSE;
 
-		memset(pHdr, 0, 0x68u);
+		memset(pHdr, 0, sizeof(pHdr));
 		pHdr->signature = '\x1AQPM';
 		pHdr->headersize = 32;
 		pHdr->sectorsizeid = 3;
@@ -552,7 +552,7 @@ BOOL mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // Pa
 	return TRUE;
 }
 
-void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // CloseMPQ
+void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
 {
 	if (bFree) {
 		MemFreeDbg(sgpBlockTbl);
@@ -602,23 +602,23 @@ void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
 	if (sghArchive != INVALID_HANDLE_VALUE) {
 		if (save_archive_modified) {
 			if (mpqapi_can_seek()) {
-				if (mpqapi_write_header()) {
+				if (WriteMPQHeader()) {
 					if (mpqapi_write_block_table())
 						mpqapi_write_hash_table();
 				}
 			}
 		}
 	}
-	mpqapi_close_archive(pszArchive, bFree, dwChar);
+	CloseMPQ(pszArchive, bFree, dwChar);
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-BOOL mpqapi_write_header() // WriteMPQHeader
+BOOL WriteMPQHeader()
 {
 	_FILEHEADER fhdr;
 	DWORD NumberOfBytesWritten;
 
-	memset(&fhdr, 0, 0x68);
+	memset(&fhdr, 0, sizeof(fhdr));
 	fhdr.signature = '\x1AQPM';
 	fhdr.headersize = 32;
 	fhdr.filesize = GetFileSize(sghArchive, 0);
@@ -631,7 +631,7 @@ BOOL mpqapi_write_header() // WriteMPQHeader
 
 	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
 		return 0;
-	if (!WriteFile(sghArchive, &fhdr, 0x68, &NumberOfBytesWritten, 0))
+	if (!WriteFile(sghArchive, &fhdr, sizeof(fhdr), &NumberOfBytesWritten, 0))
 		return 0;
 
 	return NumberOfBytesWritten == 104;
