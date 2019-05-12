@@ -2747,39 +2747,27 @@ void DrawTalkPan()
 // 4B8840: using guessed type int sgbPlrTalkTbl;
 // 4B8960: using guessed type int talkflag;
 
-char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just)
+char *control_print_talk_msg(char *msg, int x, int y, int *a4, int color)
 {
-	int v5;            // edx
-	char *v6;          // ebx
-	unsigned char v7;  // al
-	int v8;            // ecx
-	unsigned char v10; // dl
-	int v11;           // edi
-	int a3;            // [esp+14h] [ebp+8h]
+	BYTE c;
+	int width;
 
-	v5 = x + 264;
-	v6 = msg;
-	*a4 = v5 + PitchTbl[y + 534];
-	v7 = *msg;
-	v8 = v5;
-	if (!v7)
-		return 0;
-	while (1) {
-		v10 = fontframe[gbFontTransTbl[v7]];
-		v11 = v10;
-		a3 = v8 + fontkern[v10] + 1;
-		if (a3 > 514)
-			break;
-		++v6;
-		if (v10)
-			CPrintString(*a4, v10, just);
-		*a4 += fontkern[v11] + 1;
-		v7 = *v6;
-		if (!*v6)
-			return 0;
-		v8 = a3;
+	x += 264;
+	width = x;
+	*a4 = PitchTbl[y + 534] + x;
+	while (*msg) {
+
+		c = fontframe[gbFontTransTbl[(BYTE)*msg]];
+		width += fontkern[c] + 1;
+		if (width > 514)
+			return msg;
+		msg++;
+		if (c) {
+			CPrintString(*a4, c, color);
+		}
+		*a4 += fontkern[c] + 1;
 	}
-	return v6;
+	return 0;
 }
 
 int control_check_talk_btn()
