@@ -1070,34 +1070,35 @@ void stream_play(TSFX *pSFX, int lVolume, int lPan)
 
 int RndSFX(int psfx)
 {
-	int v1; // esi
-	int v3; // [esp-4h] [ebp-8h]
+	int nRand;
 
-	v1 = psfx;
-	switch (psfx) {
-	case PS_WARR69:
-		goto LABEL_12;
-	case PS_WARR14:
-	case PS_WARR15:
-	case PS_WARR16:
-		goto LABEL_19;
-	case PS_MAGE69:
-	case PS_ROGUE69:
-	case PS_SWING:
-	case LS_ACID:
-	case IS_FMAG:
-	case IS_MAGIC:
-	case IS_BHIT:
-	LABEL_12:
-		v3 = 2;
-	LABEL_15:
-		return v1 + random(165, v3);
-	case PS_WARR2:
-	LABEL_19:
-		v3 = 3;
-		goto LABEL_15;
-	}
-	return psfx;
+	if (psfx == PS_WARR69)
+		nRand = 2;
+	else if (psfx == PS_WARR14)
+		nRand = 3;
+	else if (psfx == PS_WARR15)
+		nRand = 3;
+	else if (psfx == PS_WARR16)
+		nRand = 3;
+	else if (psfx == PS_MAGE69)
+		nRand = 2;
+	else if (psfx == PS_ROGUE69)
+		nRand = 2;
+	else if (psfx == PS_SWING)
+		nRand = 2;
+	else if (psfx == LS_ACID)
+		nRand = 2;
+	else if (psfx == IS_FMAG)
+		nRand = 2;
+	else if (psfx == IS_MAGIC)
+		nRand = 2;
+	else if (psfx == IS_BHIT)
+		nRand = 2;
+	else if (psfx == PS_WARR2)
+		nRand = 3;
+	else
+		return psfx;
+	 return psfx + random(165, nRand);
 }
 
 void PlaySfxLoc(int psfx, int x, int y)
