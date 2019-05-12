@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_endian.h>
 #include <SDL_mixer.h>
 #include <Radon.hpp>
 #include <smacker.h>
@@ -197,15 +198,15 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 		return false;
 	}
 
-	int width = pcxhdr.xmax - pcxhdr.xmin + 1;
-	int height = pcxhdr.ymax - pcxhdr.ymin + 1;
+	int width = SDL_SwapLE16(pcxhdr.xmax) - SDL_SwapLE16(pcxhdr.xmin) + 1;
+	int height = SDL_SwapLE16(pcxhdr.ymax) - SDL_SwapLE16(pcxhdr.ymin) + 1;
 
 	if (pdwWidth)
 		*pdwWidth = width;
 	if (dwHeight)
 		*dwHeight = height;
 	if (pdwBpp)
-		*pdwBpp = pcxhdr.bitsPerPixel;
+		*pdwBpp = SDL_SwapLE16(pcxhdr.bitsPerPixel);
 
 	if (!pBuffer) {
 		SFileSetFilePointer(hFile, 0, 0, 2);
@@ -241,7 +242,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 		free(fileBuffer);
 	}
 
-	if (pPalette && pcxhdr.bitsPerPixel == 8) {
+	if (pPalette && SDL_SwapLE16(pcxhdr.bitsPerPixel) == 8) {
 		SFileSetFilePointer(hFile, -768, 0, 1);
 		SFileReadFile(hFile, paldata, 768, 0, 0);
 		for (int i = 0; i < 256; i++) {
@@ -544,7 +545,7 @@ BOOL SVidPlayContinue(void)
 
 	double now = SDL_GetTicks() * 1000;
 	if (now < SVidFrameEnd) {
-		SDL_Delay((SVidFrameEnd - now)/1000); // wait with next frame if the system is to fast
+		SDL_Delay((SVidFrameEnd - now) / 1000); // wait with next frame if the system is to fast
 	}
 
 	return SVidLoadNextFrame();
