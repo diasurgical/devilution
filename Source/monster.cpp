@@ -5189,79 +5189,68 @@ void M_FallenFear(int x, int y)
 
 void PrintMonstHistory(int mt)
 {
-	int v1;   // edi
-	int *v2;  // ebx
-	int v3;   // ecx
-	int v4;   // eax
-	int v5;   // edi
-	short v6; // bx
-	int v7;   // ebx
+	int minHP, maxHP, res;
 
-	v1 = mt;
-	v2 = &monstkills[mt];
-	sprintf(tempstr, "Total kills : %i", *v2);
+	sprintf(tempstr, "Total kills : %i", monstkills[mt]);
 	AddPanelString(tempstr, 1);
-	if (*v2 >= 30) {
-		v3 = monsterdata[v1].mMinHP;
-		v4 = monsterdata[v1].mMaxHP;
+	if (monstkills[mt] >= 30) {
+		minHP = monsterdata[mt].mMinHP;
+		maxHP = monsterdata[mt].mMaxHP;
 		if (gbMaxPlayers == 1) {
-			v3 = monsterdata[v1].mMinHP >> 1;
-			v4 = monsterdata[v1].mMaxHP >> 1;
+			minHP = monsterdata[mt].mMinHP >> 1;
+			maxHP = monsterdata[mt].mMaxHP >> 1;
 		}
-		if (v3 < 1)
-			v3 = 1;
-		if (v4 < 1)
-			v4 = 1;
+		if (minHP < 1)
+			minHP = 1;
+		if (maxHP < 1)
+			maxHP = 1;
 		if (gnDifficulty == DIFF_NIGHTMARE) {
-			v3 = 3 * v3 + 1;
-			v4 = 3 * v4 + 1;
+			minHP = 3 * minHP + 1;
+			maxHP = 3 * maxHP + 1;
 		}
 		if (gnDifficulty == DIFF_HELL) {
-			v3 = 4 * v3 + 3;
-			v4 = 4 * v4 + 3;
+			minHP = 4 * minHP + 3;
+			maxHP = 4 * maxHP + 3;
 		}
-		sprintf(tempstr, "Hit Points : %i-%i", v3, v4);
+		sprintf(tempstr, "Hit Points : %i-%i", minHP, maxHP);
 		AddPanelString(tempstr, 1);
 	}
-	if (*v2 >= 15) {
-		v5 = v1 << 7;
-		if (gnDifficulty == DIFF_HELL)
-			v6 = *(short *)((char *)&monsterdata[0].mMagicRes2 + v5);
+	if (monstkills[mt] >= 15) {
+		if (gnDifficulty != DIFF_HELL)
+			res = monsterdata[mt].mMagicRes;
 		else
-			v6 = *(short *)((char *)&monsterdata[0].mMagicRes + v5);
-		v7 = v6 & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
-		if (v7) {
-			if (v7 & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING)) {
-				strcpy(tempstr, "Resists : ");
-				if (v7 & RESIST_MAGIC)
-					strcat(tempstr, "Magic ");
-				if (v7 & RESIST_FIRE)
-					strcat(tempstr, "Fire ");
-				if (v7 & RESIST_LIGHTNING)
-					strcat(tempstr, "Lightning ");
-				tempstr[strlen(tempstr) - 1] = '\0';
-				AddPanelString(tempstr, 1);
-			}
-			if (v7 & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
-				strcpy(tempstr, "Immune : ");
-				if (v7 & IMUNE_MAGIC)
-					strcat(tempstr, "Magic ");
-				if (v7 & IMUNE_FIRE)
-					strcat(tempstr, "Fire ");
-				if (v7 & IMUNE_LIGHTNING)
-					strcat(tempstr, "Lightning ");
-				tempstr[strlen(tempstr) - 1] = '\0';
-				AddPanelString(tempstr, 1);
-			}
-		} else {
+			res = monsterdata[mt].mMagicRes2;
+		res = res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
+		if (!res) {
 			strcpy(tempstr, "No magic resistance");
 			AddPanelString(tempstr, 1);
-		}
+		} else{
+			if (res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING)) {
+				strcpy(tempstr, "Resists : ");
+				if (res & RESIST_MAGIC)
+					strcat(tempstr, "Magic ");
+				if (res & RESIST_FIRE)
+					strcat(tempstr, "Fire ");
+				if (res & RESIST_LIGHTNING)
+					strcat(tempstr, "Lightning ");
+				tempstr[strlen(tempstr) - 1] = '\0';
+				AddPanelString(tempstr, 1);
+			}
+			if (res & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
+				strcpy(tempstr, "Immune : ");
+				if (res & IMUNE_MAGIC)
+					strcat(tempstr, "Magic ");
+				if (res & IMUNE_FIRE)
+					strcat(tempstr, "Fire ");
+				if (res & IMUNE_LIGHTNING)
+					strcat(tempstr, "Lightning ");
+				tempstr[strlen(tempstr) - 1] = '\0';
+				AddPanelString(tempstr, 1);
+			}
+		} 
 	}
 	pinfoflag = 1;
 }
-// 4B8824: using guessed type int pinfoflag;
-// 679660: using guessed type char gbMaxPlayers;
 
 void PrintUniqueHistory()
 {
