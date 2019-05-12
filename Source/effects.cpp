@@ -1144,13 +1144,18 @@ void sound_stop()
 
 void sound_update()
 {
-	int current, end;
-
 	if (!gbSndInited) {
 		return;
 	}
 
 	snd_update(FALSE);
+	effects_update();
+}
+
+void effects_update()
+{
+	DWORD current, end;
+
 	if (sfx_stream != NULL && SFileDdaGetPos(sfx_stream, &current, &end) && current >= end) {
 		sfx_stop();
 	}
