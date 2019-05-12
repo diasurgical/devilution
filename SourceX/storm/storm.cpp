@@ -242,7 +242,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 		free(fileBuffer);
 	}
 
-	if (pPalette && SDL_SwapLE16(pcxhdr.bitsPerPixel) == 8) {
+	if (pPalette && pcxhdr.bitsPerPixel == 8) {
 		SFileSetFilePointer(hFile, -768, 0, 1);
 		SFileReadFile(hFile, paldata, 768, 0, 0);
 		for (int i = 0; i < 256; i++) {
