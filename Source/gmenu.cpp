@@ -415,11 +415,10 @@ void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
-	int v3;          // eax
-	unsigned int v4; // ecx
+	int v3, v4;
 
-	v3 = (pItem->dwFlags >> 12) & 0xFFF;
 	v4 = pItem->dwFlags & 0xFFF;
+	v3 = ((signed int)pItem->dwFlags >> 12) & 0xFFF;
 	if (v3 < 2)
 		v3 = 2;
 	return min + (v4 * (max - min) + (v3 - 1) / 2) / v3;
