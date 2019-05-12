@@ -1134,11 +1134,14 @@ void FreeMonsterSnd()
 
 void sound_stop()
 {
-	int i; // edi
+	int i;
+	TSFX *snd;
 
+	snd = &sgSFX[0];
 	for (i = 0; i < NUM_SFX; i++) {
-		if (sgSFX[i].pSnd)
-			snd_stop_snd(sgSFX[i].pSnd);
+		if (snd->pSnd)
+			snd_stop_snd(snd->pSnd);
+		snd++;
 	}
 }
 

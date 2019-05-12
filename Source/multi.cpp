@@ -371,15 +371,9 @@ void multi_mon_seeds()
 
 void multi_begin_timeout()
 {
-	unsigned char bGroupPlayers; // bl
-	signed int v1;               // eax
-	signed int nLowestActive;    // esi
-	signed int nLowestPlayer;    // edi
-	signed int v4;               // eax
-	int v5;                      // edx
-	unsigned char v6;            // [esp+Fh] [ebp-1h]
+	BYTE bGroupPlayers, v6;
+	int v1, nLowestActive, nLowestPlayer, v4, v5;
 
-	bGroupPlayers = 0;
 #ifdef _DEBUG
 	if (sgbTimeout && !debug_mode_key_i)
 #else
@@ -387,13 +381,15 @@ void multi_begin_timeout()
 #endif
 	{
 		v1 = GetTickCount() - sglTimeoutStart;
-		if (v1 <= 20000) {
+		if (v1 > 20000) {
+			gbRunGame = FALSE;
+		} else {
 			if (v1 >= 10000) {
 				v6 = 0;
 				nLowestActive = -1;
 				nLowestPlayer = -1;
-				v4 = 0;
-				do {
+				bGroupPlayers = 0;
+				for (v4 = 0; v4 < MAX_PLRS; v4++) {
 					v5 = player_state[v4];
 					if (v5 & 0x10000) {
 						if (nLowestPlayer == -1)
@@ -406,23 +402,18 @@ void multi_begin_timeout()
 							++v6;
 						}
 					}
-					++v4;
-				} while (v4 < MAX_PLRS);
-				if (bGroupPlayers >= v6 && (bGroupPlayers != v6 || nLowestPlayer == nLowestActive)) {
+				}
+
+				if ((v6 > bGroupPlayers || (bGroupPlayers == v6 && nLowestPlayer == nLowestActive))) {
 					if (nLowestActive == myplr)
 						multi_check_drop_player();
 				} else {
 					gbGameDestroyed = TRUE;
 				}
 			}
-		} else {
-			gbRunGame = FALSE;
 		}
 	}
 }
-// 67862D: using guessed type char gbGameDestroyed;
-// 678644: using guessed type int sglTimeoutStart;
-// 679661: using guessed type char sgbTimeout;
 
 void multi_check_drop_player()
 {
