@@ -4902,112 +4902,84 @@ BOOL LineClear(int x1, int y1, int x2, int y2)
 
 BOOL LineClearF1(BOOL(*Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2)
 {
-	int v6;         // esi
-	int v7;         // edi
-	int v8;         // ebx
-	int v9;         // eax
-	int v10;        // eax
-	int v11;        // eax
-	int v12;        // ebx
-	int v13;        // esi
-	signed int v14; // edi
-	int v15;        // eax
-	int v16;        // eax
-	int v17;        // eax
-	int v18;        // eax
-	int v19;        // ebx
-	int v20;        // edi
-	signed int v21; // esi
-	int v22;        // edx
-	int v25;        // [esp+10h] [ebp-10h]
-	int v26;        // [esp+14h] [ebp-Ch]
-	int v27;        // [esp+18h] [ebp-8h]
-	int v28;        // [esp+1Ch] [ebp-4h]
-	int v29;        // [esp+1Ch] [ebp-4h]
+	int xorg, yorg;
+	int dx, dy;
+	int d;
+	int xincD, yincD, dincD, dincH;
+	int tmp;
 
-	v6 = y2 - y1;
-	v25 = monst;
-	v26 = x1;
-	v27 = y1;
-	v7 = x2 - x1;
-	v8 = abs(y2 - y1);
-	if (abs(x2 - x1) <= v8) {
-		if (v6 < 0) {
-			v16 = y1;
-			y1 = y2;
-			y2 = v16;
-			v17 = x1;
-			v6 = -v6;
+	xorg = x1;
+	yorg = y1;
+	dx = x2 - x1;
+	dy = y2 - y1;
+	if (abs(dx) > abs(dy)) {
+		if (dx < 0) {
+			tmp = x1;
 			x1 = x2;
-			x2 = v17;
-			v7 = -v7;
+			x2 = tmp;
+			tmp = y1;
+			y1 = y2;
+			y2 = tmp;
+			dx = -dx;
+			dy = -dy;
 		}
-		v18 = 2 * v7;
-		v29 = 2 * v7;
-		if (v7 <= 0) {
-			v19 = v18 + v6;
-			v20 = 2 * (v6 + v7);
-			v21 = -1;
+		if (dy > 0) {
+			d = 2 * dy - dx;
+			dincH = 2 * (dy - dx);
+			dincD = 2 * dy;
+			yincD = 1;
 		} else {
-			v19 = v18 - v6;
-			v20 = 2 * (v7 - v6);
-			v21 = 1;
+			d = 2 * dy + dx;
+			dincH = 2 * (dx + dy);
+			dincD = 2 * dy;
+			yincD = -1;
 		}
-		while (1) {
-			v22 = x1;
-			if (y1 == y2 && x1 == x2)
-				break;
-			if (v19 <= 0 == v21 < 0) {
-				v19 += v20;
-				v22 = v21 + x1;
-				x1 += v21;
+		while (x1 != x2 || y1 != y2) {
+			if ((d <= 0) ^ (yincD < 0)) {
+				d += dincD;
 			} else {
-				v19 += v29;
+				d += dincH;
+				y1 += yincD;
 			}
-			if ((++y1 != v27 || v22 != v26) && !Clear(v25, v22, y1))
-				goto LABEL_29;
+			x1++;
+			if ((x1 != xorg || y1 != yorg) && !Clear(monst, x1, y1))
+				break;
 		}
 	} else {
-		if (v7 < 0) {
-			v9 = x1;
-			x1 = x2;
-			x2 = v9;
-			v10 = y1;
-			v7 = -v7;
+		if (dy < 0) {
+			tmp = y1;
 			y1 = y2;
-			y2 = v10;
-			v6 = -v6;
+			y2 = tmp;
+			tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+			dy = -dy;
+			dx = -dx;
 		}
-		v11 = 2 * v6;
-		v28 = 2 * v6;
-		if (v6 <= 0) {
-			v12 = v11 + v7;
-			v13 = 2 * (v7 + v6);
-			v14 = -1;
+		if (dx > 0) {
+			d = 2 * dx - dy;
+			dincH = 2 * (dx - dy);
+			dincD = 2 * dx;
+			xincD = 1;
 		} else {
-			v12 = v11 - v7;
-			v13 = 2 * (v6 - v7);
-			v14 = 1;
+			d = 2 * dx + dy;
+			dincH = 2 * (dy + dx);
+			dincD = 2 * dx;
+			xincD = -1;
 		}
-		do {
-			v15 = y1;
-			if (x1 == x2 && y1 == y2)
-				break;
-			if (v12 <= 0 == v14 < 0) {
-				v12 += v13;
-				v15 = v14 + y1;
-				y1 += v14;
+		while (y1 != y2 || x1 != x2) {
+			if ((d <= 0) ^ (xincD < 0)) {
+				d += dincD;
 			} else {
-				v12 += v28;
+				d += dincH;
+				x1 += xincD;
 			}
-		} while (++x1 == v26 && v15 == v27 || Clear(v25, x1, v15)); /* check args */
-	LABEL_29:
-		if (x1 != x2)
-			return 0;
+			y1++;
+			if ((y1 != yorg || x1 != xorg) && !Clear(monst, x1, y1))
+				break;
+		}
 	}
-	if (y1 == y2)
-		return 1;
-	return 0;
+	return x1 == x2 && y1 == y2;
 }
 
 void SyncMonsterAnim(int i)
