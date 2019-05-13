@@ -413,6 +413,9 @@ void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 	pItem->dwFlags |= ((max - min - 1) / 2 + (gamma - min) * v) / (max - min);
 }
 
+/**
+ * @brief Get the current value for the slider 
+ */
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
 	int nSteps, step;
