@@ -425,7 +425,7 @@ int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 	nSteps >>= 12;
 	nSteps &= 0xFFF;
 	if (nSteps < 2)
-		v3 = 2;
+		nSteps = 2;
 	return min + (v4 * (max - min) + (v3 - 1) / 2) / v3;
 }
 
