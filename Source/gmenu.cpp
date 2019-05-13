@@ -415,7 +415,7 @@ void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
-	int v3, v4;
+	int nSteps, step;
 
 	v4 = pItem->dwFlags & 0xFFF;
 	v3 = pItem->dwFlags;
