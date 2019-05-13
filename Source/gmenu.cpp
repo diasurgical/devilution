@@ -418,7 +418,9 @@ int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 	int v3, v4;
 
 	v4 = pItem->dwFlags & 0xFFF;
-	v3 = ((signed int)pItem->dwFlags >> 12) & 0xFFF;
+	v3 = pItem->dwFlags;
+	v3 >>= 12;
+	v3 &= 0xFFF;
 	if (v3 < 2)
 		v3 = 2;
 	return min + (v4 * (max - min) + (v3 - 1) / 2) / v3;
