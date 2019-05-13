@@ -4815,114 +4815,84 @@ BOOL CheckNoSolid(int x, int y)
 
 BOOL LineClearF(BOOL(*Clear)(int, int), int x1, int y1, int x2, int y2)
 {
-	int v5;         // esi
-	int v6;         // edi
-	int v7;         // ebx
-	int v8;         // eax
-	int v9;         // eax
-	int v10;        // eax
-	int v11;        // ebx
-	int v12;        // esi
-	signed int v13; // edi
-	int v14;        // edx
-	int v15;        // ecx
-	int v16;        // eax
-	int v17;        // eax
-	int v18;        // eax
-	int v19;        // ebx
-	int v20;        // edi
-	signed int v21; // esi
-	int v22;        // ecx
-	int v25;        // [esp+10h] [ebp-10h]
-	int v26;        // [esp+14h] [ebp-Ch]
-	int v27;        // [esp+18h] [ebp-8h]
-	int v28;        // [esp+18h] [ebp-8h]
-	int v29;        // [esp+1Ch] [ebp-4h]
+	int xorg, yorg;
+	int dx, dy;
+	int d;
+	int xincD, yincD, dincD, dincH;
+	int tmp;
 
-	v5 = y2 - y1;
-	v29 = x1;
-	v25 = x1;
-	v26 = y1;
-	v6 = x2 - x1;
-	v7 = abs(y2 - y1);
-	if (abs(v6) <= v7) {
-		if (v5 < 0) {
-			v16 = y1;
+	xorg = x1;
+	yorg = y1;
+	dx = x2 - x1;
+	dy = y2 - y1;
+	if (abs(dx) > abs(dy)) {
+		if (dx < 0) {
+			tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+			tmp = y1;
 			y1 = y2;
-			y2 = v16;
-			v17 = v29;
-			v5 = -v5;
-			v29 = x2;
-			x2 = v17;
-			v6 = -v6;
+			y2 = tmp;
+			dx = -dx;
+			dy = -dy;
 		}
-		v18 = 2 * v6;
-		v28 = 2 * v6;
-		if (v6 <= 0) {
-			v19 = v18 + v5;
-			v20 = 2 * (v5 + v6);
-			v21 = -1;
+		if (dy > 0) {
+			d = 2 * dy - dx;
+			dincH = 2 * (dy - dx);
+			dincD = 2 * dy;
+			yincD = 1;
 		} else {
-			v19 = v18 - v5;
-			v20 = 2 * (v6 - v5);
-			v21 = 1;
+			d = 2 * dy + dx;
+			dincH = 2 * (dx + dy);
+			dincD = 2 * dy;
+			yincD = -1;
 		}
-		while (1) {
-			v22 = v29;
-			if (y1 == y2 && v29 == x2)
-				break;
-			if (v19 <= 0 == v21 < 0) {
-				v19 += v20;
-				v22 = v21 + v29;
-				v29 += v21;
+		while (x1 != x2 || y1 != y2) {
+			if ((d <= 0) ^ (yincD < 0)) {
+				d += dincD;
 			} else {
-				v19 += v28;
+				d += dincH;
+				y1 += yincD;
 			}
-			if ((++y1 != v26 || v22 != v25) && !Clear(v22, y1)) /* check args */
-				goto LABEL_29;
+			x1++;
+			if ((x1 != xorg || y1 != yorg) && !Clear(x1, y1))
+				break;
 		}
 	} else {
-		if (v6 < 0) {
-			v8 = v29;
-			v29 = x2;
-			x2 = v8;
-			v9 = y1;
-			v6 = -v6;
+		if (dy < 0) {
+			tmp = y1;
 			y1 = y2;
-			y2 = v9;
-			v5 = -v5;
+			y2 = tmp;
+			tmp = x1;
+			x1 = x2;
+			x2 = tmp;
+			dy = -dy;
+			dx = -dx;
 		}
-		v10 = 2 * v5;
-		v27 = 2 * v5;
-		if (v5 <= 0) {
-			v11 = v10 + v6;
-			v12 = 2 * (v6 + v5);
-			v13 = -1;
+		if (dx > 0) {
+			d = 2 * dx - dy;
+			dincH = 2 * (dx - dy);
+			dincD = 2 * dx;
+			xincD = 1;
 		} else {
-			v11 = v10 - v6;
-			v12 = 2 * (v5 - v6);
-			v13 = 1;
+			d = 2 * dx + dy;
+			dincH = 2 * (dy + dx);
+			dincD = 2 * dx;
+			xincD = -1;
 		}
-		do {
-			v14 = y1;
-			if (v29 == x2 && y1 == y2)
-				break;
-			if (v11 <= 0 == v13 < 0) {
-				v11 += v12;
-				v14 = v13 + y1;
-				y1 += v13;
+		while (y1 != y2 || x1 != x2) {
+			if ((d <= 0) ^ (xincD < 0)) {
+				d += dincD;
 			} else {
-				v11 += v27;
+				d += dincH;
+				x1 += xincD;
 			}
-			v15 = v29 + 1;
-		} while (++v29 == v25 && v14 == v26 || Clear(v15, v14));
-	LABEL_29:
-		if (v29 != x2)
-			return 0;
+			y1++;
+			if ((y1 != yorg || x1 != xorg) && !Clear(x1, y1))
+				break;
+		}
 	}
-	if (y1 == y2)
-		return 1;
-	return 0;
+	return x1 == x2 && y1 == y2;
 }
 
 BOOL LineClear(int x1, int y1, int x2, int y2)
