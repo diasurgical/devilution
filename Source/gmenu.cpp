@@ -413,16 +413,20 @@ void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 	pItem->dwFlags |= ((max - min - 1) / 2 + (gamma - min) * v) / (max - min);
 }
 
+/**
+ * @brief Get the current value for the slider 
+ */
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
-	int v3;          // eax
-	unsigned int v4; // ecx
+	int nSteps, step;
 
-	v3 = (pItem->dwFlags >> 12) & 0xFFF;
-	v4 = pItem->dwFlags & 0xFFF;
-	if (v3 < 2)
-		v3 = 2;
-	return min + (v4 * (max - min) + (v3 - 1) / 2) / v3;
+	step = pItem->dwFlags & 0xFFF;
+	nSteps = pItem->dwFlags;
+	nSteps >>= 12;
+	nSteps &= 0xFFF;
+	if (nSteps < 2)
+		nSteps = 2;
+	return min + (step * (max - min) + (nSteps - 1) / 2) / nSteps;
 }
 
 void gmenu_slider_3(TMenuItem *pItem, int dwTicks)
