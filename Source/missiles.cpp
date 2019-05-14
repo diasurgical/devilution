@@ -891,129 +891,115 @@ LABEL_50:
 	return 0;
 }
 
-BOOLEAN Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, int shift)
+BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, BOOLEAN shift)
 {
-	int v7;           // edi
-	unsigned char v8; // al
-	int v9;           // eax
-	int v10;          // esi
-	int v11;          // eax
-	int v12;          // ecx
-	int v13;          // eax
-	int v14;          // ecx
-	BOOLEAN v15;      // sf
-	int v16;          // ecx
-	int v17;          // ebx
-	int v20;          // eax
-	int v22;          // [esp+Ch] [ebp-14h]
-	int v23;          // [esp+10h] [ebp-10h]
-	int v24;          // [esp+10h] [ebp-10h]
-	int arglist;      // [esp+14h] [ebp-Ch]
-	int v26;          // [esp+18h] [ebp-8h]
-	int v27;          // [esp+1Ch] [ebp-4h]
-	int dista;        // [esp+30h] [ebp+10h]
+	int tac, resper, dam, blk, blkper, hper, hit;
 
-	arglist = p;
-	v7 = p;
-	v26 = pnum;
-	if (plr[p]._pInvincible || mtype == MIS_HBOLT || plr[v7]._pSpellFlags & 1 && !missiledata[mtype].mType)
-		return 0;
-	v22 = mtype;
-	v8 = missiledata[mtype].mResist;
-	if (v8 == MISR_FIRE) {
-		v9 = plr[v7]._pFireResist;
-	} else if (v8 == MISR_LIGHTNING) {
-		v9 = plr[v7]._pLghtResist;
-	} else {
-		if (v8 <= MISR_LIGHTNING || v8 > MISR_ACID) {
-			v27 = 0;
-			goto LABEL_14;
-		}
-		v9 = plr[v7]._pMagResist;
+	if (plr[p]._pInvincible) {
+		return FALSE;
 	}
-	v27 = v9;
-LABEL_14:
-	v23 = random(69, 100);
-	if (missiledata[mtype].mType) {
-		v10 = v26;
-		v12 = 2 * plr[v7]._pLevel;
-		v11 = plr[v26]._pMagic - v12 - dist + 50;
-		if (plr[v26]._pClass == PC_SORCERER)
-			v11 = plr[v10]._pMagic - v12 - dist + 70;
-	} else {
-		v10 = v26;
-		v12 = plr[v10]._pIBonusToHit
-		    + plr[v10]._pLevel
+
+	if (mtype == MIS_HBOLT) {
+		return FALSE;
+	}
+
+	if (plr[p]._pSpellFlags & 1 && !missiledata[mtype].mType) {
+		return FALSE;
+	}
+
+	switch (missiledata[mtype].mResist) {
+	case MISR_FIRE:
+		resper = plr[p]._pFireResist;
+		break;
+	case MISR_LIGHTNING:
+		resper = plr[p]._pLghtResist;
+		break;
+	case MISR_MAGIC:
+	case MISR_ACID:
+		resper = plr[p]._pMagResist;
+		break;
+	default:
+		resper = 0;
+		break;
+	}
+	hper = random(69, 100);
+	if (!missiledata[mtype].mType) {
+		hit = plr[pnum]._pIBonusToHit
+		    + plr[pnum]._pLevel
 		    - (dist * dist >> 1)
-		    - plr[v7]._pDexterity / 5
-		    - plr[v7]._pIBonusAC
-		    - plr[v7]._pIAC;
-		v11 = v12 + plr[v26]._pDexterity + 50;
-		if (plr[v26]._pClass == PC_ROGUE)
-			v11 += 20;
-		if (plr[v26]._pClass == PC_WARRIOR)
-			v11 += 10;
+		    - plr[p]._pDexterity / 5
+		    - plr[p]._pIBonusAC
+		    - plr[p]._pIAC
+		    + plr[pnum]._pDexterity + 50;
+		if (plr[pnum]._pClass == PC_ROGUE)
+			hit += 20;
+		if (plr[pnum]._pClass == PC_WARRIOR)
+			hit += 10;
+	} else {
+		hit = plr[pnum]._pMagic
+		    - (plr[p]._pLevel << 1)
+		    - dist
+		    + 50;
+		if (plr[pnum]._pClass == PC_SORCERER)
+			hit += 20;
 	}
-	if (v11 < 5)
-		v11 = 5;
-	if (v11 > 95)
-		v11 = 95;
-	if (v23 < v11) {
-		v13 = plr[v7]._pmode;
-		if (v13 && v13 != 4 || !plr[v7]._pBlockFlag) {
-			v24 = 100;
+	if (hit < 5)
+		hit = 5;
+	if (hit > 95)
+		hit = 95;
+	if (hper < hit) {
+		if (!((plr[p]._pmode && plr[p]._pmode != PM_ATTACK) || !plr[p]._pBlockFlag)) {
+			blkper = random(73, 100);
 		} else {
-			v24 = random(73, 100);
+			blkper = 100;
 		}
-		if ((_BYTE)shift == 1)
-			v24 = 100;
-		v14 = plr[v7]._pBaseToBlk + 2 * plr[v7]._pLevel - 2 * plr[v10]._pLevel;
-		v15 = plr[v7]._pDexterity + v14 < 0;
-		v16 = plr[v7]._pDexterity + v14;
-		dista = v16;
-		if (v15) {
-			dista = 0;
-			v16 = 0;
+		if (shift == TRUE)
+			blkper = 100;
+		blk = plr[p]._pDexterity + plr[p]._pBaseToBlk + (plr[p]._pLevel << 1) - (plr[pnum]._pLevel << 1);
+
+		if (blk < 0) {
+			blk = 0;
 		}
-		if (v16 > 100) {
-			dista = 100;
-			v16 = 100;
+		if (blk > 100) {
+			blk = 100;
 		}
+
 		if (mtype == MIS_BONESPIRIT) {
-			v17 = plr[v7]._pHitPoints / 3;
+			dam = plr[p]._pHitPoints / 3;
 		} else {
-			v17 = mindam + random(70, maxdam - mindam + 1);
-			if (!missiledata[v22].mType)
-				v17 += plr[v10]._pIBonusDamMod + plr[v10]._pDamageMod + v17 * plr[v10]._pIBonusDam / 100;
-			v16 = dista;
-			if (!(_BYTE)shift)
-				v17 <<= 6;
+			dam = mindam + random(70, maxdam - mindam + 1);
+			if (!missiledata[mtype].mType)
+				dam += plr[pnum]._pIBonusDamMod + plr[pnum]._pDamageMod + dam * plr[pnum]._pIBonusDam / 100;
+			if (!shift)
+				dam <<= 6;
 		}
-		if (missiledata[v22].mType)
-			v17 >>= 1;
-		if (v27 <= 0) {
-			if (v24 >= v16) {
-				if (v26 == myplr)
-					NetSendCmdDamage(TRUE, arglist, v17);
-				StartPlrHit(arglist, v17, 0);
+		if (missiledata[mtype].mType)
+			dam >>= 1;
+		if (resper > 0) {
+			if (pnum == myplr)
+				NetSendCmdDamage(TRUE, p, dam - resper * dam / 100);
+			if (plr[pnum]._pClass == PC_WARRIOR) {
+				tac = PS_WARR69;
+			} else if (plr[pnum]._pClass == PC_ROGUE) {
+				tac = PS_ROGUE69;
+			} else if (plr[pnum]._pClass == PC_SORCERER) {
+				tac = PS_MAGE69;
 			} else {
-				v20 = GetDirection(plr[v7].WorldX, plr[v7].WorldY, plr[v10].WorldX, plr[v10].WorldY);
-				StartPlrBlock(arglist, v20);
+				return TRUE;
 			}
-			return 1;
+			PlaySfxLoc(tac, plr[pnum].WorldX, plr[pnum].WorldY);
+		} else {
+			if (blkper < blk) {
+				StartPlrBlock(p, GetDirection(plr[p].WorldX, plr[p].WorldY, plr[pnum].WorldX, plr[pnum].WorldY));
+			} else {
+				if (pnum == myplr)
+					NetSendCmdDamage(TRUE, p, dam);
+				StartPlrHit(p, dam, 0);
+			}
 		}
-		if (v26 == myplr)
-			NetSendCmdDamage(TRUE, arglist, v17 - v27 * v17 / 100);
-		if (plr[v10]._pClass == PC_WARRIOR) {
-			PlaySfxLoc(PS_WARR69, plr[v10].WorldX, plr[v10].WorldY);
-		} else if (plr[v10]._pClass == PC_ROGUE) {
-			PlaySfxLoc(PS_ROGUE69, plr[v10].WorldX, plr[v10].WorldY);
-		} else if (plr[v10]._pClass == PC_SORCERER) {
-			PlaySfxLoc(PS_MAGE69, plr[v10].WorldX, plr[v10].WorldY);
-		}
-		return 1;
+		return TRUE;
 	}
-	return 0;
+	return FALSE;
 }
 
 void CheckMissileCol(int i, int mindam, int maxdam, BOOLEAN shift, int mx, int my, int nodel)
