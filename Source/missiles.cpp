@@ -91,7 +91,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		for(k = 0; k < sl; k++) {
 			*mind += *mind >> 3;
 		}
-		*maxd = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: `2 * (plr[myplr]._pLevel + 20) + 4`
+		*maxd = 2 * plr[myplr]._pLevel + 40;
 		for(k = 0; k < sl; k++) {
 			*maxd += *maxd >> 3;
 		}
@@ -150,7 +150,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		for(k = 0; k < sl; k++) {
 			*mind += *mind >> 3;
 		}
-		*maxd = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: `2 * (plr[myplr]._pLevel + 20) + 4`
+		*maxd = 2 * plr[myplr]._pLevel + 40;
 		for(k = 0; k < sl; k++) {
 			*maxd += *maxd >> 3;
 		}
