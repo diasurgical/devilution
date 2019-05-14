@@ -982,7 +982,7 @@ BOOL TryIconCurs()
 
 void LeftMouseUp()
 {
-	gmenu_left_mouse(0);
+	gmenu_left_mouse(FALSE);
 	control_release_talk_btn();
 	if (panbtndown)
 		CheckBtnUp();
