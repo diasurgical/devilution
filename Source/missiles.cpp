@@ -14,78 +14,53 @@ int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 
 void GetDamageAmt(int i, int *mind, int *maxd)
 {
-	int v3;         // eax
-	int v4;         // esi
-	int v5;         // eax
-	int v6;         // ecx
-	int v7;         // eax
-	int *v8;        // eax
-	signed int v9;  // ecx
-	int v10;        // eax
-	int v11;        // ecx
-	int v12;        // eax
-	int v13;        // eax
-	int v14;        // eax
-	int v15;        // ecx
-	int *v16;       // ecx
-	int v17;        // eax
-	int v18;        // ecx
-	int v19;        // eax
-	int v20;        // ecx
-	int v21;        // eax
-	signed int v22; // eax
-	signed int v23; // ecx
-	int v24;        // eax
-	int v25;        // ecx
-	int v26;        // ecx
-	int v27;        // eax
-	signed int v28; // ecx
+	int k, sl;
 
-	v3 = myplr;
-	v4 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[i];
-	switch (i) {
+	/// ASSERT: assert((DWORD)myplr < MAX_PLRS);
+	/// ASSERT: assert((DWORD)i < 64);
+	sl = plr[myplr]._pSplLvl[i] + plr[myplr]._pISplLvlAdd;
+
+	switch(i) {
 	case SPL_FIREBOLT:
-		*mind = (plr[v3]._pMagic >> 3) + v4 + 1;
-		v5 = (plr[myplr]._pMagic >> 3) + v4 + 10;
-		goto LABEL_73;
-	case SPL_HEAL:
-		v6 = plr[v3]._pLevel + v4 + 1;
-		*mind = v6;
-		v7 = myplr;
-		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*mind = 2 * v6;
-			v7 = myplr;
+		*mind = (plr[myplr]._pMagic >> 3) + sl + 1;
+		*maxd = (plr[myplr]._pMagic >> 3) + sl + 10;
+		break;
+	case SPL_HEAL: /// BUGFIX: healing calculation is unused
+		*mind = plr[myplr]._pLevel + sl + 1;
+		if(plr[myplr]._pClass == PC_WARRIOR) {
+			*mind *= 2;
 		}
-		if (plr[v7]._pClass == PC_ROGUE)
+		if(plr[myplr]._pClass == PC_ROGUE) {
 			*mind += *mind >> 1;
-		v8 = maxd;
-		v9 = 0;
+		}
 		*maxd = 10;
-		if (plr[myplr]._pLevel > 0) {
-			do {
-				*maxd += 4;
-				++v9;
-			} while (v9 < plr[myplr]._pLevel);
+		for(k = 0; k < plr[myplr]._pLevel; k++) {
+			*maxd += 4;
 		}
-		goto LABEL_65;
+		for(k = 0; k < sl; k++) {
+			*maxd += 6;
+		}
+		if(plr[myplr]._pClass == PC_WARRIOR) {
+			*maxd *= 2;
+		}
+		if(plr[myplr]._pClass == PC_ROGUE) {
+			*maxd += *maxd >> 1;
+		}
+		*mind = -1;
+		*maxd = -1;
+		break;
 	case SPL_LIGHTNING:
-		v10 = 2;
 		*mind = 2;
-		v11 = plr[myplr]._pLevel;
-		goto LABEL_43;
+		*maxd = plr[myplr]._pLevel + 2;
+		break;
 	case SPL_FLASH:
-		v12 = plr[v3]._pLevel;
-		*mind = v12;
-		if (v4 > 0) {
-			do {
-				v12 += v12 >> 3;
-				--v4;
-			} while (v4);
-			*mind = v12;
+		*mind = plr[myplr]._pLevel;
+		for(k = 0; k < sl; k++) {
+			*mind += *mind >> 3;
 		}
-		v13 = (*mind >> 1) + *mind;
-		*mind = v13;
-		goto LABEL_33;
+		*mind += *mind >> 1;
+		*maxd = *mind * 2;
+		break;
 	case SPL_IDENTIFY:
 	case SPL_TOWN:
 	case SPL_STONE:
@@ -104,183 +79,117 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 	case SPL_RESURRECT:
 	case SPL_TELEKINESIS:
 	case SPL_BONESPIRIT:
-		v8 = maxd;
-		goto LABEL_71;
+		*mind = -1;
+		*maxd = -1;
+		break;
 	case SPL_FIREWALL:
-		*mind = (4 * plr[v3]._pLevel + 8) >> 1;
-		v5 = (4 * plr[myplr]._pLevel + 80) >> 1;
-		goto LABEL_73;
+		*mind = (4 * plr[myplr]._pLevel + 8) >> 1;
+		*maxd = (4 * plr[myplr]._pLevel + 80) >> 1;
+		break;
 	case SPL_FIREBALL:
-		v14 = 2 * plr[v3]._pLevel + 4;
-		*mind = v14;
-		if (v4 > 0) {
-			v15 = v4;
-			do {
-				v14 += v14 >> 3;
-				--v15;
-			} while (v15);
-			*mind = v14;
+		*mind = 2 * plr[myplr]._pLevel + 4;
+		for(k = 0; k < sl; k++) {
+			*mind += *mind >> 3;
 		}
-		v16 = maxd;
-		v5 = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: set to `2 * (plr[myplr]._pLevel + 20) + 4`
-		*maxd = v5;
-		if (v4 <= 0)
-			return;
-		do {
-			v5 += v5 >> 3;
-			--v4;
-		} while (v4);
-		goto LABEL_74;
+		*maxd = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: `2 * (plr[myplr]._pLevel + 20) + 4`
+		for(k = 0; k < sl; k++) {
+			*maxd += *maxd >> 3;
+		}
+		break;
 	case SPL_GUARDIAN:
-		v17 = (plr[v3]._pLevel >> 1) + 1;
-		*mind = v17;
-		if (v4 > 0) {
-			v18 = v4;
-			do {
-				v17 += v17 >> 3;
-				--v18;
-			} while (v18);
-			*mind = v17;
+		*mind = (plr[myplr]._pLevel >> 1) + 1;
+		for(k = 0; k < sl; k++) {
+			*mind += *mind >> 3;
 		}
-		v16 = maxd;
-		v5 = (plr[myplr]._pLevel >> 1) + 10;
-		*maxd = v5;
-		if (v4 <= 0)
-			return;
-		do {
-			v5 += v5 >> 3;
-			--v4;
-		} while (v4);
-		goto LABEL_74;
+		*maxd = (plr[myplr]._pLevel >> 1) + 10;
+		for(k = 0; k < sl; k++) {
+			*maxd += *maxd >> 3;
+		}
+		break;
 	case SPL_CHAIN:
 		*mind = 4;
-		v5 = 2 * plr[myplr]._pLevel + 4;
-		goto LABEL_73;
+		*maxd = 2 * plr[myplr]._pLevel + 4;
+		break;
 	case SPL_WAVE:
-		*mind = 6 * (plr[v3]._pLevel + 1);
-		v13 = 3 * (plr[myplr]._pLevel + 10);
-	LABEL_33:
-		v5 = 2 * v13;
-		goto LABEL_73;
+		*mind = 6 * (plr[myplr]._pLevel + 1);
+		*maxd = 6 * (plr[myplr]._pLevel + 10);
+		break;
 	case SPL_NOVA:
-		v19 = (plr[v3]._pLevel + 5) >> 1;
-		*mind = v19;
-		if (v4 > 0) {
-			v20 = v4;
-			do {
-				v19 += v19 >> 3;
-				--v20;
-			} while (v20);
-			*mind = v19;
+		*mind = (plr[myplr]._pLevel + 5) >> 1;
+		for(k = 0; k < sl; k++) {
+			*mind += *mind >> 3;
 		}
-		v16 = maxd;
 		*mind *= 5;
-		v21 = (plr[myplr]._pLevel + 30) >> 1;
-		*maxd = v21;
-		if (v4 > 0) {
-			do {
-				v21 += v21 >> 3;
-				--v4;
-			} while (v4);
-			*maxd = v21;
+		*maxd = (plr[myplr]._pLevel + 30) >> 1;
+		for(k = 0; k < sl; k++) {
+			*maxd += *maxd >> 3;
 		}
-		v5 = 5 * *maxd;
-		goto LABEL_74;
+		*maxd *= 5;
+		break;
 	case SPL_FLAME:
 		*mind = 3;
-		v10 = plr[myplr]._pLevel + 4;
-		v11 = v10 >> 1;
-	LABEL_43:
-		*maxd = v10 + v11;
-		return;
+		*maxd = plr[myplr]._pLevel + 4;
+		*maxd += *maxd >> 1;
+		break;
 	case SPL_GOLEM:
 		*mind = 11;
 		*maxd = 17;
-		return;
+		break;
 	case SPL_APOCA:
 		*mind = 0;
-		v22 = 0;
-		if (plr[myplr]._pLevel > 0) {
-			do {
-				++*mind;
-				++v22;
-			} while (v22 < plr[myplr]._pLevel);
+		for(k = 0; k < plr[myplr]._pLevel; k++) {
+			*mind += 1;
 		}
-		v23 = 0;
 		*maxd = 0;
-		if (plr[myplr]._pLevel > 0) {
-			do {
-				*maxd += 6;
-				++v23;
-			} while (v23 < plr[myplr]._pLevel);
+		for(k = 0; k < plr[myplr]._pLevel; k++) {
+			*maxd += 6;
 		}
-		return;
+		break;
 	case SPL_ELEMENT:
-		v24 = 2 * plr[v3]._pLevel + 4;
-		*mind = v24;
-		if (v4 > 0) {
-			v25 = v4;
-			do {
-				v24 += v24 >> 3;
-				--v25;
-			} while (v25);
-			*mind = v24;
+		*mind = 2 * plr[myplr]._pLevel + 4;
+		for(k = 0; k < sl; k++) {
+			*mind += *mind >> 3;
 		}
-		v16 = maxd;
-		v5 = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: set to `2 * (plr[myplr]._pLevel + 20) + 4`
-		*maxd = v5;
-		if (v4 <= 0)
-			return;
-		do {
-			v5 += v5 >> 3;
-			--v4;
-		} while (v4);
-		goto LABEL_74;
+		*maxd = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: `2 * (plr[myplr]._pLevel + 20) + 4`
+		for(k = 0; k < sl; k++) {
+			*maxd += *maxd >> 3;
+		}
+		break;
 	case SPL_CBOLT:
 		*mind = 1;
-		v5 = (plr[myplr]._pMagic >> 2) + 1;
-		goto LABEL_73;
+		*maxd = (plr[myplr]._pMagic >> 2) + 1;
+		break;
 	case SPL_HBOLT:
-		*mind = plr[v3]._pLevel + 9;
-		v5 = plr[myplr]._pLevel + 18;
-		goto LABEL_73;
-	case SPL_HEALOTHER:
-		v26 = plr[v3]._pLevel + v4 + 1;
-		*mind = v26;
-		v27 = myplr;
-		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*mind = 2 * v26;
-			v27 = myplr;
+		*mind = plr[myplr]._pLevel + 9;
+		*maxd = plr[myplr]._pLevel + 18;
+		break;
+	case SPL_HEALOTHER: /// BUGFIX: healing calculation is unused
+		*mind = plr[myplr]._pLevel + sl + 1;
+		if(plr[myplr]._pClass == PC_WARRIOR) {
+			*mind *= 2;
 		}
-		if (plr[v27]._pClass == PC_ROGUE)
+		if(plr[myplr]._pClass == PC_ROGUE) {
 			*mind += *mind >> 1;
-		v8 = maxd;
-		v28 = 0;
-		*maxd = 10;
-		if (plr[myplr]._pLevel > 0) {
-			do {
-				*maxd += 4;
-				++v28;
-			} while (v28 < plr[myplr]._pLevel);
 		}
-	LABEL_65:
-		if (v4 > 0)
-			*v8 += 6 * v4;
-		if (plr[myplr]._pClass == PC_WARRIOR)
-			*v8 *= 2;
-		if (plr[myplr]._pClass == PC_ROGUE)
-			*v8 += *v8 >> 1;
-	LABEL_71:
+		*maxd = 10;
+		for(k = 0; k < plr[myplr]._pLevel; k++) {
+			*maxd += 4;
+		}
+		for(k = 0; k < sl; k++) {
+			*maxd += 6;
+		}
+		if(plr[myplr]._pClass == PC_WARRIOR) {
+			*maxd *= 2;
+		}
+		if(plr[myplr]._pClass == PC_ROGUE) {
+			*maxd += *maxd >> 1;
+		}
 		*mind = -1;
-		*v8 = -1;
+		*maxd = -1;
 		break;
 	case SPL_FLARE:
-		v5 = 3 * v4 + (plr[v3]._pMagic >> 1) - (plr[v3]._pMagic >> 3);
-		*mind = v5;
-	LABEL_73:
-		v16 = maxd;
-	LABEL_74:
-		*v16 = v5;
+		*mind = (plr[myplr]._pMagic >> 1) + 3 * sl - (plr[myplr]._pMagic >> 3);
+		*maxd = *mind;
 		break;
 	}
 }
