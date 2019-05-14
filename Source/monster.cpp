@@ -4689,118 +4689,57 @@ void FreeMonsters()
 
 BOOL DirOK(int i, int mdir)
 {
-	int v2;             // ebx
-	int v3;             // esi
-	int v4;             // ebx
-	int v5;             // edi
-	int v6;             // esi
-	int v7;             // edi
-	BOOLEAN v8;         // zf
-	int v9;             // edx
-	unsigned char *v11; // ebx
-	unsigned char v12;  // al
-	int v13;            // edx
-	int v14;            // eax
-	int v15;            // edi
-	int v16;            // ecx
-	signed int j;       // esi
-	int v18;            // eax
-	BOOLEAN v19;        // zf
-	int v20;            // eax
-	int v21;            // [esp+Ch] [ebp-14h]
-	int v22;            // [esp+10h] [ebp-10h]
-	int v23;            // [esp+14h] [ebp-Ch]
-	int a1;             // [esp+18h] [ebp-8h]
-	int v25;            // [esp+1Ch] [ebp-4h]
-	int v26;            // [esp+1Ch] [ebp-4h]
+	int fx, fy;
+	int x, y;
+	int mcount, mi;
 
-	v2 = i;
-	v3 = mdir;
-	v25 = mdir;
-	a1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("DirOK: Invalid monster %d", i);
-	v4 = v2;
-	v5 = offset_y[v3];
-	v6 = monster[v4]._mx + offset_x[v3];
-	v7 = monster[v4]._my + v5;
-	if (v7 < 0 || v7 >= MAXDUNY || v6 < 0 || v6 >= MAXDUNX || !PosOkMonst(a1, v6, v7))
-		return 0;
-	if (v25 == DIR_E) {
-		if (!SolidLoc(v6, v7 + 1)) {
-			v8 = (dFlags[v6][v7 + 1] & DFLAG_MONSTER) == 0;
-			goto LABEL_18;
-		}
-		return 0;
+	fx = monster[i]._mx + offset_x[mdir];
+	fy = monster[i]._my + offset_y[mdir];
+	if (fy < 0 || fy >= MAXDUNY || fx < 0 || fx >= MAXDUNX || !PosOkMonst(i, fx, fy))
+		return FALSE;
+	if (mdir == DIR_E) {
+		if (SolidLoc(fx, fy + 1) || dFlags[fx][fy + 1] & DFLAG_MONSTER)
+			return FALSE;
 	}
-	if (v25 == DIR_W) {
-		if (SolidLoc(v6 + 1, v7))
-			return 0;
-		v8 = (dFlags[v6 + 1][v7] & DFLAG_MONSTER) == 0;
-	} else {
-		if (v25 == DIR_N) {
-			if (SolidLoc(v6 + 1, v7))
-				return 0;
-			v9 = v7 + 1;
-		} else {
-			if (v25)
-				goto LABEL_24;
-			if (SolidLoc(v6 - 1, v7))
-				return 0;
-			v9 = v7 - 1;
+	if (mdir == DIR_W) {
+		if (SolidLoc(fx + 1, fy) || dFlags[fx + 1][fy] & DFLAG_MONSTER)
+			return FALSE;
+	} 
+	if (mdir == DIR_N) {
+			if (SolidLoc(fx + 1, fy) || SolidLoc(fx, fy + 1))
+				return FALSE;
 		}
-		v8 = SolidLoc(v6, v9) == 0;
-	}
-LABEL_18:
-	if (!v8)
-		return 0;
-LABEL_24:
-	if (monster[v4].leaderflag == 1) {
-		v11 = &monster[v4].leader;
-		if (abs(v6 - monster[(unsigned char)*v11]._mfutx) >= 4
-		    || abs(v7 - monster[(unsigned char)*v11]._mfuty) >= 4) {
-			return 0;
+	if (mdir == DIR_S)
+			if (SolidLoc(fx - 1, fy) || SolidLoc(fx, fy - 1))
+				return FALSE;
+	if (monster[i].leaderflag == 1) {
+		if (abs(fx - monster[monster[i].leader]._mfutx) >= 4
+		    || abs(fy - monster[monster[i].leader]._mfuty) >= 4) {
+			return FALSE;
 		}
-		return 1;
+		return TRUE;
 	}
-	v12 = monster[v4]._uniqtype;
-	if (v12 == 0 || !(UniqMonst[v12 - 1].mUnqAttr & 2))
-		return 1;
-	v26 = 0;
-	v13 = v6 - 3;
-	v21 = v6 + 3;
-	if (v6 - 3 <= v6 + 3) {
-		v14 = v7 - 3;
-		v15 = v7 + 3;
-		v23 = v14;
-		v22 = v15;
-		v16 = 112 * v13;
-		do {
-			for (j = v23; j <= v15; ++j) {
-				if (j >= 0 && j < MAXDUNY && v16 >= 0 && v16 < MAXDUNX * 112) {
-					v18 = dMonster[0][v16 + j];
-					v19 = v18 == 0;
-					if (v18 < 0) {
-						v18 = -v18;
-						v19 = v18 == 0;
-					}
-					if (!v19)
-						--v18;
-					v20 = v18;
-					if (monster[v20].leaderflag == 1
-					    && (unsigned char)monster[v20].leader == a1
-					    && monster[v20]._mfutx == v13
-					    && monster[v20]._mfuty == j) {
-						++v26;
-					}
-				}
-				v15 = v22;
+	if (monster[i]._uniqtype == 0 || !(UniqMonst[monster[i]._uniqtype - 1].mUnqAttr & 2))
+		return TRUE;
+	mcount = 0;
+	for (x = fx - 3; x <= fx + 3; x++) {
+		for (y = fy - 3; y <= fy + 3; y++) {
+			if (y < 0 || y >= MAXDUNY || x < 0 || x >= MAXDUNX)
+				continue;
+			mi = dMonster[x][y];
+			if (mi < 0) mi = -mi;
+			if (mi != 0) mi--;
+			if (monster[mi].leaderflag == 1
+				&& monster[mi].leader == i
+				&& monster[mi]._mfutx == x
+				&& monster[mi]._mfuty == y) {
+				mcount++;
 			}
-			++v13;
-			v16 += 112;
-		} while (v13 <= v21);
+		}
 	}
-	return v26 == (unsigned char)monster[v4].packsize;
+	return mcount == monster[i].packsize;
 }
 
 BOOL PosOkMissile(int x, int y)
