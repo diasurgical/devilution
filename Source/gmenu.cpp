@@ -93,37 +93,27 @@ BOOL gmenu_exception()
 	return sgpCurrentMenu != 0;
 }
 
-void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
+void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 {
-	TMenuItem *v2;         // eax
-	int v3;                // ecx
-	void(* *v4)(BOOL); // edx
+	int i;
 
 	PauseMode = 0;
-	mouseNavigation = 0;
-	v2 = pItem;
-	dword_63447C = gmFunc;
+	mouseNavigation = FALSE;
 	sgpCurrentMenu = pItem;
+	dword_63447C = gmFunc;
 	if (gmFunc) {
-		gmFunc(sgpCurrentMenu);
-		v2 = sgpCurrentMenu;
+		dword_63447C(sgpCurrentMenu);
+		pItem = sgpCurrentMenu;
 	}
-	v3 = 0;
 	sgCurrentMenuIdx = 0;
-	if (v2) {
-		v4 = &v2->fnMenu;
-		while (*v4) {
-			++v3;
-			v4 += 3;
-			sgCurrentMenuIdx = v3;
+	if (sgpCurrentMenu) {
+		for (i = 0; sgpCurrentMenu[i].fnMenu; i++) {
+			sgCurrentMenuIdx++;
 		}
 	}
-	sgpCurrItem = &v2[v3 - 1];
+	sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx - 1];
 	gmenu_up_down(TRUE);
 }
-// 525740: using guessed type int PauseMode;
-// 634464: using guessed type char mouseNavigation;
-// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_up_down(BOOL isDown)
 {
