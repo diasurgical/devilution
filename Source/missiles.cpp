@@ -644,148 +644,120 @@ BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
 	return 1;
 }
 
-BOOLEAN MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift)
+BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLEAN shift)
 {
-	int v7;     // edi
-	BOOLEAN v8; // zf
-	short v9;   // ax
-	int v10;    // ecx
-	int v11;    // eax
-	int v12;    // esi
-	int v13;    // ebx
-	int v15;    // eax
-	//int v16; // eax
-	int v19;              // ebx
-	int v20;              // ebx
-	int v21;              // edx
-	int v22;              // eax
-	int v23;              // [esp+Ch] [ebp-18h]
-	BOOL ret;             // [esp+10h] [ebp-14h]
-	int v25;              // [esp+14h] [ebp-10h]
-	int v26;              // [esp+18h] [ebp-Ch]
-	int pnuma;            // [esp+1Ch] [ebp-8h]
-	int arglist;          // [esp+20h] [ebp-4h]
-	unsigned char dist_3; // [esp+37h] [ebp+13h]
+	int hit, hper, dam, mor, mir;
+	BOOL resist, ret;
 
-	arglist = m;
-	v7 = m;
-	v26 = 0;
-	v8 = monster[m].mtalkmsg == 0;
-	pnuma = pnum;
-	if (!v8
-	    || monster[v7]._mhitpoints >> 6 <= 0
-	    || t == MIS_HBOLT && monster[v7].MType->mtype != MT_DIABLO && monster[v7].MData->mMonstClass) {
-		return 0;
+	resist = FALSE;
+	if (monster[m].mtalkmsg
+	    || monster[m]._mhitpoints >> 6 <= 0
+	    || t == MIS_HBOLT && monster[m].MType->mtype != MT_DIABLO && monster[m].MData->mMonstClass) {
+		return FALSE;
 	}
-	if (monster[v7].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v7]._mgoal) == MGOAL_RETREAT)
-		return 0;
-	if (monster[v7]._mmode == MM_CHARGE)
-		return 0;
-	v9 = monster[v7].mMagicRes;
-	v10 = missiledata[t].mResist;
-	v23 = t;
-	if (v9 & IMUNE_MAGIC) {
-		if (v10 == MISR_MAGIC)
-			return 0;
-	}
-	if (v9 & IMUNE_FIRE && v10 == MISR_FIRE || v9 & IMUNE_LIGHTNING && v10 == MISR_LIGHTNING || (v9 & IMUNE_ACID) != 0 && v10 == MISR_ACID)
-		return 0;
-	if (v9 & RESIST_MAGIC && v10 == MISR_MAGIC || v9 & RESIST_FIRE && v10 == MISR_FIRE || v9 & RESIST_LIGHTNING && v10 == MISR_LIGHTNING)
-		v26 = 1;
-	v11 = random(69, 100);
-	v8 = missiledata[t].mType == 0;
-	v25 = v11;
-	if (v8) {
-		v12 = pnuma;
-		v13 = plr[v12]._pDexterity
-		    + plr[v12]._pIBonusToHit
-		    + plr[v12]._pLevel
-		    - (unsigned char)monster[v7].mArmorClass
+	if (monster[m].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[m]._mgoal) == MGOAL_RETREAT)
+		return FALSE;
+	if (monster[m]._mmode == MM_CHARGE)
+		return FALSE;
+
+	mor = monster[m].mMagicRes;
+	mir = missiledata[t].mResist;
+
+	if (mor & IMUNE_MAGIC && mir == MISR_MAGIC
+		|| mor & IMUNE_FIRE && mir == MISR_FIRE
+		|| mor & IMUNE_LIGHTNING && mir == MISR_LIGHTNING
+		|| (mor & IMUNE_ACID) && mir == MISR_ACID)
+		return FALSE;
+
+	if (mor & RESIST_MAGIC && mir == MISR_MAGIC
+		|| mor & RESIST_FIRE && mir == MISR_FIRE
+		|| mor & RESIST_LIGHTNING && mir == MISR_LIGHTNING)
+		resist = TRUE;
+
+	hit = random(69, 100);
+	if (!missiledata[t].mType) {
+		hper = plr[pnum]._pDexterity
+		    + plr[pnum]._pIBonusToHit
+		    + plr[pnum]._pLevel
+		    - monster[m].mArmorClass
 		    - (dist * dist >> 1)
-		    + plr[pnuma]._pIEnAc
+		    + plr[pnum]._pIEnAc
 		    + 50;
-		if (plr[pnuma]._pClass == PC_ROGUE)
-			v13 = plr[v12]._pDexterity
-			    + plr[v12]._pIBonusToHit
-			    + plr[v12]._pLevel
-			    - (unsigned char)monster[v7].mArmorClass
-			    - (dist * dist >> 1)
-			    + plr[pnuma]._pIEnAc
-			    + 70;
-		if (plr[pnuma]._pClass == PC_WARRIOR)
-			v13 += 10;
+		if (plr[pnum]._pClass == PC_ROGUE)
+			hper += 20;
+		if (plr[pnum]._pClass == PC_WARRIOR)
+			hper += 10;
 	} else {
-		v12 = pnuma;
-		v15 = 2 * SLOBYTE(monster[v7].mLevel);
-		v13 = plr[pnuma]._pMagic - v15 - dist + 50;
-		if (plr[pnuma]._pClass == PC_SORCERER)
-			v13 = plr[v12]._pMagic - v15 - dist + 70;
+		hper = plr[pnum]._pMagic - (monster[m].mLevel<<1) - dist + 50;
+		if (plr[pnum]._pClass == PC_SORCERER)
+			hper += 20;
 	}
-	if (v13 < 5)
-		v13 = 5;
-	if (v13 > 95)
-		v13 = 95;
-	if (monster[v7]._mmode == MM_STONE)
-		v25 = 0;
-	if (CheckMonsterHit(arglist, &ret))
+	if (hper < 5)
+		hper = 5;
+	if (hper > 95)
+		hper = 95;
+	if (monster[m]._mmode == MM_STONE)
+		hit = 0;
+	if (CheckMonsterHit(m, &ret))
 		return ret;
 #ifdef _DEBUG
-	if (v25 >= v13 && !debug_mode_key_inverted_v && !debug_mode_dollar_sign)
+	if (hit >= hper && !debug_mode_key_inverted_v && !debug_mode_dollar_sign)
 		return 0;
 #else
-	if (v25 >= v13)
+	if (hit >= hper)
 		return 0;
 #endif
 	if (t == MIS_BONESPIRIT) {
-		v19 = monster[v7]._mhitpoints / 3 >> 6;
+		dam = monster[m]._mhitpoints / 3 >> 6;
 	} else {
-		v19 = mindam + random(70, maxdam - mindam + 1);
+		dam = mindam + random(70, maxdam - mindam + 1);
 	}
-	dist_3 = missiledata[v23].mType;
-	if (!missiledata[v23].mType) {
-		v20 = plr[v12]._pIBonusDamMod + v19 * plr[v12]._pIBonusDam / 100 + v19;
-		if (plr[v12]._pClass == PC_ROGUE)
-			v19 = plr[v12]._pDamageMod + v20;
+	if (!missiledata[t].mType) {
+		dam = plr[pnum]._pIBonusDamMod + dam * plr[pnum]._pIBonusDam / 100 + dam;
+		if (plr[pnum]._pClass == PC_ROGUE)
+			dam += plr[pnum]._pDamageMod;
 		else
-			v19 = (plr[v12]._pDamageMod >> 1) + v20;
+			dam += (plr[pnum]._pDamageMod >> 1);
 	}
-	if (!(_BYTE)shift)
-		v19 <<= 6;
-	if (v26)
-		v19 >>= 2;
-	v21 = pnuma;
-	if (pnuma == myplr)
-		monster[v7]._mhitpoints -= v19;
-	v22 = plr[v12]._pIFlags;
-	if (v22 & 8)
-		monster[v7]._mFlags |= MFLAG_NOHEAL;
-	if (monster[v7]._mhitpoints >> 6 > 0) {
-		if (v26) {
-			PlayEffect(arglist, 1);
-		} else if (monster[v7]._mmode == MM_STONE) {
-			if (arglist > 3)
-				M_StartHit(arglist, v21, v19);
-			monster[v7]._mmode = MM_STONE;
-		} else {
-			if (!dist_3 && v22 & 0x800) {
-				M_GetKnockback(arglist);
-				v21 = pnuma;
-			}
-			if (arglist > 3)
-				M_StartHit(arglist, v21, v19);
+	if (!shift)
+		dam <<= 6;
+	if (resist)
+		dam >>= 2;
+	if (pnum == myplr)
+		monster[m]._mhitpoints -= dam;
+	if (plr[pnum]._pIFlags & ISPL_FIRE_ARROWS)
+		monster[m]._mFlags |= MFLAG_NOHEAL;
+
+	if (monster[m]._mhitpoints >> 6 <= 0) {
+		if (monster[m]._mmode == MM_STONE){
+			M_StartKill(m, pnum);
+			monster[m]._mmode = MM_STONE;
 		}
-	} else if (monster[v7]._mmode == MM_STONE) {
-		M_StartKill(arglist, v21);
-		monster[v7]._mmode = MM_STONE;
-	} else {
-		M_StartKill(arglist, v21);
+		else{
+			M_StartKill(m, pnum);
+		}
+	} else{
+		if (resist) {
+			PlayEffect(m, 1);
+		} else if (monster[m]._mmode == MM_STONE) {
+			if (m > 3)
+				M_StartHit(m, pnum, dam);
+			monster[m]._mmode = MM_STONE;
+		} else {
+			if (!missiledata[t].mType && plr[pnum]._pIFlags & ISPL_KNOCKBACK) {
+				M_GetKnockback(m);
+			}
+			if (m > 3)
+				M_StartHit(m, pnum, dam);
+		}
+}
+
+	if (!monster[m]._msquelch) {
+		monster[m]._msquelch = -1;
+		monster[m]._lastx = plr[pnum].WorldX;
+		monster[m]._lasty = plr[pnum].WorldY;
 	}
-	if (!monster[v7]._msquelch) {
-		monster[v7]._msquelch = -1;
-		monster[v7]._lastx = plr[v12].WorldX;
-		monster[v7]._lasty = plr[v12].WorldY;
-	}
-	return 1;
+	return TRUE;
 }
 
 BOOLEAN PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag)
