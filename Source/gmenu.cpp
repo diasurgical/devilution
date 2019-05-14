@@ -95,7 +95,7 @@ BOOL gmenu_exception()
 
 void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 {
-	void (**v4)(BOOL);
+	int i;
 
 	PauseMode = 0;
 	mouseNavigation = FALSE;
@@ -107,7 +107,7 @@ void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 	}
 	sgCurrentMenuIdx = 0;
 	if (sgpCurrentMenu) {
-		for (v4 = &sgpCurrentMenu->fnMenu; *v4; v4 += 3) {
+		for (i = 0; sgpCurrentMenu[i].fnMenu; i++) {
 			sgCurrentMenuIdx++;
 		}
 	}
