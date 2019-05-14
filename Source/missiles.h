@@ -23,7 +23,7 @@ void PutMissile(int i);
 void GetMissilePos(int i);
 void MoveMissilePos(int i);
 BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift);
-BOOLEAN MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift);
+BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLEAN shift);
 BOOLEAN PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag);
 BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, BOOLEAN shift);
 void CheckMissileCol(int i, int mindam, int maxdam, BOOLEAN shift, int mx, int my, int nodel);
