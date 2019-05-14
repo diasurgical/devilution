@@ -401,16 +401,19 @@ void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 		pMenuItem->dwFlags &= ~0x80000000;
 }
 
-void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
+/**
+ * @brief Set the TMenuItem slider position based on the given value
+ */
+void gmenu_slider_set(TMenuItem *pItem, int min, int max, int value)
 {
-	int v;
+	int nSteps;
 
 	/// ASSERT: assertassert(pItem, "gmenu.cpp", 445);
-	v = (int)(pItem->dwFlags & 0xFFF000) >> 12;
-	if (v < 2)
-		v = 2;
+	nSteps = (int)(pItem->dwFlags & 0xFFF000) >> 12;
+	if (nSteps < 2)
+		nSteps = 2;
 	pItem->dwFlags &= 0xFFFFF000;
-	pItem->dwFlags |= ((max - min - 1) / 2 + (gamma - min) * v) / (max - min);
+	pItem->dwFlags |= ((max - min - 1) / 2 + (value - min) * nSteps) / (max - min);
 }
 
 /**
@@ -429,8 +432,11 @@ int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 	return min + (step * (max - min) + (nSteps - 1) / 2) / nSteps;
 }
 
-void gmenu_slider_3(TMenuItem *pItem, int dwTicks)
+/**
+ * @brief Set the number of steps for the slider
+ */
+void gmenu_slider_steps(TMenuItem *pItem, int steps)
 {
 	pItem->dwFlags &= 0xFF000FFF;
-	pItem->dwFlags |= (dwTicks << 12) & 0xFFF000;
+	pItem->dwFlags |= (steps << 12) & 0xFFF000;
 }
