@@ -150,10 +150,12 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		for(k = 0; k < sl; k++) {
 			*mind += *mind >> 3;
 		}
+		/// BUGFIX: add here '*mind >>= 1;'
 		*maxd = 2 * plr[myplr]._pLevel + 40;
 		for(k = 0; k < sl; k++) {
 			*maxd += *maxd >> 3;
 		}
+		/// BUGFIX: add here '*maxd >>= 1;'
 		break;
 	case SPL_CBOLT:
 		*mind = 1;
