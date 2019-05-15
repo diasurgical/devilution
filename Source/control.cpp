@@ -2739,7 +2739,7 @@ BOOL control_presskeys(int vkey)
 			ret = FALSE;
 		} else {
 			if (vkey == VK_SPACE) {
-			} else if (a1 == VK_ESCAPE) {
+			} else if (vkey == VK_ESCAPE) {
 				control_reset_talk();
 			} else if (a1 == VK_RETURN) {
 				control_press_enter();
