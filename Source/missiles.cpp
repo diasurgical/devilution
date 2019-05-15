@@ -559,89 +559,100 @@ void MoveMissilePos(int i)
 	}
 }
 
-BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
+BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, BOOLEAN shift)
 {
-	int v6;  // esi
-	int v8;  // ecx
-	int v9;  // eax
-	int v10; // edi
-	//int v11; // eax
-	int v13;            // eax
-	int v14;            // [esp+Ch] [ebp-10h]
-	int v15;            // [esp+10h] [ebp-Ch]
-	signed int v16;     // [esp+14h] [ebp-8h]
-	signed int arglist; // [esp+18h] [ebp-4h]
-	BOOL ret;
+	int hit, hper, dam, mor, mir;
+	BOOL resist, ret, rv;
 
-	v16 = 0;
-	arglist = m;
-	v6 = m;
-	v15 = mindam;
-	if (monster[m].mtalkmsg
-	    || monster[v6]._mhitpoints >> 6 <= 0
-	    || monster[v6].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v6]._mgoal) == MGOAL_RETREAT) {
-		return 0;
-	}
-	if (monster[v6]._mmode == MM_CHARGE)
-		return 0;
-	v8 = _LOWORD(monster[v6].mMagicRes);
-	v9 = missiledata[t].mResist;
-	if (v8 & IMUNE_MAGIC) {
-		if (v9 == MISR_MAGIC)
-			return 0;
-	}
-	if (v8 & IMUNE_FIRE && v9 == MISR_FIRE || v8 & IMUNE_LIGHTNING && v9 == MISR_LIGHTNING)
-		return 0;
-	if (v8 & RESIST_MAGIC && v9 == MISR_MAGIC || v8 & 2 && v9 == MISR_FIRE || v8 & RESIST_LIGHTNING && v9 == MISR_LIGHTNING)
-		v16 = 1;
-	v14 = random(68, 100);
-	v10 = 90 - (unsigned char)monster[v6].mArmorClass - dist;
-	if (v10 < 5)
-		v10 = 5;
-	if (v10 > 95)
-		v10 = 95;
-	//_LOBYTE(v11) = CheckMonsterHit(arglist, (unsigned char *)&t);
-	if (CheckMonsterHit(arglist, &ret))
-		return ret;
+	resist = FALSE;
+	if (monster[m].mtalkmsg) {
+		ret = FALSE;
+	} else if (monster[m]._mhitpoints >> 6 <= 0) {
+		ret = FALSE;
+	} else if (monster[m].MType->mtype == MT_ILLWEAV && monster[m]._mgoal == MGOAL_RETREAT)
+		ret = FALSE;
+	else if (monster[m]._mmode == MM_CHARGE)
+		ret = FALSE;
+
+	else {
+		mir = missiledata[t].mResist;
+		mor = monster[m].mMagicRes;
+		if (mor & IMUNE_MAGIC && mir == MISR_MAGIC) {
+			ret = FALSE;
+		}
+
+		else if (mor & IMUNE_FIRE && mir == MISR_FIRE) {
+			ret = FALSE;
+		}
+
+		else if (mor & IMUNE_LIGHTNING && mir == MISR_LIGHTNING) {
+			ret = FALSE;
+		}
+
+		//else if (mor & IMUNE_ACID && mir == MISR_ACID) {
+		//ret = FALSE;
+		//}
+		else {
+
+			if ((mor & RESIST_MAGIC && mir == MISR_MAGIC) || (mor & RESIST_FIRE && mir == MISR_FIRE) || (mor & RESIST_LIGHTNING && mir == MISR_LIGHTNING)) {
+				resist = TRUE;
+			}
+
+			hit = random(68, 100);
+			hper = 90 - (unsigned char)monster[m].mArmorClass - dist;
+			if (hper < 5)
+				hper = 5;
+			if (hper > 95)
+				hper = 95;
+			if (CheckMonsterHit(m, &rv)) {
+				ret = rv;
+			} else {
 #ifdef _DEBUG
-	if (v14 >= v10 && !debug_mode_dollar_sign && !debug_mode_key_inverted_v && monster[v6]._mmode != MM_STONE)
-		return 0;
+				if (hit >= hper && !debug_mode_dollar_sign && !debug_mode_key_inverted_v && monster[m]._mmode != MM_STONE) {
+					ret = FALSE;
+				}
 #else
-	if (v14 >= v10 && monster[v6]._mmode != MM_STONE)
-		return 0;
+				if (hit >= hper && monster[m]._mmode != MM_STONE) {
+					ret = FALSE;
+				}
 #endif
-	v13 = v15 + random(68, maxdam - v15 + 1);
-	if (!(_BYTE)shift)
-		v13 <<= 6;
-	if (v16)
-		monster[v6]._mhitpoints -= v13 >> 2;
-	else
-		monster[v6]._mhitpoints -= v13;
+				else {
+					dam = mindam + random(68, maxdam - mindam + 1);
+					if (!shift)
+						dam <<= 6;
+					if (resist)
+						monster[m]._mhitpoints -= dam >> 2;
+					else
+						monster[m]._mhitpoints -= dam;
 #ifdef _DEBUG
-	if (debug_mode_dollar_sign || debug_mode_key_inverted_v)
-		monster[v6]._mhitpoints = 0;
+					if (debug_mode_dollar_sign || debug_mode_key_inverted_v)
+						monster[m]._mhitpoints = 0;
 #endif
-	if (monster[v6]._mhitpoints >> 6 > 0) {
-		if (v16) {
-			PlayEffect(arglist, 1);
-			return 1;
+					if (monster[m]._mhitpoints >> 6 <= 0) {
+						if (monster[m]._mmode == MM_STONE) {
+							M_StartKill(m, -1);
+							monster[m]._mmode = MM_STONE;
+						} else {
+							M_StartKill(m, -1);
+						}
+					} else {
+						if (resist) {
+							PlayEffect(m, 1);
+						} else if (monster[m]._mmode == MM_STONE) {
+							if (m > 3)
+								M_StartHit(m, -1, dam);
+							monster[m]._mmode = MM_STONE;
+						} else {
+							if (m > 3)
+								M_StartHit(m, -1, dam);
+						}
+					}
+					ret = TRUE;
+				}
+			}
 		}
-		if (monster[v6]._mmode != MM_STONE) {
-			if (arglist > 3)
-				M_StartHit(arglist, -1, v13);
-			return 1;
-		}
-		if (arglist > 3)
-			M_StartHit(arglist, -1, v13);
-	} else {
-		if (monster[v6]._mmode != MM_STONE) {
-			M_StartKill(arglist, -1);
-			return 1;
-		}
-		M_StartKill(arglist, -1);
 	}
-	monster[v6]._mmode = MM_STONE;
-	return 1;
+	return ret;
 }
 
 BOOLEAN MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift)
