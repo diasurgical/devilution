@@ -4703,7 +4703,7 @@ BOOL DirOK(int i, int mdir)
 	if (mdir == DIR_W) {
 		if (SolidLoc(fx + 1, fy) || dFlags[fx + 1][fy] & DFLAG_MONSTER)
 			return FALSE;
-	} 
+	}
 	if (mdir == DIR_N) {
 			if (SolidLoc(fx + 1, fy) || SolidLoc(fx, fy + 1))
 				return FALSE;
@@ -4920,82 +4920,72 @@ BOOL LineClearF1(BOOL(*Clear)(int, int, int), int monst, int x1, int y1, int x2,
 
 void SyncMonsterAnim(int i)
 {
-	int v1;             // esi
-	int v2;             // eax
-	int v3;             // edx
-	MonsterData *v4;    // esi
-	CMonster *v5;       // ecx
-	unsigned char v6;   // dl
-	char *v7;           // edx
-	int v8;             // esi
-	int v9;             // edx
-	unsigned char *v10; // ecx
-	unsigned char *v11; // edx
-	int v12;            // ecx
-	unsigned char *v13; // edx
+	MonsterData *MData;
+	CMonster *cmonst;
+	unsigned char _uniqtype;
+	int _mdir;
+	MonsterStruct *Monst;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("SyncMonsterAnim: Invalid monster %d", i);
-	v2 = v1;
-	v3 = monster[v1]._mMTidx;
-	v4 = Monsters[v3].MData;
-	v5 = &Monsters[v3];
-	v6 = monster[v2]._uniqtype;
-	monster[v2].MType = v5;
-	monster[v2].MData = v4;
-	if (v6 != 0)
-		v7 = UniqMonst[v6 - 1].mName;
+	Monst = monster + i;
+	Monst->MType = Monsters + Monst->_mMTidx;
+	MData = Monsters[Monst->_mMTidx].MData;
+	Monst->MData = MData;
+	if (Monst->_uniqtype != 0)
+		Monst->mName = UniqMonst[Monst->_uniqtype - 1].mName;
 	else
-		v7 = v4->mName;
-	v8 = monster[v2]._mmode;
-	monster[v2].mName = v7;
-	v9 = monster[v2]._mdir;
-	switch (v8) {
-	case MM_STAND:
-	case MM_DELAY:
-	case MM_TALK:
-		v10 = v5->Anims[MA_STAND].Data[v9];
-		goto LABEL_13;
+		Monst->mName = MData->mName;
+	_mdir = monster[i]._mdir;
+
+	switch (Monst->_mmode) {
 	case MM_WALK:
 	case MM_WALK2:
 	case MM_WALK3:
-		v10 = v5->Anims[MA_WALK].Data[v9];
-		goto LABEL_13;
+		Monst->_mAnimData = Monst->MType->Anims[MA_WALK].Data[_mdir];
+		return;
 	case MM_ATTACK:
 	case MM_RATTACK:
-		v10 = v5->Anims[MA_ATTACK].Data[v9];
-		goto LABEL_13;
+		Monst->_mAnimData = Monst->MType->Anims[MA_ATTACK].Data[_mdir];
+		return;
 	case MM_GOTHIT:
-		v10 = v5->Anims[MA_GOTHIT].Data[v9];
-		goto LABEL_13;
+		Monst->_mAnimData = Monst->MType->Anims[MA_GOTHIT].Data[_mdir];
+		return;
 	case MM_DEATH:
-		v10 = v5->Anims[MA_DEATH].Data[v9];
-		goto LABEL_13;
+		Monst->_mAnimData = Monst->MType->Anims[MA_DEATH].Data[_mdir];
+		return;
 	case MM_SATTACK:
 	case MM_FADEIN:
 	case MM_FADEOUT:
+		Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[_mdir];
+		return;
 	case MM_SPSTAND:
 	case MM_RSPATTACK:
+		Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[_mdir];
+		return;
 	case MM_HEAL:
-		v10 = v5->Anims[MA_SPECIAL].Data[v9];
-	LABEL_13:
-		monster[v2]._mAnimData = v10;
+		Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[_mdir];
+		return;
+	case MM_STAND:
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[_mdir];
+		return;
+	case MM_DELAY:
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[_mdir];
+		return;
+	case MM_TALK:
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[_mdir];
 		return;
 	case MM_CHARGE:
-		v11 = v5->Anims[MA_ATTACK].Data[v9];
-		monster[v2]._mAnimFrame = 1;
-		monster[v2]._mAnimData = v11;
-		v12 = v5->Anims[MA_ATTACK].Frames;
+		Monst->_mAnimData = Monst->MType->Anims[MA_ATTACK].Data[_mdir];
+		Monst->_mAnimFrame = 1;
+		Monst->_mAnimLen = Monst->MType->Anims[MA_ATTACK].Frames;
 		break;
 	default:
-		v13 = v5->Anims[MA_STAND].Data[v9];
-		monster[v2]._mAnimFrame = 1;
-		monster[v2]._mAnimData = v13;
-		v12 = v5->Anims[MA_STAND].Frames;
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[_mdir];
+		Monst->_mAnimFrame = 1;
+		Monst->_mAnimLen = Monst->MType->Anims[MA_STAND].Frames;
 		break;
 	}
-	monster[v2]._mAnimLen = v12;
 }
 
 void M_FallenFear(int x, int y)
@@ -5097,7 +5087,7 @@ void PrintMonstHistory(int mt)
 				tempstr[strlen(tempstr) - 1] = '\0';
 				AddPanelString(tempstr, 1);
 			}
-		} 
+		}
 	}
 	pinfoflag = 1;
 }
