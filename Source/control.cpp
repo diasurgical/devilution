@@ -2729,7 +2729,7 @@ BOOL control_talk_last_key(int vkey)
 	return TRUE;
 }
 
-BOOL control_presskeys(int a1)
+BOOL control_presskeys(int vkey)
 {
 	int len;
 	BOOL ret;
