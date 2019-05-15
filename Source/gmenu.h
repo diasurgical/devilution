@@ -28,7 +28,7 @@ BOOL gmenu_presskeys(int a1);
 void gmenu_left_right(BOOL isRight);
 BOOL gmenu_on_mouse_move();
 BOOLEAN gmenu_valid_mouse_pos(int *plOffset);
-int gmenu_left_mouse(int a1);
+BOOL gmenu_left_mouse(BOOL isDown);
 void gmenu_enable(TMenuItem *pMenuItem, BOOL enable);
 void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma);
 int gmenu_slider_get(TMenuItem *pItem, int min, int max);

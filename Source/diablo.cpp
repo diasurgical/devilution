@@ -791,7 +791,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 BOOL LeftMouseDown(int wParam)
 {
-	if (gmenu_left_mouse(1) || control_check_talk_btn() || sgnTimeoutCurs)
+	if (gmenu_left_mouse(TRUE) || control_check_talk_btn() || sgnTimeoutCurs)
 		return 0;
 	if (deathflag) {
 		control_check_btn_press();
@@ -982,7 +982,7 @@ BOOL TryIconCurs()
 
 void LeftMouseUp()
 {
-	gmenu_left_mouse(0);
+	gmenu_left_mouse(FALSE);
 	control_release_talk_btn();
 	if (panbtndown)
 		CheckBtnUp();
