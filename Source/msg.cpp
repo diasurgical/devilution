@@ -360,7 +360,7 @@ void delta_sync_monster(const TSyncMonster *pSync, BYTE bLevel)
 	if (pD->_mhitpoints != 0) {
 		pD->_mx = pSync->_mx;
 		pD->_my = pSync->_my;
-		pD->_mactive = -1;
+		pD->_mactive = UCHAR_MAX;
 		pD->_menemy = pSync->_menemy;
 	}
 }
@@ -375,7 +375,7 @@ void delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 		pD = &sgLevels[bLevel].monster[pnum];
 		pD->_mx = pG->_mx;
 		pD->_my = pG->_my;
-		pD->_mactive = -1;
+		pD->_mactive = UCHAR_MAX;
 		pD->_menemy = pG->_menemy;
 		pD->_mdir = pG->_mdir;
 		pD->_mhitpoints = pG->_mhitpoints;

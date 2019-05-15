@@ -30,9 +30,9 @@ BOOL gmenu_on_mouse_move();
 BOOLEAN gmenu_valid_mouse_pos(int *plOffset);
 int gmenu_left_mouse(int a1);
 void gmenu_enable(TMenuItem *pMenuItem, BOOL enable);
-void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma);
+void gmenu_slider_set(TMenuItem *pItem, int min, int max, int gamma);
 int gmenu_slider_get(TMenuItem *pItem, int min, int max);
-void gmenu_slider_3(TMenuItem *pItem, int dwTicks);
+void gmenu_slider_steps(TMenuItem *pItem, int dwTicks);
 
 /* rdata */
 

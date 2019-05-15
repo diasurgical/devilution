@@ -179,8 +179,8 @@ void gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int volume)
 	if (gbSndInited) {
 		menu_item->dwFlags |= 0xC0000000;
 		menu_item->pszStr = *names;
-		gmenu_slider_3(menu_item, 17);
-		gmenu_slider_1(menu_item, VOLUME_MIN, VOLUME_MAX, volume);
+		gmenu_slider_steps(menu_item, 17);
+		gmenu_slider_set(menu_item, VOLUME_MIN, VOLUME_MAX, volume);
 		return;
 	}
 
@@ -200,8 +200,8 @@ void gamemenu_get_color_cycling()
 
 void gamemenu_get_gamma()
 {
-	gmenu_slider_3(&sgOptionMenu[2], 15);
-	gmenu_slider_1(&sgOptionMenu[2], 30, 100, UpdateGamma(0));
+	gmenu_slider_steps(&sgOptionMenu[2], 15);
+	gmenu_slider_set(&sgOptionMenu[2], 30, 100, UpdateGamma(0));
 }
 
 void gamemenu_music_volume(BOOL bActivate)

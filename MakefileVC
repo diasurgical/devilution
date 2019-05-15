@@ -57,17 +57,17 @@ DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp Source/render.
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
-PKWARE_SRC=$(sort $(wildcard 3rdParty/PKWare/*.cpp))
-PKWARE_OBJS=$(PKWARE_SRC:.cpp=.obj)
-
-Diablo.exe: main_files $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib
-	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib
+Diablo.exe: main_files diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib 3rdParty/PKWare/pkware.lib
 
 DiabloUI/diabloui.lib:
 	make -C DiabloUI
 
 3rdParty/Storm/storm.lib:
 	make -C 3rdParty/Storm
+
+3rdParty/PKWare/pkware.lib:
+	make -C 3rdParty/PKWare
 
 # compiles all main source files with once compiler call
 main_files:
@@ -80,6 +80,6 @@ diablo.res: Diablo.rc
 	$(RC) /i $(VC6_INC_DIR) /i $(VC6_DIR)/MFC/Include /l 0x409 /fo $@ $<
 
 clean:
-	@$(RM) -v $(OBJS) $(PKWARE_OBJS)
+	@$(RM) -v $(OBJS)
 
 .PHONY: clean all

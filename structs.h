@@ -582,7 +582,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	unsigned char _mint;
 	short falign_9A;
 	int _mFlags;
-	char _msquelch; /* unsigned char */
+	BYTE _msquelch;
 	int falign_A4;
 	int _lastx;
 	int _lasty;
@@ -913,7 +913,7 @@ typedef struct DMonsterStr {
 	BYTE _my;
 	BYTE _mdir;
 	BYTE _menemy;
-	char _mactive;
+	BYTE _mactive;
 	int _mhitpoints;
 } DMonsterStr;
 
@@ -1261,6 +1261,13 @@ typedef struct _SNETCAPS {
 	int defaultturnssec;
 	int defaultturnsintransit;
 } _SNETCAPS;
+
+typedef struct _SNETEVENT {
+	int eventid;
+	int playerid;
+	void *data;
+	int databytes;
+} _SNETEVENT;
 
 // TPDEF PTR FCN UCHAR SNETABORTPROC
 // TPDEF PTR FCN UCHAR SNETCATEGORYPROC
