@@ -2741,15 +2741,15 @@ BOOL control_presskeys(int vkey)
 			if (vkey == VK_SPACE) {
 			} else if (vkey == VK_ESCAPE) {
 				control_reset_talk();
-			} else if (a1 == VK_RETURN) {
+			} else if (vkey == VK_RETURN) {
 				control_press_enter();
-			} else if (a1 == VK_BACK) {
+			} else if (vkey == VK_BACK) {
 				len = strlen(sgszTalkMsg);
 				if (len > 0)
 					sgszTalkMsg[len - 1] = '\0';
-			} else if (a1 == VK_DOWN) {
+			} else if (vkey == VK_DOWN) {
 				control_up_down(1);
-			} else if (a1 == VK_UP) {
+			} else if (vkey == VK_UP) {
 				control_up_down(-1);
 			} else {
 				return FALSE;
