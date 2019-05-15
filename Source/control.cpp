@@ -2729,40 +2729,38 @@ BOOL control_talk_last_key(int vkey)
 	return TRUE;
 }
 
-int control_presskeys(int a1)
+BOOL control_presskeys(int a1)
 {
-	signed int v1; // eax
-	char v2;       // cl
+	int len;
+	BOOL ret;
 
-	if (gbMaxPlayers != 1 && talkflag) {
-		switch (a1) {
-		case VK_SPACE:
-			return 1;
-		case VK_ESCAPE:
-			control_reset_talk();
-			return 1;
-		case VK_RETURN:
-			control_press_enter();
-			return 1;
-		case VK_BACK:
-			v1 = strlen(sgszTalkMsg);
-			if (v1 > 0)
-				sgszTalkMsg[v1 - 1] = '\0';
-			return 1;
-		case VK_DOWN:
-			v2 = 1;
-		LABEL_15:
-			control_up_down(v2);
-			return 1;
-		case VK_UP:
-			v2 = -1;
-			goto LABEL_15;
+	if (gbMaxPlayers != 1) {
+		if (!talkflag) {
+			ret = FALSE;
+		} else {
+			if (a1 == VK_SPACE) {
+			} else if (a1 == VK_ESCAPE) {
+				control_reset_talk();
+			} else if (a1 == VK_RETURN) {
+				control_press_enter();
+			} else if (a1 == VK_BACK) {
+				len = strlen(sgszTalkMsg);
+				if (len > 0)
+					sgszTalkMsg[len - 1] = '\0';
+			} else if (a1 == VK_DOWN) {
+				control_up_down(1);
+			} else if (a1 == VK_UP) {
+				control_up_down(-1);
+			} else {
+				return FALSE;
+			}
+			ret = TRUE;
 		}
+	} else {
+		ret = FALSE;
 	}
-	return 0;
+	return ret;
 }
-// 4B8960: using guessed type int talkflag;
-// 679660: using guessed type char gbMaxPlayers;
 
 void control_press_enter()
 {
