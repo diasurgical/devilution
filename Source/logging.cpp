@@ -12,7 +12,7 @@ DWORD nNumberOfBytesToWrite; // idb
 /* data */
 
 int log_not_created = 1;              // weak
-HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
+HANDLE log_file = INVALID_HANDLE_VALUE;
 
 void __cdecl log_flush(BOOL force_close)
 {
@@ -72,11 +72,11 @@ HANDLE log_create()
 		    file_info.dwProductVersionLS >> 16,
 		    _LOWORD(file_info.dwProductVersionLS));
 	}
-	v1 = (HANDLE)-1;
+	v1 = INVALID_HANDLE_VALUE;
 	for (pcbBuffer = log_not_created == 0; (signed int)pcbBuffer < 2; ++pcbBuffer) {
 		v2 = CreateFile(FileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		v1 = v2;
-		if (v2 != (HANDLE)-1) {
+		if (v2 != INVALID_HANDLE_VALUE) {
 			if (GetFileSize(v2, 0) > 0x10000)
 				SetEndOfFile(v1);
 			break;

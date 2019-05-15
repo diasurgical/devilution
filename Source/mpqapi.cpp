@@ -12,7 +12,7 @@ BOOLEAN save_archive_open; // weak
 
 /* data */
 
-HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
+HANDLE sghArchive = INVALID_HANDLE_VALUE;
 
 BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 {
@@ -43,7 +43,7 @@ void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
 		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != (HANDLE)-1) {
+		if (v4 != INVALID_HANDLE_VALUE) {
 			FindClose(v4);
 			v5 = 16 * v2;
 			*(_DWORD *)&dst[v5] = FindFileData.ftCreationTime.dwLowDateTime;
@@ -56,22 +56,20 @@ void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 
 BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 {
-	unsigned int iSize;
 	char *pszDst;
 	char *pbData;
-	int nbytes_read;
+	DWORD nbytes_read;
 
-	iSize = size;
 	pszDst = dst;
 	memset(dst, 0, size);
-	if (!SRegLoadData("Diablo", "Video Player ", 0, (unsigned char *)pszDst, iSize, (LPDWORD)&nbytes_read)) {
+	if (!SRegLoadData("Diablo", "Video Player ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
 		return FALSE;
 	}
 
 	if (nbytes_read != size)
 		return FALSE;
 
-	for (; iSize >= 8; iSize -= 8) {
+	for (; size >= 8u; size -= 8) {
 		pbData = pszDst;
 		pszDst += 8;
 		mpqapi_xor_buf(pbData);
@@ -82,24 +80,23 @@ BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 
 void mpqapi_xor_buf(char *pbData)
 {
-	signed int v1; // eax
-	char *v2;      // esi
-	signed int v3; // edi
+	DWORD mask;
+	char *pbCurrentData;
+	int i;
 
-	v1 = 0xF0761AB;
-	v2 = pbData;
-	v3 = 8;
-	do {
-		*v2 ^= v1;
-		++v2;
-		v1 = _rotl(v1, 1);
-		--v3;
-	} while (v3);
+	mask = 0xF0761AB;
+	pbCurrentData = pbData;
+
+	for (i = 0; i < 8; i++) {
+		*pbCurrentData ^= mask;
+		pbCurrentData++;
+		mask = _rotl(mask, 1);
+	}
 }
 
 void mpqapi_store_default_time(DWORD dwChar)
 {
-/*
+	/*
 	DWORD idx;
 	char dst[160];
 
@@ -117,9 +114,8 @@ void mpqapi_store_default_time(DWORD dwChar)
 
 BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 {
-	char *pbCurrentData;
+	char *pbCurrentData, *pbDataToXor;
 	DWORD i;
-	char *pbDataToXor;
 
 	pbCurrentData = pbData;
 	if (dwLen >= 8) {
@@ -128,7 +124,7 @@ BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 			pbDataToXor = pbCurrentData;
 			pbCurrentData += 8;
 			mpqapi_xor_buf(pbDataToXor);
-			--i;
+			i--;
 		} while (i);
 	}
 
@@ -137,25 +133,22 @@ BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 
 void mpqapi_remove_hash_entry(const char *pszName)
 {
-	int v1;          // eax
-	_HASHENTRY *v2;  // ecx
-	_BLOCKENTRY *v3; // eax
-	int v4;          // esi
-	int v5;          // edi
+	_HASHENTRY *pHashTbl;
+	_BLOCKENTRY *blockEntry;
+	int hIdx, block_offset, block_size;
 
-	v1 = mpqapi_get_hash_index_of_path(pszName);
-	if (v1 != -1) {
-		v2 = &sgpHashTbl[v1];
-		v3 = &sgpBlockTbl[v2->block];
-		v2->block = -2;
-		v4 = v3->offset;
-		v5 = v3->sizealloc;
-		memset(v3, 0, 0x10u);
-		mpqapi_free_block(v4, v5);
+	hIdx = FetchHandle(pszName);
+	if (hIdx != -1) {
+		pHashTbl = &sgpHashTbl[hIdx];
+		blockEntry = &sgpBlockTbl[pHashTbl->block];
+		pHashTbl->block = -2;
+		block_offset = blockEntry->offset;
+		block_size = blockEntry->sizealloc;
+		memset(blockEntry, 0, sizeof(*blockEntry));
+		mpqapi_free_block(block_offset, block_size);
 		save_archive_modified = 1;
 	}
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 void mpqapi_free_block(int block_offset, int block_size)
 {
@@ -209,61 +202,49 @@ LABEL_2:
 
 _BLOCKENTRY *mpqapi_new_block(int *block_index)
 {
-	_BLOCKENTRY *result; // eax
-	unsigned int v2;     // edx
+	_BLOCKENTRY *blockEntry;
+	DWORD i;
 
-	result = sgpBlockTbl;
-	v2 = 0;
-	while (result->offset || result->sizealloc || result->flags || result->sizefile) {
-		++v2;
-		++result;
-		if (v2 >= 0x800) {
+	blockEntry = sgpBlockTbl;
+
+	i = 0;
+	while (blockEntry->offset || blockEntry->sizealloc || blockEntry->flags || blockEntry->sizefile) {
+		i++;
+		blockEntry++;
+		if (i >= 2048) {
 			app_fatal("Out of free block entries");
 			return 0;
 		}
 	}
 	if (block_index)
-		*block_index = v2;
-	return result;
+		*block_index = i;
+
+	return blockEntry;
 }
 
-int mpqapi_get_hash_index_of_path(const char *pszName) // FetchHandle
+int FetchHandle(const char *pszName)
 {
 	return mpqapi_get_hash_index(Hash(pszName, 0), Hash(pszName, 1), Hash(pszName, 2), 0);
 }
 
 int mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
 {
-	int v4;         // ecx
-	signed int v5;  // eax
-	signed int v6;  // edx
-	_HASHENTRY *v7; // ecx
-	int v8;         // edi
-	int v10;        // [esp+Ch] [ebp-8h]
-	int i;          // [esp+10h] [ebp-4h]
+	int idx, i;
 
-	v4 = index & 0x7FF;
-	v10 = hash_a;
-	v5 = 2048;
-	for (i = v4;; i = (i + 1) & 0x7FF) {
-		v7 = &sgpHashTbl[v4];
-		v8 = v7->block;
-		if (v8 == -1)
-			return -1;
-		v6 = v5--;
-		if (!v6)
-			return -1;
-		if (v7->hashcheck[0] == v10 && v7->hashcheck[1] == hash_b && v7->lcid == locale && v8 != -2)
+	i = 2048;
+	for (idx = index & 0x7FF; sgpHashTbl[idx].block != -1; idx = (idx + 1) & 0x7FF) {
+		if (!i--)
 			break;
-		v4 = (i + 1) & 0x7FF;
+		if (sgpHashTbl[idx].hashcheck[0] == hash_a && sgpHashTbl[idx].hashcheck[1] == hash_b && sgpHashTbl[idx].lcid == locale && sgpHashTbl[idx].block != -2)
+			return idx;
 	}
-	return i;
+
+	return -1;
 }
 
 void mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, char *))
 {
-	DWORD dwIndex;
-	BOOL i;
+	DWORD dwIndex, i;
 	char pszFileName[MAX_PATH];
 
 	dwIndex = 1;
@@ -285,50 +266,40 @@ BOOL mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen)
 	}
 	return TRUE;
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_index)
 {
-	const char *v3;   // edi
-	short v4;         // si
-	int v5;           // ebx
-	signed int v6;    // edx
-	int v7;           // esi
-	int v8;           // ecx
-	int v9;           // esi
-	int v11;          // [esp+Ch] [ebp-8h]
-	_BLOCKENTRY *v12; // [esp+10h] [ebp-4h]
+	DWORD h1, h2, h3;
+	int i, hIdx;
 
-	v12 = pBlk;
-	v3 = pszName;
-	v4 = Hash(pszName, 0);
-	v5 = Hash(v3, 1);
-	v11 = Hash(v3, 2);
-	if (mpqapi_get_hash_index(v4, v5, v11, 0) != -1)
-		app_fatal("Hash collision between \"%s\" and existing file\n", v3);
-	v6 = 2048;
-	v7 = v4 & 0x7FF;
+	h1 = Hash(pszName, 0);
+	h2 = Hash(pszName, 1);
+	h3 = Hash(pszName, 2);
+	if (mpqapi_get_hash_index(h1, h2, h3, 0) != -1)
+		app_fatal("Hash collision between \"%s\" and existing file\n", pszName);
+	i = 2048;
+	hIdx = h1 & 0x7FF;
 	while (1) {
-		--v6;
-		v8 = sgpHashTbl[v7].block;
-		if (v8 == -1 || v8 == -2)
+		i--;
+		if (sgpHashTbl[hIdx].block == -1 || sgpHashTbl[hIdx].block == -2)
 			break;
-		v7 = (v7 + 1) & 0x7FF;
-		if (!v6) {
-			v6 = -1;
+		hIdx = (hIdx + 1) & 0x7FF;
+		if (!i) {
+			i = -1;
 			break;
 		}
 	}
-	if (v6 < 0)
+	if (i < 0)
 		app_fatal("Out of hash space");
-	if (!v12)
-		v12 = mpqapi_new_block(&block_index);
-	v9 = v7;
-	sgpHashTbl[v9].hashcheck[0] = v5;
-	sgpHashTbl[v9].hashcheck[1] = v11;
-	sgpHashTbl[v9].lcid = 0;
-	sgpHashTbl[v9].block = block_index;
-	return v12;
+	if (!pBlk)
+		pBlk = mpqapi_new_block(&block_index);
+
+	sgpHashTbl[hIdx].hashcheck[0] = h2;
+	sgpHashTbl[hIdx].hashcheck[1] = h3;
+	sgpHashTbl[hIdx].lcid = 0;
+	sgpHashTbl[hIdx].block = block_index;
+
+	return pBlk;
 }
 
 BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
@@ -429,36 +400,33 @@ BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwL
 
 int mpqapi_find_free_block(int size, int *block_size)
 {
-	_BLOCKENTRY *v2; // eax
-	signed int v3;   // esi
-	int result;      // eax
-	int v5;          // esi
-	BOOLEAN v6;      // zf
+	_BLOCKENTRY *pBlockTbl;
+	int i, result;
 
-	v2 = sgpBlockTbl;
-	v3 = 2048;
+	pBlockTbl = sgpBlockTbl;
+	i = 2048;
 	while (1) {
-		--v3;
-		if (v2->offset) {
-			if (!v2->flags && !v2->sizefile && v2->sizealloc >= (unsigned int)size)
-				break;
-		}
-		++v2;
-		if (!v3) {
+		i--;
+		if (pBlockTbl->offset && !pBlockTbl->flags && !pBlockTbl->sizefile && (DWORD)pBlockTbl->sizealloc >= size)
+			break;
+		pBlockTbl++;
+		if (!i) {
 			*block_size = size;
 			result = sgdwMpqOffset;
 			sgdwMpqOffset += size;
 			return result;
 		}
 	}
-	v5 = v2->offset;
+
+	result = pBlockTbl->offset;
 	*block_size = size;
-	v2->offset += size;
-	v6 = v2->sizealloc == size;
-	v2->sizealloc -= size;
-	if (v6)
-		memset(v2, 0, 0x10u);
-	return v5;
+	pBlockTbl->offset += size;
+	pBlockTbl->sizealloc -= size;
+
+	if (!pBlockTbl->sizealloc)
+		memset(pBlockTbl, 0, 0x10u);
+
+	return result;
 }
 
 void mpqapi_rename(char *pszOld, char *pszNew)
@@ -467,7 +435,7 @@ void mpqapi_rename(char *pszOld, char *pszNew)
 	_HASHENTRY *hashEntry;
 	_BLOCKENTRY *blockEntry;
 
-	index = mpqapi_get_hash_index_of_path(pszOld);
+	index = FetchHandle(pszOld);
 	if (index != -1) {
 		hashEntry = &sgpHashTbl[index];
 		block = hashEntry->block;
@@ -477,14 +445,13 @@ void mpqapi_rename(char *pszOld, char *pszNew)
 		save_archive_modified = TRUE;
 	}
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 BOOL mpqapi_has_file(const char *pszName)
 {
-	return mpqapi_get_hash_index_of_path(pszName) != -1;
+	return FetchHandle(pszName) != -1;
 }
 
-BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // OpenMPQ
+BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 {
 	const char *v3;         // ebp
 	BOOL v4;                // esi
@@ -504,18 +471,18 @@ BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // Ope
 	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
 	save_archive_open = 0;
 	sghArchive = CreateFile(v3, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
-	if (sghArchive == (HANDLE)-1) {
+	if (sghArchive == INVALID_HANDLE_VALUE) {
 		sghArchive = CreateFile(lpFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
-		if (sghArchive == (HANDLE)-1)
+		if (sghArchive == INVALID_HANDLE_VALUE)
 			return 0;
 		save_archive_open = 1;
 		save_archive_modified = 1;
 	}
 	if (!sgpBlockTbl || !sgpHashTbl) {
-		memset(&fhdr, 0, 0x68u);
-		if (!mpqapi_parse_archive_header(&fhdr, &sgdwMpqOffset)) {
+		memset(&fhdr, 0, sizeof(fhdr));
+		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
 		LABEL_15:
-			mpqapi_close_archive(lpFileName, 1, dwChar);
+			CloseMPQ(lpFileName, 1, dwChar);
 			return 0;
 		}
 		sgpBlockTbl = (_BLOCKENTRY *)DiabloAllocPtr(0x8000);
@@ -545,49 +512,47 @@ BOOL mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwChar) // Ope
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOLEAN mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
+BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 {
-	int *v2;                 // ebp
-	_FILEHEADER *v3;         // esi
-	DWORD v4;                // eax
-	DWORD v5;                // edi
-	DWORD NumberOfBytesRead; // [esp+10h] [ebp-4h]
+	DWORD size;
+	DWORD NumberOfBytesRead;
 
-	v2 = pdwNextFileStart;
-	v3 = pHdr;
-	v4 = GetFileSize(sghArchive, 0);
-	v5 = v4;
-	*v2 = v4;
-	if (v4 == -1
-	    || v4 < 0x68
-	    || !ReadFile(sghArchive, v3, 0x68u, &NumberOfBytesRead, NULL)
+	size = GetFileSize(sghArchive, 0);
+	*pdwNextFileStart = size;
+
+	if (size == -1
+	    || size < sizeof(pHdr)
+	    || !ReadFile(sghArchive, pHdr, sizeof(pHdr), &NumberOfBytesRead, NULL)
 	    || NumberOfBytesRead != 104
-	    || v3->signature != '\x1AQPM'
-	    || v3->headersize != 32
-	    || v3->version > 0u
-	    || v3->sectorsizeid != 3
-	    || v3->filesize != v5
-	    || v3->hashoffset != 32872
-	    || v3->blockoffset != 104
-	    || v3->hashcount != 2048
-	    || v3->blockcount != 2048) {
-		if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1 || !SetEndOfFile(sghArchive))
-			return 0;
-		memset(v3, 0, 0x68u);
-		v3->signature = '\x1AQPM';
-		v3->headersize = 32;
-		v3->sectorsizeid = 3;
-		v3->version = 0;
-		*v2 = 0x10068;
+	    || pHdr->signature != '\x1AQPM'
+	    || pHdr->headersize != 32
+	    || pHdr->version > 0
+	    || pHdr->sectorsizeid != 3
+	    || pHdr->filesize != size
+	    || pHdr->hashoffset != 32872
+	    || pHdr->blockoffset != 104
+	    || pHdr->hashcount != 2048
+	    || pHdr->blockcount != 2048) {
+
+		if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
+			return FALSE;
+		if (!SetEndOfFile(sghArchive))
+			return FALSE;
+
+		memset(pHdr, 0, sizeof(pHdr));
+		pHdr->signature = '\x1AQPM';
+		pHdr->headersize = 32;
+		pHdr->sectorsizeid = 3;
+		pHdr->version = 0;
+		*pdwNextFileStart = 0x10068;
 		save_archive_modified = 1;
 		save_archive_open = 1;
 	}
-	return 1;
-}
-// 65AB0C: using guessed type int save_archive_modified;
-// 65AB14: using guessed type char save_archive_open;
 
-void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // CloseMPQ
+	return TRUE;
+}
+
+void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
 {
 	if (bFree) {
 		MemFreeDbg(sgpBlockTbl);
@@ -606,8 +571,6 @@ void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // Clo
 		mpqapi_store_creation_time(pszArchive, dwChar);
 	}
 }
-// 65AB0C: using guessed type int save_archive_modified;
-// 65AB14: using guessed type char save_archive_open;
 
 void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 {
@@ -623,7 +586,7 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
 		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != (HANDLE)-1) {
+		if (v4 != INVALID_HANDLE_VALUE) {
 			FindClose(v4);
 			v5 = 16 * v2;
 			*(_DWORD *)&dst[v5 + 8] = FindFileData.ftLastWriteTime.dwLowDateTime;
@@ -636,27 +599,26 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 
 void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
 {
-	if (sghArchive != (HANDLE)-1) {
+	if (sghArchive != INVALID_HANDLE_VALUE) {
 		if (save_archive_modified) {
 			if (mpqapi_can_seek()) {
-				if (mpqapi_write_header()) {
+				if (WriteMPQHeader()) {
 					if (mpqapi_write_block_table())
 						mpqapi_write_hash_table();
 				}
 			}
 		}
 	}
-	mpqapi_close_archive(pszArchive, bFree, dwChar);
+	CloseMPQ(pszArchive, bFree, dwChar);
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-BOOLEAN mpqapi_write_header() // WriteMPQHeader
+BOOL WriteMPQHeader()
 {
-	BOOLEAN result;             // al
-	_FILEHEADER fhdr;           // [esp+8h] [ebp-6Ch]
-	DWORD NumberOfBytesWritten; // [esp+70h] [ebp-4h]
+	_FILEHEADER fhdr;
+	DWORD NumberOfBytesWritten;
 
-	memset(&fhdr, 0, 0x68u);
+	memset(&fhdr, 0, sizeof(fhdr));
 	fhdr.signature = '\x1AQPM';
 	fhdr.headersize = 32;
 	fhdr.filesize = GetFileSize(sghArchive, 0);
@@ -666,11 +628,13 @@ BOOLEAN mpqapi_write_header() // WriteMPQHeader
 	fhdr.blockoffset = 104;
 	fhdr.hashcount = 2048;
 	fhdr.blockcount = 2048;
-	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) != -1 && WriteFile(sghArchive, &fhdr, 0x68u, &NumberOfBytesWritten, 0))
-		result = NumberOfBytesWritten == 104;
-	else
-		result = 0;
-	return result;
+
+	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
+		return 0;
+	if (!WriteFile(sghArchive, &fhdr, sizeof(fhdr), &NumberOfBytesWritten, 0))
+		return 0;
+
+	return NumberOfBytesWritten == 104;
 }
 
 BOOL mpqapi_write_block_table()

@@ -112,7 +112,7 @@ void MAI_Succ(int i);
 void MAI_AcidUniq(int i);
 void MAI_Scav(int i);
 void MAI_Garg(int i);
-void MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam, int lessmissiles);
+void MAI_RoundRanged(int i, int missile_type, BOOL checkdoors, int dam, int lessmissiles);
 void MAI_Magma(int i);
 void MAI_Storm(int i);
 void MAI_Acid(int i);

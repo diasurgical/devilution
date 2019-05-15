@@ -100,7 +100,7 @@ BOOL pfile_open_archive(BOOL a1, DWORD save_num)
 	char FileName[MAX_PATH];
 
 	pfile_get_save_path(FileName, sizeof(FileName), save_num);
-	if (mpqapi_open_archive(FileName, FALSE, save_num))
+	if (OpenMPQ(FileName, FALSE, save_num))
 		return TRUE;
 
 	if (a1 && gbMaxPlayers > 1)
@@ -336,7 +336,7 @@ BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 				read = codec_decode(buf, dwlen, password);
 				if (!read && gbMaxPlayers > 1) {
 					GetComputerName(password, &nSize);
-					if (SFileSetFilePointer(file, 0, NULL, 0) || !SFileReadFile(file, buf, dwlen, &read, NULL))
+					if (SFileSetFilePointer(file, 0, NULL, FILE_BEGIN) || !SFileReadFile(file, buf, dwlen, &read, NULL))
 						decoded = FALSE;
 					else
 						read = codec_decode(buf, dwlen, password);
@@ -668,7 +668,7 @@ BYTE *pfile_read(const char *pszName, DWORD *pdwLen)
 			// there is no way this can work correctly
 			if (gbMaxPlayers > 1) {
 				GetComputerName(password, &nSize);
-				if (SFileSetFilePointer(save, 0, NULL, 0))
+				if (SFileSetFilePointer(save, 0, NULL, FILE_BEGIN))
 					app_fatal("Unable to read save file");
 
 				if (!SFileReadFile(save, buf, *pdwLen, &nread, NULL))

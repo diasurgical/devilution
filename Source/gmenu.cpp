@@ -93,37 +93,27 @@ BOOL gmenu_exception()
 	return sgpCurrentMenu != 0;
 }
 
-void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
+void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 {
-	TMenuItem *v2;         // eax
-	int v3;                // ecx
-	void(* *v4)(BOOL); // edx
+	int i;
 
 	PauseMode = 0;
-	mouseNavigation = 0;
-	v2 = pItem;
-	dword_63447C = gmFunc;
+	mouseNavigation = FALSE;
 	sgpCurrentMenu = pItem;
+	dword_63447C = gmFunc;
 	if (gmFunc) {
-		gmFunc(sgpCurrentMenu);
-		v2 = sgpCurrentMenu;
+		dword_63447C(sgpCurrentMenu);
+		pItem = sgpCurrentMenu;
 	}
-	v3 = 0;
 	sgCurrentMenuIdx = 0;
-	if (v2) {
-		v4 = &v2->fnMenu;
-		while (*v4) {
-			++v3;
-			v4 += 3;
-			sgCurrentMenuIdx = v3;
+	if (sgpCurrentMenu) {
+		for (i = 0; sgpCurrentMenu[i].fnMenu; i++) {
+			sgCurrentMenuIdx++;
 		}
 	}
-	sgpCurrItem = &v2[v3 - 1];
+	sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx - 1];
 	gmenu_up_down(TRUE);
 }
-// 525740: using guessed type int PauseMode;
-// 634464: using guessed type char mouseNavigation;
-// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_up_down(BOOL isDown)
 {
@@ -401,32 +391,42 @@ void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 		pMenuItem->dwFlags &= ~0x80000000;
 }
 
-void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
+/**
+ * @brief Set the TMenuItem slider position based on the given value
+ */
+void gmenu_slider_set(TMenuItem *pItem, int min, int max, int value)
 {
-	int v;
+	int nSteps;
 
 	/// ASSERT: assertassert(pItem, "gmenu.cpp", 445);
-	v = (int)(pItem->dwFlags & 0xFFF000) >> 12;
-	if (v < 2)
-		v = 2;
+	nSteps = (int)(pItem->dwFlags & 0xFFF000) >> 12;
+	if (nSteps < 2)
+		nSteps = 2;
 	pItem->dwFlags &= 0xFFFFF000;
-	pItem->dwFlags |= ((max - min - 1) / 2 + (gamma - min) * v) / (max - min);
+	pItem->dwFlags |= ((max - min - 1) / 2 + (value - min) * nSteps) / (max - min);
 }
 
+/**
+ * @brief Get the current value for the slider 
+ */
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
-	int v3;          // eax
-	unsigned int v4; // ecx
+	int nSteps, step;
 
-	v3 = (pItem->dwFlags >> 12) & 0xFFF;
-	v4 = pItem->dwFlags & 0xFFF;
-	if (v3 < 2)
-		v3 = 2;
-	return min + (v4 * (max - min) + (v3 - 1) / 2) / v3;
+	step = pItem->dwFlags & 0xFFF;
+	nSteps = pItem->dwFlags;
+	nSteps >>= 12;
+	nSteps &= 0xFFF;
+	if (nSteps < 2)
+		nSteps = 2;
+	return min + (step * (max - min) + (nSteps - 1) / 2) / nSteps;
 }
 
-void gmenu_slider_3(TMenuItem *pItem, int dwTicks)
+/**
+ * @brief Set the number of steps for the slider
+ */
+void gmenu_slider_steps(TMenuItem *pItem, int steps)
 {
 	pItem->dwFlags &= 0xFF000FFF;
-	pItem->dwFlags |= (dwTicks << 12) & 0xFFF000;
+	pItem->dwFlags |= (steps << 12) & 0xFFF000;
 }

@@ -17,6 +17,9 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name Storm
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Pkware
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -32,6 +35,18 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name Storm
     End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Pkware"=".\3rdParty\PKWare\Pkware.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
 }}}
 
 ###############################################################################
