@@ -599,7 +599,7 @@ BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, BOOLEAN shif
 			}
 
 			hit = random(68, 100);
-			hper = 90 - (unsigned char)monster[m].mArmorClass - dist;
+			hper = 90 - (BYTE)monster[m].mArmorClass - dist;
 			if (hper < 5)
 				hper = 5;
 			if (hper > 95)
