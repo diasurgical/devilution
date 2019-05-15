@@ -2738,7 +2738,7 @@ BOOL control_presskeys(int vkey)
 		if (!talkflag) {
 			ret = FALSE;
 		} else {
-			if (a1 == VK_SPACE) {
+			if (vkey == VK_SPACE) {
 			} else if (a1 == VK_ESCAPE) {
 				control_reset_talk();
 			} else if (a1 == VK_RETURN) {
