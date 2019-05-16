@@ -97,11 +97,19 @@
 #define SCREEN_BPP		32
 #endif
 
-#define BUFFER_WIDTH	(64 + SCREEN_WIDTH + 64)
-#define BUFFER_HEIGHT	(160 + SCREEN_HEIGHT + 16)
+#define BORDER_LEFT		64
+#define BORDER_TOP		160
+#define BORDER_RIGHT	64
+#define BORDER_BOTTOM	16
+
+#define SCREEN_X		BORDER_LEFT
+#define SCREEN_Y		BORDER_TOP
+
+#define BUFFER_WIDTH	(BORDER_LEFT + SCREEN_WIDTH + BORDER_RIGHT)
+#define BUFFER_HEIGHT	(BORDER_TOP + SCREEN_HEIGHT + BORDER_BOTTOM)
 #define TILE_SIZE		32
 
-#define SCREENXY(x, y)	((x) + 64 + (((y) + 160) * BUFFER_WIDTH))
+#define SCREENXY(x, y)	((x) + SCREEN_X + ((y) + SCREEN_Y) * BUFFER_WIDTH)
 
 #define MemFreeDbg(p)	\
 {						\

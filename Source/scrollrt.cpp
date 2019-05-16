@@ -493,7 +493,7 @@ void DrawGame(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[160]];
+	gpBufEnd = &gpBuffer[PitchTbl[0 + SCREEN_Y]];
 	for (i = 0; i < 4; i++) {
 		scrollrt_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -505,7 +505,7 @@ void DrawGame(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[512]];
+	gpBufEnd = &gpBuffer[PitchTbl[352 + SCREEN_Y]];
 	for (i = 0; i < blocks; i++) {
 		scrollrt_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -1979,7 +1979,7 @@ void DrawZoom(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[143]];
+	gpBufEnd = &gpBuffer[PitchTbl[-17 + SCREEN_Y]];
 	for (i = 0; i < 4; i++) {
 		scrollrt_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -1991,7 +1991,7 @@ void DrawZoom(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[320]];
+	gpBufEnd = &gpBuffer[PitchTbl[160 + SCREEN_Y]];
 	for (i = 0; i < blocks; i++) {
 		scrollrt_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -2240,7 +2240,7 @@ void scrollrt_draw_cursor_back_buffer()
 	src = sgSaveBack;
 	dst = &gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
 
-	for (i = sgdwCursHgt; i != 0; i--, src += sgdwCursWdt, dst += 768) {
+	for (i = sgdwCursHgt; i != 0; i--, src += sgdwCursWdt, dst += BUFFER_WIDTH) {
 		memcpy(dst, src, sgdwCursWdt);
 	}
 
@@ -2298,13 +2298,13 @@ void scrollrt_draw_cursor_item()
 	dst = sgSaveBack;
 	src = &gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
 
-	for (i = sgdwCursHgt; i != 0; i--, dst += sgdwCursWdt, src += 768) {
+	for (i = sgdwCursHgt; i != 0; i--, dst += sgdwCursWdt, src += BUFFER_WIDTH) {
 		memcpy(dst, src, sgdwCursWdt);
 	}
 
 	mx++;
 	my++;
-	gpBufEnd = &gpBuffer[PitchTbl[640] - cursW - 2];
+	gpBufEnd = &gpBuffer[PitchTbl[SCREEN_HEIGHT + SCREEN_Y] - cursW - 2];
 
 	if (pcurs >= CURSOR_FIRSTITEM) {
 		col = PAL16_YELLOW + 5;
@@ -2314,14 +2314,14 @@ void scrollrt_draw_cursor_item()
 		if (!plr[myplr].HoldItem._iStatFlag) {
 			col = PAL16_RED + 5;
 		}
-		CelDrawHdrClrHL(col, mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+		CelDrawHdrClrHL(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
 		if (col != PAL16_RED + 5) {
-			Cel2DrawHdrOnly(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+			Cel2DrawHdrOnly(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
 		} else {
-			Cel2DrawHdrLightRed(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8, 1);
+			Cel2DrawHdrLightRed(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8, 1);
 		}
 	} else {
-		Cel2DrawHdrOnly(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+		Cel2DrawHdrOnly(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
 	}
 }
 
@@ -2489,8 +2489,8 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 	/// ASSERT: assert(! (dwWdt & 3));
 
 	if (lpDDSBackBuf != NULL) {
-		SrcRect.left = dwX + 64;
-		SrcRect.top = dwY + 160;
+		SrcRect.left = dwX + SCREEN_X;
+		SrcRect.top = dwY + SCREEN_Y;
 		SrcRect.right = SrcRect.left + dwWdt - 1;
 		SrcRect.bottom = SrcRect.top + dwHgt - 1;
 		/// ASSERT: assert(! gpBuffer);
