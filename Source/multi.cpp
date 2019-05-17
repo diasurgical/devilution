@@ -85,21 +85,20 @@ void NetSendLoPri(BYTE *pbMsg, BYTE bLen)
 	}
 }
 
-void multi_copy_packet(TBuffer *a1, void *packet, BYTE size)
+void multi_copy_packet(TBuffer *buf, void *packet, BYTE size)
 {
-	DWORD v3; // eax
-	DWORD v4; // ebx
-	BYTE *v5; // esi
+	BYTE *p;
 
-	v3 = a1->dwNextWriteOffset;
-	v4 = a1->dwNextWriteOffset + size;
-	if (v4 + 2 <= 0x1000) {
-		a1->dwNextWriteOffset = v4 + 1;
-		a1->bData[v3] = size;
-		v5 = &a1->bData[v3 + 1];
-		memcpy(v5, packet, size);
-		v5[size] = 0;
+	if (buf->dwNextWriteOffset + size + 2 > 0x1000) {
+		return;
 	}
+
+	p = &buf->bData[buf->dwNextWriteOffset];
+	buf->dwNextWriteOffset += size + 1;
+	*p = size;
+	p++;
+	memcpy(p, packet, size);
+	p[size] = 0;
 }
 
 void multi_send_packet(void *packet, BYTE dwSize)

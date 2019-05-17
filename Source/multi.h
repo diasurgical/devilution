@@ -20,7 +20,7 @@ void __cdecl dumphist(const char *pszFmt, ...);
 #endif
 void multi_msg_add(BYTE *pbMsg, BYTE bLen);
 void NetSendLoPri(BYTE *pbMsg, BYTE bLen);
-void multi_copy_packet(TBuffer *a1, void *packet, BYTE size);
+void multi_copy_packet(TBuffer *buf, void *packet, BYTE size);
 void multi_send_packet(void *packet, BYTE dwSize);
 void NetRecvPlrData(TPkt *pkt);
 void NetSendHiPri(BYTE *pbMsg, BYTE bLen);
