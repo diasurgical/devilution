@@ -2667,157 +2667,82 @@ void MI_Arrow(int i)
 
 void MI_Firebolt(int i)
 {
-	int v1;  // edi
-	int v2;  // esi
-	int v3;  // ecx
-	int v4;  // ST1C_4
-	int v5;  // edx
-	int v6;  // ecx
-	int v7;  // eax
-	int v9;  // edi
-	int v10; // eax
-	int v11; // edi
-	int v12; // eax
-	int v13; // ecx
-	int v14; // ecx
-	int v15; // eax
-	int v16; // esi
-	int v17; // edx
-	int v18; // eax
-	int v19; // esi
-	int v21; // [esp+Ch] [ebp-Ch]
-	int v22; // [esp+10h] [ebp-8h]
-	int ia;  // [esp+14h] [ebp-4h]
+	int omx, omy;
+	int d, p;
 
-	v1 = i;
-	ia = i;
-	v2 = i;
-	--missile[v2]._mirange;
-	if (missile[i]._mitype == MIS_BONESPIRIT && missile[v2]._mimfnum == 8) {
-		if (!missile[i]._mirange) {
-			v3 = missile[v2]._mlid;
-			if (v3 >= 0)
-				AddUnLight(v3);
-			v4 = missile[v2]._miy;
-			v5 = missile[v2]._mix;
-			missile[v2]._miDelFlag = TRUE;
-			PlaySfxLoc(LS_BSIMPCT, v5, v4);
-		}
-		goto LABEL_39;
-	}
-	v6 = missile[v2]._mityoff;
-	v22 = missile[v2]._mitxoff;
-	v21 = v6;
-	v7 = v6 + missile[v2]._miyvel;
-	missile[v2]._mitxoff = v22 + missile[v2]._mixvel;
-	missile[v2]._mityoff = v7;
-	GetMissilePos(v1);
-	v9 = missile[v2]._misource;
-	if (v9 == -1) {
-		v12 = random(78, 2 * currlevel);
-		v13 = currlevel;
-		goto LABEL_17;
-	}
-	if (missile[v2]._micaster) {
-		v11 = v9;
-		v12 = random(77, (unsigned char)monster[v11].mMaxDamage - (unsigned char)monster[v11].mMinDamage + 1);
-		v13 = (unsigned char)monster[v11].mMinDamage;
-	LABEL_17:
-		v10 = v13 + v12;
-		goto LABEL_19;
-	}
-	switch (missile[v2]._mitype) {
-	case 1:
-		v10 = (plr[v9]._pMagic >> 3) + random(75, 10) + missile[v2]._mispllvl + 1;
-		break;
-	case 0x18:
-		v10 = (plr[v9]._pMagic >> 1) + 3 * missile[v2]._mispllvl - (plr[v9]._pMagic >> 3);
-		break;
-	case 0x3F:
-		v10 = 0;
-		break;
-	default:
-		v10 = v21;
-		break;
-	}
-LABEL_19:
-	v14 = missile[v2]._mix;
-	if (v14 == missile[v2]._misx && missile[v2]._miy == missile[v2]._misy) {
-		v1 = ia;
-	} else {
-		v1 = ia;
-		CheckMissileCol(ia, v10, v10, 0, v14, missile[v2]._miy, 0);
-	}
-	if (missile[v2]._mirange) {
-		v17 = missile[v2]._mix;
-		if (v17 != missile[v2]._miVar1 || missile[v2]._miy != missile[v2]._miVar2) {
-			missile[v2]._miVar1 = v17;
-			v18 = missile[v2]._miy;
-			missile[v2]._miVar2 = v18;
-			v19 = missile[v2]._mlid;
-			if (v19 >= 0)
-				ChangeLight(v19, v17, v18, 8);
-		}
-	} else {
-		missile[v2]._mitxoff = v22;
-		missile[v2]._miDelFlag = TRUE;
-		missile[v2]._mityoff = v21;
-		GetMissilePos(v1);
-		v15 = missile[v2]._mitype - 1;
-		if (missile[v2]._mitype == MIS_FIREBOLT || (v15 = missile[v2]._mitype - 21, missile[v2]._mitype == MIS_MAGMABALL)) {
-			_LOBYTE(v15) = missile[v2]._micaster;
-			AddMissile(
-			    missile[v2]._mix,
-			    missile[v2]._miy,
-			    v1,
-			    0,
-			    missile[v2]._mimfnum,
-			    MIS_MISEXP,
-			    v15,
-			    missile[v2]._misource,
-			    0,
-			    0);
+	missile[i]._mirange--;
+	if (missile[i]._mitype != MIS_BONESPIRIT || missile[i]._mimfnum != 8) {
+		omx = missile[i]._mitxoff;
+		omy = missile[i]._mityoff;
+		missile[i]._mitxoff += missile[i]._mixvel;
+		missile[i]._mityoff += missile[i]._miyvel;
+		GetMissilePos(i);
+		p = missile[i]._misource;
+		if (p != -1) {
+			if (!missile[i]._micaster) {
+				switch (missile[i]._mitype) {
+				case MIS_FIREBOLT:
+					d = random(75, 10) + (plr[p]._pMagic >> 3) + missile[i]._mispllvl + 1;
+					break;
+				case MIS_FLARE:
+					d = 3 * missile[i]._mispllvl - (plr[p]._pMagic >> 3) + (plr[p]._pMagic >> 1);
+					break;
+				case MIS_BONESPIRIT:
+					d = 0;
+					break;
+				}
+			} else {
+				d = monster[p].mMinDamage + random(77, monster[p].mMaxDamage - monster[p].mMinDamage + 1);
+			}
 		} else {
-			switch (missile[v2]._mitype) {
+			d = currlevel + random(78, 2 * currlevel);
+		}
+		if (missile[i]._mix != missile[i]._misx || missile[i]._miy != missile[i]._misy) {
+			CheckMissileCol(i, d, d, 0, missile[i]._mix, missile[i]._miy, 0);
+		}
+		if (!missile[i]._mirange) {
+			missile[i]._miDelFlag = TRUE;
+			missile[i]._mitxoff = omx;
+			missile[i]._mityoff = omy;
+			GetMissilePos(i);
+			switch (missile[i]._mitype) {
+			case MIS_FIREBOLT:
+			case MIS_MAGMABALL:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_MISEXP, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
 			case MIS_FLARE:
-				AddMissile(
-				    missile[v2]._mix,
-				    missile[v2]._miy,
-				    v1,
-				    0,
-				    missile[v2]._mimfnum,
-				    MIS_MISEXP2,
-				    _LOBYTE(missile[v2]._micaster),
-				    missile[v2]._misource,
-				    0,
-				    0);
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_MISEXP2, missile[i]._micaster, missile[i]._misource, 0, 0);
 				break;
 			case MIS_ACID:
-				AddMissile(
-				    missile[v2]._mix,
-				    missile[v2]._miy,
-				    v1,
-				    0,
-				    missile[v2]._mimfnum,
-				    MIS_MISEXP3,
-				    _LOBYTE(missile[v2]._micaster),
-				    missile[v2]._misource,
-				    0,
-				    0);
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_MISEXP3, missile[i]._micaster, missile[i]._misource, 0, 0);
 				break;
 			case MIS_BONESPIRIT:
-				SetMissDir(v1, 8);
-				missile[v2]._mirange = 7;
-				missile[v2]._miDelFlag = FALSE;
-				goto LABEL_39;
+				SetMissDir(i, 8);
+				missile[i]._mirange = 7;
+				missile[i]._miDelFlag = FALSE;
+				PutMissile(i);
+				return;
 			}
+			if (missile[i]._mlid >= 0)
+				AddUnLight(missile[i]._mlid);
+			PutMissile(i);
+		} else {
+			if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
+				missile[i]._miVar1 = missile[i]._mix;
+				missile[i]._miVar2 = missile[i]._miy;
+				if (missile[i]._mlid >= 0)
+					ChangeLight(missile[i]._mlid, missile[i]._miVar1, missile[i]._miVar2, 8);
+			}
+			PutMissile(i);
 		}
-		v16 = missile[v2]._mlid;
-		if (v16 >= 0)
-			AddUnLight(v16);
-	}
-LABEL_39:
-	PutMissile(v1);
+	} else if (!missile[i]._mirange) {
+		if (missile[i]._mlid >= 0)
+			AddUnLight(missile[i]._mlid);
+		missile[i]._miDelFlag = TRUE;
+		PlaySfxLoc(LS_BSIMPCT, missile[i]._mix, missile[i]._miy);
+		PutMissile(i);
+	} else
+		PutMissile(i);
 }
 
 void MI_Lightball(int i)
