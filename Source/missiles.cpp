@@ -951,167 +951,124 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 	return FALSE;
 }
 
-void CheckMissileCol(int i, int mindam, int maxdam, BOOLEAN shift, int mx, int my, int nodel)
+void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, BOOLEAN nodel)
 {
-	int v7;      // ebx
-	int v8;      // esi
-	char v9;     // dl
-	int v10;     // ecx
-	int v11;     // edi
-	int v12;     // eax
-	BOOLEAN v13; // eax
-	char v14;    // al
-	int v15;     // ecx
-	int v16;     // edx
-	BOOLEAN v17; // eax
-	int v18;     // eax
-	BOOLEAN v19; // eax
-	char v20;    // al
-	int v21;     // eax
-	int v22;     // eax
-	char v23;    // al
-	char v24;    // al
-	int v25;     // edx
-	int v26;     // ecx
-	int v27;     // [esp-Ch] [ebp-1Ch]
-	int v28;     // [esp-8h] [ebp-18h]
-	int mindama; // [esp+Ch] [ebp-4h]
+	int oi;
 
-	v7 = mindam;
-	v8 = i;
-	mindama = mindam;
-	v9 = missile[i]._miAnimType;
-	if (v9 == 4 || (v10 = missile[v8]._misource, v10 == -1)) {
-		v11 = 112 * mx + my;
-		v21 = dMonster[0][v11];
-		if (v21 > 0) {
-			v28 = missile[v8]._mitype;
-			v27 = missile[v8]._midist;
-			v22 = v9 == 4 ? MonsterMHit(missile[v8]._misource, v21 - 1, v7, maxdam, v27, v28, shift) : MonsterTrapHit(v21 - 1, v7, maxdam, v27, v28, shift);
-			if (v22) {
-				if (!(_BYTE)nodel)
-					missile[v8]._mirange = 0;
-				missile[v8]._miHitFlag = TRUE;
+	if (missile[i]._miAnimType != 4 && missile[i]._misource != -1) {
+		if (!missile[i]._micaster) {
+			if (dMonster[mx][my] > 0) {
+				if (MonsterMHit(
+				        missile[i]._misource,
+				        dMonster[mx][my] - 1,
+				        mindam,
+				        maxdam,
+				        missile[i]._midist,
+				        missile[i]._mitype,
+				        shift)) {
+					if (!nodel)
+						missile[i]._mirange = 0;
+					missile[i]._miHitFlag = 1;
+				}
+			} else {
+				if (dMonster[mx][my] < 0
+				    && monster[-(dMonster[mx][my] + 1)]._mmode == 15
+				    && MonsterMHit(
+				        missile[i]._misource,
+				        -(dMonster[mx][my] + 1),
+				        mindam,
+				        maxdam,
+				        missile[i]._midist,
+				        missile[i]._mitype,
+				        shift)) {
+					if (!nodel)
+						missile[i]._mirange = 0;
+					missile[i]._miHitFlag = 1;
+				}
 			}
-		}
-		v23 = dPlayer[0][v11];
-		if (v23 > 0) {
-			v17 = PlayerMHit(
-			    v23 - 1,
-			    -1,
-			    missile[v8]._midist,
-			    v7,
-			    maxdam,
-			    missile[v8]._mitype,
-			    shift,
-			    _LOBYTE(missile[v8]._miAnimType) == MFILE_FIREWAL);
-		LABEL_35:
-			if (v17) {
-				if (!(_BYTE)nodel)
-					missile[v8]._mirange = 0;
-				missile[v8]._miHitFlag = TRUE;
+			if (dPlayer[mx][my] > 0
+			    && dPlayer[mx][my] - 1 != missile[i]._misource
+			    && Plr2PlrMHit(
+			        missile[i]._misource,
+			        dPlayer[mx][my] - 1,
+			        mindam,
+			        maxdam,
+			        missile[i]._midist,
+			        missile[i]._mitype,
+			        shift)) {
+				if (!nodel)
+					missile[i]._mirange = 0;
+				missile[i]._miHitFlag = 1;
 			}
-			goto LABEL_39;
+		} else {
+			if (monster[missile[i]._misource]._mFlags & 0x10
+			    && dMonster[mx][my] > 0
+			    && monster[dMonster[mx][my] - 1]._mFlags & 0x20
+			    && MonsterTrapHit(dMonster[mx][my] - 1, mindam, maxdam, missile[i]._midist, missile[i]._mitype, shift)) {
+				if (!nodel)
+					missile[i]._mirange = 0;
+				missile[i]._miHitFlag = 1;
+			}
+			if (dPlayer[mx][my] > 0
+			    && PlayerMHit(
+			        dPlayer[mx][my] - 1,
+			        missile[i]._misource,
+			        missile[i]._midist,
+			        mindam,
+			        maxdam,
+			        missile[i]._mitype,
+			        shift,
+			        0)) {
+				if (!nodel)
+					missile[i]._mirange = 0;
+				missile[i]._miHitFlag = 1;
+			}
 		}
 	} else {
-		if (!missile[v8]._micaster) {
-			v11 = 112 * mx + my;
-			v12 = dMonster[0][v11];
-			if (v12 <= 0) {
-				if (v12 >= 0 || monster[-(v12 + 1)]._mmode != MM_STONE) {
-				LABEL_13:
-					v14 = dPlayer[0][v11];
-					if (v14 <= 0)
-						goto LABEL_39;
-					v15 = missile[v8]._misource;
-					v16 = v14 - 1;
-					if (v16 == v15)
-						goto LABEL_39;
-					v17 = Plr2PlrMHit(
-					    v15,
-					    v16,
-					    mindama,
-					    maxdam,
-					    missile[v8]._midist,
-					    missile[v8]._mitype,
-					    shift);
-					goto LABEL_35;
+		if (dMonster[mx][my] > 0) {
+			if (missile[i]._miAnimType == 4) {
+				if (MonsterMHit(
+				        missile[i]._misource,
+				        dMonster[mx][my] - 1,
+				        mindam,
+				        maxdam,
+				        missile[i]._midist,
+				        missile[i]._mitype,
+				        shift)) {
+					if (!nodel)
+						missile[i]._mirange = 0;
+					missile[i]._miHitFlag = 1;
 				}
-				v13 = MonsterMHit(
-				    v10,
-				    -1 - v12,
-				    mindama,
-				    maxdam,
-				    missile[v8]._midist,
-				    missile[v8]._mitype,
-				    shift);
-			} else {
-				v13 = MonsterMHit(v10, v12 - 1, v7, maxdam, missile[v8]._midist, missile[v8]._mitype, shift);
-			}
-			if (v13) {
-				if (!(_BYTE)nodel)
-					missile[v8]._mirange = 0;
-				missile[v8]._miHitFlag = TRUE;
-			}
-			goto LABEL_13;
-		}
-		if (monster[v10]._mFlags & MFLAG_TARGETS_MONSTER) {
-			v18 = dMonster[mx][my];
-			if (v18 > 0) {
-				if (monster[v18 - 1]._mFlags & MFLAG_GOLEM) /* fix */
-				{
-					v19 = MonsterTrapHit(
-					    v18 - 1,
-					    mindama,
-					    maxdam,
-					    missile[v8]._midist,
-					    missile[v8]._mitype,
-					    shift);
-					if (v19) {
-						if (!(_BYTE)nodel)
-							missile[v8]._mirange = 0;
-						missile[v8]._miHitFlag = TRUE;
-					}
-				}
+			} else if (MonsterTrapHit(dMonster[mx][my] - 1, mindam, maxdam, missile[i]._midist, missile[i]._mitype, shift)) {
+				if (!nodel)
+					missile[i]._mirange = 0;
+				missile[i]._miHitFlag = 1;
 			}
 		}
-		v11 = my + 112 * mx;
-		v20 = dPlayer[0][v11];
-		if (v20 > 0) {
-			v17 = PlayerMHit(
-			    v20 - 1,
-			    missile[v8]._misource,
-			    missile[v8]._midist,
-			    mindama,
-			    maxdam,
-			    missile[v8]._mitype,
-			    shift,
-			    0);
-			goto LABEL_35;
+		if (dPlayer[mx][my] > 0
+		    && PlayerMHit(dPlayer[mx][my] - 1, -1, missile[i]._midist, mindam, maxdam, missile[i]._mitype, shift, missile[i]._miAnimType == MFILE_FIREWAL)) {
+			if (!nodel)
+				missile[i]._mirange = 0;
+			missile[i]._miHitFlag = 1;
 		}
 	}
-LABEL_39:
-	v24 = dObject[0][v11];
-	if (v24) {
-		v25 = v24 <= 0 ? -1 - v24 : v24 - 1;
-		if (!object[v25]._oMissFlag) {
-			if (object[v25]._oBreak == 1)
-				BreakObject(-1, v25);
-			if (!(_BYTE)nodel)
-				missile[v8]._mirange = 0;
-			missile[v8]._miHitFlag = FALSE;
+	if (dObject[mx][my]) {
+		oi = dObject[mx][my] > 0 ? dObject[mx][my] - 1 : -(dObject[mx][my] + 1);
+		if (!object[oi]._oMissFlag) {
+			if (object[oi]._oBreak == 1)
+				BreakObject(-1, oi);
+			if (!nodel)
+				missile[i]._mirange = 0;
+			missile[i]._miHitFlag = 0;
 		}
 	}
-	if (nMissileTable[dPiece[0][v11]]) {
-		if (!(_BYTE)nodel)
-			missile[v8]._mirange = 0;
-		missile[v8]._miHitFlag = FALSE;
+	if (nMissileTable[dPiece[mx][my]]) {
+		if (!nodel)
+			missile[i]._mirange = 0;
+		missile[i]._miHitFlag = 0;
 	}
-	if (!missile[v8]._mirange) {
-		v26 = missiledata[missile[v8]._mitype].miSFX;
-		if (v26 != -1)
-			PlaySfxLoc(v26, missile[v8]._mix, missile[v8]._miy);
-	}
+	if (!missile[i]._mirange && missiledata[missile[i]._mitype].miSFX != -1)
+		PlaySfxLoc(missiledata[missile[i]._mitype].miSFX, missile[i]._mix, missile[i]._miy);
 }
 
 void SetMissAnim(int mi, int animtype)
