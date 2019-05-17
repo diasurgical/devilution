@@ -9,15 +9,15 @@ int monstactive[MAXMONSTERS];
 int nummonsters;
 BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
-int totalmonsters; // weak
+int totalmonsters;
 CMonster Monsters[16];
 // int END_Monsters_17; // weak
-int monstimgtot; // weak
+int monstimgtot;
 int uniquetrans;
 int nummtypes;
 
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
-const unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
+const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
 
 /* data */
 
@@ -274,10 +274,10 @@ void InitMonsterGFX(int monst)
 {
 	int mtype, anim, i;
 	char strBuff[256];
-	unsigned char *celBuf;
+	BYTE *celBuf;
 	void *trans_file;
 
-	mtype = (unsigned char)Monsters[monst].mtype;
+	mtype = Monsters[monst].mtype;
 
 	for (anim = 0; anim < 6; anim++) {
 		if ((animletter[anim] != 's' || monsterdata[mtype].has_special) && monsterdata[mtype].Frames[anim] > 0) {
@@ -918,7 +918,7 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 
 void LoadDiabMonsts()
 {
-	unsigned char *lpSetPiece; // esi
+	BYTE *lpSetPiece;
 
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
 	SetMapMonsters(lpSetPiece, 2 * diabquad1x, 2 * diabquad1y);
@@ -933,8 +933,6 @@ void LoadDiabMonsts()
 	SetMapMonsters(lpSetPiece, 2 * diabquad4x, 2 * diabquad4y);
 	mem_free_dbg(lpSetPiece);
 }
-// 5289C4: using guessed type int diabquad1x;
-// 5289C8: using guessed type int diabquad1y;
 
 void InitMonsters()
 {
@@ -1003,10 +1001,6 @@ void InitMonsters()
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
-// 658550: using guessed type int totalmonsters;
-// 679660: using guessed type char gbMaxPlayers;
-// 432637: using guessed type int var_1BC[111];
 
 void PlaceUniques()
 {
@@ -1078,7 +1072,6 @@ void SetMapMonsters(unsigned char *pMap, int startx, int starty)
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void DeleteMonster(int i)
 {
@@ -1210,7 +1203,6 @@ void M_Enemy(int i)
 		Monst->_mFlags |= MFLAG_NO_ENEMY;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int M_GetDir(int i)
 {
@@ -1591,7 +1583,6 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 	Monst->_mVar5 = (int) ((j - (Monst->_mx << 16)) / (double)dist);
 	Monst->_mVar6 = (int) ((k - (Monst->_my << 16)) / (double)dist);
 }
-// 64D32C: using guessed type int sgbSaveSoundOn;
 
 void M2MStartHit(int mid, int i, int dam)
 {
@@ -2041,14 +2032,11 @@ void M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 {
 	int hit, hper;
-	int dam;
 	int dx, dy;
 	int blk, blkper;
-	int mdam;
+	int dam, mdam;
 	int newx, newy;
-	int j;
-	int misnum, ms_num, cur_ms_num;
-	int new_hp;
+	int j, misnum, ms_num, cur_ms_num, new_hp;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_TryH2HHit: Invalid monster %d", i);
@@ -2176,7 +2164,6 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL M_DoAttack(int i)
 {
@@ -2454,11 +2441,6 @@ int M_DoTalk(int i)
 	}
 	return FALSE;
 }
-// 4351F5: could not find valid save-restore pair for ebp
-// 5A5590: using guessed type char TransVal;
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
-// 679660: using guessed type char gbMaxPlayers;
 
 void M_Teleport(int i)
 {
@@ -2576,7 +2558,6 @@ void DoEnding()
 	sound_get_or_set_music_volume(musicVolume);
 	gbMusicOn = bMusicOn;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void PrepDoEnding()
 {
@@ -2605,9 +2586,6 @@ void PrepDoEnding()
 		}
 	}
 }
-// 525718: using guessed type char cineflag;
-// 64D32C: using guessed type int sgbSaveSoundOn;
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL M_DoDeath(int i)
 {
@@ -3327,7 +3305,6 @@ void MAI_Sneak(int i)
 		}
 	}
 }
-// 642A14: using guessed type char lightmax;
 
 void MAI_Fireman(int i)
 {
@@ -4338,8 +4315,6 @@ void MAI_SnotSpil(int i)
 	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void MAI_Lazurus(int i)
 {
@@ -4390,7 +4365,6 @@ void MAI_Lazurus(int i)
 	if (monster[i]._mmode == MM_STAND || monster[i]._mmode == MM_TALK)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void MAI_Lazhelp(int i)
 {
@@ -4425,7 +4399,6 @@ void MAI_Lazhelp(int i)
 	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void MAI_Lachdanan(int i)
 {
