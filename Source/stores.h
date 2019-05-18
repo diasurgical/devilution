@@ -40,7 +40,7 @@ void InitStores();
 void SetupTownStores();
 void FreeStoreMem();
 void DrawSTextBack();
-void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val);
+void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val);
 void DrawSLine(int y);
 void DrawSArrows(int y1, int y2);
 void DrawSTextHelp();
