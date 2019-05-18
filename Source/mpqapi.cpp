@@ -521,8 +521,8 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 	*pdwNextFileStart = size;
 
 	if (size == -1
-	    || size < sizeof(pHdr)
-	    || !ReadFile(sghArchive, pHdr, sizeof(pHdr), &NumberOfBytesRead, NULL)
+	    || size < sizeof(*pHdr)
+	    || !ReadFile(sghArchive, pHdr, sizeof(*pHdr), &NumberOfBytesRead, NULL)
 	    || NumberOfBytesRead != 104
 	    || pHdr->signature != '\x1AQPM'
 	    || pHdr->headersize != 32
@@ -539,7 +539,7 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 		if (!SetEndOfFile(sghArchive))
 			return FALSE;
 
-		memset(pHdr, 0, sizeof(pHdr));
+		memset(pHdr, 0, sizeof(*pHdr));
 		pHdr->signature = '\x1AQPM';
 		pHdr->headersize = 32;
 		pHdr->sectorsizeid = 3;

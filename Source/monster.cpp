@@ -4921,8 +4921,6 @@ BOOL LineClearF1(BOOL(*Clear)(int, int, int), int monst, int x1, int y1, int x2,
 void SyncMonsterAnim(int i)
 {
 	MonsterData *MData;
-	CMonster *cmonst;
-	unsigned char _uniqtype;
 	int _mdir;
 	MonsterStruct *Monst;
 
