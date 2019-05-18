@@ -80,10 +80,10 @@ void codec_init_key(int unused, char *pszPassword)
 // 4035DB: using guessed type char var_58[64];
 // 4035DB: using guessed type char dst[20];
 
-int codec_get_encoded_len(int dwSrcBytes)
+DWORD codec_get_encoded_len(DWORD dwSrcBytes)
 {
-	if (dwSrcBytes & 0x3F)
-		dwSrcBytes += 64 - (dwSrcBytes & 0x3F);
+	if (dwSrcBytes % 64 != 0)
+		dwSrcBytes += 64 - (dwSrcBytes % 64);
 	return dwSrcBytes + 8;
 }
 
