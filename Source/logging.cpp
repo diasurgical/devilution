@@ -135,7 +135,7 @@ void __cdecl log_printf(const char *pszFmt, ...)
 	sgMemCrit.Enter();
 #endif
 	va_start(va, pszFmt);
-	_vsnprintf(msg, 0x200u, pszFmt, va);
+	_vsnprintf(msg, 0x200, pszFmt, va);
 	va_end(va);
 	msg[511] = 0;
 	size = strlen(msg);
