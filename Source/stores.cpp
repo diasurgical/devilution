@@ -139,7 +139,7 @@ void DrawSTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val)
+void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 {
 	int v6;            // edi
 	int v7;            // eax
@@ -1573,57 +1573,49 @@ void StartStore(char s)
 
 void DrawSText()
 {
-	int i; // edi
+	int i;
 
-	if (stextsize)
-		DrawQTextBack();
-	else
+	if (!stextsize)
 		DrawSTextBack();
-	if (!stextscrl)
-		goto LABEL_19;
-	if (stextflag > (signed int)STORE_WRECHARGE) {
+	else
+		DrawQTextBack();
+
+	if (stextscrl) {
 		switch (stextflag) {
+		case STORE_SBUY:
+			S_ScrollSBuy(stextsval);
+			break;
+		case STORE_SSELL:
+		case STORE_SREPAIR:
+		case STORE_WSELL:
+		case STORE_WRECHARGE:
+		case STORE_SIDENTIFY:
+			S_ScrollSSell(stextsval);
+			break;
+		case STORE_WBUY:
+			S_ScrollWBuy(stextsval);
+			break;
 		case STORE_HBUY:
 			S_ScrollHBuy(stextsval);
 			break;
-		case STORE_SIDENTIFY:
-			goto LABEL_17;
 		case STORE_SPBUY:
 			S_ScrollSPBuy(stextsval);
 			break;
 		}
-	} else {
-		if (stextflag >= (signed int)STORE_WSELL)
-			goto LABEL_17;
-		if (stextflag == STORE_SBUY) {
-			S_ScrollSBuy(stextsval);
-			goto LABEL_19;
-		}
-		if (stextflag > (signed int)STORE_SBUY) {
-			if (stextflag > (signed int)STORE_SREPAIR) {
-				if (stextflag == STORE_WBUY)
-					S_ScrollWBuy(stextsval);
-				goto LABEL_19;
-			}
-		LABEL_17:
-			S_ScrollSSell(stextsval);
-			goto LABEL_19;
-		}
 	}
-LABEL_19:
 
 	for (i = 0; i < 24; i++) {
 		if (stext[i]._sline)
 			DrawSLine(i);
-		if (stext[i]._sstr)
+		if (stext[i]._sstr[0])
 			PrintSString(stext[i]._sx, i, stext[i]._sjust, stext[i]._sstr, stext[i]._sclr, stext[i]._sval);
 	}
 
 	if (stextscrl)
 		DrawSArrows(4, 20);
+
 	InStoreFlag = (InStoreFlag & 7) + 1;
 }
-// 6AA705: using guessed type char stextflag;
 
 void STextESC()
 {
