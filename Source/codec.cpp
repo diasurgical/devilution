@@ -87,52 +87,40 @@ DWORD codec_get_encoded_len(DWORD dwSrcBytes)
 	return dwSrcBytes + 8;
 }
 
-void codec_encode(void *pbSrcDst, int size, int size_64, char *pszPassword)
+void codec_encode(BYTE* pbSrcDst, DWORD size, int size_64, char *pszPassword)
 {
-	char *v4;      // esi
-	char v5;       // bl
-	size_t v6;     // edi
-	signed int v7; // ecx
-	char v9[128];  // [esp+8h] [ebp-ACh]
-	char v10[20];  // [esp+88h] [ebp-2Ch]
-	char dst[20];  // [esp+9Ch] [ebp-18h]
-	size_t v12;    // [esp+B0h] [ebp-4h]
+	char buf[128];
+	char tmp[20];
+	char dst[20];
+	DWORD chunk;
+	WORD last_chunk;
 
-	v4 = (char *)pbSrcDst;
-	v12 = size;
 	if (size_64 != codec_get_encoded_len(size))
 		app_fatal("Invalid encode parameters");
 	codec_init_key(1, pszPassword);
-	v5 = 0;
-	if (v12) {
-		do {
-			v6 = v12;
-			if (v12 >= 0x40)
-				v6 = 64;
-			memcpy(v9, v4, v6);
-			if (v6 < 0x40)
-				memset(&v9[v6], 0, 64 - v6);
-			SHA1Result(0, dst);
-			SHA1Calculate(0, v9, NULL);
-			v7 = 0;
-			do {
-				v9[v7] ^= dst[v7 % 20];
-				++v7;
-			} while (v7 < 64);
-			memset(dst, 0, sizeof(dst));
-			memcpy(v4, v9, 0x40u);
-			v4 += 64;
-			v12 -= v6;
-		} while (v12);
-		v5 = v6;
+
+	last_chunk = 0;
+	while (size != 0) {
+		chunk = size < 64 ? size : 64;
+		memcpy(buf, pbSrcDst, chunk);
+		if (chunk < 64)
+			memset(buf + chunk, 0, 64 - chunk);
+		SHA1Result(0, dst);
+		SHA1Calculate(0, buf, NULL);
+		for (int j = 0; j < 64; j++) {
+			buf[j] ^= dst[j % 20];
+		}
+		memset(dst, 0, sizeof(dst));
+		memcpy(pbSrcDst, buf, 64);
+		last_chunk = chunk;
+		pbSrcDst += 64;
+		size -= chunk;
 	}
-	memset(v9, 0, sizeof(v9));
-	SHA1Result(0, v10);
-	v4[4] = 0;
-	*((_WORD *)v4 + 3) = 0;
-	*(_DWORD *)v4 = *(_DWORD *)v10;
-	v4[5] = v5;
+	memset(buf, 0, sizeof(buf));
+	SHA1Result(0, tmp);
+	pbSrcDst[4] = 0;
+	((WORD *)pbSrcDst)[3] = 0;
+	((DWORD *)pbSrcDst)[0] = ((DWORD *)tmp)[0];
+	pbSrcDst[5] = last_chunk;
 	SHA1Clear();
 }
-// 4036BE: using guessed type char var_AC[128];
-// 4036BE: using guessed type char dst[20];
