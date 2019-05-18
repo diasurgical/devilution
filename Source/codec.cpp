@@ -1,59 +1,45 @@
 #include "diablo.h"
 
-int codec_decode(void *pbSrcDst, int size, char *pszPassword)
+int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 {
-	unsigned int v3; // ebx
-	char *v4;        // esi
-	int v5;          // ebx
-	signed int v7;   // ecx
-	int v8;          // esi
-	char v9[128];    // [esp+8h] [ebp-98h]
-	char dst[20];    // [esp+88h] [ebp-18h]
-	int v11;         // [esp+9Ch] [ebp-4h]
-	char *passworda; // [esp+A8h] [ebp+8h]
+	char buf[128];
+	char dst[20];
+	int i;
 
-	v3 = size;
-	v4 = (char *)pbSrcDst;
 	codec_init_key(0, pszPassword);
-	if (v3 <= 8)
+	if (size <= 8)
 		return 0;
-	v5 = v3 - 8;
-	v11 = v5;
-	if (v5 & 0x3F)
+	size = size - 8;
+	if (size % 64 != 0)
 		return 0;
-	passworda = (char *)v5;
-	if (v5) {
-		do {
-			memcpy(v9, v4, 0x40u);
-			SHA1Result(0, dst);
-			v7 = 0;
-			do {
-				v9[v7] ^= dst[v7 % 20];
-				++v7;
-			} while (v7 < 64);
-			SHA1Calculate(0, v9, NULL);
-			memset(dst, 0, sizeof(dst));
-			memcpy(v4, v9, 0x40u);
-			v4 += 64;
-			passworda -= 64;
-		} while (passworda);
-		v5 = v11;
-	}
-	memset(v9, 0, sizeof(v9));
-	if (!v4[4]) {
+	for (i = size; i != 0; pbSrcDst += 64, i -= 64) {
+		memcpy(buf, pbSrcDst, 64);
 		SHA1Result(0, dst);
-		if (*(_DWORD *)v4 == *(_DWORD *)dst) {
-			v8 = v5 + (unsigned char)v4[5] - 64;
-			goto LABEL_14;
+		for (int j = 0; j < 64; j++) {
+			buf[j] ^= dst[j % 20];
 		}
+		SHA1Calculate(0, buf, NULL);
 		memset(dst, 0, sizeof(dst));
+		memcpy(pbSrcDst, buf, 64);
 	}
-	v8 = 0;
-LABEL_14:
-	SHA1Clear();
-	return v8;
+
+	memset(buf, 0, sizeof(buf));
+	if (pbSrcDst[4] > 0) {
+		size = 0;
+		SHA1Clear();
+	} else {
+		SHA1Result(0, dst);
+		if (*(DWORD *)pbSrcDst != *(DWORD *)dst) {
+			memset(dst, 0, sizeof(dst));
+			size = 0;
+			SHA1Clear();
+		} else {
+			size += pbSrcDst[5] - 64;
+			SHA1Clear();
+		}
+	}
+	return size;
 }
-// 4034D9: using guessed type char var_98[128];
 
 void codec_init_key(int unused, char *pszPassword)
 {
