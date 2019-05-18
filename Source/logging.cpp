@@ -96,30 +96,24 @@ HANDLE log_create()
 
 void log_get_version(VS_FIXEDFILEINFO *file_info)
 {
-	DWORD v1;           // eax
-	DWORD v2;           // esi
-	void *v3;           // ebx
-	unsigned int v4;    // eax
-	char Filename[MAX_PATH]; // [esp+8h] [ebp-114h]
-	DWORD dwHandle;     // [esp+10Ch] [ebp-10h]
-	LPVOID lpBuffer;    // [esp+110h] [ebp-Ch]
-	unsigned int puLen; // [esp+114h] [ebp-8h]
-	void *v9;           // [esp+118h] [ebp-4h]
+	DWORD size, len, dwHandle;
+	unsigned int puLen;
+	void *version;
+	char Filename[MAX_PATH];
+	LPVOID lpBuffer;
 
-	v9 = file_info;
-	memset(file_info, 0, 0x34u);
+	memset(file_info, 0, sizeof(*file_info));
 	if (GetModuleFileName(0, Filename, sizeof(Filename))) {
-		v1 = GetFileVersionInfoSize(Filename, &dwHandle);
-		v2 = v1;
-		if (v1) {
-			v3 = VirtualAlloc(0, v1, 0x1000u, 4u);
-			if (GetFileVersionInfo(Filename, 0, v2, v3) && VerQueryValue(v3, "\\", &lpBuffer, &puLen)) {
-				v4 = puLen;
-				if (puLen >= 0x34)
-					v4 = 52;
-				memcpy(v9, lpBuffer, v4);
+		size = GetFileVersionInfoSize(Filename, &dwHandle);
+		if (size) {
+			version = VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
+			if (GetFileVersionInfo(Filename, 0, size, version) && VerQueryValue(version, "\\", &lpBuffer, &puLen)) {
+				len = puLen;
+				if (puLen >= 52)
+					len = 52;
+				memcpy(file_info, lpBuffer, len);
 			}
-			VirtualFree(v3, 0, 0x8000u);
+			VirtualFree(version, 0, MEM_RELEASE);
 		}
 	}
 }
