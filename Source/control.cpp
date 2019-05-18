@@ -2595,39 +2595,27 @@ void DrawTalkPan()
 // 4B8840: using guessed type int sgbPlrTalkTbl;
 // 4B8960: using guessed type int talkflag;
 
-char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just)
+char *control_print_talk_msg(char *msg, int x, int y, int *a4, int color)
 {
-	int v5;            // edx
-	char *v6;          // ebx
-	unsigned char v7;  // al
-	int v8;            // ecx
-	unsigned char v10; // dl
-	int v11;           // edi
-	int a3;            // [esp+14h] [ebp+8h]
+	BYTE c;
+	int width;
 
-	v5 = x + 264;
-	v6 = msg;
-	*a4 = v5 + PitchTbl[y + 534];
-	v7 = *msg;
-	v8 = v5;
-	if (!v7)
-		return 0;
-	while (1) {
-		v10 = fontframe[gbFontTransTbl[v7]];
-		v11 = v10;
-		a3 = v8 + fontkern[v10] + 1;
-		if (a3 > 514)
-			break;
-		++v6;
-		if (v10)
-			CPrintString(*a4, v10, just);
-		*a4 += fontkern[v11] + 1;
-		v7 = *v6;
-		if (!*v6)
-			return 0;
-		v8 = a3;
+	x += 264;
+	width = x;
+	*a4 = PitchTbl[y + 534] + x;
+	while (*msg) {
+
+		c = fontframe[gbFontTransTbl[(BYTE)*msg]];
+		width += fontkern[c] + 1;
+		if (width > 514)
+			return msg;
+		msg++;
+		if (c) {
+			CPrintString(*a4, c, color);
+		}
+		*a4 += fontkern[c] + 1;
 	}
-	return v6;
+	return 0;
 }
 
 BOOL control_check_talk_btn()
@@ -2691,17 +2679,21 @@ void control_reset_talk_msg()
 
 void control_type_message()
 {
-	if (gbMaxPlayers != 1) {
-		sgszTalkMsg[0] = 0;
-		talkflag = 1;
-		frame = 1;
-		talkbtndown[0] = FALSE;
-		talkbtndown[1] = FALSE;
-		talkbtndown[2] = FALSE;
-		sgbPlrTalkTbl = 144;
-		drawpanflag = 255;
-		sgbTalkSavePos = sgbNextTalkSave;
+	int i;
+
+	if (gbMaxPlayers == 1) {
+		return;
 	}
+
+	talkflag = 1;
+	sgszTalkMsg[0] = 0;
+	frame = 1;
+	for (i = 0; i < 3; i++) {
+		talkbtndown[i] = FALSE;
+	}
+	sgbPlrTalkTbl = 144;
+	drawpanflag = 255;
+	sgbTalkSavePos = sgbNextTalkSave;
 }
 
 void control_reset_talk()
@@ -2732,40 +2724,38 @@ BOOL control_talk_last_key(int vkey)
 	return TRUE;
 }
 
-int control_presskeys(int a1)
+BOOL control_presskeys(int vkey)
 {
-	signed int v1; // eax
-	char v2;       // cl
+	int len;
+	BOOL ret;
 
-	if (gbMaxPlayers != 1 && talkflag) {
-		switch (a1) {
-		case VK_SPACE:
-			return 1;
-		case VK_ESCAPE:
-			control_reset_talk();
-			return 1;
-		case VK_RETURN:
-			control_press_enter();
-			return 1;
-		case VK_BACK:
-			v1 = strlen(sgszTalkMsg);
-			if (v1 > 0)
-				sgszTalkMsg[v1 - 1] = '\0';
-			return 1;
-		case VK_DOWN:
-			v2 = 1;
-		LABEL_15:
-			control_up_down(v2);
-			return 1;
-		case VK_UP:
-			v2 = -1;
-			goto LABEL_15;
+	if (gbMaxPlayers != 1) {
+		if (!talkflag) {
+			ret = FALSE;
+		} else {
+			if (vkey == VK_SPACE) {
+			} else if (vkey == VK_ESCAPE) {
+				control_reset_talk();
+			} else if (vkey == VK_RETURN) {
+				control_press_enter();
+			} else if (vkey == VK_BACK) {
+				len = strlen(sgszTalkMsg);
+				if (len > 0)
+					sgszTalkMsg[len - 1] = '\0';
+			} else if (vkey == VK_DOWN) {
+				control_up_down(1);
+			} else if (vkey == VK_UP) {
+				control_up_down(-1);
+			} else {
+				return FALSE;
+			}
+			ret = TRUE;
 		}
+	} else {
+		ret = FALSE;
 	}
-	return 0;
+	return ret;
 }
-// 4B8960: using guessed type int talkflag;
-// 679660: using guessed type char gbMaxPlayers;
 
 void control_press_enter()
 {

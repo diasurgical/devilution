@@ -108,6 +108,9 @@
 
 #define lstrcpyn lstrcpynA
 
+#define MEM_COMMIT 0x1000
+#define MEM_RELEASE 0x8000
+
 #define SEC_COMMIT 0x8000000
 #define PAGE_READWRITE 0x04
 

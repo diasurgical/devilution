@@ -55,6 +55,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
+#include <limits.h>
 #include "defs.h"
 #include "enums.h"
 #include "structs.h"

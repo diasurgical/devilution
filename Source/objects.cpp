@@ -3484,7 +3484,7 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_BOOK, sendmsg, 0);
 			if (QuestStatus(QTYPE_ZHAR)
 			    && monster[4].mName == UniqMonst[UMT_ZHAR].mName
-			    && monster[4]._msquelch == -1
+			    && monster[4]._msquelch == UCHAR_MAX
 			    && monster[4]._mhitpoints) {
 				monster[4].mtalkmsg = QUEST_ZHAR2;
 				M_StartStand(0, monster[4]._mdir);

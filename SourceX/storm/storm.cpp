@@ -81,7 +81,7 @@ BOOL SFileDdaEnd(HANDLE hFile)
 	return true;
 }
 
-BOOL SFileDdaGetPos(HANDLE hFile, int *current, int *end)
+BOOL SFileDdaGetPos(HANDLE hFile, DWORD *current, DWORD *end)
 {
 	*current = 0;
 	*end = 1;

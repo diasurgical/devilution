@@ -507,7 +507,7 @@ BOOL STORMAPI SFileCloseFile(HANDLE hFile);
 BOOL STORMAPI SFileDdaBeginEx(HANDLE hFile, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int pan, int a7);
 BOOL STORMAPI SFileDdaDestroy();
 BOOL STORMAPI SFileDdaEnd(HANDLE hFile);
-BOOL STORMAPI SFileDdaGetPos(HANDLE hFile, int *current, int *end);
+BOOL STORMAPI SFileDdaGetPos(HANDLE hFile, DWORD *current, DWORD *end);
 
 BOOL STORMAPI SFileDdaInitialize(HANDLE directsound);
 BOOL STORMAPI SFileDdaSetVolume(HANDLE hFile, signed int bigvolume, signed int volume);

@@ -14,7 +14,7 @@ DWORD nNumberOfBytesToWrite; // idb
 /* data */
 
 int log_not_created = 1;              // weak
-HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
+HANDLE log_file = INVALID_HANDLE_VALUE;
 
 void __cdecl log_flush(BOOL force_close)
 {
@@ -74,11 +74,11 @@ HANDLE log_create()
 		    file_info.dwProductVersionLS >> 16,
 		    _LOWORD(file_info.dwProductVersionLS));
 	}
-	v1 = (HANDLE)-1;
+	v1 = INVALID_HANDLE_VALUE;
 	for (pcbBuffer = log_not_created == 0; (signed int)pcbBuffer < 2; ++pcbBuffer) {
 		v2 = CreateFile(FileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		v1 = v2;
-		if (v2 != (HANDLE)-1) {
+		if (v2 != INVALID_HANDLE_VALUE) {
 			if (GetFileSize(v2, 0) > 0x10000)
 				SetEndOfFile(v1);
 			break;
@@ -98,58 +98,56 @@ HANDLE log_create()
 
 void log_get_version(VS_FIXEDFILEINFO *file_info)
 {
-	DWORD v1;           // eax
-	DWORD v2;           // esi
-	void *v3;           // ebx
-	unsigned int v4;    // eax
-	char Filename[MAX_PATH]; // [esp+8h] [ebp-114h]
-	DWORD dwHandle;     // [esp+10Ch] [ebp-10h]
-	LPVOID lpBuffer;    // [esp+110h] [ebp-Ch]
-	unsigned int puLen; // [esp+114h] [ebp-8h]
-	void *v9;           // [esp+118h] [ebp-4h]
+	DWORD size, len, dwHandle;
+	unsigned int puLen;
+	void *version;
+	char Filename[MAX_PATH];
+	LPVOID lpBuffer;
 
-	v9 = file_info;
-	memset(file_info, 0, 0x34u);
+	memset(file_info, 0, sizeof(*file_info));
 	if (GetModuleFileName(0, Filename, sizeof(Filename))) {
-		v1 = GetFileVersionInfoSize(Filename, &dwHandle);
-		v2 = v1;
-		if (v1) {
-			v3 = VirtualAlloc(0, v1, 0x1000u, 4u);
-			if (GetFileVersionInfo(Filename, 0, v2, v3) && VerQueryValue(v3, "\\", &lpBuffer, &puLen)) {
-				v4 = puLen;
-				if (puLen >= 0x34)
-					v4 = 52;
-				memcpy(v9, lpBuffer, v4);
+		size = GetFileVersionInfoSize(Filename, &dwHandle);
+		if (size) {
+			version = VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
+			if (GetFileVersionInfo(Filename, 0, size, version) && VerQueryValue(version, "\\", &lpBuffer, &puLen)) {
+				len = puLen;
+				if (puLen >= 52)
+					len = 52;
+				memcpy(file_info, lpBuffer, len);
 			}
-			VirtualFree(v3, 0, 0x8000u);
+			VirtualFree(version, 0, MEM_RELEASE);
 		}
 	}
 }
 
 void __cdecl log_printf(const char *pszFmt, ...)
 {
-	size_t v1;    // edi
-	char *v2;     // eax
-	char v3[512]; // [esp+Ch] [ebp-200h]
-	va_list va;   // [esp+218h] [ebp+Ch]
+	size_t size;
+	char *pBuffer;
+	char msg[512];
+	va_list va;
 
-	va_start(va, pszFmt);
 #ifdef __cplusplus
 	sgMemCrit.Enter();
 #endif
-	_vsnprintf(v3, 0x200u, pszFmt, va);
+	va_start(va, pszFmt);
+	_vsnprintf(msg, 0x200, pszFmt, va);
 	va_end(va);
-	v3[511] = 0;
-	v1 = strlen(v3);
-	if (v1 + nNumberOfBytesToWrite > 0x1000)
+	msg[511] = 0;
+	size = strlen(msg);
+	if (size + nNumberOfBytesToWrite > 0x1000) {
 		log_flush(0);
-	v2 = (char *)lpAddress;
-	if (lpAddress
-	    || (v2 = (char *)VirtualAlloc((LPVOID)lpAddress, 0x1000u, 0x1000u, 4u),
-	           nNumberOfBytesToWrite = 0,
-	           (lpAddress = v2) != 0)) {
-		memcpy(&v2[nNumberOfBytesToWrite], v3, v1);
-		nNumberOfBytesToWrite += v1;
+	}
+
+	if (lpAddress == NULL) {
+		lpAddress = (char *)VirtualAlloc((LPVOID)lpAddress, 0x1000, MEM_COMMIT, PAGE_READWRITE);
+		pBuffer = (char *)lpAddress;
+		nNumberOfBytesToWrite = 0;
+	}
+	if (lpAddress != NULL) {
+		pBuffer = (char *)lpAddress;
+		memcpy(&pBuffer[nNumberOfBytesToWrite], msg, size);
+		nNumberOfBytesToWrite += size;
 	}
 #ifdef __cplusplus
 	sgMemCrit.Leave();
@@ -177,9 +175,9 @@ void log_dump_computer_info()
 	    "INFO: %s\r\n"
 	    "\r\n",
 	    file_info.dwProductVersionMS >> 16,
-	    _LOWORD(file_info.dwProductVersionMS),
+	    file_info.dwProductVersionMS & 0xFFFF,
 	    file_info.dwProductVersionLS >> 16,
-	    _LOWORD(file_info.dwProductVersionLS),
+	    file_info.dwProductVersionLS & 0xFFFF,
 	    Buffer,
 	    SystemTime.wMonth,
 	    SystemTime.wDay,

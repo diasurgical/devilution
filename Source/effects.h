@@ -21,6 +21,7 @@ void PlaySfxLoc(int psfx, int x, int y);
 void FreeMonsterSnd();
 void sound_stop();
 void sound_update();
+void effects_update();
 void effects_cleanup_sfx();
 void stream_update();
 void priv_sound_init(UCHAR bLoadMask);
