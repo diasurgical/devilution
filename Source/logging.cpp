@@ -175,9 +175,9 @@ void log_dump_computer_info()
 	    "INFO: %s\r\n"
 	    "\r\n",
 	    file_info.dwProductVersionMS >> 16,
-	    _LOWORD(file_info.dwProductVersionMS),
+	    file_info.dwProductVersionMS & 0xFFFF,
 	    file_info.dwProductVersionLS >> 16,
-	    _LOWORD(file_info.dwProductVersionLS),
+	    file_info.dwProductVersionLS & 0xFFFF,
 	    Buffer,
 	    SystemTime.wMonth,
 	    SystemTime.wDay,
