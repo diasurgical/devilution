@@ -186,31 +186,23 @@ unsigned char *multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3)
 	return result;
 }
 
-void multi_send_msg_packet(int a1, BYTE *a2, BYTE len)
+void multi_send_msg_packet(int pmask, BYTE *a2, BYTE len)
 {
-	//const void *v3; // edx
-	signed int v4;   // ebx
-	unsigned int v5; // edi
-	TPkt pkt;        // [esp+Ch] [ebp-204h]
-	int v8;          // [esp+20Ch] [ebp-4h]
+	DWORD v, p, t;
+	TPkt pkt;
 
-	v8 = a1;
 	NetRecvPlrData(&pkt);
-	pkt.hdr.wLen = len + 19;
+	t = len + 19;
+	pkt.hdr.wLen = t;
 	memcpy(pkt.body, a2, len);
-	v4 = 1;
-	v5 = 0;
-	while (1) {
-		if (v4 & v8) {
-			if (!SNetSendMessage(v5, &pkt.hdr, len + 19) && SErrGetLastError() != STORM_ERROR_INVALID_PLAYER)
-				break;
+	for (v = 1, p = 0; p < MAX_PLRS; p++, v <<= 1) {
+		if (v & pmask) {
+			if (!SNetSendMessage(p, &pkt.hdr, t) && SErrGetLastError() != STORM_ERROR_INVALID_PLAYER) {
+				nthread_terminate_game("SNetSendMessage");
+				return;
+			}
 		}
-		++v5;
-		v4 *= 2;
-		if (v5 >= MAX_PLRS)
-			return;
 	}
-	nthread_terminate_game("SNetSendMessage");
 }
 
 void multi_msg_countdown()
