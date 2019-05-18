@@ -1,24 +1,24 @@
 #include "diablo.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-char byte_679704; // weak
-int gdwMsgLenTbl[MAX_PLRS];
+BYTE sgbNetUpdateRate;
+DWORD gdwMsgLenTbl[MAX_PLRS];
 #ifdef __cplusplus
 static CCritSect sgMemCrit;
 #endif
-int gdwDeltaBytesSec;    // weak
-char nthread_should_run; // weak
-DWORD gdwTurnsInTransit; // weak
+DWORD gdwDeltaBytesSec;
+BOOLEAN nthread_should_run;
+DWORD gdwTurnsInTransit;
 int glpMsgTbl[MAX_PLRS];
 unsigned int glpNThreadId;
-char sgbSyncCountdown;   // weak
-int turn_upper_bit;      // weak
-char byte_679758;        // weak
-char sgbPacketCountdown; // weak
-char sgbThreadIsRunning; // weak
-DWORD gdwLargestMsgSize;   // weak
-DWORD gdwNormalMsgSize;    // weak
-int last_tick;           // weak
+char sgbSyncCountdown;
+int turn_upper_bit;
+BOOLEAN sgbTicsOutOfSync;
+char sgbPacketCountdown;
+BOOLEAN sgbThreadIsRunning;
+DWORD gdwLargestMsgSize;
+DWORD gdwNormalMsgSize;
+int last_tick;
 
 /* data */
 static HANDLE sghThread = INVALID_HANDLE_VALUE;
@@ -42,8 +42,7 @@ void nthread_terminate_game(const char *pszFcn)
 DWORD nthread_send_and_recv_turn(DWORD cur_turn, int turn_delta)
 {
 	DWORD new_cur_turn;
-	int turn_tmp;
-	int turn;
+	int turn, turn_tmp;
 	int curTurnsInTransit;
 
 	new_cur_turn = cur_turn;
@@ -70,7 +69,6 @@ DWORD nthread_send_and_recv_turn(DWORD cur_turn, int turn_delta)
 	return new_cur_turn;
 }
 
-
 BOOL nthread_recv_turns(BOOL *pfSendAsync)
 {
 	*pfSendAsync = FALSE;
@@ -80,25 +78,23 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 		return TRUE;
 	}
 	sgbSyncCountdown--;
-	sgbPacketCountdown = byte_679704;
+	sgbPacketCountdown = sgbNetUpdateRate;
 	if (sgbSyncCountdown != 0) {
-	
+
 		*pfSendAsync = TRUE;
 		last_tick += 50;
 		return TRUE;
 	}
-	if (!SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
+	if (!SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, gdwMsgLenTbl, (LPDWORD)player_state)) {
 		if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
 			nthread_terminate_game("SNetReceiveTurns");
-		byte_679758 = 0;
+		sgbTicsOutOfSync = FALSE;
 		sgbSyncCountdown = 1;
 		sgbPacketCountdown = 1;
 		return 0;
-		}
-	else{
-
-		if (!byte_679758) {
-			byte_679758 = 1;
+	} else {
+		if (!sgbTicsOutOfSync) {
+			sgbTicsOutOfSync = TRUE;
 			last_tick = GetTickCount();
 		}
 		sgbSyncCountdown = 4;
@@ -108,11 +104,6 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 		return TRUE;
 	}
 }
-// 679704: using guessed type char byte_679704;
-// 679750: using guessed type char sgbSyncCountdown;
-// 679758: using guessed type char byte_679758;
-// 679759: using guessed type char sgbPacketCountdown;
-// 679764: using guessed type int last_tick;
 
 void nthread_set_turn_upper_bit()
 {
@@ -121,16 +112,14 @@ void nthread_set_turn_upper_bit()
 
 void nthread_start(BOOL set_turn_upper_bit)
 {
-	char *err;                   // eax
-	unsigned int largestMsgSize; // esi
-	unsigned int normalMsgSize;  // eax
-	char *err2;                  // eax
-	_SNETCAPS caps;              // [esp+8h] [ebp-24h]
+	char *err, *err2;
+	DWORD largestMsgSize;
+	_SNETCAPS caps;
 
 	last_tick = GetTickCount();
 	sgbPacketCountdown = 1;
 	sgbSyncCountdown = 1;
-	byte_679758 = 1;
+	sgbTicsOutOfSync = TRUE;
 	if (set_turn_upper_bit)
 		nthread_set_turn_upper_bit();
 	else
@@ -143,33 +132,33 @@ void nthread_start(BOOL set_turn_upper_bit)
 	gdwTurnsInTransit = caps.defaultturnsintransit;
 	if (!caps.defaultturnsintransit)
 		gdwTurnsInTransit = 1;
-	if (caps.defaultturnssec <= 0x14u && caps.defaultturnssec)
-		byte_679704 = 0x14u / caps.defaultturnssec;
+	if (caps.defaultturnssec <= 20 && caps.defaultturnssec)
+		sgbNetUpdateRate = 20 / caps.defaultturnssec;
 	else
-		byte_679704 = 1;
+		sgbNetUpdateRate = 1;
 	largestMsgSize = 512;
-	if (caps.maxmessagesize < 0x200u)
+	if (caps.maxmessagesize < 0x200)
 		largestMsgSize = caps.maxmessagesize;
-	gdwDeltaBytesSec = (unsigned int)caps.bytessec >> 2;
+	gdwDeltaBytesSec = caps.bytessec >> 2;
 	gdwLargestMsgSize = largestMsgSize;
-	gdwNormalMsgSize = caps.bytessec * (unsigned int)(unsigned char)byte_679704 / 0x14;
+	gdwNormalMsgSize = caps.bytessec * sgbNetUpdateRate / 20;
 	gdwNormalMsgSize *= 3;
-	gdwNormalMsgSize = gdwNormalMsgSize >> 2;
-	if (caps.maxplayers > 4u)
-		caps.maxplayers = 4;
+	gdwNormalMsgSize >>= 2;
+	if (caps.maxplayers > MAX_PLRS)
+		caps.maxplayers = MAX_PLRS;
 	gdwNormalMsgSize /= caps.maxplayers;
-	while (gdwNormalMsgSize < 0x80){
-			gdwNormalMsgSize *= 2;
-			byte_679704 *= 2;
+	while (gdwNormalMsgSize < 0x80) {
+		gdwNormalMsgSize *= 2;
+		sgbNetUpdateRate *= 2;
 	}
 	if (gdwNormalMsgSize > largestMsgSize)
 		gdwNormalMsgSize = largestMsgSize;
-	if ((unsigned char)gbMaxPlayers > 1u) {
-		sgbThreadIsRunning = 0;
+	if (gbMaxPlayers > 1) {
+		sgbThreadIsRunning = FALSE;
 #ifdef __cplusplus
 		sgMemCrit.Enter();
 #endif
-		nthread_should_run = 1;
+		nthread_should_run = TRUE;
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &glpNThreadId);
 		if (sghThread == INVALID_HANDLE_VALUE) {
 			err2 = TraceLastError();
@@ -213,7 +202,7 @@ unsigned int __stdcall nthread_handler(void *a1)
 
 void nthread_cleanup()
 {
-	nthread_should_run = 0;
+	nthread_should_run = FALSE;
 	gdwTurnsInTransit = 0;
 	gdwNormalMsgSize = 0;
 	gdwLargestMsgSize = 0;

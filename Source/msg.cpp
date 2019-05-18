@@ -149,7 +149,6 @@ int msg_wait_for_turns()
 // 67618D: using guessed type char sgbDeltaChunks;
 // 67862D: using guessed type char gbGameDestroyed;
 // 6796E4: using guessed type char gbDeltaSender;
-// 679738: using guessed type int gdwTurnsInTransit;
 
 void msg_process_net_packets()
 {
