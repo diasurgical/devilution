@@ -126,28 +126,32 @@ void log_get_version(VS_FIXEDFILEINFO *file_info)
 
 void __cdecl log_printf(const char *pszFmt, ...)
 {
-	size_t v1;    // edi
-	char *v2;     // eax
-	char v3[512]; // [esp+Ch] [ebp-200h]
-	va_list va;   // [esp+218h] [ebp+Ch]
+	size_t size;
+	char *pBuffer;
+	char msg[512];
+	va_list va;
 
-	va_start(va, pszFmt);
 #ifdef __cplusplus
 	sgMemCrit.Enter();
 #endif
-	_vsnprintf(v3, 0x200u, pszFmt, va);
+	va_start(va, pszFmt);
+	_vsnprintf(msg, 0x200u, pszFmt, va);
 	va_end(va);
-	v3[511] = 0;
-	v1 = strlen(v3);
-	if (v1 + nNumberOfBytesToWrite > 0x1000)
+	msg[511] = 0;
+	size = strlen(msg);
+	if (size + nNumberOfBytesToWrite > 0x1000) {
 		log_flush(0);
-	v2 = (char *)lpAddress;
-	if (lpAddress
-	    || (v2 = (char *)VirtualAlloc((LPVOID)lpAddress, 0x1000u, 0x1000u, 4u),
-	           nNumberOfBytesToWrite = 0,
-	           (lpAddress = v2) != 0)) {
-		memcpy(&v2[nNumberOfBytesToWrite], v3, v1);
-		nNumberOfBytesToWrite += v1;
+	}
+
+	if (lpAddress == NULL) {
+		lpAddress = (char *)VirtualAlloc((LPVOID)lpAddress, 0x1000, MEM_COMMIT, PAGE_READWRITE);
+		pBuffer = (char *)lpAddress;
+		nNumberOfBytesToWrite = 0;
+	}
+	if (lpAddress != NULL) {
+		pBuffer = (char *)lpAddress;
+		memcpy(&pBuffer[nNumberOfBytesToWrite], msg, size);
+		nNumberOfBytesToWrite += size;
 	}
 #ifdef __cplusplus
 	sgMemCrit.Leave();
