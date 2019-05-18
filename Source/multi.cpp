@@ -227,7 +227,7 @@ void multi_parse_turn(int pnum, int turn)
 		if (absTurns >= 0x7FFFFFFF)
 			absTurns &= 0xFFFF;
 		sgbSentThisCycle = absTurns + gdwTurnsInTransit;
-		sgdwGameLoops = 4 * absTurns * (BYTE)byte_679704;
+		sgdwGameLoops = 4 * absTurns * sgbNetUpdateRate;
 	}
 }
 
@@ -627,12 +627,12 @@ void multi_event_handler(BOOL add)
 
 void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 {
-	int LeftReason;
-	int *data;
+	DWORD LeftReason;
+	DWORD *data;
 
 	switch (pEvt->eventid) {
 	case EVENT_TYPE_PLAYER_CREATE_GAME:
-		data = (int *)pEvt->data;
+		data = (DWORD *)pEvt->data;
 		sgGameInitInfo.dwSeed = data[0];
 		sgGameInitInfo.bDiff = data[1];
 		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
@@ -641,7 +641,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
 		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
 		LeftReason = 0;
-		data = (int *)pEvt->data;
+		data = (DWORD *)pEvt->data;
 		if (data && (DWORD)pEvt->databytes >= 4)
 			LeftReason = data[0];
 		sgdwPlayerLeftReasonTbl[pEvt->playerid] = LeftReason;
