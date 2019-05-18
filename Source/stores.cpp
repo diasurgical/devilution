@@ -1,37 +1,37 @@
 #include "diablo.h"
 
-int stextup;    // weak
-int storenumh;  // weak
-int stextlhold; // weak
+int stextup;
+int storenumh;
+int stextlhold;
 ItemStruct boyitem;
-int stextshold; // idb
+int stextshold;
 ItemStruct premiumitem[6];
 void *pSTextBoxCels;
-int premiumlevel; // idb
-int talker;       // weak
+int premiumlevel;
+int talker;
 STextStruct stext[24];
 char stextsize;
-int stextsmax;   // weak
-int InStoreFlag; // idb
+int stextsmax;
+int InStoreFlag;
 ItemStruct storehold[48];
-int gossipstart; // weak
+int gossipstart;
 ItemStruct witchitem[20];
 BOOL stextscrl;
-int numpremium; // idb
+int numpremium;
 ItemStruct healitem[20];
 ItemStruct golditem;
 char storehidx[48];
 void *pSTextSlidCels;
-int stextvhold;     // weak
-int stextsel;       // weak
-char stextscrldbtn; // weak
-int gossipend;      // weak
+int stextvhold;
+int stextsel;
+char stextscrldbtn;
+int gossipend;
 BYTE *pCelBuff;
-int stextsval; // idb
-int boylevel;  // weak
+int stextsval;
+int boylevel;
 ItemStruct smithitem[20];
-int stextdown;      // weak
-char stextscrlubtn; // weak
+int stextdown;
+char stextscrlubtn;
 char stextflag;
 
 int SStringY[24] = {
@@ -1634,7 +1634,7 @@ void STextESC()
 		case STORE_TAVERN:
 		case STORE_DRUNK:
 		case STORE_BARMAID:
-			stextflag = 0;
+			stextflag = STORE_NONE;
 			break;
 		case STORE_GOSSIP:
 			StartStore(stextshold);
@@ -1689,11 +1689,6 @@ void STextESC()
 		}
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6AA705: using guessed type char stextflag;
 
 void STextUp()
 {
@@ -1806,7 +1801,7 @@ void S_SmithEnter()
 	case 10:
 		talker = 0;
 		stextlhold = 10;
-		stextshold = 1;
+		stextshold = STORE_SMITH;
 		gossipstart = QUEST_GRISWOLD2;
 		gossipend = QUEST_GRISWOLD13;
 		StartStore(STORE_GOSSIP);
@@ -1946,7 +1941,7 @@ void S_SBuyEnter()
 	} else {
 		stextlhold = stextsel;
 		stextvhold = stextsval;
-		stextshold = 2;
+		stextshold = STORE_SBUY;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold < smithitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
@@ -1999,7 +1994,7 @@ void S_SPBuyEnter()
 		StartStore(STORE_SMITH);
 		stextsel = 14;
 	} else {
-		stextshold = 18;
+		stextshold = STORE_SPBUY;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		xx = stextsval + ((stextsel - stextup) >> 2);
@@ -2139,7 +2134,7 @@ void S_SSellEnter()
 	} else {
 		stextlhold = stextsel;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		stextshold = 3;
+		stextshold = STORE_SSELL;
 		stextvhold = stextsval;
 		plr[myplr].HoldItem = storehold[idx];
 
@@ -2182,7 +2177,7 @@ void S_SRepairEnter()
 		StartStore(STORE_SMITH);
 		stextsel = 18;
 	} else {
-		stextshold = 4;
+		stextshold = STORE_SREPAIR;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		idx = stextsval + ((stextsel - stextup) >> 2);
@@ -2200,7 +2195,7 @@ void S_WitchEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 6;
-		stextshold = 5;
+		stextshold = STORE_WITCH;
 		gossipstart = QUEST_ADRIA2;
 		gossipend = QUEST_ADRIA13;
 		StartStore(STORE_GOSSIP);
@@ -2257,7 +2252,7 @@ void S_WBuyEnter()
 	} else {
 		stextlhold = stextsel;
 		stextvhold = stextsval;
-		stextshold = 6;
+		stextshold = STORE_WBUY;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 
 		if (plr[myplr]._pGold < witchitem[idx]._iIvalue) {
@@ -2291,7 +2286,7 @@ void S_WSellEnter()
 	} else {
 		stextlhold = stextsel;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		stextshold = 7;
+		stextshold = STORE_WSELL;
 		stextvhold = stextsval;
 		plr[myplr].HoldItem = storehold[idx];
 		if (StoreGoldFit(idx))
@@ -2327,7 +2322,7 @@ void S_WRechargeEnter()
 		StartStore(STORE_WITCH);
 		stextsel = 18;
 	} else {
-		stextshold = 8;
+		stextshold = STORE_WRECHARGE;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		idx = stextsval + ((stextsel - stextup) >> 2);
@@ -2343,7 +2338,7 @@ void S_BoyEnter()
 {
 	if (boyitem._itype != ITYPE_NONE && stextsel == 18) {
 		if (plr[myplr]._pGold < 50) {
-			stextshold = 12;
+			stextshold = STORE_BOY;
 			stextlhold = 18;
 			stextvhold = stextsval;
 			StartStore(STORE_NOMONEY);
@@ -2353,7 +2348,7 @@ void S_BoyEnter()
 		}
 	} else if (stextsel == 8 && boyitem._itype != ITYPE_NONE || stextsel == 12 && boyitem._itype == ITYPE_NONE) {
 		talker = 8;
-		stextshold = 12;
+		stextshold = STORE_BOY;
 		stextlhold = stextsel;
 		gossipstart = QUEST_WIRT2;
 		gossipend = QUEST_WIRT12;
@@ -2368,7 +2363,7 @@ void BoyBuyItem()
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	StoreAutoPlace();
 	boyitem._itype = ITYPE_NONE;
-	stextshold = 12;
+	stextshold = STORE_BOY;
 	CalcPlrInv(myplr, 1);
 }
 
@@ -2426,7 +2421,7 @@ void S_BBuyEnter()
 	if (stextsel == 10) {
 		stextlhold = 10;
 		stextvhold = stextsval;
-		stextshold = 13;
+		stextshold = STORE_BBOY;
 		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
 			StartStore(STORE_NOMONEY);
 		} else {
@@ -2524,7 +2519,7 @@ void S_HealerEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 1;
-		stextshold = 14;
+		stextshold = STORE_HEALER;
 		gossipstart = QUEST_PEPIN2;
 		gossipend = QUEST_PEPIN11;
 		StartStore(STORE_GOSSIP);
@@ -2556,7 +2551,7 @@ void S_HBuyEnter()
 	} else {
 		stextlhold = stextsel;
 		stextvhold = stextsval;
-		stextshold = 16;
+		stextshold = STORE_HBUY;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold < healitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
@@ -2583,7 +2578,7 @@ void S_StoryEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 4;
-		stextshold = 15;
+		stextshold = STORE_STORY;
 		gossipstart = QUEST_STORY2;
 		gossipend = QUEST_STORY11;
 		StartStore(STORE_GOSSIP);
@@ -2605,7 +2600,7 @@ void S_SIDEnter()
 		StartStore(STORE_STORY);
 		stextsel = 14;
 	} else {
-		stextshold = 17;
+		stextshold = STORE_SIDENTIFY;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		idx = stextsval + ((stextsel - stextup) >> 2);
@@ -2663,7 +2658,7 @@ void S_TavernEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 3;
-		stextshold = 21;
+		stextshold = STORE_TAVERN;
 		gossipstart = QUEST_OGDEN2;
 		gossipend = QUEST_OGDEN10;
 		StartStore(STORE_GOSSIP);
@@ -2680,7 +2675,7 @@ void S_BarmaidEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 7;
-		stextshold = 23;
+		stextshold = STORE_BARMAID;
 		gossipstart = QUEST_GILLIAN2;
 		gossipend = QUEST_GILLIAN10;
 		StartStore(STORE_GOSSIP);
@@ -2697,7 +2692,7 @@ void S_DrunkEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 5;
-		stextshold = 22;
+		stextshold = STORE_DRUNK;
 		gossipstart = QUEST_FARNHAM2;
 		gossipend = QUEST_FARNHAM13;
 		StartStore(STORE_GOSSIP);
