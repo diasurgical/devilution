@@ -910,7 +910,7 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 
 void LoadDiabMonsts()
 {
-	unsigned char *lpSetPiece;
+	BYTE *lpSetPiece;
 
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
 	SetMapMonsters(lpSetPiece, 2 * diabquad1x, 2 * diabquad1y);
