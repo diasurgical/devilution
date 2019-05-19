@@ -2,60 +2,46 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int codec_decode(void *pbSrcDst, int size, char *pszPassword)
+int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 {
-	unsigned int v3; // ebx
-	char *v4;        // esi
-	INT_PTR v5;      // ebx
-	signed int v7;   // ecx
-	int v8;          // esi
-	char v9[128];    // [esp+8h] [ebp-98h]
-	char dst[20];    // [esp+88h] [ebp-18h]
-	int v11;         // [esp+9Ch] [ebp-4h]
-	char *passworda; // [esp+A8h] [ebp+8h]
+	char buf[128];
+	char dst[20];
+	int i;
 
-	v3 = size;
-	v4 = (char *)pbSrcDst;
 	codec_init_key(0, pszPassword);
-	if (v3 <= 8)
+	if (size <= 8)
 		return 0;
-	v5 = v3 - 8;
-	v11 = v5;
-	if (v5 & 0x3F)
+	size = size - 8;
+	if (size % 64 != 0)
 		return 0;
-	passworda = (char *)v5;
-	if (v5) {
-		do {
-			memcpy(v9, v4, 0x40u);
-			SHA1Result(0, dst);
-			v7 = 0;
-			do {
-				v9[v7] ^= dst[v7 % 20];
-				++v7;
-			} while (v7 < 64);
-			SHA1Calculate(0, v9, NULL);
-			memset(dst, 0, sizeof(dst));
-			memcpy(v4, v9, 0x40u);
-			v4 += 64;
-			passworda -= 64;
-		} while (passworda);
-		v5 = v11;
-	}
-	memset(v9, 0, sizeof(v9));
-	if (!v4[4]) {
+	for (i = size; i != 0; pbSrcDst += 64, i -= 64) {
+		memcpy(buf, pbSrcDst, 64);
 		SHA1Result(0, dst);
-		if (*(_DWORD *)v4 == *(_DWORD *)dst) {
-			v8 = v5 + (unsigned char)v4[5] - 64;
-			goto LABEL_14;
+		for (int j = 0; j < 64; j++) {
+			buf[j] ^= dst[j % 20];
 		}
+		SHA1Calculate(0, buf, NULL);
 		memset(dst, 0, sizeof(dst));
+		memcpy(pbSrcDst, buf, 64);
 	}
-	v8 = 0;
-LABEL_14:
-	SHA1Clear();
-	return v8;
+
+	memset(buf, 0, sizeof(buf));
+	if (pbSrcDst[4] > 0) {
+		size = 0;
+		SHA1Clear();
+	} else {
+		SHA1Result(0, dst);
+		if (*(DWORD *)pbSrcDst != *(DWORD *)dst) {
+			memset(dst, 0, sizeof(dst));
+			size = 0;
+			SHA1Clear();
+		} else {
+			size += pbSrcDst[5] - 64;
+			SHA1Clear();
+		}
+	}
+	return size;
 }
-// 4034D9: using guessed type char var_98[128];
 
 void codec_init_key(int unused, char *pszPassword)
 {
@@ -96,61 +82,50 @@ void codec_init_key(int unused, char *pszPassword)
 // 4035DB: using guessed type char var_58[64];
 // 4035DB: using guessed type char dst[20];
 
-int codec_get_encoded_len(int dwSrcBytes)
+DWORD codec_get_encoded_len(DWORD dwSrcBytes)
 {
-	if (dwSrcBytes & 0x3F)
-		dwSrcBytes += 64 - (dwSrcBytes & 0x3F);
+	if (dwSrcBytes % 64 != 0)
+		dwSrcBytes += 64 - (dwSrcBytes % 64);
 	return dwSrcBytes + 8;
 }
 
-void codec_encode(void *pbSrcDst, int size, int size_64, char *pszPassword)
+void codec_encode(BYTE* pbSrcDst, DWORD size, int size_64, char *pszPassword)
 {
-	char *v4;      // esi
-	char v5;       // bl
-	size_t v6;     // edi
-	signed int v7; // ecx
-	char v9[128];  // [esp+8h] [ebp-ACh]
-	char v10[20];  // [esp+88h] [ebp-2Ch]
-	char dst[20];  // [esp+9Ch] [ebp-18h]
-	size_t v12;    // [esp+B0h] [ebp-4h]
+	char buf[128];
+	char tmp[20];
+	char dst[20];
+	DWORD chunk;
+	WORD last_chunk;
 
-	v4 = (char *)pbSrcDst;
-	v12 = size;
 	if (size_64 != codec_get_encoded_len(size))
 		app_fatal("Invalid encode parameters");
 	codec_init_key(1, pszPassword);
-	v5 = 0;
-	if (v12) {
-		do {
-			v6 = v12;
-			if (v12 >= 0x40)
-				v6 = 64;
-			memcpy(v9, v4, v6);
-			if (v6 < 0x40)
-				memset(&v9[v6], 0, 64 - v6);
-			SHA1Result(0, dst);
-			SHA1Calculate(0, v9, NULL);
-			v7 = 0;
-			do {
-				v9[v7] ^= dst[v7 % 20];
-				++v7;
-			} while (v7 < 64);
-			memset(dst, 0, sizeof(dst));
-			memcpy(v4, v9, 0x40u);
-			v4 += 64;
-			v12 -= v6;
-		} while (v12);
-		v5 = v6;
+
+	last_chunk = 0;
+	while (size != 0) {
+		chunk = size < 64 ? size : 64;
+		memcpy(buf, pbSrcDst, chunk);
+		if (chunk < 64)
+			memset(buf + chunk, 0, 64 - chunk);
+		SHA1Result(0, dst);
+		SHA1Calculate(0, buf, NULL);
+		for (int j = 0; j < 64; j++) {
+			buf[j] ^= dst[j % 20];
+		}
+		memset(dst, 0, sizeof(dst));
+		memcpy(pbSrcDst, buf, 64);
+		last_chunk = chunk;
+		pbSrcDst += 64;
+		size -= chunk;
 	}
-	memset(v9, 0, sizeof(v9));
-	SHA1Result(0, v10);
-	v4[4] = 0;
-	*((_WORD *)v4 + 3) = 0;
-	*(_DWORD *)v4 = *(_DWORD *)v10;
-	v4[5] = v5;
+	memset(buf, 0, sizeof(buf));
+	SHA1Result(0, tmp);
+	pbSrcDst[4] = 0;
+	((WORD *)pbSrcDst)[3] = 0;
+	((DWORD *)pbSrcDst)[0] = ((DWORD *)tmp)[0];
+	pbSrcDst[5] = last_chunk;
 	SHA1Clear();
 }
-// 4036BE: using guessed type char var_AC[128];
-// 4036BE: using guessed type char dst[20];
 
 DEVILUTION_END_NAMESPACE
+
