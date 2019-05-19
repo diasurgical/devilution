@@ -587,7 +587,7 @@ void multi_send_zero_packet(DWORD pnum, char a2, void *pbSrc, DWORD dwLen)
 			return;
 		}
 		pbSrc = (char *)pbSrc + *(unsigned short *)&pkt.body[3];
-		dwLen -= *(unsigned short *)&pkt.body[3];
+		dwLen -= *(WORD *)&pkt.body[3];
 		v5 += *(_WORD *)&pkt.body[3];
 	}
 }
