@@ -9,10 +9,10 @@ int monstactive[MAXMONSTERS];
 int nummonsters;
 BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
-int totalmonsters; // weak
+int totalmonsters;
 CMonster Monsters[16];
 // int END_Monsters_17; // weak
-int monstimgtot; // weak
+int monstimgtot;
 int uniquetrans;
 int nummtypes;
 
@@ -59,7 +59,6 @@ int rnd5[4] = { 5, 10, 15, 20 };
 int rnd10[4] = { 10, 15, 20, 30 };
 int rnd20[4] = { 20, 30, 40, 50 };
 int rnd60[4] = { 60, 70, 80, 90 };
-//
 
 void(*AiProc[])(int i) = {
 	&MAI_Zombie,
@@ -99,7 +98,7 @@ void(*AiProc[])(int i) = {
 void InitMonsterTRN(int monst, BOOL special)
 {
 	BYTE *f;
-	int i, n, j, k;
+	int i, n, j;
 
 	f = Monsters[monst].trans_file;
 	for (i = 0; i < 256; i++) {
@@ -110,13 +109,13 @@ void InitMonsterTRN(int monst, BOOL special)
 	}
 
 	n = special ? 6 : 5;
-	for (j = 0; j < n; ++j) {
-		if (j != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE) {
-			for (k = 0; k < 8; k++) {
+	for (i = 0; i < n; i++) {
+		if (i != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE) {
+			for (j = 0; j < 8; j++) {
 				Cl2ApplyTrans(
-				    Monsters[monst].Anims[j].Data[k],
+				    Monsters[monst].Anims[i].Data[j],
 				    Monsters[monst].trans_file,
-				    Monsters[monst].Anims[j].Frames);
+				    Monsters[monst].Anims[i].Frames);
 			}
 		}
 	}
@@ -274,8 +273,7 @@ void InitMonsterGFX(int monst)
 {
 	int mtype, anim, i;
 	char strBuff[256];
-	unsigned char *celBuf;
-	void *trans_file;
+	BYTE *celBuf;
 
 	mtype = (unsigned char)Monsters[monst].mtype;
 
@@ -314,11 +312,7 @@ void InitMonsterGFX(int monst)
 	if (monsterdata[mtype].has_trans) {
 		Monsters[monst].trans_file = LoadFileInMem(monsterdata[mtype].TransFile, NULL);
 		InitMonsterTRN(monst, monsterdata[mtype].has_special);
-
-		trans_file = Monsters[monst].trans_file;
-		Monsters[monst].trans_file = NULL;
-
-		mem_free_dbg(trans_file);
+		MemFreeDbg(Monsters[monst].trans_file);
 	}
 
 	if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1)) {
@@ -767,7 +761,7 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 void PlaceQuestMonsters()
 {
 	int skeltype;
-	unsigned char *setp;
+	BYTE *setp;
 
 	if (!setlevel) {
 		if (QuestStatus(QTYPE_BUTCH)) {
@@ -829,10 +823,8 @@ void PlaceQuestMonsters()
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
-	} else {
-		if (setlvlnum == SL_SKELKING) {
-			PlaceUniqueMonst(UMT_SKELKING, 0, 0);
-		}
+	} else if (setlvlnum == SL_SKELKING) {
+		PlaceUniqueMonst(UMT_SKELKING, 0, 0);
 	}
 }
 
@@ -918,7 +910,7 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 
 void LoadDiabMonsts()
 {
-	unsigned char *lpSetPiece; // esi
+	unsigned char *lpSetPiece;
 
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
 	SetMapMonsters(lpSetPiece, 2 * diabquad1x, 2 * diabquad1y);
@@ -933,8 +925,6 @@ void LoadDiabMonsts()
 	SetMapMonsters(lpSetPiece, 2 * diabquad4x, 2 * diabquad4y);
 	mem_free_dbg(lpSetPiece);
 }
-// 5289C4: using guessed type int diabquad1x;
-// 5289C8: using guessed type int diabquad1y;
 
 void InitMonsters()
 {
@@ -1003,10 +993,6 @@ void InitMonsters()
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
-// 658550: using guessed type int totalmonsters;
-// 679660: using guessed type char gbMaxPlayers;
-// 432637: using guessed type int var_1BC[111];
 
 void PlaceUniques()
 {
@@ -1078,7 +1064,6 @@ void SetMapMonsters(unsigned char *pMap, int startx, int starty)
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void DeleteMonster(int i)
 {
@@ -1210,7 +1195,6 @@ void M_Enemy(int i)
 		Monst->_mFlags |= MFLAG_NO_ENEMY;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int M_GetDir(int i)
 {
@@ -1591,7 +1575,6 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 	Monst->_mVar5 = (int) ((j - (Monst->_mx << 16)) / (double)dist);
 	Monst->_mVar6 = (int) ((k - (Monst->_my << 16)) / (double)dist);
 }
-// 64D32C: using guessed type int sgbSaveSoundOn;
 
 void M2MStartHit(int mid, int i, int dam)
 {
@@ -2176,7 +2159,6 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL M_DoAttack(int i)
 {
@@ -2454,11 +2436,6 @@ int M_DoTalk(int i)
 	}
 	return FALSE;
 }
-// 4351F5: could not find valid save-restore pair for ebp
-// 5A5590: using guessed type char TransVal;
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
-// 679660: using guessed type char gbMaxPlayers;
 
 void M_Teleport(int i)
 {
@@ -2576,7 +2553,6 @@ void DoEnding()
 	sound_get_or_set_music_volume(musicVolume);
 	gbMusicOn = bMusicOn;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void PrepDoEnding()
 {
@@ -2605,9 +2581,6 @@ void PrepDoEnding()
 		}
 	}
 }
-// 525718: using guessed type char cineflag;
-// 64D32C: using guessed type int sgbSaveSoundOn;
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL M_DoDeath(int i)
 {
@@ -3327,7 +3300,6 @@ void MAI_Sneak(int i)
 		}
 	}
 }
-// 642A14: using guessed type char lightmax;
 
 void MAI_Fireman(int i)
 {
@@ -4338,8 +4310,6 @@ void MAI_SnotSpil(int i)
 	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void MAI_Lazurus(int i)
 {
@@ -4390,7 +4360,6 @@ void MAI_Lazurus(int i)
 	if (monster[i]._mmode == MM_STAND || monster[i]._mmode == MM_TALK)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void MAI_Lazhelp(int i)
 {
@@ -4425,7 +4394,6 @@ void MAI_Lazhelp(int i)
 	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void MAI_Lachdanan(int i)
 {
@@ -4665,7 +4633,6 @@ void ProcessMonsters()
 
 	DeleteMonsterList();
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void FreeMonsters()
 {
@@ -5274,14 +5241,14 @@ BOOL PosOkMonst2(int i, int x, int y)
 	BOOL ret, fire;
 
 	fire = FALSE;
-	ret = !SolidLoc(x, y); //12-15
+	ret = !SolidLoc(x, y);
 	if (ret && dObject[x][y]) {
 		oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
 		if (object[oi]._oSolidFlag)
 			ret = FALSE;
 	}
 
-	if (ret && dMissile[x][y] && i >= 0) { //37
+	if (ret && dMissile[x][y] && i >= 0) {
 		mi = dMissile[x][y];
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) {
