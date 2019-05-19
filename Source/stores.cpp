@@ -141,101 +141,57 @@ void DrawSTextBack()
 
 void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 {
-	int v6;            // edi
-	int v7;            // eax
-	int v8;            // ebx
-	int v9;            // esi
-	int v10;           // esi
-	int v11;           // ecx
-	int v12;           // eax
-	int v13;           // edx
-	int v14;           // ecx
-	unsigned char v15; // al
-	int v16;           // ebx
-	int v17;           // ecx
-	int v18;           // eax
-	int v19;           // esi
-	size_t v20;        // ebx
-	unsigned char v21; // edx
-	int v22;           // ecx
-	char valstr[32];   // [esp+Ch] [ebp-3Ch]
-	int v24;           // [esp+2Ch] [ebp-1Ch]
-	int v25;           // [esp+30h] [ebp-18h]
-	int v26;           // [esp+34h] [ebp-14h]
-	int v27;           // [esp+38h] [ebp-10h]
-	int v28;           // [esp+3Ch] [ebp-Ch]
-	int v29;           // [esp+40h] [ebp-8h]
-	int v30;           // [esp+44h] [ebp-4h]
+	int xx, yy;
+	int len, width, off, i, k, s;
+	BYTE c;
+	char valstr[32];
 
-	v6 = SStringY[y] + stext[y]._syoff;
-	v7 = -(stextsize != 0);
-	v8 = x;
-	v9 = PitchTbl[v6 + 204];
-	_LOWORD(v7) = v7 & 0xFEC0;
-	v24 = y;
-	v26 = x;
-	v27 = v7 + 416;
-	v10 = x + v7 + 416 + v9;
-	v28 = strlen(str);
-	v11 = 0;
-	v25 = stextsize != 0 ? 577 : 257;
-	v30 = 0;
+	s = SStringY[y] + stext[y]._syoff;
+	if (stextsize)
+		xx = 96;
+	else
+		xx = 416;
+	off = xx + x + PitchTbl[s + 204];
+	len = strlen(str);
+	if (stextsize)
+		yy = 577;
+	else
+		yy = 257;
+	k = 0;
 	if (cjustflag) {
-		v12 = 0;
-		if (v28 > 0) {
-			do {
-				v13 = (unsigned char)str[v11++];
-				v12 += fontkern[fontframe[gbFontTransTbl[v13]]] + 1;
-			} while (v11 < v28);
+		width = 0;
+		for (i = 0; i < len; i++)
+			width += fontkern[fontframe[gbFontTransTbl[(BYTE)str[i]]]] + 1;
+		if (width < yy)
+			k = (yy - width) >> 1;
+		off += k;
+	}
+	if (stextsel == y) {
+		CelDecodeOnly(cjustflag ? xx + x + k - 20 : xx + x - 20, s + 205, pCelBuff, InStoreFlag, 12);
+	}
+	for (i = 0; i < len; i++) {
+		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
+		k += fontkern[c] + 1;
+		if (c && k <= yy) {
+			CPrintString(off, c, col);
 		}
-		if (v12 < v25)
-			v30 = (v25 - v12) >> 1;
-		v10 += v30;
-	}
-	if (stextsel == v24) {
-		if (cjustflag)
-			v14 = v27 + v30 + v8 - 20;
-		else
-			v14 = v27 + v8 - 20;
-		CelDecodeOnly(v14, v6 + 205, pCelBuff, InStoreFlag, 12);
-	}
-	v29 = 0;
-	if (v28 > 0) {
-		do {
-			v15 = fontframe[gbFontTransTbl[(unsigned char)str[v29]]];
-			v16 = v15;
-			v17 = v30 + fontkern[v15] + 1;
-			v30 += fontkern[v15] + 1;
-			if (v15 && v17 <= v25)
-				CPrintString(v10, v15, col);
-			v18 = fontkern[v16];
-			++v29;
-			v10 += v18 + 1;
-		} while (v29 < v28);
-		v8 = v26;
+		off += fontkern[c] + 1;
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		v19 = PitchTbl[v6 + 204] - v8 + 656;
-		v20 = strlen(valstr);
-		while ((--v20 & 0x80000000) == 0) {
-			v21 = fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]];
-			v19 += -1 - fontkern[v21];
-			if (fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]])
-				CPrintString(v19, v21, col);
+		off = PitchTbl[s + 204] + 656 - x;
+		for (i = strlen(valstr) - 1; i >= 0; i--) {
+			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
+			off -= fontkern[c] + 1;
+			if (c) {
+				CPrintString(off, c, col);
+			}
 		}
-		v8 = v26;
 	}
-	if (stextsel == v24) {
-		if (cjustflag)
-			v22 = v27 + v30 + v8 + 4;
-		else
-			v22 = 660 - v8;
-		CelDecodeOnly(v22, v6 + 205, pCelBuff, InStoreFlag, 12);
+	if (stextsel == y) {
+		CelDecodeOnly(cjustflag ? xx + x + k + 4 : 660 - x, s + 205, pCelBuff, InStoreFlag, 12);
 	}
 }
-// 6A8A28: using guessed type int stextsel;
-// 457BD6: using guessed type char valstr[32];
 
 void DrawSLine(int y)
 {
