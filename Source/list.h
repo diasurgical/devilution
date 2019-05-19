@@ -162,7 +162,7 @@ void TList<T>::UnlinkAll()
 {
 	for (;;) {
 		T *node = m_link.Next();
-		if ((int)node <= 0)
+		if ((intptr_t)node <= 0)
 			break;
 		node->m_Link.Unlink();
 	}
@@ -196,17 +196,17 @@ public:
 
 	T *Next()
 	{
-		if ((int)m_nextNode <= 0)
+		if ((intptr_t)m_nextNode <= 0)
 			return NULL;
 		return m_nextNode;
 	}
 
 	TLink<T> *NextLink(size_t offset = -1)
 	{
-		if ((int)m_nextNode <= 0)
+		if ((intptr_t)m_nextNode <= 0)
 			return (TLink<T> *)~((size_t)m_nextNode);
 
-		if ((int)offset < 0) {
+		if ((intptr_t)offset < 0) {
 			// Calculate the offset from a node pointer to a link structure
 			offset = (size_t)this - (size_t)m_prevLink->m_nextNode;
 		}
