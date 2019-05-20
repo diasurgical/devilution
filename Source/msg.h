@@ -53,7 +53,7 @@ void NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam);
 void NetSendCmdString(int pmask, const char *pszStr);
 void RemovePlrPortal(int pnum);
 int ParseCmd(int pnum, TCmd *pCmd);
-int On_DLEVEL(int pnum, TCmdPlrInfoHdr *pCmd);
+int On_DLEVEL(int pnum, TCmd *pCmd);
 void DeltaImportData(BYTE cmd, DWORD recv_offset);
 BYTE *DeltaImportItem(BYTE *src, TCmdPItem *dst);
 BYTE *DeltaImportObject(BYTE *src, DObjectStr *dst);
