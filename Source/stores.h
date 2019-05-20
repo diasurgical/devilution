@@ -2,45 +2,45 @@
 #ifndef __STORES_H__
 #define __STORES_H__
 
-extern int stextup;    // weak
-extern int storenumh;  // weak
-extern int stextlhold; // weak
+extern int stextup;
+extern int storenumh;
+extern int stextlhold;
 extern ItemStruct boyitem;
-extern int stextshold; // idb
+extern int stextshold;
 extern ItemStruct premiumitem[6];
 extern void *pSTextBoxCels;
-extern int premiumlevel; // idb
-extern int talker;       // weak
+extern int premiumlevel;
+extern int talker;
 extern STextStruct stext[24];
 extern char stextsize;
-extern int stextsmax;   // weak
-extern int InStoreFlag; // idb
+extern int stextsmax;
+extern int InStoreFlag;
 extern ItemStruct storehold[48];
-extern int gossipstart; // weak
+extern int gossipstart;
 extern ItemStruct witchitem[20];
 extern BOOL stextscrl;
-extern int numpremium; // idb
+extern int numpremium;
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
 extern char storehidx[48];
 extern void *pSTextSlidCels;
-extern int stextvhold;     // weak
-extern int stextsel;       // weak
-extern char stextscrldbtn; // weak
-extern int gossipend;      // weak
+extern int stextvhold;
+extern int stextsel;
+extern char stextscrldbtn;
+extern int gossipend;
 extern BYTE *pCelBuff;
-extern int stextsval; // idb
-extern int boylevel;  // weak
+extern int stextsval;
+extern int boylevel;
 extern ItemStruct smithitem[20];
-extern int stextdown;      // weak
-extern char stextscrlubtn; // weak
+extern int stextdown;
+extern char stextscrlubtn;
 extern char stextflag;
 
 void InitStores();
 void SetupTownStores();
 void FreeStoreMem();
 void DrawSTextBack();
-void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val);
+void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val);
 void DrawSLine(int y);
 void DrawSArrows(int y1, int y2);
 void DrawSTextHelp();

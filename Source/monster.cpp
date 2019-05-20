@@ -17,7 +17,7 @@ int uniquetrans;
 int nummtypes;
 
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
-const unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
+const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
 
 /* data */
 
@@ -275,7 +275,7 @@ void InitMonsterGFX(int monst)
 	char strBuff[256];
 	BYTE *celBuf;
 
-	mtype = (unsigned char)Monsters[monst].mtype;
+	mtype = Monsters[monst].mtype;
 
 	for (anim = 0; anim < 6; anim++) {
 		if ((animletter[anim] != 's' || monsterdata[mtype].has_special) && monsterdata[mtype].Frames[anim] > 0) {
@@ -2024,14 +2024,11 @@ void M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 {
 	int hit, hper;
-	int dam;
 	int dx, dy;
 	int blk, blkper;
-	int mdam;
+	int dam, mdam;
 	int newx, newy;
-	int j;
-	int misnum, ms_num, cur_ms_num;
-	int new_hp;
+	int j, misnum, ms_num, cur_ms_num, new_hp;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_TryH2HHit: Invalid monster %d", i);
@@ -5084,118 +5081,75 @@ void PrintUniqueHistory()
 
 void MissToMonst(int i, int x, int y)
 {
-	int v3;            // edi
-	MissileStruct *v4; // edi
-	unsigned int v5;   // ebx
-	MonsterStruct *v6; // esi
-	int v7;            // edx
-	char v8;           // al
-	int v9;            // eax
-	char *v10;         // edi
-	int v11;           // eax
-	int v12;           // edx
-	char v13;          // al
-	char v14;          // al
-	int v15;           // ebx
-	int v16;           // eax
-	int v17;           // esi
-	int v18;           // edi
-	int v19;           // esi
-	int v20;           // edx
-	int *v21;          // ebx
-	char v22;          // cl
-	char v23;          // al
-	int v24;           // esi
-	int v25;           // edi
-	int v26;           // esi
-	int v27;           // eax
-	int v28;           // eax
-	int ia;            // [esp+Ch] [ebp-10h]
-	int v30;           // [esp+10h] [ebp-Ch]
-	int v31;           // [esp+14h] [ebp-8h]
-	int v32;           // [esp+18h] [ebp-4h]
-	int arglist;       // [esp+24h] [ebp+8h]
+	int oldx, oldy;
+	int newx, newy;
+	int m, pnum;
+	MissileStruct *Miss;
+	MonsterStruct *Monst;
 
-	v3 = i;
-	v30 = x;
 	if ((DWORD)i >= MAXMISSILES)
 		app_fatal("MissToMonst: Invalid missile %d", i);
-	v4 = &missile[v3];
-	v5 = v4->_misource;
-	ia = v4->_misource;
-	if (v5 >= MAXMONSTERS)
-		app_fatal("MissToMonst: Invalid monster %d", v5);
-	v32 = v4->_mix;
-	v31 = v4->_miy;
-	v6 = &monster[v5];
-	v6->_mx = v30;
-	dMonster[v30][y] = v5 + 1;
-	v7 = v4->_mimfnum;
-	v6->_mdir = v7;
-	v6->_my = y;
-	M_StartStand(v5, v7);
-	v8 = v6->MType->mtype;
-	if (v8 < MT_INCIN || v8 > MT_HELLBURN) {
-		if (v6->_mFlags & MFLAG_TARGETS_MONSTER)
-			M2MStartHit(v5, -1, 0);
+
+	Miss = &missile[i];
+	m = Miss->_misource;
+
+	if ((DWORD)m >= MAXMONSTERS)
+		app_fatal("MissToMonst: Invalid monster %d", m);
+
+	Monst = &monster[m];
+	oldx = Miss->_mix;
+	oldy = Miss->_miy;
+	dMonster[x][y] = m + 1;
+	Monst->_mdir = Miss->_mimfnum;
+	Monst->_mx = x;
+	Monst->_my = y;
+	M_StartStand(m, Monst->_mdir);
+	if (Monst->MType->mtype < MT_INCIN || Monst->MType->mtype > MT_HELLBURN) {
+		if (!(Monst->_mFlags & MFLAG_TARGETS_MONSTER))
+			M_StartHit(m, -1, 0);
 		else
-			M_StartHit(v5, -1, 0);
+			M2MStartHit(m, -1, 0);
 	} else {
-		M_StartFadein(v5, v6->_mdir, FALSE);
+		M_StartFadein(m, Monst->_mdir, FALSE);
 	}
-	v9 = v32;
-	if (v6->_mFlags & MFLAG_TARGETS_MONSTER) {
-		v21 = (int *)((char *)dMonster + 4 * (v31 + v9 * 112));
-		if (*v21 > 0) {
-			v22 = v6->MType->mtype;
-			if (v22 != MT_GLOOM && (v22 < MT_INCIN || v22 > MT_HELLBURN)) {
-				M_TryM2MHit(ia, *v21 - 1, 500, (unsigned char)v6->mMinDamage2, (unsigned char)v6->mMaxDamage2);
-				v23 = v6->MType->mtype;
-				if (v23 < MT_NSNAKE || v23 > MT_GSNAKE) {
-					v24 = v6->_mdir;
-					v25 = v32 + offset_x[v24];
-					v26 = v31 + offset_y[v24];
-					if (PosOkMonst(*v21 - 1, v25, v26)) {
-						v27 = *v21;
-						dMonster[v25][v26] = *v21;
-						*v21 = 0;
-						v28 = v27 - 1;
-						monster[v28]._mx = v25;
-						monster[v28]._mfutx = v25;
-						monster[v28]._my = v26;
-						monster[v28]._mfuty = v26;
+
+	if (!(Monst->_mFlags & MFLAG_TARGETS_MONSTER)) {
+		pnum = dPlayer[oldx][oldy] - 1;
+		if (dPlayer[oldx][oldy] > 0) {
+			if (Monst->MType->mtype != MT_GLOOM && (Monst->MType->mtype < MT_INCIN || Monst->MType->mtype > MT_HELLBURN)) {
+				M_TryH2HHit(m, dPlayer[oldx][oldy] - 1, 500, Monst->mMinDamage2, Monst->mMaxDamage2);
+				if (pnum == dPlayer[oldx][oldy] - 1 && (Monst->MType->mtype < MT_NSNAKE || Monst->MType->mtype > MT_GSNAKE)) {
+					if (plr[pnum]._pmode != 7 && plr[pnum]._pmode != 8)
+						StartPlrHit(pnum, 0, 1);
+					newx = oldx + offset_x[Monst->_mdir];
+					newy = oldy + offset_y[Monst->_mdir];
+					if (PosOkPlayer(pnum, newx, newy)) {
+						plr[pnum].WorldX = newx;
+						plr[pnum].WorldY = newy;
+						FixPlayerLocation(pnum, plr[pnum]._pdir);
+						FixPlrWalkTags(pnum);
+						dPlayer[newx][newy] = pnum + 1;
+						SetPlayerOld(pnum);
 					}
 				}
 			}
 		}
 	} else {
-		v10 = &dPlayer[v9][v31];
-		v11 = *v10;
-		v12 = v11 - 1;
-		arglist = v11 - 1;
-		if (*v10 > 0) {
-			v13 = v6->MType->mtype;
-			if (v13 != MT_GLOOM && (v13 < MT_INCIN || v13 > MT_HELLBURN)) {
-				M_TryH2HHit(v5, v12, 500, (unsigned char)v6->mMinDamage2, (unsigned char)v6->mMaxDamage2);
-				if (arglist == *v10 - 1) {
-					v14 = v6->MType->mtype;
-					if (v14 < MT_NSNAKE || v14 > MT_GSNAKE) {
-						v15 = arglist;
-						v16 = plr[arglist]._pmode;
-						if (v16 != 7 && v16 != 8)
-							StartPlrHit(arglist, 0, 1u);
-						v17 = v6->_mdir;
-						v18 = v32 + offset_x[v17];
-						v19 = v31 + offset_y[v17];
-						if (PosOkPlayer(arglist, v18, v19)) {
-							v20 = plr[v15]._pdir;
-							plr[v15].WorldX = v18;
-							plr[v15].WorldY = v19;
-							FixPlayerLocation(arglist, v20);
-							FixPlrWalkTags(arglist);
-							dPlayer[v18][v19] = arglist + 1;
-							SetPlayerOld(arglist);
-						}
+		if (dMonster[oldx][oldy] > 0) {
+			if (Monst->MType->mtype != MT_GLOOM && (Monst->MType->mtype < MT_INCIN || Monst->MType->mtype > MT_HELLBURN)) {
+				M_TryM2MHit(m, dMonster[oldx][oldy] - 1, 500, Monst->mMinDamage2, Monst->mMaxDamage2);
+				if (Monst->MType->mtype < MT_NSNAKE || Monst->MType->mtype > MT_GSNAKE) {
+					newx = oldx + offset_x[Monst->_mdir];
+					newy = oldy + offset_y[Monst->_mdir];
+					if (PosOkMonst(dMonster[oldx][oldy] - 1, newx, newy)) {
+						m = dMonster[oldx][oldy];
+						dMonster[newx][newy] = m;
+						dMonster[oldx][oldy] = 0;
+						m--;
+						monster[m]._mx = newx;
+						monster[m]._mfutx = newx;
+						monster[m]._my = newy;
+						monster[m]._mfuty = newy;
 					}
 				}
 			}

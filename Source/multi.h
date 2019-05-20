@@ -41,7 +41,7 @@ void multi_check_drop_player();
 void multi_process_network_packets();
 void multi_handle_all_packets(int players, TPkt *packet, int a3);
 void multi_process_tmsgs();
-void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen);
+void multi_send_zero_packet(DWORD pnum, char a2, void *pbSrc, DWORD dwLen);
 void NetClose();
 void multi_event_handler(BOOL add);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
