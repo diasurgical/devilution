@@ -59,7 +59,6 @@ int rnd5[4] = { 5, 10, 15, 20 };
 int rnd10[4] = { 10, 15, 20, 30 };
 int rnd20[4] = { 20, 30, 40, 50 };
 int rnd60[4] = { 60, 70, 80, 90 };
-//
 
 void(*AiProc[])(int i) = {
 	&MAI_Zombie,
@@ -99,7 +98,7 @@ void(*AiProc[])(int i) = {
 void InitMonsterTRN(int monst, BOOL special)
 {
 	BYTE *f;
-	int i, n, j, k;
+	int i, n, j;
 
 	f = Monsters[monst].trans_file;
 	for (i = 0; i < 256; i++) {
@@ -110,13 +109,13 @@ void InitMonsterTRN(int monst, BOOL special)
 	}
 
 	n = special ? 6 : 5;
-	for (j = 0; j < n; ++j) {
-		if (j != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE) {
-			for (k = 0; k < 8; k++) {
+	for (i = 0; i < n; i++) {
+		if (i != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE) {
+			for (j = 0; j < 8; j++) {
 				Cl2ApplyTrans(
-				    Monsters[monst].Anims[j].Data[k],
+				    Monsters[monst].Anims[i].Data[j],
 				    Monsters[monst].trans_file,
-				    Monsters[monst].Anims[j].Frames);
+				    Monsters[monst].Anims[i].Frames);
 			}
 		}
 	}
@@ -275,7 +274,6 @@ void InitMonsterGFX(int monst)
 	int mtype, anim, i;
 	char strBuff[256];
 	BYTE *celBuf;
-	void *trans_file;
 
 	mtype = Monsters[monst].mtype;
 
@@ -314,11 +312,7 @@ void InitMonsterGFX(int monst)
 	if (monsterdata[mtype].has_trans) {
 		Monsters[monst].trans_file = LoadFileInMem(monsterdata[mtype].TransFile, NULL);
 		InitMonsterTRN(monst, monsterdata[mtype].has_special);
-
-		trans_file = Monsters[monst].trans_file;
-		Monsters[monst].trans_file = NULL;
-
-		mem_free_dbg(trans_file);
+		MemFreeDbg(Monsters[monst].trans_file);
 	}
 
 	if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1)) {
@@ -767,7 +761,7 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 void PlaceQuestMonsters()
 {
 	int skeltype;
-	unsigned char *setp;
+	BYTE *setp;
 
 	if (!setlevel) {
 		if (QuestStatus(QTYPE_BUTCH)) {
@@ -829,10 +823,8 @@ void PlaceQuestMonsters()
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
-	} else {
-		if (setlvlnum == SL_SKELKING) {
-			PlaceUniqueMonst(UMT_SKELKING, 0, 0);
-		}
+	} else if (setlvlnum == SL_SKELKING) {
+		PlaceUniqueMonst(UMT_SKELKING, 0, 0);
 	}
 }
 
@@ -4638,7 +4630,6 @@ void ProcessMonsters()
 
 	DeleteMonsterList();
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void FreeMonsters()
 {
@@ -5204,14 +5195,14 @@ BOOL PosOkMonst2(int i, int x, int y)
 	BOOL ret, fire;
 
 	fire = FALSE;
-	ret = !SolidLoc(x, y); //12-15
+	ret = !SolidLoc(x, y);
 	if (ret && dObject[x][y]) {
 		oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
 		if (object[oi]._oSolidFlag)
 			ret = FALSE;
 	}
 
-	if (ret && dMissile[x][y] && i >= 0) { //37
+	if (ret && dMissile[x][y] && i >= 0) {
 		mi = dMissile[x][y];
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) {

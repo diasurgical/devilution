@@ -534,7 +534,7 @@ typedef struct CMonster {
 	MonsterData *MData;
 	// A TRN file contains a sequence of colour transitions, represented
 	// as indexes into a palette. (a 256 byte array of palette indices)
-	unsigned char *trans_file;
+	BYTE *trans_file;
 } CMonster;
 
 typedef struct MonsterStruct { // note: missing field _mAFNum

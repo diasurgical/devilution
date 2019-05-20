@@ -2,7 +2,7 @@
 #ifndef __EFFECTS_H__
 #define __EFFECTS_H__
 
-extern int sfxdelay; // weak
+extern int sfxdelay;
 extern int sfxdnum;
 extern HANDLE sfx_stream;
 extern TSFX *sfx_data_cur;
@@ -30,8 +30,8 @@ void __stdcall effects_play_sound(char *snd_file);
 
 /* rdata */
 
-extern const int effects_inf;              // weak
-extern const char monster_action_sounds[]; // idb
+extern const int effects_inf; // weak
+extern const char monster_action_sounds[];
 
 /* data */
 
