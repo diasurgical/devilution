@@ -1,10 +1,11 @@
-#include <SDL.h>
-
 #include "devilution.h"
-#include "DiabloUI/diabloui.h"
-#include "stubs.h"
 #include "miniwin/ddraw.h"
+#include "stubs.h"
+#include <SDL.h>
 #include <string>
+
+#include "DiabloUI/diabloui.h"
+
 #ifdef _MSC_VER
 #define strcasecmp _stricmp
 #define strncasecmp _strnicmp
@@ -198,7 +199,8 @@ BOOL VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT
 DWORD GetCurrentDirectory(DWORD nBufferLength, LPTSTR lpBuffer)
 {
 	char *base_path = SDL_GetBasePath();
-	if (!base_path) {
+	if (base_path == NULL) {
+		SDL_Log(SDL_GetError());
 		base_path = SDL_strdup("./");
 	}
 	eprintf("BasePath: %s\n", base_path);
@@ -288,7 +290,9 @@ WINBOOL SetForegroundWindow(HWND hWnd)
  */
 HWND SetFocus(HWND hWnd)
 {
-	SDL_SetWindowInputFocus(window);
+	if (SDL_SetWindowInputFocus(window) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 	MainWndProc(NULL, DVL_WM_ACTIVATEAPP, true, 0); // SDL_WINDOWEVENT_FOCUS_GAINED
 	return NULL;
 }
@@ -318,8 +322,8 @@ HWND CreateWindowExA(
     HINSTANCE hInstance,
     LPVOID lpParam)
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		SDL_Log("SDL_Init: %s\n", SDL_GetError());
+	if (SDL_Init(SDL_INIT_EVERYTHING) <= -1) {
+		SDL_Log(SDL_GetError());
 		return NULL;
 	}
 	atexit(SDL_Quit);
@@ -347,21 +351,24 @@ HWND CreateWindowExA(
 	}
 
 	window = SDL_CreateWindow(lpWindowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nWidth, nHeight, flags);
+	if (window == NULL) {
+		SDL_Log(SDL_GetError());
+	}
 	atexit(FakeWMDestroy);
 
 	if (upscale) {
 		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 		if (renderer == NULL) {
-			SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
+			SDL_Log(SDL_GetError());
 		}
 
 		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, nWidth, nHeight);
 		if (texture == NULL) {
-			SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
+			SDL_Log(SDL_GetError());
 		}
 
-		if (SDL_RenderSetLogicalSize(renderer, nWidth, nHeight) != 0) {
-			SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
+		if (SDL_RenderSetLogicalSize(renderer, nWidth, nHeight) <= -1) {
+			SDL_Log(SDL_GetError());
 		}
 	}
 
@@ -591,8 +598,8 @@ int GetDeviceCaps(HDC hdc, int index)
 {
 	SDL_DisplayMode current;
 
-	if (SDL_GetCurrentDisplayMode(0, &current) != 0) {
-		SDL_Log("SDL_GetCurrentDisplayMode: %s", SDL_GetError());
+	if (SDL_GetCurrentDisplayMode(0, &current) <= -1) {
+		SDL_Log(SDL_GetError());
 		return 0;
 	}
 
@@ -716,7 +723,12 @@ int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
 		SDLFlags |= SDL_MESSAGEBOX_WARNING;
 	}
 
-	return SDL_ShowSimpleMessageBox(SDLFlags, Title, Text, window) < 0 ? -1 : 0;
+	if (SDL_ShowSimpleMessageBox(SDLFlags, Title, Text, window) <= -1) {
+		SDL_Log(SDL_GetError());
+		return -1;
+	}
+
+	return 0;
 }
 
 LSTATUS RegOpenKeyExA(HKEY hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)

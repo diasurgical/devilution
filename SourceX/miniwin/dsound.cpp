@@ -1,9 +1,7 @@
-#include "miniwin/dsound.h"
-
-#include <SDL.h>
-
 #include "devilution.h"
+#include "miniwin/dsound.h"
 #include "stubs.h"
+#include <SDL.h>
 
 namespace dvl {
 
@@ -116,6 +114,10 @@ HRESULT DirectSoundBuffer::Stop()
 HRESULT DirectSoundBuffer::Unlock(LPVOID pvAudioPtr1, DWORD dwAudioBytes1, LPVOID pvAudioPtr2, DWORD dwAudioBytes2)
 {
 	SDL_RWops *rw = SDL_RWFromConstMem(pvAudioPtr1, dwAudioBytes1);
+	if (rw == NULL) {
+		SDL_Log(SDL_GetError());
+	}
+
 	chunk = Mix_LoadWAV_RW(rw, 1);
 	free(pvAudioPtr1);
 
@@ -127,4 +129,4 @@ HRESULT DirectSoundBuffer::Restore()
 	return DVL_DS_OK;
 };
 
-}  // namespace dvl
+} // namespace dvl

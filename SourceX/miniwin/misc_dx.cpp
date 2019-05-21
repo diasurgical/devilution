@@ -1,8 +1,7 @@
-#include <SDL.h>
-
 #include "devilution.h"
 #include "miniwin/ddraw.h"
 #include "stubs.h"
+#include <SDL.h>
 
 namespace dvl {
 
@@ -28,7 +27,9 @@ WINBOOL SetCursorPos(int X, int Y)
 
 int ShowCursor(WINBOOL bShow)
 {
-	SDL_ShowCursor(bShow ? SDL_ENABLE : SDL_DISABLE);
+	if (SDL_ShowCursor(bShow ? SDL_ENABLE : SDL_DISABLE) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 
 	return bShow;
 }

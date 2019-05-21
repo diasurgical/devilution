@@ -1,10 +1,10 @@
+#include "devilution.h"
+#include "miniwin/ddraw.h"
+#include "stubs.h"
+#include "utf8.h"
 #include <string>
 
-#include "devilution.h"
 #include "DiabloUI/diabloui.h"
-#include "miniwin/ddraw.h"
-#include "utf8.h"
-#include "stubs.h"
 
 namespace dvl {
 
@@ -19,10 +19,10 @@ Art ArtBackground;
 Art ArtCursor;
 Art ArtHero;
 
-void(*gfnSoundFunction)(char *file);
-void(*gfnListFocus)(int value);
-void(*gfnListSelect)(int value);
-void(*gfnListEsc)();
+void (*gfnSoundFunction)(char *file);
+void (*gfnListFocus)(int value);
+void (*gfnListSelect)(int value);
+void (*gfnListEsc)();
 UI_Item *gUiItems;
 int gUiItemCnt;
 bool UiItemsWraps;
@@ -103,7 +103,12 @@ int DialogBoxParam(HINSTANCE hInstance, LPCSTR msgId, HWND hWndParent, DLGPROC l
 	char text[1024];
 	snprintf(text, 1024, errorMessages[(intptr_t)msgId], dwInitParam);
 
-	return SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, errorTitle[(intptr_t)msgId], text, window) < 0 ? -1 : 0;
+	if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, errorTitle[(intptr_t)msgId], text, window) <= -1) {
+		SDL_Log(SDL_GetError());
+		return -1;
+	}
+
+	return 0;
 }
 
 BOOL SetDlgItemText(HWND hDlg, int nIDDlgItem, LPCSTR lpString)
@@ -133,7 +138,7 @@ void UiDestroy()
 	font = NULL;
 }
 
-void UiInitList(int min, int max, void(*fnFocus)(int value), void(*fnSelect)(int value), void(*fnEsc)(), UI_Item *items, int itemCnt, bool itemsWraps)
+void UiInitList(int min, int max, void (*fnFocus)(int value), void (*fnSelect)(int value), void (*fnEsc)(), UI_Item *items, int itemCnt, bool itemsWraps)
 {
 	SelectedItem = min;
 	SelectedItemMin = min;
@@ -242,7 +247,11 @@ bool UiFocusNavigation(SDL_Event *event)
 			switch (event->key.keysym.sym) {
 			case SDLK_v:
 				if (SDL_GetModState() & KMOD_CTRL) {
-					selhero_CatToName(SDL_GetClipboardText(), UiTextInput, UiTextInputLen);
+					char *clipboard = SDL_GetClipboardText();
+					if (clipboard == NULL) {
+						SDL_Log(SDL_GetError());
+					}
+					selhero_CatToName(clipboard, UiTextInput, UiTextInputLen);
 				}
 				return true;
 			case SDLK_BACKSPACE:
@@ -688,7 +697,9 @@ void UiRenderItemDebug(UI_Item item)
 {
 	item.rect.x += 64; // pal_surface is shifted?
 	item.rect.y += 160;
-	SDL_FillRect(pal_surface, &item.rect, random(0, 255));
+	if (SDL_FillRect(pal_surface, &item.rect, random(0, 255)) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 }
 
 void DrawSelector(UI_Item *item = 0)

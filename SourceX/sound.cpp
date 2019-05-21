@@ -1,8 +1,7 @@
 #include "devilution.h"
-
-#include <SDL_mixer.h>
-
 #include "stubs.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 namespace dvl {
 
@@ -490,6 +489,9 @@ void music_start(int nTrack)
 			SFileReadFile(sgpMusicTrack, musicBuffer, bytestoread, NULL, 0);
 
 			musicRw = SDL_RWFromConstMem(musicBuffer, bytestoread);
+			if (musicRw == NULL) {
+				SDL_Log(SDL_GetError());
+			}
 			music = Mix_LoadMUS_RW(musicRw, 1);
 			Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * sglMusicVolume / VOLUME_MIN);
 			Mix_PlayMusic(music, -1);
@@ -531,4 +533,4 @@ int sound_get_or_set_sound_volume(int volume)
 	return sglSoundVolume;
 }
 
-}  // namespace dvl
+} // namespace dvl

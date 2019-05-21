@@ -36,8 +36,8 @@ BOOL SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETT
 	}
 
 	assert(palette);
-	if (SDL_SetPaletteColors(palette, colors, firstentry, numentries) != 0) {
-		SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
+	if (SDL_SetPaletteColors(palette, colors, firstentry, numentries) <= -1) {
+		SDL_Log(SDL_GetError());
 		return false;
 	}
 

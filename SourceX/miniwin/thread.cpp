@@ -1,8 +1,7 @@
-#include <set>
-#include <SDL.h>
-
 #include "devilution.h"
 #include "stubs.h"
+#include <SDL.h>
+#include <set>
 
 namespace dvl {
 
@@ -15,19 +14,19 @@ struct event_emul {
 };
 
 struct func_translate {
-	unsigned int (*func)(void*);
-	void* arg;
+	unsigned int (*func)(void *);
+	void *arg;
 };
 
-static int SDLCALL thread_translate(void* ptr)
+static int SDLCALL thread_translate(void *ptr)
 {
-	func_translate* ftptr = static_cast<func_translate*>(ptr);
+	func_translate *ftptr = static_cast<func_translate *>(ptr);
 	auto ret = ftptr->func(ftptr->arg);
 	delete ftptr;
 	return ret;
 }
 
-uintptr_t DVL_beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_StartAddress)(void *),
+uintptr_t DVL_beginthreadex(void *_Security, unsigned _StackSize, unsigned (*_StartAddress)(void *),
     void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr)
 {
 	if (_Security != NULL)
@@ -36,10 +35,13 @@ uintptr_t DVL_beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_Sta
 		UNIMPLEMENTED();
 	if (_InitFlag != 0)
 		UNIMPLEMENTED();
-	func_translate* ft = new func_translate;
+	func_translate *ft = new func_translate;
 	ft->func = _StartAddress;
 	ft->arg = _ArgList;
 	SDL_Thread *ret = SDL_CreateThread(thread_translate, NULL, ft);
+	if (ret == NULL) {
+		SDL_Log(SDL_GetError());
+	}
 	*_ThrdAddr = SDL_GetThreadID(ret);
 	threads.insert((uintptr_t)ret);
 	return (uintptr_t)ret;
@@ -67,17 +69,24 @@ WINBOOL SetThreadPriority(HANDLE hThread, int nPriority)
 void InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_mutex *m = SDL_CreateMutex();
+	if (m == NULL) {
+		SDL_Log(SDL_GetError());
+	}
 	*lpCriticalSection = m;
 }
 
 void EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
-	SDL_LockMutex(*((SDL_mutex **)lpCriticalSection));
+	if (SDL_LockMutex(*((SDL_mutex **)lpCriticalSection)) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 }
 
 void LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
-	SDL_UnlockMutex(*((SDL_mutex **)lpCriticalSection));
+	if (SDL_UnlockMutex(*((SDL_mutex **)lpCriticalSection)) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 }
 
 void DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
@@ -105,7 +114,13 @@ HANDLE CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualRese
 	struct event_emul *ret;
 	ret = (struct event_emul *)malloc(sizeof(struct event_emul));
 	ret->mutex = SDL_CreateMutex();
+	if (ret->mutex == NULL) {
+		SDL_Log(SDL_GetError());
+	}
 	ret->cond = SDL_CreateCond();
+	if (ret->cond == NULL) {
+		SDL_Log(SDL_GetError());
+	}
 	events.insert((uintptr_t)ret);
 	return ret;
 }
@@ -113,32 +128,37 @@ HANDLE CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualRese
 BOOL SetEvent(HANDLE hEvent)
 {
 	struct event_emul *e = (struct event_emul *)hEvent;
-	SDL_LockMutex(e->mutex);
-	SDL_CondSignal(e->cond);
-	SDL_UnlockMutex(e->mutex);
+	if (SDL_LockMutex(e->mutex) <= -1 || SDL_CondSignal(e->cond) <= -1 || SDL_UnlockMutex(e->mutex) <= -1) {
+		SDL_Log(SDL_GetError());
+		return 0;
+	}
 	return 1;
 }
 
 BOOL ResetEvent(HANDLE hEvent)
 {
 	struct event_emul *e = (struct event_emul *)hEvent;
-	SDL_LockMutex(e->mutex);
-	SDL_CondWaitTimeout(e->cond, e->mutex, 0);
-	SDL_UnlockMutex(e->mutex);
+	if (SDL_LockMutex(e->mutex) <= -1 || SDL_CondWaitTimeout(e->cond, e->mutex, 0) <= -1 || SDL_UnlockMutex(e->mutex) <= -1) {
+		SDL_Log(SDL_GetError());
+		return 0;
+	}
 	return 1;
 }
 
 static DWORD wait_for_sdl_cond(HANDLE hHandle, DWORD dwMilliseconds)
 {
 	struct event_emul *e = (struct event_emul *)hHandle;
-	SDL_LockMutex(e->mutex);
+	if (SDL_LockMutex(e->mutex) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 	DWORD ret;
 	if (dwMilliseconds == DVL_INFINITE)
 		ret = SDL_CondWait(e->cond, e->mutex);
 	else
 		ret = SDL_CondWaitTimeout(e->cond, e->mutex, dwMilliseconds);
-	SDL_CondSignal(e->cond);
-	SDL_UnlockMutex(e->mutex);
+	if (ret <= -1 || SDL_CondSignal(e->cond) <= -1 || SDL_UnlockMutex(e->mutex) <= -1) {
+		SDL_Log(SDL_GetError());
+	}
 	return ret;
 }
 

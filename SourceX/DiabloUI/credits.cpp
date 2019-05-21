@@ -1,6 +1,7 @@
 #include "devilution.h"
-#include "DiabloUI/diabloui.h"
 #include "miniwin/ddraw.h"
+
+#include "DiabloUI/diabloui.h"
 
 #define CREDIT_LINES 13
 
@@ -523,7 +524,9 @@ void credts_Render()
 			if (text_surface) {
 				SDL_Rect src_rect = { 0, -y, SCREEN_WIDTH, 251 };
 				SDL_Rect dsc_rect = { 64 + x, 160 + 114, SCREEN_WIDTH, SCREEN_HEIGHT };
-				SDL_BlitSurface(text_surface, &src_rect, pal_surface, &dsc_rect);
+				if (SDL_BlitSurface(text_surface, &src_rect, pal_surface, &dsc_rect) <= -1) {
+					SDL_Log(SDL_GetError());
+				}
 				SDL_FreeSurface(text_surface);
 			}
 		}

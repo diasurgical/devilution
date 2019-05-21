@@ -1,10 +1,9 @@
+#include "devilution.h"
 #include "miniwin/ddraw.h"
-
+#include "stubs.h"
 #include <SDL.h>
 
 #include "DiabloUI/diabloui.h"
-#include "devilution.h"
-#include "stubs.h"
 
 namespace dvl {
 
@@ -44,7 +43,7 @@ HRESULT StubDraw::CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDI
 
 	palette = SDL_AllocPalette(256);
 	if (palette == NULL) {
-		SDL_Log("SDL_AllocPalette: %s\n", SDL_GetError());
+		SDL_Log(SDL_GetError());
 		return (HRESULT)0x80000002L; //DDERR_OUTOFMEMORY
 	}
 
@@ -62,14 +61,16 @@ HRESULT StubDraw::CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSUR
 		lpDDSurfaceDesc->ddpfPixelFormat.dwRGBBitCount = 32;
 
 		if (renderer) {
-			SDL_GetRendererOutputSize(renderer, (int *)&lpDDSurfaceDesc->dwWidth, (int *)&lpDDSurfaceDesc->dwHeight);
+			if (SDL_GetRendererOutputSize(renderer, (int *)&lpDDSurfaceDesc->dwWidth, (int *)&lpDDSurfaceDesc->dwHeight) <= -1) {
+				SDL_Log(SDL_GetError());
+			}
 			surface = SDL_CreateRGBSurfaceWithFormat(0, lpDDSurfaceDesc->dwWidth, lpDDSurfaceDesc->dwHeight, lpDDSurfaceDesc->ddpfPixelFormat.dwRGBBitCount, lpDDSurfaceDesc->ddpfPixelFormat.dwFlags);
 		} else {
 			SDL_GetWindowSize(window, (int *)&lpDDSurfaceDesc->dwWidth, (int *)&lpDDSurfaceDesc->dwHeight);
 			surface = SDL_GetWindowSurface(window);
 		}
 		if (surface == NULL) {
-			SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
+			SDL_Log(SDL_GetError());
 			return (HRESULT)0x80000002L; //DDERR_OUTOFMEMORY
 		}
 		lpDDSurfaceDesc->lpSurface = (BYTE *)surface->pixels;
@@ -79,7 +80,7 @@ HRESULT StubDraw::CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSUR
 
 	pal_surface = SDL_CreateRGBSurfaceWithFormat(0, lpDDSurfaceDesc->dwWidth, lpDDSurfaceDesc->dwHeight, lpDDSurfaceDesc->ddpfPixelFormat.dwRGBBitCount, lpDDSurfaceDesc->ddpfPixelFormat.dwFlags);
 	if (pal_surface == NULL) {
-		SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
+		SDL_Log(SDL_GetError());
 		return (HRESULT)0x80000002L; //DDERR_OUTOFMEMORY
 	}
 	lpDDSurfaceDesc->lpSurface = (BYTE *)surface->pixels;
@@ -87,8 +88,8 @@ HRESULT StubDraw::CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSUR
 
 	gpBuffer = (BYTE *)pal_surface->pixels; // Hack should happen in dx.cpp, but gives error
 
-	if (SDL_SetSurfacePalette(pal_surface, palette) != 0) {
-		SDL_Log("SDL_SetSurfacePalette: %s\n", SDL_GetError());
+	if (SDL_SetSurfacePalette(pal_surface, palette) <= -1) {
+		SDL_Log(SDL_GetError());
 		return 1; //MAKE_HRESULT(130);//DVL_MAKE_HRESULT(130);
 	}
 
@@ -144,8 +145,8 @@ HRESULT StubSurface::BltFast(DWORD dwX, DWORD dwY, LPDIRECTDRAWSURFACE lpDDSrcSu
 	SDL_Rect dst_rect = { (int)dwX, (int)dwY, w, h };
 
 	// Convert from 8-bit to 32-bit
-	if (SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect) != 0) {
-		SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
+	if (SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect) <= -1) {
+		SDL_Log(SDL_GetError());
 		return DVL_E_FAIL;
 	}
 
@@ -214,20 +215,27 @@ HRESULT StubSurface::Unlock(LPVOID lpSurfaceData)
 	}
 
 	if (renderer) {
-		if (SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch) != 0) { //pitch is 2560
-			SDL_Log("SDL_UpdateTexture: %s\n", SDL_GetError());
+		if (SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch) <= -1) { //pitch is 2560
+			SDL_Log(SDL_GetError());
 		}
 
 		// Clear buffer to avoid artifacts in case the window was resized
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // TODO only do this if window was resized
-		SDL_RenderClear(renderer);
+		if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255) <= -1) { // TODO only do this if window was resized
+			SDL_Log(SDL_GetError());
+		}
 
-		if (SDL_RenderCopy(renderer, texture, NULL, NULL) != 0) {
-			SDL_Log("SDL_RenderCopy: %s\n", SDL_GetError());
+		if (SDL_RenderClear(renderer) <= -1) {
+			SDL_Log(SDL_GetError());
+		}
+
+		if (SDL_RenderCopy(renderer, texture, NULL, NULL) <= -1) {
+			SDL_Log(SDL_GetError());
 		}
 		SDL_RenderPresent(renderer);
 	} else {
-		SDL_UpdateWindowSurface(window);
+		if (SDL_UpdateWindowSurface(window) <= -1) {
+			SDL_Log(SDL_GetError());
+		}
 	}
 
 	bufferUpdated = false;

@@ -1,6 +1,7 @@
 #include "devilution.h"
-#include "DiabloUI/diabloui.h"
 #include "miniwin/ddraw.h"
+
+#include "DiabloUI/diabloui.h"
 
 namespace dvl {
 
@@ -63,14 +64,18 @@ void progress_Render(BYTE progress)
 
 	if (msgSurface) {
 		SDL_Rect dsc_rect = { 64 + x + 50, 160 + y + 8, SCREEN_WIDTH, SCREEN_HEIGHT };
-		SDL_BlitSurface(msgSurface, NULL, pal_surface, &dsc_rect);
+		if (SDL_BlitSurface(msgSurface, NULL, pal_surface, &dsc_rect) <= -1) {
+			SDL_Log(SDL_GetError());
+		}
 		dsc_rect.x = 64 + GetCenterOffset(textWidth) - 1;
 		dsc_rect.y = 160 + y + 99 + 4;
-		SDL_BlitSurface(cancleSurface, NULL, pal_surface, &dsc_rect);
+		if (SDL_BlitSurface(cancleSurface, NULL, pal_surface, &dsc_rect) <= -1) {
+			SDL_Log(SDL_GetError());
+		}
 	}
 }
 
-BOOL UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)(), int rate)
+BOOL UiProgressDialog(HWND window, char *msg, int enable, int (*fnfunc)(), int rate)
 {
 	progress_Load(msg);
 
