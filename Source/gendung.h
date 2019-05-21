@@ -45,7 +45,7 @@ extern int scr_pix_width;  // weak
 extern int scr_pix_height; // weak
 extern char dArch[MAXDUNX][MAXDUNY];
 extern char nBlockTable[2049];
-extern void *level_special_cel;
+extern BYTE *pSpecialCels;
 extern char dFlags[MAXDUNX][MAXDUNY];
 extern char dItem[MAXDUNX][MAXDUNY];
 extern BYTE setlvlnum;

@@ -146,14 +146,14 @@ void town_special_lower(BYTE *pBuff, int nCel)
 
 #ifdef USE_ASM
 	__asm {
-		mov		ebx, level_special_cel
+		mov		ebx, pSpecialCels
 		mov		eax, nCel
 		shl		eax, 2
 		add		ebx, eax
 		mov		eax, [ebx+4]
 		sub		eax, [ebx]
 		mov		end, eax
-		mov		esi, level_special_cel
+		mov		esi, pSpecialCels
 		add		esi, [ebx]
 		mov		edi, pBuff
 		mov		eax, 768 + 64
@@ -205,8 +205,8 @@ void town_special_lower(BYTE *pBuff, int nCel)
 	BYTE *src, *dst;
 	DWORD *pFrameTable;
 
-	pFrameTable = (DWORD *)level_special_cel;
-	src = &level_special_cel[pFrameTable[nCel]];
+	pFrameTable = (DWORD *)pSpecialCels;
+	src = &pSpecialCels[pFrameTable[nCel]];
 	dst = pBuff;
 	end = &src[pFrameTable[nCel + 1] - pFrameTable[nCel]];
 
@@ -260,14 +260,14 @@ void town_special_upper(BYTE *pBuff, int nCel)
 
 #ifdef USE_ASM
 	__asm {
-		mov		ebx, level_special_cel
+		mov		ebx, pSpecialCels
 		mov		eax, nCel
 		shl		eax, 2
 		add		ebx, eax
 		mov		eax, [ebx+4]
 		sub		eax, [ebx]
 		mov		end, eax
-		mov		esi, level_special_cel
+		mov		esi, pSpecialCels
 		add		esi, [ebx]
 		mov		edi, pBuff
 		mov		eax, 768 + 64
@@ -317,8 +317,8 @@ void town_special_upper(BYTE *pBuff, int nCel)
 	BYTE *src, *dst;
 	DWORD *pFrameTable;
 
-	pFrameTable = (DWORD *)level_special_cel;
-	src = &level_special_cel[pFrameTable[nCel]];
+	pFrameTable = (DWORD *)pSpecialCels;
+	src = &pSpecialCels[pFrameTable[nCel]];
 	dst = pBuff;
 	end = &src[pFrameTable[nCel + 1] - pFrameTable[nCel]];
 
