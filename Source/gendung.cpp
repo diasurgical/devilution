@@ -43,7 +43,7 @@ int scr_pix_width;  // weak
 int scr_pix_height; // weak
 char dArch[MAXDUNX][MAXDUNY];
 char nBlockTable[2049];
-void *level_special_cel;
+BYTE *pSpecialCels;
 char dFlags[MAXDUNX][MAXDUNY];
 char dItem[MAXDUNX][MAXDUNY];
 BYTE setlvlnum;
