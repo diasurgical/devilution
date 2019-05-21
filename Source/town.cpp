@@ -138,6 +138,230 @@ void town_clear_low_buf(BYTE *pBuff)
 #endif
 }
 
+void town_special_lower(BYTE *pBuff, int nCel)
+{
+#if 0
+	int w;
+	BYTE *end;
+
+#ifdef USE_ASM
+	__asm {
+		mov		ebx, level_special_cel
+		mov		eax, nCel
+		shl		eax, 2
+		add		ebx, eax
+		mov		eax, [ebx+4]
+		sub		eax, [ebx]
+		mov		end, eax
+		mov		esi, level_special_cel
+		add		esi, [ebx]
+		mov		edi, pBuff
+		mov		eax, 768 + 64
+		mov		w, eax
+		mov		ebx, end
+		add		ebx, esi
+	label1:
+		mov		edx, 64
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label7
+		sub		edx, eax
+		cmp		edi, gpBufEnd
+		jb		label3
+		add		esi, eax
+		add		edi, eax
+		jmp		label6
+	label3:
+		mov		ecx, eax
+		shr		ecx, 1
+		jnb		label4
+		movsb
+		jecxz	label6
+	label4:
+		shr		ecx, 1
+		jnb		label5
+		movsw
+		jecxz	label6
+	label5:
+		rep movsd
+	label6:
+		or		edx, edx
+		jz		label8
+		jmp		label2
+	label7:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label8:
+		sub		edi, w
+		cmp		ebx, esi
+		jnz		label1
+	}
+#else
+	BYTE width;
+	BYTE *src, *dst;
+	DWORD *pFrameTable;
+
+	pFrameTable = (DWORD *)level_special_cel;
+	src = &level_special_cel[pFrameTable[nCel]];
+	dst = pBuff;
+	end = &src[pFrameTable[nCel + 1] - pFrameTable[nCel]];
+
+	for(; src != end; dst -= 768 + 64) {
+		for(w = 64; w;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				w -= width;
+				if(dst < gpBufEnd) {
+					if(width & 1) {
+						dst[0] = src[0];
+						src++;
+						dst++;
+					}
+					width >>= 1;
+					if(width & 1) {
+						dst[0] = src[0];
+						dst[1] = src[1];
+						src += 2;
+						dst += 2;
+					}
+					width >>= 1;
+					for(; width; width--) {
+						dst[0] = src[0];
+						dst[1] = src[1];
+						dst[2] = src[2];
+						dst[3] = src[3];
+						src += 4;
+						dst += 4;
+					}
+				} else {
+					src += width;
+					dst += width;
+				}
+			} else {
+				width = -(char)width;
+				dst += width;
+				w -= width;
+			}
+		}
+	}
+#endif
+#endif
+}
+
+void town_special_upper(BYTE *pBuff, int nCel)
+{
+#if 0
+	int w;
+	BYTE *end;
+
+#ifdef USE_ASM
+	__asm {
+		mov		ebx, level_special_cel
+		mov		eax, nCel
+		shl		eax, 2
+		add		ebx, eax
+		mov		eax, [ebx+4]
+		sub		eax, [ebx]
+		mov		end, eax
+		mov		esi, level_special_cel
+		add		esi, [ebx]
+		mov		edi, pBuff
+		mov		eax, 768 + 64
+		mov		w, eax
+		mov		ebx, end
+		add		ebx, esi
+	label1:
+		mov		edx, 64
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label6
+		sub		edx, eax
+		cmp		edi, gpBufEnd
+		jb		label8
+		mov		ecx, eax
+		shr		ecx, 1
+		jnb		label3
+		movsb
+		jecxz	label5
+	label3:
+		shr		ecx, 1
+		jnb		label4
+		movsw
+		jecxz	label5
+	label4:
+		rep movsd
+	label5:
+		or		edx, edx
+		jz		label7
+		jmp		label2
+	label6:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label7:
+		sub		edi, w
+		cmp		ebx, esi
+		jnz		label1
+	label8:
+		nop
+	}
+#else
+	BYTE width;
+	BYTE *src, *dst;
+	DWORD *pFrameTable;
+
+	pFrameTable = (DWORD *)level_special_cel;
+	src = &level_special_cel[pFrameTable[nCel]];
+	dst = pBuff;
+	end = &src[pFrameTable[nCel + 1] - pFrameTable[nCel]];
+
+	for(; src != end; dst -= 768 + 64) {
+		for(w = 64; w;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				w -= width;
+				if(dst < gpBufEnd) {
+					return;
+				}
+				if(width & 1) {
+					dst[0] = src[0];
+					src++;
+					dst++;
+				}
+				width >>= 1;
+				if(width & 1) {
+					dst[0] = src[0];
+					dst[1] = src[1];
+					src += 2;
+					dst += 2;
+				}
+				width >>= 1;
+				for(; width; width--) {
+					dst[0] = src[0];
+					dst[1] = src[1];
+					dst[2] = src[2];
+					dst[3] = src[3];
+					src += 4;
+					dst += 4;
+				}
+			} else {
+				width = -(char)width;
+				dst += width;
+				w -= width;
+			}
+		}
+	}
+#endif
+#endif
+}
+
 void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
 	int i;
@@ -224,6 +448,9 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 	}
 	if (dFlags[x][y] & DFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, 0, 8, 0);
+	}
+	if(dArch[x][y] != 0) {
+		town_special_lower(pBuff, dArch[x][y]);
 	}
 }
 
@@ -403,6 +630,9 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 	}
 	if (dFlags[x][y] & DFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, a5, 8, 0);
+	}
+	if(dArch[x][y] != 0) {
+		town_special_lower(&pBuff[PitchTbl[16 * a5]], dArch[x][y]);
 	}
 }
 
@@ -594,6 +824,9 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 	}
 	if (dFlags[x][y] & DFLAG_MISSILE) {
 		DrawMissile(x, y, sx, sy, 0, dir, 0);
+	}
+	if(dArch[x][y] != 0) {
+		town_special_upper(pBuff, dArch[x][y]);
 	}
 }
 

@@ -4,6 +4,8 @@
 
 void town_clear_upper_buf(BYTE *pBuff);
 void town_clear_low_buf(BYTE *pBuff);
+void town_special_lower(BYTE *pBuff, int nCel);
+void town_special_upper(BYTE *pBuff, int nCel);
 void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy);
 void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some_flag);
 void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag);
