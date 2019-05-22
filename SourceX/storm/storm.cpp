@@ -522,7 +522,7 @@ BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 	}
 
 	SVidPalette = SDL_AllocPalette(256);
-	if (SVidSurface == NULL) {
+	if (SVidPalette == NULL) {
 		SDL_Log(SDL_GetError());
 	}
 	if (SDL_SetSurfacePalette(SVidSurface, SVidPalette) <= -1) {
