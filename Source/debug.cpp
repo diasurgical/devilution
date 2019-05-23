@@ -2,6 +2,14 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
+#ifdef _DEBUG
+BOOL update_seed_check = FALSE;
+#endif
+
+int seed_index;
+int level_seeds[NUMLEVELS];
+int seed_table[4096];
+
 void *pSquareCel;
 char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
@@ -16,6 +24,58 @@ void FreeDebugGFX()
 {
 	MemFreeDbg(pSquareCel);
 }
+
+#ifdef _DEBUG
+void init_seed_desync()
+{
+	int i;
+
+	for(i = 0; i < 4096; i++) {
+		seed_table[i] = -1;
+	}
+
+	seed_index = 0;
+
+	for(i = 0; i < NUMLEVELS; i++) {
+		level_seeds[i] = 0;
+	}
+}
+
+void seed_desync_index_get()
+{
+	if(currlevel == 0) {
+		return;
+	}
+
+	update_seed_check = TRUE;
+	seed_index = level_seeds[currlevel];
+}
+
+void seed_desync_index_set()
+{
+	if(currlevel == 0) {
+		return;
+	}
+
+	update_seed_check = FALSE;
+	level_seeds[currlevel + 1] = seed_index;
+}
+
+void seed_desync_check(int seed)
+{
+	if(!update_seed_check || seed_index == 4096 || currlevel == 0) {
+		return;
+	}
+
+	if(seed_table[seed_index] == -1) {
+		seed_table[seed_index] = seed;
+	} else if(seed != seed_table[seed_index]) {
+		app_fatal("Seeds desynced");
+	}
+
+	seed_index++;
+}
+#endif
 
 void CheckDungeonClear()
 {
@@ -162,7 +222,7 @@ void PrintDebugQuest()
 
 	sprintf(dstr, "Quest %i :  Active = %i, Var1 = %i", dbgqst, quests[dbgqst]._qactive, quests[dbgqst]._qvar1);
 	NetSendCmdString(1 << myplr, dstr);
-	
+
 	dbgqst++;
 	if (dbgqst == MAXQUESTS)
 		dbgqst = 0;
@@ -171,8 +231,8 @@ void PrintDebugQuest()
 void PrintDebugMonster(int m)
 {
 	BOOL bActive;
-	int i;          
-	char dstr[128]; 
+	int i;
+	char dstr[128];
 
 	sprintf(dstr, "Monster %i = %s", m, monster[m].mName);
 	NetSendCmdString(1 << myplr, dstr);

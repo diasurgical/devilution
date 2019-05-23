@@ -2,38 +2,38 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int stextup;    // weak
-int storenumh;  // weak
-int stextlhold; // weak
+int stextup;
+int storenumh;
+int stextlhold;
 ItemStruct boyitem;
-int stextshold; // idb
+int stextshold;
 ItemStruct premiumitem[6];
 void *pSTextBoxCels;
-int premiumlevel; // idb
-int talker;       // weak
+int premiumlevel;
+int talker;
 STextStruct stext[24];
 char stextsize;
-int stextsmax;   // weak
-int InStoreFlag; // idb
+int stextsmax;
+int InStoreFlag;
 ItemStruct storehold[48];
-int gossipstart; // weak
+int gossipstart;
 ItemStruct witchitem[20];
 BOOL stextscrl;
-int numpremium; // idb
+int numpremium;
 ItemStruct healitem[20];
 ItemStruct golditem;
 char storehidx[48];
 void *pSTextSlidCels;
-int stextvhold;     // weak
-int stextsel;       // weak
-char stextscrldbtn; // weak
-int gossipend;      // weak
+int stextvhold;
+int stextsel;
+char stextscrldbtn;
+int gossipend;
 BYTE *pCelBuff;
-int stextsval; // idb
-int boylevel;  // weak
+int stextsval;
+int boylevel;
 ItemStruct smithitem[20];
-int stextdown;      // weak
-char stextscrlubtn; // weak
+int stextdown;
+char stextscrlubtn;
 char stextflag;
 
 int SStringY[24] = {
@@ -141,103 +141,59 @@ void DrawSTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val)
+void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 {
-	int v6;            // edi
-	int v7;            // eax
-	int v8;            // ebx
-	int v9;            // esi
-	int v10;           // esi
-	int v11;           // ecx
-	int v12;           // eax
-	int v13;           // edx
-	int v14;           // ecx
-	unsigned char v15; // al
-	int v16;           // ebx
-	int v17;           // ecx
-	int v18;           // eax
-	int v19;           // esi
-	size_t v20;        // ebx
-	unsigned char v21; // edx
-	int v22;           // ecx
-	char valstr[32];   // [esp+Ch] [ebp-3Ch]
-	int v24;           // [esp+2Ch] [ebp-1Ch]
-	int v25;           // [esp+30h] [ebp-18h]
-	int v26;           // [esp+34h] [ebp-14h]
-	int v27;           // [esp+38h] [ebp-10h]
-	int v28;           // [esp+3Ch] [ebp-Ch]
-	int v29;           // [esp+40h] [ebp-8h]
-	int v30;           // [esp+44h] [ebp-4h]
+	int xx, yy;
+	int len, width, off, i, k, s;
+	BYTE c;
+	char valstr[32];
 
-	v6 = SStringY[y] + stext[y]._syoff;
-	v7 = -(stextsize != 0);
-	v8 = x;
-	v9 = PitchTbl[v6 + 204];
-	_LOWORD(v7) = v7 & 0xFEC0;
-	v24 = y;
-	v26 = x;
-	v27 = v7 + 416;
-	v10 = x + v7 + 416 + v9;
-	v28 = strlen(str);
-	v11 = 0;
-	v25 = stextsize != 0 ? 577 : 257;
-	v30 = 0;
+	s = SStringY[y] + stext[y]._syoff;
+	if (stextsize)
+		xx = 96;
+	else
+		xx = 416;
+	off = xx + x + PitchTbl[s + 204];
+	len = strlen(str);
+	if (stextsize)
+		yy = 577;
+	else
+		yy = 257;
+	k = 0;
 	if (cjustflag) {
-		v12 = 0;
-		if (v28 > 0) {
-			do {
-				v13 = (unsigned char)str[v11++];
-				v12 += fontkern[fontframe[gbFontTransTbl[v13]]] + 1;
-			} while (v11 < v28);
+		width = 0;
+		for (i = 0; i < len; i++)
+			width += fontkern[fontframe[gbFontTransTbl[(BYTE)str[i]]]] + 1;
+		if (width < yy)
+			k = (yy - width) >> 1;
+		off += k;
+	}
+	if (stextsel == y) {
+		CelDecodeOnly(cjustflag ? xx + x + k - 20 : xx + x - 20, s + 205, pCelBuff, InStoreFlag, 12);
+	}
+	for (i = 0; i < len; i++) {
+		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
+		k += fontkern[c] + 1;
+		if (c && k <= yy) {
+			CPrintString(off, c, col);
 		}
-		if (v12 < v25)
-			v30 = (v25 - v12) >> 1;
-		v10 += v30;
-	}
-	if (stextsel == v24) {
-		if (cjustflag)
-			v14 = v27 + v30 + v8 - 20;
-		else
-			v14 = v27 + v8 - 20;
-		CelDecodeOnly(v14, v6 + 205, pCelBuff, InStoreFlag, 12);
-	}
-	v29 = 0;
-	if (v28 > 0) {
-		do {
-			v15 = fontframe[gbFontTransTbl[(unsigned char)str[v29]]];
-			v16 = v15;
-			v17 = v30 + fontkern[v15] + 1;
-			v30 += fontkern[v15] + 1;
-			if (v15 && v17 <= v25)
-				CPrintString(v10, v15, col);
-			v18 = fontkern[v16];
-			++v29;
-			v10 += v18 + 1;
-		} while (v29 < v28);
-		v8 = v26;
+		off += fontkern[c] + 1;
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		v19 = PitchTbl[v6 + 204] - v8 + 656;
-		v20 = strlen(valstr);
-		while ((--v20 & 0x80000000) == 0) {
-			v21 = fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]];
-			v19 += -1 - fontkern[v21];
-			if (fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]])
-				CPrintString(v19, v21, col);
+		off = PitchTbl[s + 204] + 656 - x;
+		for (i = strlen(valstr) - 1; i >= 0; i--) {
+			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
+			off -= fontkern[c] + 1;
+			if (c) {
+				CPrintString(off, c, col);
+			}
 		}
-		v8 = v26;
 	}
-	if (stextsel == v24) {
-		if (cjustflag)
-			v22 = v27 + v30 + v8 + 4;
-		else
-			v22 = 660 - v8;
-		CelDecodeOnly(v22, v6 + 205, pCelBuff, InStoreFlag, 12);
+	if (stextsel == y) {
+		CelDecodeOnly(cjustflag ? xx + x + k + 4 : 660 - x, s + 205, pCelBuff, InStoreFlag, 12);
 	}
 }
-// 6A8A28: using guessed type int stextsel;
-// 457BD6: using guessed type char valstr[32];
 
 void DrawSLine(int y)
 {
@@ -1575,57 +1531,49 @@ void StartStore(char s)
 
 void DrawSText()
 {
-	int i; // edi
+	int i;
 
-	if (stextsize)
-		DrawQTextBack();
-	else
+	if (!stextsize)
 		DrawSTextBack();
-	if (!stextscrl)
-		goto LABEL_19;
-	if (stextflag > (signed int)STORE_WRECHARGE) {
+	else
+		DrawQTextBack();
+
+	if (stextscrl) {
 		switch (stextflag) {
+		case STORE_SBUY:
+			S_ScrollSBuy(stextsval);
+			break;
+		case STORE_SSELL:
+		case STORE_SREPAIR:
+		case STORE_WSELL:
+		case STORE_WRECHARGE:
+		case STORE_SIDENTIFY:
+			S_ScrollSSell(stextsval);
+			break;
+		case STORE_WBUY:
+			S_ScrollWBuy(stextsval);
+			break;
 		case STORE_HBUY:
 			S_ScrollHBuy(stextsval);
 			break;
-		case STORE_SIDENTIFY:
-			goto LABEL_17;
 		case STORE_SPBUY:
 			S_ScrollSPBuy(stextsval);
 			break;
 		}
-	} else {
-		if (stextflag >= (signed int)STORE_WSELL)
-			goto LABEL_17;
-		if (stextflag == STORE_SBUY) {
-			S_ScrollSBuy(stextsval);
-			goto LABEL_19;
-		}
-		if (stextflag > (signed int)STORE_SBUY) {
-			if (stextflag > (signed int)STORE_SREPAIR) {
-				if (stextflag == STORE_WBUY)
-					S_ScrollWBuy(stextsval);
-				goto LABEL_19;
-			}
-		LABEL_17:
-			S_ScrollSSell(stextsval);
-			goto LABEL_19;
-		}
 	}
-LABEL_19:
 
 	for (i = 0; i < 24; i++) {
 		if (stext[i]._sline)
 			DrawSLine(i);
-		if (stext[i]._sstr)
+		if (stext[i]._sstr[0])
 			PrintSString(stext[i]._sx, i, stext[i]._sjust, stext[i]._sstr, stext[i]._sclr, stext[i]._sval);
 	}
 
 	if (stextscrl)
 		DrawSArrows(4, 20);
+
 	InStoreFlag = (InStoreFlag & 7) + 1;
 }
-// 6AA705: using guessed type char stextflag;
 
 void STextESC()
 {
@@ -1644,7 +1592,7 @@ void STextESC()
 		case STORE_TAVERN:
 		case STORE_DRUNK:
 		case STORE_BARMAID:
-			stextflag = 0;
+			stextflag = STORE_NONE;
 			break;
 		case STORE_GOSSIP:
 			StartStore(stextshold);
@@ -1699,11 +1647,6 @@ void STextESC()
 		}
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6AA705: using guessed type char stextflag;
 
 void STextUp()
 {
@@ -1816,7 +1759,7 @@ void S_SmithEnter()
 	case 10:
 		talker = 0;
 		stextlhold = 10;
-		stextshold = 1;
+		stextshold = STORE_SMITH;
 		gossipstart = QUEST_GRISWOLD2;
 		gossipend = QUEST_GRISWOLD13;
 		StartStore(STORE_GOSSIP);
@@ -1956,7 +1899,7 @@ void S_SBuyEnter()
 	} else {
 		stextlhold = stextsel;
 		stextvhold = stextsval;
-		stextshold = 2;
+		stextshold = STORE_SBUY;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold < smithitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
@@ -2009,7 +1952,7 @@ void S_SPBuyEnter()
 		StartStore(STORE_SMITH);
 		stextsel = 14;
 	} else {
-		stextshold = 18;
+		stextshold = STORE_SPBUY;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		xx = stextsval + ((stextsel - stextup) >> 2);
@@ -2149,7 +2092,7 @@ void S_SSellEnter()
 	} else {
 		stextlhold = stextsel;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		stextshold = 3;
+		stextshold = STORE_SSELL;
 		stextvhold = stextsval;
 		plr[myplr].HoldItem = storehold[idx];
 
@@ -2192,7 +2135,7 @@ void S_SRepairEnter()
 		StartStore(STORE_SMITH);
 		stextsel = 18;
 	} else {
-		stextshold = 4;
+		stextshold = STORE_SREPAIR;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		idx = stextsval + ((stextsel - stextup) >> 2);
@@ -2210,7 +2153,7 @@ void S_WitchEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 6;
-		stextshold = 5;
+		stextshold = STORE_WITCH;
 		gossipstart = QUEST_ADRIA2;
 		gossipend = QUEST_ADRIA13;
 		StartStore(STORE_GOSSIP);
@@ -2267,7 +2210,7 @@ void S_WBuyEnter()
 	} else {
 		stextlhold = stextsel;
 		stextvhold = stextsval;
-		stextshold = 6;
+		stextshold = STORE_WBUY;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 
 		if (plr[myplr]._pGold < witchitem[idx]._iIvalue) {
@@ -2301,7 +2244,7 @@ void S_WSellEnter()
 	} else {
 		stextlhold = stextsel;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		stextshold = 7;
+		stextshold = STORE_WSELL;
 		stextvhold = stextsval;
 		plr[myplr].HoldItem = storehold[idx];
 		if (StoreGoldFit(idx))
@@ -2337,7 +2280,7 @@ void S_WRechargeEnter()
 		StartStore(STORE_WITCH);
 		stextsel = 18;
 	} else {
-		stextshold = 8;
+		stextshold = STORE_WRECHARGE;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		idx = stextsval + ((stextsel - stextup) >> 2);
@@ -2353,7 +2296,7 @@ void S_BoyEnter()
 {
 	if (boyitem._itype != ITYPE_NONE && stextsel == 18) {
 		if (plr[myplr]._pGold < 50) {
-			stextshold = 12;
+			stextshold = STORE_BOY;
 			stextlhold = 18;
 			stextvhold = stextsval;
 			StartStore(STORE_NOMONEY);
@@ -2363,7 +2306,7 @@ void S_BoyEnter()
 		}
 	} else if (stextsel == 8 && boyitem._itype != ITYPE_NONE || stextsel == 12 && boyitem._itype == ITYPE_NONE) {
 		talker = 8;
-		stextshold = 12;
+		stextshold = STORE_BOY;
 		stextlhold = stextsel;
 		gossipstart = QUEST_WIRT2;
 		gossipend = QUEST_WIRT12;
@@ -2378,7 +2321,7 @@ void BoyBuyItem()
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	StoreAutoPlace();
 	boyitem._itype = ITYPE_NONE;
-	stextshold = 12;
+	stextshold = STORE_BOY;
 	CalcPlrInv(myplr, 1);
 }
 
@@ -2436,7 +2379,7 @@ void S_BBuyEnter()
 	if (stextsel == 10) {
 		stextlhold = 10;
 		stextvhold = stextsval;
-		stextshold = 13;
+		stextshold = STORE_BBOY;
 		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
 			StartStore(STORE_NOMONEY);
 		} else {
@@ -2534,7 +2477,7 @@ void S_HealerEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 1;
-		stextshold = 14;
+		stextshold = STORE_HEALER;
 		gossipstart = QUEST_PEPIN2;
 		gossipend = QUEST_PEPIN11;
 		StartStore(STORE_GOSSIP);
@@ -2566,7 +2509,7 @@ void S_HBuyEnter()
 	} else {
 		stextlhold = stextsel;
 		stextvhold = stextsval;
-		stextshold = 16;
+		stextshold = STORE_HBUY;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold < healitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
@@ -2593,7 +2536,7 @@ void S_StoryEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 4;
-		stextshold = 15;
+		stextshold = STORE_STORY;
 		gossipstart = QUEST_STORY2;
 		gossipend = QUEST_STORY11;
 		StartStore(STORE_GOSSIP);
@@ -2615,7 +2558,7 @@ void S_SIDEnter()
 		StartStore(STORE_STORY);
 		stextsel = 14;
 	} else {
-		stextshold = 17;
+		stextshold = STORE_SIDENTIFY;
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		idx = stextsval + ((stextsel - stextup) >> 2);
@@ -2673,7 +2616,7 @@ void S_TavernEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 3;
-		stextshold = 21;
+		stextshold = STORE_TAVERN;
 		gossipstart = QUEST_OGDEN2;
 		gossipend = QUEST_OGDEN10;
 		StartStore(STORE_GOSSIP);
@@ -2690,7 +2633,7 @@ void S_BarmaidEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 7;
-		stextshold = 23;
+		stextshold = STORE_BARMAID;
 		gossipstart = QUEST_GILLIAN2;
 		gossipend = QUEST_GILLIAN10;
 		StartStore(STORE_GOSSIP);
@@ -2707,7 +2650,7 @@ void S_DrunkEnter()
 	case 12:
 		stextlhold = 12;
 		talker = 5;
-		stextshold = 22;
+		stextshold = STORE_DRUNK;
 		gossipstart = QUEST_FARNHAM2;
 		gossipend = QUEST_FARNHAM13;
 		StartStore(STORE_GOSSIP);

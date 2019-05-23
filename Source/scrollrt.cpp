@@ -890,7 +890,7 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 	}
 	if(bArch != 0) {
 		cel_transparency_active = (unsigned char)TransList[bMap];
-		Cel2DecodeLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, 0, 8);
+		Cel2DecodeLightTrans(pBuff, pSpecialCels, bArch, 64, 0, 8);
 	}
 }
 
@@ -1354,7 +1354,7 @@ void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks
 	}
 	if(bArch != 0) {
 		cel_transparency_active = (unsigned char)TransList[bMap];
-		Cel2DecodeLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, CelSkip, 8);
+		Cel2DecodeLightTrans(pBuff, pSpecialCels, bArch, 64, CelSkip, 8);
 	}
 }
 
@@ -1768,7 +1768,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 	}
 	if (bArch != 0) {
 		cel_transparency_active = (unsigned char)TransList[bMap];
-		CelDecodeHdrLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, 0, CelCap);
+		CelDecodeHdrLightTrans(pBuff, pSpecialCels, bArch, 64, 0, CelCap);
 	}
 }
 

@@ -2,15 +2,15 @@
 #ifndef __MONSTER_H__
 #define __MONSTER_H__
 
-extern int MissileFileFlag; // weak
+extern int MissileFileFlag;
 extern int monstkills[MAXMONSTERS];
 extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
 extern MonsterStruct monster[MAXMONSTERS];
-extern int totalmonsters; // weak
+extern int totalmonsters;
 extern CMonster Monsters[16];
 // int END_Monsters_17; // weak
-extern int monstimgtot; // weak
+extern int monstimgtot;
 extern int uniquetrans;
 extern int nummtypes;
 
@@ -136,9 +136,9 @@ void FreeMonsters();
 BOOL DirOK(int i, int mdir);
 BOOL PosOkMissile(int x, int y);
 BOOL CheckNoSolid(int x, int y);
-BOOL LineClearF(BOOL(*Clear)(int, int), int x1, int y1, int x2, int y2);
+BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2);
 BOOL LineClear(int x1, int y1, int x2, int y2);
-BOOL LineClearF1(BOOL(*Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2);
+BOOL LineClearF1(BOOL (*Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2);
 void SyncMonsterAnim(int i);
 void M_FallenFear(int x, int y);
 void PrintMonstHistory(int mt);
@@ -182,6 +182,6 @@ extern int rnd20[4];
 extern int rnd60[4];
 //
 
-extern void(*AiProc[])(int i);
+extern void (*AiProc[])(int i);
 
 #endif /* __MONSTER_H__ */

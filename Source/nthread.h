@@ -2,18 +2,18 @@
 #ifndef __NTHREAD_H__
 #define __NTHREAD_H__
 
-extern char byte_679704; // weak
-extern int gdwMsgLenTbl[MAX_PLRS];
-extern int gdwDeltaBytesSec;    // weak
-extern char nthread_should_run; // weak
-extern DWORD gdwTurnsInTransit; // weak
-extern char *glpMsgTbl[MAX_PLRS];
+extern BYTE sgbNetUpdateRate;
+extern DWORD gdwMsgLenTbl[MAX_PLRS];
+extern DWORD gdwDeltaBytesSec;
+extern BOOLEAN nthread_should_run;
+extern DWORD gdwTurnsInTransit;
+extern int glpMsgTbl[MAX_PLRS];
 extern unsigned int glpNThreadId;
-extern int turn_upper_bit;    // weak
-extern char byte_679758;      // weak
-extern DWORD gdwLargestMsgSize; // weak
-extern DWORD gdwNormalMsgSize;  // weak
-extern int last_tick;         // weak
+extern int turn_upper_bit;
+extern BOOLEAN sgbThreadIsRunning;
+extern DWORD gdwLargestMsgSize;
+extern DWORD gdwNormalMsgSize;
+extern int last_tick;
 
 void nthread_terminate_game(const char *pszFcn);
 DWORD nthread_send_and_recv_turn(DWORD cur_turn, int turn_delta);

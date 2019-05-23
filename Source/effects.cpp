@@ -3,7 +3,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int sfxdelay; // weak
+int sfxdelay;
 int sfxdnum;
 HANDLE sfx_stream;
 TSFX *sfx_data_cur;
@@ -973,7 +973,6 @@ void PlayEffect(int i, int mode)
 
 	snd_play_snd(snd, lVolume, lPan);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 BOOL calc_snd_position(int x, int y, int *plVolume, int *plPan)
 {
@@ -1038,8 +1037,6 @@ void PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 	if (pSFX->pSnd)
 		snd_play_snd(pSFX->pSnd, lVolume, lPan);
 }
-// 676194: using guessed type char gbBufferMsgs;
-// 679660: using guessed type char gbMaxPlayers;
 
 void stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
@@ -1167,7 +1164,6 @@ void effects_update()
 	}
 }
 
-// 415DBA: could not find valid save-restore pair for ebp
 
 void effects_cleanup_sfx()
 {
@@ -1200,7 +1196,6 @@ void stream_update()
 
 	priv_sound_init(mask);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void priv_sound_init(UCHAR bLoadMask)
 {

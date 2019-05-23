@@ -78,9 +78,6 @@ void codec_init_key(int unused, char *pszPassword)
 	}
 	memset(key, 0, sizeof(key));
 }
-// 4035DB: using guessed type char var_E0[72];
-// 4035DB: using guessed type char var_58[64];
-// 4035DB: using guessed type char dst[20];
 
 DWORD codec_get_encoded_len(DWORD dwSrcBytes)
 {

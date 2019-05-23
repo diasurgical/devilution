@@ -534,7 +534,7 @@ typedef struct CMonster {
 	MonsterData *MData;
 	// A TRN file contains a sequence of colour transitions, represented
 	// as indexes into a palette. (a 256 byte array of palette indices)
-	unsigned char *trans_file;
+	BYTE *trans_file;
 } CMonster;
 
 typedef struct MonsterStruct { // note: missing field _mAFNum
@@ -1251,22 +1251,22 @@ typedef struct _uiheroinfo {
 // TPDEF PTR FCN VOID SMSGHANDLER
 
 typedef struct _SNETCAPS {
-	int size;
-	int flags;
-	int maxmessagesize;
-	int maxqueuesize;
-	int maxplayers;
-	int bytessec;
-	int latencyms;
-	int defaultturnssec;
-	int defaultturnsintransit;
+	DWORD size;
+	DWORD flags;
+	DWORD maxmessagesize;
+	DWORD maxqueuesize;
+	DWORD maxplayers;
+	DWORD bytessec;
+	DWORD latencyms;
+	DWORD defaultturnssec;
+	DWORD defaultturnsintransit;
 } _SNETCAPS;
 
 typedef struct _SNETEVENT {
-	int eventid;
-	int playerid;
+	DWORD eventid;
+	DWORD playerid;
 	void *data;
-	int databytes;
+	DWORD databytes;
 } _SNETEVENT;
 
 // TPDEF PTR FCN UCHAR SNETABORTPROC

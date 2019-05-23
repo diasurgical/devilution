@@ -229,7 +229,7 @@ void multi_parse_turn(int pnum, int turn)
 		if (absTurns >= 0x7FFFFFFF)
 			absTurns &= 0xFFFF;
 		sgbSentThisCycle = absTurns + gdwTurnsInTransit;
-		sgdwGameLoops = 4 * absTurns * (BYTE)byte_679704;
+		sgdwGameLoops = 4 * absTurns * sgbNetUpdateRate;
 	}
 }
 
@@ -549,23 +549,14 @@ void multi_process_tmsgs()
 	}
 }
 
-void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen)
+void multi_send_zero_packet(DWORD pnum, char a2, void *pbSrc, DWORD dwLen)
 {
-	unsigned int v4;       // edi
-	short v5;              // si
-	unsigned short dwBody; // ax
-	TPkt pkt;              // [esp+Ch] [ebp-208h]
-	int pnuma;             // [esp+20Ch] [ebp-8h]
-	int v10;               // [esp+210h] [ebp-4h]
-
-	v4 = dwLen;
-	_LOBYTE(v10) = a2;
-	pnuma = pnum;
+	DWORD v5, dwBody;
+	TPkt pkt;
+	int t;
 	v5 = 0;
-	while (v4) {
+	while (dwLen) {
 		pkt.hdr.wCheck = 'ip';
-		pkt.body[0] = v10;
-		dwBody = gdwLargestMsgSize - 24;
 		pkt.hdr.px = 0;
 		pkt.hdr.py = 0;
 		pkt.hdr.targx = 0;
@@ -575,18 +566,21 @@ void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen)
 		pkt.hdr.bstr = 0;
 		pkt.hdr.bmag = 0;
 		pkt.hdr.bdex = 0;
+		pkt.body[0] = a2;
 		*(_WORD *)&pkt.body[1] = v5;
-		if (v4 < gdwLargestMsgSize - 24)
-			dwBody = v4;
+		dwBody = gdwLargestMsgSize - 24;
+		if (dwLen < dwBody)
+			dwBody = dwLen;
 		*(_WORD *)&pkt.body[3] = dwBody;
-		memcpy(&pkt.body[5], pbSrc, dwBody);
-		pkt.hdr.wLen = *(_WORD *)&pkt.body[3] + 24;
-		if (!SNetSendMessage(pnuma, &pkt.hdr, *(unsigned short *)&pkt.body[3] + 24)) {
+		memcpy(&pkt.body[5], pbSrc, *(_WORD *)&pkt.body[3]);
+		t = *(WORD *)&pkt.body[3] + 24;
+		pkt.hdr.wLen = t;
+		if (!SNetSendMessage(pnum, &pkt.hdr, t)) {
 			nthread_terminate_game("SNetSendMessage2");
 			return;
 		}
-		pbSrc = (char *)pbSrc + *(unsigned short *)&pkt.body[3];
-		v4 -= *(unsigned short *)&pkt.body[3];
+		pbSrc = (char *)pbSrc + *(WORD *)&pkt.body[3];
+		dwLen -= *(WORD *)&pkt.body[3];
 		v5 += *(_WORD *)&pkt.body[3];
 	}
 }
@@ -629,12 +623,12 @@ void multi_event_handler(BOOL add)
 
 void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 {
-	int LeftReason;
-	int *data;
+	DWORD LeftReason;
+	DWORD *data;
 
 	switch (pEvt->eventid) {
 	case EVENT_TYPE_PLAYER_CREATE_GAME:
-		data = (int *)pEvt->data;
+		data = (DWORD *)pEvt->data;
 		sgGameInitInfo.dwSeed = data[0];
 		sgGameInitInfo.bDiff = data[1];
 		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
@@ -643,7 +637,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
 		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
 		LeftReason = 0;
-		data = (int *)pEvt->data;
+		data = (DWORD *)pEvt->data;
 		if (data && (DWORD)pEvt->databytes >= 4)
 			LeftReason = data[0];
 		sgdwPlayerLeftReasonTbl[pEvt->playerid] = LeftReason;
