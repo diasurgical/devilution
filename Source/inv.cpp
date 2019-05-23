@@ -1005,7 +1005,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 				cn = SwapItem(&plr[pnum].InvList[il], &plr[pnum].HoldItem);
 				if (plr[pnum].HoldItem._itype == ITYPE_GOLD)
 					plr[pnum]._pGold = CalculateGold(pnum);
-				for (i = 0; i < NUM_INV_GRID_ELEM; ++i) {
+				for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 					if (plr[pnum].InvGrid[i] == it)
 						plr[pnum].InvGrid[i] = 0;
 					if (plr[pnum].InvGrid[i] == -it)
