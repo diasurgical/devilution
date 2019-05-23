@@ -934,7 +934,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 		}
 		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell != 0 && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
 			plr[pnum]._pRSpell = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell;
-			plr[pnum]._pRSplType = 3;
+			plr[pnum]._pRSplType = RSPLTYPE_CHARGES;
 			drawpanflag = 255;
 		}
 		break;
