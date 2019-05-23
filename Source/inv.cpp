@@ -700,7 +700,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 		if (i >= InvRect[r].X && i < InvRect[r].X + INV_SLOT_SIZE_PX) {
 			if (j >= InvRect[r].Y - INV_SLOT_SIZE_PX - 1 && j < InvRect[r].Y) {
 				done = TRUE;
-				--r;
+				r--;
 			}
 		}
 		if (r == 24) {
