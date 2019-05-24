@@ -521,7 +521,7 @@ BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, cha
 				v16 = strlen(String);
 				TextOutA(v8[6], 0, 0, String, v16);
 				v17 = v8[6];
-				qmemcpy(a8a, v8, sizeof(a8a));
+				memcpy(a8a, v8, sizeof(a8a));
 				GetCurrentPositionEx(v17, (LPPOINT)&a8a[7]);
 				SetTextAlign(v8[6], 0);
 				connect_color_text = 1;
