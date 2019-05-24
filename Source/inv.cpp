@@ -2090,7 +2090,7 @@ void StartGoldDrop()
 
 BOOL UseInvItem(int pnum, int cii)
 {
-	int c, idata, it;
+	int c, idata;
 	ItemStruct *Item;
 	BOOL speedlist;
 
@@ -2111,8 +2111,8 @@ BOOL UseInvItem(int pnum, int cii)
 		if (talkflag)
 			return TRUE;
 		c = cii - 47;
-		speedlist = TRUE;
 		Item = &plr[pnum].SpdList[c];
+		speedlist = TRUE;
 	}
 
 	switch (Item->IDidx) {
@@ -2152,9 +2152,7 @@ BOOL UseInvItem(int pnum, int cii)
 			return TRUE;
 		}
 
-		it = Item->_iMiscId;
-
-		if (it == IMISC_NONE && Item->_itype == ITYPE_GOLD) {
+		if (Item->_iMiscId == IMISC_NONE && Item->_itype == ITYPE_GOLD) {
 			StartGoldDrop();
 			return TRUE;
 		}
@@ -2164,13 +2162,13 @@ BOOL UseInvItem(int pnum, int cii)
 			dropGoldValue = 0;
 		}
 
-		if (it == IMISC_SCROLL && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell
-		    || it == IMISC_SCROLLT && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell) {
+		if ((Item->_iMiscId == IMISC_SCROLL && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell)
+		    || (Item->_iMiscId == IMISC_SCROLLT && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell)) {
 			return TRUE;
 		}
 
 		idata = ItemCAnimTbl[Item->_iCurs];
-		if (it == IMISC_BOOK)
+		if (Item->_iMiscId == IMISC_BOOK)
 			PlaySFX(IS_RBOOK);
 		else if (pnum == myplr)
 			PlaySFX(ItemInvSnds[idata]);
