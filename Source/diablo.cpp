@@ -1976,7 +1976,7 @@ void diablo_color_cyc_logic()
 			if (leveltype == DTYPE_HELL) {
 				lighting_color_cycling();
 			} else if (leveltype == DTYPE_CAVES) {
-				if (fullscreen)
+				//if (fullscreen)
 					palette_update_caves();
 			}
 		}

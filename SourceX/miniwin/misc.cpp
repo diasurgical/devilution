@@ -340,7 +340,6 @@ HWND CreateWindowExA(
 		DvlStringSetting("scaling quality", scaleQuality, 2);
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQuality);
 	} else if (fullscreen) {
-		printf("fullscreen\n");
 		flags |= SDL_WINDOW_FULLSCREEN;
 	}
 
