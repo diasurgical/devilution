@@ -588,13 +588,13 @@ BOOL SVidPlayContinue(void)
 		return SVidLoadNextFrame(); // Skip video if the system is to slow
 	}
 
-	SDL_Rect pal_surface_offset = { 64, 160, 0, 0 };
-	if (SDL_BlitSurface(SVidSurface, NULL, pal_surface, &pal_surface_offset) <= -1) {
+	if (SDL_BlitSurface(SVidSurface, NULL, surface, NULL) <= -1) {
 		SDL_Log(SDL_GetError());
 		return false;
 	}
 
-	SetFadeLevel(256); // present frame
+	bufferUpdated = true;
+	lpDDSPrimary->Unlock(NULL);
 
 	double now = SDL_GetTicks() * 1000;
 	if (now < SVidFrameEnd) {

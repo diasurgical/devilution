@@ -9,6 +9,7 @@ extern SDL_Texture *texture;
 extern SDL_Surface *surface;
 extern SDL_Palette *palette;
 extern SDL_Surface *pal_surface;
+extern bool bufferUpdated;
 
 struct StubDraw : public IDirectDraw {
 public:
