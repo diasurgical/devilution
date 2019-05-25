@@ -443,6 +443,7 @@ SDL_Palette *SVidPalette;
 SDL_Surface *SVidSurface;
 BYTE *SVidBuffer;
 SDL_AudioDeviceID deviceId;
+unsigned long SVidWidth, SVidHeight;
 
 BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video)
 {
@@ -491,31 +492,33 @@ BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 		}
 	}
 
-	unsigned long width, height, nFrames;
+	unsigned long nFrames;
 	smk_info_all(SVidSMK, NULL, &nFrames, &SVidFrameLength);
-	smk_info_video(SVidSMK, &width, &height, NULL);
+	smk_info_video(SVidSMK, &SVidWidth, &SVidHeight, NULL);
 
 	smk_enable_video(SVidSMK, enableVideo);
 	smk_first(SVidSMK); // Decode first frame
 
-	smk_info_video(SVidSMK, &width, &height, NULL);
-	SDL_DestroyTexture(texture);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
-	if (texture == NULL) {
-		SDL_Log(SDL_GetError());
-	}
-	if (SDL_RenderSetLogicalSize(renderer, width, height) <= -1) {
-		SDL_Log(SDL_GetError());
+	smk_info_video(SVidSMK, &SVidWidth, &SVidHeight, NULL);
+	if (renderer) {
+		SDL_DestroyTexture(texture);
+		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SVidWidth, SVidHeight);
+		if (texture == NULL) {
+			SDL_Log(SDL_GetError());
+		}
+		if (SDL_RenderSetLogicalSize(renderer, SVidWidth, SVidHeight) <= -1) {
+			SDL_Log(SDL_GetError());
+		}
 	}
 	memcpy(SVidPreviousPalette, orig_palette, 1024);
 
 	// Copy frame to buffer
 	SVidSurface = SDL_CreateRGBSurfaceWithFormatFrom(
 	    (unsigned char *)smk_get_video(SVidSMK),
-	    width,
-	    height,
+	    SVidWidth,
+	    SVidHeight,
 	    8,
-	    width,
+	    SVidWidth,
 	    SDL_PIXELFORMAT_INDEX8);
 	if (SVidSurface == NULL) {
 		SDL_Log(SDL_GetError());
@@ -588,9 +591,31 @@ BOOL SVidPlayContinue(void)
 		return SVidLoadNextFrame(); // Skip video if the system is to slow
 	}
 
-	if (SDL_BlitSurface(SVidSurface, NULL, surface, NULL) <= -1) {
-		SDL_Log(SDL_GetError());
-		return false;
+	if (renderer) {
+		if (SDL_BlitSurface(SVidSurface, NULL, surface, NULL) <= -1) {
+			SDL_Log(SDL_GetError());
+			return false;
+		}
+	} else {
+		int factor;
+		int wFactor = SCREEN_WIDTH / SVidWidth;
+		int hFactor = SCREEN_HEIGHT / SVidHeight;
+		if (wFactor > hFactor && SCREEN_HEIGHT > SVidHeight) {
+			factor = hFactor;
+		} else {
+			factor = wFactor;
+		}
+		int scaledW = SVidWidth * factor;
+		int scaledH = SVidHeight * factor;
+
+		SDL_Rect pal_surface_offset = { (SCREEN_WIDTH - scaledW) / 2, (SCREEN_HEIGHT - scaledH) / 2, scaledW, scaledH };
+		Uint32 format = SDL_GetWindowPixelFormat(window);
+		SDL_Surface *tmp = SDL_ConvertSurfaceFormat(SVidSurface, format, 0);
+		if (SDL_BlitScaled(tmp, NULL, surface, &pal_surface_offset) <= -1) {
+			SDL_Log(SDL_GetError());
+			return false;
+		}
+		SDL_FreeSurface(tmp);
 	}
 
 	bufferUpdated = true;
@@ -627,13 +652,15 @@ BOOL SVidPlayEnd(HANDLE video)
 	video = NULL;
 
 	memcpy(orig_palette, SVidPreviousPalette, 1024);
-	SDL_DestroyTexture(texture);
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
-	if (texture == NULL) {
-		SDL_Log(SDL_GetError());
-	}
-	if (SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT) <= -1) {
-		SDL_Log(SDL_GetError());
+	if (renderer) {
+		SDL_DestroyTexture(texture);
+		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+		if (texture == NULL) {
+			SDL_Log(SDL_GetError());
+		}
+		if (renderer && SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT) <= -1) {
+			SDL_Log(SDL_GetError());
+		}
 	}
 
 	return true;
