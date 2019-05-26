@@ -1090,13 +1090,14 @@ int AddMonster(int x, int y, int dir, int mtype, BOOL InMap)
 
 void NewMonsterAnim(int i, AnimStruct *anim, int md)
 {
-	monster[i]._mAnimData = anim->Data[md];
-	monster[i]._mAnimCnt = 0;
-	monster[i]._mAnimLen = anim->Frames;
-	monster[i]._mAnimFrame = 1;
-	monster[i]._mFlags &= ~(MFLAG_LOCK_ANIMATION | MFLAG_ALLOW_SPECIAL);
-	monster[i]._mAnimDelay = anim->Rate;
-	monster[i]._mdir = md;
+	MonsterStruct *Monst = monster + i;
+	Monst->_mAnimData = anim->Data[md];
+	Monst->_mAnimLen = anim->Frames;
+	Monst->_mAnimCnt = 0;
+	Monst->_mAnimFrame = 1;
+	Monst->_mAnimDelay = anim->Rate;
+	Monst->_mFlags &= ~(MFLAG_LOCK_ANIMATION | MFLAG_ALLOW_SPECIAL);
+	Monst->_mdir = md;
 }
 
 BOOL M_Ranged(int i)
