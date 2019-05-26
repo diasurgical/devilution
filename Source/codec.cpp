@@ -2,11 +2,20 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
+struct CodecSignature
+{
+	DWORD checksum;
+	BYTE error;
+	BYTE last_chunk_size;
+	WORD unused;
+};
+
 int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 {
 	char buf[128];
-	char dst[20];
+	char dst[SHA1HashSize];
 	int i;
+	CodecSignature *sig;
 
 	codec_init_key(0, pszPassword);
 	if (size <= 8)
@@ -18,7 +27,7 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 		memcpy(buf, pbSrcDst, 64);
 		SHA1Result(0, dst);
 		for (int j = 0; j < 64; j++) {
-			buf[j] ^= dst[j % 20];
+			buf[j] ^= dst[j % SHA1HashSize];
 		}
 		SHA1Calculate(0, buf, NULL);
 		memset(dst, 0, sizeof(dst));
@@ -26,17 +35,18 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 	}
 
 	memset(buf, 0, sizeof(buf));
-	if (pbSrcDst[4] > 0) {
+	sig = (CodecSignature *)pbSrcDst;
+	if (sig->error > 0) {
 		size = 0;
 		SHA1Clear();
 	} else {
 		SHA1Result(0, dst);
-		if (*(DWORD *)pbSrcDst != *(DWORD *)dst) {
+		if (sig->checksum != *(DWORD *)dst) {
 			memset(dst, 0, sizeof(dst));
 			size = 0;
 			SHA1Clear();
 		} else {
-			size += pbSrcDst[5] - 64;
+			size += sig->last_chunk_size - 64;
 			SHA1Clear();
 		}
 	}
@@ -69,7 +79,7 @@ void codec_init_key(int unused, char *pszPassword)
 	SHA1Calculate(0, pw, digest);
 	SHA1Clear();
 	for (i = 0; (DWORD)i < 136; i++)
-		key[i] ^= digest[i % 20];
+		key[i] ^= digest[i % SHA1HashSize];
 	memset(pw, 0, sizeof(pw));
 	memset(digest, 0, sizeof(digest));
 	for (n = 0; n < 3; n++) {
@@ -89,10 +99,11 @@ DWORD codec_get_encoded_len(DWORD dwSrcBytes)
 void codec_encode(BYTE* pbSrcDst, DWORD size, int size_64, char *pszPassword)
 {
 	char buf[128];
-	char tmp[20];
-	char dst[20];
+	char tmp[SHA1HashSize];
+	char dst[SHA1HashSize];
 	DWORD chunk;
 	WORD last_chunk;
+	CodecSignature *sig;
 
 	if (size_64 != codec_get_encoded_len(size))
 		app_fatal("Invalid encode parameters");
@@ -107,7 +118,7 @@ void codec_encode(BYTE* pbSrcDst, DWORD size, int size_64, char *pszPassword)
 		SHA1Result(0, dst);
 		SHA1Calculate(0, buf, NULL);
 		for (int j = 0; j < 64; j++) {
-			buf[j] ^= dst[j % 20];
+			buf[j] ^= dst[j % SHA1HashSize];
 		}
 		memset(dst, 0, sizeof(dst));
 		memcpy(pbSrcDst, buf, 64);
@@ -117,10 +128,11 @@ void codec_encode(BYTE* pbSrcDst, DWORD size, int size_64, char *pszPassword)
 	}
 	memset(buf, 0, sizeof(buf));
 	SHA1Result(0, tmp);
-	pbSrcDst[4] = 0;
-	((WORD *)pbSrcDst)[3] = 0;
-	((DWORD *)pbSrcDst)[0] = ((DWORD *)tmp)[0];
-	pbSrcDst[5] = last_chunk;
+	sig = (CodecSignature*) pbSrcDst;
+	sig->error = 0;
+	sig->unused = 0;
+	sig->checksum = *(DWORD *)tmp;
+	sig->last_chunk_size = last_chunk;
 	SHA1Clear();
 }
 

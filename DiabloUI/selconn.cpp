@@ -937,10 +937,10 @@ int UNKCALL SelConn_1000AC9E(HWND hWnd) { return 0; }
 		BNetGW_100028C2(&unk_10029480);
 	}
 	if ( dword_1002A364 )
-		qmemcpy(&v13, (const void *)dword_1002A364, 0x50u);
+		memcpy(&v13, (const void *)dword_1002A364, 0x50u);
 	v14 = v1;
 	if ( dword_1002A370 )
-		qmemcpy(&v15, (const void *)dword_1002A370, 0x3Cu);
+		memcpy(&v15, (const void *)dword_1002A370, 0x3Cu);
 	SelConn_1000ADA8(v1);
 	v6 = dword_1002A358;
 	v7 = dword_1002A34C;

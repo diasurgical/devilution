@@ -145,12 +145,9 @@
 #define _DWORD unsigned int
 
 // Some convenience macros to make partial accesses nicer
-#define LAST_IND(x,part_type)    (sizeof(x)/sizeof(part_type) - 1)
 #if defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN
-#  define LOW_IND(x,part_type)   LAST_IND(x,part_type)
-#  define HIGH_IND(x,part_type)  0
+#  define LOW_IND(x,part_type)   (sizeof(x)/sizeof(part_type) - 1)
 #else
-#  define HIGH_IND(x,part_type)  LAST_IND(x,part_type)
 #  define LOW_IND(x,part_type)   0
 #endif
 
@@ -160,24 +157,6 @@
 
 #define _LOBYTE(x)  BYTEn(x,LOW_IND(x,BYTE))
 #define _LOWORD(x)  WORDn(x,LOW_IND(x,WORD))
-#define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,BYTE))
-#define BYTE1(x)   BYTEn(x,  1)         // byte 1 (counting from 0)
-#define BYTE2(x)   BYTEn(x,  2)
-
-#define SLOBYTE(x)   (*((char*)&(x)+LOW_IND(x,char)))
-
-// Helper functions to represent some assembly instructions.
-
-__inline void *qmemcpy(void *dst, const void *src, size_t cnt)
-{
-	char *out      = (char *)dst;
-	const char *in = (const char *)src;
-	while (cnt > 0) {
-		*out++ = *in++;
-		--cnt;
-	}
-	return dst;
-}
 
 #endif /* IDA_GARBAGE */
 
