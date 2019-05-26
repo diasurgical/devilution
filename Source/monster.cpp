@@ -4289,7 +4289,7 @@ void MAI_SnotSpil(int i)
 	if (dFlags[mx][my] & DFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_BANNER12) {
 			if (!effect_is_playing(USFX_SNOT3) && Monst->_mgoal == MGOAL_TALKING) {
-				ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
+				ObjChangeMap(setpc_x, setpc_y, setpc_x + setpc_w + 1, setpc_y + setpc_h + 1);
 				quests[QTYPE_BOL]._qvar1 = 3;
 				RedoPlayerVision();
 				Monst->_msquelch = UCHAR_MAX;
