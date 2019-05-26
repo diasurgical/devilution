@@ -542,15 +542,15 @@ BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 		yy += 10;
 	}
 	if (!done) {
-		if (sx <= 1 && sy <= 1) {
+		if (sx > 1 || sy > 1) {
+			done = FALSE;
+		} else {
 			for (i = 0; i < MAXBELTITEMS; i++) {
 				if (plr[pnum].SpdList[i]._itype == ITYPE_NONE) {
 					done = TRUE;
 					break;
 				}
 			}
-		} else {
-			done = FALSE;
 		}
 	}
 	if (done && saveflag) {
