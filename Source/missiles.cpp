@@ -2290,40 +2290,30 @@ void AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 
 void AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, char micaster, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // eax
-	int v12; // edx
-	int v13; // eax
-	int v14; // ecx
-	int i;   // [esp+Ch] [ebp-8h]
-	int x;   // [esp+10h] [ebp-4h]
-
-	i = mi;
-	v9 = mi;
-	x = sx;
-	if ((_BYTE)micaster) {
-		v13 = random(63, 15);
-		missile[v9]._midam = 15;
-		missile[v9]._mirnd = v13 + 1;
+	if (micaster == 0) {
+			if (id != -1)
+				missile[mi]._mirnd = random(63, 15) + 1;
+			else
+				missile[mi]._mirnd = random(63, 15) + 1;
+			missile[mi]._midam = random(68, plr[id]._pMagic >> 2) + 1;
 	} else {
-		v10 = random(63, 15);
-		v12 = plr[id]._pMagic;
-		missile[v9]._mirnd = v10 + 1;
-		missile[v9]._midam = random(68, v12 >> 2) + 1;
+		missile[mi]._mirnd = random(63, 15) + 1;
+		missile[mi]._midam = 15;
 	}
-	v14 = dx;
-	if (x == dx && sy == dy) {
-		v14 = XDirAdd[midir] + dx;
+
+	if (sx == dx && sy == dy) {
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
-	}
-	missile[v9]._miAnimFrame = random(63, 8) + 1;
-	missile[v9]._mlid = AddLight(x, sy, 5);
-	GetMissileVel(i, x, sy, dx, dy, 8);
-	missile[v9]._miVar3 = 0;
-	missile[v9]._miVar1 = 5;
-	missile[v9]._miVar2 = midir;
-	missile[v9]._mirange = 256;
+		}
+
+	missile[mi]._miAnimFrame = random(63, 8) + 1;
+		missile[mi]._mlid = AddLight(sx, sy, 5);
+	
+	GetMissileVel(mi, sx, sy, dx, dy, 8);
+	missile[mi]._miVar1 = 5;
+	missile[mi]._miVar2 = midir;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._mirange = 256;
 }
 
 void AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, char micaster, int id, int dam)
