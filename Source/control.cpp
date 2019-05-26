@@ -376,189 +376,127 @@ void DrawSpell()
 
 void DrawSpellList()
 {
-	int v0;               // esi
-	signed int v1;        // edi
-	signed int v4;        // ebp
-	int v5;               // eax
-	int v6;               // esi
-	int v7;               // eax
-	BOOLEAN v8;           // sf
-	int v9;               // esi
-	int v10;              // eax
-	int v11;              // ebp
-	int v12;              // edx
-	int *v13;             // ecx
-	int *v14;             // eax
-	signed int v15;       // edx
-	signed int v16;       // edi
-	int v17;              // [esp+Ch] [ebp-34h]
-	__int32 xp;           // [esp+10h] [ebp-30h]
-	__int32 yp;           // [esp+14h] [ebp-2Ch]
-	BOOL *v20;            // [esp+18h] [ebp-28h]
-	__int32 nCel;         // [esp+1Ch] [ebp-24h]
-	int v22;              // [esp+20h] [ebp-20h]
-	__int32 v23;          // [esp+24h] [ebp-1Ch]
-	signed int v24;       // [esp+28h] [ebp-18h]
-	unsigned __int64 v25; // [esp+2Ch] [ebp-14h]
-	signed __int64 v26;   // [esp+34h] [ebp-Ch]
+	int i, j, x, y, c, s, t, v, lx, ly, trans;
+	unsigned __int64 mask, spl;
 
 	pSpell = -1;
-	infostr[0] = 0;
-	v17 = 636;
-	xp = 495;
+	infostr[0] = '\0';
+	x = 636;
+	y = 495;
 	ClearPanel();
-	v0 = myplr;
-	v1 = RSPLTYPE_SKILL;
-	v24 = 0;
-	do {
-		switch (v1) {
+	for (i = 0; i < 4; i++) {
+		switch ((spell_type)i) {
 		case RSPLTYPE_SKILL:
 			SetSpellTrans(RSPLTYPE_SKILL);
-			yp = 46;
-			v25 = plr[v0]._pAblSpells;
+			c = 46;
+			mask = plr[myplr]._pAblSpells;
 			break;
 		case RSPLTYPE_SPELL:
-			yp = 47;
-			v25 = plr[v0]._pMemSpells;
+			c = 47;
+			mask = plr[myplr]._pMemSpells;
 			break;
 		case RSPLTYPE_SCROLL:
 			SetSpellTrans(RSPLTYPE_SCROLL);
-			yp = 44;
-			v25 = plr[v0]._pScrlSpells;
+			c = 44;
+			mask = plr[myplr]._pScrlSpells;
 			break;
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
-			yp = 45;
-			v25 = plr[v0]._pISpells;
+			c = 45;
+			mask = plr[myplr]._pISpells;
 			break;
 		}
-		v20 = &spelldata[1].sTownSpell;
-		v4 = 1;
-		v26 = (__int64)1;
-		v23 = 1;
-		v22 = xp - 216;
-		do {
-			if (!(v25 & v26))
-				goto LABEL_68;
-			if (v1 == RSPLTYPE_SPELL) {
-				v5 = v0;
-				v6 = plr[v0]._pSplLvl[v4];
-				v7 = plr[v5]._pISplLvlAdd;
-				v8 = v7 + v6 < 0;
-				v9 = v7 + v6;
-				nCel = v9;
-				if (v8) {
-					nCel = 0;
-					v9 = 0;
-				}
-				SetSpellTrans(v9 <= 0 ? RSPLTYPE_INVALID : RSPLTYPE_SPELL);
-			} else {
-				v9 = nCel;
+		for (spl = 1, j = 1; j < MAX_SPELLS; spl <<= 1, j++) {
+			if (!(mask & spl))
+				continue;
+			if (i == RSPLTYPE_SPELL) {
+				s = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[j];
+				if (s < 0)
+					s = 0;
+				if (s > 0)
+					trans = RSPLTYPE_SPELL;
+				else
+					trans = RSPLTYPE_INVALID;
+				SetSpellTrans(trans);
 			}
-			if (!currlevel && !*v20)
+			if (currlevel == 0 && !spelldata[j].sTownSpell)
 				SetSpellTrans(RSPLTYPE_INVALID);
-			DrawSpellCel(v17, xp, pSpellCels, SpellITbl[v4], 56);
-			if (MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56) {
-				pSpell = v4;
-				pSplType = v1;
-				DrawSpellCel(v17, xp, pSpellCels, yp, 56);
-				if (v1) {
-					switch (v1) {
-					case RSPLTYPE_SPELL:
-						sprintf(infostr, "%s Spell", spelldata[pSpell].sNameText);
-						if (pSpell == 31) {
-							sprintf(tempstr, "Damages undead only");
-							AddPanelString(tempstr, 1);
-						}
-						if (v9)
-							sprintf(tempstr, "Spell Level %i", v9);
-						else
-							sprintf(tempstr, "Spell Level 0 - Unusable");
-					LABEL_32:
-						AddPanelString(tempstr, 1);
-						break;
-					case RSPLTYPE_SCROLL:
-						sprintf(infostr, "Scroll of %s", spelldata[pSpell].sNameText);
-						v10 = myplr;
-						v11 = 0;
-						v12 = plr[myplr]._pNumInv;
-						if (v12 > 0) {
-							v13 = &plr[v10].InvList[0]._iMiscId;
-							do {
-								if (*(v13 - 53) != -1
-								    && (*v13 == IMISC_SCROLL || *v13 == IMISC_SCROLLT)
-								    && v13[1] == pSpell) {
-									++v11;
-								}
-								v13 += 92;
-								--v12;
-							} while (v12);
-						}
-						v14 = &plr[v10].SpdList[0]._iMiscId;
-						v15 = MAXBELTITEMS;
-						do {
-							if (*(v14 - 53) != -1
-							    && (*v14 == IMISC_SCROLL || *v14 == IMISC_SCROLLT)
-							    && v14[1] == pSpell) {
-								++v11;
-							}
-							v14 += 92;
-							--v15;
-						} while (v15);
-						if (v11 == 1)
-							strcpy(tempstr, "1 Scroll");
-						else
-							sprintf(tempstr, "%i Scrolls", v11);
-						AddPanelString(tempstr, 1);
-						v4 = v23;
-						break;
-					case RSPLTYPE_CHARGES:
-						sprintf(infostr, "Staff of %s", spelldata[pSpell].sNameText);
-						if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1)
-							strcpy(tempstr, "1 Charge");
-						else
-							sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
-						goto LABEL_32;
-					}
-				} else {
+			DrawSpellCel(x, y, pSpellCels, SpellITbl[j], 56);
+			lx = x - 64;
+			ly = y - 216;
+			if (MouseX >= lx && MouseX < lx + 56 && MouseY >= ly && MouseY < ly + 56) {
+				pSpell = j;
+				pSplType = i;
+				DrawSpellCel(x, y, pSpellCels, c, 56);
+				switch (i) {
+				case RSPLTYPE_SKILL:
 					sprintf(infostr, "%s Skill", spelldata[pSpell].sSkillText);
-				}
-				v0 = myplr;
-				v16 = 0;
-				do {
-					if (plr[v0]._pSplHotKey[v16] == pSpell && plr[v0]._pSplTHotKey[v16] == pSplType) {
-						DrawSpellCel(v17, xp, pSpellCels, v16 + 48, 56);
-						sprintf(tempstr, "Spell Hot Key #F%i", v16 + 5);
+					break;
+				case RSPLTYPE_SPELL:
+					sprintf(infostr, "%s Spell", spelldata[pSpell].sNameText);
+					if (pSpell == SPL_HBOLT) {
+						sprintf(tempstr, "Damages undead only");
 						AddPanelString(tempstr, 1);
-						v0 = myplr;
 					}
-					++v16;
-				} while (v16 < 4);
-				v1 = v24;
-				goto LABEL_66;
+					if (s == 0)
+						sprintf(tempstr, "Spell Level 0 - Unusable");
+					else
+						sprintf(tempstr, "Spell Level %i", s);
+					AddPanelString(tempstr, TRUE);
+					break;
+				case RSPLTYPE_SCROLL:
+					sprintf(infostr, "Scroll of %s", spelldata[pSpell].sNameText);
+					v = 0;
+					for (t = 0; t < plr[myplr]._pNumInv; t++) {
+						if (plr[myplr].InvList[t]._itype != ITYPE_NONE
+						    && (plr[myplr].InvList[t]._iMiscId == IMISC_SCROLL || plr[myplr].InvList[t]._iMiscId == IMISC_SCROLLT)
+						    && plr[myplr].InvList[t]._iSpell == pSpell) {
+							v++;
+						}
+					}
+					for (t = 0; t < MAXBELTITEMS; t++) {
+						if (plr[myplr].SpdList[t]._itype != ITYPE_NONE
+						    && (plr[myplr].SpdList[t]._iMiscId == IMISC_SCROLL || plr[myplr].SpdList[t]._iMiscId == IMISC_SCROLLT)
+						    && plr[myplr].SpdList[t]._iSpell == pSpell) {
+							v++;
+						}
+					}
+					if (v == 1)
+						strcpy(tempstr, "1 Scroll");
+					else
+						sprintf(tempstr, "%i Scrolls", v);
+					AddPanelString(tempstr, TRUE);
+					break;
+				case RSPLTYPE_CHARGES:
+					sprintf(infostr, "Staff of %s", spelldata[pSpell].sNameText);
+					if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1)
+						strcpy(tempstr, "1 Charge");
+					else
+						sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
+					AddPanelString(tempstr, TRUE);
+					break;
+				}
+				for (t = 0; t < 4; t++) {
+					if (plr[myplr]._pSplHotKey[t] == pSpell && plr[myplr]._pSplTHotKey[t] == pSplType) {
+						DrawSpellCel(x, y, pSpellCels, t + 48, 56);
+						printf(tempstr, "Spell Hot Key #F%i", t + 5);
+						AddPanelString(tempstr, 1);
+					}
+				}
 			}
-			v0 = myplr;
-		LABEL_66:
-			v17 -= 56;
-			if (v17 == 20) {
-				xp -= 56;
-				v22 -= 56;
-				v17 = 636;
+			x -= 56;
+			if (x == 20) {
+				y -= 56;
+				x = 636;
 			}
-		LABEL_68:
-			v20 += 14;
-			++v4;
-			v26 *= (__int64)2;
-			v23 = v4;
-		} while ((signed int)v20 < (signed int)&spelldata[MAX_SPELLS].sTownSpell);
-		if (v25 && v17 != 636)
-			v17 -= 56;
-		if (v17 == 20) {
-			xp -= 56;
-			v17 = 636;
 		}
-		v24 = ++v1;
-	} while (v1 < 4);
+		if (mask != 0 && x != 636)
+			x -= 56;
+		if (x == 20) {
+			y -= 56;
+			x = 636;
+		}
+	}
 }
 // 4B8834: using guessed type int pSpell;
 // 4B8954: using guessed type int pSplType;
