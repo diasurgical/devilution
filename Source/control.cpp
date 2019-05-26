@@ -1601,7 +1601,7 @@ void DrawInfoBox()
 
 	DrawPanelBox(177, 62, 288, 60, 241, 558);
 	if (!panelflag && !trigflag && pcursinvitem == -1 && !spselflag) {
-		infostr[0] = 0;
+		infostr[0] = '\0';
 		infoclr = COL_WHITE;
 		ClearPanel();
 	}
