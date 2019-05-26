@@ -1535,33 +1535,35 @@ BOOL control_WriteStringToBuffer(BYTE *str)
 
 void DrawInfoBox()
 {
-	int v0;         // ecx
-	int v1;         // eax
-	int v2;         // eax
-	int v3;         // esi
-	char *v4;       // eax
-	const char *v5; // eax
-	signed int v7;  // edi
-	signed int v8;  // ebp
-	int v9;         // esi
-	char *v10;      // ebx
+	int nGold;
 
 	DrawPanelBox(177, 62, 288, 60, 241, 558);
-	v0 = trigflag;
-	v1 = spselflag;
-	if (!panelflag && !trigflag && pcursinvitem == -1) {
-		if (spselflag) {
-		LABEL_32:
-			infoclr = COL_WHITE;
-			goto LABEL_33;
-		}
-		infostr[0] = 0;
+	if (!panelflag && !trigflag && pcursinvitem == -1 && !spselflag) {
+		infostr[0] = '\0';
 		infoclr = COL_WHITE;
 		ClearPanel();
 	}
-	if (v1 || v0)
-		goto LABEL_32;
-	if (pcurs < CURSOR_FIRSTITEM) {
+	if (spselflag || trigflag) {
+		infoclr = COL_WHITE;
+	} else if (pcurs >= CURSOR_FIRSTITEM) {
+		if (plr[myplr].HoldItem._itype == ITYPE_GOLD) {
+			nGold = plr[myplr].HoldItem._ivalue;
+			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(plr[myplr].HoldItem._ivalue));
+		} else if (!plr[myplr].HoldItem._iStatFlag) {
+			ClearPanel();
+			AddPanelString("Requirements not met", 1);
+			pinfoflag = TRUE;
+		} else {
+			if (plr[myplr].HoldItem._iIdentified)
+				strcpy(infostr, plr[myplr].HoldItem._iIName);
+			else
+				strcpy(infostr, plr[myplr].HoldItem._iName);
+			if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_MAGIC)
+				infoclr = COL_BLUE;
+			if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_UNIQUE)
+				infoclr = COL_GOLD;
+		}
+	} else {
 		if (pcursitem != -1)
 			GetItemStr(pcursitem);
 		if (pcursobj != -1)
@@ -1590,56 +1592,29 @@ void DrawInfoBox()
 			sprintf(tempstr, "Hit Points %i of %i", plr[pcursplr]._pHitPoints >> 6, plr[pcursplr]._pMaxHP >> 6);
 			AddPanelString(tempstr, 1);
 		}
-	} else {
-		v2 = myplr;
-		if (plr[myplr].HoldItem._itype == ITYPE_GOLD) {
-			v3 = plr[v2].HoldItem._ivalue;
-			v4 = get_pieces_str(plr[v2].HoldItem._ivalue);
-			sprintf(infostr, "%i gold %s", v3, v4);
-		} else if (plr[v2].HoldItem._iStatFlag) {
-			if (plr[v2].HoldItem._iIdentified)
-				v5 = plr[v2].HoldItem._iIName;
-			else
-				v5 = plr[v2].HoldItem._iName;
-			strcpy(infostr, v5);
-			if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_MAGIC)
-				infoclr = COL_BLUE;
-			if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_UNIQUE)
-				infoclr = COL_GOLD;
-		} else {
-			ClearPanel();
-			AddPanelString("Requirements not met", 1);
-			pinfoflag = TRUE;
-		}
 	}
-LABEL_33:
-	if ((infostr[0] || pnumlines) && !talkflag) {
-		v7 = 0;
-		v8 = 1;
+	if (infostr[0] || pnumlines)
+		control_draw_info_str();
+}
+
+void control_draw_info_str()
+{
+	int yo, lo, i;
+
+	if (!talkflag) {
+		yo = 0;
+		lo = 1;
 		if (infostr[0]) {
 			control_print_info_str(0, infostr, 1, pnumlines);
-			v7 = 1;
-			v8 = 0;
+			yo = 1;
+			lo = 0;
 		}
-		v9 = 0;
-		if (pnumlines > 0) {
-			v10 = panelstr;
-			do {
-				control_print_info_str(v9 + v7, v10, pstrjust[v9], pnumlines - v8);
-				++v9;
-				v10 += 64;
-			} while (v9 < pnumlines);
+
+		for (i = 0; i < pnumlines; i++) {
+			control_print_info_str(i + yo, &panelstr[64 * i], pstrjust[i], pnumlines - lo);
 		}
 	}
 }
-// 4B883C: using guessed type int infoclr;
-// 4B8960: using guessed type int talkflag;
-// 4B8B84: using guessed type int panelflag;
-// 4B8C98: using guessed type int spselflag;
-// 4B8CB8: using guessed type char pcursinvitem;
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC1: using guessed type char pcursobj;
-// 4B8CC2: using guessed type char pcursplr;
 
 void control_print_info_str(int y, char *str, BOOL center, int lines)
 {
