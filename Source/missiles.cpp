@@ -426,7 +426,7 @@ void GetMissilePos(int i)
 
 void MoveMissilePos(int i)
 {
-	int dx, dy;
+	int dx, dy, x, y;
 
 	switch (missile[i]._mimfnum) {
 	case DIR_S:
@@ -462,7 +462,9 @@ void MoveMissilePos(int i)
 		dy = 1;
 		break;
 	}
-	if (PosOkMonst(missile[i]._misource, missile[i]._mix + dx, missile[i]._miy + dy)) {
+	x = missile[i]._mix + dx;
+	y = missile[i]._miy + dy;
+	if (PosOkMonst(missile[i]._misource, x, y)) {
 		missile[i]._mix += dx;
 		missile[i]._miy += dy;
 		missile[i]._mixoff += (dy << 5) - (dx << 5);
