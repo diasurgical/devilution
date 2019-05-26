@@ -4402,16 +4402,16 @@ void MAI_Lachdanan(int i)
 		app_fatal("MAI_Lachdanan: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode != MM_STAND) {
+	if (monster[i]._mmode != MM_STAND) {
 		return;
 	}
 
 	_mx = Monst->_mx;
 	_my = Monst->_my;
 	md = M_GetDir(i);
-	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
+	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && monster[i]._mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_VEIL10;
-		Monst->_mgoal = MGOAL_INQUIRING;
+		monster[i]._mgoal = MGOAL_INQUIRING;
 	}
 
 	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
@@ -4426,7 +4426,7 @@ void MAI_Lachdanan(int i)
 
 	Monst->_mdir = md;
 
-	if (Monst->_mmode == MM_STAND)
+	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
