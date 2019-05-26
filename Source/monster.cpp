@@ -1092,13 +1092,14 @@ int AddMonster(int x, int y, int dir, int mtype, BOOL InMap)
 
 void NewMonsterAnim(int i, AnimStruct *anim, int md)
 {
-	monster[i]._mAnimData = anim->Data[md];
-	monster[i]._mAnimCnt = 0;
-	monster[i]._mAnimLen = anim->Frames;
-	monster[i]._mAnimFrame = 1;
-	monster[i]._mFlags &= ~(MFLAG_LOCK_ANIMATION | MFLAG_ALLOW_SPECIAL);
-	monster[i]._mAnimDelay = anim->Rate;
-	monster[i]._mdir = md;
+	MonsterStruct *Monst = monster + i;
+	Monst->_mAnimData = anim->Data[md];
+	Monst->_mAnimLen = anim->Frames;
+	Monst->_mAnimCnt = 0;
+	Monst->_mAnimFrame = 1;
+	Monst->_mAnimDelay = anim->Rate;
+	Monst->_mFlags &= ~(MFLAG_LOCK_ANIMATION | MFLAG_ALLOW_SPECIAL);
+	Monst->_mdir = md;
 }
 
 BOOL M_Ranged(int i)
@@ -4290,7 +4291,7 @@ void MAI_SnotSpil(int i)
 	if (dFlags[mx][my] & DFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_BANNER12) {
 			if (!effect_is_playing(USFX_SNOT3) && Monst->_mgoal == MGOAL_TALKING) {
-				ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
+				ObjChangeMap(setpc_x, setpc_y, setpc_x + setpc_w + 1, setpc_y + setpc_h + 1);
 				quests[QTYPE_BOL]._qvar1 = 3;
 				RedoPlayerVision();
 				Monst->_msquelch = UCHAR_MAX;
@@ -4403,16 +4404,16 @@ void MAI_Lachdanan(int i)
 		app_fatal("MAI_Lachdanan: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode != MM_STAND) {
+	if (monster[i]._mmode != MM_STAND) {
 		return;
 	}
 
 	_mx = Monst->_mx;
 	_my = Monst->_my;
 	md = M_GetDir(i);
-	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
+	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && monster[i]._mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_VEIL10;
-		Monst->_mgoal = MGOAL_INQUIRING;
+		monster[i]._mgoal = MGOAL_INQUIRING;
 	}
 
 	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
@@ -4427,7 +4428,7 @@ void MAI_Lachdanan(int i)
 
 	Monst->_mdir = md;
 
-	if (Monst->_mmode == MM_STAND)
+	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 

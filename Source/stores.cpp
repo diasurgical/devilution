@@ -2380,7 +2380,7 @@ void S_BBuyEnter()
 		stextlhold = 10;
 		stextvhold = stextsval;
 		stextshold = STORE_BBOY;
-		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
+		if (plr[myplr]._pGold < boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
 			StartStore(STORE_NOMONEY);
 		} else {
 			plr[myplr].HoldItem = boyitem;
