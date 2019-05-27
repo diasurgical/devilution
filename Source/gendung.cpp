@@ -565,28 +565,20 @@ void DRLG_InitTrans()
 
 void DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 {
-	int v4;      // esi
-	int v5;      // edi
-	int i;       // eax
-	char *v7;    // edx
-	int j;       // ecx
-	int ty_enda; // [esp+10h] [ebp+8h]
+	int i, j;
 
-	v4 = 2 * x1 + 17;
-	v5 = 2 * x2 + 16;
-	i = 2 * y1 + 17;
-	for (ty_enda = 2 * y2 + 16; i <= ty_enda; ++i) {
-		if (v4 <= v5) {
-			v7 = &dTransVal[v4][i];
-			j = v5 - v4 + 1;
-			do {
-				*v7 = TransVal;
-				v7 += 112;
-				--j;
-			} while (j);
+	x1 = 2 * x1 + 17;
+	y1 = 2 * y1 + 17;
+	x2 = 2 * x2 + 16;
+	y2 = 2 * y2 + 16;
+
+	for(j = y1; j <= y2; j++) {
+		for(i = x1; i <= x2; i++) {
+			dTransVal[i][j] = TransVal;
 		}
 	}
-	++TransVal;
+
+	TransVal++;
 }
 // 5A5590: using guessed type char TransVal;
 
