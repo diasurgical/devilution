@@ -1,6 +1,6 @@
 #include "diablo.h"
 
-char sgbNextTalkSave; // weak
+BYTE sgbNextTalkSave;
 BYTE sgbTalkSavePos;
 BYTE *pDurIcons;
 BYTE *pChrButtons;
@@ -2573,7 +2573,7 @@ void control_release_talk_btn()
 	}
 }
 
-void control_reset_talk_msg()
+void control_reset_talk_msg(char* msg)
 {
 	int i, pmask;
 	pmask = 0;
@@ -2669,43 +2669,32 @@ BOOL control_presskeys(int vkey)
 
 void control_press_enter()
 {
-	signed int v0; // esi
-	char(*v1)[80]; // ebp
-	char v2;       // al
-	int v3;        // ecx
-	char *v4;      // ebp
+	int i;
+	BYTE talk_save;
 
 	if (sgszTalkMsg[0]) {
-		control_reset_talk_msg();
-		v0 = 0;
-		v1 = sgszTalkSave;
-		do {
-			if (!strcmp((const char *)v1, sgszTalkMsg))
+		control_reset_talk_msg(sgszTalkMsg);
+		for (i = 0; i < 8; i++) {
+			if (!strcmp(sgszTalkSave[i], sgszTalkMsg))
 				break;
-			++v1;
-			++v0;
-		} while ((signed int)v1 < (signed int)&sgszTalkSave[8]);
-		if (v0 < 8) {
-			v2 = sgbNextTalkSave;
-			v3 = (sgbNextTalkSave - 1) & 7;
-			if (v0 != v3) {
-				v4 = sgszTalkSave[v3];
-				strcpy(sgszTalkSave[v0], sgszTalkSave[v3]);
-				strcpy(v4, sgszTalkMsg);
-				v2 = sgbNextTalkSave;
-			}
-		} else {
-			strcpy(sgszTalkSave[(unsigned char)sgbNextTalkSave], sgszTalkMsg);
-			v2 = (sgbNextTalkSave + 1) & 7;
-			sgbNextTalkSave = (sgbNextTalkSave + 1) & 7;
 		}
-		sgszTalkMsg[0] = 0;
-		sgbTalkSavePos = v2;
+		if (i >= 8) {
+			strcpy(sgszTalkSave[sgbNextTalkSave], sgszTalkMsg);
+			sgbNextTalkSave = sgbNextTalkSave + 1;
+			sgbNextTalkSave &= 7;
+		} else {
+			talk_save = sgbNextTalkSave - 1;
+			talk_save &= 7;
+			if (i != talk_save) {
+				strcpy(sgszTalkSave[i], sgszTalkSave[talk_save]);
+				strcpy(sgszTalkSave[talk_save], sgszTalkMsg);
+			}
+		}
+		sgszTalkMsg[0] = '\0';
+		sgbTalkSavePos = sgbNextTalkSave;
 	}
 	control_reset_talk();
 }
-// 4B84CC: using guessed type char sgbNextTalkSave;
-// 4B84CD: using guessed type char sgbTalkSavePos;
 
 void control_up_down(int v)
 {
