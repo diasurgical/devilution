@@ -2431,79 +2431,63 @@ void control_set_gold_curs(int pnum)
 
 void DrawTalkPan()
 {
-	int v0;        // esi
-	signed int v1; // edi
-	signed int v2; // esi
-	char *v3;      // eax
-	int v4;        // esi
-	int v5;        // esi
-	int v6;        // ebx
-	int v7;        // eax
-	int a4;        // [esp+4h] [ebp-Ch]
-	char *a1;      // [esp+8h] [ebp-8h]
-	int v10;       // [esp+Ch] [ebp-4h]
+	int i, off, talk_btn, color, nCel, x;
+	char *msg;
 
-	v0 = 0;
-	if (talkflag) {
-		DrawPanelBox(175, sgbPlrTalkTbl + 20, 294, 5, 239, 516);
-		v1 = 293;
-		do {
-			DrawPanelBox((v0 >> 1) + 175, sgbPlrTalkTbl + v0 + 25, v1, 1, (v0 >> 1) + 239, v0 + 521);
-			++v0;
-			--v1;
-		} while (v1 > 283);
-		DrawPanelBox(185, sgbPlrTalkTbl + 35, 274, 30, 249, 531);
-		DrawPanelBox(180, sgbPlrTalkTbl + 65, 284, 5, 244, 561);
-		v2 = 0;
-		do {
-			DrawPanelBox(180, sgbPlrTalkTbl + v2 + 70, v2 + 284, 1, 244, v2 + 566);
-			++v2;
-		} while (v2 < 10);
-		DrawPanelBox(170, sgbPlrTalkTbl + 80, 310, 55, 234, 576);
-		v3 = sgszTalkMsg;
-		v4 = 0;
-		do {
-			v3 = control_print_talk_msg(v3, 0, v4, &a4, 0);
-			if (!v3)
-				goto LABEL_10;
-			v4 += 13;
-		} while (v4 < 39);
-		*v3 = 0;
-	LABEL_10:
-		CelDecDatOnly(gpBuffer + a4, pCelBuff, frame, 12);
-		v5 = 0;
-		a1 = plr[0]._pName;
-		v10 = 0;
-		frame = (frame & 7) + 1;
-		while (v10 == myplr) {
-		LABEL_21:
-			a1 += 21720;
-			++v10;
-			if ((signed int)a1 >= (signed int)&plr[4]._pName)
-				return;
-		}
-		if (whisper[v10]) {
-			v6 = 3;
-			if (!talkbtndown[v5]) {
-			LABEL_18:
-				if (*(a1 - 291))
-					control_print_talk_msg(a1, 46, 18 * v5 + 60, &a4, v6);
-				++v5;
-				goto LABEL_21;
+	off = 0;
+	if (!talkflag)
+		return;
+
+	DrawPanelBox(175, sgbPlrTalkTbl + 20, 294, 5, 239, 516);
+	for (i = 293; i > 283; off++, i--) {
+		DrawPanelBox((off >> 1) + 175, sgbPlrTalkTbl + off + 25, i, 1, (off >> 1) + 239, off + 521);
+	}
+	DrawPanelBox(185, sgbPlrTalkTbl + 35, 274, 30, 249, 531);
+	DrawPanelBox(180, sgbPlrTalkTbl + 65, 284, 5, 244, 561);
+	for (i = 0; i < 10; i++) {
+		DrawPanelBox(180, sgbPlrTalkTbl + i + 70, i + 284, 1, 244, i + 566);
+	}
+	DrawPanelBox(170, sgbPlrTalkTbl + 80, 310, 55, 234, 576);
+	msg = sgszTalkMsg;
+	for (i = 0; i < 39; i += 13) {
+		msg = control_print_talk_msg(msg, 0, i, &x, 0);
+		if (!msg)
+			break;
+	}
+	if (msg)
+		*msg = '\0';
+	CelDecDatOnly(gpBuffer + x, pCelBuff, frame, 12);
+	talk_btn = 0;
+	frame = (frame & 7) + 1;
+	for (i = 0; i < 4; i++) {
+		if (i == myplr)
+			continue;
+		if (whisper[i]) {
+			color = COL_GOLD;
+			if (talkbtndown[talk_btn]) {
+				if (talk_btn != 0)
+					nCel = 4;
+				else
+					nCel = 3;
+				CelDecodeOnly(236, 596 + 18 * talk_btn, pTalkBtns, nCel, 61);
 			}
-			v7 = (v5 != 0) + 3;
 		} else {
-			v7 = (v5 != 0) + 1;
-			v6 = 2;
-			if (talkbtndown[v5])
-				v7 = (v5 != 0) + 5;
+			color = COL_RED;
+			if (talk_btn != 0)
+				nCel = 2;
+			else
+				nCel = 1;
+			if (talkbtndown[talk_btn])
+				nCel += 4;
+			CelDecodeOnly(236, 596 + 18 * talk_btn, pTalkBtns, nCel, 61);
 		}
-		CelDecodeOnly(236, 18 * v5 + 596, pTalkBtns, v7, 61);
-		goto LABEL_18;
+		if (plr[i].plractive) {
+			control_print_talk_msg(plr[i]._pName, 46, 60 + talk_btn * 18, &x, color);
+		}
+
+		talk_btn++;
 	}
 }
-// 4B8840: using guessed type int sgbPlrTalkTbl;
-// 4B8960: using guessed type int talkflag;
 
 char *control_print_talk_msg(char *msg, int x, int y, int *a4, int color)
 {
