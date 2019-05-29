@@ -532,11 +532,11 @@ BOOL MonstPlace(int xp, int yp)
 
 	f = dFlags[xp][yp];
 
-	if (f & DFLAG_VISIBLE) {
+	if (f & BFLAG_VISIBLE) {
 		return FALSE;
 	}
 
-	if (f & DFLAG_POPULATED) {
+	if (f & BFLAG_POPULATED) {
 		return FALSE;
 	}
 
@@ -1344,7 +1344,7 @@ void M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int y
 	dMonster[fx][fy] = -(i + 1);
 	monster[i]._mVar4 = x;
 	monster[i]._mVar5 = y;
-	dFlags[x][y] |= DFLAG_MONSTER;
+	dFlags[x][y] |= BFLAG_MONSTLR;
 	monster[i]._moldx = monster[i]._mx;
 	monster[i]._moldy = monster[i]._my;
 	monster[i]._mfutx = fx;
@@ -1462,9 +1462,9 @@ void M_ClearSquares(int i)
 	}
 
 	if (mx + 1 < MAXDUNX)
-		dFlags[mx + 1][my] &= ~DFLAG_MONSTER;
+		dFlags[mx + 1][my] &= ~BFLAG_MONSTLR;
 	if (my + 1 < MAXDUNY)
-		dFlags[mx][my + 1] &= ~DFLAG_MONSTER;
+		dFlags[mx][my + 1] &= ~BFLAG_MONSTLR;
 }
 
 void M_GetKnockback(int i)
@@ -1965,7 +1965,7 @@ BOOL M_DoWalk3(int i)
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
 		monster[i]._mx = monster[i]._mVar1;
 		monster[i]._my = monster[i]._mVar2;
-		dFlags[monster[i]._mVar4][monster[i]._mVar5] &= ~DFLAG_MONSTER;
+		dFlags[monster[i]._mVar4][monster[i]._mVar5] &= ~BFLAG_MONSTLR;
 		dMonster[monster[i]._mx][monster[i]._my] = i + 1;
 		if (monster[i]._uniqtype)
 			ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
@@ -2901,7 +2901,7 @@ void MAI_Zombie(int i)
 
 	mx = Monst->_mx;
 	my = Monst->_my;
-	if (!(dFlags[mx][my] & DFLAG_VISIBLE)) {
+	if (!(dFlags[mx][my] & BFLAG_VISIBLE)) {
 		return;
 	}
 
@@ -4188,13 +4188,13 @@ void MAI_Garbud(int i)
 
 	if (Monst->mtalkmsg < QUEST_GARBUD4
 	    && Monst->mtalkmsg > QUEST_DOOM10
-	    && !(dFlags[_mx][_my] & DFLAG_VISIBLE)
+	    && !(dFlags[_mx][_my] & BFLAG_VISIBLE)
 	    && Monst->_mgoal == MGOAL_TALKING) {
 		Monst->_mgoal = MGOAL_INQUIRING;
 		Monst->mtalkmsg++;
 	}
 
-	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
+	if (dFlags[_mx][_my] & BFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_GARBUD4) {
 			if (!effect_is_playing(USFX_GARBUD4) && Monst->_mgoal == MGOAL_TALKING) {
 				Monst->_mgoal = MGOAL_NORMAL;
@@ -4229,12 +4229,12 @@ void MAI_Zhar(int i)
 	my = Monst->_my;
 	mx = Monst->_mx;
 	md = M_GetDir(i);
-	if (Monst->mtalkmsg == QUEST_ZHAR1 && !(dFlags[mx][my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
+	if (Monst->mtalkmsg == QUEST_ZHAR1 && !(dFlags[mx][my] & BFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_ZHAR2;
 		Monst->_mgoal = MGOAL_INQUIRING;
 	}
 
-	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+	if (dFlags[mx][my] & BFLAG_VISIBLE) {
 		_mx = Monst->_mx - Monst->_menemyx;
 		_my = Monst->_my - Monst->_menemyy;
 		if (abs(_mx) > abs(_my))
@@ -4276,7 +4276,7 @@ void MAI_SnotSpil(int i)
 	my = Monst->_my;
 	md = M_GetDir(i);
 
-	if (Monst->mtalkmsg == QUEST_BANNER10 && !(dFlags[mx][my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
+	if (Monst->mtalkmsg == QUEST_BANNER10 && !(dFlags[mx][my] & BFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_BANNER11;
 		Monst->_mgoal = MGOAL_INQUIRING;
 	}
@@ -4286,7 +4286,7 @@ void MAI_SnotSpil(int i)
 		Monst->_mgoal = MGOAL_NORMAL;
 	}
 
-	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+	if (dFlags[mx][my] & BFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_BANNER12) {
 			if (!effect_is_playing(USFX_SNOT3) && Monst->_mgoal == MGOAL_TALKING) {
 				ObjChangeMap(setpc_x, setpc_y, setpc_x + setpc_w + 1, setpc_y + setpc_h + 1);
@@ -4325,7 +4325,7 @@ void MAI_Lazurus(int i)
 	mx = Monst->_mx;
 	my = Monst->_my;
 	md = M_GetDir(i);
-	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+	if (dFlags[mx][my] & BFLAG_VISIBLE) {
 		if (gbMaxPlayers == 1) {
 			if (Monst->mtalkmsg == QUEST_VILE13 && Monst->_mgoal == MGOAL_INQUIRING && plr[myplr].WorldX == QUEST_VILE13 && plr[myplr].WorldY == 46) {
 				PlayInGameMovie("gendata\\fprst3.smk");
@@ -4375,7 +4375,7 @@ void MAI_Lazhelp(int i)
 	_my = Monst->_my;
 	md = M_GetDir(i);
 
-	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
+	if (dFlags[_mx][_my] & BFLAG_VISIBLE) {
 		if (gbMaxPlayers == 1) {
 			if (quests[QTYPE_VB]._qvar1 <= 5) {
 				Monst->_mgoal = MGOAL_INQUIRING;
@@ -4409,12 +4409,12 @@ void MAI_Lachdanan(int i)
 	_mx = Monst->_mx;
 	_my = Monst->_my;
 	md = M_GetDir(i);
-	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && monster[i]._mgoal == MGOAL_TALKING) {
+	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & BFLAG_VISIBLE) && monster[i]._mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_VEIL10;
 		monster[i]._mgoal = MGOAL_INQUIRING;
 	}
 
-	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
+	if (dFlags[_mx][_my] & BFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_VEIL11) {
 			if (!effect_is_playing(USFX_LACH3) && Monst->_mgoal == MGOAL_TALKING) {
 				Monst->mtalkmsg = 0;
@@ -4446,7 +4446,7 @@ void MAI_Warlord(int i)
 	mx = Monst->_mx;
 	my = Monst->_my;
 	md = M_GetDir(i);
-	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+	if (dFlags[mx][my] & BFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_WARLRD9 && Monst->_mgoal == MGOAL_INQUIRING)
 			Monst->_mmode = MM_TALK;
 		if (Monst->mtalkmsg == QUEST_WARLRD9 && !effect_is_playing(USFX_WARLRD1) && Monst->_mgoal == MGOAL_TALKING) {
@@ -4517,7 +4517,7 @@ void ProcessMonsters()
 		}
 		mx = Monst->_mx;
 		my = Monst->_my;
-		if(dFlags[mx][my] & DFLAG_VISIBLE && Monst->_msquelch == 0 && Monst->MType->mtype == MT_CLEAVER) {
+		if(dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0 && Monst->MType->mtype == MT_CLEAVER) {
 			PlaySFX(USFX_CLEAVER);
 		}
 		if(Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
@@ -4536,7 +4536,7 @@ void ProcessMonsters()
 			}
 			Monst->_menemyx = plr[Monst->_menemy]._px;
 			Monst->_menemyy = plr[Monst->_menemy]._py;
-			if(dFlags[mx][my] & DFLAG_VISIBLE) {
+			if(dFlags[mx][my] & BFLAG_VISIBLE) {
 				Monst->_msquelch = 255;
 				Monst->_lastx = plr[Monst->_menemy]._px;
 				Monst->_lasty = plr[Monst->_menemy]._py;
@@ -4662,11 +4662,11 @@ BOOL DirOK(int i, int mdir)
 	if (fy < 0 || fy >= MAXDUNY || fx < 0 || fx >= MAXDUNX || !PosOkMonst(i, fx, fy))
 		return FALSE;
 	if (mdir == DIR_E) {
-		if (SolidLoc(fx, fy + 1) || dFlags[fx][fy + 1] & DFLAG_MONSTER)
+		if (SolidLoc(fx, fy + 1) || dFlags[fx][fy + 1] & BFLAG_MONSTLR)
 			return FALSE;
 	}
 	if (mdir == DIR_W) {
-		if (SolidLoc(fx + 1, fy) || dFlags[fx + 1][fy] & DFLAG_MONSTER)
+		if (SolidLoc(fx + 1, fy) || dFlags[fx + 1][fy] & BFLAG_MONSTLR)
 			return FALSE;
 	}
 	if (mdir == DIR_N) {
@@ -4706,7 +4706,7 @@ BOOL DirOK(int i, int mdir)
 
 BOOL PosOkMissile(int x, int y)
 {
-	return !nMissileTable[dPiece[x][y]] && !(dFlags[x][y] & DFLAG_MONSTER);
+	return !nMissileTable[dPiece[x][y]] && !(dFlags[x][y] & BFLAG_MONSTLR);
 }
 
 BOOL CheckNoSolid(int x, int y)

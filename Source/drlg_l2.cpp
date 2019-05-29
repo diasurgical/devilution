@@ -353,7 +353,7 @@ void LoadL2Dungeon(char *sFileName, int vx, int vy)
 		for (i = 0; i < rw; i++) {
 			if (*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= DFLAG_EXPLORED;
+				dflags[i][j] |= 0x80;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -528,7 +528,7 @@ void LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 		for (i = 0; i < rw; i++) {
 			if (*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= DFLAG_EXPLORED;
+				dflags[i][j] |= 0x80;
 			} else {
 				dungeon[i][j] = 3;
 			}

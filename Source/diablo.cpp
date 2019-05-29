@@ -1770,7 +1770,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		} else {
 			for (i = 0; i < MAXDUNX; i++) {
 				for (j = 0; j < MAXDUNY; j++)
-					dFlags[i][j] |= DFLAG_LIT;
+					dFlags[i][j] |= BFLAG_LIT;
 			}
 
 			InitTowners();
@@ -1836,7 +1836,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 				else
 					SyncInitPlrPos(i);
 			} else {
-				dFlags[plr[i].WorldX][plr[i].WorldY] |= DFLAG_DEAD_PLAYER;
+				dFlags[plr[i].WorldX][plr[i].WorldY] |= BFLAG_DEAD_PLAYER;
 			}
 		}
 	}

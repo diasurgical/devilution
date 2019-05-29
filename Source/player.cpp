@@ -998,11 +998,11 @@ BOOL PlrDirOK(int pnum, int dir)
 
 	isOk = TRUE;
 	if (dir == DIR_E) {
-		isOk = !SolidLoc(px, py + 1) && !(dFlags[px][py + 1] & DFLAG_PLAYER);
+		isOk = !SolidLoc(px, py + 1) && !(dFlags[px][py + 1] & BFLAG_PLAYERLR);
 	}
 
 	if (isOk && dir == DIR_W) {
-		isOk = !SolidLoc(px + 1, py) && !(dFlags[px + 1][py] & DFLAG_PLAYER);
+		isOk = !SolidLoc(px + 1, py) && !(dFlags[px + 1][py] & BFLAG_PLAYERLR);
 	}
 
 	return isOk;
@@ -1364,7 +1364,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	dPlayer[px][py] = -1 - pnum;
 	plr[pnum]._pVar4 = x;
 	plr[pnum]._pVar5 = y;
-	dFlags[x][y] |= DFLAG_PLAYER;
+	dFlags[x][y] |= BFLAG_PLAYERLR;
 	plr[pnum]._pxoff = xoff;
 	plr[pnum]._pyoff = yoff;
 
@@ -1544,8 +1544,8 @@ void FixPlrWalkTags(int pnum)
 	}
 
 	if (dx >= 0 && dx < MAXDUNX - 1 && dy >= 0 && dy < MAXDUNY - 1) {
-		dFlags[dx + 1][dy] &= ~DFLAG_PLAYER;
-		dFlags[dx][dy + 1] &= ~DFLAG_PLAYER;
+		dFlags[dx + 1][dy] &= ~BFLAG_PLAYERLR;
+		dFlags[dx][dy + 1] &= ~BFLAG_PLAYERLR;
 	}
 }
 
@@ -1560,8 +1560,8 @@ void RemovePlrFromMap(int pnum)
 	for (y = 1; y < MAXDUNY; y++)
 		for (x = 1; x < MAXDUNX; x++)
 			if (dPlayer[x][y - 1] == pn || dPlayer[x - 1][y] == pn)
-				if (dFlags[x][y] & DFLAG_PLAYER)
-					dFlags[x][y] &= ~DFLAG_PLAYER;
+				if (dFlags[x][y] & BFLAG_PLAYERLR)
+					dFlags[x][y] &= ~BFLAG_PLAYERLR;
 
 	for (y = 0; y < MAXDUNY; y++)
 		for (x = 0; x < MAXDUNX; x++)
@@ -1692,7 +1692,7 @@ void StartPlayerKill(int pnum, int earflag)
 	if (plr[pnum].plrlevel == currlevel) {
 		FixPlayerLocation(pnum, plr[pnum]._pdir);
 		RemovePlrFromMap(pnum);
-		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
+		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
 		SetPlayerOld(pnum);
 
 		if (pnum == myplr) {
@@ -2182,7 +2182,7 @@ BOOL PM_DoWalk3(int pnum)
 
 	if (plr[pnum]._pVar8 == vel) {
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
-		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~DFLAG_PLAYER;
+		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~BFLAG_PLAYERLR;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
 		plr[pnum].WorldY = plr[pnum]._pVar2;
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
@@ -2933,7 +2933,7 @@ BOOL PM_DoDeath(int pnum)
 
 		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
 		plr[pnum]._pAnimDelay = 10000;
-		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
+		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
 	}
 
 	if (plr[pnum]._pVar8 < 100) {

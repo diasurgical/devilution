@@ -403,7 +403,7 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 		}
 		Cel2DrawHdrOnly(px, sy, item[bv]._iAnimData, item[bv]._iAnimFrame, item[bv]._iAnimWidth, 0, 8);
 	}
-	if (dFlags[x][y] & DFLAG_MONSTER) {
+	if (dFlags[x][y] & BFLAG_MONSTLR) {
 		mi = -(dMonster[x][y - 1] + 1);
 		px = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst) {
@@ -419,7 +419,7 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 		}
 		Cel2DrawHdrOnly(px, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, 8);
 	}
-	if (dFlags[x][y] & DFLAG_PLAYER) {
+	if (dFlags[x][y] & BFLAG_PLAYERLR) {
 		bv = -(dPlayer[x][y - 1] + 1);
 		px = sx + plr[bv]._pxoff - plr[bv]._pAnimWidth2;
 		py = sy + plr[bv]._pyoff;
@@ -431,7 +431,7 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 			town_draw_clipped_e_flag(pBuff - 64, x - 1, y + 1, sx - 64, sy);
 		}
 	}
-	if (dFlags[x][y] & DFLAG_DEAD_PLAYER) {
+	if (dFlags[x][y] & BFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(x, y, sx, sy, 0, 8, 1);
 	}
 	if (dPlayer[x][y] > 0) {
@@ -446,7 +446,7 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 			town_draw_clipped_e_flag(pBuff - 64, x - 1, y + 1, sx - 64, sy);
 		}
 	}
-	if (dFlags[x][y] & DFLAG_MISSILE) {
+	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, 0, 8, 0);
 	}
 	if(dArch[x][y] != 0) {
@@ -585,7 +585,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 		}
 		Cel2DrawHdrOnly(px, sy, item[bv]._iAnimData, item[bv]._iAnimFrame, item[bv]._iAnimWidth, a5, 8);
 	}
-	if (dFlags[x][y] & DFLAG_MONSTER) {
+	if (dFlags[x][y] & BFLAG_MONSTLR) {
 		mi = -(dMonster[x][y - 1] + 1);
 		px = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst) {
@@ -601,7 +601,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 		}
 		Cel2DrawHdrOnly(px, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, a5, 8);
 	}
-	if (dFlags[x][y] & DFLAG_PLAYER) {
+	if (dFlags[x][y] & BFLAG_PLAYERLR) {
 		bv = -(dPlayer[x][y - 1] + 1);
 		px = sx + plr[bv]._pxoff - plr[bv]._pAnimWidth2;
 		py = sy + plr[bv]._pyoff;
@@ -613,7 +613,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 			town_draw_clipped_e_flag_2(pBuff - 64, x - 1, y + 1, a4, a5, sx - 64, sy);
 		}
 	}
-	if (dFlags[x][y] & DFLAG_DEAD_PLAYER) {
+	if (dFlags[x][y] & BFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(x, y, sx, sy, a5, 8, 1);
 	}
 	if (dPlayer[x][y] > 0) {
@@ -628,7 +628,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 			town_draw_clipped_e_flag_2(pBuff - 64, x - 1, y + 1, a4, a5, sx - 64, sy);
 		}
 	}
-	if (dFlags[x][y] & DFLAG_MISSILE) {
+	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, a5, 8, 0);
 	}
 	if(dArch[x][y] != 0) {
@@ -775,7 +775,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 		/// ASSERT: assert(item[bv]._iAnimData);
 		CelDrawHdrOnly(px, sy, item[bv]._iAnimData, item[bv]._iAnimFrame, item[bv]._iAnimWidth, 0, dir);
 	}
-	if (dFlags[x][y] & DFLAG_MONSTER) {
+	if (dFlags[x][y] & BFLAG_MONSTLR) {
 		mi = -(dMonster[x][y - 1] + 1);
 		px = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst) {
@@ -793,7 +793,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 		/// ASSERT: assert(towner[mi]._tAnimData);
 		CelDrawHdrOnly(px, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
-	if (dFlags[x][y] & DFLAG_PLAYER) {
+	if (dFlags[x][y] & BFLAG_PLAYERLR) {
 		bv = -(dPlayer[x][y - 1] + 1);
 		px = sx + plr[bv]._pxoff - plr[bv]._pAnimWidth2;
 		py = sy + plr[bv]._pyoff;
@@ -806,7 +806,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 			town_draw_e_flag(pBuff - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 		}
 	}
-	if (dFlags[x][y] & DFLAG_DEAD_PLAYER) {
+	if (dFlags[x][y] & BFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(x, y, sx, sy, 0, dir, 0);
 	}
 	if (dPlayer[x][y] > 0) {
@@ -822,7 +822,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 			town_draw_e_flag(pBuff - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 		}
 	}
-	if (dFlags[x][y] & DFLAG_MISSILE) {
+	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawMissile(x, y, sx, sy, 0, dir, 0);
 	}
 	if(dArch[x][y] != 0) {
