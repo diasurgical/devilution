@@ -130,7 +130,7 @@ BOOL RndLocOk(int xp, int yp)
 		return FALSE;
 	if (dObject[xp][yp])
 		return FALSE;
-	if (dFlags[xp][yp] & DFLAG_POPULATED)
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
 	if (nSolidTable[dPiece[xp][yp]])
 		return FALSE;
@@ -419,7 +419,7 @@ void AddL3Objs(int x1, int y1, int x2, int y2)
 
 BOOL WallTrapLocOk(int xp, int yp)
 {
-	if (dFlags[xp][yp] & DFLAG_POPULATED)
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
 	return TRUE;
 }
@@ -451,7 +451,7 @@ void AddL2Torches()
 
 BOOL TorchLocOK(int xp, int yp)
 {
-	if (dFlags[xp][yp] & DFLAG_POPULATED)
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
 
 	return nTrapTable[dPiece[xp][yp]] != FALSE;

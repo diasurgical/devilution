@@ -291,7 +291,7 @@ void CheckCursMove()
 
 	if(leveltype != DTYPE_TOWN) {
 		if(pcurstemp != -1) {
-			if(!flipflag && dMonster[mx + 2][my + 1] != 0 && dFlags[mx + 2][my + 1] & DFLAG_LIT) {
+			if(!flipflag && dMonster[mx + 2][my + 1] != 0 && dFlags[mx + 2][my + 1] & BFLAG_LIT) {
 				mi = dMonster[mx + 2][my + 1] > 0 ? dMonster[mx + 2][my + 1] - 1 : -(dMonster[mx + 2][my + 1] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 4) {
 					cursmx = mx + 1; /// BUGFIX: 'mx + 2'
@@ -299,7 +299,7 @@ void CheckCursMove()
 					pcursmonst = mi;
 				}
 			}
-			if(flipflag && dMonster[mx + 1][my + 2] != 0 && dFlags[mx + 1][my + 2] & DFLAG_LIT) {
+			if(flipflag && dMonster[mx + 1][my + 2] != 0 && dFlags[mx + 1][my + 2] & BFLAG_LIT) {
 				mi = dMonster[mx + 1][my + 2] > 0 ? dMonster[mx + 1][my + 2] - 1 : -(dMonster[mx + 1][my + 2] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 4) {
 					cursmx = mx + 1;
@@ -307,7 +307,7 @@ void CheckCursMove()
 					pcursmonst = mi;
 				}
 			}
-			if(dMonster[mx + 2][my + 2] != 0 && dFlags[mx + 2][my + 2] & DFLAG_LIT) {
+			if(dMonster[mx + 2][my + 2] != 0 && dFlags[mx + 2][my + 2] & BFLAG_LIT) {
 				mi = dMonster[mx + 2][my + 2] > 0 ? dMonster[mx + 2][my + 2] - 1 : -(dMonster[mx + 2][my + 2] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 4) {
 					cursmx = mx + 2;
@@ -315,7 +315,7 @@ void CheckCursMove()
 					pcursmonst = mi;
 				}
 			}
-			if(!flipflag && dMonster[mx + 1][my] != 0 && dFlags[mx + 1][my] & DFLAG_LIT) {
+			if(!flipflag && dMonster[mx + 1][my] != 0 && dFlags[mx + 1][my] & BFLAG_LIT) {
 				mi = dMonster[mx + 1][my] > 0 ? dMonster[mx + 1][my] - 1 : -(dMonster[mx + 1][my] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 2) {
 					cursmx = mx + 1;
@@ -323,7 +323,7 @@ void CheckCursMove()
 					pcursmonst = mi;
 				}
 			}
-			if(flipflag && dMonster[mx][my + 1] != 0 && dFlags[mx][my + 1] & DFLAG_LIT) {
+			if(flipflag && dMonster[mx][my + 1] != 0 && dFlags[mx][my + 1] & BFLAG_LIT) {
 				mi = dMonster[mx][my + 1] > 0 ? dMonster[mx][my + 1] - 1 : -(dMonster[mx][my + 1] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 2) {
 					cursmx = mx;
@@ -331,7 +331,7 @@ void CheckCursMove()
 					pcursmonst = mi;
 				}
 			}
-			if(dMonster[mx][my] != 0 && dFlags[mx][my] & DFLAG_LIT) {
+			if(dMonster[mx][my] != 0 && dFlags[mx][my] & BFLAG_LIT) {
 				mi = dMonster[mx][my] > 0 ? dMonster[mx][my] - 1 : -(dMonster[mx][my] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 1) {
 					cursmx = mx;
@@ -339,7 +339,7 @@ void CheckCursMove()
 					pcursmonst = mi;
 				}
 			}
-			if(dMonster[mx + 1][my + 1] != 0 && dFlags[mx + 1][my + 1] & DFLAG_LIT) {
+			if(dMonster[mx + 1][my + 1] != 0 && dFlags[mx + 1][my + 1] & BFLAG_LIT) {
 				mi = dMonster[mx + 1][my + 1] > 0 ? dMonster[mx + 1][my + 1] - 1 : -(dMonster[mx + 1][my + 1] + 1);
 				if(mi == pcurstemp && monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 2) {
 					cursmx = mx + 1;
@@ -359,7 +359,7 @@ void CheckCursMove()
 				return;
 			}
 		}
-		if(!flipflag && dMonster[mx + 2][my + 1] != 0 && dFlags[mx + 2][my + 1] & DFLAG_LIT) {
+		if(!flipflag && dMonster[mx + 2][my + 1] != 0 && dFlags[mx + 2][my + 1] & BFLAG_LIT) {
 			mi = dMonster[mx + 2][my + 1] > 0 ? dMonster[mx + 2][my + 1] - 1 : -(dMonster[mx + 2][my + 1] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 4) {
 				cursmx = mx + 2;
@@ -367,7 +367,7 @@ void CheckCursMove()
 				pcursmonst = mi;
 			}
 		}
-		if(flipflag && dMonster[mx + 1][my + 2] != 0 && dFlags[mx + 1][my + 2] & DFLAG_LIT) {
+		if(flipflag && dMonster[mx + 1][my + 2] != 0 && dFlags[mx + 1][my + 2] & BFLAG_LIT) {
 			mi = dMonster[mx + 1][my + 2] > 0 ? dMonster[mx + 1][my + 2] - 1 : -(dMonster[mx + 1][my + 2] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 4) {
 				cursmx = mx + 1;
@@ -375,7 +375,7 @@ void CheckCursMove()
 				pcursmonst = mi;
 			}
 		}
-		if(dMonster[mx + 2][my + 2] != 0 && dFlags[mx + 2][my + 2] & DFLAG_LIT) {
+		if(dMonster[mx + 2][my + 2] != 0 && dFlags[mx + 2][my + 2] & BFLAG_LIT) {
 			mi = dMonster[mx + 2][my + 2] > 0 ? dMonster[mx + 2][my + 2] - 1 : -(dMonster[mx + 2][my + 2] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 4) {
 				cursmx = mx + 2;
@@ -383,7 +383,7 @@ void CheckCursMove()
 				pcursmonst = mi;
 			}
 		}
-		if(!flipflag && dMonster[mx + 1][my] != 0 && dFlags[mx + 1][my] & DFLAG_LIT) {
+		if(!flipflag && dMonster[mx + 1][my] != 0 && dFlags[mx + 1][my] & BFLAG_LIT) {
 			mi = dMonster[mx + 1][my] > 0 ? dMonster[mx + 1][my] - 1 : -(dMonster[mx + 1][my] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 2) {
 				cursmx = mx + 1;
@@ -391,7 +391,7 @@ void CheckCursMove()
 				pcursmonst = mi;
 			}
 		}
-		if(flipflag && dMonster[mx][my + 1] != 0 && dFlags[mx][my + 1] & DFLAG_LIT) {
+		if(flipflag && dMonster[mx][my + 1] != 0 && dFlags[mx][my + 1] & BFLAG_LIT) {
 			mi = dMonster[mx][my + 1] > 0 ? dMonster[mx][my + 1] - 1 : -(dMonster[mx][my + 1] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 2) {
 				cursmx = mx;
@@ -399,7 +399,7 @@ void CheckCursMove()
 				pcursmonst = mi;
 			}
 		}
-		if(dMonster[mx][my] != 0 && dFlags[mx][my] & DFLAG_LIT) {
+		if(dMonster[mx][my] != 0 && dFlags[mx][my] & BFLAG_LIT) {
 			mi = dMonster[mx][my] > 0 ? dMonster[mx][my] - 1 : -(dMonster[mx][my] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 1) {
 				cursmx = mx;
@@ -407,7 +407,7 @@ void CheckCursMove()
 				pcursmonst = mi;
 			}
 		}
-		if(dMonster[mx + 1][my + 1] != 0 && dFlags[mx + 1][my + 1] & DFLAG_LIT) {
+		if(dMonster[mx + 1][my + 1] != 0 && dFlags[mx + 1][my + 1] & BFLAG_LIT) {
 			mi = dMonster[mx + 1][my + 1] > 0 ? dMonster[mx + 1][my + 1] - 1 : -(dMonster[mx + 1][my + 1] + 1);
 			if(monster[mi]._mhitpoints >> 6 > 0 && monster[mi].MData->mSelFlag & 2) {
 				cursmx = mx + 1;
@@ -474,7 +474,7 @@ void CheckCursMove()
 				pcursplr = bv;
 			}
 		}
-		if(dFlags[mx][my] & DFLAG_DEAD_PLAYER) {
+		if(dFlags[mx][my] & BFLAG_DEAD_PLAYER) {
 			for(i = 0; i < MAX_PLRS; i++) {
 				if(plr[i].WorldX == mx && plr[i].WorldY == my && i != myplr) {
 					cursmx = mx;
@@ -486,7 +486,7 @@ void CheckCursMove()
 		if(pcurs == CURSOR_RESURRECT) {
 			for(xx = -1; xx < 2; xx++) {
 				for(yy = -1; yy < 2; yy++) {
-					if(dFlags[mx + xx][my + yy] & DFLAG_DEAD_PLAYER) {
+					if(dFlags[mx + xx][my + yy] & BFLAG_DEAD_PLAYER) {
 						for(i = 0; i < MAX_PLRS; i++) {
 							if(plr[i].WorldX == mx + xx && plr[i].WorldY == my + yy && i != myplr) {
 								cursmx = mx + xx;

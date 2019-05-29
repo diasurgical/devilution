@@ -974,10 +974,10 @@ void DRLG_HoldThemeRooms()
 			for(x = themeLoc[i].x; x < themeLoc[i].x + themeLoc[i].width - 1; x++) {
 				xx = 2 * x + 16;
 				yy = 2 * y + 16;
-				dFlags[xx][yy] |= DFLAG_POPULATED;
-				dFlags[xx + 1][yy] |= DFLAG_POPULATED;
-				dFlags[xx][yy + 1] |= DFLAG_POPULATED;
-				dFlags[xx + 1][yy + 1] |= DFLAG_POPULATED;
+				dFlags[xx][yy] |= BFLAG_POPULATED;
+				dFlags[xx + 1][yy] |= BFLAG_POPULATED;
+				dFlags[xx][yy + 1] |= BFLAG_POPULATED;
+				dFlags[xx + 1][yy + 1] |= BFLAG_POPULATED;
 			}
 		}
 	}

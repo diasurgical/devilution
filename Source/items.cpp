@@ -206,7 +206,7 @@ BOOL ItemPlace(int xp, int yp)
 		return FALSE;
 	if (dObject[xp][yp])
 		return FALSE;
-	if (dFlags[xp][yp] & DFLAG_POPULATED)
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
 	if (nSolidTable[dPiece[xp][yp]])
 		return FALSE;

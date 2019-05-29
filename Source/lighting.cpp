@@ -656,7 +656,7 @@ void DoUnVision(int nXPos, int nYPos, int nRadius)
 
 	for (i = x1; i < x2; i++) {
 		for (j = y1; j < y2; j++) {
-			dFlags[i][j] &= ~(DFLAG_VISIBLE | DFLAG_LIT);
+			dFlags[i][j] &= ~(BFLAG_VISIBLE | BFLAG_LIT);
 		}
 	}
 }
@@ -671,12 +671,12 @@ void DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible)
 			if (dFlags[nXPos][nYPos] >= 0) {
 				SetAutomapView(nXPos, nXPos);
 			}
-			dFlags[nXPos][nYPos] |= DFLAG_EXPLORED;
+			dFlags[nXPos][nYPos] |= BFLAG_EXPLORED;
 		}
 		if (visible) {
-			dFlags[nXPos][nYPos] |= DFLAG_LIT;
+			dFlags[nXPos][nYPos] |= BFLAG_LIT;
 		}
-		dFlags[nXPos][nYPos] |= DFLAG_VISIBLE;
+		dFlags[nXPos][nYPos] |= BFLAG_VISIBLE;
 	}
 
 	for (v = 0; v < 4; v++) {
@@ -730,12 +730,12 @@ void DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible)
 							if (dFlags[nCrawlX][nCrawlY] >= 0) {
 								SetAutomapView(nCrawlX, nCrawlY);
 							}
-							dFlags[nCrawlX][nCrawlY] |= DFLAG_EXPLORED;
+							dFlags[nCrawlX][nCrawlY] |= BFLAG_EXPLORED;
 						}
 						if (visible) {
-							dFlags[nCrawlX][nCrawlY] |= DFLAG_LIT;
+							dFlags[nCrawlX][nCrawlY] |= BFLAG_LIT;
 						}
-						dFlags[nCrawlX][nCrawlY] |= DFLAG_VISIBLE;
+						dFlags[nCrawlX][nCrawlY] |= BFLAG_VISIBLE;
 						if (!nBlockerFlag) {
 							nTrans = dTransVal[nCrawlX][nCrawlY];
 							if (nTrans != 0) {

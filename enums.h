@@ -1840,14 +1840,14 @@ typedef enum dungeon_type {
 } dungeon_type;
 
 typedef enum dflag {
-	DFLAG_MISSILE     = 0x01,
-	DFLAG_VISIBLE     = 0x02,
-	DFLAG_DEAD_PLAYER = 0x04,
-	DFLAG_POPULATED   = 0x08,
-	DFLAG_MONSTER     = 0x10,
-	DFLAG_PLAYER      = 0x20,
-	DFLAG_LIT         = 0x40,
-	DFLAG_EXPLORED    = 0x80,
+	BFLAG_MISSILE     = 0x01,
+	BFLAG_VISIBLE     = 0x02,
+	BFLAG_DEAD_PLAYER = 0x04,
+	BFLAG_POPULATED   = 0x08,
+	BFLAG_MONSTLR     = 0x10,
+	BFLAG_PLAYERLR    = 0x20,
+	BFLAG_LIT         = 0x40,
+	BFLAG_EXPLORED    = 0x80,
 } dflag;
 
 typedef enum dungeon_message {
