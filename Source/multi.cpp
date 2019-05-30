@@ -156,35 +156,30 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 }
 // 679760: using guessed type int gdwNormalMsgSize;
 
-unsigned char *multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3)
+BYTE *multi_recv_packet(TBuffer *packet, BYTE *body, int *size)
 {
-	TBuffer *v3;           // esi
-	unsigned char *result; // eax
-	BYTE *v5;              // ebx
-	size_t v6;             // edi
-	char *v7;              // ebx
-	unsigned char *v8;     // [esp+4h] [ebp-4h]
+	BYTE *src_ptr;
+	size_t chunk_size;
 
-	v3 = packet;
-	result = a2;
-	v8 = a2;
-	if (packet->dwNextWriteOffset) {
-		v5 = packet->bData;
-		while (*v5) {
-			v6 = *v5;
-			if (v6 > *a3)
+	if (packet->dwNextWriteOffset != 0) {
+		src_ptr = packet->bData;
+		while (TRUE) {
+			if (*src_ptr == 0)
 				break;
-			v7 = (char *)(v5 + 1);
-			memcpy(v8, v7, v6);
-			v8 += v6;
-			v5 = (BYTE *)&v7[v6];
-			*a3 -= v6;
+			chunk_size = *src_ptr;
+			if (chunk_size > *size)
+				break;
+			src_ptr++;
+			memcpy(body, src_ptr, chunk_size);
+			body += chunk_size;
+			src_ptr += chunk_size;
+			*size -= chunk_size;
 		}
-		memcpy(v3->bData, v5, (size_t)&v3->bData[v3->dwNextWriteOffset - (UINT_PTR)v5 + 1]); /* memcpy_0 */
-		v3->dwNextWriteOffset += (char *)v3 - (char *)v5 + 4;
-		result = v8;
+		memcpy(packet->bData, src_ptr, (packet->bData - src_ptr) + packet->dwNextWriteOffset + 1);
+		packet->dwNextWriteOffset += (packet->bData - src_ptr);
+		return body;
 	}
-	return result;
+	return body;
 }
 
 void multi_send_msg_packet(int pmask, BYTE *a2, BYTE len)
@@ -365,53 +360,72 @@ void multi_mon_seeds()
 
 void multi_begin_timeout()
 {
-	unsigned char bGroupPlayers; // bl
-	signed int v1;               // eax
-	signed int nLowestActive;    // esi
-	signed int nLowestPlayer;    // edi
-	signed int v4;               // eax
-	int v5;                      // edx
-	unsigned char v6;            // [esp+Fh] [ebp-1h]
+	int i, nTicks, nState, nLowestActive, nLowestPlayer;
+	BYTE bGroupPlayers, bGroupCount;
 
-	bGroupPlayers = 0;
+	if(!sgbTimeout) {
+		return;
+	}
 #ifdef _DEBUG
-	if (sgbTimeout && !debug_mode_key_i)
-#else
-	if (sgbTimeout)
+	if(debug_mode_key_i) {
+		return;
+	}
 #endif
-	{
-		v1 = GetTickCount() - sglTimeoutStart;
-		if (v1 <= 20000) {
-			if (v1 >= 10000) {
-				v6 = 0;
-				nLowestActive = -1;
-				nLowestPlayer = -1;
-				v4 = 0;
-				do {
-					v5 = player_state[v4];
-					if (v5 & 0x10000) {
-						if (nLowestPlayer == -1)
-							nLowestPlayer = v4;
-						if (v5 & 0x40000) {
-							++bGroupPlayers;
-							if (nLowestActive == -1)
-								nLowestActive = v4;
-						} else {
-							++v6;
-						}
-					}
-					++v4;
-				} while (v4 < MAX_PLRS);
-				if (bGroupPlayers >= v6 && (bGroupPlayers != v6 || nLowestPlayer == nLowestActive)) {
-					if (nLowestActive == myplr)
-						multi_check_drop_player();
-				} else {
-					gbGameDestroyed = TRUE;
-				}
+
+	nTicks = GetTickCount() - sglTimeoutStart;
+	if(nTicks > 20000) {
+		gbRunGame = FALSE;
+		return;
+	}
+	if(nTicks < 10000) {
+		return;
+	}
+
+	nLowestActive = -1;
+	nLowestPlayer = -1;
+	bGroupPlayers = 0;
+	bGroupCount = 0;
+	for(i = 0; i < MAX_PLRS; i++) {
+		nState = player_state[i];
+		if(nState & 0x10000) {
+			if(nLowestPlayer == -1) {
+				nLowestPlayer = i;
 			}
-		} else {
-			gbRunGame = FALSE;
+			if(nState & 0x40000) {
+				bGroupPlayers++;
+				if(nLowestActive == -1) {
+					nLowestActive = i;
+				}
+			} else {
+				bGroupCount++;
+			}
 		}
+	}
+
+	/// ASSERT: assert(bGroupPlayers);
+	/// ASSERT: assert(nLowestActive != -1);
+	/// ASSERT: assert(nLowestPlayer != -1);
+
+#ifdef _DEBUG
+	dumphist(
+		"(%d) grp:%d ngrp:%d lowp:%d lowa:%d",
+		myplr,
+		bGroupPlayers,
+		bGroupCount,
+		nLowestPlayer,
+		nLowestActive);
+#endif
+
+	if(bGroupPlayers < bGroupCount) {
+		gbGameDestroyed = TRUE;
+	} else if(bGroupPlayers == bGroupCount) {
+		if(nLowestPlayer != nLowestActive) {
+			gbGameDestroyed = TRUE;
+		} else if(nLowestActive == myplr) {
+			multi_check_drop_player();
+		}
+	} else if(nLowestActive == myplr) {
+		multi_check_drop_player();
 	}
 }
 // 67862D: using guessed type char gbGameDestroyed;
@@ -957,7 +971,7 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 			NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
 			plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
 			plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
-			dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
+			dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
 		}
 	}
 #ifdef _DEBUG

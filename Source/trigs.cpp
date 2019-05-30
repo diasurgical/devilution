@@ -595,7 +595,7 @@ void Freeupstairs()
 
 		for (yy = 0; yy < MAXTRIGGERS; yy++) {
 			for (xx = 0; xx < MAXTRIGGERS; xx++) {
-				dFlags[tx - 2 + xx][ty - 2 + yy] |= DFLAG_POPULATED;
+				dFlags[tx - 2 + xx][ty - 2 + yy] |= BFLAG_POPULATED;
 			}
 		}
 	}

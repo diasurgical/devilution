@@ -567,28 +567,20 @@ void DRLG_InitTrans()
 
 void DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 {
-	int v4;      // esi
-	int v5;      // edi
-	int i;       // eax
-	char *v7;    // edx
-	int j;       // ecx
-	int ty_enda; // [esp+10h] [ebp+8h]
+	int i, j;
 
-	v4 = 2 * x1 + 17;
-	v5 = 2 * x2 + 16;
-	i = 2 * y1 + 17;
-	for (ty_enda = 2 * y2 + 16; i <= ty_enda; ++i) {
-		if (v4 <= v5) {
-			v7 = &dTransVal[v4][i];
-			j = v5 - v4 + 1;
-			do {
-				*v7 = TransVal;
-				v7 += 112;
-				--j;
-			} while (j);
+	x1 = 2 * x1 + 17;
+	y1 = 2 * y1 + 17;
+	x2 = 2 * x2 + 16;
+	y2 = 2 * y2 + 16;
+
+	for(j = y1; j <= y2; j++) {
+		for(i = x1; i <= x2; i++) {
+			dTransVal[i][j] = TransVal;
 		}
 	}
-	++TransVal;
+
+	TransVal++;
 }
 // 5A5590: using guessed type char TransVal;
 
@@ -977,48 +969,19 @@ void DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rnd
 
 void DRLG_HoldThemeRooms()
 {
-	int *v0; // esi
-	int v1;  // edi
-	int v2;  // edx
-	int v3;  // ebx
-	int v4;  // edi
-	int v5;  // ecx
-	int v6;  // eax
-	int v7;  // [esp+0h] [ebp-Ch]
-	int v8;  // [esp+4h] [ebp-8h]
-	int v9;  // [esp+8h] [ebp-4h]
+	int i, x, y, xx, yy;
 
-	if (themeCount > 0) {
-		v0 = &themeLoc[0].height;
-		v8 = themeCount;
-		do {
-			v1 = *(v0 - 3);
-			if (v1 < v1 + *v0 - 1) {
-				v2 = *(v0 - 4);
-				v3 = 2 * v1 + 16;
-				v7 = v2 + *(v0 - 1) - 1;
-				v9 = *v0 - 1;
-				do {
-					if (v2 < v7) {
-						v4 = 224 * (v2 + 8);
-						v5 = v7 - v2;
-						do {
-							v6 = v3 + v4;
-							v4 += 224;
-							dFlags[0][v6] |= DFLAG_POPULATED;
-							dFlags[1][v6] |= DFLAG_POPULATED;
-							dFlags[0][v6 + 1] |= DFLAG_POPULATED;
-							dFlags[1][v6 + 1] |= DFLAG_POPULATED;
-							--v5;
-						} while (v5);
-					}
-					v3 += 2;
-					--v9;
-				} while (v9);
+	for(i = 0; i < themeCount; i++) {
+		for(y = themeLoc[i].y; y < themeLoc[i].y + themeLoc[i].height - 1; y++) {
+			for(x = themeLoc[i].x; x < themeLoc[i].x + themeLoc[i].width - 1; x++) {
+				xx = 2 * x + 16;
+				yy = 2 * y + 16;
+				dFlags[xx][yy] |= BFLAG_POPULATED;
+				dFlags[xx + 1][yy] |= BFLAG_POPULATED;
+				dFlags[xx][yy + 1] |= BFLAG_POPULATED;
+				dFlags[xx + 1][yy + 1] |= BFLAG_POPULATED;
 			}
-			v0 += 5;
-			--v8;
-		} while (v8);
+		}
 	}
 }
 

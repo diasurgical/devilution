@@ -361,7 +361,7 @@ BOOL CheckThemeRoom(int tv)
 		for (i = 0; i < MAXDUNX; i++) {
 			if (dTransVal[i][j] != tv)
 				continue;
-			if (dFlags[i][j] & DFLAG_POPULATED)
+			if (dFlags[i][j] & BFLAG_POPULATED)
 				return FALSE;
 
 			tarea++;
@@ -464,7 +464,7 @@ void HoldThemeRooms()
 				for (y = 0; y < MAXDUNY; y++) {
 					for (x = 0; x < MAXDUNX; x++) {
 						if (dTransVal[x][y] == (char)themes[i].ttval) {
-							dFlags[x][y] |= DFLAG_POPULATED;
+							dFlags[x][y] |= BFLAG_POPULATED;
 						}
 					}
 				}

@@ -341,49 +341,66 @@ BOOLEAN gmenu_valid_mouse_pos(int *plOffset)
 	return 1;
 }
 
-int gmenu_left_mouse(int a1)
+BOOL gmenu_left_mouse(BOOL isDown)
 {
-	int result;      // eax
-	unsigned int v2; // eax
-	unsigned int v3; // eax
-	TMenuItem *v4;   // esi
-	unsigned int v5; // eax
-	//LPARAM v6; // ecx
-	int a1a; // [esp+4h] [ebp-4h]
+	BOOL result;
+	TMenuItem *v3;
+	DWORD v4, v5;
+	int dummy;
 
-	if (a1) {
-		if (!sgpCurrentMenu || MouseY >= 352)
-			return 0;
-		if (MouseY - 117 >= 0) {
-			v2 = (MouseY - 117) / 45;
-			if (v2 < sgCurrentMenuIdx) {
-				v3 = v2;
-				v4 = &sgpCurrentMenu[v3];
-				if ((v4->dwFlags & 0x80000000) != 0) {
-					v5 = (unsigned int)gmenu_get_lfont(&sgpCurrentMenu[v3]) >> 1;
-					if (MouseX >= 320 - v5 && MouseX <= v5 + 320) {
-						sgpCurrItem = v4;
-						PlaySFX(IS_TITLEMOV);
-						if (v4->dwFlags & 0x40000000) {
-							mouseNavigation = gmenu_valid_mouse_pos(&a1a);
-							gmenu_on_mouse_move();
-						} else {
-							sgpCurrItem->fnMenu(TRUE);
-						}
-					}
-				}
-			}
+	if (!isDown) {
+		if (mouseNavigation) {
+			mouseNavigation = 0;
+			result = TRUE;
+		} else {
+			result = FALSE;
 		}
+
 	} else {
-		result = 0;
-		if (!mouseNavigation)
-			return result;
-		mouseNavigation = 0;
+
+		if (!sgpCurrentMenu) {
+			return FALSE;
+		}
+		if (MouseY >= 352) {
+			return FALSE;
+		}
+		if (MouseY - 117 >= 0) {
+			v4 = (MouseY - 117) / 45;
+			//v4 /= 45;
+			if (v4 < sgCurrentMenuIdx) {
+				v3 = &sgpCurrentMenu[v4];
+				if ((sgpCurrentMenu[v4].dwFlags & 0x80000000) != 0) {
+					v5 = gmenu_get_lfont(v3);
+					if (MouseX >= 320 - (v5 >> 1)) {
+						if (MouseX <= (v5 >> 1) + 320) {
+							sgpCurrItem = v3;
+							PlaySFX(IS_TITLEMOV);
+							if (v3->dwFlags & 0x40000000) {
+								mouseNavigation = gmenu_valid_mouse_pos(&dummy);
+								gmenu_on_mouse_move();
+							} else {
+								sgpCurrItem->fnMenu(TRUE);
+							}
+							result = TRUE;
+						} else {
+							result = TRUE;
+						}
+					} else {
+						result = TRUE;
+					}
+				} else {
+					result = TRUE;
+				}
+			} else {
+				result = TRUE;
+			}
+		} else {
+			result = TRUE;
+		}
 	}
-	return 1;
+	return result;
 }
-// 634464: using guessed type char mouseNavigation;
-// 63448C: using guessed type int sgCurrentMenuIdx;
+
 
 void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 {

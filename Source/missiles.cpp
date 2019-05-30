@@ -386,7 +386,7 @@ void PutMissile(int i)
 	if (x <= 0 || y <= 0 || x >= MAXDUNX || y >= MAXDUNY)
 		missile[i]._miDelFlag = TRUE;
 	if (!missile[i]._miDelFlag) {
-		dFlags[x][y] |= DFLAG_MISSILE;
+		dFlags[x][y] |= BFLAG_MISSILE;
 		if (dMissile[x][y] == 0)
 			dMissile[x][y] = i + 1;
 		else
@@ -428,7 +428,7 @@ void GetMissilePos(int i)
 
 void MoveMissilePos(int i)
 {
-	int dx, dy;
+	int dx, dy, x, y;
 
 	switch (missile[i]._mimfnum) {
 	case DIR_S:
@@ -464,7 +464,9 @@ void MoveMissilePos(int i)
 		dy = 1;
 		break;
 	}
-	if (PosOkMonst(missile[i]._misource, missile[i]._mix + dx, missile[i]._miy + dy)) {
+	x = missile[i]._mix + dx;
+	y = missile[i]._miy + dy;
+	if (PosOkMonst(missile[i]._misource, x, y)) {
 		missile[i]._mix += dx;
 		missile[i]._miy += dy;
 		missile[i]._mixoff += (dy << 5) - (dx << 5);
@@ -1203,7 +1205,7 @@ void InitMissiles()
 	}
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			dFlags[i][j] &= ~DFLAG_MISSILE;
+			dFlags[i][j] &= ~BFLAG_MISSILE;
 		}
 	}
 }
@@ -4065,7 +4067,7 @@ void ProcessMissiles()
 	int i, mi;
 
 	for (i = 0; i < nummissiles; i++) {
-		dFlags[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] &= ~DFLAG_MISSILE;
+		dFlags[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] &= ~BFLAG_MISSILE;
 		dMissile[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] = 0;
 	}
 
@@ -4146,7 +4148,7 @@ void missiles_process_charge()
 
 void ClearMissileSpot(int mi)
 {
-	dFlags[missile[mi]._mix][missile[mi]._miy] &= ~DFLAG_MISSILE;
+	dFlags[missile[mi]._mix][missile[mi]._miy] &= ~BFLAG_MISSILE;
 	dMissile[missile[mi]._mix][missile[mi]._miy] = 0;
 }
 

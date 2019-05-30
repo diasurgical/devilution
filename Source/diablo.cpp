@@ -793,7 +793,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 BOOL LeftMouseDown(int wParam)
 {
-	if (gmenu_left_mouse(1) || control_check_talk_btn() || sgnTimeoutCurs)
+	if (gmenu_left_mouse(TRUE) || control_check_talk_btn() || sgnTimeoutCurs)
 		return 0;
 	if (deathflag) {
 		control_check_btn_press();
@@ -984,7 +984,7 @@ BOOL TryIconCurs()
 
 void LeftMouseUp()
 {
-	gmenu_left_mouse(0);
+	gmenu_left_mouse(FALSE);
 	control_release_talk_btn();
 	if (panbtndown)
 		CheckBtnUp();
@@ -1772,7 +1772,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		} else {
 			for (i = 0; i < MAXDUNX; i++) {
 				for (j = 0; j < MAXDUNY; j++)
-					dFlags[i][j] |= DFLAG_LIT;
+					dFlags[i][j] |= BFLAG_LIT;
 			}
 
 			InitTowners();
@@ -1838,7 +1838,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 				else
 					SyncInitPlrPos(i);
 			} else {
-				dFlags[plr[i].WorldX][plr[i].WorldY] |= DFLAG_DEAD_PLAYER;
+				dFlags[plr[i].WorldX][plr[i].WorldY] |= BFLAG_DEAD_PLAYER;
 			}
 		}
 	}

@@ -104,7 +104,7 @@ void InitAutomap()
 
 	for (y = 0; y < MAXDUNY; y++) {
 		for (x = 0; x < MAXDUNX; x++)
-			dFlags[x][y] &= ~DFLAG_EXPLORED;
+			dFlags[x][y] &= ~BFLAG_EXPLORED;
 	}
 }
 
