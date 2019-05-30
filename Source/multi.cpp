@@ -363,53 +363,72 @@ void multi_mon_seeds()
 
 void multi_begin_timeout()
 {
-	unsigned char bGroupPlayers; // bl
-	signed int v1;               // eax
-	signed int nLowestActive;    // esi
-	signed int nLowestPlayer;    // edi
-	signed int v4;               // eax
-	int v5;                      // edx
-	unsigned char v6;            // [esp+Fh] [ebp-1h]
+	int i, nTicks, nState, nLowestActive, nLowestPlayer;
+	BYTE bGroupPlayers, bGroupCount;
 
-	bGroupPlayers = 0;
+	if(!sgbTimeout) {
+		return;
+	}
 #ifdef _DEBUG
-	if (sgbTimeout && !debug_mode_key_i)
-#else
-	if (sgbTimeout)
+	if(debug_mode_key_i) {
+		return;
+	}
 #endif
-	{
-		v1 = GetTickCount() - sglTimeoutStart;
-		if (v1 <= 20000) {
-			if (v1 >= 10000) {
-				v6 = 0;
-				nLowestActive = -1;
-				nLowestPlayer = -1;
-				v4 = 0;
-				do {
-					v5 = player_state[v4];
-					if (v5 & 0x10000) {
-						if (nLowestPlayer == -1)
-							nLowestPlayer = v4;
-						if (v5 & 0x40000) {
-							++bGroupPlayers;
-							if (nLowestActive == -1)
-								nLowestActive = v4;
-						} else {
-							++v6;
-						}
-					}
-					++v4;
-				} while (v4 < MAX_PLRS);
-				if (bGroupPlayers >= v6 && (bGroupPlayers != v6 || nLowestPlayer == nLowestActive)) {
-					if (nLowestActive == myplr)
-						multi_check_drop_player();
-				} else {
-					gbGameDestroyed = TRUE;
-				}
+
+	nTicks = GetTickCount() - sglTimeoutStart;
+	if(nTicks > 20000) {
+		gbRunGame = FALSE;
+		return;
+	}
+	if(nTicks < 10000) {
+		return;
+	}
+
+	nLowestActive = -1;
+	nLowestPlayer = -1;
+	bGroupPlayers = 0;
+	bGroupCount = 0;
+	for(i = 0; i < MAX_PLRS; i++) {
+		nState = player_state[i];
+		if(nState & 0x10000) {
+			if(nLowestPlayer == -1) {
+				nLowestPlayer = i;
 			}
-		} else {
-			gbRunGame = FALSE;
+			if(nState & 0x40000) {
+				bGroupPlayers++;
+				if(nLowestActive == -1) {
+					nLowestActive = i;
+				}
+			} else {
+				bGroupCount++;
+			}
 		}
+	}
+
+	/// ASSERT: assert(bGroupPlayers);
+	/// ASSERT: assert(nLowestActive != -1);
+	/// ASSERT: assert(nLowestPlayer != -1);
+
+#ifdef _DEBUG
+	dumphist(
+		"(%d) grp:%d ngrp:%d lowp:%d lowa:%d",
+		myplr,
+		bGroupPlayers,
+		bGroupCount,
+		nLowestPlayer,
+		nLowestActive);
+#endif
+
+	if(bGroupPlayers < bGroupCount) {
+		gbGameDestroyed = TRUE;
+	} else if(bGroupPlayers == bGroupCount) {
+		if(nLowestPlayer != nLowestActive) {
+			gbGameDestroyed = TRUE;
+		} else if(nLowestActive == myplr) {
+			multi_check_drop_player();
+		}
+	} else if(nLowestActive == myplr) {
+		multi_check_drop_player();
 	}
 }
 // 67862D: using guessed type char gbGameDestroyed;
