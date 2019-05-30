@@ -3298,8 +3298,8 @@ void ValidatePlayer()
 	if ((DWORD)myplr >= MAX_PLRS) {
 		app_fatal("ValidatePlayer: illegal player %d", myplr);
 	}
-	if (plr[myplr]._pLevel > 50)
-		plr[myplr]._pLevel = 50;
+	if (plr[myplr]._pLevel > MAXCHARLEVEL - 1)
+		plr[myplr]._pLevel = MAXCHARLEVEL - 1;
 	if (plr[myplr]._pExperience > plr[myplr]._pNextExper)
 		plr[myplr]._pExperience = plr[myplr]._pNextExper;
 

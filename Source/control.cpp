@@ -1664,227 +1664,205 @@ void PrintGameStr(int x, int y, char *str, int color)
 
 void DrawChr()
 {
-	int v1;      // ecx
-	int v2;      // ecx
-	int v3;      // eax
-	int v4;      // eax
-	BOOLEAN v5;  // zf
-	int v6;      // eax
-	int v7;      // edi
-	int v8;      // edi
-	char v9;     // al
-	char v10;    // al
-	char v11;    // al
-	int v12;     // ecx
-	int v13;     // eax
-	int v14;     // ecx
-	int v15;     // eax
-	int v16;     // ecx
-	int v17;     // eax
-	int v18;     // ecx
-	int v19;     // eax
-	int *v20;    // edi
-	int v21;     // edi
-	int v22;     // edi
-	int v23;     // ecx
-	int v24;     // eax
-	int v25;     // ecx
-	int v26;     // ecx
-	char a4[64]; // [esp+Ch] [ebp-50h]
-	int v28;     // [esp+4Ch] [ebp-10h]
-	int v29;     // [esp+50h] [ebp-Ch]
-	int v30;     // [esp+54h] [ebp-8h]
-	char a5[4];  // [esp+58h] [ebp-4h]
+	char col;
+	char chrstr[64];
+	int pc, mindam, maxdam;
 
 	CelDecodeOnly(64, 511, pChrPanel, 1, 320);
-	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, 0);
+	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, COL_WHITE);
+
 	if (plr[myplr]._pClass == PC_WARRIOR) {
-		ADD_PlrStringXY(168, 32, 299, "Warrior", 0);
+		ADD_PlrStringXY(168, 32, 299, "Warrior", COL_WHITE);
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
-		ADD_PlrStringXY(168, 32, 299, "Rogue", 0); /* should use ClassStrTbl ? */
+		ADD_PlrStringXY(168, 32, 299, "Rogue", COL_WHITE); /* should use ClassStrTbl ? */
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
-		ADD_PlrStringXY(168, 32, 299, "Sorceror", 0);
+		ADD_PlrStringXY(168, 32, 299, "Sorceror", COL_WHITE);
 	}
-	sprintf(a4, "%i", plr[myplr]._pLevel);
-	ADD_PlrStringXY(66, 69, 109, a4, 0);
-	sprintf(a4, "%li", plr[myplr]._pExperience);
-	ADD_PlrStringXY(216, 69, 300, a4, 0);
-	if (plr[myplr]._pLevel == 50) {
-		strcpy(a4, "None");
-		a5[0] = 3;
+
+	sprintf(chrstr, "%i", plr[myplr]._pLevel);
+	ADD_PlrStringXY(66, 69, 109, chrstr, COL_WHITE);
+
+	sprintf(chrstr, "%li", plr[myplr]._pExperience);
+	ADD_PlrStringXY(216, 69, 300, chrstr, COL_WHITE);
+
+	if (plr[myplr]._pLevel == MAXCHARLEVEL - 1) {
+		strcpy(chrstr, "None");
+		col = COL_GOLD;
 	} else {
-		sprintf(a4, "%li", plr[myplr]._pNextExper);
-		a5[0] = 0;
+		sprintf(chrstr, "%li", plr[myplr]._pNextExper);
+		col = COL_WHITE;
 	}
-	ADD_PlrStringXY(216, 97, 300, a4, a5[0]);
-	sprintf(a4, "%i", plr[myplr]._pGold);
-	ADD_PlrStringXY(216, 146, 300, a4, 0);
-	a5[0] = 0;
-	v29 = plr[myplr]._pIBonusAC;
-	if (v29 > 0)
-		a5[0] = 1;
-	if (v29 < 0)
-		a5[0] = 2;
-	sprintf(a4, "%i", v29 + plr[myplr]._pIAC + plr[myplr]._pDexterity / 5);
-	ADD_PlrStringXY(258, 183, 301, a4, a5[0]);
-	a5[0] = 0;
-	v1 = plr[myplr]._pIBonusToHit;
-	if (v1 > 0)
-		a5[0] = 1;
-	if (v1 < 0)
-		a5[0] = 2;
-	sprintf(a4, "%i%%", (plr[myplr]._pDexterity >> 1) + v1 + 50);
-	ADD_PlrStringXY(258, 211, 301, a4, a5[0]);
-	a5[0] = 0;
-	v2 = myplr;
-	v3 = plr[myplr]._pIBonusDam;
-	if (v3 > 0)
-		a5[0] = 1;
-	if (v3 < 0)
-		a5[0] = 2;
-	v30 = plr[v2]._pIMinDam;
-	v30 += plr[v2]._pIBonusDamMod + v30 * v3 / 100;
-	v4 = plr[v2]._pDamageMod;
-	v5 = plr[v2].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW;
-	v29 = plr[v2]._pDamageMod;
-	if (v5 && plr[v2]._pClass != PC_ROGUE)
-		v4 >>= 1;
-	v30 += v4;
-	v6 = plr[v2]._pIBonusDam;
-	v28 = plr[v2]._pIMaxDam;
-	v7 = plr[v2]._pIBonusDamMod + v28 * v6 / 100 + v28;
-	if (plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW || plr[v2]._pClass == PC_ROGUE)
-		v8 = v29 + v7;
+	ADD_PlrStringXY(216, 97, 300, chrstr, col);
+
+	sprintf(chrstr, "%i", plr[myplr]._pGold);
+	ADD_PlrStringXY(216, 146, 300, chrstr, COL_WHITE);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pIBonusAC > 0)
+		col = COL_BLUE;
+	if (plr[myplr]._pIBonusAC < 0)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pIBonusAC + plr[myplr]._pIAC + plr[myplr]._pDexterity / 5);
+	ADD_PlrStringXY(258, 183, 301, chrstr, col);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pIBonusToHit > 0)
+		col = COL_BLUE;
+	if (plr[myplr]._pIBonusToHit < 0)
+		col = COL_RED;
+	sprintf(chrstr, "%i%%", (plr[myplr]._pDexterity >> 1) + plr[myplr]._pIBonusToHit + 50);
+	ADD_PlrStringXY(258, 211, 301, chrstr, col);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pIBonusDam > 0)
+		col = COL_BLUE;
+	if (plr[myplr]._pIBonusDam < 0)
+		col = COL_RED;
+	mindam = plr[myplr]._pIMinDam;
+	mindam += plr[myplr]._pIBonusDam * mindam / 100;
+	mindam += plr[myplr]._pIBonusDamMod;
+	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW) {
+		if (plr[myplr]._pClass == PC_ROGUE)
+			mindam += plr[myplr]._pDamageMod;
+		else
+			mindam += plr[myplr]._pDamageMod >> 1;
+	} else {
+		mindam += plr[myplr]._pDamageMod;
+	}
+	maxdam = plr[myplr]._pIMaxDam;
+	maxdam +=  plr[myplr]._pIBonusDam * maxdam / 100;
+	maxdam += plr[myplr]._pIBonusDamMod;
+	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW) {
+		if (plr[myplr]._pClass == PC_ROGUE)
+			maxdam += plr[myplr]._pDamageMod;
+		else
+			maxdam += plr[myplr]._pDamageMod >> 1;
+	} else {
+		maxdam += plr[myplr]._pDamageMod;
+	}
+	sprintf(chrstr, "%i-%i", mindam, maxdam);
+	if (mindam >= 100 || maxdam >= 100)
+		MY_PlrStringXY(254, 239, 305, chrstr, col, -1);
 	else
-		v8 = (v29 >> 1) + v7;
-	sprintf(a4, "%i-%i", v30, v8);
-	if (v30 >= 100 || v8 >= 100)
-		MY_PlrStringXY(254, 239, 305, a4, a5[0], -1);
-	else
-		MY_PlrStringXY(258, 239, 301, a4, a5[0], 0);
-	v9 = plr[myplr]._pMagResist;
-	a5[0] = v9 != 0;
-	if (v9 < 75) {
-		sprintf(a4, "%i%%", v9);
+		MY_PlrStringXY(258, 239, 301, chrstr, col, 0);
+
+	col = plr[myplr]._pMagResist == 0 ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pMagResist < 75) {
+		sprintf(chrstr, "%i%%", plr[myplr]._pMagResist);
 	} else {
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		col = COL_GOLD;
+		sprintf(chrstr, "MAX");
 	}
-	ADD_PlrStringXY(257, 276, 300, a4, a5[0]);
-	v10 = plr[myplr]._pFireResist;
-	a5[0] = v10 != 0;
-	if (v10 < 75) {
-		sprintf(a4, "%i%%", v10);
+	ADD_PlrStringXY(257, 276, 300, chrstr, col);
+
+	col = plr[myplr]._pFireResist == 0 ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pFireResist < 75) {
+		sprintf(chrstr, "%i%%", plr[myplr]._pFireResist);
 	} else {
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		col = COL_GOLD;
+		sprintf(chrstr, "MAX");
 	}
-	ADD_PlrStringXY(257, 304, 300, a4, a5[0]);
-	v11 = plr[myplr]._pLghtResist;
-	a5[0] = v11 != 0;
-	if (v11 < 75) {
-		sprintf(a4, "%i%%", v11);
+	ADD_PlrStringXY(257, 304, 300, chrstr, col);
+
+	col = plr[myplr]._pLghtResist == 0 ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pLghtResist < 75) {
+		sprintf(chrstr, "%i%%", plr[myplr]._pLghtResist);
 	} else {
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		col = COL_GOLD;
+		sprintf(chrstr, "MAX");
 	}
-	ADD_PlrStringXY(257, 332, 300, a4, a5[0]);
-	a5[0] = 0;
-	sprintf(a4, "%i", plr[myplr]._pBaseStr);
+	ADD_PlrStringXY(257, 332, 300, chrstr, col);
+
+	col = COL_WHITE;
+	sprintf(chrstr, "%i", plr[myplr]._pBaseStr);
 	if (MaxStats[plr[myplr]._pClass][ATTRIB_STR] == plr[myplr]._pBaseStr)
-		a5[0] = 3;
-	ADD_PlrStringXY(95, 155, 126, a4, a5[0]);
-	a5[0] = 0;
-	sprintf(a4, "%i", plr[myplr]._pBaseMag);
+		col = COL_GOLD;
+	ADD_PlrStringXY(95, 155, 126, chrstr, col);
+
+	col = COL_WHITE;
+	sprintf(chrstr, "%i", plr[myplr]._pBaseMag);
 	if (MaxStats[plr[myplr]._pClass][ATTRIB_MAG] == plr[myplr]._pBaseMag)
-		a5[0] = 3;
-	ADD_PlrStringXY(95, 183, 126, a4, a5[0]);
-	a5[0] = 0;
-	sprintf(a4, "%i", plr[myplr]._pBaseDex);
+		col = COL_GOLD;
+	ADD_PlrStringXY(95, 183, 126, chrstr, col);
+
+	col = COL_WHITE;
+	sprintf(chrstr, "%i", plr[myplr]._pBaseDex);
 	if (MaxStats[plr[myplr]._pClass][ATTRIB_DEX] == plr[myplr]._pBaseDex)
-		a5[0] = 3;
-	ADD_PlrStringXY(95, 211, 126, a4, a5[0]);
-	a5[0] = 0;
-	sprintf(a4, "%i", plr[myplr]._pBaseVit);
+		col = COL_GOLD;
+	ADD_PlrStringXY(95, 211, 126, chrstr, col);
+
+	col = COL_WHITE;
+	sprintf(chrstr, "%i", plr[myplr]._pBaseVit);
 	if (MaxStats[plr[myplr]._pClass][ATTRIB_VIT] == plr[myplr]._pBaseVit)
-		a5[0] = 3;
-	ADD_PlrStringXY(95, 239, 126, a4, a5[0]);
-	a5[0] = 0;
-	v12 = plr[myplr]._pStrength;
-	v13 = plr[myplr]._pBaseStr;
-	if (v12 > v13)
-		a5[0] = 1;
-	if (v12 < v13)
-		a5[0] = 2;
-	sprintf(a4, "%i", v12);
-	ADD_PlrStringXY(143, 155, 173, a4, a5[0]);
-	a5[0] = 0;
-	v14 = plr[myplr]._pMagic;
-	v15 = plr[myplr]._pBaseMag;
-	if (v14 > v15)
-		a5[0] = 1;
-	if (v14 < v15)
-		a5[0] = 2;
-	sprintf(a4, "%i", v14);
-	ADD_PlrStringXY(143, 183, 173, a4, a5[0]);
-	a5[0] = 0;
-	v16 = plr[myplr]._pDexterity;
-	v17 = plr[myplr]._pBaseDex;
-	if (v16 > v17)
-		a5[0] = 1;
-	if (v16 < v17)
-		a5[0] = 2;
-	sprintf(a4, "%i", v16);
-	ADD_PlrStringXY(143, 211, 173, a4, a5[0]);
-	a5[0] = 0;
-	v18 = plr[myplr]._pVitality;
-	v19 = plr[myplr]._pBaseVit;
-	if (v18 > v19)
-		a5[0] = 1;
-	if (v18 < v19)
-		a5[0] = 2;
-	sprintf(a4, "%i", v18);
-	ADD_PlrStringXY(143, 239, 173, a4, a5[0]);
-	v20 = &plr[myplr]._pStatPts;
-	if (*v20 > 0) {
-		v20 = &plr[myplr]._pStatPts;
-		if (CalcStatDiff(myplr) < *v20) {
-			v20 = &plr[myplr]._pStatPts;
-			*v20 = CalcStatDiff(myplr);
+		col = COL_GOLD;
+	ADD_PlrStringXY(95, 239, 126, chrstr, col);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pStrength > plr[myplr]._pBaseStr)
+		col = COL_BLUE;
+	if (plr[myplr]._pStrength < plr[myplr]._pBaseStr)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pStrength);
+	ADD_PlrStringXY(143, 155, 173, chrstr, col);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pMagic > plr[myplr]._pBaseMag)
+		col = COL_BLUE;
+	if (plr[myplr]._pMagic < plr[myplr]._pBaseMag)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pMagic);
+	ADD_PlrStringXY(143, 183, 173, chrstr, col);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pDexterity > plr[myplr]._pBaseDex)
+		col = COL_BLUE;
+	if (plr[myplr]._pDexterity < plr[myplr]._pBaseDex)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pDexterity);
+	ADD_PlrStringXY(143, 211, 173, chrstr, col);
+
+	col = COL_WHITE;
+	if (plr[myplr]._pVitality > plr[myplr]._pBaseVit)
+		col = COL_BLUE;
+	if (plr[myplr]._pVitality < plr[myplr]._pBaseVit)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pVitality);
+	ADD_PlrStringXY(143, 239, 173, chrstr, col);
+
+	if (plr[myplr]._pStatPts > 0) {
+		if (CalcStatDiff(myplr) < plr[myplr]._pStatPts) {
+			plr[myplr]._pStatPts = CalcStatDiff(myplr);
 		}
 	}
-	v21 = *v20;
-	if (v21 > 0) {
-		sprintf(a4, "%i", v21);
-		ADD_PlrStringXY(95, 266, 126, a4, 2);
-		v22 = plr[myplr]._pClass;
-		if (plr[myplr]._pBaseStr < MaxStats[v22][ATTRIB_STR])
-			CelDecodeOnly(201, 319, pChrButtons, chrbtn[0] + 2, 41);
-		if (plr[myplr]._pBaseMag < MaxStats[v22][ATTRIB_MAG])
-			CelDecodeOnly(201, 347, pChrButtons, chrbtn[1] + 4, 41);
-		if (plr[myplr]._pBaseDex < MaxStats[v22][ATTRIB_DEX])
-			CelDecodeOnly(201, 376, pChrButtons, chrbtn[2] + 6, 41);
-		if (plr[myplr]._pBaseVit < MaxStats[v22][ATTRIB_VIT])
-			CelDecodeOnly(201, 404, pChrButtons, chrbtn[3] + 8, 41);
+	if (plr[myplr]._pStatPts > 0) {
+		sprintf(chrstr, "%i", plr[myplr]._pStatPts);
+		ADD_PlrStringXY(95, 266, 126, chrstr, COL_RED);
+		pc = plr[myplr]._pClass;
+		if (plr[myplr]._pBaseStr < MaxStats[pc][ATTRIB_STR])
+			CelDecodeOnly(201, 319, pChrButtons, chrbtn[ATTRIB_STR] + 2, 41);
+		if (plr[myplr]._pBaseMag < MaxStats[pc][ATTRIB_MAG])
+			CelDecodeOnly(201, 347, pChrButtons, chrbtn[ATTRIB_MAG] + 4, 41);
+		if (plr[myplr]._pBaseDex < MaxStats[pc][ATTRIB_DEX])
+			CelDecodeOnly(201, 376, pChrButtons, chrbtn[ATTRIB_DEX] + 6, 41);
+		if (plr[myplr]._pBaseVit < MaxStats[pc][ATTRIB_VIT])
+			CelDecodeOnly(201, 404, pChrButtons, chrbtn[ATTRIB_VIT] + 8, 41);
 	}
-	v23 = plr[myplr]._pMaxHP;
-	a5[0] = v23 > plr[myplr]._pMaxHPBase;
-	sprintf(a4, "%i", v23 >> 6);
-	ADD_PlrStringXY(95, 304, 126, a4, a5[0]);
-	v24 = plr[myplr]._pHitPoints;
-	if (v24 != plr[myplr]._pMaxHP)
-		a5[0] = 2;
-	sprintf(a4, "%i", v24 >> 6);
-	ADD_PlrStringXY(143, 304, 174, a4, a5[0]);
-	v25 = plr[myplr]._pMaxMana;
-	a5[0] = v25 > plr[myplr]._pMaxManaBase;
-	sprintf(a4, "%i", v25 >> 6);
-	ADD_PlrStringXY(95, 332, 126, a4, a5[0]);
-	v26 = plr[myplr]._pMana;
-	if (v26 != plr[myplr]._pMaxMana)
-		a5[0] = 2;
-	sprintf(a4, "%i", v26 >> 6);
-	ADD_PlrStringXY(143, 332, 174, a4, a5[0]);
+
+	col = plr[myplr]._pMaxHP <= plr[myplr]._pMaxHPBase ? COL_WHITE : COL_BLUE;
+	sprintf(chrstr, "%i", plr[myplr]._pMaxHP >> 6);
+	ADD_PlrStringXY(95, 304, 126, chrstr, col);
+	if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pHitPoints >> 6);
+	ADD_PlrStringXY(143, 304, 174, chrstr, col);
+
+	col = plr[myplr]._pMaxMana <= plr[myplr]._pMaxManaBase ? COL_WHITE : COL_BLUE;
+	sprintf(chrstr, "%i", plr[myplr]._pMaxMana >> 6);
+	ADD_PlrStringXY(95, 332, 126, chrstr, col);
+	if (plr[myplr]._pMana != plr[myplr]._pMaxMana)
+		col = COL_RED;
+	sprintf(chrstr, "%i", plr[myplr]._pMana >> 6);
+	ADD_PlrStringXY(143, 332, 174, chrstr, col);
 }
 
 /**
@@ -1969,7 +1947,7 @@ void DrawLevelUpIcon()
 
 	if (!stextflag) {
 		nCel = lvlbtndown ? 3 : 2;
-		ADD_PlrStringXY(0, 303, 120, "Level Up", 0);
+		ADD_PlrStringXY(0, 303, 120, "Level Up", COL_WHITE);
 		CelDecodeOnly(104, 495, pChrButtons, nCel, 41);
 	}
 }
@@ -2335,10 +2313,10 @@ void DrawGoldSplit(int amount)
 	screen_x = 0;
 	CelDecodeOnly(415, 338, pGBoxBuff, 1, 261);
 	sprintf(tempstr, "You have %u gold", initialDropGoldValue);
-	ADD_PlrStringXY(366, 87, 600, tempstr, 3);
+	ADD_PlrStringXY(366, 87, 600, tempstr, COL_GOLD);
 	sprintf(tempstr, "%s.  How many do", get_pieces_str(initialDropGoldValue));
-	ADD_PlrStringXY(366, 103, 600, tempstr, 3);
-	ADD_PlrStringXY(366, 121, 600, "you want to remove?", 3);
+	ADD_PlrStringXY(366, 103, 600, tempstr, COL_GOLD);
+	ADD_PlrStringXY(366, 121, 600, "you want to remove?", COL_GOLD);
 	if (amount > 0) {
 		sprintf(tempstr, "%u", amount);
 		PrintGameStr(388, 140, tempstr, 0);
@@ -2573,7 +2551,7 @@ void control_release_talk_btn()
 	}
 }
 
-void control_reset_talk_msg(char* msg)
+void control_reset_talk_msg(char *msg)
 {
 	int i, pmask;
 	pmask = 0;
