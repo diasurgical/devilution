@@ -154,35 +154,30 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 }
 // 679760: using guessed type int gdwNormalMsgSize;
 
-unsigned char *multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3)
+BYTE *multi_recv_packet(TBuffer *packet, BYTE *body, int *size)
 {
-	TBuffer *v3;           // esi
-	unsigned char *result; // eax
-	BYTE *v5;              // ebx
-	size_t v6;             // edi
-	char *v7;              // ebx
-	unsigned char *v8;     // [esp+4h] [ebp-4h]
+	BYTE *src_ptr;
+	size_t chunk_size;
 
-	v3 = packet;
-	result = a2;
-	v8 = a2;
-	if (packet->dwNextWriteOffset) {
-		v5 = packet->bData;
-		while (*v5) {
-			v6 = *v5;
-			if (v6 > *a3)
+	if (packet->dwNextWriteOffset != 0) {
+		src_ptr = packet->bData;
+		while (TRUE) {
+			if (*src_ptr == 0)
 				break;
-			v7 = (char *)(v5 + 1);
-			memcpy(v8, v7, v6);
-			v8 += v6;
-			v5 = (BYTE *)&v7[v6];
-			*a3 -= v6;
+			chunk_size = *src_ptr;
+			if (chunk_size > *size)
+				break;
+			src_ptr++;
+			memcpy(body, src_ptr, chunk_size);
+			body += chunk_size;
+			src_ptr += chunk_size;
+			*size -= chunk_size;
 		}
-		memcpy(v3->bData, v5, (size_t)&v3->bData[v3->dwNextWriteOffset - (_DWORD)v5 + 1]); /* memcpy_0 */
-		v3->dwNextWriteOffset += (char *)v3 - (char *)v5 + 4;
-		result = v8;
+		memcpy(packet->bData, src_ptr, (packet->bData - src_ptr) + packet->dwNextWriteOffset + 1);
+		packet->dwNextWriteOffset += (packet->bData - src_ptr);
+		return body;
 	}
-	return result;
+	return body;
 }
 
 void multi_send_msg_packet(int pmask, BYTE *a2, BYTE len)
