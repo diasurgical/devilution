@@ -24,7 +24,7 @@ void multi_copy_packet(TBuffer *buf, void *packet, BYTE size);
 void multi_send_packet(void *packet, BYTE dwSize);
 void NetRecvPlrData(TPkt *pkt);
 void NetSendHiPri(BYTE *pbMsg, BYTE bLen);
-unsigned char *multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3);
+BYTE *multi_recv_packet(TBuffer *packet, BYTE *body, int *size);
 void multi_send_msg_packet(int pmask, BYTE *a2, BYTE len);
 void multi_msg_countdown();
 void multi_parse_turn(int pnum, int turn);
