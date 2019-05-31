@@ -176,30 +176,19 @@ void InitTownerInfo(int i, int w, int sel, int t, int x, int y, int ao, int tp)
 
 void InitQstSnds(int i)
 {
-	int v1;            // eax
-	_BYTE *v2;         // ecx
-	unsigned char *v3; // esi
-	QuestTalkData *v4; // eax
-	BOOLEAN v5;        // zf
-
-	v1 = i;
+	int j, tl;
+	tl = i;
 	if (boyloadflag)
-		v1 = i + 1;
-	v2 = (unsigned char *)&towner[i].qsts[0]._qstmsgact;
-	v3 = &quests[0]._qtype;
-	v4 = &Qtalklist[v1];
-	do {
-		v5 = v4->_qinfra == -1;
-		*(v2 - 2) = *v3;
-		*(v2 - 1) = v4->_qinfra;
-		*v2 = !v5;
-		v3 += 24;
-		v4 = (QuestTalkData *)((char *)v4 + 4);
-		v2 += 3;
-	} while ((signed int)v3 < (signed int)&quests[16]._qtype);
+		tl++;
+	for (j = 0; j < 16; j++) {
+		towner[i].qsts[j]._qsttype = quests[j]._qtype;
+		towner[i].qsts[j]._qstmsg = ((int*)(Qtalklist + tl))[j];
+		if (((int*)(Qtalklist + tl))[j] != -1)
+			towner[i].qsts[j]._qstmsgact = TRUE;
+		else
+			towner[i].qsts[j]._qstmsgact = FALSE;
+	}
 }
-// 69BE90: using guessed type int qline;
-// 6AAC2C: using guessed type int boyloadflag;
 
 void InitSmith()
 {
