@@ -1039,7 +1039,7 @@ typedef struct SpellData {
 typedef struct TNQ {
 	unsigned char _qsttype;
 	unsigned char _qstmsg;
-	unsigned char _qstmsgact;
+	BOOLEAN _qstmsgact;
 } TNQ;
 
 typedef struct TownerStruct {
