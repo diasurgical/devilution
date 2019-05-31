@@ -2371,20 +2371,20 @@ void control_remove_gold(int pnum, int gold_index)
 {
 	int gi;
 
-	if (gold_index > 46) {
-		gi = gold_index - 47;
-		plr[pnum].SpdList[gi]._ivalue -= dropGoldValue;
-		if (plr[pnum].SpdList[gi]._ivalue > 0)
-			SetSpdbarGoldCurs(pnum, gi);
-		else
-			RemoveSpdBarItem(pnum, gi);
-	} else {
+	if (gold_index <= 46) {
 		gi = gold_index - 7;
 		plr[pnum].InvList[gi]._ivalue -= dropGoldValue;
 		if (plr[pnum].InvList[gi]._ivalue > 0)
 			SetGoldCurs(pnum, gi);
 		else
 			RemoveInvItem(pnum, gi);
+	} else {
+		gi = gold_index - 47;
+		plr[pnum].SpdList[gi]._ivalue -= dropGoldValue;
+		if (plr[pnum].SpdList[gi]._ivalue > 0)
+			SetSpdbarGoldCurs(pnum, gi);
+		else
+			RemoveSpdBarItem(pnum, gi);
 	}
 	SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
 	GetGoldSeed(pnum, &plr[pnum].HoldItem);
