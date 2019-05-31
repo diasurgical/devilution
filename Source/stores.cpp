@@ -2375,9 +2375,9 @@ void S_BBuyEnter()
 	int i;
 
 	if (stextsel == 10) {
-		stextlhold = 10;
-		stextvhold = stextsval;
 		stextshold = STORE_BBOY;
+		stextvhold = stextsval;
+		stextlhold = 10;
 		if (plr[myplr]._pGold < boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
 			StartStore(STORE_NOMONEY);
 		} else {
