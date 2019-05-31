@@ -791,86 +791,54 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 BOOL LeftMouseDown(int wParam)
 {
-	if (gmenu_left_mouse(TRUE) || control_check_talk_btn() || sgnTimeoutCurs)
-		return 0;
-	if (deathflag) {
-		control_check_btn_press();
-		return 0;
-	}
-	if (PauseMode == 2)
-		return 0;
-	if (doomflag) {
-		doom_close();
-		return 0;
-	}
-	if (spselflag) {
-		SetSpell();
-		return 0;
-	}
-	if (stextflag) {
-		CheckStoreBtn();
-		return 0;
-	}
-	if (MouseY >= 352) {
-		if (!talkflag && !dropGoldFlag) {
-			if (!gmenu_exception())
-				CheckInvScrn();
+	if (!gmenu_left_mouse(TRUE) && !control_check_talk_btn() && !sgnTimeoutCurs) {
+		if (deathflag) {
+			control_check_btn_press();
+		} else if (PauseMode != 2) {
+			if (doomflag) {
+				doom_close();
+			} else if (spselflag) {
+				SetSpell();
+			} else if (stextflag) {
+				CheckStoreBtn();
+			} else if (MouseY < 352) {
+				if (!gmenu_exception() && !TryIconCurs()) {
+					if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
+						QuestlogESC();
+					} else if (qtextflag) {
+						qtextflag = FALSE;
+						sfx_stop();
+					} else if (chrflag && MouseX < 320) {
+						CheckChrBtns();
+					} else if (invflag && MouseX > 320) {
+						if (!dropGoldFlag)
+							CheckInvItem();
+					} else if (sbookflag && MouseX > 320) {
+						CheckSBook();
+					} else if (pcurs >= CURSOR_FIRSTITEM) {
+						if (TryInvPut()) {
+							NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
+							SetCursor_(CURSOR_HAND);
+						}
+					} else {
+						if (plr[myplr]._pStatPts && !spselflag)
+							CheckLvlBtn();
+						if (!lvlbtndown)
+							return LeftMouseCmd(wParam == MK_SHIFT + MK_LBUTTON);
+					}
+				}
+			} else {
+				if (!talkflag && !dropGoldFlag && !gmenu_exception())
+						CheckInvScrn();
+				DoPanBtn();
+				if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
+					SetCursor_(CURSOR_HAND);
+			}
 		}
-		DoPanBtn();
-		if (pcurs <= 1 || pcurs >= 12)
-			return 0;
-		goto LABEL_48;
 	}
-	if (gmenu_exception() || TryIconCurs())
-		return 0;
-	if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
-		QuestlogESC();
-		return 0;
-	}
-	if (qtextflag) {
-		qtextflag = FALSE;
-		sfx_stop();
-		return 0;
-	}
-	if (chrflag && MouseX < 320) {
-		CheckChrBtns();
-		return 0;
-	}
-	if (invflag && MouseX > 320) {
-		if (!dropGoldFlag)
-			CheckInvItem();
-		return 0;
-	}
-	if (sbookflag && MouseX > 320) {
-		CheckSBook();
-		return 0;
-	}
-	if (pcurs >= CURSOR_FIRSTITEM) {
-		if (!TryInvPut())
-			return 0;
-		NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-	LABEL_48:
-		SetCursor_(CURSOR_HAND);
-		return 0;
-	}
-	if (plr[myplr]._pStatPts && !spselflag)
-		CheckLvlBtn();
-	if (!lvlbtndown)
-		return LeftMouseCmd(wParam == MK_SHIFT + MK_LBUTTON);
-	return 0;
+
+	return FALSE;
 }
-// 484368: using guessed type int FriendlyMode;
-// 4B851C: using guessed type int lvlbtndown;
-// 4B8960: using guessed type int talkflag;
-// 4B8968: using guessed type int sbookflag;
-// 4B8C98: using guessed type int spselflag;
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC1: using guessed type char pcursobj;
-// 4B8CC2: using guessed type char pcursplr;
-// 525740: using guessed type int PauseMode;
-// 52575C: using guessed type int doomflag;
-// 646D00: using guessed type char qtextflag;
-// 6AA705: using guessed type char stextflag;
 
 BOOL LeftMouseCmd(BOOL bShift)
 {
