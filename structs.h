@@ -940,7 +940,7 @@ typedef struct DPortal {
 } DPortal;
 
 typedef struct MultiQuests {
-	char qstate;
+	BYTE qstate;
 	BYTE qlog;
 	BYTE qvar1;
 } MultiQuests;
