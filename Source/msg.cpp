@@ -983,8 +983,8 @@ void NetSendCmdString(int pmask, const char *pszStr)
 	int dwStrLen;
 	TCmdString cmd;
 
-	cmd.bCmd = CMD_STRING;
 	dwStrLen = strlen(pszStr);
+	cmd.bCmd = CMD_STRING;
 	strcpy(cmd.str, pszStr);
 	multi_send_msg_packet(pmask, (BYTE *)&cmd.bCmd, dwStrLen + 2);
 }
