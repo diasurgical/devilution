@@ -3648,83 +3648,57 @@ void MI_Apoca(int i)
 
 void MI_Wave(int i)
 {
-	int v1;         // esi
-	int v2;         // ebx
-	int v3;         // eax
-	int v4;         // edi
-	int v5;         // ecx
-	int v6;         // eax
-	int v7;         // ebx
-	int v8;         // eax
-	int v9;         // ebx
-	int v10;        // eax
-	int v11;        // ebx
-	BOOLEAN v12;    // zf
-	int v13;        // [esp+Ch] [ebp-2Ch]
-	int v14;        // [esp+10h] [ebp-28h]
-	int v15;        // [esp+14h] [ebp-24h]
-	int v16;        // [esp+14h] [ebp-24h]
-	signed int v17; // [esp+18h] [ebp-20h]
-	int *v18;       // [esp+1Ch] [ebp-1Ch]
-	signed int v19; // [esp+20h] [ebp-18h]
-	int v20;        // [esp+24h] [ebp-14h]
-	int v21;        // [esp+24h] [ebp-14h]
-	int v22;        // [esp+28h] [ebp-10h]
-	int j;          // [esp+28h] [ebp-10h]
-	int id;         // [esp+2Ch] [ebp-Ch]
-	int sx;         // [esp+30h] [ebp-8h]
-	int sy;         // [esp+34h] [ebp-4h]
-	int sya;        // [esp+34h] [ebp-4h]
+	int sx, sy, sd, nxa, nxb, nya, nyb, dira, dirb;
+	int j, id, pn;
+	BOOL f1, f2;
+	int v1, v2;
 
-	v19 = 0;
-	v1 = i;
-	v17 = 0;
-	v2 = missile[i]._mix;
+	f1 = FALSE;
+	f2 = FALSE;
+	/// ASSERT: assert((DWORD)i < MAXMISSILES);
+
 	id = missile[i]._misource;
-	v14 = v2;
-	v20 = missile[i]._miy;
-	v3 = GetDirection(v2, v20, missile[i]._miVar1, missile[i]._miVar2);
-	v22 = ((_BYTE)v3 - 2) & 7;
-	v4 = v3;
-	v15 = ((_BYTE)v3 + 2) & 7;
-	v5 = YDirAdd[v3];
-	v6 = XDirAdd[v3];
-	v7 = v6 + v2;
-	sy = v5 + v20;
-	if (!nMissileTable[dPiece[v7][v5 + v20]]) {
-		v18 = &plr[id]._pdir;
-		AddMissile(v7, sy, v7 + v6, sy + v5, *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
-		v13 = v22;
-		sya = YDirAdd[v22] + sy;
-		v8 = v15;
-		sx = XDirAdd[v22] + v7;
-		v16 = v8 * 4;
-		v9 = XDirAdd[v8];
-		v10 = v20 + YDirAdd[v4] + YDirAdd[v8];
-		v11 = v14 + XDirAdd[v4] + v9;
-		v21 = 0;
-		for (j = v10; v21 < (missile[v1]._mispllvl >> 1) + 2; ++v21) {
-			if (nMissileTable[dPiece[sx][sya]] || v19 || sx <= 0 || sx >= MAXDUNX || sya <= 0 || sya >= MAXDUNY) {
-				v19 = 1;
+	sx = missile[i]._mix;
+	sy = missile[i]._miy;
+	v1 = missile[i]._miVar1;
+	v2 = missile[i]._miVar2;
+	sd = GetDirection(sx, sy, v1, v2);
+	dira = (sd - 2) & 7;
+	dirb = (sd + 2) & 7;
+	nxa = sx + XDirAdd[sd];
+	nya = sy + YDirAdd[sd];
+	pn = dPiece[nxa][nya];
+	/// ASSERT: assert((DWORD)pn <= MAXTILES);
+	if (nMissileTable[pn] == 0) {
+		AddMissile(nxa, nya, nxa + XDirAdd[sd], nya + YDirAdd[sd], plr[id]._pdir, MIS_FIREMOVE, 0, id, 0, missile[i]._mispllvl);
+		nxa += XDirAdd[dira];
+		nya += YDirAdd[dira];
+		nxb = sx + XDirAdd[sd] + XDirAdd[dirb];
+		nyb = sy + YDirAdd[sd] + YDirAdd[dirb];
+		for (j = 0; j < (missile[i]._mispllvl >> 1) + 2; j++) {
+			pn = dPiece[nxa][nya]; // BUGFIX: dPiece is accessed before check against dungeon size and 0
+			                       /// ASSERT: assert((DWORD)pn <= MAXTILES);
+			if (nMissileTable[pn] || f1 || nxa <= 0 || nxa >= MAXDUNX || nya <= 0 || nya >= MAXDUNY) {
+				f1 = TRUE;
 			} else {
-				AddMissile(sx, sya, sx + XDirAdd[v4], sya + YDirAdd[v4], *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
-				sx += XDirAdd[v13];
-				sya += YDirAdd[v13];
-				v10 = j;
+				AddMissile(nxa, nya, nxa + XDirAdd[sd], nya + YDirAdd[sd], plr[id]._pdir, MIS_FIREMOVE, 0, id, 0, missile[i]._mispllvl);
+				nxa += XDirAdd[dira];
+				nya += YDirAdd[dira];
 			}
-			if (nMissileTable[dPiece[v11][v10]] || v17 || v11 <= 0 || v11 >= MAXDUNX || v10 <= 0 || v10 >= MAXDUNY) {
-				v17 = 1;
+			pn = dPiece[nxb][nyb]; // BUGFIX: dPiece is accessed before check against dungeon size and 0
+			                       /// ASSERT: assert((DWORD)pn <= MAXTILES);
+			if (nMissileTable[pn] || f2 || nxb <= 0 || nxb >= MAXDUNX || nyb <= 0 || nyb >= MAXDUNY) {
+				f2 = TRUE;
 			} else {
-				AddMissile(v11, v10, v11 + XDirAdd[v4], v10 + YDirAdd[v4], *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
-				v11 += *(int *)((char *)XDirAdd + v16);
-				j += *(int *)((char *)YDirAdd + v16);
-				v10 = j;
+				AddMissile(nxb, nyb, nxb + XDirAdd[sd], nyb + YDirAdd[sd], plr[id]._pdir, MIS_FIREMOVE, 0, id, 0, missile[i]._mispllvl);
+				nxb += XDirAdd[dirb];
+				nyb += YDirAdd[dirb];
 			}
 		}
 	}
-	v12 = missile[v1]._mirange-- == 1;
-	if (v12)
-		missile[v1]._miDelFlag = TRUE;
+	missile[i]._mirange--;
+	if (missile[i]._mirange == 0)
+		missile[i]._miDelFlag = TRUE;
 }
 
 void MI_Nova(int i)
