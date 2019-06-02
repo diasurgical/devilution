@@ -1004,7 +1004,7 @@ void T_DrawGame(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[160]];
+	gpBufEnd = &gpBuffer[PitchTbl[SCREEN_Y]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
