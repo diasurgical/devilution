@@ -3311,8 +3311,8 @@ void ValidatePlayer()
 	if ((DWORD)myplr >= MAX_PLRS) {
 		app_fatal("ValidatePlayer: illegal player %d", myplr);
 	}
-	if (plr[myplr]._pLevel > 50)
-		plr[myplr]._pLevel = 50;
+	if (plr[myplr]._pLevel > MAXCHARLEVEL - 1)
+		plr[myplr]._pLevel = MAXCHARLEVEL - 1;
 	if (plr[myplr]._pExperience > plr[myplr]._pNextExper)
 		plr[myplr]._pExperience = plr[myplr]._pNextExper;
 
@@ -3631,7 +3631,7 @@ void CheckPlrSpell()
 	}
 
 	if (pcurs != CURSOR_HAND
-	    || MouseY >= 352
+	    || MouseY >= VIEWPORT_HEIGHT
 	    || (chrflag && MouseX < 320 || invflag && MouseX > 320)
 	        && rspell != SPL_HEAL
 	        && rspell != SPL_IDENTIFY

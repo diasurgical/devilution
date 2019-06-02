@@ -43,7 +43,7 @@ void DrawCutscene()
 	for (i = 0; i < sgdwProgress; i++) {
 		DrawProgress(
 		    progress_bar_screen_pos[progress_id][0] + i + 64,
-		    progress_bar_screen_pos[progress_id][1] + 160,
+		    progress_bar_screen_pos[progress_id][1] + SCREEN_Y,
 		    progress_id);
 	}
 

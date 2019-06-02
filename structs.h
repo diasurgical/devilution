@@ -940,7 +940,7 @@ typedef struct DPortal {
 } DPortal;
 
 typedef struct MultiQuests {
-	char qstate;
+	BYTE qstate;
 	BYTE qlog;
 	BYTE qvar1;
 } MultiQuests;
@@ -1039,7 +1039,7 @@ typedef struct SpellData {
 typedef struct TNQ {
 	unsigned char _qsttype;
 	unsigned char _qstmsg;
-	unsigned char _qstmsgact;
+	BOOLEAN _qstmsgact;
 } TNQ;
 
 typedef struct TownerStruct {

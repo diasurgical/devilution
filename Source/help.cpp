@@ -98,20 +98,20 @@ void DrawHelp()
 
 	s = gszHelpText;
 
-	for(i = 0; i < help_select_line; i++) {
+	for (i = 0; i < help_select_line; i++) {
 		c = 0;
 		w = 0;
-		while(*s == '\0') {
+		while (*s == '\0') {
 			s++;
 		}
-		if(*s == '$') {
+		if (*s == '$') {
 			s++;
 		}
-		if(*s == '&') {
+		if (*s == '&') {
 			continue;
 		}
-		while(*s != '|' && w < 577) {
-			while(*s == '\0') {
+		while (*s != '|' && w < 577) {
+			while (*s == '\0') {
 				s++;
 			}
 			tempstr[c] = *s;
@@ -119,35 +119,35 @@ void DrawHelp()
 			c++;
 			s++;
 		}
-		if(w >= 577) {
+		if (w >= 577) {
 			c--;
-			while(tempstr[c] != ' ') {
+			while (tempstr[c] != ' ') {
 				s--;
 				c--;
 			}
 		}
-		if(*s == '|') {
+		if (*s == '|') {
 			s++;
 		}
 	}
-	for(i = 7; i < 22; i++) {
+	for (i = 7; i < 22; i++) {
 		c = 0;
 		w = 0;
-		while(*s == '\0') {
+		while (*s == '\0') {
 			s++;
 		}
-		if(*s == '$') {
+		if (*s == '$') {
 			s++;
 			col = COL_RED;
 		} else {
 			col = COL_WHITE;
 		}
-		if(*s == '&') {
+		if (*s == '&') {
 			HelpTop = help_select_line;
 			continue;
 		}
-		while(*s != '|' && w < 577) {
-			while(*s == '\0') {
+		while (*s != '|' && w < 577) {
+			while (*s == '\0') {
 				s++;
 			}
 			tempstr[c] = *s;
@@ -155,18 +155,18 @@ void DrawHelp()
 			c++;
 			s++;
 		}
-		if(w >= 577) {
+		if (w >= 577) {
 			c--;
-			while(tempstr[c] != ' ') {
+			while (tempstr[c] != ' ') {
 				s--;
 				c--;
 			}
 		}
-		if(c != 0) {
+		if (c != 0) {
 			tempstr[c] = '\0';
 			DrawHelpLine(0, i, tempstr, col);
 		}
-		if(*s == '|') {
+		if (*s == '|') {
 			s++;
 		}
 	}
@@ -208,14 +208,14 @@ void DisplayHelp()
 void HelpScrollUp()
 {
 	if (help_select_line > 0)
-		--help_select_line;
+		help_select_line--;
 }
 // 634490: using guessed type int help_select_line;
 
 void HelpScrollDown()
 {
 	if (help_select_line < HelpTop)
-		++help_select_line;
+		help_select_line++;
 }
 // 634490: using guessed type int help_select_line;
 // 634960: using guessed type int HelpTop;

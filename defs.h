@@ -4,7 +4,6 @@
 #define DMAXY					40
 
 #define LIGHTSIZE				6912 // 27 * 256
-#define ROW_PITCH				768
 
 // must be unsigned to generate unsigned comparisons with pnum
 #define MAX_PLRS				4
@@ -108,6 +107,8 @@
 #define BUFFER_WIDTH	(BORDER_LEFT + SCREEN_WIDTH + BORDER_RIGHT)
 #define BUFFER_HEIGHT	(BORDER_TOP + SCREEN_HEIGHT + BORDER_BOTTOM)
 #define TILE_SIZE		32
+
+#define VIEWPORT_HEIGHT	352
 
 #define SCREENXY(x, y)	((x) + SCREEN_X + ((y) + SCREEN_Y) * BUFFER_WIDTH)
 

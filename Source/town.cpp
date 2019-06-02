@@ -933,7 +933,7 @@ void T_DrawGame(int x, int y)
 	int i, sx, sy, chunks, blocks;
 
 	scr_pix_width = 640;
-	scr_pix_height = 352;
+	scr_pix_height = VIEWPORT_HEIGHT;
 	dword_5C2FF8 = 10;
 	dword_5C2FFC = 11;
 
@@ -1006,7 +1006,7 @@ void T_DrawGame(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[160]];
+	gpBufEnd = &gpBuffer[PitchTbl[SCREEN_Y]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -1282,7 +1282,7 @@ void SetTownMicros()
 
 	if (zoomflag) {
 		scr_pix_width = 640;
-		scr_pix_height = 352;
+		scr_pix_height = VIEWPORT_HEIGHT;
 		dword_5C2FF8 = 10;
 		dword_5C2FFC = 11;
 	} else {

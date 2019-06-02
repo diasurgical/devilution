@@ -1160,7 +1160,7 @@ void M_Enemy(int i)
 		}
 	}
 	for (j = 0; j < nummonsters; j++) {
-		mi = monstactive[j + 1];
+		mi = monstactive[j];
 		if (mi == i)
 			continue;
 		if (monster[mi]._mx == 1 && monster[mi]._my == 0)

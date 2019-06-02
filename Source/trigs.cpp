@@ -656,7 +656,7 @@ void CheckTrigForce()
 {
 	trigflag = FALSE;
 
-	if(MouseY > 352 - 1) {
+	if(MouseY > VIEWPORT_HEIGHT - 1) {
 		return;
 	}
 

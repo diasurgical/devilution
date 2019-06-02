@@ -434,7 +434,7 @@ void DrawGame(int x, int y)
 	int i, sx, sy, chunks, blocks;
 
 	scr_pix_width = 640;
-	scr_pix_height = 352;
+	scr_pix_height = VIEWPORT_HEIGHT;
 	dword_5C2FF8 = 10;
 	dword_5C2FFC = 11;
 
@@ -507,7 +507,7 @@ void DrawGame(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[352 + SCREEN_Y]];
+	gpBufEnd = &gpBuffer[PitchTbl[VIEWPORT_HEIGHT + SCREEN_Y]];
 	for (i = 0; i < blocks; i++) {
 		scrollrt_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
