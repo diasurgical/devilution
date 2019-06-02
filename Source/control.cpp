@@ -2092,7 +2092,7 @@ void RedBack()
 			add		edi, SCREENXY(0, 0)
 			mov		ebx, pLightTbl
 			add		ebx, idx
-			mov		edx, 352
+			mov		edx, VIEWPORT_HEIGHT
 		lx_label1:
 			mov		ecx, 640
 		lx_label2:
@@ -2110,7 +2110,7 @@ void RedBack()
 			add		edi, SCREENXY(0, 0)
 			mov		ebx, pLightTbl
 			add		ebx, idx
-			mov		edx, 352
+			mov		edx, VIEWPORT_HEIGHT
 		l4_label1:
 			mov		ecx, 640
 		l4_label2:
@@ -2133,7 +2133,7 @@ void RedBack()
 	if (leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = 352; h; h--, dst += 768 - 640) {
+		for (h = VIEWPORT_HEIGHT; h; h--, dst += 768 - 640) {
 			for (w = 640; w; w--) {
 				*dst = tbl[*dst];
 				dst++;
@@ -2142,7 +2142,7 @@ void RedBack()
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = 352; h; h--, dst += 768 - 640) {
+		for (h = VIEWPORT_HEIGHT; h; h--, dst += 768 - 640) {
 			for (w = 640; w; w--) {
 				if (*dst >= 32)
 					*dst = tbl[*dst];

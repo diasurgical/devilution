@@ -108,6 +108,8 @@
 #define BUFFER_HEIGHT	(BORDER_TOP + SCREEN_HEIGHT + BORDER_BOTTOM)
 #define TILE_SIZE		32
 
+#define VIEWPORT_HEIGHT	352
+
 #define SCREENXY(x, y)	((x) + SCREEN_X + ((y) + SCREEN_Y) * BUFFER_WIDTH)
 
 #define MemFreeDbg(p)	\
