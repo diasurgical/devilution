@@ -15,7 +15,7 @@ BOOL __stdcall UiCopyProtError(int *pdwResult)
 		*pdwResult = v2;
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100040AF
 LRESULT __stdcall CopyProt_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -68,7 +68,7 @@ LRESULT __stdcall CopyProt_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10004173
 void __cdecl CopyProt_FreeCopyResrcs()

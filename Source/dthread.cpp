@@ -41,7 +41,7 @@ void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 	pkt->pNext = NULL;
 	pkt->dwSpaceLeft = pnum;
 	pkt->data[0] = cmd;
-	*(_DWORD *)&pkt->data[4] = dwLen;
+	*(DWORD *)&pkt->data[4] = dwLen;
 	memcpy(&pkt->data[8], pbSrc, dwLen);
 #ifdef __cplusplus
 	sgMemCrit.Enter();
@@ -107,9 +107,9 @@ unsigned int __stdcall dthread_handler(void *unused)
 
 		if (pkt) {
 			if (pkt->dwSpaceLeft != 4)
-				multi_send_zero_packet(pkt->dwSpaceLeft, pkt->data[0], &pkt->data[8], *(_DWORD *)&pkt->data[4]);
+				multi_send_zero_packet(pkt->dwSpaceLeft, pkt->data[0], &pkt->data[8], *(DWORD *)&pkt->data[4]);
 
-			dwMilliseconds = 1000 * *(_DWORD *)&pkt->data[4] / gdwDeltaBytesSec;
+			dwMilliseconds = 1000 * *(DWORD *)&pkt->data[4] / gdwDeltaBytesSec;
 			if (dwMilliseconds >= 1)
 				dwMilliseconds = 1;
 

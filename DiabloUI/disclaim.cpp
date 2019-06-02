@@ -7,7 +7,7 @@ BOOL __stdcall UiBetaDisclaimer(int a1)
 	SDlgDialogBoxParam(ghUiInst, "DISCLAIMER_DIALOG", v1, disclaim_WndProc, a1);
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100063DA
 LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -17,7 +17,7 @@ LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	if (Msg > 0x111) {
 		if (Msg != 513 && Msg != 516) {
 			if (Msg == 528) {
-				if ((_WORD)wParam == 513 || (_WORD)wParam == 516)
+				if ((WORD)wParam == 513 || (WORD)wParam == 516)
 					disclaim_FadeFromDisclaim(hWnd);
 			} else if (Msg == 2024) {
 				if (!Fade_CheckRange5())
@@ -50,7 +50,7 @@ LABEL_21:
 	disclaim_FadeFromDisclaim(hWnd);
 	return 0;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100064C9
 void __fastcall disclaim_DelDisclaimProcs(HWND hWnd)

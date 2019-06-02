@@ -195,7 +195,7 @@ void PrintDebugPlayer(BOOL bNextPlayer)
 	char dstr[128];
 
 	if (bNextPlayer)
-		dbgplr = ((_BYTE)dbgplr + 1) & 3;
+		dbgplr = ((BYTE)dbgplr + 1) & 3;
 
 	sprintf(dstr, "Plr %i : Active = %i", dbgplr, plr[dbgplr].plractive);
 	NetSendCmdString(1 << myplr, dstr);

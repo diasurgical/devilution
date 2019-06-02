@@ -39,7 +39,7 @@ BOOL __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)
 int __stdcall UiProfileGetString();
 void __cdecl UiProfileCallback();
 void __cdecl UiProfileDraw();
-BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
+BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, DWORD *a6, DWORD *a7);
 BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5);
 BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
 BOOL __stdcall UiSoundCallback(int a1, int type, int a3);

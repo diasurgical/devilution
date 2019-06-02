@@ -42,9 +42,9 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 		}
 		if (HIWORD(wParam) != 6) {
 			v6 = 1;
-			if (HIWORD(wParam) != 5 && (_WORD)wParam != 1) {
+			if (HIWORD(wParam) != 5 && (WORD)wParam != 1) {
 				v6 = 2;
-				if ((_WORD)wParam != 2)
+				if ((WORD)wParam != 2)
 					return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			}
 		LABEL_25:
@@ -61,7 +61,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 		SelList_DeleteFreeProcs(hWnd);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	case 6u:
-		if ((_WORD)wParam == 1 || (_WORD)wParam == 2)
+		if ((WORD)wParam == 1 || (WORD)wParam == 2)
 			SelList_LoadFocus16(hWnd);
 		else
 			SelList_KillFocus16(hWnd);
@@ -87,7 +87,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	SelList_ShowListWindow(hWnd);
 	return 0;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000D916
 void __fastcall SelList_DeleteFreeProcs(HWND hWnd)
@@ -265,7 +265,7 @@ void __fastcall SelList_SetHeroDlgLong(HWND hWnd, _uiheroinfo *pInfo)
 				v6 = GetWindowLongA(v4, -21);
 				local_SetWndLongStr(v6, pInfo->name);
 				if (v6)
-					*(_DWORD *)(v6 + 12) = (unsigned int)pInfo;
+					*(DWORD *)(v6 + 12) = (unsigned int)pInfo;
 				pInfo                    = pInfo->next;
 			} else {
 				EnableWindow(v4, 0);

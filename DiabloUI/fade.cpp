@@ -63,7 +63,7 @@ void __fastcall Fade_UpdatePaletteRange(int range)
 	GetPaletteEntries(v6, 0xAu, 0xAu, &fadepal[246]);
 	SDrawUpdatePalette(0, 0x100u, fadepal, 1);
 }
-// 1001043C: using guessed type int __stdcall SDrawClearSurface(_DWORD);
+// 1001043C: using guessed type int __stdcall SDrawClearSurface(DWORD);
 
 // ref: 0x1000739F
 BOOL __cdecl Fade_CheckRange5()

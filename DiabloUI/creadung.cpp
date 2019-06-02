@@ -34,9 +34,9 @@ LRESULT __stdcall CreaDung_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 						Focus_CheckPlayMove(lParam);
 						Focus_DoBlitSpinIncFrame(hWnd, (HWND)lParam);
 						CreaDung_ParseDungProcs(hWnd, (unsigned short)wParam);
-					} else if (HIWORD(wParam) == 5 || (_WORD)wParam == 1) {
+					} else if (HIWORD(wParam) == 5 || (WORD)wParam == 1) {
 						CreaDung_DoAllPlaySnd(hWnd);
-					} else if ((_WORD)wParam == 2) {
+					} else if ((WORD)wParam == 2) {
 						CreaDung_PlaySndAndKill(hWnd, 2);
 					}
 					return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
@@ -58,7 +58,7 @@ LRESULT __stdcall CreaDung_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 // 100296D8: using guessed type int creadung_dword_100296D8;
 
 // ref: 0x10004D75
@@ -196,7 +196,7 @@ void __fastcall CreaDung_DoSnetCreaGame(HWND hWnd)
 		v2 = crea_somegamestruct;
 		if (crea_somegamestruct[8] >= 8) {
 			v3                 = crea_somegamestruct[7];
-			*(_BYTE *)(v3 + 4) = GetWindowLongA(v1, -12) - 70;
+			*(BYTE *)(v3 + 4) = GetWindowLongA(v1, -12) - 70;
 			v2                 = crea_somegamestruct;
 		}
 		if (SNetCreateGame(
@@ -206,7 +206,7 @@ void __fastcall CreaDung_DoSnetCreaGame(HWND hWnd)
 		        0,
 		        (char *)v2[7],
 		        v2[8],
-		        *(_DWORD *)(creadung_playername + 8),
+		        *(DWORD *)(creadung_playername + 8),
 		        a2,
 		        0,
 		        creadung_playerID)) {
@@ -223,7 +223,7 @@ void __fastcall CreaDung_DoSnetCreaGame(HWND hWnd)
 		}
 	}
 }
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
 // 100296BC: using guessed type int creadung_playername;
 // 100296D4: using guessed type int creadung_lasterror;
 
@@ -256,14 +256,14 @@ BOOL __fastcall CreaDung_SelDungDiff(int a1, int a2, int a3, int a4, int a5, int
 	crea_somegamestruct     = (DWORD *)a2;
 	creadung_gamename       = (char *)a8;
 	v8                      = SelHero_GetHeroIsGood();
-	result                  = SDlgDialogBoxParam(ghUiInst, "SELDIFF_DIALOG", *(_DWORD *)(a4 + 8), CreaDung_WndProc, v8);
+	result                  = SDlgDialogBoxParam(ghUiInst, "SELDIFF_DIALOG", *(DWORD *)(a4 + 8), CreaDung_WndProc, v8);
 	if (result != 1) {
 		SErrSetLastError(creadung_lasterror);
 		result = 0;
 	}
 	return result;
 }
-// 1001041E: using guessed type int __stdcall SErrSetLastError(_DWORD);
+// 1001041E: using guessed type int __stdcall SErrSetLastError(DWORD);
 // 100296BC: using guessed type int creadung_playername;
 // 100296C8: using guessed type int creadung_dword_100296C8;
 // 100296CC: using guessed type int creadung_delspinners;

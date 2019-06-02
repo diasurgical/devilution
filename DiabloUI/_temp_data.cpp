@@ -136,7 +136,7 @@ HGDIOBJ dword_10029420;                                         // idb
 HGDIOBJ dword_10029424;                                         // idb
 BYTE *dword_10029428;                                           // idb
 void *dword_1002942C;                                           // idb
-int(__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD); // weak
+int(__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD); // weak
 void *dword_10029434;                                           // idb
 int dword_10029438[4];                                          // weak
 char nullcharacter;                                             /* check */

@@ -579,12 +579,12 @@ void multi_send_zero_packet(DWORD pnum, char a2, void *pbSrc, DWORD dwLen)
 		pkt.hdr.bmag = 0;
 		pkt.hdr.bdex = 0;
 		pkt.body[0] = a2;
-		*(_WORD *)&pkt.body[1] = v5;
+		*(WORD *)&pkt.body[1] = v5;
 		dwBody = gdwLargestMsgSize - 24;
 		if (dwLen < dwBody)
 			dwBody = dwLen;
-		*(_WORD *)&pkt.body[3] = dwBody;
-		memcpy(&pkt.body[5], pbSrc, *(_WORD *)&pkt.body[3]);
+		*(WORD *)&pkt.body[3] = dwBody;
+		memcpy(&pkt.body[5], pbSrc, *(WORD *)&pkt.body[3]);
 		t = *(WORD *)&pkt.body[3] + 24;
 		pkt.hdr.wLen = t;
 		if (!SNetSendMessage(pnum, &pkt.hdr, t)) {
@@ -593,7 +593,7 @@ void multi_send_zero_packet(DWORD pnum, char a2, void *pbSrc, DWORD dwLen)
 		}
 		pbSrc = (char *)pbSrc + *(WORD *)&pkt.body[3];
 		dwLen -= *(WORD *)&pkt.body[3];
-		v5 += *(_WORD *)&pkt.body[3];
+		v5 += *(WORD *)&pkt.body[3];
 	}
 }
 // 67975C: using guessed type int gdwLargestMsgSize;

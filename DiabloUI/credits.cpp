@@ -15,7 +15,7 @@ BOOL __stdcall UiCreditsDialog(int a1)
 	SDlgDialogBoxParam(ghUiInst, "CREDITS_DIALOG", v1, credits_WndProc, 25);
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100052C7
 LRESULT __stdcall credits_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -37,7 +37,7 @@ LRESULT __stdcall credits_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 			}
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
-		if ((_WORD)wParam != 513 && (_WORD)wParam != 516)
+		if ((WORD)wParam != 513 && (WORD)wParam != 516)
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	LABEL_25:
 		Title_KillAndFadeDlg(hWnd);
@@ -70,7 +70,7 @@ LRESULT __stdcall credits_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	credits_FreeCreditResrc(hWnd);
 	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100053D9
 void __fastcall credits_FreeCreditResrc(HWND hWnd)
@@ -145,12 +145,12 @@ void __fastcall credits_LoadImgCreditTxt(HWND hWnd, LPARAM lParam)
 // ref: 0x100055C0
 void __fastcall credits_CalcPosROP3(HWND hWnd)
 {
-	_DWORD *v2;          // edi
+	DWORD *v2;          // edi
 	struct tagRECT Rect; // [esp+Ch] [ebp-14h]
 	HWND hWnda;          // [esp+1Ch] [ebp-4h]
 
 	hWnda = GetDlgItem(hWnd, 1000);
-	v2    = (_DWORD *)GetWindowLongA(hWnd, -21);
+	v2    = (DWORD *)GetWindowLongA(hWnd, -21);
 	GetWindowRect(hWnda, &Rect);
 	ScreenToClient(hWnd, (LPPOINT)&Rect);
 	ScreenToClient(hWnd, (LPPOINT)&Rect.right);
@@ -204,8 +204,8 @@ void __fastcall credits_PrintCredLines(HWND hWnd)
 	if (i < 0)
 		Title_KillAndFadeDlg(hWnd);
 }
-// 100103A6: using guessed type int __stdcall SGdiSetPitch(_DWORD);
-// 100103AC: using guessed type int __stdcall SGdiSelectObject(_DWORD);
+// 100103A6: using guessed type int __stdcall SGdiSetPitch(DWORD);
+// 100103AC: using guessed type int __stdcall SGdiSelectObject(DWORD);
 // 100296E8: using guessed type int credittext_size;
 // 100296FC: using guessed type int credit_vertical_pos1;
 // 10029700: using guessed type int credit_line_count;

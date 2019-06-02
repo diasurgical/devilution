@@ -111,7 +111,7 @@ int __stdcall SelDial_1000B0CF(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 			v6 = 1;
 			if ( wParam != 327681 )
 			{
-				if ( (_WORD)wParam != 2 )
+				if ( (WORD)wParam != 2 )
 					return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 				v6 = 2;
 			}
@@ -120,8 +120,8 @@ int __stdcall SelDial_1000B0CF(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 	}
 	return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000B1FB
 HWND __fastcall SelDial_1000B1FB(HWND hWnd, int a2) { return 0; }
@@ -198,8 +198,8 @@ int __fastcall SelDial_1000B2D8(int a1, int a2) { return 0; }
 		strcpy(dword_1002A378, &byte_1002A380[32 * (v5 - 1119)]);
 	return SDlgEndDialog(v3, 4);
 } */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
-// 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
+// 10010418: using guessed type int __stdcall SDlgKillTimer(DWORD, DWORD);
 
 // ref: 0x1000B354
 HWND UNKCALL SelDial_1000B354(HWND hDlg) { return 0; }
@@ -238,7 +238,7 @@ HWND UNKCALL SelDial_1000B354(HWND hDlg) { return 0; }
 	}
 	return result;
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
 
 // ref: 0x1000B3D8
 HWND UNKCALL SelDial_1000B3D8(HWND hDlg) { return 0; }
@@ -367,7 +367,7 @@ HWND USERCALL SelDial_1000B483(HWND hWnd, int a2) { return 0; }
 	return result;
 } */
 // 1000B483: could not find valid save-restore pair for ebp
-// 10010412: using guessed type int __stdcall SDlgSetTimer(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010412: using guessed type int __stdcall SDlgSetTimer(DWORD, DWORD, DWORD, DWORD);
 // 1002A400: using guessed type int dword_1002A400;
 
 // ref: 0x1000B5D9

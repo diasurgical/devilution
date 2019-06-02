@@ -579,7 +579,7 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 	    || t == MIS_HBOLT && monster[m].MType->mtype != MT_DIABLO && monster[m].MData->mMonstClass) {
 		return FALSE;
 	}
-	if (monster[m].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[m]._mgoal) == MGOAL_RETREAT)
+	if (monster[m].MType->mtype == MT_ILLWEAV && monster[m]._mgoal == MGOAL_RETREAT)
 		return FALSE;
 	if (monster[m]._mmode == MM_CHARGE)
 		return FALSE;

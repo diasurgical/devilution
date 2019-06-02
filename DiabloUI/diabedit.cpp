@@ -105,7 +105,7 @@ void __fastcall DiabEdit_GetCursorProp(HWND hWnd)
 
 	String[0] = nullcharacter;
 	memset(&String[1], 0, 0xFCu);
-	*(_WORD *)&String[253] = 0;
+	*(WORD *)&String[253] = 0;
 	String[255]            = 0;
 	if (GetPropA(hWnd, "CURSOR")) {
 		SetPropA(hWnd, "CURSOR", 0);
@@ -139,9 +139,9 @@ void __fastcall DiabEdit_RestrictAndLimit(HWND hWnd, WPARAM wParam, LPARAM lPara
 	String[0] = nullcharacter;
 	v3        = wParam;
 	memset(&String[1], 0, 0xFCu);
-	*(_WORD *)&String[253] = 0;
+	*(WORD *)&String[253] = 0;
 	String[255]            = 0;
-	if ((_BYTE)wParam == 8)
+	if ((BYTE)wParam == 8)
 		goto LABEL_9;
 	if ((unsigned char)wParam < 0x20u || (unsigned char)wParam > 0x7Eu && (unsigned char)wParam < 0xC0u)
 		return;
@@ -185,7 +185,7 @@ void __fastcall DiabEdit_SetTextAndProp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 
 	String[0] = nullcharacter;
 	memset(&String[1], 0, 0xFCu);
-	*(_WORD *)&String[253] = 0;
+	*(WORD *)&String[253] = 0;
 	String[255]            = 0;
 	v4                     = wParam;
 	GetWindowTextA(hWnd, String, 255);

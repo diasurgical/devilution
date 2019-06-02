@@ -53,8 +53,8 @@ int __stdcall EntDial_10006C96(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam
 	}
 	return SDlgDefDialogProc(hDlg, Msg, wParam, lParam);
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10006D78
 HWND UNKCALL EntDial_10006D78(HWND hDlg) { return 0; }
@@ -102,7 +102,7 @@ HWND USERCALL EntDial_10006DB8(HWND hWnd, int a2) { return 0; }
 	return Modem_10008563(v6, (const char *)&v9, (int)&v8);
 } */
 // 10006DB8: could not find valid save-restore pair for ebp
-// 10010412: using guessed type int __stdcall SDlgSetTimer(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010412: using guessed type int __stdcall SDlgSetTimer(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10006EA7
 int __fastcall EntDial_10006EA7(HWND hDlg, int a2) { return 0; }
@@ -122,8 +122,8 @@ int __fastcall EntDial_10006EA7(HWND hDlg, int a2) { return 0; }
 	lpString[31] = 0;
 	return SDlgEndDialog(v3, v2);
 } */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
-// 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
+// 10010418: using guessed type int __stdcall SDlgKillTimer(DWORD, DWORD);
 
 // ref: 0x10006EE8
 void __fastcall EntDial_10006EE8(HWND hWnd, unsigned int a2, int a3) { return; }
