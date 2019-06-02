@@ -1363,7 +1363,7 @@ void CheckInvItem()
 void CheckInvScrn()
 {
 	if (MouseX > 190 && MouseX < 437
-	    && MouseY > 352 && MouseY < 385) {
+	    && MouseY > VIEWPORT_HEIGHT && MouseY < 385) {
 		CheckInvItem();
 	}
 }

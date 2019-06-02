@@ -3618,7 +3618,7 @@ void CheckPlrSpell()
 	}
 
 	if (pcurs != CURSOR_HAND
-	    || MouseY >= 352
+	    || MouseY >= VIEWPORT_HEIGHT
 	    || (chrflag && MouseX < 320 || invflag && MouseX > 320)
 	        && rspell != SPL_HEAL
 	        && rspell != SPL_IDENTIFY

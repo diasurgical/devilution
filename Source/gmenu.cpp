@@ -359,7 +359,7 @@ BOOL gmenu_left_mouse(BOOL isDown)
 		if (!sgpCurrentMenu) {
 			return FALSE;
 		}
-		if (MouseY >= 352) {
+		if (MouseY >= VIEWPORT_HEIGHT) {
 			return FALSE;
 		}
 		if (MouseY - 117 >= 0) {

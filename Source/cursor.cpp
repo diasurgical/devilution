@@ -271,7 +271,7 @@ void CheckCursMove()
 		cursmy = my;
 		return;
 	}
-	if(MouseY > 352) {
+	if(MouseY > VIEWPORT_HEIGHT) {
 		CheckPanelInfo();
 		return;
 	}
