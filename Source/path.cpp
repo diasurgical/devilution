@@ -40,36 +40,23 @@ char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
  */
 int FindPath(BOOL(*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path)
 {
-	PATHNODE *path_start; // esi
-	char initial_h;       // al
-	PATHNODE *next_node;  // eax
-	int result;           // eax
-	PATHNODE *current;    // edx
-	PATHNODE **previous;  // eax
-	int path_length;      // edi
-	BOOLEAN path_is_full; // zf
-	int *step_ptr;        // ecx
-	char step;            // dl
+	PATHNODE *path_start, *next_node, *current;
+	int path_length, i;
 
 	// clear all nodes, create root nodes for the visited/frontier linked lists
 	gdwCurNodes = 0;
 	path_2_nodes = path_new_step();
-	gdwCurPathStep = 0;
 	pnode_ptr = path_new_step();
+	gdwCurPathStep = 0;
 	path_start = path_new_step();
 	path_start->g = 0;
-	initial_h = path_get_h_cost(sx, sy, dx, dy);
-	path_start->h = initial_h;
+	path_start->h = path_get_h_cost(sx, sy, dx, dy);
 	path_start->x = sx;
-	path_start->f = initial_h + path_start->g;
+	path_start->f = path_start->h + path_start->g;
 	path_start->y = sy;
 	path_2_nodes->NextNode = path_start;
 	// A* search until we find (dx,dy) or fail
-	while (TRUE) {
-		next_node = GetNextPath();
-		// frontier is empty, no path!
-		if (!next_node)
-			return 0;
+	while ((next_node = GetNextPath())) {
 		// reached the end, success!
 		if (next_node->x == dx && next_node->y == dy)
 			break;
@@ -77,35 +64,23 @@ int FindPath(BOOL(*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, 
 		if (!path_get_path(PosOk, PosOkArg, next_node, dx, dy))
 			return 0;
 	}
+	// frontier is empty, no path!
+	if (!next_node)
+		return 0;
 	current = next_node;
-	previous = &next_node->Parent;
 	path_length = 0;
-	if (*previous) {
-		while (TRUE) {
-			path_is_full = path_length == 25;
-			if (path_length >= 25)
-				break;
-			pnode_vals[++path_length - 1] = path_directions[3 * (current->y - (*previous)->y) - (*previous)->x + 4 + current->x];
-			current = *previous;
-			previous = &(*previous)->Parent;
-			if (!*previous) {
-				path_is_full = path_length == 25;
-				break;
-			}
-		}
-		if (path_is_full)
-			return 0;
+	while (current->Parent) {
+		if (path_length >= 25)
+			break;
+		pnode_vals[path_length++] = path_directions[3 * (current->y - current->Parent->y) - current->Parent->x + 4 + current->x];
+		current = current->Parent;
 	}
-	result = 0;
-	if (path_length > 0) {
-		step_ptr = &pnode_vals[path_length - 1];
-		do {
-			step = *(_BYTE *)step_ptr;
-			--step_ptr;
-			path[result++] = step;
-		} while (result < path_length);
+	if (path_length != 25) {
+		for (i = 0; i < path_length; i++)
+			path[i] = pnode_vals[path_length - i - 1];
+		return i;
 	}
-	return result;
+	return 0;
 }
 
 /* heuristic, estimated cost from (sx,sy) to (dx,dy) */
