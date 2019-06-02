@@ -10,7 +10,7 @@ signed int DirLink_10005CFA() { return 0; }
 // 10029730: using guessed type int dword_10029730;
 
 // ref: 0x10005D05
-BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid) { return 0; }
+BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, DWORD *a4, int a5, int playerid) { return 0; }
 /* {
 	int v6; // esi
 
@@ -24,7 +24,7 @@ BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, _DWORD *a4, int a5, int
 	artfont_100010C8();
 	return v6 == 1;
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002983C: using guessed type int dword_1002983C;
 // 10029840: using guessed type int dword_10029840;
 // 10029844: using guessed type int gnDlinkPlayerid;
@@ -75,7 +75,7 @@ int __stdcall DirLink_10005D63(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int 
 		{
 			DirLink_100060D1(hWnd);
 		}
-		else if ( (_WORD)wParam == 2 )
+		else if ( (WORD)wParam == 2 )
 		{
 			DirLink_10006047((int)hWnd, 2);
 		}
@@ -100,8 +100,8 @@ int __stdcall DirLink_10005D63(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int 
 	DirLink_10005F7B(hWnd);
 	return 0;
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10005EB2
 int __fastcall DirLink_10005EB2(HWND hDlg, int a2) { return 0; }
@@ -128,7 +128,7 @@ int __fastcall DirLink_10005EB2(HWND hDlg, int a2) { return 0; }
 int UNKCALL DirLink_10005F1F(HWND hDlg) { return 0; }
 /* {
 	HWND v1; // esi
-	_DWORD *v2; // eax
+	DWORD *v2; // eax
 
 	v1 = hDlg;
 	Doom_10006C53(hDlg, (int *)&unk_10022A54);
@@ -136,7 +136,7 @@ int UNKCALL DirLink_10005F1F(HWND hDlg) { return 0; }
 	Doom_10006C53(v1, (int *)&unk_10022A40);
 	Doom_10006C53(v1, (int *)&unk_10022A38);
 	Doom_10006C53(v1, (int *)&unk_10022A2C);
-	v2 = (_DWORD *)GetWindowLongA(v1, -21);
+	v2 = (DWORD *)GetWindowLongA(v1, -21);
 	local_10007F72(v2);
 	Title_100100E7(v1);
 	return Focus_10007818(v1);
@@ -175,7 +175,7 @@ int UNKCALL DirLink_10005F7B(HWND hWnd) { return 0; }
 	DirLink_10006073(v1);
 	return SDlgSetTimer(v1, 3, 2000, 0);
 } */
-// 10010412: using guessed type int __stdcall SDlgSetTimer(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010412: using guessed type int __stdcall SDlgSetTimer(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10006047
 int __fastcall DirLink_10006047(int a1, int a2) { return 0; }
@@ -191,8 +191,8 @@ int __fastcall DirLink_10006047(int a1, int a2) { return 0; }
 	Fade_100072BE(10);
 	return SDlgEndDialog(v3, v2);
 } */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
-// 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
+// 10010418: using guessed type int __stdcall SDlgKillTimer(DWORD, DWORD);
 
 // ref: 0x10006073
 void UNKCALL DirLink_10006073(void *arg) { return; }
@@ -209,7 +209,7 @@ void UNKCALL DirLink_10006073(void *arg) { return; }
 			DirLink_10006047(v1, 1);
 	}
 } */
-// 10010430: using guessed type int __stdcall SNetJoinGame(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010430: using guessed type int __stdcall SNetJoinGame(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 // 10029738: using guessed type int dword_10029738;
 // 10029844: using guessed type int gnDlinkPlayerid;
 
@@ -267,7 +267,7 @@ int UNKCALL DirLink_10006141(void *arg) { return 0; }
 	memset(&v6, 0, 0x10u);
 	v6 = 16;
 	v7 = 1396916812;
-	v8 = *(_DWORD *)(dword_1002984C + 24);
+	v8 = *(DWORD *)(dword_1002984C + 24);
 	v9 = 0;
 	result = CreaDung_100051D8(
 				 (int)&v6,
@@ -317,8 +317,8 @@ int UNKCALL DirLink_100061E1(void *arg) { return 0; }
 	}
 	return SelYesNo_1000FD39(v1, v2, 0, 0);
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
-// 10010430: using guessed type int __stdcall SNetJoinGame(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
+// 10010430: using guessed type int __stdcall SNetJoinGame(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 // 10029738: using guessed type int dword_10029738;
 // 10029844: using guessed type int gnDlinkPlayerid;
 
@@ -346,8 +346,8 @@ int UNKCALL DirLink_100062BF(void *arg, int a2, char *a3, char *a4) { return 0; 
 	}
 	return result;
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
-// 10010436: using guessed type int __stdcall SNetEnumGames(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
+// 10010436: using guessed type int __stdcall SNetEnumGames(DWORD, DWORD, DWORD, DWORD);
 // 10029738: using guessed type int dword_10029738;
 
 // ref: 0x1000632B

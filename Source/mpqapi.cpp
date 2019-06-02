@@ -107,7 +107,7 @@ void mpqapi_store_default_time(DWORD dwChar)
 	/// ASSERT: assert(dwChar < MAX_CHARACTERS);
 	idx = 16 * dwChar;
 	mpqapi_reg_load_modification_time(dst, sizeof(dst));
-	*(_DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
+	*(DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
 	mpqapi_reg_store_modification_time(dst, sizeof(dst));
 */
 }

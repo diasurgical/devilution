@@ -243,7 +243,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 		*hero_is_created = selhero_is_created;
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 // 1002A45C: using guessed type int selhero_is_created;
 
 // ref: 0x1000BC46
@@ -324,7 +324,7 @@ LRESULT __stdcall SelHero_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	SelHero_DoHeroSelClass(hWnd);
 	return 0;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 // 1002A420: using guessed type int selhero_difficulty;
 
 // ref: 0x1000BDAD
@@ -742,5 +742,5 @@ BOOL __stdcall UiSelHeroSingDialog(
 		artfont_FreeAllFonts();
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 // 1002A420: using guessed type int selhero_difficulty;

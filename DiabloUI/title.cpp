@@ -1,13 +1,13 @@
 // ref: 0x1000FDEE
 void __fastcall Title_BlitTitleBuffer(HWND hWnd)
 {
-	_DWORD *v2;          // edi
+	DWORD *v2;          // edi
 	int v3;              // eax
 	HANDLE v4;           // esi
 	struct tagRECT Rect; // [esp+Ch] [ebp-18h]
 	HWND hWnda;          // [esp+20h] [ebp-4h]
 
-	v2    = (_DWORD *)GetWindowLongA(hWnd, -21);
+	v2    = (DWORD *)GetWindowLongA(hWnd, -21);
 	hWnda = GetDlgItem(hWnd, 1043);
 	if (IsWindowVisible(hWnd) && hWnda && v2 && *v2 && titlePHTrans[0]) {
 		v3            = titleTransIdx + 1;
@@ -22,13 +22,13 @@ void __fastcall Title_BlitTitleBuffer(HWND hWnd)
 			SBltROP3(
 			    *(void **)v4,
 			    (void *)(Rect.left + *v2 + Rect.top * v2[1]),
-			    *((_DWORD *)v4 + 1),
-			    *((_DWORD *)v4 + 2),
-			    *((_DWORD *)v4 + 1),
+			    *((DWORD *)v4 + 1),
+			    *((DWORD *)v4 + 2),
+			    *((DWORD *)v4 + 1),
 			    v2[1],
 			    0,
 			    0xCC0020u);
-			STransBlt(*(void **)v4, 0, 0, *((_DWORD *)v4 + 1), (HANDLE)titlePHTrans[titleTransIdx]);
+			STransBlt(*(void **)v4, 0, 0, *((DWORD *)v4 + 1), (HANDLE)titlePHTrans[titleTransIdx]);
 			InvalidateRect(hWnda, 0, 0);
 		}
 	}
@@ -72,7 +72,7 @@ void __fastcall Title_FreeTransMem(HWND hWnd)
 void __fastcall Title_SetTitleBMP(HWND hWnd)
 {
 	HWND v1;             // eax MAPDST
-	_DWORD *v2;          // esi
+	DWORD *v2;          // esi
 	void *v3;            // eax
 	struct tagRECT Rect; // [esp+0h] [ebp-18h]
 
@@ -80,9 +80,9 @@ void __fastcall Title_SetTitleBMP(HWND hWnd)
 	v1 = GetDlgItem(hWnd, 1043);
 	if (v1) {
 		GetClientRect(v1, &Rect);
-		v2    = (unsigned int *)SMemAlloc(0xCu, "C:\\Src\\Diablo\\DiabloUI\\Title.cpp", 134, 0);
+		v2    = (DWORD *)SMemAlloc(0xCu, "C:\\Src\\Diablo\\DiabloUI\\Title.cpp", 134, 0);
 		v3    = SMemAlloc(Rect.right * Rect.bottom, "C:\\Src\\Diablo\\DiabloUI\\Title.cpp", 136, 8);
-		*v2   = (unsigned int)v3;
+		*v2   = (DWORD)v3;
 		v2[1] = Rect.right;
 		v2[2] = Rect.bottom;
 		SDlgSetBitmapI(v1, 0, 0, -1, 1, v3, 0, Rect.right, Rect.bottom, -1);
@@ -94,8 +94,8 @@ void __fastcall Title_SetTitleBMP(HWND hWnd)
 void __fastcall Title_LoadTitleImage(HWND hWnd, const char *pszFileName)
 {
 	int v3;             // edi
-	_DWORD *v4;         // eax
-	_DWORD *v5;         // esi
+	DWORD *v4;         // eax
+	DWORD *v5;         // esi
 	int v6;             // ebx
 	int a5[4];          // [esp+8h] [ebp-20h]
 	int data[2];        // [esp+18h] [ebp-10h]
@@ -105,7 +105,7 @@ void __fastcall Title_LoadTitleImage(HWND hWnd, const char *pszFileName)
 	v3      = 0;
 	pBuffer = 0;
 	local_LoadArtImage(pszFileName, &pBuffer, (DWORD *)data);
-	v4 = (unsigned int *)GetPropA(hWnd, "TITLE_BUFFER");
+	v4 = (DWORD *)GetPropA(hWnd, "TITLE_BUFFER");
 	v5 = v4;
 	if (pBuffer) {
 		if (v4) {
@@ -174,7 +174,7 @@ BOOL __stdcall UiTitleDialog(int a1)
 	SDlgDialogBoxParam(ghUiInst, "TITLESCREEN_DIALOG", v1, Title_MainProc, a1);
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10010126
 LRESULT __stdcall Title_MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -209,7 +209,7 @@ LRESULT __stdcall Title_MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 	if (uMsg != 275) {
 		if (uMsg != 513 && uMsg != 516) {
 			if (uMsg == 528) {
-				if ((_WORD)wParam == 513 || (_WORD)wParam == 516)
+				if ((WORD)wParam == 513 || (WORD)wParam == 516)
 					Title_KillAndFadeDlg(hWnd);
 			} else if (uMsg == 2024) {
 				if (!Fade_CheckRange5())
@@ -226,8 +226,8 @@ LRESULT __stdcall Title_MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		goto LABEL_25;
 	return 0;
 }
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10010235
 void __fastcall Title_KillTimerAndFree(HWND hWnd)

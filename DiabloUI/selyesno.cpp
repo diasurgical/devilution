@@ -45,7 +45,7 @@ LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 				Focus_DoBlitSpinIncFrame(hWnd, (HWND)lParam);
 			} else {
 				v7 = 1;
-				if ((_WORD)wParam == 1) {
+				if ((WORD)wParam == 1) {
 					v8  = GetFocus();
 					v9  = GetWindowLongA(v8, -12);
 					v10 = hWnd;
@@ -54,9 +54,9 @@ LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 					else
 						v7 = 2;
 				} else {
-					if ((_WORD)wParam == 2) {
+					if ((WORD)wParam == 2) {
 						v7 = 2;
-					} else if ((_WORD)wParam != 1109) {
+					} else if ((WORD)wParam != 1109) {
 						return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 					}
 					v10 = hWnd;
@@ -77,7 +77,7 @@ LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000FBC7
 void __fastcall SelYesNo_RemoveYNDialog(HWND hWnd)

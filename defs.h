@@ -140,22 +140,10 @@
 // Partially defined types. They are used when the decompiler does not know
 // anything about the type except its size.
 #define _BYTE  unsigned char
-#define _WORD  unsigned short
 #define _DWORD unsigned int
 
-// Some convenience macros to make partial accesses nicer
-#if defined(__BYTE_ORDER) && __BYTE_ORDER == __BIG_ENDIAN
-#  define LOW_IND(x,part_type)   (sizeof(x)/sizeof(part_type) - 1)
-#else
-#  define LOW_IND(x,part_type)   0
-#endif
-
-// first unsigned macros:
-#define BYTEn(x, n)   (*((BYTE*)&(x)+n))
-#define WORDn(x, n)   (*((WORD*)&(x)+n))
-
-#define _LOBYTE(x)  BYTEn(x,LOW_IND(x,BYTE))
-#define _LOWORD(x)  WORDn(x,LOW_IND(x,WORD))
+#define _LOBYTE(x)  (*((BYTE*)&(x)))
+#define _LOWORD(x)  (*((WORD*)&(x)))
 
 #endif /* IDA_GARBAGE */
 

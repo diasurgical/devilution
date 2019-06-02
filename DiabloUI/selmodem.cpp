@@ -28,7 +28,7 @@ int __fastcall SelModem_1000E435(void *a1, int a2, int a3, char *a4, char *a5) {
 		return SelModem_1000E51E();
 	return SelModem_1000E5CC();
 } */
-// 10010496: using guessed type int __stdcall SNetEnumDevices(_DWORD);
+// 10010496: using guessed type int __stdcall SNetEnumDevices(DWORD);
 // 1002A4D0: using guessed type int dword_1002A4D0;
 // 1002A4DC: using guessed type int dword_1002A4DC;
 // 1002A4E0: using guessed type int dword_1002A4E0;
@@ -39,17 +39,17 @@ char *__stdcall SelModem_1000E497(int a1, char *a2, char *a3) { return 0; }
 /* {
 	int result; // eax
 	int v4; // esi
-	_DWORD *v5; // eax
+	DWORD *v5; // eax
 
 	result = SelModem_1000E4EC();
 	v4 = result;
 	if ( result )
 	{
-		*(_DWORD *)result = 0;
-		*(_DWORD *)(result + 4) = a1;
+		*(DWORD *)result = 0;
+		*(DWORD *)(result + 4) = a1;
 		strcpy((char *)(result + 8), a2);
 		strcpy((char *)(v4 + 136), a3);
-		v5 = SelModem_1000E500(dword_1002A4DC, (_DWORD *)v4);
+		v5 = SelModem_1000E500(dword_1002A4DC, (DWORD *)v4);
 		++dword_1002A4D8;
 		dword_1002A4DC = (int)v5;
 		result = 1;
@@ -63,12 +63,12 @@ void *SelModem_1000E4EC() { return 0; }
 /* {
 	return SMemAlloc(264, "C:\\Src\\Diablo\\DiabloUI\\SelModem.cpp", 72, 0);
 } */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000E500
-_DWORD *__fastcall SelModem_1000E500(int a1, _DWORD *a2) { return 0; }
+DWORD *__fastcall SelModem_1000E500(int a1, DWORD *a2) { return 0; }
 /* {
-	_DWORD *result; // eax
+	DWORD *result; // eax
 
 	result = a2;
 	*a2 = a1;
@@ -83,16 +83,16 @@ signed int UNKCALL SelModem_1000E505(void *arg) { return 0; }
 	SErrSetLastError(1222);
 	return 0;
 } */
-// 1001041E: using guessed type int __stdcall SErrSetLastError(_DWORD);
+// 1001041E: using guessed type int __stdcall SErrSetLastError(DWORD);
 
 // ref: 0x1000E51E
 signed int SelModem_1000E51E() { return 0; }
 /* {
 	signed int result; // eax
 
-	if ( SelModem_1000E57B(*((_DWORD *)dword_1002A4D4 + 2), *(_DWORD *)(dword_1002A4DC + 4)) )
+	if ( SelModem_1000E57B(*((DWORD *)dword_1002A4D4 + 2), *(DWORD *)(dword_1002A4DC + 4)) )
 	{
-		SelModem_1000E553((_DWORD *)dword_1002A4DC);
+		SelModem_1000E553((DWORD *)dword_1002A4DC);
 		result = 1;
 	}
 	else
@@ -102,20 +102,20 @@ signed int SelModem_1000E51E() { return 0; }
 	}
 	return result;
 } */
-// 1001041E: using guessed type int __stdcall SErrSetLastError(_DWORD);
+// 1001041E: using guessed type int __stdcall SErrSetLastError(DWORD);
 // 1002A4DC: using guessed type int dword_1002A4DC;
 
 // ref: 0x1000E553
-int __fastcall SelModem_1000E553(_DWORD *a1) { return 0; }
+int __fastcall SelModem_1000E553(DWORD *a1) { return 0; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 	int result; // eax
 
 	if ( a1 )
 	{
 		do
 		{
-			v1 = (_DWORD *)*a1;
+			v1 = (DWORD *)*a1;
 			result = SelModem_1000E567(a1);
 			a1 = v1;
 		}
@@ -133,7 +133,7 @@ int UNKCALL SelModem_1000E567(void *arg) { return 0; }
 		result = SMemFree(arg, "C:\\Src\\Diablo\\DiabloUI\\SelModem.cpp", 77, 0);
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000E57B
 int __fastcall SelModem_1000E57B(int a1, int a2) { return 0; }
@@ -152,7 +152,7 @@ int __fastcall SelModem_1000E57B(int a1, int a2) { return 0; }
 	v6 = v3;
 	return SNetInitializeDevice(v2, dword_1002A4E0, dword_1002A4E8, &v5, dword_1002A4D0);
 } */
-// 1001049C: using guessed type int __stdcall SNetInitializeDevice(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 1001049C: using guessed type int __stdcall SNetInitializeDevice(DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002A4D0: using guessed type int dword_1002A4D0;
 // 1002A4E0: using guessed type int dword_1002A4E0;
 // 1002A4E8: using guessed type int dword_1002A4E8;
@@ -164,26 +164,26 @@ signed int SelModem_1000E5CC() { return 0; }
 	signed int result; // eax
 
 	v0 = 1;
-	if ( SDlgDialogBoxParam(hInstance, "SELMODEM_DIALOG", *((_DWORD *)dword_1002A4D4 + 2), SelModem_1000E63E, 0) == 1 )
+	if ( SDlgDialogBoxParam(hInstance, "SELMODEM_DIALOG", *((DWORD *)dword_1002A4D4 + 2), SelModem_1000E63E, 0) == 1 )
 	{
-		if ( !SelModem_1000E57B(*((_DWORD *)dword_1002A4D4 + 2), dword_1002A4E4) )
+		if ( !SelModem_1000E57B(*((DWORD *)dword_1002A4D4 + 2), dword_1002A4E4) )
 		{
 			SErrSetLastError(-2062548879);
 			v0 = 0;
 		}
-		SelModem_1000E553((_DWORD *)dword_1002A4DC);
+		SelModem_1000E553((DWORD *)dword_1002A4DC);
 		result = v0;
 	}
 	else
 	{
-		SelModem_1000E553((_DWORD *)dword_1002A4DC);
+		SelModem_1000E553((DWORD *)dword_1002A4DC);
 		SErrSetLastError(1223);
 		result = 0;
 	}
 	return result;
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1001041E: using guessed type int __stdcall SErrSetLastError(_DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
+// 1001041E: using guessed type int __stdcall SErrSetLastError(DWORD);
 // 1002A4DC: using guessed type int dword_1002A4DC;
 // 1002A4E4: using guessed type int dword_1002A4E4;
 
@@ -254,7 +254,7 @@ LABEL_25:
 		v4 = 1;
 		if ( wParam != 327681 )
 		{
-			if ( (_WORD)wParam != 2 )
+			if ( (WORD)wParam != 2 )
 				return SDlgDefDialogProc(hDlg, Msg, wParam, lParam);
 			v4 = 2;
 		}
@@ -262,14 +262,14 @@ LABEL_25:
 	}
 	return SDlgDefDialogProc(hDlg, Msg, wParam, lParam);
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000E783
 void UNKCALL SelModem_1000E783(HWND hDlg) { return; }
 /* {
 	HWND v1; // esi
-	_DWORD *v2; // eax
+	DWORD *v2; // eax
 
 	v1 = hDlg;
 	Sbar_10009CD2(hDlg, 1105);
@@ -280,7 +280,7 @@ void UNKCALL SelModem_1000E783(HWND hDlg) { return; }
 	Doom_10006C53(v1, (int *)&unk_100231E0);
 	Focus_10007818(v1);
 	local_1000811B();
-	v2 = (_DWORD *)GetWindowLongA(v1, -21);
+	v2 = (DWORD *)GetWindowLongA(v1, -21);
 	local_10007F72(v2);
 } */
 // 100231F4: using guessed type int dword_100231F4;
@@ -302,8 +302,8 @@ HWND UNKCALL SelModem_1000E7E9(HWND hDlg) { return 0; }
 int UNKCALL SelModem_1000E80E(HWND hWnd) { return 0; }
 /* {
 	LONG v1; // eax
-	_DWORD *v2; // ecx
-	_DWORD *v3; // eax
+	DWORD *v2; // ecx
+	DWORD *v3; // eax
 	int v5; // edx
 
 	if ( !hWnd )
@@ -311,10 +311,10 @@ int UNKCALL SelModem_1000E80E(HWND hWnd) { return 0; }
 	v1 = GetWindowLongA(hWnd, -21);
 	if ( !v1 )
 		return 0;
-	v2 = (_DWORD *)dword_1002A4DC;
+	v2 = (DWORD *)dword_1002A4DC;
 	if ( !dword_1002A4DC )
 		return 0;
-	v3 = *(_DWORD **)(v1 + 12);
+	v3 = *(DWORD **)(v1 + 12);
 	if ( !v3 )
 		return 0;
 	v5 = 0;
@@ -322,7 +322,7 @@ int UNKCALL SelModem_1000E80E(HWND hWnd) { return 0; }
 	{
 		if ( v2 == v3 )
 			break;
-		v2 = (_DWORD *)*v2;
+		v2 = (DWORD *)*v2;
 		++v5;
 	}
 	while ( v2 );
@@ -398,7 +398,7 @@ int __fastcall SelModem_1000E932(HWND a1, const char *a2) { return 0; }
 					v6 = GetWindowLongA(v5, -21);
 					local_10007FA4(v6, v2 + 8);
 					if ( v6 )
-						*(_DWORD *)(v6 + 12) = v2;
+						*(DWORD *)(v6 + 12) = v2;
 					v2 = *(const char **)v2;
 				}
 				else
@@ -590,7 +590,7 @@ HWND UNKCALL SelModem_1000EC0E(HWND hWnd) { return 0; }
 	HWND v2; // edi
 	HWND v3; // ebx
 	HWND v4; // eax
-	_DWORD *v5; // eax
+	DWORD *v5; // eax
 	int v6; // eax
 	const char *v7; // esi
 
@@ -606,7 +606,7 @@ HWND UNKCALL SelModem_1000EC0E(HWND hWnd) { return 0; }
 			result = (HWND)GetWindowLongA(v4, -21);
 			if ( result )
 			{
-				v5 = (_DWORD *)*((_DWORD *)result + 3);
+				v5 = (DWORD *)*((DWORD *)result + 3);
 				if ( v5 && *v5 )
 				{
 					v6 = SelModem_1000E80E(v3) + 6;
@@ -632,14 +632,14 @@ HWND UNKCALL SelModem_1000EC0E(HWND hWnd) { return 0; }
 } */
 
 // ref: 0x1000EC9F
-_DWORD *__fastcall SelModem_1000EC9F(int a1) { return 0; }
+DWORD *__fastcall SelModem_1000EC9F(int a1) { return 0; }
 /* {
-	_DWORD *result; // eax
+	DWORD *result; // eax
 
-	result = (_DWORD *)dword_1002A4DC;
+	result = (DWORD *)dword_1002A4DC;
 	while ( result && a1 )
 	{
-		result = (_DWORD *)*result;
+		result = (DWORD *)*result;
 		--a1;
 	}
 	return result;
@@ -667,7 +667,7 @@ HWND UNKCALL SelModem_1000ECB2(HWND hWnd) { return 0; }
 			result = (HWND)GetWindowLongA(result, -21);
 			if ( result )
 			{
-				result = (HWND)*((_DWORD *)result + 3);
+				result = (HWND)*((DWORD *)result + 3);
 				if ( result )
 				{
 					if ( result == (HWND)dword_1002A4DC )
@@ -711,10 +711,10 @@ HWND UNKCALL SelModem_1000ED3B(HWND hWnd) { return 0; }
 	result = (HWND)GetWindowLongA(hWnd, -21);
 	if ( result )
 	{
-		result = (HWND)*((_DWORD *)result + 3);
+		result = (HWND)*((DWORD *)result + 3);
 		if ( result )
 		{
-			if ( *(_DWORD *)result )
+			if ( *(DWORD *)result )
 			{
 				if ( GetWindowLongA(v1, -12) >= 1115 )
 				{
@@ -725,7 +725,7 @@ HWND UNKCALL SelModem_1000ED3B(HWND hWnd) { return 0; }
 						result = (HWND)GetWindowLongA(result, -21);
 						if ( result )
 						{
-							v4 = (const char *)*((_DWORD *)result + 3);
+							v4 = (const char *)*((DWORD *)result + 3);
 							if ( v4 )
 							{
 								TitleSnd_10010315();
@@ -762,7 +762,7 @@ HWND UNKCALL SelModem_1000EDBC(HWND hWnd) { return 0; }
 	result = (HWND)GetWindowLongA(v1, -21);
 	if ( result )
 	{
-		result = (HWND)*((_DWORD *)result + 3);
+		result = (HWND)*((DWORD *)result + 3);
 		if ( result )
 		{
 			v3 = (const char *)dword_1002A4DC;
@@ -802,9 +802,9 @@ int __fastcall SelModem_1000EE29(int a1, int a2) { return 0; }
 			v5 = GetWindowLongA(v4, -21);
 			if ( v5 )
 			{
-				v6 = *(_DWORD *)(v5 + 12);
+				v6 = *(DWORD *)(v5 + 12);
 				if ( v6 )
-					dword_1002A4E4 = *(_DWORD *)(v6 + 4);
+					dword_1002A4E4 = *(DWORD *)(v6 + 4);
 			}
 		}
 	}
@@ -812,7 +812,7 @@ int __fastcall SelModem_1000EE29(int a1, int a2) { return 0; }
 	Fade_100072BE(10);
 	return SDlgEndDialog(v3, v2);
 } */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
 // 1002A4E4: using guessed type int dword_1002A4E4;
 
 // ref: 0x1000EE78
