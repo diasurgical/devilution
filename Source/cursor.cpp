@@ -190,8 +190,8 @@ void CheckCursMove()
 			sx = 0;
 		}
 	}
-	if(sy > 351 && track_isscrolling()) {
-		sy = 351;
+	if(sy > VIEWPORT_HEIGHT - 1 && track_isscrolling()) {
+		sy = VIEWPORT_HEIGHT - 1;
 	}
 	if(!zoomflag) {
 		sx >>= 1;
