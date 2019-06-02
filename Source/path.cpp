@@ -273,21 +273,23 @@ PATHNODE *path_get_node2(int dx, int dy)
  * distance) */
 void path_next_node(PATHNODE *pPath)
 {
-	PATHNODE *current; // edx
-	PATHNODE *next;    // eax
+	PATHNODE *next, *current;
+	int f;
 
-	current = path_2_nodes;
-	next = path_2_nodes->NextNode;
-	if (next != NULL) {
-		do {
-			if (next->f >= pPath->f)
-				break;
+	next = path_2_nodes;
+	if (path_2_nodes->NextNode) {
+		current = path_2_nodes;
+		next = path_2_nodes->NextNode;
+		f = pPath->f;
+		while (next && next->f < f) {
 			current = next;
 			next = next->NextNode;
-		} while (next != NULL);
+		}
 		pPath->NextNode = next;
+		current->NextNode = pPath;
+	} else {
+		path_2_nodes->NextNode = pPath;
 	}
-	current->NextNode = pPath;
 }
 
 /* update all path costs using depth-first search starting at pPath */
