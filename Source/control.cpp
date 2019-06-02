@@ -1652,7 +1652,7 @@ void PrintGameStr(int x, int y, char *str, int color)
 {
 	BYTE c;
 	int off;
-	off = PitchTbl[y + 160] + x + 64;
+	off = PitchTbl[y + SCREEN_Y] + x + 64;
 	while (*str) {
 		c = gbFontTransTbl[(BYTE)*str++];
 		c = fontframe[c];
@@ -1874,7 +1874,7 @@ void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 	char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
-	nOffset = x + PitchTbl[y + 160] + 64;
+	nOffset = x + PitchTbl[y + SCREEN_Y] + 64;
 	widthOffset = width - x + 1;
 	line = 0;
 	screen_x = 0;
@@ -1904,7 +1904,7 @@ void MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base)
 	char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
-	nOffset = x + PitchTbl[y + 160] + 64;
+	nOffset = x + PitchTbl[y + SCREEN_Y] + 64;
 	widthOffset = width - x + 1;
 	line = 0;
 	screen_x = 0;

@@ -15,7 +15,7 @@
 __asm {
 	mov edi, gpBuffer
 	; origin is at 64,160
-	add edi, (160 + TRANS_RECT_Y + TRANS_RECT_HEIGHT - 1) * BUFFER_WIDTH + 64 + TRANS_RECT_X
+	add edi, (SCREEN_Y + TRANS_RECT_Y + TRANS_RECT_HEIGHT - 1) * BUFFER_WIDTH + 64 + TRANS_RECT_X
 	xor eax, eax
 	mov edx, TRANS_RECT_HEIGHT >> 1
 yloop:

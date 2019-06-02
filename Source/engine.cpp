@@ -2123,10 +2123,10 @@ void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 	if (x1 < 0 + 64 || x1 >= 640 + 64) {
 		gbNotInView = TRUE;
 	}
-	if (y0 < 0 + 160 || y0 >= VIEWPORT_HEIGHT + 160) {
+	if (y0 < 0 + SCREEN_Y || y0 >= VIEWPORT_HEIGHT + SCREEN_Y) {
 		gbNotInView = TRUE;
 	}
-	if (y1 < 0 + 160 || y1 >= VIEWPORT_HEIGHT + 160) {
+	if (y1 < 0 + SCREEN_Y || y1 >= VIEWPORT_HEIGHT + SCREEN_Y) {
 		gbNotInView = TRUE;
 	}
 
