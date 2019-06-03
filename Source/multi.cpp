@@ -525,7 +525,7 @@ void multi_process_network_packets()
 						}
 					}
 				}
-				multi_handle_all_packets(*(int *)arglist, (TPkt *)&v2[1], len - 19);
+				multi_handle_all_packets(*(int *)arglist, (BYTE *)&v2[1], len - 19);
 			}
 			//_LOBYTE(v15) = SNetReceiveMessage((int *)arglist, (char **)&pkt, &len);
 		} while (SNetReceiveMessage((int *)arglist, (char **)&pkt, &len));
@@ -536,18 +536,17 @@ void multi_process_network_packets()
 // 676194: using guessed type char gbBufferMsgs;
 // 676198: using guessed type int pkt_counter;
 
-void multi_handle_all_packets(int players, TPkt *packet, int a3)
+void multi_handle_all_packets(int pnum, BYTE *pData, int nSize)
 {
-	TCmd *v3; // esi
-	int i;    // edi
-	int v5;   // eax
+	int nLen;
 
-	v3 = (TCmd *)packet;
-	for (i = players; a3; a3 -= v5) {
-		v5 = ParseCmd(i, v3);
-		if (!v5)
+	while(nSize != 0) {
+		nLen = ParseCmd(pnum, (TCmd *)pData);
+		if(nLen == 0) {
 			break;
-		v3 += v5;
+		}
+		pData += nLen;
+		nSize -= nLen;
 	}
 }
 
@@ -557,7 +556,7 @@ void multi_process_tmsgs()
 	TPkt pkt;
 
 	while (cnt = tmsg_get((BYTE *)&pkt, 512)) {
-		multi_handle_all_packets(myplr, &pkt, cnt);
+		multi_handle_all_packets(myplr, (BYTE *)&pkt, cnt);
 	}
 }
 
