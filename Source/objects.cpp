@@ -3480,13 +3480,13 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 			SetRndSeed(object[i]._oRndSeed);
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_BOOK, sendmsg, 0);
 			if (QuestStatus(QTYPE_ZHAR)
-			    && monster[4].mName == UniqMonst[UMT_ZHAR].mName
-			    && monster[4]._msquelch == UCHAR_MAX
-			    && monster[4]._mhitpoints) {
-				monster[4].mtalkmsg = QUEST_ZHAR2;
-				M_StartStand(0, monster[4]._mdir);
-				monster[4]._mgoal = MGOAL_SHOOT;
-				monster[4]._mmode = MM_TALK;
+			    && monster[MAX_PLRS].mName == UniqMonst[UMT_ZHAR].mName
+			    && monster[MAX_PLRS]._msquelch == UCHAR_MAX
+			    && monster[MAX_PLRS]._mhitpoints) {
+				monster[MAX_PLRS].mtalkmsg = QUEST_ZHAR2;
+				M_StartStand(0, monster[MAX_PLRS]._mdir);
+				monster[MAX_PLRS]._mgoal = MGOAL_SHOOT;
+				monster[MAX_PLRS]._mmode = MM_TALK;
 			}
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);

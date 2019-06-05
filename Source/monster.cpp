@@ -1636,7 +1636,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 
 	if (pnum >= 0)
 		monster[i].mWhoHit |= 1 << pnum;
-	if (pnum < 4 && i > 4)
+	if (pnum < MAX_PLRS && i > MAX_PLRS)
 		AddPlrMonstExper(monster[i].mLevel, monster[i].mExp, monster[i].mWhoHit);
 	monstkills[monster[i].MType->mtype]++;
 	monster[i]._mhitpoints = 0;
@@ -1691,14 +1691,14 @@ void M2MStartKill(int i, int mid)
 	NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[mid]._mx, monster[mid]._my, mid);
 
 	monster[mid].mWhoHit |= 1 << i;
-	if (i < 4)
+	if (i < MAX_PLRS)
 		AddPlrMonstExper(monster[mid].mLevel, monster[mid].mExp, monster[mid].mWhoHit);
 
 	monstkills[monster[mid].MType->mtype]++;
 	monster[mid]._mhitpoints = 0;
 	SetRndSeed(monster[mid]._mRndSeed);
 
-	if (mid >= 4)
+	if (mid >= MAX_PLRS)
 		SpawnItem(mid, monster[mid]._mx, monster[mid]._my, TRUE);
 
 	if (monster[mid].MType->mtype == MT_DIABLO)
@@ -4484,7 +4484,7 @@ void DeleteMonsterList()
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
-			i = 0; // TODO: check if this should be i=4.
+			i = 0; // TODO: check if this should be MAX_PLRS.
 		} else {
 			i++;
 		}
@@ -5506,21 +5506,21 @@ int encode_enemy(int m)
 
 	enemy = monster[m]._menemy;
 	if (monster[m]._mFlags & MFLAG_TARGETS_MONSTER)
-		enemy += 4;
+		enemy += MAX_PLRS;
 
 	return enemy;
 }
 
 void decode_enemy(int m, int enemy)
 {
-	if (enemy < 4) {
+	if (enemy < MAX_PLRS) {
 		monster[m]._mFlags &= ~MFLAG_TARGETS_MONSTER;
 		monster[m]._menemy = enemy;
 		monster[m]._menemyx = plr[enemy]._px;
 		monster[m]._menemyy = plr[enemy]._py;
 	} else {
 		monster[m]._mFlags |= MFLAG_TARGETS_MONSTER;
-		enemy -= 4;
+		enemy -= MAX_PLRS;
 		monster[m]._menemy = enemy;
 		monster[m]._menemyx = monster[enemy]._mfutx;
 		monster[m]._menemyy = monster[enemy]._mfuty;
