@@ -520,7 +520,7 @@ void DeltaLoadLevel()
 					decode_enemy(i, sgLevels[currlevel].monster[i]._menemy);
 					if (monster[i]._mx && monster[i]._mx != 1 || monster[i]._my)
 						dMonster[monster[i]._mx][monster[i]._my] = i + 1;
-					if (i < 4) {
+					if (i < MAX_PLRS) {
 						MAI_Golum(i);
 						monster[i]._mFlags |= (MFLAG_TARGETS_MONSTER | MFLAG_GOLEM);
 					} else {

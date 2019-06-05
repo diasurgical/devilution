@@ -3025,7 +3025,7 @@ void MI_Town(int i)
 		missile[i]._miVar2++;
 	}
 
-	for (p = 0; p < 4; p++) {
+	for (p = 0; p < MAX_PLRS; p++) {
 		if (plr[p].plractive && currlevel == plr[p].plrlevel && !plr[p]._pLvlChanging && !plr[p]._pmode && plr[p].WorldX == missile[i]._mix && plr[p].WorldY == missile[i]._miy) {
 			ClrPlrPath(p);
 			if (p == myplr) {
