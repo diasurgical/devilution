@@ -3752,7 +3752,7 @@ void OperateLazStand(int pnum, int i)
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
 		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
-		SpawnQuestItem(IDI_LGTFORGE, xx, yy, 0, 0);
+		SpawnQuestItem(IDI_LAZSTAFF, xx, yy, 0, 0);
 	}
 }
 
