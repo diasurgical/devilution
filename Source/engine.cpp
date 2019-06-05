@@ -34,7 +34,7 @@ void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	__asm {
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -82,7 +82,7 @@ void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	dst = pDecodeTo;
 	w = nWidth;
 
-	for (; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -256,7 +256,7 @@ void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		mov		tbl, eax
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -353,7 +353,7 @@ void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 	tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 
-	for (; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -411,7 +411,7 @@ void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 		mov		tbl, eax
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -518,7 +518,7 @@ void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
-	for (; src != &pRLEBytes[nDataSize]; dst -= 768 + w, shift = (shift + 1) & 1) {
+	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w, shift = (shift + 1) & 1) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -743,9 +743,9 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 	__asm {
 		mov		esi, src
 		mov		edi, dst
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
-		mov		w, eax /* use C for w? w = 768 + nWidth */
+		mov		w, eax /* use C for w? w = BUFFER_WIDTH + nWidth */
 		mov		ebx, nDataSize
 		add		ebx, esi
 	label1:
@@ -788,7 +788,7 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 
 	end = &src[nDataSize];
 
-	for (; src != end; dst -= 768 + nWidth) {
+	for (; src != end; dst -= BUFFER_WIDTH + nWidth) {
 		for (w = nWidth; w;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -828,7 +828,7 @@ void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	__asm {
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -882,7 +882,7 @@ void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	dst = pDecodeTo;
 	w = nWidth;
 
-	for (; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -1024,7 +1024,7 @@ void Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 		mov		tbl, eax
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -1128,7 +1128,7 @@ void Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 
-	for (; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -1195,7 +1195,7 @@ void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int n
 		mov		tbl, eax
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -1308,7 +1308,7 @@ void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int n
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
-	for (; src != &pRLEBytes[nDataSize]; dst -= 768 + w, shift = (shift + 1) & 1) {
+	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w, shift = (shift + 1) & 1) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -1504,7 +1504,7 @@ void Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 	tbl = &pLightTbl[idx];
 
 #ifdef USE_ASM
-	w = 768 + nWidth;
+	w = BUFFER_WIDTH + nWidth;
 
 	__asm {
 		mov		esi, src
@@ -1557,7 +1557,7 @@ void Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 
 	end = &src[nDataSize];
 
-	for (; src != end; dst -= 768 + nWidth) {
+	for (; src != end; dst -= BUFFER_WIDTH + nWidth) {
 		for (w = nWidth; w;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -1754,7 +1754,7 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 	__asm {
 		mov		esi, src
 		mov		edi, dst
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -1773,10 +1773,10 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 		lodsb
 		or		al, al
 		jz		label4
-		mov		[edi-768], ah
+		mov		[edi-BUFFER_WIDTH], ah
 		mov		[edi-1], ah
 		mov		[edi+1], ah
-		mov		[edi+768], ah
+		mov		[edi+BUFFER_WIDTH], ah
 	label4:
 		inc		edi
 		loop	label3
@@ -1817,17 +1817,17 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 	end = &src[nDataSize];
 	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
-	for (; src != end; dst -= 768 + nWidth) {
+	for (; src != end; dst -= BUFFER_WIDTH + nWidth) {
 		for (w = nWidth; w;) {
 			width = *src++;
 			if (!(width & 0x80)) {
 				w -= width;
 				while (width) {
 					if (*src++) {
-						dst[-768] = col;
+						dst[-BUFFER_WIDTH] = col;
 						dst[-1] = col;
 						dst[1] = col;
-						dst[768] = col;
+						dst[BUFFER_WIDTH] = col;
 					}
 					dst++;
 					width--;
@@ -1895,7 +1895,7 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 	__asm {
 		mov		esi, src
 		mov		edi, dst
-		mov		eax, 768
+		mov		eax, BUFFER_WIDTH
 		add		eax, nWidth
 		mov		w, eax
 		mov		ebx, nDataSize
@@ -1915,7 +1915,7 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 		add		edi, eax
 		jmp		label9
 	label3:
-		sub		ecx, 768
+		sub		ecx, BUFFER_WIDTH
 		cmp		edi, ecx
 		jnb		label6
 		mov		ecx, eax
@@ -1924,10 +1924,10 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 		lodsb
 		or		al, al
 		jz		label5
-		mov		[edi-768], ah
+		mov		[edi-BUFFER_WIDTH], ah
 		mov		[edi-1], ah
 		mov		[edi+1], ah
-		mov		[edi+768], ah
+		mov		[edi+BUFFER_WIDTH], ah
 	label5:
 		inc		edi
 		loop	label4
@@ -1939,7 +1939,7 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 		lodsb
 		or		al, al
 		jz		label8
-		mov		[edi-768], ah
+		mov		[edi-BUFFER_WIDTH], ah
 		mov		[edi-1], ah
 		mov		[edi+1], ah
 	label8:
@@ -1983,16 +1983,16 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 	end = &src[nDataSize];
 	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
-	for (; src != end; dst -= 768 + nWidth) {
+	for (; src != end; dst -= BUFFER_WIDTH + nWidth) {
 		for (w = nWidth; w;) {
 			width = *src++;
 			if (!(width & 0x80)) {
 				w -= width;
 				if (dst < gpBufEnd) {
-					if (dst >= gpBufEnd - 768) {
+					if (dst >= gpBufEnd - BUFFER_WIDTH) {
 						while (width) {
 							if (*src++) {
-								dst[-768] = col;
+								dst[-BUFFER_WIDTH] = col;
 								dst[-1] = col;
 								dst[1] = col;
 							}
@@ -2002,10 +2002,10 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 					} else {
 						while (width) {
 							if (*src++) {
-								dst[-768] = col;
+								dst[-BUFFER_WIDTH] = col;
 								dst[-1] = col;
 								dst[1] = col;
-								dst[768] = col;
+								dst[BUFFER_WIDTH] = col;
 							}
 							dst++;
 							width--;
@@ -2588,7 +2588,7 @@ void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 		test	ebx, ebx
 		jnz		label10
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		jmp		label10
 	label6:
@@ -2606,7 +2606,7 @@ void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 		sub		ebx, edx
 		jnz		label9
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 	label9:
 		test	eax, eax
@@ -2645,7 +2645,7 @@ void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 				}
 				if (!w) {
 					w = nWidth;
-					dst -= 768 + w;
+					dst -= BUFFER_WIDTH + w;
 				}
 				continue;
 			} else {
@@ -2659,7 +2659,7 @@ void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 				}
 				if (!w) {
 					w = nWidth;
-					dst -= 768 + w;
+					dst -= BUFFER_WIDTH + w;
 				}
 				continue;
 			}
@@ -2676,7 +2676,7 @@ void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 			}
 			if (!w) {
 				w = nWidth;
-				dst -= 768 + w;
+				dst -= BUFFER_WIDTH + w;
 			}
 		}
 	}
@@ -2759,8 +2759,8 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 		sub		ebx, eax
 		mov		[edi+eax], dl
 	label2:
-		mov		[edi-768], dl
-		mov		[edi+768], dl
+		mov		[edi-BUFFER_WIDTH], dl
+		mov		[edi+BUFFER_WIDTH], dl
 		dec		eax
 		lea		edi, [edi+1]
 		jnz		label2
@@ -2775,8 +2775,8 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 		jz		label5
 		mov		[edi-1], dl
 		mov		[edi+1], dl
-		mov		[edi-768], dl
-		mov		[edi+768], dl
+		mov		[edi-BUFFER_WIDTH], dl
+		mov		[edi+BUFFER_WIDTH], dl
 	label5:
 		dec		eax
 		lea		edi, [edi+1]
@@ -2785,7 +2785,7 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 		test	ebx, ebx
 		jnz		label11
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		jmp		label11
 	label7:
@@ -2803,7 +2803,7 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 		sub		ebx, edx
 		jnz		label10
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 	label10:
 		test	eax, eax
@@ -2838,14 +2838,14 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 					dst[-1] = col;
 					dst[width] = col;
 					while (width) {
-						dst[-768] = col;
-						dst[768] = col;
+						dst[-BUFFER_WIDTH] = col;
+						dst[BUFFER_WIDTH] = col;
 						dst++;
 						width--;
 					}
 					if (!w) {
 						w = nWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				}
@@ -2856,15 +2856,15 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 					if (*src++) {
 						dst[-1] = col;
 						dst[1] = col;
-						dst[-768] = col;
-						dst[768] = col;
+						dst[-BUFFER_WIDTH] = col;
+						dst[BUFFER_WIDTH] = col;
 					}
 					dst++;
 					width--;
 				}
 				if (!w) {
 					w = nWidth;
-					dst -= 768 + w;
+					dst -= BUFFER_WIDTH + w;
 				}
 				continue;
 			}
@@ -2881,7 +2881,7 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
 			}
 			if (!w) {
 				w = nWidth;
-				dst -= 768 + w;
+				dst -= BUFFER_WIDTH + w;
 			}
 		}
 	}
@@ -2991,7 +2991,7 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		test	ebx, ebx
 		jnz		label10
 		mov		ebx, sgnWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		jmp		label10
 	label6:
@@ -3009,7 +3009,7 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		sub		ebx, edx
 		jnz		label9
 		mov		ebx, sgnWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 	label9:
 		test	eax, eax
@@ -3050,7 +3050,7 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 				}
 				if (!w) {
 					w = sgnWidth;
-					dst -= 768 + w;
+					dst -= BUFFER_WIDTH + w;
 				}
 				continue;
 			} else {
@@ -3064,7 +3064,7 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 				}
 				if (!w) {
 					w = sgnWidth;
-					dst -= 768 + w;
+					dst -= BUFFER_WIDTH + w;
 				}
 				continue;
 			}
@@ -3081,7 +3081,7 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 			}
 			if (!w) {
 				w = sgnWidth;
-				dst -= 768 + w;
+				dst -= BUFFER_WIDTH + w;
 			}
 		}
 	}
@@ -3228,7 +3228,7 @@ void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 		test	ebx, ebx
 		jnz		label11
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		jmp		label11
 	label7:
@@ -3246,7 +3246,7 @@ void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 		sub		ebx, edx
 		jnz		label10
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 	label10:
 		test	eax, eax
@@ -3286,7 +3286,7 @@ void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 					}
 					if (!w) {
 						w = nWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				}
@@ -3302,7 +3302,7 @@ void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 					}
 					if (!w) {
 						w = nWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				} else {
@@ -3322,7 +3322,7 @@ void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 			}
 			if (!w) {
 				w = nWidth;
-				dst -= 768 + w;
+				dst -= BUFFER_WIDTH + w;
 			}
 		}
 	}
@@ -3365,14 +3365,14 @@ void Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	gpBufEnd -= 768;
+	gpBufEnd -= BUFFER_WIDTH;
 	Cl2DecDatClrHL(
 	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
 	    col);
-	gpBufEnd += 768;
+	gpBufEnd += BUFFER_WIDTH;
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
@@ -3411,8 +3411,8 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 		sub		ebx, eax
 		mov		[edi+eax], dl
 	label2:
-		mov		[edi-768], dl
-		mov		[edi+768], dl
+		mov		[edi-BUFFER_WIDTH], dl
+		mov		[edi+BUFFER_WIDTH], dl
 		dec		eax
 		lea		edi, [edi+1]
 		jnz		label2
@@ -3432,8 +3432,8 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 		jz		label6
 		mov		[edi-1], dl
 		mov		[edi+1], dl
-		mov		[edi-768], dl
-		mov		[edi+768], dl
+		mov		[edi-BUFFER_WIDTH], dl
+		mov		[edi+BUFFER_WIDTH], dl
 	label6:
 		dec		eax
 		lea		edi, [edi+1]
@@ -3442,7 +3442,7 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 		test	ebx, ebx
 		jnz		label13
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		jmp		label13
 	label9:
@@ -3460,7 +3460,7 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 		sub		ebx, edx
 		jnz		label12
 		mov		ebx, nWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 	label12:
 		test	eax, eax
@@ -3495,14 +3495,14 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 					dst[-1] = col;
 					dst[width] = col;
 					while (width) {
-						dst[-768] = col;
-						dst[768] = col;
+						dst[-BUFFER_WIDTH] = col;
+						dst[BUFFER_WIDTH] = col;
 						dst++;
 						width--;
 					}
 					if (!w) {
 						w = nWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				}
@@ -3514,15 +3514,15 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 						if (*src++) {
 							dst[-1] = col;
 							dst[1] = col;
-							dst[-768] = col;
-							dst[768] = col;
+							dst[-BUFFER_WIDTH] = col;
+							dst[BUFFER_WIDTH] = col;
 						}
 						dst++;
 						width--;
 					}
 					if (!w) {
 						w = nWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				} else {
@@ -3542,7 +3542,7 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 			}
 			if (!w) {
 				w = nWidth;
-				dst -= 768 + w;
+				dst -= BUFFER_WIDTH + w;
 			}
 		}
 	}
@@ -3660,7 +3660,7 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		test	ebx, ebx
 		jnz		label11
 		mov		ebx, sgnWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		jmp		label11
 	label7:
@@ -3678,7 +3678,7 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		sub		ebx, edx
 		jnz		label10
 		mov		ebx, sgnWidth
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 	label10:
 		test	eax, eax
@@ -3720,7 +3720,7 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 					}
 					if (!w) {
 						w = sgnWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				}
@@ -3736,7 +3736,7 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 					}
 					if (!w) {
 						w = sgnWidth;
-						dst -= 768 + w;
+						dst -= BUFFER_WIDTH + w;
 					}
 					continue;
 				} else {
@@ -3756,7 +3756,7 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 			}
 			if (!w) {
 				w = sgnWidth;
-				dst -= 768 + w;
+				dst -= BUFFER_WIDTH + w;
 			}
 		}
 	}

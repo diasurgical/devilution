@@ -143,7 +143,7 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 		sub		edx, eax
 		jnz		label2
 	label8:
-		sub		edi, 768 + 22
+		sub		edi, BUFFER_WIDTH + 22
 		cmp		ebx, esi
 		jnz		label1
 	}
@@ -157,7 +157,7 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 	src = &pCelBuff[pFrameTable[0]];
 	end = &src[pFrameTable[1] - pFrameTable[0]];
 
-	for (; src != end; dst -= 768 + 22) {
+	for (; src != end; dst -= BUFFER_WIDTH + 22) {
 		for (i = 22; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {

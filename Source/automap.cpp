@@ -173,7 +173,7 @@ void DrawAutomap()
 		return;
 	}
 
-	gpBufEnd = (unsigned char *)&gpBuffer[(VIEWPORT_HEIGHT + SCREEN_Y) * 768];
+	gpBufEnd = (unsigned char *)&gpBuffer[(VIEWPORT_HEIGHT + SCREEN_Y) * BUFFER_WIDTH];
 
 	MapX = (ViewX - 16) >> 1;
 	while (MapX + AutoMapXOfs < 0)

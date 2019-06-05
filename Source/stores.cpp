@@ -201,12 +201,12 @@ void DrawSLine(int y)
 		xy = SCREENXY(26, 25);
 		yy = PitchTbl[SStringY[y] + 198] + 26 + 64;
 		width = 586 / 4;
-		line = 768 - 586;
+		line = BUFFER_WIDTH - 586;
 	} else {
 		xy = SCREENXY(346, 25);
 		yy = PitchTbl[SStringY[y] + 198] + 346 + 64;
 		width = 266 / 4;
-		line = 768 - 266;
+		line = BUFFER_WIDTH - 266;
 	}
 
 	/// ASSERT: assert(gpBuffer);
@@ -235,8 +235,8 @@ void DrawSLine(int y)
 	src = &gpBuffer[xy];
 	dst = &gpBuffer[yy];
 
-	for (i = 0; i < 3; i++, src += 768, dst += 768)
-		memcpy(dst, src, 768 - line);
+	for (i = 0; i < 3; i++, src += BUFFER_WIDTH, dst += BUFFER_WIDTH)
+		memcpy(dst, src, BUFFER_WIDTH - line);
 #endif
 }
 
