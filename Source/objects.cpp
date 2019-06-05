@@ -2185,7 +2185,6 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
 		return;
 	}
-
 	xp = object[oi]._ox;
 	yp = object[oi]._oy;
 	if (object[oi]._oVar4 == 0) {
@@ -2514,9 +2513,9 @@ void OperateBookLever(int pnum, int i)
 			quests[QTYPE_BLOOD]._qactive = 2;
 			quests[QTYPE_BLOOD]._qlog = 1;
 			quests[QTYPE_BLOOD]._qvar1 = 1;
-			SpawnQuestItem(21, 2 * setpc_x + 19, 2 * setpc_y + 26, 0, 1);
-			SpawnQuestItem(21, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
-			SpawnQuestItem(21, 2 * setpc_x + 25, 2 * setpc_y + 33, 0, 1);
+			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 19, 2 * setpc_y + 26, 0, 1);
+			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
+			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 25, 2 * setpc_y + 33, 0, 1);
 		}
 		object[i]._otype = object[i]._otype;
 		if (object[i]._otype == OBJ_STEELTOME && !quests[QTYPE_WARLRD]._qvar1) {
@@ -3753,7 +3752,7 @@ void OperateLazStand(int pnum, int i)
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
 		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
-		SpawnQuestItem(33, xx, yy, 0, 0);
+		SpawnQuestItem(IDI_LGTFORGE, xx, yy, 0, 0);
 	}
 }
 

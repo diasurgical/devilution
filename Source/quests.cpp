@@ -662,7 +662,7 @@ void ResyncQuests()
 	}
 	if (currlevel == quests[QTYPE_VEIL]._qlevel + 1 && quests[QTYPE_VEIL]._qactive == 2 && !quests[QTYPE_VEIL]._qvar1) {
 		quests[QTYPE_VEIL]._qvar1 = 1;
-		SpawnQuestItem(15, 0, 0, 5, 1);
+		SpawnQuestItem(IDI_GLDNELIX, 0, 0, 5, 1);
 	}
 	if (setlevel && setlvlnum == 5) {
 		if (quests[QTYPE_VB]._qvar1 >= 4u)
