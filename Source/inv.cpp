@@ -141,7 +141,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 	label5:
 		inc		edi
 		loop	label2
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		dec		edx
 		jnz		label1
@@ -150,7 +150,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 	int wdt, hgt;
 	BYTE pix;
 
-	for (hgt = H; hgt; hgt--, dst -= 768 + W) {
+	for (hgt = H; hgt; hgt--, dst -= BUFFER_WIDTH + W) {
 		for (wdt = W; wdt; wdt--) {
 			pix = *dst;
 			if (pix >= PAL16_BLUE) {

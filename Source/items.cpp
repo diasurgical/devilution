@@ -2935,7 +2935,7 @@ void DrawULine(int y)
 		mov		edi, esi
 		add		esi, SCREENXY(26, 25)
 		add		edi, yy
-		mov		ebx, 768 - 266
+		mov		ebx, BUFFER_WIDTH - 266
 		mov		edx, 3
 	copyline:
 		mov		ecx, 266 / 4
@@ -2953,7 +2953,7 @@ void DrawULine(int y)
 	src = &gpBuffer[SCREENXY(26, 25)];
 	dst = &gpBuffer[PitchTbl[SStringY[y] + 198] + 26 + 64];
 
-	for (i = 0; i < 3; i++, src += 768, dst += 768)
+	for (i = 0; i < 3; i++, src += BUFFER_WIDTH, dst += BUFFER_WIDTH)
 		memcpy(dst, src, 266);
 #endif
 }
