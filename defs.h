@@ -145,7 +145,6 @@
 #define _DWORD unsigned int
 
 #define _LOBYTE(x)  (*((BYTE*)&(x)))
-#define _LOWORD(x)  (*((WORD*)&(x)))
 
 #endif /* IDA_GARBAGE */
 

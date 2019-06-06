@@ -47,7 +47,7 @@ HANDLE log_create()
 	char *last_slash_pos;
 	HANDLE fh;
 	VS_FIXEDFILEINFO file_info;
-	DWORD i, j;
+	DWORD i;
 	char buf[32];
 
 	if (log_not_created) {
