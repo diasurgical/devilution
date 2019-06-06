@@ -31,28 +31,20 @@ BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 
 void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 {
-	int v2;                                // esi
-	const char *v3;                        // ebx
-	HANDLE v4;                             // eax
-	int v5;                                // esi
-	struct _WIN32_FIND_DATAA FindFileData; // [esp+8h] [ebp-1E0h]
-	char dst[160];                         // [esp+148h] [ebp-A0h]
+	HANDLE handle;
+	struct _WIN32_FIND_DATAA FindFileData;
+	char dst[160];
 
-	v2 = dwChar;
-	v3 = pszArchive;
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != INVALID_HANDLE_VALUE) {
-			FindClose(v4);
-			v5 = 16 * v2;
-			*(_DWORD *)&dst[v5] = FindFileData.ftCreationTime.dwLowDateTime;
-			*(_DWORD *)&dst[v5 + 4] = FindFileData.ftCreationTime.dwHighDateTime;
+		handle = FindFirstFile(pszArchive, &FindFileData);
+		if (handle != INVALID_HANDLE_VALUE) {
+			FindClose(handle);
+			*((FILETIME *)(dst) + dwChar * 2) = FindFileData.ftCreationTime;
 			mpqapi_reg_store_modification_time(dst, 160);
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 {
