@@ -257,7 +257,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE82;
 		}
 		if (sendmsg)
-			NetSendCmdQuest(TRUE, 12);
+			NetSendCmdQuest(TRUE, QTYPE_KING);
 
 	} else if (monster[m].MType->mtype == MT_CLEAVER) {
 		quests[QTYPE_BUTCH]._qactive = 3;
@@ -270,7 +270,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE80;
 		}
 		if (sendmsg)
-			NetSendCmdQuest(TRUE, 6);
+			NetSendCmdQuest(TRUE, QTYPE_BUTCH);
 	} else if (monster[m].mName == UniqMonst[UMT_GARBUD].mName) { //"Gharbad the Weak"
 		quests[QTYPE_GARB]._qactive = 3;
 		sfxdelay = 30;
@@ -315,8 +315,8 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE83;
 		}
 		if (sendmsg) {
-			NetSendCmdQuest(TRUE, 15);
-			NetSendCmdQuest(TRUE, 5);
+			NetSendCmdQuest(TRUE, QTYPE_VB);
+			NetSendCmdQuest(TRUE, QTYPE_MOD);
 		}
 	} else if (monster[m].mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers == 1) { //"Arch-Bishop Lazarus"
 		quests[QTYPE_VB]._qactive = 3;
