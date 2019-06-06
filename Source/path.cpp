@@ -254,7 +254,7 @@ BOOL path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 /* return a node for (dx,dy) on the frontier, or NULL if not found */
 PATHNODE *path_get_node1(int dx, int dy)
 {
-	PATHNODE *result = path_2_nodes;
+	PATHNODE *result = path_2_nodes->NextNode;
 	while (result != NULL && (result->x != dx || result->y != dy))
 		result = result->NextNode;
 	return result;
@@ -263,7 +263,7 @@ PATHNODE *path_get_node1(int dx, int dy)
 /* return a node for (dx,dy) if it was visited, or NULL if not found */
 PATHNODE *path_get_node2(int dx, int dy)
 {
-	PATHNODE *result = pnode_ptr;
+	PATHNODE *result = pnode_ptr->NextNode;
 	while (result != NULL && (result->x != dx || result->y != dy))
 		result = result->NextNode;
 	return result;
