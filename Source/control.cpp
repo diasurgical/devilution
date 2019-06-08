@@ -2404,7 +2404,7 @@ void control_set_gold_curs(int pnum)
 	else
 		plr[pnum].HoldItem._iCurs = ICURS_GOLD_MEDIUM;
 
-	SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+	NewCursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 }
 
 void DrawTalkPan()
