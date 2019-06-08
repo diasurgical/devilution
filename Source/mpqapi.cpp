@@ -165,7 +165,7 @@ void mpqapi_alloc_block(int block_offset, int block_size)
 				return;
 			}
 		}
-		++block;
+		block++;
 	}
 	if (block_offset + block_size > sgdwMpqOffset) {
 		app_fatal("MPQ free list error");
