@@ -128,12 +128,11 @@ void NetRecvPlrData(TPkt *pkt)
 
 void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 {
-	unsigned char *v5; // eax
-	BYTE *v6;          // eax
-	int v7;            // eax
-	int v8;            // eax
-	TPkt pkt;          // [esp+Ch] [ebp-204h]
-	int size;          // [esp+20Ch] [ebp-4h]
+	BYTE *hipri_body;
+	BYTE *lowpri_body;
+	DWORD len;
+	TPkt pkt;
+	int size;
 
 	if (pbMsg && bLen) {
 		multi_copy_packet(&sgHiPriBuf, pbMsg, bLen);
@@ -142,13 +141,13 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 	if (!gbShouldValidatePackage) {
 		gbShouldValidatePackage = TRUE;
 		NetRecvPlrData(&pkt);
-		size = gdwNormalMsgSize - 19;
-		v5 = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
-		v6 = multi_recv_packet(&sgLoPriBuf, v5, &size);
-		v7 = sync_all_monsters(v6, size);
-		v8 = gdwNormalMsgSize - v7;
-		pkt.hdr.wLen = v8;
-		if (!SNetSendMessage(-2, &pkt.hdr, v8))
+		size = gdwNormalMsgSize - sizeof(TPktHdr);
+		hipri_body = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
+		lowpri_body = multi_recv_packet(&sgLoPriBuf, hipri_body, &size);
+		size = sync_all_monsters(lowpri_body, size);
+		len = gdwNormalMsgSize - size;
+		pkt.hdr.wLen = len;
+		if (!SNetSendMessage(-2, &pkt.hdr, len))
 			nthread_terminate_game("SNetSendMessage");
 	}
 }
