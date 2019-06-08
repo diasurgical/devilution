@@ -235,7 +235,7 @@ void init_archives()
 	fileinfo.patcharchivefile = patch_rt_mpq_path;
 	init_get_file_info();
 #ifdef COPYPROT
-	while (TRUE) {
+	while (1) {
 #endif
 		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
 #ifdef COPYPROT
