@@ -29,7 +29,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar);
 BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart);
 void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar);
 void mpqapi_store_modified_time(const char *pszArchive, int dwChar);
-void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar);
+BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar);
 BOOL WriteMPQHeader();
 BOOL mpqapi_write_block_table();
 BOOL mpqapi_write_hash_table();

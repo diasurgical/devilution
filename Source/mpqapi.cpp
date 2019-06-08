@@ -581,21 +581,25 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 	}
 }
 
-void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
+BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
 {
-	if (sghArchive != INVALID_HANDLE_VALUE) {
-		if (save_archive_modified) {
-			if (mpqapi_can_seek()) {
-				if (WriteMPQHeader()) {
-					if (mpqapi_write_block_table())
-						mpqapi_write_hash_table();
-				}
-			}
+    BOOL ret = FALSE;
+    if (sghArchive == INVALID_HANDLE_VALUE)
+		ret = TRUE;
+	else {
+        ret = FALSE;
+        if (!save_archive_modified)
+          ret = TRUE;
+        else if (mpqapi_can_seek() && WriteMPQHeader() && mpqapi_write_block_table()) {
+	        if (mpqapi_write_hash_table())
+				ret = TRUE;
+			else
+				ret = FALSE;
 		}
-	}
-	CloseMPQ(pszArchive, bFree, dwChar);
+    }
+    CloseMPQ(pszArchive, bFree, dwChar);
+    return ret;
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 BOOL WriteMPQHeader()
 {
