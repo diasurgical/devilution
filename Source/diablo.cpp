@@ -1095,8 +1095,8 @@ void PressKey(int vkey)
 			helpflag = 0;
 		} else if(stextflag) {
 			ClearPanel();
-			AddPanelString("No help available", 1); /// BUGFIX: message isn't displayed
-			AddPanelString("while in stores", 1);
+			AddPanelString("No help available", TRUE); /// BUGFIX: message isn't displayed
+			AddPanelString("while in stores", TRUE);
 			track_repeat_walk(0);
 		} else {
 			invflag = 0;
@@ -1915,8 +1915,8 @@ void timeout_cursor(BOOL bTimeout)
 			sgnTimeoutCurs = pcurs;
 			multi_net_ping();
 			ClearPanel();
-			AddPanelString("-- Network timeout --", 1);
-			AddPanelString("-- Waiting for players --", 1);
+			AddPanelString("-- Network timeout --", TRUE);
+			AddPanelString("-- Waiting for players --", TRUE);
 			SetCursor_(CURSOR_HOURGLASS);
 			drawpanflag = 255;
 		}

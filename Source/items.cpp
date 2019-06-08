@@ -2585,67 +2585,67 @@ void PrintItemOil(char IDidx)
 	switch (IDidx) {
 	case IMISC_FULLHEAL:
 		strcpy(tempstr, "fully recover life");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_HEAL:
 		strcpy(tempstr, "recover partial life");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_OLDHEAL:
 		strcpy(tempstr, "recover life");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_DEADHEAL:
 		strcpy(tempstr, "deadly heal");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_MANA:
 		strcpy(tempstr, "recover mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_FULLMANA:
 		strcpy(tempstr, "fully recover mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXSTR:
 		strcpy(tempstr, "increase strength");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXMAG:
 		strcpy(tempstr, "increase magic");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXDEX:
 		strcpy(tempstr, "increase dexterity");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXVIT:
 		strcpy(tempstr, "increase vitality");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXWEAK:
 		strcpy(tempstr, "decrease strength");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXDIS:
 		strcpy(tempstr, "decrease strength");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXCLUM:
 		strcpy(tempstr, "decrease dexterity");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXSICK:
 		strcpy(tempstr, "decrease vitality");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_REJUV:
 		strcpy(tempstr, "recover life and mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_FULLREJUV:
 		strcpy(tempstr, "fully recover life and mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	}
 }
@@ -2997,30 +2997,30 @@ void PrintItemMisc(ItemStruct *x)
 {
 	if (x->_iMiscId == IMISC_SCROLL) {
 		strcpy(tempstr, "Right-click to read");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_SCROLLT) {
 		strcpy(tempstr, "Right-click to read, then");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		strcpy(tempstr, "left-click to target");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId >= IMISC_USEFIRST && x->_iMiscId <= IMISC_USELAST) {
 		PrintItemOil(x->_iMiscId);
 		strcpy(tempstr, "Right click to use");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_BOOK) {
 		strcpy(tempstr, "Right click to read");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_MAPOFDOOM) {
 		strcpy(tempstr, "Right click to view");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_EAR) {
 		sprintf(tempstr, "Level : %i", x->_ivalue);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 }
 
@@ -3031,30 +3031,30 @@ void PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iClass == ICLASS_ARMOR) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
 			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
 		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iPrePower != -1) {
 		PrintItemPower(x->_iPrePower, x);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iSufPower != -1) {
 		PrintItemPower(x->_iSufPower, x);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
-		AddPanelString("unique item", 1);
+		AddPanelString("unique item", TRUE);
 		uitemflag = 1;
 		curruitem = *x;
 	}
@@ -3067,7 +3067,7 @@ void PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "%s %i Mag", tempstr, x->_iMinMag);
 		if (x->_iMinDex)
 			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	pinfoflag = TRUE;
 }
@@ -3079,29 +3079,29 @@ void PrintItemDur(ItemStruct *x)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
 			sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		}
 		if (x->_iMagical != ITEM_QUALITY_NORMAL)
-			AddPanelString("Not Identified", 1);
+			AddPanelString("Not Identified", TRUE);
 	}
 	if (x->_iClass == ICLASS_ARMOR) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
 			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		if (x->_iMagical != ITEM_QUALITY_NORMAL)
-			AddPanelString("Not Identified", 1);
+			AddPanelString("Not Identified", TRUE);
 		if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
 			sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		}
 	}
 	if (x->_itype == ITYPE_RING || x->_itype == ITYPE_AMULET)
-		AddPanelString("Not Identified", 1);
+		AddPanelString("Not Identified", TRUE);
 	PrintItemMisc(x);
 	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
 		strcpy(tempstr, "Required:");

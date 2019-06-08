@@ -436,7 +436,7 @@ void DrawSpellList()
 					sprintf(infostr, "%s Spell", spelldata[pSpell].sNameText);
 					if (pSpell == SPL_HBOLT) {
 						sprintf(tempstr, "Damages undead only");
-						AddPanelString(tempstr, 1);
+						AddPanelString(tempstr, TRUE);
 					}
 					if (s == 0)
 						sprintf(tempstr, "Spell Level 0 - Unusable");
@@ -480,7 +480,7 @@ void DrawSpellList()
 					if (plr[myplr]._pSplHotKey[t] == pSpell && plr[myplr]._pSplTHotKey[t] == pSplType) {
 						DrawSpellCel(x, y, pSpellCels, t + 48, 56);
 						sprintf(tempstr, "Spell Hot Key #F%i", t + 5);
-						AddPanelString(tempstr, 1);
+						AddPanelString(tempstr, TRUE);
 					}
 				}
 			}
@@ -1342,7 +1342,7 @@ void CheckPanelInfo()
 			}
 			if (PanBtnHotKey[i]) {
 				sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[i]);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 			}
 			infoclr = COL_WHITE;
 			panelflag = 1;
@@ -1355,17 +1355,17 @@ void CheckPanelInfo()
 		panelflag = 1;
 		pinfoflag = TRUE;
 		strcpy(tempstr, "Hotkey : 's'");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		v = plr[myplr]._pRSpell;
 		if (v != -1) {
 			switch (plr[myplr]._pRSplType) {
 			case RSPLTYPE_SKILL:
 				sprintf(tempstr, "%s Skill", spelldata[v].sSkillText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			case RSPLTYPE_SPELL:
 				sprintf(tempstr, "%s Spell", spelldata[v].sNameText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				c = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v];
 				if (c < 0)
 					c = 0;
@@ -1373,11 +1373,11 @@ void CheckPanelInfo()
 					sprintf(tempstr, "Spell Level 0 - Unusable");
 				else
 					sprintf(tempstr, "Spell Level %i", c);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			case RSPLTYPE_SCROLL:
 				sprintf(tempstr, "Scroll of %s", spelldata[v].sNameText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				s = 0;
 				for (i = 0; i < plr[myplr]._pNumInv; i++) {
 					if (plr[myplr].InvList[i]._itype != -1
@@ -1397,16 +1397,16 @@ void CheckPanelInfo()
 					strcpy(tempstr, "1 Scroll");
 				else
 					sprintf(tempstr, "%i Scrolls", s);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			case RSPLTYPE_CHARGES:
 				sprintf(tempstr, "Staff of %s", spelldata[v].sNameText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1)
 					strcpy(tempstr, "1 Charge");
 				else
 					sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			}
 		}
@@ -1551,7 +1551,7 @@ void DrawInfoBox()
 			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(plr[myplr].HoldItem._ivalue));
 		} else if (!plr[myplr].HoldItem._iStatFlag) {
 			ClearPanel();
-			AddPanelString("Requirements not met", 1);
+			AddPanelString("Requirements not met", TRUE);
 			pinfoflag = TRUE;
 		} else {
 			if (plr[myplr].HoldItem._iIdentified)
@@ -1588,9 +1588,9 @@ void DrawInfoBox()
 			strcpy(infostr, plr[pcursplr]._pName);
 			ClearPanel();
 			sprintf(tempstr, "Level : %i", plr[pcursplr]._pLevel);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 			sprintf(tempstr, "Hit Points %i of %i", plr[pcursplr]._pHitPoints >> 6, plr[pcursplr]._pMaxHP >> 6);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		}
 	}
 	if (infostr[0] || pnumlines)

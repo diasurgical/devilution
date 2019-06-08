@@ -131,7 +131,7 @@ void CheckTown()
 				ClearPanel();
 				strcpy(infostr, "Town Portal");
 				sprintf(tempstr, "from %s", plr[missile[mx]._misource]._pName);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				cursmx = missile[mx]._mix;
 				cursmy = missile[mx]._miy;
 			}
@@ -160,7 +160,7 @@ void CheckRportal()
 					strcpy(tempstr, "The Unholy Altar");
 				else
 					strcpy(tempstr, "level 15");
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				cursmx = missile[mx]._mix;
 				cursmy = missile[mx]._miy;
 			}

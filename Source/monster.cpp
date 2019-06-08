@@ -4995,7 +4995,7 @@ void PrintMonstHistory(int mt)
 	int minHP, maxHP, res;
 
 	sprintf(tempstr, "Total kills : %i", monstkills[mt]);
-	AddPanelString(tempstr, 1);
+	AddPanelString(tempstr, TRUE);
 	if (monstkills[mt] >= 30) {
 		minHP = monsterdata[mt].mMinHP;
 		maxHP = monsterdata[mt].mMaxHP;
@@ -5016,7 +5016,7 @@ void PrintMonstHistory(int mt)
 			maxHP = 4 * maxHP + 3;
 		}
 		sprintf(tempstr, "Hit Points : %i-%i", minHP, maxHP);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (monstkills[mt] >= 15) {
 		if (gnDifficulty != DIFF_HELL)
@@ -5026,7 +5026,7 @@ void PrintMonstHistory(int mt)
 		res = res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
 		if (!res) {
 			strcpy(tempstr, "No magic resistance");
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		} else{
 			if (res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING)) {
 				strcpy(tempstr, "Resists : ");
@@ -5037,7 +5037,7 @@ void PrintMonstHistory(int mt)
 				if (res & RESIST_LIGHTNING)
 					strcat(tempstr, "Lightning ");
 				tempstr[strlen(tempstr) - 1] = '\0';
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 			}
 			if (res & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
 				strcpy(tempstr, "Immune : ");
@@ -5048,7 +5048,7 @@ void PrintMonstHistory(int mt)
 				if (res & IMUNE_LIGHTNING)
 					strcat(tempstr, "Lightning ");
 				tempstr[strlen(tempstr) - 1] = '\0';
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 			}
 		}
 	}
@@ -5062,21 +5062,21 @@ void PrintUniqueHistory()
 	res = monster[pcursmonst].mMagicRes & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
 	if (!res) {
 		strcpy(tempstr, "No resistances");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		strcpy(tempstr, "No Immunities");
 	} else {
 		if (res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING))
 			strcpy(tempstr, "Some Magic Resistances");
 		else
 			strcpy(tempstr, "No resistances");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		if (res & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
 			strcpy(tempstr, "Some Magic Immunities");
 		} else {
 			strcpy(tempstr, "No Immunities");
 		}
 	}
-	AddPanelString(tempstr, 1);
+	AddPanelString(tempstr, TRUE);
 	pinfoflag = TRUE;
 }
 
