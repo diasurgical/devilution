@@ -138,14 +138,7 @@
 /////////////////////////////////////////////////////////////////////////
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
-
-// Partially defined types. They are used when the decompiler does not know
-// anything about the type except its size.
-#define _BYTE  unsigned char
-#define _DWORD unsigned int
-
 #define _LOBYTE(x)  (*((BYTE*)&(x)))
-
 #endif /* IDA_GARBAGE */
 
 // Typedef for the function pointer
