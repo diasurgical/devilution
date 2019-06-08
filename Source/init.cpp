@@ -223,12 +223,12 @@ void init_await_mom_parent_exit()
 
 void init_archives()
 {
-	HANDLE a1; // [esp+8h] [ebp-8h]
+	HANDLE fh;
 #ifdef COPYPROT
-	int v1; // [esp+Ch] [ebp-4h]
+	int result;
 #endif
-
-	fileinfo.size = 20;
+	memset (&fileinfo, 0, sizeof (fileinfo));
+	fileinfo.size = sizeof (fileinfo);
 	fileinfo.versionstring = gszVersionNumber;
 	fileinfo.executablefile = diablo_exe_path;
 	fileinfo.originalarchivefile = diabdat_mpq_path;
@@ -241,14 +241,14 @@ void init_archives()
 #ifdef COPYPROT
 		if (diabdat_mpq)
 			break;
-		UiCopyProtError(&v1);
-		if (v1 == COPYPROT_CANCEL)
+		UiCopyProtError(&result);
+		if (result == COPYPROT_CANCEL)
 			FileErrDlg("diabdat.mpq");
 	}
 #endif
-	if (!WOpenFile("ui_art\\title.pcx", &a1, 1))
+	if (!WOpenFile("ui_art\\title.pcx", &fh, TRUE))
 		FileErrDlg("Main program archive: diabdat.mpq");
-	WCloseFile(a1);
+	WCloseFile(fh);
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, FS_PC);
 }
 
