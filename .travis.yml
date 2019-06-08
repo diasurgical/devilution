@@ -62,7 +62,7 @@ jobs:
           echo '#!/bin/sh' | sudo tee /bin/wine
           echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
           sudo chmod +x /bin/wine
-          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja:stable
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e COPYPROT=1 diasurgical/riivaaja:stable
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../status.sh
       after_success:

@@ -39,6 +39,10 @@ endif
 CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi /FAs
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
+ifeq ($(COPYPROT),1)
+	CFLAGS += /D "COPYPROT"
+endif
+
 ifeq ($(MAKE_BUILD),pdb)
 	VC_LINK = $(VC6_LINK)
 	LINKFLAGS += /pdb:"Diablo.pdb" /LIBPATH:$(VC6_LIB_DIR) /debug
