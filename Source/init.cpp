@@ -254,16 +254,12 @@ void init_archives()
 
 HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
 {
-	char *v5;           // esi
-	char *v7;           // eax
-	char Filename[MAX_PATH]; // [esp+Ch] [ebp-314h]
-	char Buffer[MAX_PATH];   // [esp+110h] [ebp-210h]
-	char v15[MAX_PATH];      // [esp+214h] [ebp-10Ch]
-	char *mpq_namea;    // [esp+318h] [ebp-8h]
-	HANDLE archive;     // [esp+31Ch] [ebp-4h]
+	char *last_slash_pos;
+	char Filename[MAX_PATH];
+	char Buffer[MAX_PATH];
+	char archive_path[MAX_PATH];
+	HANDLE archive;
 
-	mpq_namea = mpq_name;
-	v5 = mpq_path;
 	if (!GetCurrentDirectory(sizeof(Buffer), Buffer))
 		app_fatal("Can't get program path");
 	init_strip_trailing_slash(Buffer);
@@ -271,47 +267,47 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags
 		app_fatal("SFileSetBasePath");
 	if (!GetModuleFileName(ghInst, Filename, sizeof(Filename)))
 		app_fatal("Can't get program name");
-	v7 = strrchr(Filename, '\\');
-	if (v7)
-		*v7 = 0;
+	last_slash_pos = strrchr(Filename, '\\');
+	if (last_slash_pos)
+		*last_slash_pos = '\0';
 	init_strip_trailing_slash(Filename);
-	strcpy(v5, Buffer);
-	strcat(v5, mpq_namea);
+	strcpy(mpq_path, Buffer);
+	strcat(mpq_path, mpq_name);
 #ifdef COPYPROT
-	if (SFileOpenArchive(v5, flags, fs, &archive))
+	if (SFileOpenArchive(mpq_path, flags, fs, &archive))
 #else
-	if (SFileOpenArchive(v5, flags, FS_PC, &archive))
+	if (SFileOpenArchive(mpq_path, flags, FS_PC, &archive))
 #endif
 		return archive;
 	if (strcmp(Filename, Buffer)) {
-		strcpy(v5, Filename);
-		strcat(v5, mpq_namea);
+		strcpy(mpq_path, Filename);
+		strcat(mpq_path, mpq_name);
 #ifdef COPYPROT
-		if (SFileOpenArchive(v5, flags, fs, &archive))
+		if (SFileOpenArchive(mpq_path, flags, fs, &archive))
 #else
-		if (SFileOpenArchive(v5, flags, FS_PC, &archive))
+		if (SFileOpenArchive(mpq_path, flags, FS_PC, &archive))
 #endif
 			return archive;
 	}
-	v15[0] = 0;
+	archive_path[0] = '\0';
 	if (reg_loc) {
-		if (SRegLoadString("Archives", (const char *)reg_loc, 0, v15, sizeof(v15))) {
-			init_strip_trailing_slash(v15);
-			strcpy(v5, v15);
-			strcat(v5, mpq_namea);
+		if (SRegLoadString("Archives", reg_loc, 0, archive_path, sizeof(archive_path))) {
+			init_strip_trailing_slash(archive_path);
+			strcpy(mpq_path, archive_path);
+			strcat(mpq_path, mpq_name);
 #ifdef COPYPROT
-			if (SFileOpenArchive(v5, flags, fs, &archive))
+			if (SFileOpenArchive(mpq_path, flags, fs, &archive))
 #else
-			if (SFileOpenArchive(v5, flags, FS_PC, &archive))
+			if (SFileOpenArchive(mpq_path, flags, FS_PC, &archive))
 #endif
 				return archive;
 		}
 	}
-	if (fs == FS_CD && init_read_test_file(v15, mpq_namea, flags, &archive)) {
-		strcpy(v5, v15);
+	if (fs != FS_PC && init_read_test_file(archive_path, mpq_name, flags, &archive)) {
+		strcpy(mpq_path, archive_path);
 		return archive;
 	}
-	return 0;
+	return NULL;
 }
 
 char *init_strip_trailing_slash(char *path)
