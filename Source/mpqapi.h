@@ -14,7 +14,7 @@ void mpqapi_store_default_time(DWORD dwChar);
 BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen);
 _BLOCKENTRY *j_mpqapi_remove_hash_entry(char *pszName);
 void mpqapi_remove_hash_entry(const char *pszName);
-void mpqapi_free_block(int block_offset, int block_size);
+void mpqapi_alloc_block(int block_offset, int block_size);
 _BLOCKENTRY *mpqapi_new_block(int *block_index);
 int FetchHandle(const char *pszName);
 int mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale);

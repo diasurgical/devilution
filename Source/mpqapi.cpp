@@ -1,7 +1,7 @@
 #include "diablo.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-int sgdwMpqOffset; // idb
+DWORD sgdwMpqOffset;
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
 BOOL save_archive_modified; // weak
@@ -137,58 +137,47 @@ void mpqapi_remove_hash_entry(const char *pszName)
 		block_offset = blockEntry->offset;
 		block_size = blockEntry->sizealloc;
 		memset(blockEntry, 0, sizeof(*blockEntry));
-		mpqapi_free_block(block_offset, block_size);
+		mpqapi_alloc_block(block_offset, block_size);
 		save_archive_modified = 1;
 	}
 }
 
-void mpqapi_free_block(int block_offset, int block_size)
+void mpqapi_alloc_block(int block_offset, int block_size)
 {
-	int v2;          // esi
-	int v3;          // edi
-	_BLOCKENTRY *v4; // eax
-	signed int v5;   // edx
-	signed int v6;   // ecx
-	int v7;          // ecx
-	BOOLEAN v8;      // zf
-	_BLOCKENTRY *v9; // eax
+	_BLOCKENTRY *block;
+	int i;
 
-	v2 = block_size;
-	v3 = block_offset;
-LABEL_2:
-	v4 = sgpBlockTbl;
-	v5 = 2048;
-	while (1) {
-		v6 = v5--;
-		if (!v6)
-			break;
-		v7 = v4->offset;
-		if (v4->offset && !v4->flags && !v4->sizefile) {
-			if (v7 + v4->sizealloc == v3) {
-				v3 = v4->offset;
-			LABEL_11:
-				v2 += v4->sizealloc;
-				memset(v4, 0, 0x10u);
-				goto LABEL_2;
+	block = sgpBlockTbl;
+	i = 2048;
+	while (i-- != 0) {
+		if (block->offset && !block->flags && !block->sizefile) {
+			if (block->offset + block->sizealloc == block_offset) {
+				block_offset = block->offset;
+				block_size += block->sizealloc;
+				memset(block, 0, sizeof(_BLOCKENTRY));
+				mpqapi_alloc_block(block_offset, block_size);
+				return;
 			}
-			if (v3 + v2 == v7)
-				goto LABEL_11;
+			if (block_offset + block_size == block->offset) {
+				block_size += block->sizealloc;
+				memset(block, 0, sizeof(_BLOCKENTRY));
+				mpqapi_alloc_block(block_offset, block_size);
+				return;
+			}
 		}
-		++v4;
+		++block;
 	}
-	v8 = v3 + v2 == sgdwMpqOffset;
-	if (v3 + v2 > sgdwMpqOffset) {
+	if (block_offset + block_size > sgdwMpqOffset) {
 		app_fatal("MPQ free list error");
-		v8 = v3 + v2 == sgdwMpqOffset;
 	}
-	if (v8) {
-		sgdwMpqOffset = v3;
+	if (block_offset + block_size == sgdwMpqOffset) {
+		sgdwMpqOffset = block_offset;
 	} else {
-		v9 = mpqapi_new_block(0);
-		v9->offset = v3;
-		v9->sizealloc = v2;
-		v9->sizefile = 0;
-		v9->flags = 0;
+		block = mpqapi_new_block(NULL);
+		block->offset = block_offset;
+		block->sizealloc = block_size;
+		block->sizefile = 0;
+		block->flags = 0;
 	}
 }
 
@@ -384,7 +373,7 @@ BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwL
 		if (v14 >= 0x400) {
 			v15 = destsize + v9->offset;
 			v9->sizealloc = destsize;
-			mpqapi_free_block(v15, v14);
+			mpqapi_alloc_block(v15, v14);
 		}
 	}
 	return 1;
@@ -472,7 +461,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 	}
 	if (!sgpBlockTbl || !sgpHashTbl) {
 		memset(&fhdr, 0, sizeof(fhdr));
-		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
+		if (!ParseMPQHeader(&fhdr, (int *)&sgdwMpqOffset)) {
 		LABEL_15:
 			CloseMPQ(lpFileName, 1, dwChar);
 			return 0;
