@@ -29,7 +29,7 @@ BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 		return SetFileAttributes(pszArchive, dwFileAttributesToSet);
 }
 
-void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
+void mpqapi_store_creation_time(const char *pszArchive, DWORD dwChar)
 {
 	HANDLE handle;
 	struct _WIN32_FIND_DATAA FindFileData;
@@ -283,7 +283,7 @@ _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_i
 	return pBlk;
 }
 
-BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
+BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD dwLen, _BLOCKENTRY *pBlk)
 {
 	const char *v4;              // esi
 	const char *v5;              // eax
@@ -432,7 +432,7 @@ BOOL mpqapi_has_file(const char *pszName)
 	return FetchHandle(pszName) != -1;
 }
 
-BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
+BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 {
 	const char *v3;         // ebp
 	BOOL v4;                // esi
@@ -461,7 +461,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 	}
 	if (!sgpBlockTbl || !sgpHashTbl) {
 		memset(&fhdr, 0, sizeof(fhdr));
-		if (!ParseMPQHeader(&fhdr, (int *)&sgdwMpqOffset)) {
+		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
 		LABEL_15:
 			CloseMPQ(lpFileName, 1, dwChar);
 			return 0;
@@ -493,7 +493,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
+BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 {
 	DWORD size;
 	DWORD NumberOfBytesRead;
@@ -533,7 +533,7 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 	return TRUE;
 }
 
-void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
+void CloseMPQ(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
 	if (bFree) {
 		MemFreeDbg(sgpBlockTbl);
@@ -553,7 +553,7 @@ void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
 	}
 }
 
-void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
+void mpqapi_store_modified_time(const char *pszArchive, DWORD dwChar)
 {
 	HANDLE handle;
 	struct _WIN32_FIND_DATAA FindFileData;
@@ -570,7 +570,7 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 	}
 }
 
-BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
+BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
     BOOL ret = FALSE;
     if (sghArchive == INVALID_HANDLE_VALUE)
