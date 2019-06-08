@@ -443,92 +443,70 @@ void multi_check_drop_player()
 
 void multi_process_network_packets()
 {
-	//int v0; // eax
-	TPktHdr *v1;       // ecx
-	TPktHdr *v2;       // edi
-	int v3;            // eax
-	BOOLEAN v4;        // zf
-	unsigned char *v5; // esi
-	int v6;            // ebx
-	int v7;            // eax
-	int v8;            // ecx
-	int v9;            // eax
-	int v10;           // eax
-	int v11;           // esi
-	int v12;           // eax
-	int v13;           // ecx
-	int v14;           // eax
-	//int v15; // eax
-	TPktHdr *pkt;    // [esp+0h] [ebp-Ch]
-	int len;         // [esp+4h] [ebp-8h]
-	char arglist[4]; // [esp+8h] [ebp-4h] /* fix, int */
+	int dx, dy;
+	TPktHdr *pkt;
+	DWORD dwMsgSize;
+	DWORD dwID;
+	BOOL cond;
+	char *data;
 
 	multi_clear_left_tbl();
 	multi_process_tmsgs();
-	//_LOBYTE(v0) = SNetReceiveMessage((int *)arglist, (char **)&pkt, &len);
-	if (SNetReceiveMessage((int *)arglist, (char **)&pkt, &len)) {
-		do {
-			++pkt_counter;
-			multi_clear_left_tbl();
-			v1 = pkt;
-			v2 = pkt;
-			if ((unsigned int)len >= sizeof(TPktHdr)
-			    && *(_DWORD *)arglist < MAX_PLRS
-			    && pkt->wCheck == 'ip'
-			    && (unsigned short)pkt->wLen == len) {
-				v3 = *(_DWORD *)arglist;
-				v4 = *(_DWORD *)arglist == myplr;
-				plr[v3]._pownerx = (unsigned char)pkt->px;
-				v5 = &v1->py;
-				plr[v3]._pownery = (unsigned char)v1->py;
-				if (!v4) {
-					v4 = gbBufferMsgs == 1;
-					plr[v3]._pHitPoints = v1->php;
-					plr[v3]._pMaxHP = v1->pmhp;
-					plr[v3]._pBaseStr = (unsigned char)v1->bstr;
-					plr[v3]._pBaseMag = (unsigned char)v1->bmag;
-					plr[v3]._pBaseDex = (unsigned char)v1->bdex;
-					if (!v4 && plr[v3].plractive && plr[v3]._pHitPoints) {
-						if (currlevel != plr[v3].plrlevel || plr[v3]._pLvlChanging) {
-							plr[v3].WorldX = (unsigned char)v1->px;
-							plr[v3].WorldY = (unsigned char)*v5;
-							plr[v3]._px = (unsigned char)v1->px;
-							plr[v3]._py = (unsigned char)*v5;
-							plr[v3]._ptargx = (unsigned char)v1->targx;
-							plr[v3]._ptargy = (unsigned char)v1->targy;
-						} else {
-							v6 = abs(plr[v3].WorldX - (unsigned char)v1->px);
-							v7 = abs(plr[*(_DWORD *)arglist].WorldY - (unsigned char)*v5);
-							if ((v6 > 3 || v7 > 3) && !dPlayer[(unsigned char)v2->px][(unsigned char)*v5]) {
-								FixPlrWalkTags(*(int *)arglist);
-								v8 = *(_DWORD *)arglist;
-								v9 = *(_DWORD *)arglist;
-								plr[v9]._poldx = plr[*(_DWORD *)arglist].WorldX;
-								plr[v9]._poldy = plr[v9].WorldY;
-								FixPlrWalkTags(v8);
-								v10 = *(_DWORD *)arglist;
-								plr[v10].WorldX = (unsigned char)v2->px;
-								plr[v10].WorldY = (unsigned char)*v5;
-								plr[v10]._px = (unsigned char)v2->px;
-								plr[v10]._py = (unsigned char)*v5;
-								dPlayer[plr[v10].WorldX][plr[v10].WorldY] = arglist[0] + 1;
-							}
-							v11 = abs(plr[*(_DWORD *)arglist]._px - plr[*(_DWORD *)arglist].WorldX);
-							v12 = abs(plr[*(_DWORD *)arglist]._py - plr[*(_DWORD *)arglist].WorldY);
-							v13 = *(_DWORD *)arglist;
-							if (v11 > 1 || v12 > 1) {
-								v14 = *(_DWORD *)arglist;
-								plr[v14]._px = plr[*(_DWORD *)arglist].WorldX;
-								plr[v14]._py = plr[v13].WorldY;
-							}
-							MakePlrPath(v13, (unsigned char)v2->targx, (unsigned char)v2->targy, 1u);
-						}
+	while (SNetReceiveMessage((int *)&dwID, &data, (int *)&dwMsgSize)) {
+		pkt_counter++;
+		multi_clear_left_tbl();
+		pkt = (TPktHdr *)data;
+		if (dwMsgSize < sizeof(TPktHdr))
+			continue;
+		if (dwID >= MAX_PLRS)
+			continue;
+		if (pkt->wCheck != 'ip')
+			continue;
+		if (pkt->wLen != dwMsgSize)
+			continue;
+		plr[dwID]._pownerx = pkt->px;
+		plr[dwID]._pownery = pkt->py;
+		if (dwID != myplr) {
+			// ASSERT: gbBufferMsgs != BUFFER_PROCESS (2)
+			plr[dwID]._pHitPoints = pkt->php;
+			plr[dwID]._pMaxHP = pkt->pmhp;
+			cond = gbBufferMsgs == 1;
+			plr[dwID]._pBaseStr = pkt->bstr;
+			plr[dwID]._pBaseMag = pkt->bmag;
+			plr[dwID]._pBaseDex = pkt->bdex;
+			if (!cond && plr[dwID].plractive && plr[dwID]._pHitPoints) {
+				if (currlevel == plr[dwID].plrlevel && !plr[dwID]._pLvlChanging) {
+					dx = abs(plr[dwID].WorldX - pkt->px);
+					dy = abs(plr[dwID].WorldY - pkt->py);
+					if ((dx > 3 || dy > 3) && dPlayer[pkt->px][pkt->py] == 0) {
+						FixPlrWalkTags(dwID);
+						plr[dwID]._poldx = plr[dwID].WorldX;
+						plr[dwID]._poldy = plr[dwID].WorldY;
+						FixPlrWalkTags(dwID);
+						plr[dwID].WorldX = pkt->px;
+						plr[dwID].WorldY = pkt->py;
+						plr[dwID]._px = pkt->px;
+						plr[dwID]._py = pkt->py;
+						dPlayer[plr[dwID].WorldX][plr[dwID].WorldY] = dwID + 1;
 					}
+					dx = abs(plr[dwID]._px - plr[dwID].WorldX);
+					dy = abs(plr[dwID]._py - plr[dwID].WorldY);
+					if (dx > 1 || dy > 1) {
+						plr[dwID]._px = plr[dwID].WorldX;
+						plr[dwID]._py = plr[dwID].WorldY;
+					}
+					MakePlrPath(dwID, pkt->targx, pkt->targy, TRUE);
+				} else {
+					plr[dwID].WorldX = pkt->px;
+					plr[dwID].WorldY = pkt->py;
+					plr[dwID]._px = pkt->px;
+					plr[dwID]._py = pkt->py;
+					plr[dwID]._ptargx = pkt->targx;
+					plr[dwID]._ptargy = pkt->targy;
 				}
-				multi_handle_all_packets(*(int *)arglist, (BYTE *)&v2[1], len - 19);
 			}
-			//_LOBYTE(v15) = SNetReceiveMessage((int *)arglist, (char **)&pkt, &len);
-		} while (SNetReceiveMessage((int *)arglist, (char **)&pkt, &len));
+		}
+		multi_handle_all_packets(dwID, (BYTE *)(pkt + 1), dwMsgSize - sizeof (TPktHdr));
 	}
 	if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
 		nthread_terminate_game("SNetReceiveMsg");
