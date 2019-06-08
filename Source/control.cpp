@@ -479,7 +479,7 @@ void DrawSpellList()
 				for (t = 0; t < 4; t++) {
 					if (plr[myplr]._pSplHotKey[t] == pSpell && plr[myplr]._pSplTHotKey[t] == pSplType) {
 						DrawSpellCel(x, y, pSpellCels, t + 48, 56);
-						printf(tempstr, "Spell Hot Key #F%i", t + 5);
+						sprintf(tempstr, "Spell Hot Key #F%i", t + 5);
 						AddPanelString(tempstr, 1);
 					}
 				}
