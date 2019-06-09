@@ -1883,7 +1883,7 @@ void SmithBuyItem()
 		}
 		smithitem[idx]._itype = ITYPE_NONE;
 	}
-	CalcPlrInv(myplr, 1);
+	CalcPlrInv(myplr, TRUE);
 }
 
 void S_SBuyEnter()
@@ -2267,7 +2267,7 @@ void WitchRechargeItem()
 	else
 		plr[myplr].InvList[i]._iCharges = plr[myplr].InvList[i]._iMaxCharges;
 
-	CalcPlrInv(myplr, 1u);
+	CalcPlrInv(myplr, TRUE);
 }
 
 void S_WRechargeEnter()
@@ -2320,7 +2320,7 @@ void BoyBuyItem()
 	StoreAutoPlace();
 	boyitem._itype = ITYPE_NONE;
 	stextshold = STORE_BOY;
-	CalcPlrInv(myplr, 1);
+	CalcPlrInv(myplr, TRUE);
 }
 
 void HealerBuyItem()

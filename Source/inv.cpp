@@ -1079,7 +1079,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 		drawsbarflag = 1;
 		break;
 	}
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 	if (pnum == myplr) {
 		if (cn == 1)
 			SetCursorPos(MouseX + (cursW >> 1), MouseY + (cursH >> 1));
@@ -1271,19 +1271,15 @@ void CheckInvCut(int pnum, int mx, int my)
 
 void inv_update_rem_item(int pnum, BYTE iv)
 {
-	BOOL Loadgfx;
-
 	if (iv < NUM_INVLOC) {
 		plr[pnum].InvBody[iv]._itype = ITYPE_NONE;
 	}
 
-	Loadgfx = FALSE;
-
-	if (plr[pnum]._pmode != PM_DEATH) {
-		Loadgfx = TRUE;
+	if (plr[pnum]._pmode == PM_DEATH) {
+		CalcPlrInv(pnum, FALSE);
+	} else {
+		CalcPlrInv(pnum, TRUE);
 	}
-
-	CalcPlrInv(pnum, Loadgfx);
 }
 
 void RemoveInvItem(int pnum, int iv)

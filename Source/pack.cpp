@@ -208,7 +208,7 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 			witchitem[i]._itype = -1;
 	}
 
-	CalcPlrInv(pnum, 0);
+	CalcPlrInv(pnum, FALSE);
 	pPlayer->pTownWarps = 0;
 	pPlayer->pDungMsgs = 0;
 	pPlayer->pLvlLoad = 0;

@@ -2492,7 +2492,7 @@ void CheckIdentify(int pnum, int cii)
 		pi = &plr[pnum].InvBody[cii];
 
 	pi->_iIdentified = TRUE;
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
@@ -2508,7 +2508,7 @@ void DoRepair(int pnum, int cii)
 
 	PlaySfxLoc(IS_REPAIR, p->WorldX, p->WorldY);
 	RepairItem(pi, p->_pLevel);
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
@@ -2557,7 +2557,7 @@ void DoRecharge(int pnum, int cii)
 		r = spelldata[pi->_iSpell].sBookLvl;
 		r = random(38, p->_pLevel / r) + 1;
 		RechargeItem(pi, r);
-		CalcPlrInv(pnum, 1);
+		CalcPlrInv(pnum, TRUE);
 	}
 
 	if (pnum == myplr)
