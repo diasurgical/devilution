@@ -4,7 +4,7 @@
 DWORD sgdwMpqOffset;
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
-BOOL save_archive_modified; // weak
+BOOL save_archive_modified;
 _BLOCKENTRY *sgpBlockTbl;
 BOOLEAN save_archive_open; // weak
 
@@ -29,7 +29,7 @@ BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 		return SetFileAttributes(pszArchive, dwFileAttributesToSet);
 }
 
-void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
+void mpqapi_store_creation_time(const char *pszArchive, DWORD dwChar)
 {
 	HANDLE handle;
 	struct _WIN32_FIND_DATAA FindFileData;
@@ -283,7 +283,7 @@ _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_i
 	return pBlk;
 }
 
-BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
+BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD dwLen, _BLOCKENTRY *pBlk)
 {
 	const char *v4;              // esi
 	const char *v5;              // eax
@@ -432,7 +432,7 @@ BOOL mpqapi_has_file(const char *pszName)
 	return FetchHandle(pszName) != -1;
 }
 
-BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
+BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 {
 	const char *v3;         // ebp
 	BOOL v4;                // esi
@@ -457,11 +457,11 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 		if (sghArchive == INVALID_HANDLE_VALUE)
 			return 0;
 		save_archive_open = 1;
-		save_archive_modified = 1;
+		save_archive_modified = TRUE;
 	}
 	if (!sgpBlockTbl || !sgpHashTbl) {
 		memset(&fhdr, 0, sizeof(fhdr));
-		if (!ParseMPQHeader(&fhdr, (int *)&sgdwMpqOffset)) {
+		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
 		LABEL_15:
 			CloseMPQ(lpFileName, 1, dwChar);
 			return 0;
@@ -489,11 +489,10 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
 	}
 	return 1;
 }
-// 65AB0C: using guessed type int save_archive_modified;
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
+BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 {
 	DWORD size;
 	DWORD NumberOfBytesRead;
@@ -526,14 +525,14 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 		pHdr->sectorsizeid = 3;
 		pHdr->version = 0;
 		*pdwNextFileStart = 0x10068;
-		save_archive_modified = 1;
+		save_archive_modified = TRUE;
 		save_archive_open = 1;
 	}
 
 	return TRUE;
 }
 
-void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
+void CloseMPQ(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
 	if (bFree) {
 		MemFreeDbg(sgpBlockTbl);
@@ -553,7 +552,7 @@ void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
 	}
 }
 
-void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
+void mpqapi_store_modified_time(const char *pszArchive, DWORD dwChar)
 {
 	HANDLE handle;
 	struct _WIN32_FIND_DATAA FindFileData;
@@ -564,30 +563,30 @@ void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
 		handle = FindFirstFile(pszArchive, &FindFileData);
 		if (handle != INVALID_HANDLE_VALUE) {
 			FindClose(handle);
-			*((FILETIME*) (dst) + dwChar * 2 + 1) = FindFileData.ftLastWriteTime;
+			*((FILETIME *)(dst) + dwChar * 2 + 1) = FindFileData.ftLastWriteTime;
 			mpqapi_reg_store_modification_time(dst, 160);
 		}
 	}
 }
 
-BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
+BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
-    BOOL ret = FALSE;
-    if (sghArchive == INVALID_HANDLE_VALUE)
+	BOOL ret = FALSE;
+	if (sghArchive == INVALID_HANDLE_VALUE)
 		ret = TRUE;
 	else {
-        ret = FALSE;
-        if (!save_archive_modified)
-          ret = TRUE;
-        else if (mpqapi_can_seek() && WriteMPQHeader() && mpqapi_write_block_table()) {
-	        if (mpqapi_write_hash_table())
+		ret = FALSE;
+		if (!save_archive_modified)
+			ret = TRUE;
+		else if (mpqapi_can_seek() && WriteMPQHeader() && mpqapi_write_block_table()) {
+			if (mpqapi_write_hash_table())
 				ret = TRUE;
 			else
 				ret = FALSE;
 		}
-    }
-    CloseMPQ(pszArchive, bFree, dwChar);
-    return ret;
+	}
+	CloseMPQ(pszArchive, bFree, dwChar);
+	return ret;
 }
 
 BOOL WriteMPQHeader()

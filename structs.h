@@ -1472,7 +1472,7 @@ typedef struct _FILEHEADER {
 	int signature;
 	int headersize;
 	int filesize;
-	short version;
+	WORD version;
 	short sectorsizeid;
 	int hashoffset;
 	int blockoffset;
