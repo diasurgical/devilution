@@ -2895,7 +2895,7 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
  */
 void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
-	int nDataStart, nDataSize, nDataCap, idx;
+	int nDataStart, nDataSize, idx, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
@@ -2923,6 +2923,10 @@ void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
 		idx += 256;
@@ -2930,9 +2934,9 @@ void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		idx += (light - 1) << 8;
 
 	Cl2DecDatLightTbl1(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
-	    nDataSize - nDataStart,
+	    pDecodeTo,
+	    pRLEBytes,
+	    nSize,
 	    nWidth,
 	    &pLightTbl[idx]);
 }
@@ -3095,7 +3099,7 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
  */
 void Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize;
+	int nDataStart, nDataSize, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
@@ -3123,12 +3127,14 @@ void Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
 	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
-		Cl2DecDatLightTbl1(pDecodeTo, &pRLEBytes[nDataStart], nDataSize - nDataStart, nWidth, &pLightTbl[light_table_index * 256]);
+		Cl2DecDatLightTbl1(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[light_table_index * 256]);
 	else
-		Cl2DecDatFrm1(pDecodeTo, &pRLEBytes[nDataStart], nDataSize - nDataStart, nWidth);
+		Cl2DecDatFrm1(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
 // 69BEF8: using guessed type int light_table_index;
 
@@ -3553,8 +3559,8 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
  */
 void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
-	int nDataStart, nDataSize, idx;
-	BYTE *pRLEBytes;
+	int nDataStart, nDataSize, idx, nSize;
+	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer != NULL);
@@ -3581,6 +3587,10 @@ void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
 		idx += 256;
@@ -3588,9 +3598,9 @@ void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		idx += (light - 1) << 8;
 
 	Cl2DecDatLightTbl2(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
-	    nDataSize - nDataStart,
+	    pDecodeTo,
+	    pRLEBytes,
+	    nSize,
 	    nWidth,
 	    &pLightTbl[idx]);
 }
@@ -3767,7 +3777,7 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
  */
 void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize;
+	int nDataStart, nDataSize, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
@@ -3795,12 +3805,14 @@ void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
 	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
-		Cl2DecDatLightTbl2(pDecodeTo, &pRLEBytes[nDataStart], nDataSize - nDataStart, nWidth, &pLightTbl[light_table_index * 256]);
+		Cl2DecDatLightTbl2(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[light_table_index * 256]);
 	else
-		Cl2DecDatFrm4(pDecodeTo, &pRLEBytes[nDataStart], nDataSize - nDataStart, nWidth);
+		Cl2DecDatFrm4(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
 // 69BEF8: using guessed type int light_table_index;
 
