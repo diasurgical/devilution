@@ -51,6 +51,10 @@
 // from diablo 2 beta
 #define MAXEXP					2000000000
 
+#define GOLD_SMALL_LIMIT		1000
+#define GOLD_MEDIUM_LIMIT		2500
+#define GOLD_MAX_LIMIT			5000
+
 #define PLR_NAME_LEN			32
 
 #define MAXPATHNODES			300
