@@ -434,63 +434,57 @@ BOOL mpqapi_has_file(const char *pszName)
 
 BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 {
-	const char *v3;         // ebp
-	BOOL v4;                // esi
-	DWORD v6;               // edi
-	int v8;                 // eax
-	int v10;                // eax
-	const char *lpFileName; // [esp+10h] [ebp-70h]
-	DWORD dwTemp;           // [esp+14h] [ebp-6Ch]
-	_FILEHEADER fhdr;       // [esp+18h] [ebp-68h]
+	DWORD dwFlagsAndAttributes;
+	DWORD key;
+	DWORD dwTemp;
+	_FILEHEADER fhdr;
 
-	v3 = pszArchive;
-	v4 = hidden;
-	lpFileName = pszArchive;
 	InitHash();
-	if (!mpqapi_set_hidden(v3, v4))
-		return 0;
-	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
-	save_archive_open = 0;
-	sghArchive = CreateFile(v3, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
+	if (!mpqapi_set_hidden(pszArchive, hidden)) {
+		return FALSE;
+	}
+	dwFlagsAndAttributes = gbMaxPlayers > 1 ? FILE_FLAG_WRITE_THROUGH : 0;
+	save_archive_open = FALSE;
+	sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
 	if (sghArchive == INVALID_HANDLE_VALUE) {
-		sghArchive = CreateFile(lpFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
+		sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, dwFlagsAndAttributes  | (hidden ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
 		if (sghArchive == INVALID_HANDLE_VALUE)
-			return 0;
-		save_archive_open = 1;
+			return FALSE;
+		save_archive_open = TRUE;
 		save_archive_modified = TRUE;
 	}
-	if (!sgpBlockTbl || !sgpHashTbl) {
+	if (sgpBlockTbl == NULL || sgpHashTbl == NULL) {
 		memset(&fhdr, 0, sizeof(fhdr));
-		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
-		LABEL_15:
-			CloseMPQ(lpFileName, 1, dwChar);
-			return 0;
+		if (ParseMPQHeader(&fhdr, &sgdwMpqOffset) == FALSE) {
+			goto on_error;
 		}
 		sgpBlockTbl = (_BLOCKENTRY *)DiabloAllocPtr(0x8000);
-		memset(sgpBlockTbl, 0, 0x8000u);
+		memset(sgpBlockTbl, 0, 0x8000);
 		if (fhdr.blockcount) {
-			if (SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1
-			    || !ReadFile(sghArchive, sgpBlockTbl, 0x8000u, &dwTemp, NULL)) {
-				goto LABEL_15;
-			}
-			v8 = Hash("(block table)", 3);
-			Decrypt(sgpBlockTbl, 0x8000, v8);
+			if (SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1)
+				goto on_error;
+			if (!ReadFile(sghArchive, sgpBlockTbl, 0x8000, &dwTemp, NULL))
+				goto on_error;
+			key = Hash("(block table)", 3);
+			Decrypt(sgpBlockTbl, 0x8000, key);
 		}
 		sgpHashTbl = (_HASHENTRY *)DiabloAllocPtr(0x8000);
-		memset(sgpHashTbl, 255, 0x8000u);
+		memset(sgpHashTbl, 255, 0x8000);
 		if (fhdr.hashcount) {
-			if (SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1
-			    || !ReadFile(sghArchive, sgpHashTbl, 0x8000u, &dwTemp, NULL)) {
-				goto LABEL_15;
-			}
-			v10 = Hash("(hash table)", 3);
-			Decrypt(sgpHashTbl, 0x8000, v10);
+			if (SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1)
+				goto on_error;
+			if (!ReadFile(sghArchive, sgpHashTbl, 0x8000, &dwTemp, NULL))
+				goto on_error;
+			key = Hash("(hash table)", 3);
+			Decrypt(sgpHashTbl, 0x8000, key);
 		}
+		return TRUE;
 	}
-	return 1;
+	return TRUE;
+on_error:
+	CloseMPQ(pszArchive, TRUE, dwChar);
+	return FALSE;
 }
-// 65AB14: using guessed type char save_archive_open;
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 {
