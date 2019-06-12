@@ -285,98 +285,87 @@ _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_i
 
 BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD dwLen, _BLOCKENTRY *pBlk)
 {
-	const char *v4;              // esi
-	const char *v5;              // eax
-	unsigned int destsize;       // ebx
-	const char *v7;              // eax
-	unsigned int v8;             // esi
-	_BLOCKENTRY *v9;             // edi
-	int v10;                     // eax
-	signed int v11;              // eax
-	unsigned int v13;            // eax
-	unsigned int v14;            // eax
-	int v15;                     // ecx
-	int size;                    // [esp+Ch] [ebp-10h]
-	const BYTE *v17;             // [esp+10h] [ebp-Ch]
-	int v18;                     // [esp+14h] [ebp-8h]
-	DWORD nNumberOfBytesToWrite; // [esp+18h] [ebp-4h]
+	DWORD *sectoroffsettable;
+	DWORD destsize, num_bytes, block_size, nNumberOfBytesToWrite;
+	const BYTE *src;
+	const char *tmp, *str_ptr;
+	int i, j;
 
-	v4 = pszName;
-	v17 = pbData;
-	v5 = strchr(pszName, ':');
+	str_ptr = pszName;
+	src = pbData;
+	while ((tmp = strchr(str_ptr, ':'))) {
+		str_ptr = tmp + 1;
+	}
+	while ((tmp = strchr(str_ptr, '\\'))) {
+		str_ptr = tmp + 1;
+	}
+	Hash(str_ptr, 3);
+	num_bytes = (dwLen + 4095) >> 12;
+	nNumberOfBytesToWrite = 4 * num_bytes + 4;
+	pBlk->offset = mpqapi_find_free_block(dwLen + nNumberOfBytesToWrite, &pBlk->sizealloc);
+	pBlk->sizefile = dwLen;
+	pBlk->flags = 0x80000100;
+	if (SetFilePointer(sghArchive, pBlk->offset, NULL, FILE_BEGIN) == (DWORD)-1)
+		return FALSE;
+	j = 0;
 	destsize = 0;
-	while (v5) {
-		v4 = v5 + 1;
-		v5 = strchr(v5 + 1, ':');
-	}
-	while (1) {
-		v7 = strchr(v4, '\\');
-		if (!v7)
-			break;
-		v4 = v7 + 1;
-	}
-	Hash(v4, 3);
-	v8 = dwLen;
-	v9 = pBlk;
-	size = 4 * ((unsigned int)(dwLen + 4095) >> 12) + 4;
-	nNumberOfBytesToWrite = 4 * ((unsigned int)(dwLen + 4095) >> 12) + 4;
-	v10 = mpqapi_find_free_block(size + dwLen, &pBlk->sizealloc);
-	v9->offset = v10;
-	v9->sizefile = v8;
-	v9->flags = 0x80000100;
-	if (SetFilePointer(sghArchive, v10, NULL, FILE_BEGIN) == -1)
-		return 0;
-	pBlk = 0;
-	v18 = 0;
-	while (v8) {
-		v11 = 0;
-		do
-			mpq_buf[v11++] -= 86;
-		while (v11 < 4096);
-		dwLen = v8;
-		if (v8 >= 0x1000)
-			dwLen = 4096;
-		memcpy(mpq_buf, v17, dwLen);
-		v17 += dwLen;
-		dwLen = PkwareCompress(mpq_buf, dwLen);
-		if (!v18) {
-			nNumberOfBytesToWrite = size;
-			pBlk = (_BLOCKENTRY *)DiabloAllocPtr(size);
-			memset(pBlk, 0, nNumberOfBytesToWrite);
-			if (!WriteFile(sghArchive, pBlk, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0))
-				goto LABEL_25;
+	sectoroffsettable = NULL;
+	while (dwLen != 0) {
+		for (i = 0; i < 4096; i++)
+			mpq_buf[i] -= 86;
+		DWORD len = dwLen;
+		if (dwLen >= 4096)
+			len = 4096;
+		memcpy(mpq_buf, src, len);
+		src += len;
+		len = PkwareCompress(mpq_buf, len);
+		if (j == 0) {
+			nNumberOfBytesToWrite = 4 * num_bytes + 4;
+			sectoroffsettable = (DWORD *)DiabloAllocPtr(nNumberOfBytesToWrite);
+			memset(sectoroffsettable, 0, nNumberOfBytesToWrite);
+			if (!WriteFile(sghArchive, sectoroffsettable, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0)) {
+				goto on_error;
+			}
 			destsize += nNumberOfBytesToWrite;
 		}
-		*(&pBlk->offset + v18) = destsize;
-		if (!WriteFile(sghArchive, mpq_buf, dwLen, (LPDWORD)&dwLen, 0))
-			goto LABEL_25;
-		++v18;
-		if (v8 <= 0x1000)
-			v8 = 0;
+		sectoroffsettable[j] = destsize;
+		if (!WriteFile(sghArchive, mpq_buf, len, &len, NULL)) {
+			goto on_error;
+		}
+		j++;
+		if (dwLen > 4096)
+			dwLen -= 4096;
 		else
-			v8 -= 4096;
-		destsize += dwLen;
+			dwLen = 0;
+		destsize += len;
 	}
-	*(&pBlk->offset + v18) = destsize;
-	if (SetFilePointer(sghArchive, -destsize, NULL, FILE_CURRENT) == -1
-	    || !WriteFile(sghArchive, pBlk, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0)
-	    || SetFilePointer(sghArchive, destsize - nNumberOfBytesToWrite, NULL, FILE_CURRENT) == -1) {
-	LABEL_25:
-		if (pBlk)
-			mem_free_dbg(pBlk);
-		return 0;
+
+	sectoroffsettable[j] = destsize;
+	if (SetFilePointer(sghArchive, -destsize, NULL, FILE_CURRENT) == (DWORD)-1) {
+		goto on_error;
 	}
-	mem_free_dbg(pBlk);
-	v13 = v9->sizealloc;
-	if (destsize < v13) {
-		v14 = v13 - destsize;
-		if (v14 >= 0x400) {
-			v15 = destsize + v9->offset;
-			v9->sizealloc = destsize;
-			mpqapi_alloc_block(v15, v14);
+
+	if (!WriteFile(sghArchive, sectoroffsettable, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0)) {
+		goto on_error;
+	}
+
+	if (SetFilePointer(sghArchive, destsize - nNumberOfBytesToWrite, NULL, FILE_CURRENT) == (DWORD)-1) {
+		goto on_error;
+	}
+
+	mem_free_dbg(sectoroffsettable);
+	if (destsize < pBlk->sizealloc) {
+		block_size = pBlk->sizealloc - destsize;
+		if (block_size >= 1024) {
+			pBlk->sizealloc = destsize;
+			mpqapi_alloc_block(pBlk->sizealloc + pBlk->offset, block_size);
 		}
 	}
-	return 1;
+	return TRUE;
+on_error:
+	if (sectoroffsettable)
+		mem_free_dbg(sectoroffsettable);
+	return FALSE;
 }
 
 int mpqapi_find_free_block(int size, int *block_size)
