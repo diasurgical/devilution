@@ -737,10 +737,11 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 	if (light >= 4)
 		idx += (light - 1) << 8;
 
-	tbl = &pLightTbl[idx];
-
 #ifdef USE_ASM
 	__asm {
+		mov		eax, pLightTbl
+		add		eax, idx
+		mov		tbl, eax
 		mov		esi, pRLEBytes
 		mov		edi, dst
 		mov		eax, BUFFER_WIDTH
@@ -786,6 +787,7 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 	BYTE width;
 	BYTE *end;
 
+	tbl = &pLightTbl[idx];
 	end = &pRLEBytes[nDataSize];
 
 	for (; pRLEBytes != end; dst -= BUFFER_WIDTH + nWidth) {
