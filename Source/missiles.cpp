@@ -2401,9 +2401,9 @@ void AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy,
 	missile[mi]._miy = sy;
 	missile[mi]._misx = sx;
 	missile[mi]._misy = sy;
+	missile[mi]._mirange = 100;
 	missile[mi]._miVar1 = 100 - missile[mi]._miAnimLen;
 	missile[mi]._miVar2 = 0;
-	missile[mi]._mirange = 100;
 	PutMissile(mi);
 }
 
