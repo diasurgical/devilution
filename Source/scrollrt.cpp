@@ -1596,10 +1596,10 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 	negPlr = dPlayer[sx][sy - 1];
 	negMon = dMonster[sx][sy - 1];
 
-	if (visiondebug && (bFlag & 0x40)) {
+	if (visiondebug && (bFlag & BFLAG_LIT)) {
 		CelDecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, 0, CelCap);
 	}
-	if (MissilePreFlag && (bFlag & 1)) {
+	if (MissilePreFlag && (bFlag & BFLAG_MISSILE)) {
 		DrawMissile(sx, sy, dx, dy, 0, CelCap, 1);
 	}
 	if (light_table_index < lightmax) {
@@ -1651,7 +1651,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 			}
 		}
 	}
-	if (bFlag & 0x20) {
+	if (bFlag & BFLAG_PLAYERLR) {
 		p = -(negPlr + 1);
 		if ((DWORD)p < MAX_PLRS) {
 			pPlayer = &plr[p];
@@ -1668,7 +1668,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 			// app_fatal("draw player: tried to draw illegal player %d", p);
 		}
 	}
-	if ((bFlag & 0x10) && ((bFlag & 0x40) || plr[myplr]._pInfraFlag) && negMon < 0) {
+	if ((bFlag & BFLAG_MONSTLR) && ((bFlag & BFLAG_LIT) || plr[myplr]._pInfraFlag) && negMon < 0) {
 		draw_monster_num = -(negMon + 1);
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
@@ -1691,7 +1691,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 			// app_fatal("Draw Monster: tried to draw illegal monster %d", draw_monster_num);
 		}
 	}
-	if (bFlag & 4) {
+	if (bFlag & BFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
 	}
 	if (bPlr > 0) {
@@ -1711,7 +1711,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 			// app_fatal("draw player: tried to draw illegal player %d", p);
 		}
 	}
-	if (nMon > 0 && ((bFlag & 0x40) || plr[myplr]._pInfraFlag)) {
+	if (nMon > 0 && ((bFlag & BFLAG_LIT) || plr[myplr]._pInfraFlag)) {
 		draw_monster_num = nMon - 1;
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
@@ -1734,7 +1734,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 			// app_fatal("Draw Monster: tried to draw illegal monster %d", draw_monster_num);
 		}
 	}
-	if (bFlag & 1) {
+	if (bFlag & BFLAG_MISSILE) {
 		DrawMissile(sx, sy, dx, dy, 0, CelCap, 0);
 	}
 	if (bObj != 0 && light_table_index < lightmax) {
