@@ -601,7 +601,7 @@ void ResyncMPQuests()
 
 void ResyncQuests()
 {
-	int i, tren;
+	int i, tren, x, y;
 
 	if (setlevel && setlvlnum == quests[QTYPE_PW]._qslvl && quests[QTYPE_PW]._qactive != 1 && leveltype == quests[QTYPE_PW]._qlvltype) {
 
@@ -636,7 +636,9 @@ void ResyncQuests()
 			TransVal = tren;
 		}
 		if (quests[QTYPE_BOL]._qvar1 == 3) {
-			ObjChangeMapResync(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
+			x = setpc_x;
+			y = setpc_y;
+			ObjChangeMapResync(x, y, x + setpc_w + 1, y + setpc_h + 1);
 			for (i = 0; i < nobjects; i++)
 				SyncObjectAnim(objectactive[i]);
 			tren = TransVal;
