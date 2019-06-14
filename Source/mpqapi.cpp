@@ -311,9 +311,10 @@ BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD d
 	destsize = 0;
 	sectoroffsettable = NULL;
 	while (dwLen != 0) {
+		DWORD len;
 		for (i = 0; i < 4096; i++)
 			mpq_buf[i] -= 86;
-		DWORD len = dwLen;
+		len = dwLen;
 		if (dwLen >= 4096)
 			len = 4096;
 		memcpy(mpq_buf, src, len);
