@@ -359,7 +359,7 @@ BOOL ForceTownTrig()
 	}
 
 	if (townwarps[2]) {
-		for (l = 1240; l <= 1254; l++) {
+		for (l = 1240; l <= 1255; l++) {
 			if (dPiece[cursmx][cursmy] == l) {
 				strcpy(infostr, "Down to hell");
 				cursmx = 41;
