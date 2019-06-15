@@ -4,10 +4,6 @@
 
 #include "../3rdParty/Storm/Source/storm.h"
 
-#ifdef _MSC_VER
-#pragma warning (disable : 4291) // no matching operator delete found
-#endif
-
 #define OBJECT_NAME(obj) (((const char *)&typeid(obj)) + 8)
 
 /******************************************************************************
@@ -59,13 +55,6 @@ private:
 	// Hide copy-constructor and assignment operator
 	TList(const TList &);
 	TList &operator=(const TList &);
-
-	// replacement new/delete operators for Storm objects
-	static __forceinline T *SNew(size_t extralen, int flags)
-	{
-		void *obj = SMemAlloc(sizeof(T) + extralen, (char *)OBJECT_NAME(T), SLOG_OBJECT, flags | (1<<3));
-		return new (obj) T();
-	}
 
 	static __forceinline void SDelete(T *node)
 	{
@@ -131,7 +120,7 @@ T *TList<T>::Remove(T *node)
 template <class T>
 T *TList<T>::Create(InsertPos pos, size_t extra, int memflags)
 {
-	T *node = SNew(extra, memflags);
+	T *node = new (extra, memflags) T;
 	if (pos != NONE)
 		Insert(node, pos, NULL);
 	return node;
