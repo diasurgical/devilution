@@ -2754,7 +2754,7 @@ void CheckStoreBtn()
 			if (MouseX < 344 || MouseX > 616)
 				return;
 		} else {
-			if (MouseX < 3 || MouseX > 616)
+			if (MouseX < 24 || MouseX > 616)
 				return;
 		}
 		y = (MouseY - 32) / 12;
@@ -2764,7 +2764,7 @@ void CheckStoreBtn()
 					STextUp();
 					stextscrlubtn = 10;
 				} else {
-					--stextscrlubtn;
+					stextscrlubtn--;
 				}
 			}
 			if (y == 20) {
@@ -2772,7 +2772,7 @@ void CheckStoreBtn()
 					STextDown();
 					stextscrldbtn = 10;
 				} else {
-					--stextscrldbtn;
+					stextscrldbtn--;
 				}
 			}
 		} else if (y >= 5) {
@@ -2782,7 +2782,7 @@ void CheckStoreBtn()
 				if (stext[y - 2]._ssel) {
 					y -= 2;
 				} else if (stext[y - 1]._ssel) {
-					--y;
+					y--;
 				}
 			}
 			if (stext[y]._ssel || stextscrl && y == 22) {
