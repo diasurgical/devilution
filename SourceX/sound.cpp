@@ -112,7 +112,6 @@ void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 
 	tc = GetTickCount();
 	if (tc - pSnd->start_tc < 80) {
-		pSnd->start_tc = GetTickCount();
 		return;
 	}
 
