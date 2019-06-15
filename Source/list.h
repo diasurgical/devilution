@@ -69,7 +69,6 @@ private:
 
 	static __forceinline void SDelete(T *node)
 	{
-		node->~T();
 		SMemFree(node, (char *)OBJECT_NAME(T), SLOG_OBJECT, 0);
 	}
 };
@@ -97,8 +96,10 @@ TList<T>::TList()
 template <class T>
 void TList<T>::DeleteAll()
 {
-	while (T *node = m_link.Next())
+	while (T *node = m_link.Next()) {
+		node->Delete(0x0);
 		SDelete(node);
+	}
 }
 
 //=============================================================================
@@ -122,6 +123,7 @@ T *TList<T>::Remove(T *node)
 {
 	TLink<T> *link = node ? &node->m_Link : &m_link;
 	T *next = link->Next();
+	node->Delete(0x0);
 	SDelete(node);
 	return next;
 }
