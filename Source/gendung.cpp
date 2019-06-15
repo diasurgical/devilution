@@ -5,17 +5,17 @@ int themeCount;
 char nTransTable[2049];
 //int dword_52D204;
 int dMonster[MAXDUNX][MAXDUNY];
-BYTE dungeon[40][40];
+BYTE dungeon[DMAXX][DMAXY];
 char dObject[MAXDUNX][MAXDUNY];
 BYTE *pSpeedCels;
 int nlevel_frames; // weak
-char pdungeon[40][40];
+char pdungeon[DMAXX][DMAXY];
 char dDead[MAXDUNX][MAXDUNY];
 MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY];
 char dPreLight[MAXDUNX][MAXDUNY];
-char TransVal; // weak
+char TransVal;
 int MicroTileLen;
-char dflags[40][40];
+char dflags[DMAXX][DMAXY];
 int dPiece[MAXDUNX][MAXDUNY];
 char dLight[MAXDUNX][MAXDUNY];
 int setloadflag_2; // weak
@@ -887,83 +887,44 @@ void DRLG_CreateThemeRoom(int themeIndex)
 
 void DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rndSize)
 {
-	int v5; // ebx
-	//int v7; // eax
-	int v8;             // esi
-	int v9;             // edi
-	int v10;            // eax
-	int v12;            // eax
-	int v14;            // eax
-	int v16;            // eax
-	int v17;            // edi
-	int v18;            // esi
-	int v19;            // ecx
-	int v20;            // ecx
-	int v21;            // eax
-	int minSize2;       // [esp+10h] [ebp-1Ch]
-	int maxSize2;       // [esp+14h] [ebp-18h]
-	unsigned char *v24; // [esp+18h] [ebp-14h]
-	signed int x_start; // [esp+1Ch] [ebp-10h]
-	int x;              // [esp+20h] [ebp-Ch]
-	int width;          // [esp+24h] [ebp-8h]
-	int height;         // [esp+28h] [ebp-4h]
+	int i, j;
+	int themeW, themeH;
+	int rv2, min, max;
 
-	v5 = 0;
-	maxSize2 = maxSize;
-	minSize2 = minSize;
 	themeCount = 0;
 	memset(themeLoc, 0, sizeof(*themeLoc));
-	do {
-		x = 0;
-		x_start = 20;
-		v24 = (unsigned char *)dungeon + v5;
-		do {
-			if (*v24 == floor) {
-				if (!random(0, freq)) {
-					//_LOBYTE(v7) = DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height);
-					if (DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height)) {
-						if (rndSize) {
-							v8 = minSize2 - 2;
-							v9 = maxSize2 - 2;
-							v10 = random(0, width - (minSize2 - 2) + 1);
-							v12 = minSize2 - 2 + random(0, v10);
-							if (v12 < minSize2 - 2 || (width = v12, v12 > v9))
-								width = minSize2 - 2;
-							v14 = random(0, height - v8 + 1);
-							v16 = v8 + random(0, v14);
-							if (v16 < v8 || v16 > v9)
-								v16 = minSize2 - 2;
-							height = v16;
-						} else {
-							v16 = height;
-						}
-						v17 = themeCount;
-						v18 = themeCount;
-						themeLoc[v18].x = x + 1;
-						themeLoc[v18].y = v5 + 1;
-						v19 = width;
-						themeLoc[v18].width = width;
-						themeLoc[v18].height = v16;
-						v20 = x + v19;
-						v21 = v5 + v16;
-						if (leveltype == DTYPE_CAVES)
-							DRLG_RectTrans(x_start, 2 * v5 + 20, 2 * v20 + 15, 2 * v21 + 15);
-						else
-							DRLG_MRectTrans(x + 1, v5 + 1, v20, v21);
-						themeLoc[v18].ttval = TransVal - 1;
-						DRLG_CreateThemeRoom(v17);
-						++themeCount;
-					}
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
+			if (dungeon[i][j] == floor && !random(0, freq) && DRLG_WillThemeRoomFit(floor, i, j, minSize, maxSize, &themeW, &themeH)) {
+				if (rndSize) {
+					min = minSize - 2;
+					max = maxSize - 2;
+					rv2 = min + random(0, random(0, themeW - min + 1));
+					if (rv2 >= min && rv2 <= max)
+						themeW = rv2;
+					else
+						themeW = min;
+					rv2 = min + random(0, random(0, themeH - min + 1));
+					if (rv2 >= min && rv2 <= max)
+						themeH = rv2;
+					else
+						themeH = min;
 				}
+				themeLoc[themeCount].x = i + 1;
+				themeLoc[themeCount].y = j + 1;
+				themeLoc[themeCount].width = themeW;
+				themeLoc[themeCount].height = themeH;
+				if (leveltype == DTYPE_CAVES)
+					DRLG_RectTrans(2 * i + 20, 2 * j + 20, 2 * (i + themeW) + 15, 2 * (j + themeH) + 15);
+				else
+					DRLG_MRectTrans(i + 1, j + 1, i + themeW, j + themeH);
+				themeLoc[themeCount].ttval = TransVal - 1;
+				DRLG_CreateThemeRoom(themeCount);
+				themeCount++;
 			}
-			x_start += 2;
-			++x;
-			v24 += 40;
-		} while (x_start < 100);
-		++v5;
-	} while (v5 < 40);
+		}
+	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_HoldThemeRooms()
 {
