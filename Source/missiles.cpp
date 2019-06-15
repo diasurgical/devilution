@@ -2451,8 +2451,8 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 	missile[mi]._misource = id;
 	missile[mi]._miAnimType = missiledata[mitype].mFileNum;
 	missile[mi]._miDrawFlag = missiledata[mitype].mDraw;
-	missile[mi]._mimfnum = midir;
 	missile[mi]._mispllvl = spllvl;
+	missile[mi]._mimfnum = midir;
 
 	if (missile[mi]._miAnimType == 255 || misfiledata[missile[mi]._miAnimType].mAnimFAmt < 8)
 		SetMissDir(mi, 0);
