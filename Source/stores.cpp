@@ -2754,7 +2754,7 @@ void CheckStoreBtn()
 			if (MouseX < 344 || MouseX > 616)
 				return;
 		} else {
-			if (MouseX < 3 || MouseX > 616)
+			if (MouseX < 24 || MouseX > 616)
 				return;
 		}
 		y = (MouseY - 32) / 12;
