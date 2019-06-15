@@ -7,6 +7,7 @@
 #include <winuser.h>
 #include <winsock.h>
 #include <ddraw.h>
+#include <limits>
 
 // Note to self: Linker error => forgot a return value in cpp
 
@@ -52,6 +53,8 @@ typedef struct _WSIZE
 } WSIZE, *PWSIZE;
 
 #ifdef __cplusplus
+static float infinity = std::numeric_limits<float>::infinity();
+
 struct CCritSect {
 	CRITICAL_SECTION m_critsect;
 
