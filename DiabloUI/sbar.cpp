@@ -21,8 +21,8 @@ BOOL __fastcall Sbar_CheckIfNextHero(HWND hWnd)
 // ref: 0x100099DC
 int __fastcall Sbar_NumScrollLines(HWND hWnd, int width, int height)
 {
-	_DWORD *v4;            // eax
-	_DWORD *v5;            // esi
+	DWORD *v4;            // eax
+	DWORD *v5;            // esi
 	int result;            // eax
 	signed int v7;         // ecx
 	LONG v8;               // ebx
@@ -36,7 +36,7 @@ int __fastcall Sbar_NumScrollLines(HWND hWnd, int width, int height)
 		return 0;
 	if (!IsWindowVisible(hWnd))
 		return 0;
-	v4 = (_DWORD *)GetWindowLongA(hWnd, -21);
+	v4 = (DWORD *)GetWindowLongA(hWnd, -21);
 	v5 = v4;
 	if (!v4)
 		return 0;
@@ -89,60 +89,60 @@ void __fastcall Sbar_DrawScrollBar(HWND hWnd, int nIDDlgItem, int width, int hei
 	if (v4) {
 		v5 = GetWindowLongA(v4, -21);
 		if (v5) {
-			if (*(_DWORD *)(v5 + 4)) {
-				v7                   = *(_DWORD *)(v5 + 16) == 0;
-				*(_DWORD *)(v5 + 52) = width;
-				*(_DWORD *)(v5 + 56) = height;
+			if (*(DWORD *)(v5 + 4)) {
+				v7                   = *(DWORD *)(v5 + 16) == 0;
+				*(DWORD *)(v5 + 52) = width;
+				*(DWORD *)(v5 + 56) = height;
 				if (!v7) {
 					SrcBuffer.left   = 0;
 					DstRect.left     = 0;
 					SrcBuffer.top    = 0;
 					DstRect.top      = 0;
-					DstRect.right    = *(_DWORD *)(v5 + 8) - 1;
-					DstRect.bottom   = *(_DWORD *)(v5 + 12) - 1;
-					SrcBuffer.right  = *(_DWORD *)(v5 + 8) - 1;
-					SrcBuffer.bottom = *(_DWORD *)(v5 + 24) - 1;
+					DstRect.right    = *(DWORD *)(v5 + 8) - 1;
+					DstRect.bottom   = *(DWORD *)(v5 + 12) - 1;
+					SrcBuffer.right  = *(DWORD *)(v5 + 8) - 1;
+					SrcBuffer.bottom = *(DWORD *)(v5 + 24) - 1;
 					SBltROP3Tiled(
 					    *(void **)(v5 + 4),
 					    &DstRect,
 					    *(POINT **)(v5 + 8),
-					    *(_DWORD *)(v5 + 16),
+					    *(DWORD *)(v5 + 16),
 					    &SrcBuffer,
 					    *(RECT **)(v5 + 20),
 					    0,
 					    0,
 					    0,
 					    0xCC0020u);
-					if (*(_DWORD *)(v5 + 28)) {
+					if (*(DWORD *)(v5 + 28)) {
 						if (width <= 1)
 							v8 = 22;
 						else
-							v8 = height * (*(_DWORD *)(v5 + 12) - *(_DWORD *)(v5 + 36) - 44) / (width - 1) + 22;
+							v8 = height * (*(DWORD *)(v5 + 12) - *(DWORD *)(v5 + 36) - 44) / (width - 1) + 22;
 						SBltROP3(
-						    (void *)(v8 * *(_DWORD *)(v5 + 8) + *(_DWORD *)(v5 + 4) + 3),
+						    (void *)(v8 * *(DWORD *)(v5 + 8) + *(DWORD *)(v5 + 4) + 3),
 						    *(void **)(v5 + 28),
 						    18,
-						    *(_DWORD *)(v5 + 36),
-						    *(_DWORD *)(v5 + 8),
-						    *(_DWORD *)(v5 + 32),
+						    *(DWORD *)(v5 + 36),
+						    *(DWORD *)(v5 + 8),
+						    *(DWORD *)(v5 + 32),
 						    0,
 						    0xCC0020u);
 						SBltROP3(
 						    *(void **)(v5 + 4),
-						    (void *)(*(_DWORD *)(v5 + 40) + 22 * (~*(_BYTE *)v5 & 1) * *(_DWORD *)(v5 + 44)),
-						    *(_DWORD *)(v5 + 8),
+						    (void *)(*(DWORD *)(v5 + 40) + 22 * (~*(BYTE *)v5 & 1) * *(DWORD *)(v5 + 44)),
+						    *(DWORD *)(v5 + 8),
 						    22,
-						    *(_DWORD *)(v5 + 8),
-						    *(_DWORD *)(v5 + 44),
+						    *(DWORD *)(v5 + 8),
+						    *(DWORD *)(v5 + 44),
 						    0,
 						    0xCC0020u);
 						SBltROP3(
-						    (void *)(*(_DWORD *)(v5 + 4) + *(_DWORD *)(v5 + 8) * (*(_DWORD *)(v5 + 12) - 22)),
-						    (void *)(*(_DWORD *)(v5 + 40) + 22 * ((~*(_BYTE *)v5 & 4 | 8u) >> 2) * *(_DWORD *)(v5 + 44)),
-						    *(_DWORD *)(v5 + 8),
+						    (void *)(*(DWORD *)(v5 + 4) + *(DWORD *)(v5 + 8) * (*(DWORD *)(v5 + 12) - 22)),
+						    (void *)(*(DWORD *)(v5 + 40) + 22 * ((~*(BYTE *)v5 & 4 | 8u) >> 2) * *(DWORD *)(v5 + 44)),
+						    *(DWORD *)(v5 + 8),
 						    22,
-						    *(_DWORD *)(v5 + 8),
-						    *(_DWORD *)(v5 + 44),
+						    *(DWORD *)(v5 + 8),
+						    *(DWORD *)(v5 + 44),
 						    0,
 						    0xCC0020u);
 						InvalidateRect(hWnda, 0, 0);
@@ -194,7 +194,7 @@ void __cdecl Sbar_cpp_init2()
 void __fastcall Sbar_FreeScrollBar(HWND hWnd, int nIDDlgItem)
 {
 	HWND v2;    // eax MAPDST
-	_DWORD *v4; // eax MAPDST
+	DWORD *v4; // eax MAPDST
 	void *v6;   // eax
 	void *v7;   // eax
 	void *v8;   // eax
@@ -202,7 +202,7 @@ void __fastcall Sbar_FreeScrollBar(HWND hWnd, int nIDDlgItem)
 
 	v2 = GetDlgItem(hWnd, nIDDlgItem);
 	if (v2) {
-		v4 = (_DWORD *)GetWindowLongA(v2, -21);
+		v4 = (DWORD *)GetWindowLongA(v2, -21);
 		if (v4) {
 			v6 = (void *)v4[1];
 			if (v6)

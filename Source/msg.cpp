@@ -522,7 +522,7 @@ void DeltaLoadLevel()
 					decode_enemy(i, sgLevels[currlevel].monster[i]._menemy);
 					if (monster[i]._mx && monster[i]._mx != 1 || monster[i]._my)
 						dMonster[monster[i]._mx][monster[i]._my] = i + 1;
-					if (i < 4) {
+					if (i < MAX_PLRS) {
 						MAI_Golum(i);
 						monster[i]._mFlags |= (MFLAG_TARGETS_MONSTER | MFLAG_GOLEM);
 					} else {
@@ -985,8 +985,8 @@ void NetSendCmdString(int pmask, const char *pszStr)
 	int dwStrLen;
 	TCmdString cmd;
 
-	cmd.bCmd = CMD_STRING;
 	dwStrLen = strlen(pszStr);
+	cmd.bCmd = CMD_STRING;
 	strcpy(cmd.str, pszStr);
 	multi_send_msg_packet(pmask, (BYTE *)&cmd.bCmd, dwStrLen + 2);
 }
@@ -1478,37 +1478,39 @@ BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 	BOOL result;
 	TCmdPItem *pD;
 	int i;
+	BOOL found;
 
+	result = TRUE;
+	found = FALSE;
 	if (gbMaxPlayers != 1) {
-		for (i = 0; i < MAXITEMS; i++) {
-			pD = &sgLevels[bLevel].item[i];
-			if (*(BYTE *)pD != 0xFF
-			    && pD->wIndx == pI->wIndx
-			    && pD->wCI == pI->wCI
-			    && pD->dwSeed == pI->dwSeed) {
-				if (pD->bCmd == CMD_STAND) {
-					sgbDeltaChanged = 1;
-					pD->bCmd = CMD_WALKXY;
-					return TRUE;
-				} else if (pD->bCmd == CMD_WALKXY) {
-					return TRUE;
-				} else if (pD->bCmd == CMD_ACK_PLRINFO) {
-					*(BYTE *)pD = 0xFF;
-					sgbDeltaChanged = 1;
-					return TRUE;
-				} else {
-					app_fatal("delta:1");
-				}
-				return result;
+		pD = sgLevels[bLevel].item;
+		for (i = 0; i < MAXITEMS; i++, pD++) {
+			if (pD->bCmd != 0xFF && pD->wIndx == pI->wIndx && pD->wCI == pI->wCI && pD->dwSeed == pI->dwSeed) {
+				found = TRUE;
+				break;
 			}
 		}
-
+		if (found) {
+			if (pD->bCmd == CMD_WALKXY) {
+				return result;
+			}
+			if (pD->bCmd == CMD_STAND) {
+				sgbDeltaChanged = 1;
+				pD->bCmd = CMD_WALKXY;
+				return result;
+			}
+			if (pD->bCmd == CMD_ACK_PLRINFO) {
+				pD->bCmd = 0xFF;
+				sgbDeltaChanged = 1;
+				return result;
+			}
+			app_fatal("delta:1");
+		}
 		if (((pI->wCI >> 8) & 0x80) == 0)
 			return FALSE;
-
-		for (i = 0; i < MAXITEMS; i++) {
-			pD = &sgLevels[bLevel].item[i];
-			if (*(BYTE *)pD == 0xFF) {
+		pD = sgLevels[bLevel].item;
+		for (i = 0; i < MAXITEMS; i++, pD++) {
+			if (pD->bCmd == 0xFF) {
 				sgbDeltaChanged = 1;
 				pD->bCmd = CMD_WALKXY;
 				pD->x = pI->x;
@@ -1523,11 +1525,12 @@ BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 				pD->bMCh = pI->bMCh;
 				pD->wValue = pI->wValue;
 				pD->dwBuff = pI->dwBuff;
-				return TRUE;
+				result = TRUE;
+				break;
 			}
 		}
 	}
-	return TRUE;
+	return result;
 }
 // 679660: using guessed type char gbMaxPlayers;
 

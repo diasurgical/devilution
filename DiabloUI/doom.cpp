@@ -45,8 +45,8 @@ void __fastcall Doom_GetSetWndText(HWND hWnd, int msg, int nFont, int a4)
 // ref: 0x1000663F
 void __fastcall Doom_PrintStrWithSpin(HWND hWnd, BOOL a2)
 {
-	_DWORD *v3;       // eax
-	_DWORD *v4;       // esi
+	DWORD *v3;       // eax
+	DWORD *v4;       // esi
 	char *v5;         // ebx
 	int v6;           // edi
 	size_t v7;        // eax
@@ -57,7 +57,7 @@ void __fastcall Doom_PrintStrWithSpin(HWND hWnd, BOOL a2)
 	char *v12;        // [esp+108h] [ebp-Ch]
 	int v14;          // [esp+110h] [ebp-4h]
 
-	v3 = (_DWORD *)GetWindowLongA(hWnd, -21);
+	v3 = (DWORD *)GetWindowLongA(hWnd, -21);
 	v4 = v3;
 	if (v3 && *v3) {
 		GetWindowTextA(hWnd, String, 255);
@@ -103,23 +103,23 @@ void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int a2, int bmp_flags)
 // ref: 0x1000678A
 void __fastcall Doom_GetWindowROP3(HWND hWnd1, HWND hWnd2)
 {
-	_DWORD *v3;          // ebx
+	DWORD *v3;          // ebx
 	LONG v4;             // eax MAPDST
 	struct tagRECT Rect; // [esp+Ch] [ebp-14h]
 
-	v3 = (_DWORD *)GetWindowLongA(hWnd1, -21);
+	v3 = (DWORD *)GetWindowLongA(hWnd1, -21);
 	v4 = GetWindowLongA(hWnd2, -21);
 	if (v3 && *v3 && v4) {
-		if (*(_DWORD *)v4) {
+		if (*(DWORD *)v4) {
 			GetWindowRect(hWnd2, &Rect);
 			ScreenToClient(hWnd1, (LPPOINT)&Rect);
 			ScreenToClient(hWnd1, (LPPOINT)&Rect.right);
 			SBltROP3(
 			    *(void **)v4,
 			    (void *)(Rect.left + *v3 + Rect.top * v3[1]),
-			    *(_DWORD *)(v4 + 4),
-			    *(_DWORD *)(v4 + 8),
-			    *(_DWORD *)(v4 + 4),
+			    *(DWORD *)(v4 + 4),
+			    *(DWORD *)(v4 + 8),
+			    *(DWORD *)(v4 + 4),
 			    v3[1],
 			    0,
 			    0xCC0020u);
@@ -201,13 +201,13 @@ void __fastcall Doom_GetSetWndTxt3(HWND hWnd, int msg, int nFont)
 // ref: 0x1000695D
 void __fastcall Doom_PrintStrWithSpn2(HWND hWnd, int justify_type)
 {
-	_DWORD *v2;       // eax
-	_DWORD *v3;       // esi
+	DWORD *v2;       // eax
+	DWORD *v3;       // esi
 	char *v4;         // edi
 	int v5;           // eax
 	char String[256]; // [esp+4h] [ebp-108h]
 
-	v2 = (_DWORD *)GetWindowLongA(hWnd, -21);
+	v2 = (DWORD *)GetWindowLongA(hWnd, -21);
 	v3 = v2;
 	if (v2 && *v2) {
 		GetWindowTextA(hWnd, String, 255);
@@ -306,7 +306,7 @@ void __fastcall Doom_PrintTextMsg403(HWND hWnd)
 
 	v2        = (BYTE *)GetWindowLongA(hWnd, -21);
 	pWidthBin = v2;
-	if (v2 && *(_DWORD *)v2) {
+	if (v2 && *(DWORD *)v2) {
 		GetWindowTextA(hWnd, String, 255);
 		v14 = strlen(String);
 		v3  = Focus_GetSpinWidthOrZero();
@@ -324,7 +324,7 @@ void __fastcall Doom_PrintTextMsg403(HWND hWnd)
 		if (v12)
 			String[v14 - 1] = 124; // *(&v9 + v14) = 124;
 		v8                  = artfont_GetFontMaxHeight();
-		artfont_PrintFontStr(i, (DWORD **)pWidthBin, v4, (*((_DWORD *)pWidthBin + 2) - v8) / 2);
+		artfont_PrintFontStr(i, (DWORD **)pWidthBin, v4, (*((DWORD *)pWidthBin + 2) - v8) / 2);
 	}
 }
 

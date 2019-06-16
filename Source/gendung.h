@@ -7,17 +7,17 @@ extern int themeCount;
 extern char nTransTable[2049];
 //int dword_52D204;
 extern int dMonster[MAXDUNX][MAXDUNY];
-extern BYTE dungeon[40][40];
+extern BYTE dungeon[DMAXX][DMAXY];
 extern char dObject[MAXDUNX][MAXDUNY];
 extern BYTE *pSpeedCels;
 extern int nlevel_frames; // weak
-extern char pdungeon[40][40];
+extern char pdungeon[DMAXX][DMAXY];
 extern char dDead[MAXDUNX][MAXDUNY];
 extern MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY];
 extern char dPreLight[MAXDUNX][MAXDUNY];
 extern char TransVal; // weak
 extern int MicroTileLen;
-extern char dflags[40][40];
+extern char dflags[DMAXX][DMAXY];
 extern int dPiece[MAXDUNX][MAXDUNY];
 extern char dLight[MAXDUNX][MAXDUNY];
 extern int setloadflag_2; // weak

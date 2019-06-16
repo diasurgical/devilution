@@ -17,7 +17,7 @@ int UNKCALL ModmStat_10008C87(void *arg) { return 0; }
 /* {
 	return SDlgDialogBoxParam(hInstance, "MODMSTAT_DIALOG", arg, ModmStat_10008CA0, 0);
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10008CA0
 int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
@@ -53,7 +53,7 @@ int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 						Focus_10007458((void *)lParam);
 						Focus_100075DC(hWnd, (HWND)lParam);
 					}
-					else if ( (_WORD)wParam == 1 || (_WORD)wParam == 2 )
+					else if ( (WORD)wParam == 1 || (WORD)wParam == 2 )
 					{
 						ModmStat_10008E89((int)hWnd, 1);
 					}
@@ -74,8 +74,8 @@ int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 	}
 	return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 // 1002A258: using guessed type int dword_1002A258;
 // 1002A25C: using guessed type int dword_1002A25C;
 
@@ -83,10 +83,10 @@ int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 int UNKCALL ModmStat_10008DB3(HWND hDlg) { return 0; }
 /* {
 	HWND v1; // esi
-	_DWORD *v2; // eax
+	DWORD *v2; // eax
 
 	v1 = hDlg;
-	v2 = (_DWORD *)GetWindowLongA(hDlg, -21);
+	v2 = (DWORD *)GetWindowLongA(hDlg, -21);
 	local_10007F72(v2);
 	Focus_100076C3();
 	Doom_10006C53(v1, (int *)&unk_10022CB4);
@@ -123,7 +123,7 @@ BOOL UNKCALL ModmStat_10008DE4(HWND hWnd) { return 0; }
 	dword_1002A25C = 0;
 	return result;
 } */
-// 10010412: using guessed type int __stdcall SDlgSetTimer(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010412: using guessed type int __stdcall SDlgSetTimer(DWORD, DWORD, DWORD, DWORD);
 // 1002A258: using guessed type int dword_1002A258;
 // 1002A25C: using guessed type int dword_1002A25C;
 // 1002A260: using guessed type int (*dword_1002A260)(void);
@@ -151,8 +151,8 @@ int __fastcall ModmStat_10008E89(int a1, int a2) { return 0; }
 	return result;
 } */
 // 1002A260: invalid function type has been ignored
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
-// 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
+// 10010418: using guessed type int __stdcall SDlgKillTimer(DWORD, DWORD);
 // 1002A25C: using guessed type int dword_1002A25C;
 // 1002A260: using guessed type int (*dword_1002A260)(void);
 

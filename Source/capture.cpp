@@ -22,7 +22,7 @@ void CaptureScreen()
 		lock_buf(2);
 		success = CaptureHdr(hObject, 640, 480);
 		if (success) {
-			success = CapturePix(hObject, 640, 480, 768, &gpBuffer[SCREENXY(0, 0)]);
+			success = CapturePix(hObject, 640, 480, BUFFER_WIDTH, &gpBuffer[SCREENXY(0, 0)]);
 			if (success) {
 				success = CapturePal(hObject, palette);
 			}

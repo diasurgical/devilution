@@ -740,7 +740,7 @@ BOOLEAN StormDestroy(void)
 	return true;
 }
 
-BOOLEAN SFileSetBasePath(char *)
+BOOL SFileSetBasePath(char *)
 {
 	DUMMY();
 	return true;

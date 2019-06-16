@@ -1,7 +1,7 @@
 // ref: 0x100028C2
-void UNKCALL BNetGW_100028C2(_DWORD *arg) { return; }
+void UNKCALL BNetGW_100028C2(DWORD *arg) { return; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 	bool v2; // zf
 	bool v3; // sf
 	int v4; // edi
@@ -21,7 +21,7 @@ void UNKCALL BNetGW_100028C2(_DWORD *arg) { return; }
 	arg[4] = 0;
 	arg[5] = 0;
 	arg[6] = 0;
-	*(_BYTE *)arg = 0;
+	*(BYTE *)arg = 0;
 	BNetGW_10002C23(arg);
 	if ( !v1[4] )
 		goto LABEL_15;
@@ -72,14 +72,14 @@ LABEL_15:
 		v1[3] = 0;
 	}
 } */
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
-// 100103C4: using guessed type int __stdcall SMemZero(_DWORD, _DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
+// 100103C4: using guessed type int __stdcall SMemZero(DWORD, DWORD);
 // 100103CA: using guessed type int __stdcall SRegDeleteValue(const char *, const char *, unsigned int);
 
 // ref: 0x100029BF
-void UNKCALL BNetGW_100029BF(_DWORD *arg, int a2) { return; }
+void UNKCALL BNetGW_100029BF(DWORD *arg, int a2) { return; }
 /* {
-	_DWORD *v2; // esi
+	DWORD *v2; // esi
 	char *v3; // edi
 	signed int v4; // ebx
 	signed int v5; // ebp
@@ -109,11 +109,11 @@ void UNKCALL BNetGW_100029BF(_DWORD *arg, int a2) { return; }
 } */
 
 // ref: 0x10002A07
-void *UNKCALL BNetGW_10002A07(_DWORD *arg) { return 0; }
+void *UNKCALL BNetGW_10002A07(DWORD *arg) { return 0; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 	int v2; // edi
-	_BYTE *v3; // ecx
+	BYTE *v3; // ecx
 	const char *v4; // eax
 	int result; // eax
 
@@ -123,7 +123,7 @@ void *UNKCALL BNetGW_10002A07(_DWORD *arg) { return 0; }
 		v2 = arg[4];
 		if ( v2 )
 		{
-			v3 = (_BYTE *)(v2 + SStrLen(arg[4]) + 1);
+			v3 = (BYTE *)(v2 + SStrLen(arg[4]) + 1);
 			*v3 = v1[3] / 10 + 48;
 			v4 = "Override Battle.net gateways";
 			v3[1] = v1[3] % 10 + 48;
@@ -141,12 +141,12 @@ void *UNKCALL BNetGW_10002A07(_DWORD *arg) { return 0; }
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
 // 100103D0: using guessed type int __stdcall SRegSaveData(const char *, const char *, unsigned int, void *, unsigned int);
 
 // ref: 0x10002A84
-_DWORD *UNKCALL BNetGW_10002A84(_DWORD *arg, signed int a2) { return 0; }
+DWORD *UNKCALL BNetGW_10002A84(DWORD *arg, signed int a2) { return 0; }
 /* {
 	signed int v2; // eax
 	signed int v3; // ebx
@@ -155,9 +155,9 @@ _DWORD *UNKCALL BNetGW_10002A84(_DWORD *arg, signed int a2) { return 0; }
 	bool v6; // sf
 	unsigned char v7; // of
 	int v8; // eax
-	_DWORD *result; // eax
-	_DWORD *v10; // [esp+8h] [ebp-4h]
-	_DWORD *v11; // [esp+14h] [ebp+8h]
+	DWORD *result; // eax
+	DWORD *v10; // [esp+8h] [ebp-4h]
+	DWORD *v11; // [esp+14h] [ebp+8h]
 
 	v10 = arg;
 	if ( !arg[4] )
@@ -168,7 +168,7 @@ _DWORD *UNKCALL BNetGW_10002A84(_DWORD *arg, signed int a2) { return 0; }
 		return arg;
 	v4 = 3 * a2;
 	v5 = 0;
-	v11 = (_DWORD *)arg[4];
+	v11 = (DWORD *)arg[4];
 	if ( 3 * v2 <= 1 )
 	{
 LABEL_7:
@@ -185,7 +185,7 @@ LABEL_7:
 				break;
 			v8 = SStrLen(v11);
 			arg = v10;
-			v11 = (_DWORD *)((char *)v11 + ++v8);
+			v11 = (DWORD *)((char *)v11 + ++v8);
 			v5 += v8;
 			if ( ++v3 >= v4 )
 				goto LABEL_7;
@@ -198,7 +198,7 @@ LABEL_7:
 		return arg;
 	return result;
 } */
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
 
 // ref: 0x10002AE5
 signed int BNetGW_10002AE5() { return 0; }
@@ -212,7 +212,7 @@ signed int BNetGW_10002AE5() { return 0; }
 // 10029478: using guessed type int dword_10029478;
 
 // ref: 0x10002AF0
-int UNKCALL BNetGW_10002AF0(_DWORD *arg, char *a2) { return 0; }
+int UNKCALL BNetGW_10002AF0(DWORD *arg, char *a2) { return 0; }
 /* {
 	const char *v2; // eax
 	const char *v3; // esi
@@ -223,17 +223,17 @@ int UNKCALL BNetGW_10002AF0(_DWORD *arg, char *a2) { return 0; }
 		v3 = &v2[SStrLen(v2) + 1];
 	return strtol(v3, &a2, 10);
 } */
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
 
 // ref: 0x10002B21
-_BYTE *UNKCALL BNetGW_10002B21(_DWORD *arg, signed int a2) { return 0; }
+BYTE *UNKCALL BNetGW_10002B21(DWORD *arg, signed int a2) { return 0; }
 /* {
-	_DWORD *v2; // eax
-	_BYTE *v3; // esi
+	DWORD *v2; // eax
+	BYTE *v3; // esi
 
 	v2 = BNetGW_10002A84(arg, a2);
 	v3 = v2;
-	if ( *(_BYTE *)v2 )
+	if ( *(BYTE *)v2 )
 	{
 		v3 = (char *)v2 + SStrLen(v2) + 1;
 		if ( *v3 )
@@ -241,10 +241,10 @@ _BYTE *UNKCALL BNetGW_10002B21(_DWORD *arg, signed int a2) { return 0; }
 	}
 	return v3;
 } */
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
 
 // ref: 0x10002B51
-void UNKCALL BNetGW_10002B51(_DWORD *arg, signed int a2) { return; }
+void UNKCALL BNetGW_10002B51(DWORD *arg, signed int a2) { return; }
 /* {
 	signed int v2; // eax
 
@@ -262,9 +262,9 @@ void UNKCALL BNetGW_10002B51(_DWORD *arg, signed int a2) { return; }
 } */
 
 // ref: 0x10002B78
-char *UNKCALL BNetGW_10002B78(_DWORD *arg, char *a2) { return 0; }
+char *UNKCALL BNetGW_10002B78(DWORD *arg, char *a2) { return 0; }
 /* {
-	_DWORD *v2; // esi
+	DWORD *v2; // esi
 	char *result; // eax
 	char *v4; // ST08_4
 	void *v5; // eax
@@ -302,14 +302,14 @@ char *UNKCALL BNetGW_10002B78(_DWORD *arg, char *a2) { return 0; }
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 // 100103D6: using guessed type int __stdcall SRegLoadData(const char *, const char *, unsigned int, void *, unsigned int, unsigned int *);
 
 // ref: 0x10002C23
-char *UNKCALL BNetGW_10002C23(_DWORD *arg) { return 0; }
+char *UNKCALL BNetGW_10002C23(DWORD *arg) { return 0; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 	char *result; // eax
 
 	v1 = arg;
@@ -322,24 +322,24 @@ char *UNKCALL BNetGW_10002C23(_DWORD *arg) { return 0; }
 } */
 
 // ref: 0x10002C51
-int UNKCALL BNetGW_10002C51(_DWORD *arg) { return 0; }
+int UNKCALL BNetGW_10002C51(DWORD *arg) { return 0; }
 /* {
 	int result; // eax
 	char *v2; // edi
 	char *v3; // esi
 	unsigned int v4; // ebx
 	char *v5; // esi
-	_BYTE *v6; // esi
+	BYTE *v6; // esi
 	char *v7; // eax
 	char *v8; // eax
-	_BYTE *v9; // esi
+	BYTE *v9; // esi
 	char *v10; // esi
 	char v11; // al
 	unsigned int v12; // esi
 	char *v13; // [esp+4h] [ebp-10h]
 	int v14; // [esp+8h] [ebp-Ch]
 	int v15; // [esp+Ch] [ebp-8h]
-	_DWORD *v16; // [esp+10h] [ebp-4h]
+	DWORD *v16; // [esp+10h] [ebp-4h]
 
 	v15 = 0;
 	v16 = arg;
@@ -426,20 +426,20 @@ LABEL_8:
 		SMemFree(v14, "C:\\Src\\Diablo\\DiabloUI\\BNetGW.cpp", 429, 0);
 		result = (int)v16;
 		v16[5] = v12;
-		*(_DWORD *)(result + 16) = v13;
-		*(_DWORD *)(result + 24) = 1000;
+		*(DWORD *)(result + 16) = v13;
+		*(DWORD *)(result + 24) = 1000;
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
 // 100103D0: using guessed type int __stdcall SRegSaveData(const char *, const char *, unsigned int, void *, unsigned int);
 
 // ref: 0x10002DBF
-int UNKCALL BNetGW_10002DBF(_DWORD *arg) { return 0; }
+int UNKCALL BNetGW_10002DBF(DWORD *arg) { return 0; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 	int v3; // [esp+4h] [ebp-8h]
 	int v4; // [esp+8h] [ebp-4h]
 
@@ -449,7 +449,7 @@ int UNKCALL BNetGW_10002DBF(_DWORD *arg) { return 0; }
 	*v1 = v4;
 	return v3;
 } */
-// 100103DC: using guessed type int __stdcall SFileLoadFile(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 100103DC: using guessed type int __stdcall SFileLoadFile(DWORD, DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10002DEB
 char *__stdcall BNetGW_10002DEB(char *a1, unsigned int a2) { return 0; }

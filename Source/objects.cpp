@@ -2187,7 +2187,6 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
 		return;
 	}
-
 	xp = object[oi]._ox;
 	yp = object[oi]._oy;
 	if (object[oi]._oVar4 == 0) {
@@ -2516,9 +2515,9 @@ void OperateBookLever(int pnum, int i)
 			quests[QTYPE_BLOOD]._qactive = 2;
 			quests[QTYPE_BLOOD]._qlog = 1;
 			quests[QTYPE_BLOOD]._qvar1 = 1;
-			SpawnQuestItem(21, 2 * setpc_x + 19, 2 * setpc_y + 26, 0, 1);
-			SpawnQuestItem(21, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
-			SpawnQuestItem(21, 2 * setpc_x + 25, 2 * setpc_y + 33, 0, 1);
+			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 19, 2 * setpc_y + 26, 0, 1);
+			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
+			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 25, 2 * setpc_y + 33, 0, 1);
 		}
 		object[i]._otype = object[i]._otype;
 		if (object[i]._otype == OBJ_STEELTOME && !quests[QTYPE_WARLRD]._qvar1) {
@@ -3483,13 +3482,13 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 			SetRndSeed(object[i]._oRndSeed);
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_BOOK, sendmsg, 0);
 			if (QuestStatus(QTYPE_ZHAR)
-			    && monster[4].mName == UniqMonst[UMT_ZHAR].mName
-			    && monster[4]._msquelch == UCHAR_MAX
-			    && monster[4]._mhitpoints) {
-				monster[4].mtalkmsg = QUEST_ZHAR2;
-				M_StartStand(0, monster[4]._mdir);
-				monster[4]._mgoal = MGOAL_SHOOT;
-				monster[4]._mmode = MM_TALK;
+			    && monster[MAX_PLRS].mName == UniqMonst[UMT_ZHAR].mName
+			    && monster[MAX_PLRS]._msquelch == UCHAR_MAX
+			    && monster[MAX_PLRS]._mhitpoints) {
+				monster[MAX_PLRS].mtalkmsg = QUEST_ZHAR2;
+				M_StartStand(0, monster[MAX_PLRS]._mdir);
+				monster[MAX_PLRS]._mgoal = MGOAL_SHOOT;
+				monster[MAX_PLRS]._mmode = MM_TALK;
 			}
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
@@ -3755,7 +3754,7 @@ void OperateLazStand(int pnum, int i)
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
 		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
-		SpawnQuestItem(33, xx, yy, 0, 0);
+		SpawnQuestItem(IDI_LAZSTAFF, xx, yy, 0, 0);
 	}
 }
 

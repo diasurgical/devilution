@@ -3,7 +3,7 @@ void *SelConn_1000A082() { return 0; }
 /* {
 	return SMemAlloc(272, "C:\\Src\\Diablo\\DiabloUI\\SelConn.cpp", 124, 0);
 } */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000A09B
 signed int SelConn_1000A09B() { return 0; }
@@ -81,7 +81,7 @@ LABEL_25:
 			{
 				SelConn_1000AC30(hWnd);
 			}
-			else if ( (_WORD)wParam == 2 )
+			else if ( (WORD)wParam == 2 )
 			{
 				SelConn_1000AC07((int)hWnd, 2);
 			}
@@ -95,8 +95,8 @@ LABEL_27:
 	}
 	return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000A226
 HWND __fastcall SelConn_1000A226(HWND hDlg, int nIDDlgItem) { return 0; }
@@ -129,7 +129,7 @@ HWND __fastcall SelConn_1000A226(HWND hDlg, int nIDDlgItem) { return 0; }
 		result = (HWND)GetWindowLongA(result, -21);
 		if ( result )
 		{
-			v4 = *((_DWORD *)result + 3);
+			v4 = *((DWORD *)result + 3);
 			if ( v4 )
 			{
 				result = GetDlgItem(v2, 1081);
@@ -144,18 +144,18 @@ HWND __fastcall SelConn_1000A226(HWND hDlg, int nIDDlgItem) { return 0; }
 						LoadStringA(hInstance, 0x21u, &Buffer, 63);//"Players Supported: %d"
 						if ( dword_1002A370 )
 						{
-							v7 = *(_DWORD *)(dword_1002A370 + 24);
-							if ( v7 >= *(_DWORD *)(v4 + 12) )
-								v7 = *(_DWORD *)(v4 + 12);
+							v7 = *(DWORD *)(dword_1002A370 + 24);
+							if ( v7 >= *(DWORD *)(v4 + 12) )
+								v7 = *(DWORD *)(v4 + 12);
 							wsprintfA(&v21, &Buffer, v7);
 						}
 						else
 						{
-							wsprintfA(&v21, &Buffer, *(_DWORD *)(v4 + 12));
+							wsprintfA(&v21, &Buffer, *(DWORD *)(v4 + 12));
 						}
 						v8 = GetWindowLongA(v6, -21);
 						local_10007FA4(v8, &v21);
-						if ( *(_DWORD *)(v4 + 8) == 1112425812 )
+						if ( *(DWORD *)(v4 + 8) == 1112425812 )
 						{
 							hWnd = GetDlgItem(v2, 1144);
 							v9 = BNetGW_10002B21(&unk_10029480, dword_1002948C);
@@ -216,8 +216,8 @@ int SelConn_1000A3FF() { return 0; }
 /* {
 	HWND v0; // eax
 	LONG v1; // eax
-	_DWORD *v2; // ecx
-	_DWORD *v3; // eax
+	DWORD *v2; // ecx
+	DWORD *v3; // eax
 	int v5; // edx
 
 	v0 = GetFocus();
@@ -226,10 +226,10 @@ int SelConn_1000A3FF() { return 0; }
 	v1 = GetWindowLongA(v0, -21);
 	if ( !v1 )
 		return 0;
-	v2 = (_DWORD *)dword_1002A35C;
+	v2 = (DWORD *)dword_1002A35C;
 	if ( !dword_1002A35C )
 		return 0;
-	v3 = *(_DWORD **)(v1 + 12);
+	v3 = *(DWORD **)(v1 + 12);
 	if ( !v3 )
 		return 0;
 	v5 = 0;
@@ -237,7 +237,7 @@ int SelConn_1000A3FF() { return 0; }
 	{
 		if ( v2 == v3 )
 			break;
-		v2 = (_DWORD *)*v2;
+		v2 = (DWORD *)*v2;
 		++v5;
 	}
 	while ( v2 );
@@ -249,36 +249,36 @@ int SelConn_1000A3FF() { return 0; }
 void UNKCALL SelConn_1000A43A(HWND hDlg) { return; }
 /* {
 	HWND v1; // esi
-	_DWORD *v2; // eax
+	DWORD *v2; // eax
 
 	v1 = hDlg;
 	Title_100100E7(hDlg);
 	Focus_10007818(v1);
 	Sbar_10009CD2(v1, 1105);
-	SelConn_1000A4B9((_DWORD *)dword_1002A35C);
+	SelConn_1000A4B9((DWORD *)dword_1002A35C);
 	Doom_10006C53(v1, &dword_10022F18);
 	Doom_10006C53(v1, (int *)&unk_10022F08);
 	Doom_10006C53(v1, (int *)&unk_10022ED8);
 	Doom_10006C53(v1, (int *)&unk_10022EE4);
 	Doom_10006C53(v1, (int *)&unk_10022F00);
 	Doom_10006C53(v1, (int *)&unk_10022EF0);
-	v2 = (_DWORD *)GetWindowLongA(v1, -21);
+	v2 = (DWORD *)GetWindowLongA(v1, -21);
 	local_10007F72(v2);
 } */
 // 10022F18: using guessed type int dword_10022F18;
 // 1002A35C: using guessed type int dword_1002A35C;
 
 // ref: 0x1000A4B9
-int __fastcall SelConn_1000A4B9(_DWORD *a1) { return 0; }
+int __fastcall SelConn_1000A4B9(DWORD *a1) { return 0; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 	int result; // eax
 
 	if ( a1 )
 	{
 		do
 		{
-			v1 = (_DWORD *)*a1;
+			v1 = (DWORD *)*a1;
 			result = SelConn_1000A4CD(a1);
 			a1 = v1;
 		}
@@ -296,7 +296,7 @@ int UNKCALL SelConn_1000A4CD(void *arg) { return 0; }
 		result = SMemFree(arg, "C:\\Src\\Diablo\\DiabloUI\\SelConn.cpp", 130, 0);
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000A4E4
 HWND UNKCALL SelConn_1000A4E4(HWND hWnd, char *a2, int a3) { return 0; }
@@ -340,7 +340,7 @@ HWND UNKCALL SelConn_1000A4E4(HWND hWnd, char *a2, int a3) { return 0; }
 	}
 	return result;
 } */
-// 10010472: using guessed type int __stdcall SNetEnumProviders(_DWORD, _DWORD);
+// 10010472: using guessed type int __stdcall SNetEnumProviders(DWORD, DWORD);
 // 10022F18: using guessed type int dword_10022F18;
 // 10029488: using guessed type int dword_10029488;
 // 1002A35C: using guessed type int dword_1002A35C;
@@ -351,19 +351,19 @@ signed int __stdcall SelConn_1000A5F3(int a1, char *a2, char *a3, int a4) { retu
 /* {
 	int v4; // esi
 	int v6; // edx
-	_DWORD *v7; // eax
+	DWORD *v7; // eax
 
 	v4 = SelConn_1000A082();
 	if ( !v4 || a1 == 1112425812 && !dword_1002A368 )
 		return 0;
-	*(_DWORD *)v4 = 0;
-	v6 = *(_DWORD *)(a4 + 4);
-	*(_DWORD *)(v4 + 8) = a1;
-	*(_DWORD *)(v4 + 4) = v6 & 2;
-	*(_DWORD *)(v4 + 12) = *(_DWORD *)(a4 + 16);
+	*(DWORD *)v4 = 0;
+	v6 = *(DWORD *)(a4 + 4);
+	*(DWORD *)(v4 + 8) = a1;
+	*(DWORD *)(v4 + 4) = v6 & 2;
+	*(DWORD *)(v4 + 12) = *(DWORD *)(a4 + 16);
 	strcpy((char *)(v4 + 16), a2);
 	strcpy((char *)(v4 + 144), a3);
-	v7 = SelRegn_1000EF56(dword_1002A35C, (_DWORD *)v4);
+	v7 = SelRegn_1000EF56(dword_1002A35C, (DWORD *)v4);
 	++dword_1002A360;
 	dword_1002A35C = (int)v7;
 	return 1;
@@ -398,7 +398,7 @@ int __fastcall SelConn_1000A670(HWND a1, const char *a2) { return 0; }
 					v6 = GetWindowLongA(v5, -21);
 					if ( v6 )
 					{
-						*(_DWORD *)(v6 + 12) = v2;
+						*(DWORD *)(v6 + 12) = v2;
 						local_10007FA4(v6, v2 + 16);
 						v2 = *(const char **)v2;
 					}
@@ -593,7 +593,7 @@ HWND UNKCALL SelConn_1000A948(HWND hWnd) { return 0; }
 	HWND v3; // esi
 	HWND v4; // ebx
 	HWND v5; // eax
-	_DWORD *v6; // eax
+	DWORD *v6; // eax
 	int v7; // eax
 	const char *v8; // ebx
 	int v9; // eax
@@ -611,7 +611,7 @@ HWND UNKCALL SelConn_1000A948(HWND hWnd) { return 0; }
 			result = (HWND)GetWindowLongA(v5, -21);
 			if ( result )
 			{
-				v6 = (_DWORD *)*((_DWORD *)result + 3);
+				v6 = (DWORD *)*((DWORD *)result + 3);
 				if ( v6 && *v6 )
 				{
 					v7 = SelConn_1000A9F3(v4) + 6;
@@ -642,8 +642,8 @@ HWND UNKCALL SelConn_1000A948(HWND hWnd) { return 0; }
 int UNKCALL SelConn_1000A9F3(HWND hWnd) { return 0; }
 /* {
 	LONG v1; // eax
-	_DWORD *v2; // ecx
-	_DWORD *v3; // eax
+	DWORD *v2; // ecx
+	DWORD *v3; // eax
 	int v5; // edx
 
 	if ( !hWnd )
@@ -651,10 +651,10 @@ int UNKCALL SelConn_1000A9F3(HWND hWnd) { return 0; }
 	v1 = GetWindowLongA(hWnd, -21);
 	if ( !v1 )
 		return 0;
-	v2 = (_DWORD *)dword_1002A35C;
+	v2 = (DWORD *)dword_1002A35C;
 	if ( !dword_1002A35C )
 		return 0;
-	v3 = *(_DWORD **)(v1 + 12);
+	v3 = *(DWORD **)(v1 + 12);
 	if ( !v3 )
 		return 0;
 	v5 = 0;
@@ -662,7 +662,7 @@ int UNKCALL SelConn_1000A9F3(HWND hWnd) { return 0; }
 	{
 		if ( v2 == v3 )
 			break;
-		v2 = (_DWORD *)*v2;
+		v2 = (DWORD *)*v2;
 		++v5;
 	}
 	while ( v2 );
@@ -671,14 +671,14 @@ int UNKCALL SelConn_1000A9F3(HWND hWnd) { return 0; }
 // 1002A35C: using guessed type int dword_1002A35C;
 
 // ref: 0x1000AA28
-_DWORD *__fastcall SelConn_1000AA28(int a1) { return 0; }
+DWORD *__fastcall SelConn_1000AA28(int a1) { return 0; }
 /* {
-	_DWORD *result; // eax
+	DWORD *result; // eax
 
-	result = (_DWORD *)dword_1002A35C;
+	result = (DWORD *)dword_1002A35C;
 	while ( result && a1 )
 	{
-		result = (_DWORD *)*result;
+		result = (DWORD *)*result;
 		--a1;
 	}
 	return result;
@@ -709,7 +709,7 @@ HWND UNKCALL SelConn_1000AA3B(HWND hWnd) { return 0; }
 			result = (HWND)GetWindowLongA(result, -21);
 			if ( result )
 			{
-				result = (HWND)*((_DWORD *)result + 3);
+				result = (HWND)*((DWORD *)result + 3);
 				if ( result )
 				{
 					if ( result == (HWND)dword_1002A35C )
@@ -757,10 +757,10 @@ HWND UNKCALL SelConn_1000AAEB(HWND hWnd) { return 0; }
 	result = (HWND)GetWindowLongA(hWnd, -21);
 	if ( result )
 	{
-		result = (HWND)*((_DWORD *)result + 3);
+		result = (HWND)*((DWORD *)result + 3);
 		if ( result )
 		{
-			if ( *(_DWORD *)result )
+			if ( *(DWORD *)result )
 			{
 				if ( GetWindowLongA(v1, -12) >= 1074 )
 				{
@@ -771,7 +771,7 @@ HWND UNKCALL SelConn_1000AAEB(HWND hWnd) { return 0; }
 						result = (HWND)GetWindowLongA(result, -21);
 						if ( result )
 						{
-							v4 = (const char *)*((_DWORD *)result + 3);
+							v4 = (const char *)*((DWORD *)result + 3);
 							if ( v4 )
 							{
 								TitleSnd_10010315();
@@ -813,7 +813,7 @@ HWND UNKCALL SelConn_1000AB83(HWND hWnd) { return 0; }
 	result = (HWND)GetWindowLongA(v1, -21);
 	if ( result )
 	{
-		result = (HWND)*((_DWORD *)result + 3);
+		result = (HWND)*((DWORD *)result + 3);
 		if ( result )
 		{
 			v3 = (const char *)dword_1002A35C;
@@ -850,7 +850,7 @@ int __fastcall SelConn_1000AC07(int a1, int a2) { return 0; }
 	Fade_100072BE(10);
 	return SDlgEndDialog(v3, v2);
 } */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
 
 // ref: 0x1000AC30
 int UNKCALL SelConn_1000AC30(HWND arg) { return 0; }
@@ -897,7 +897,7 @@ LABEL_14:
 	}
 	return result;
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
 // 1002A374: using guessed type int dword_1002A374;
 
 // ref: 0x1000AC9E
@@ -926,7 +926,7 @@ int UNKCALL SelConn_1000AC9E(HWND hWnd) { return 0; }
 	v3 = GetWindowLongA(v2, -21);
 	if ( !v3 )
 		return 0;
-	v4 = *(_DWORD *)(v3 + 12);
+	v4 = *(DWORD *)(v3 + 12);
 	if ( !v4 )
 		return 0;
 	SelGame_1000B677(*(void **)(v4 + 8));
@@ -961,8 +961,8 @@ int UNKCALL SelConn_1000AC9E(HWND hWnd) { return 0; }
 		SelConn_1000ADD0(v1);
 	return v9;
 } */
-// 10010478: using guessed type _DWORD __stdcall SNetDestroy();
-// 1001047E: using guessed type int __stdcall SNetInitializeProvider(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010478: using guessed type DWORD __stdcall SNetDestroy();
+// 1001047E: using guessed type int __stdcall SNetInitializeProvider(DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002A364: using guessed type int dword_1002A364;
 // 1002A370: using guessed type int dword_1002A370;
 
@@ -1014,7 +1014,7 @@ int __fastcall SelConn_1000AE19(int a1, UINT a2) { return 0; }
 	}
 	return result;
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
 
 // ref: 0x1000AE59
 HWND __fastcall SelConn_1000AE59(HWND hWnd, int a2, int a3) { return 0; }
@@ -1137,9 +1137,9 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 	}
 	return 0;
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
-// 1001041E: using guessed type int __stdcall SErrSetLastError(_DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
+// 1001041E: using guessed type int __stdcall SErrSetLastError(DWORD);
 // 1002A364: using guessed type int dword_1002A364;
 // 1002A36C: using guessed type int dword_1002A36C;
 // 1002A370: using guessed type int dword_1002A370;

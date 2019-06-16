@@ -13,7 +13,7 @@ DWORD nNumberOfBytesToWrite; // idb
 
 /* data */
 
-int log_not_created = 1;              // weak
+BOOL log_not_created = 1;
 HANDLE log_file = INVALID_HANDLE_VALUE;
 
 void __cdecl log_flush(BOOL force_close)
@@ -46,53 +46,54 @@ void __cdecl log_flush(BOOL force_close)
 
 HANDLE log_create()
 {
-	char *v0;                   // eax
-	HANDLE v1;                  // ebx
-	HANDLE v2;                  // eax
-	char *v3;                   // edx
-	char Filename[MAX_PATH];         // [esp+Ch] [ebp-15Ch]
-	VS_FIXEDFILEINFO file_info; // [esp+110h] [ebp-58h]
-	char Buffer[32];            // [esp+144h] [ebp-24h]
-	DWORD pcbBuffer;            // [esp+164h] [ebp-4h]
+	char *last_slash_pos;
+	HANDLE fh;
+	VS_FIXEDFILEINFO file_info;
+	DWORD i;
+	char buf[32];
 
 	if (log_not_created) {
-		if (GetModuleFileName(0, Filename, sizeof(Filename)) && (v0 = strrchr(Filename, '\\')) != 0)
-			v0[1] = 0;
-		else
-			Filename[0] = 0;
-		pcbBuffer = 32;
-		if (!GetUserName(Buffer, &pcbBuffer))
-			Buffer[0] = 0;
+		char filename_tmp[MAX_PATH];
+		if (GetModuleFileName(NULL, filename_tmp, sizeof filename_tmp) == 0)
+			filename_tmp[0] = '\0';
+		else {
+			last_slash_pos = strrchr(filename_tmp, '\\');
+			if (last_slash_pos == NULL)
+				filename_tmp[0] = '\0';
+			else
+				*(last_slash_pos + 1) = '\0';
+		}
+		i = 32;
+		if (!GetUserName(buf, &i))
+			buf[0] = '\0';
 		log_get_version(&file_info);
 		_snprintf(
 		    FileName,
-		    sizeof(Filename),
+		    sizeof(filename_tmp),
 		    "%s%s%02u%02u%02u.ERR",
-		    Filename,
-		    Buffer,
-		    _LOWORD(file_info.dwProductVersionMS),
+		    filename_tmp,
+		    buf,
+		    file_info.dwProductVersionMS & 0xFFFF,
 		    file_info.dwProductVersionLS >> 16,
-		    _LOWORD(file_info.dwProductVersionLS));
+		    file_info.dwProductVersionLS & 0xFFFF);
 	}
-	v1 = INVALID_HANDLE_VALUE;
-	for (pcbBuffer = log_not_created == 0; (signed int)pcbBuffer < 2; ++pcbBuffer) {
-		v2 = CreateFile(FileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-		v1 = v2;
-		if (v2 != INVALID_HANDLE_VALUE) {
-			if (GetFileSize(v2, 0) > 0x10000)
-				SetEndOfFile(v1);
+	fh = INVALID_HANDLE_VALUE;
+	for (i = log_not_created ? 0 : 1; (int)i < 2; i++) {
+		fh = CreateFile(FileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (fh != INVALID_HANDLE_VALUE) {
+			if (GetFileSize(fh, NULL) > 0x10000)
+				SetEndOfFile(fh);
 			break;
 		}
-		v3 = strrchr(FileName, '\\');
-		if (!v3)
-			v3 = FileName;
-		strcpy(Filename, "c:\\");
-		memset(&Filename[4], 0, 0x100u);
-		strcat(Filename, v3);
-		strcpy(FileName, Filename);
+		last_slash_pos = strrchr(FileName, '\\');
+		if (!last_slash_pos)
+			last_slash_pos = FileName;
+		char filename_tmp[MAX_PATH] = "c:\\";
+		strcat(filename_tmp, last_slash_pos);
+		strcpy(FileName, filename_tmp);
 	}
-	log_not_created = 0;
-	return v1;
+	log_not_created = FALSE;
+	return fh;
 }
 // 4947D4: using guessed type int log_not_created;
 

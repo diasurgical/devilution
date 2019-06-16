@@ -104,9 +104,9 @@ void GiveGoldCheat()
 			ni = plr[myplr]._pNumInv++;
 			SetPlrHandItem(&plr[myplr].InvList[ni], IDI_GOLD);
 			GetPlrHandSeed(&plr[myplr].InvList[ni]);
-			plr[myplr].InvList[ni]._ivalue = 5000;
+			plr[myplr].InvList[ni]._ivalue = GOLD_MAX_LIMIT;
 			plr[myplr].InvList[ni]._iCurs = 6;
-			plr[myplr]._pGold += 5000;
+			plr[myplr]._pGold += GOLD_MAX_LIMIT;
 			plr[myplr].InvGrid[i] = plr[myplr]._pNumInv;
 		}
 	}
@@ -197,7 +197,7 @@ void PrintDebugPlayer(BOOL bNextPlayer)
 	char dstr[128];
 
 	if (bNextPlayer)
-		dbgplr = ((_BYTE)dbgplr + 1) & 3;
+		dbgplr = ((BYTE)dbgplr + 1) & 3;
 
 	sprintf(dstr, "Plr %i : Active = %i", dbgplr, plr[dbgplr].plractive);
 	NetSendCmdString(1 << myplr, dstr);

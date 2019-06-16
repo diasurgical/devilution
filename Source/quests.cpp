@@ -259,7 +259,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE82;
 		}
 		if (sendmsg)
-			NetSendCmdQuest(TRUE, 12);
+			NetSendCmdQuest(TRUE, QTYPE_KING);
 
 	} else if (monster[m].MType->mtype == MT_CLEAVER) {
 		quests[QTYPE_BUTCH]._qactive = 3;
@@ -272,7 +272,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE80;
 		}
 		if (sendmsg)
-			NetSendCmdQuest(TRUE, 6);
+			NetSendCmdQuest(TRUE, QTYPE_BUTCH);
 	} else if (monster[m].mName == UniqMonst[UMT_GARBUD].mName) { //"Gharbad the Weak"
 		quests[QTYPE_GARB]._qactive = 3;
 		sfxdelay = 30;
@@ -317,8 +317,8 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE83;
 		}
 		if (sendmsg) {
-			NetSendCmdQuest(TRUE, 15);
-			NetSendCmdQuest(TRUE, 5);
+			NetSendCmdQuest(TRUE, QTYPE_VB);
+			NetSendCmdQuest(TRUE, QTYPE_MOD);
 		}
 	} else if (monster[m].mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers == 1) { //"Arch-Bishop Lazarus"
 		quests[QTYPE_VB]._qactive = 3;
@@ -603,7 +603,7 @@ void ResyncMPQuests()
 
 void ResyncQuests()
 {
-	int i, tren;
+	int i, tren, x, y;
 
 	if (setlevel && setlvlnum == quests[QTYPE_PW]._qslvl && quests[QTYPE_PW]._qactive != 1 && leveltype == quests[QTYPE_PW]._qlvltype) {
 
@@ -638,7 +638,9 @@ void ResyncQuests()
 			TransVal = tren;
 		}
 		if (quests[QTYPE_BOL]._qvar1 == 3) {
-			ObjChangeMapResync(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
+			x = setpc_x;
+			y = setpc_y;
+			ObjChangeMapResync(x, y, x + setpc_w + 1, y + setpc_h + 1);
 			for (i = 0; i < nobjects; i++)
 				SyncObjectAnim(objectactive[i]);
 			tren = TransVal;
@@ -664,7 +666,7 @@ void ResyncQuests()
 	}
 	if (currlevel == quests[QTYPE_VEIL]._qlevel + 1 && quests[QTYPE_VEIL]._qactive == 2 && !quests[QTYPE_VEIL]._qvar1) {
 		quests[QTYPE_VEIL]._qvar1 = 1;
-		SpawnQuestItem(15, 0, 0, 5, 1);
+		SpawnQuestItem(IDI_GLDNELIX, 0, 0, 5, 1);
 	}
 	if (setlevel && setlvlnum == 5) {
 		if (quests[QTYPE_VB]._qvar1 >= 4u)

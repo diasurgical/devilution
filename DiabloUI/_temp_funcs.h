@@ -15,56 +15,56 @@ void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy
 
 signed int bn_prof_100014E8();
 //const char *UiProfileGetString();
-//BOOL __stdcall UiProfileCallback(int a1, int a2, int a3, int a4, LPARAM a5, int a6, int a7, int a8, int (__stdcall *a9)(_DWORD, _DWORD, _DWORD, _DWORD));
+//BOOL __stdcall UiProfileCallback(int a1, int a2, int a3, int a4, LPARAM a5, int a6, int a7, int a8, int (__stdcall *a9)(DWORD, DWORD, DWORD, DWORD));
 HGDIOBJ __stdcall bn_prof_1000155F(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void UNKCALL bn_prof_100016DD(HWND arg);
 void __fastcall bn_prof_100018CE(int a1, int a2);
-int __fastcall bn_prof_10001938(HDC a1, _DWORD *a2, char *a3, int a4, int a5);
+int __fastcall bn_prof_10001938(HDC a1, DWORD *a2, char *a3, int a4, int a5);
 int __fastcall bn_prof_10001A10(HWND a1, HWND a2);
 HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2);
 HWND UNKCALL bn_prof_10001C0E(HWND hWnd);
-void __fastcall bn_prof_10001CB9(_DWORD *a1, int a2, void(__fastcall *a3)(_BYTE *, _DWORD, int), int a4);
+void __fastcall bn_prof_10001CB9(DWORD *a1, int a2, void(__fastcall *a3)(BYTE *, DWORD, int), int a4);
 BOOL UNKCALL bn_prof_10001CF3(HWND hWnd);
 HFONT __fastcall bn_prof_10001D81(HWND hWnd, int a2, int a3);
 void UNKCALL bn_prof_10001E34(void *arg);
 void __fastcall bn_prof_10001E4C(char *a1, LPARAM lParam, HWND hDlg);
-void __fastcall bn_prof_10001ED0(char *a1, _BYTE *a2, int a3);
+void __fastcall bn_prof_10001ED0(char *a1, BYTE *a2, int a3);
 void *bn_prof_10001F29();
 BYTE *bn_prof_10001F84();
 //int __stdcall UiProfileDraw(int, int, int, int, HGDIOBJ ho, int, int, int, int, int, int); // idb
 BOOL bn_prof_100021C4();
 void *bn_prof_10002247();
 int j_bn_prof_10002282();
-_DWORD *bn_prof_10002282();
+DWORD *bn_prof_10002282();
 void __cdecl bn_prof_10002298();         // idb
 int UNKCALL bn_prof_100022A2(HWND hWnd); // idb
 int UNKCALL bn_prof_10002353(HGDIOBJ h); // idb
 HGDIOBJ bn_prof_100023D8();
-_DWORD *__fastcall bn_prof_10002410(HDC hdc, _DWORD *a2);
-signed int __fastcall bn_prof_10002456(int a1, const CHAR *a2, char a3, _DWORD *a4);
+DWORD *__fastcall bn_prof_10002410(HDC hdc, DWORD *a2);
+signed int __fastcall bn_prof_10002456(int a1, const CHAR *a2, char a3, DWORD *a4);
 signed int bn_prof_100026B9();
-signed int UNKCALL bn_prof_100026C4(_DWORD *arg);
-void UNKCALL bn_prof_100026F0(_DWORD *arg);
-int UNKCALL bn_prof_10002749(_DWORD *arg, _DWORD *location);
-_DWORD *UNKCALL bn_prof_10002782(int *arg, int a2, int a3, char a4);
-_DWORD *UNKCALL bn_prof_100027CE(_DWORD *arg);
-void UNKCALL bn_prof_100027D8(_DWORD *arg);
-_DWORD *UNKCALL bn_prof_1000280C(int *arg, _DWORD *a2, int a3, _DWORD *a4);
-void UNKCALL bn_prof_1000287D(_DWORD *arg);
-void UNKCALL bn_prof_10002890(_DWORD *arg);
+signed int UNKCALL bn_prof_100026C4(DWORD *arg);
+void UNKCALL bn_prof_100026F0(DWORD *arg);
+int UNKCALL bn_prof_10002749(DWORD *arg, DWORD *location);
+DWORD *UNKCALL bn_prof_10002782(int *arg, int a2, int a3, char a4);
+DWORD *UNKCALL bn_prof_100027CE(DWORD *arg);
+void UNKCALL bn_prof_100027D8(DWORD *arg);
+DWORD *UNKCALL bn_prof_1000280C(int *arg, DWORD *a2, int a3, DWORD *a4);
+void UNKCALL bn_prof_1000287D(DWORD *arg);
+void UNKCALL bn_prof_10002890(DWORD *arg);
 
-void UNKCALL BNetGW_100028C2(_DWORD *arg);
-void UNKCALL BNetGW_100029BF(_DWORD *arg, int a2);
-void *UNKCALL BNetGW_10002A07(_DWORD *arg);
-_DWORD *UNKCALL BNetGW_10002A84(_DWORD *arg, signed int a2);
+void UNKCALL BNetGW_100028C2(DWORD *arg);
+void UNKCALL BNetGW_100029BF(DWORD *arg, int a2);
+void *UNKCALL BNetGW_10002A07(DWORD *arg);
+DWORD *UNKCALL BNetGW_10002A84(DWORD *arg, signed int a2);
 signed int BNetGW_10002AE5();
-int UNKCALL BNetGW_10002AF0(_DWORD *arg, char *a2);
-_BYTE *UNKCALL BNetGW_10002B21(_DWORD *arg, signed int a2);
-void UNKCALL BNetGW_10002B51(_DWORD *arg, signed int a2);
+int UNKCALL BNetGW_10002AF0(DWORD *arg, char *a2);
+BYTE *UNKCALL BNetGW_10002B21(DWORD *arg, signed int a2);
+void UNKCALL BNetGW_10002B51(DWORD *arg, signed int a2);
 char *UNKCALL BNetGW_10002B78(void *arg, char *a2);
-char *UNKCALL BNetGW_10002C23(_DWORD *arg);
-int UNKCALL BNetGW_10002C51(_DWORD *arg);
-int UNKCALL BNetGW_10002DBF(_DWORD *arg);
+char *UNKCALL BNetGW_10002C23(DWORD *arg);
+int UNKCALL BNetGW_10002C51(DWORD *arg);
+int UNKCALL BNetGW_10002DBF(DWORD *arg);
 char *__stdcall BNetGW_10002DEB(char *a1, unsigned int a2);
 char *__stdcall BNetGW_10002E0B(char *a1, unsigned int a2);
 
@@ -77,7 +77,7 @@ BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4,
 BOOL __stdcall UiSoundCallback(int a1, int type, int a3);
 BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
 BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
-BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
+BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, DWORD *a6, DWORD *a7);
 int __fastcall Connect_GetRankFromLevel(char *str);
 BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, int a4);
 void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, char *str2, char *str3, int size);
@@ -165,7 +165,7 @@ void __cdecl j_DiabloUI_cpp_init();
 void __cdecl DiabloUI_cpp_init();
 
 signed int DirLink_10005CFA();
-BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid);
+BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, DWORD *a4, int a5, int playerid);
 int __stdcall DirLink_10005D63(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int lParam);
 int __fastcall DirLink_10005EB2(HWND hDlg, int a2);
 int UNKCALL DirLink_10005F1F(HWND hDlg); // idb
@@ -301,7 +301,7 @@ signed int Modem_10008648();
 int Modem_10008653();
 int Modem_10008659();
 int UNKCALL Modem_1000865F(char *); // idb
-BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid);
+BOOL __fastcall Modem_10008680(int a1, int a2, int a3, DWORD *a4, int a5, int playerid);
 int __stdcall Modem_100086DE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 void **UNKCALL Modem_1000879E(HWND hDlg);
 BOOL UNKCALL Modem_100087DB(HWND hWnd);
@@ -367,7 +367,7 @@ HWND __fastcall SelConn_1000A226(HWND hDlg, int nIDDlgItem);
 HWND UNKCALL SelConn_1000A3E2(HWND hDlg);
 int SelConn_1000A3FF();
 void UNKCALL SelConn_1000A43A(HWND hDlg);
-BOOL __fastcall SelConn_1000A4B9(_DWORD *a1);
+BOOL __fastcall SelConn_1000A4B9(DWORD *a1);
 BOOL UNKCALL SelConn_1000A4CD(void *location);
 HWND UNKCALL SelConn_1000A4E4(HWND hWnd, char *a2, int a3);
 signed int __stdcall SelConn_1000A5F3(int a1, char *a2, char *a3, int a4);
@@ -378,7 +378,7 @@ HWND UNKCALL SelConn_1000A866(HWND hWnd);
 HWND UNKCALL SelConn_1000A8D7(HWND hWnd);
 HWND UNKCALL SelConn_1000A948(HWND hWnd);
 int UNKCALL SelConn_1000A9F3(HWND hWnd); // idb
-_DWORD *__fastcall SelConn_1000AA28(int a1);
+DWORD *__fastcall SelConn_1000AA28(int a1);
 HWND UNKCALL SelConn_1000AA3B(HWND hWnd);
 HWND UNKCALL SelConn_1000AAEB(HWND hWnd);
 HWND UNKCALL SelConn_1000AB83(HWND hWnd);
@@ -449,21 +449,21 @@ BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 
 void *SelIPX_1000C610();
 signed int SelIPX_1000C629();
-BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid);
+BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, DWORD *a4, int a5, int playerid);
 int __stdcall SelIPX_1000C692(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 LONG __fastcall SelIPX_1000C818(HWND hDlg, int nIDDlgItem);
 HWND UNKCALL SelIPX_1000C982(HWND hDlg);
 int SelIPX_1000C99F();
 const char *UNKCALL SelIPX_1000C9DA(HWND hDlg);
-void __fastcall SelIPX_1000CA64(_DWORD *a1);
-_DWORD **__fastcall SelIPX_1000CA71(_DWORD *a1);
+void __fastcall SelIPX_1000CA64(DWORD *a1);
+DWORD **__fastcall SelIPX_1000CA71(DWORD *a1);
 BOOL UNKCALL SelIPX_1000CAC1(void *location);
 void *__stdcall SelIPX_1000CAD5(int a1, char *a2, char *a3);
-_DWORD *__fastcall SelIPX_1000CB50(_DWORD *a1, _DWORD *a2);
-_DWORD *__fastcall SelIPX_1000CB73(_DWORD *a1, int a2);
+DWORD *__fastcall SelIPX_1000CB50(DWORD *a1, DWORD *a2);
+DWORD *__fastcall SelIPX_1000CB73(DWORD *a1, int a2);
 int __fastcall SelIPX_1000CB83(HWND a1, const char *a2);
 int UNKCALL SelIPX_1000CC41(HWND hDlg); // idb
-BOOL __fastcall SelIPX_1000CCC5(_DWORD *a1);
+BOOL __fastcall SelIPX_1000CCC5(DWORD *a1);
 HWND UNKCALL SelIPX_1000CCD9(HWND hWnd);
 HWND UNKCALL SelIPX_1000CD4A(HWND hWnd);
 void UNKCALL SelIPX_1000CEE6(HWND hDlg);
@@ -471,7 +471,7 @@ LRESULT __stdcall SelIPX_1000CF38(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 HWND UNKCALL SelIPX_1000D070(HWND hWnd);
 HWND UNKCALL SelIPX_1000D0E1(HWND hWnd);
 int UNKCALL SelIPX_1000D18C(HWND hWnd); // idb
-_DWORD *__fastcall SelIPX_1000D1C1(int a1);
+DWORD *__fastcall SelIPX_1000D1C1(int a1);
 HWND UNKCALL SelIPX_1000D1D4(HWND hWnd);
 HWND UNKCALL SelIPX_1000D284(HWND hWnd);
 HWND UNKCALL SelIPX_1000D31C(HWND hWnd);
@@ -516,10 +516,10 @@ signed int SelModem_1000E42A();
 int __fastcall SelModem_1000E435(void *a1, int a2, int a3, char *a4, char *a5);
 char *__stdcall SelModem_1000E497(int a1, char *a2, char *a3);
 void *SelModem_1000E4EC();
-_DWORD *__fastcall SelModem_1000E500(int a1, _DWORD *a2);
+DWORD *__fastcall SelModem_1000E500(int a1, DWORD *a2);
 signed int UNKCALL SelModem_1000E505(void *arg);
 signed int SelModem_1000E51E();
-BOOL __fastcall SelModem_1000E553(_DWORD *a1);
+BOOL __fastcall SelModem_1000E553(DWORD *a1);
 BOOL UNKCALL SelModem_1000E567(void *location);
 int __fastcall SelModem_1000E57B(int a1, int a2);
 signed int SelModem_1000E5CC();
@@ -534,7 +534,7 @@ LRESULT __stdcall SelModem_1000EA04(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM l
 HWND UNKCALL SelModem_1000EB2C(HWND hWnd);
 HWND UNKCALL SelModem_1000EB9D(HWND hWnd);
 HWND UNKCALL SelModem_1000EC0E(HWND hWnd);
-_DWORD *__fastcall SelModem_1000EC9F(int a1);
+DWORD *__fastcall SelModem_1000EC9F(int a1);
 HWND UNKCALL SelModem_1000ECB2(HWND hWnd);
 HWND UNKCALL SelModem_1000ED3B(HWND hWnd);
 HWND UNKCALL SelModem_1000EDBC(HWND hWnd);
@@ -549,7 +549,7 @@ HWND __fastcall SelRegn_1000F0D7(HWND hDlg, int nIDDlgItem);
 HWND UNKCALL SelRegn_1000F109(HWND hDlg);
 int SelRegn_1000F126();
 void UNKCALL SelRegn_1000F161(HWND hDlg);
-BOOL __fastcall SelRegn_1000F1D4(_DWORD *a1);
+BOOL __fastcall SelRegn_1000F1D4(DWORD *a1);
 BOOL UNKCALL SelRegn_1000F1E8(void *location);
 HWND UNKCALL SelRegn_1000F1FC(HWND hWnd);
 signed int SelRegn_1000F2ED();
@@ -560,14 +560,14 @@ HWND UNKCALL SelRegn_1000F53C(HWND hWnd);
 HWND UNKCALL SelRegn_1000F5AD(HWND hWnd);
 HWND UNKCALL SelRegn_1000F61E(HWND hWnd);
 int UNKCALL SelRegn_1000F6C9(HWND hWnd); // idb
-_DWORD *__fastcall SelRegn_1000F6FE(int a1);
+DWORD *__fastcall SelRegn_1000F6FE(int a1);
 HWND UNKCALL SelRegn_1000F711(HWND hWnd);
 HWND UNKCALL SelRegn_1000F7C1(HWND hWnd);
 HWND UNKCALL SelRegn_1000F859(HWND hWnd);
 signed int UNKCALL SelRegn_1000F8DD(void *arg);
 signed int SelRegn_1000F8F6();
 HWND __fastcall SelRegn_1000F929(HWND hWnd, int a2, int height);
-//signed int __stdcall UiSelectRegion(_DWORD *a1);
+//signed int __stdcall UiSelectRegion(DWORD *a1);
 
 int __fastcall SelYesNo_YesNoDialog(HWND hWnd, char *dialogstr, char *hero, int nofocus); /* void */
 LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);

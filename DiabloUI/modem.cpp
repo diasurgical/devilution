@@ -61,7 +61,7 @@ BOOL Modem_10008606() { return 0; }
 		result = 0;
 	return result;
 } */
-// 10010436: using guessed type int __stdcall SNetEnumGames(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010436: using guessed type int __stdcall SNetEnumGames(DWORD, DWORD, DWORD, DWORD);
 // 1002A150: using guessed type int dword_1002A150;
 
 // ref: 0x1000863D
@@ -116,7 +116,7 @@ int UNKCALL Modem_1000865F(char *arg) { return 0; }
 } */
 
 // ref: 0x10008680
-BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid) { return 0; }
+BOOL __fastcall Modem_10008680(int a1, int a2, int a3, DWORD *a4, int a5, int playerid) { return 0; }
 /* {
 	int v6; // esi
 
@@ -130,7 +130,7 @@ BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int p
 	artfont_100010C8();
 	return v6 == 1;
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002A138: using guessed type int dword_1002A138;
 // 1002A13C: using guessed type int dword_1002A13C;
 // 1002A140: using guessed type int gnModemPlayerid;
@@ -183,20 +183,20 @@ int __stdcall Modem_100086DE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) 
 	PostMessageA(hWnd, 0x7E8u, 0, 0);
 	return 0;
 } */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000879E
 void **UNKCALL Modem_1000879E(HWND hDlg) { return 0; }
 /* {
 	HWND v1; // esi
-	_DWORD *v2; // eax
+	DWORD *v2; // eax
 
 	v1 = hDlg;
 	Doom_10006C53(hDlg, (int *)&unk_10022C5C);
 	Doom_10006C53(v1, (int *)&unk_10022C54);
 	Doom_10006C53(v1, (int *)&unk_10022C4C);
-	v2 = (_DWORD *)GetWindowLongA(v1, -21);
+	v2 = (DWORD *)GetWindowLongA(v1, -21);
 	local_10007F72(v2);
 	return Title_100100E7(v1);
 } */
@@ -259,8 +259,8 @@ int Modem_10008888() { return 0; }
 	}
 	return result;
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
-// 10010436: using guessed type int __stdcall SNetEnumGames(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
+// 10010436: using guessed type int __stdcall SNetEnumGames(DWORD, DWORD, DWORD, DWORD);
 // 1002A124: using guessed type int dword_1002A124;
 // 1002A130: using guessed type int dword_1002A130;
 // 1002A134: using guessed type int dword_1002A134;
@@ -285,7 +285,7 @@ int UNKCALL Modem_100088DB(HWND hWnd) { return 0; }
 		return PostMessageA(v1, 0xBD1u, 0, 0);
 	return SelHero_1000C3E2((int)v1, 2);
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000893D
 int UNKCALL Modem_1000893D(HWND hWnd) { return 0; }
@@ -309,7 +309,7 @@ int UNKCALL Modem_1000893D(HWND hWnd) { return 0; }
 	memset(&v8, 0, 0x10u);
 	v8 = 16;
 	v9 = 1297040461;
-	v2 = *(_DWORD *)(dword_1002A138 + 24);
+	v2 = *(DWORD *)(dword_1002A138 + 24);
 	v11 = 0;
 	v10 = v2;
 	LoadStringA(hInstance, 0x47u, &Buffer, 31);//"Game %d"
@@ -339,7 +339,7 @@ int UNKCALL Modem_1000893D(HWND hWnd) { return 0; }
 	}
 	return result;
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
 // 1002A124: using guessed type int dword_1002A124;
 // 1002A130: using guessed type int dword_1002A130;
 // 1002A138: using guessed type int dword_1002A138;
@@ -429,8 +429,8 @@ void __cdecl Modem_10008B42(char *a1) { return; }
 	dword_1002A148 = 1;
 	_endthread();
 } */
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
-// 10010430: using guessed type int __stdcall SNetJoinGame(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
+// 10010430: using guessed type int __stdcall SNetJoinGame(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 // 10011E20: using guessed type int _endthread(void);
 // 1002A120: using guessed type int dword_1002A120;
 // 1002A124: using guessed type int dword_1002A124;
@@ -452,7 +452,7 @@ int UNKCALL Modem_10008BB7(HWND hWnd) { return 0; }
 		result = PostMessageA(v1, 0xBD0u, 0, 0);
 	return result;
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10008BFE
 int UNKCALL Modem_10008BFE(HWND hWnd) { return 0; }
@@ -473,5 +473,5 @@ int UNKCALL Modem_10008BFE(HWND hWnd) { return 0; }
 	dword_1002A124 = 0;
 	return PostMessageA(v1, 0xBD0u, 0, 0);
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002A124: using guessed type int dword_1002A124;

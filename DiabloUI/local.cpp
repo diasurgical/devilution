@@ -57,7 +57,7 @@ void __cdecl local_ClearSurface()
 {
 	SDrawClearSurface(0);
 }
-// 1001043C: using guessed type int __stdcall SDrawClearSurface(_DWORD);
+// 1001043C: using guessed type int __stdcall SDrawClearSurface(DWORD);
 
 // ref: 0x100078BE
 BOOL __fastcall local_LoadArtImage(const char *pszFileName, BYTE **pBuffer, DWORD *pdwSize)
@@ -122,7 +122,7 @@ BOOL __fastcall local_LoadArtWithPal(HWND hWnd, int a2, char *src, int mask, int
 	}
 	return 1;
 }
-// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(_DWORD, _DWORD, _DWORD, _DWORD);
+// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10007A68
 void __fastcall local_AdjustRectSize(tagRECT *pRect, int a2, int a3)
@@ -247,8 +247,8 @@ void __fastcall local_DlgDoPaint(HWND hWnd)
 	SDlgBeginPaint(hWnd, v2);
 	SDlgEndPaint(hWnd, v2);
 }
-// 10010442: using guessed type int __stdcall SDlgEndPaint(_DWORD, _DWORD);
-// 10010448: using guessed type int __stdcall SDlgBeginPaint(_DWORD, _DWORD);
+// 10010442: using guessed type int __stdcall SDlgEndPaint(DWORD, DWORD);
+// 10010448: using guessed type int __stdcall SDlgBeginPaint(DWORD, DWORD);
 
 // ref: 0x10007CB5
 void __fastcall local_DoUiWndProc(HWND hWnd, DWORD *pdwMsgTbl)
@@ -414,7 +414,7 @@ DWORD *__cdecl local_AllocWndLongData()
 		result[1]               = 0;
 		result[2]               = 0;
 		result[3]               = 0;
-		*((_BYTE *)result + 16) = 0;
+		*((BYTE *)result + 16) = 0;
 	}
 	return result;
 }
@@ -435,9 +435,9 @@ void __fastcall local_SetWndLongStr(int WndLongData, const char *pszStr)
 	if (WndLongData) {
 		if (pszStr) {
 			strncpy((char *)(WndLongData + 16), pszStr, 0xFFu);
-			*(_BYTE *)(WndLongData + 271) = 0;
+			*(BYTE *)(WndLongData + 271) = 0;
 		} else {
-			*(_BYTE *)(WndLongData + 16) = 0;
+			*(BYTE *)(WndLongData + 16) = 0;
 		}
 	}
 }
@@ -503,14 +503,14 @@ void __cdecl local_SetCursorArt()
 		local_LoadArtCursor();
 	SDlgSetSystemCursor(gpCursorArt2, gpCursorArt, (int *)gdwCursData, 32512);
 }
-// 1001044E: using guessed type int __stdcall SDlgSetSystemCursor(_DWORD, _DWORD, _DWORD, _DWORD);
+// 1001044E: using guessed type int __stdcall SDlgSetSystemCursor(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000811B
 void __cdecl local_SetCursorDefault()
 {
 	SDlgSetSystemCursor(0, 0, 0, 32512);
 }
-// 1001044E: using guessed type int __stdcall SDlgSetSystemCursor(_DWORD, _DWORD, _DWORD, _DWORD);
+// 1001044E: using guessed type int __stdcall SDlgSetSystemCursor(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000812B
 void __fastcall local_SetDiabloCursor(HWND hWnd)
@@ -523,4 +523,4 @@ void __fastcall local_SetDiabloCursor(HWND hWnd)
 	v2 = LoadCursorA(ghUiInst, "DIABLOCURSOR");
 	SDlgSetCursor(hWnd, v2, 32512, &v3);
 }
-// 10010454: using guessed type int __stdcall SDlgSetCursor(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010454: using guessed type int __stdcall SDlgSetCursor(DWORD, DWORD, DWORD, DWORD);

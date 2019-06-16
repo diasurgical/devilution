@@ -3,10 +3,10 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int sgdwMpqOffset; // idb
+DWORD sgdwMpqOffset;
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
-BOOL save_archive_modified; // weak
+BOOL save_archive_modified;
 _BLOCKENTRY *sgpBlockTbl;
 BOOLEAN save_archive_open; // weak
 
@@ -31,30 +31,22 @@ BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 		return SetFileAttributes(pszArchive, dwFileAttributesToSet);
 }
 
-void mpqapi_store_creation_time(const char *pszArchive, int dwChar)
+void mpqapi_store_creation_time(const char *pszArchive, DWORD dwChar)
 {
-	int v2;                                // esi
-	const char *v3;                        // ebx
-	HANDLE v4;                             // eax
-	int v5;                                // esi
-	struct _WIN32_FIND_DATAA FindFileData; // [esp+8h] [ebp-1E0h]
-	char dst[160];                         // [esp+148h] [ebp-A0h]
+	HANDLE handle;
+	struct _WIN32_FIND_DATAA FindFileData;
+	char dst[160];
 
-	v2 = dwChar;
-	v3 = pszArchive;
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != INVALID_HANDLE_VALUE) {
-			FindClose(v4);
-			v5 = 16 * v2;
-			*(_DWORD *)&dst[v5] = FindFileData.ftCreationTime.dwLowDateTime;
-			*(_DWORD *)&dst[v5 + 4] = FindFileData.ftCreationTime.dwHighDateTime;
+		handle = FindFirstFile(pszArchive, &FindFileData);
+		if (handle != INVALID_HANDLE_VALUE) {
+			FindClose(handle);
+			*((FILETIME *)(dst) + dwChar * 2) = FindFileData.ftCreationTime;
 			mpqapi_reg_store_modification_time(dst, 160);
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 {
@@ -109,7 +101,7 @@ void mpqapi_store_default_time(DWORD dwChar)
 	/// ASSERT: assert(dwChar < MAX_CHARACTERS);
 	idx = 16 * dwChar;
 	mpqapi_reg_load_modification_time(dst, sizeof(dst));
-	*(_DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
+	*(DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
 	mpqapi_reg_store_modification_time(dst, sizeof(dst));
 */
 }
@@ -147,58 +139,47 @@ void mpqapi_remove_hash_entry(const char *pszName)
 		block_offset = blockEntry->offset;
 		block_size = blockEntry->sizealloc;
 		memset(blockEntry, 0, sizeof(*blockEntry));
-		mpqapi_free_block(block_offset, block_size);
+		mpqapi_alloc_block(block_offset, block_size);
 		save_archive_modified = 1;
 	}
 }
 
-void mpqapi_free_block(int block_offset, int block_size)
+void mpqapi_alloc_block(int block_offset, int block_size)
 {
-	int v2;          // esi
-	int v3;          // edi
-	_BLOCKENTRY *v4; // eax
-	signed int v5;   // edx
-	signed int v6;   // ecx
-	int v7;          // ecx
-	BOOLEAN v8;      // zf
-	_BLOCKENTRY *v9; // eax
+	_BLOCKENTRY *block;
+	int i;
 
-	v2 = block_size;
-	v3 = block_offset;
-LABEL_2:
-	v4 = sgpBlockTbl;
-	v5 = 2048;
-	while (1) {
-		v6 = v5--;
-		if (!v6)
-			break;
-		v7 = v4->offset;
-		if (v4->offset && !v4->flags && !v4->sizefile) {
-			if (v7 + v4->sizealloc == v3) {
-				v3 = v4->offset;
-			LABEL_11:
-				v2 += v4->sizealloc;
-				memset(v4, 0, 0x10u);
-				goto LABEL_2;
+	block = sgpBlockTbl;
+	i = 2048;
+	while (i-- != 0) {
+		if (block->offset && !block->flags && !block->sizefile) {
+			if (block->offset + block->sizealloc == block_offset) {
+				block_offset = block->offset;
+				block_size += block->sizealloc;
+				memset(block, 0, sizeof(_BLOCKENTRY));
+				mpqapi_alloc_block(block_offset, block_size);
+				return;
 			}
-			if (v3 + v2 == v7)
-				goto LABEL_11;
+			if (block_offset + block_size == block->offset) {
+				block_size += block->sizealloc;
+				memset(block, 0, sizeof(_BLOCKENTRY));
+				mpqapi_alloc_block(block_offset, block_size);
+				return;
+			}
 		}
-		++v4;
+		block++;
 	}
-	v8 = v3 + v2 == sgdwMpqOffset;
-	if (v3 + v2 > sgdwMpqOffset) {
+	if (block_offset + block_size > sgdwMpqOffset) {
 		app_fatal("MPQ free list error");
-		v8 = v3 + v2 == sgdwMpqOffset;
 	}
-	if (v8) {
-		sgdwMpqOffset = v3;
+	if (block_offset + block_size == sgdwMpqOffset) {
+		sgdwMpqOffset = block_offset;
 	} else {
-		v9 = mpqapi_new_block(0);
-		v9->offset = v3;
-		v9->sizealloc = v2;
-		v9->sizefile = 0;
-		v9->flags = 0;
+		block = mpqapi_new_block(NULL);
+		block->offset = block_offset;
+		block->sizealloc = block_size;
+		block->sizefile = 0;
+		block->flags = 0;
 	}
 }
 
@@ -304,100 +285,90 @@ _BLOCKENTRY *mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_i
 	return pBlk;
 }
 
-BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
+BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD dwLen, _BLOCKENTRY *pBlk)
 {
-	const char *v4;              // esi
-	const char *v5;              // eax
-	unsigned int destsize;       // ebx
-	const char *v7;              // eax
-	unsigned int v8;             // esi
-	_BLOCKENTRY *v9;             // edi
-	int v10;                     // eax
-	signed int v11;              // eax
-	unsigned int v13;            // eax
-	unsigned int v14;            // eax
-	int v15;                     // ecx
-	int size;                    // [esp+Ch] [ebp-10h]
-	const BYTE *v17;             // [esp+10h] [ebp-Ch]
-	int v18;                     // [esp+14h] [ebp-8h]
-	DWORD nNumberOfBytesToWrite; // [esp+18h] [ebp-4h]
+	DWORD *sectoroffsettable;
+	DWORD destsize, num_bytes, block_size, nNumberOfBytesToWrite;
+	const BYTE *src;
+	const char *tmp, *str_ptr;
+	int i, j;
 
-	v4 = pszName;
-	v17 = pbData;
-	v5 = strchr(pszName, ':');
+	str_ptr = pszName;
+	src = pbData;
+	while ((tmp = strchr(str_ptr, ':'))) {
+		str_ptr = tmp + 1;
+	}
+	while ((tmp = strchr(str_ptr, '\\'))) {
+		str_ptr = tmp + 1;
+	}
+	Hash(str_ptr, 3);
+	num_bytes = (dwLen + 4095) >> 12;
+	nNumberOfBytesToWrite = 4 * num_bytes + 4;
+	pBlk->offset = mpqapi_find_free_block(dwLen + nNumberOfBytesToWrite, &pBlk->sizealloc);
+	pBlk->sizefile = dwLen;
+	pBlk->flags = 0x80000100;
+	if (SetFilePointer(sghArchive, pBlk->offset, NULL, FILE_BEGIN) == (DWORD)-1)
+		return FALSE;
+	j = 0;
 	destsize = 0;
-	while (v5) {
-		v4 = v5 + 1;
-		v5 = strchr(v5 + 1, ':');
-	}
-	while (1) {
-		v7 = strchr(v4, '\\');
-		if (!v7)
-			break;
-		v4 = v7 + 1;
-	}
-	Hash(v4, 3);
-	v8 = dwLen;
-	v9 = pBlk;
-	size = 4 * ((unsigned int)(dwLen + 4095) >> 12) + 4;
-	nNumberOfBytesToWrite = 4 * ((unsigned int)(dwLen + 4095) >> 12) + 4;
-	v10 = mpqapi_find_free_block(size + dwLen, &pBlk->sizealloc);
-	v9->offset = v10;
-	v9->sizefile = v8;
-	v9->flags = 0x80000100;
-	if (SetFilePointer(sghArchive, v10, NULL, FILE_BEGIN) == -1)
-		return 0;
-	pBlk = 0;
-	v18 = 0;
-	while (v8) {
-		v11 = 0;
-		do
-			mpq_buf[v11++] -= 86;
-		while (v11 < 4096);
-		dwLen = v8;
-		if (v8 >= 0x1000)
-			dwLen = 4096;
-		memcpy(mpq_buf, v17, dwLen);
-		v17 += dwLen;
-		dwLen = PkwareCompress(mpq_buf, dwLen);
-		if (!v18) {
-			nNumberOfBytesToWrite = size;
-			pBlk = (_BLOCKENTRY *)DiabloAllocPtr(size);
-			memset(pBlk, 0, nNumberOfBytesToWrite);
-			if (!WriteFile(sghArchive, pBlk, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0))
-				goto LABEL_25;
+	sectoroffsettable = NULL;
+	while (dwLen != 0) {
+		DWORD len;
+		for (i = 0; i < 4096; i++)
+			mpq_buf[i] -= 86;
+		len = dwLen;
+		if (dwLen >= 4096)
+			len = 4096;
+		memcpy(mpq_buf, src, len);
+		src += len;
+		len = PkwareCompress(mpq_buf, len);
+		if (j == 0) {
+			nNumberOfBytesToWrite = 4 * num_bytes + 4;
+			sectoroffsettable = (DWORD *)DiabloAllocPtr(nNumberOfBytesToWrite);
+			memset(sectoroffsettable, 0, nNumberOfBytesToWrite);
+			if (!WriteFile(sghArchive, sectoroffsettable, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0)) {
+				goto on_error;
+			}
 			destsize += nNumberOfBytesToWrite;
 		}
-		*(&pBlk->offset + v18) = destsize;
-		if (!WriteFile(sghArchive, mpq_buf, dwLen, (LPDWORD)&dwLen, 0))
-			goto LABEL_25;
-		++v18;
-		if (v8 <= 0x1000)
-			v8 = 0;
+		sectoroffsettable[j] = destsize;
+		if (!WriteFile(sghArchive, mpq_buf, len, &len, NULL)) {
+			goto on_error;
+		}
+		j++;
+		if (dwLen > 4096)
+			dwLen -= 4096;
 		else
-			v8 -= 4096;
-		destsize += dwLen;
+			dwLen = 0;
+		destsize += len;
 	}
-	*(&pBlk->offset + v18) = destsize;
-	if (SetFilePointer(sghArchive, -destsize, NULL, FILE_CURRENT) == -1
-	    || !WriteFile(sghArchive, pBlk, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0)
-	    || SetFilePointer(sghArchive, destsize - nNumberOfBytesToWrite, NULL, FILE_CURRENT) == -1) {
-	LABEL_25:
-		if (pBlk)
-			mem_free_dbg(pBlk);
-		return 0;
+
+	sectoroffsettable[j] = destsize;
+	if (SetFilePointer(sghArchive, -destsize, NULL, FILE_CURRENT) == (DWORD)-1) {
+		goto on_error;
 	}
-	mem_free_dbg(pBlk);
-	v13 = v9->sizealloc;
-	if (destsize < v13) {
-		v14 = v13 - destsize;
-		if (v14 >= 0x400) {
-			v15 = destsize + v9->offset;
-			v9->sizealloc = destsize;
-			mpqapi_free_block(v15, v14);
+
+	if (!WriteFile(sghArchive, sectoroffsettable, nNumberOfBytesToWrite, &nNumberOfBytesToWrite, 0)) {
+		goto on_error;
+	}
+
+	if (SetFilePointer(sghArchive, destsize - nNumberOfBytesToWrite, NULL, FILE_CURRENT) == (DWORD)-1) {
+		goto on_error;
+	}
+
+	mem_free_dbg(sectoroffsettable);
+	if (destsize < pBlk->sizealloc) {
+		block_size = pBlk->sizealloc - destsize;
+		if (block_size >= 1024) {
+			pBlk->sizealloc = destsize;
+			mpqapi_alloc_block(pBlk->sizealloc + pBlk->offset, block_size);
 		}
 	}
-	return 1;
+	return TRUE;
+on_error:
+	if (sectoroffsettable)
+		mem_free_dbg(sectoroffsettable);
+	return FALSE;
 }
 
 int mpqapi_find_free_block(int size, int *block_size)
@@ -453,68 +424,61 @@ BOOL mpqapi_has_file(const char *pszName)
 	return FetchHandle(pszName) != -1;
 }
 
-BOOL OpenMPQ(const char *pszArchive, BOOL hidden, int dwChar)
+BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 {
-	const char *v3;         // ebp
-	BOOL v4;                // esi
-	DWORD v6;               // edi
-	int v8;                 // eax
-	int v10;                // eax
-	const char *lpFileName; // [esp+10h] [ebp-70h]
-	DWORD dwTemp;           // [esp+14h] [ebp-6Ch]
-	_FILEHEADER fhdr;       // [esp+18h] [ebp-68h]
+	DWORD dwFlagsAndAttributes;
+	DWORD key;
+	DWORD dwTemp;
+	_FILEHEADER fhdr;
 
-	v3 = pszArchive;
-	v4 = hidden;
-	lpFileName = pszArchive;
 	InitHash();
-	if (!mpqapi_set_hidden(v3, v4))
-		return 0;
-	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
-	save_archive_open = 0;
-	sghArchive = CreateFile(v3, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
-	if (sghArchive == INVALID_HANDLE_VALUE) {
-		sghArchive = CreateFile(lpFileName, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
-		if (sghArchive == INVALID_HANDLE_VALUE)
-			return 0;
-		save_archive_open = 1;
-		save_archive_modified = 1;
+	if (!mpqapi_set_hidden(pszArchive, hidden)) {
+		return FALSE;
 	}
-	if (!sgpBlockTbl || !sgpHashTbl) {
+	dwFlagsAndAttributes = gbMaxPlayers > 1 ? FILE_FLAG_WRITE_THROUGH : 0;
+	save_archive_open = FALSE;
+	sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
+	if (sghArchive == INVALID_HANDLE_VALUE) {
+		sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, dwFlagsAndAttributes  | (hidden ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
+		if (sghArchive == INVALID_HANDLE_VALUE)
+			return FALSE;
+		save_archive_open = TRUE;
+		save_archive_modified = TRUE;
+	}
+	if (sgpBlockTbl == NULL || sgpHashTbl == NULL) {
 		memset(&fhdr, 0, sizeof(fhdr));
-		if (!ParseMPQHeader(&fhdr, &sgdwMpqOffset)) {
-		LABEL_15:
-			CloseMPQ(lpFileName, 1, dwChar);
-			return 0;
+		if (ParseMPQHeader(&fhdr, &sgdwMpqOffset) == FALSE) {
+			goto on_error;
 		}
 		sgpBlockTbl = (_BLOCKENTRY *)DiabloAllocPtr(0x8000);
-		memset(sgpBlockTbl, 0, 0x8000u);
+		memset(sgpBlockTbl, 0, 0x8000);
 		if (fhdr.blockcount) {
-			if (SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1
-			    || !ReadFile(sghArchive, sgpBlockTbl, 0x8000u, &dwTemp, NULL)) {
-				goto LABEL_15;
-			}
-			v8 = Hash("(block table)", 3);
-			Decrypt(sgpBlockTbl, 0x8000, v8);
+			if (SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1)
+				goto on_error;
+			if (!ReadFile(sghArchive, sgpBlockTbl, 0x8000, &dwTemp, NULL))
+				goto on_error;
+			key = Hash("(block table)", 3);
+			Decrypt(sgpBlockTbl, 0x8000, key);
 		}
 		sgpHashTbl = (_HASHENTRY *)DiabloAllocPtr(0x8000);
-		memset(sgpHashTbl, 255, 0x8000u);
+		memset(sgpHashTbl, 255, 0x8000);
 		if (fhdr.hashcount) {
-			if (SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1
-			    || !ReadFile(sghArchive, sgpHashTbl, 0x8000u, &dwTemp, NULL)) {
-				goto LABEL_15;
-			}
-			v10 = Hash("(hash table)", 3);
-			Decrypt(sgpHashTbl, 0x8000, v10);
+			if (SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1)
+				goto on_error;
+			if (!ReadFile(sghArchive, sgpHashTbl, 0x8000, &dwTemp, NULL))
+				goto on_error;
+			key = Hash("(hash table)", 3);
+			Decrypt(sgpHashTbl, 0x8000, key);
 		}
+		return TRUE;
 	}
-	return 1;
+	return TRUE;
+on_error:
+	CloseMPQ(pszArchive, TRUE, dwChar);
+	return FALSE;
 }
-// 65AB0C: using guessed type int save_archive_modified;
-// 65AB14: using guessed type char save_archive_open;
-// 679660: using guessed type char gbMaxPlayers;
 
-BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
+BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 {
 	DWORD size;
 	DWORD NumberOfBytesRead;
@@ -547,14 +511,14 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, int *pdwNextFileStart)
 		pHdr->sectorsizeid = 3;
 		pHdr->version = 0;
 		*pdwNextFileStart = 0x10068;
-		save_archive_modified = 1;
+		save_archive_modified = TRUE;
 		save_archive_open = 1;
 	}
 
 	return TRUE;
 }
 
-void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
+void CloseMPQ(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
 	if (bFree) {
 		MemFreeDbg(sgpBlockTbl);
@@ -574,46 +538,42 @@ void CloseMPQ(const char *pszArchive, BOOL bFree, int dwChar)
 	}
 }
 
-void mpqapi_store_modified_time(const char *pszArchive, int dwChar)
+void mpqapi_store_modified_time(const char *pszArchive, DWORD dwChar)
 {
-	int v2;                                // esi
-	const char *v3;                        // ebx
-	HANDLE v4;                             // eax
-	int v5;                                // esi
-	struct _WIN32_FIND_DATAA FindFileData; // [esp+8h] [ebp-1E0h]
-	char dst[160];                         // [esp+148h] [ebp-A0h]
+	HANDLE handle;
+	struct _WIN32_FIND_DATAA FindFileData;
+	char dst[160];
 
-	v2 = dwChar;
-	v3 = pszArchive;
 	if (gbMaxPlayers != 1) {
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFile(v3, &FindFileData);
-		if (v4 != INVALID_HANDLE_VALUE) {
-			FindClose(v4);
-			v5 = 16 * v2;
-			*(_DWORD *)&dst[v5 + 8] = FindFileData.ftLastWriteTime.dwLowDateTime;
-			*(_DWORD *)&dst[v5 + 12] = FindFileData.ftLastWriteTime.dwHighDateTime;
+		handle = FindFirstFile(pszArchive, &FindFileData);
+		if (handle != INVALID_HANDLE_VALUE) {
+			FindClose(handle);
+			*((FILETIME *)(dst) + dwChar * 2 + 1) = FindFileData.ftLastWriteTime;
 			mpqapi_reg_store_modification_time(dst, 160);
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
-void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar)
+BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
-	if (sghArchive != INVALID_HANDLE_VALUE) {
-		if (save_archive_modified) {
-			if (mpqapi_can_seek()) {
-				if (WriteMPQHeader()) {
-					if (mpqapi_write_block_table())
-						mpqapi_write_hash_table();
-				}
-			}
+	BOOL ret = FALSE;
+	if (sghArchive == INVALID_HANDLE_VALUE)
+		ret = TRUE;
+	else {
+		ret = FALSE;
+		if (!save_archive_modified)
+			ret = TRUE;
+		else if (mpqapi_can_seek() && WriteMPQHeader() && mpqapi_write_block_table()) {
+			if (mpqapi_write_hash_table())
+				ret = TRUE;
+			else
+				ret = FALSE;
 		}
 	}
 	CloseMPQ(pszArchive, bFree, dwChar);
+	return ret;
 }
-// 65AB0C: using guessed type int save_archive_modified;
 
 BOOL WriteMPQHeader()
 {

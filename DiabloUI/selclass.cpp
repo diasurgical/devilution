@@ -50,9 +50,9 @@ LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	} else {
 		if (HIWORD(wParam) != 6) {
 			v5 = 1;
-			if (HIWORD(wParam) == 5 || (_WORD)wParam == 1)
+			if (HIWORD(wParam) == 5 || (WORD)wParam == 1)
 				goto LABEL_19;
-			if ((_WORD)wParam != 2)
+			if ((WORD)wParam != 2)
 				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			goto LABEL_21;
 		}
@@ -62,7 +62,7 @@ LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10009EC0
 void __fastcall SelClass_FreeClassMsgTbl(HWND hWnd)

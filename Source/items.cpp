@@ -279,7 +279,7 @@ void InitItems()
 		if (QuestStatus(QTYPE_INFRA))
 			SpawnRock();
 		if (QuestStatus(QTYPE_ANVIL))
-			SpawnQuestItem(16, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
+			SpawnQuestItem(IDI_ANVIL, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
 		if (currlevel > 0u && currlevel < 0x10u)
 			AddInitItems();
 	}
@@ -842,9 +842,9 @@ void SetPlrHandSeed(ItemStruct *h, int iseed)
 
 void SetPlrHandGoldCurs(ItemStruct *h)
 {
-	if (h->_ivalue >= 2500)
+	if (h->_ivalue >= GOLD_MEDIUM_LIMIT)
 		h->_iCurs = ICURS_GOLD_LARGE;
-	else if (h->_ivalue <= 1000)
+	else if (h->_ivalue <= GOLD_SMALL_LIMIT)
 		h->_iCurs = ICURS_GOLD_SMALL;
 	else
 		h->_iCurs = ICURS_GOLD_MEDIUM;
@@ -934,7 +934,7 @@ void CreatePlrItems(int p)
 		plr[p].InvGrid[30] = plr[p]._pNumInv;
 #ifdef _DEBUG
 	} else {
-		plr[p].HoldItem._ivalue = 5000;
+		plr[p].HoldItem._ivalue = GOLD_MAX_LIMIT;
 		plr[p].HoldItem._iCurs = ICURS_GOLD_LARGE;
 		plr[p]._pGold = plr[p].HoldItem._ivalue * 40;
 		for (i = 0; i < 40; i++) {
@@ -1308,15 +1308,15 @@ void GetItemAttrs(int i, int idata, int lvl)
 
 		if (leveltype == DTYPE_HELL)
 			rndv += rndv >> 3;
-		if (rndv > 5000)
-			rndv = 5000;
+		if (rndv > GOLD_MAX_LIMIT)
+			rndv = GOLD_MAX_LIMIT;
 
 		item[i]._ivalue = rndv;
 
-		if (rndv >= 2500)
+		if (rndv >= GOLD_MEDIUM_LIMIT)
 			item[i]._iCurs = ICURS_GOLD_LARGE;
 		else
-			item[i]._iCurs = (rndv > 1000) + 4;
+			item[i]._iCurs = (rndv > GOLD_SMALL_LIMIT) + 4;
 	}
 }
 
@@ -2229,9 +2229,9 @@ void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
 		item[ii]._iSeed = iseed;
 		item[ii]._iCreateInfo = ic;
 		item[ii]._ivalue = ivalue;
-		if (ivalue >= 2500)
+		if (ivalue >= GOLD_MEDIUM_LIMIT)
 			item[ii]._iCurs = ICURS_GOLD_LARGE;
-		else if (ivalue <= 1000)
+		else if (ivalue <= GOLD_SMALL_LIMIT)
 			item[ii]._iCurs = ICURS_GOLD_SMALL;
 		else
 			item[ii]._iCurs = ICURS_GOLD_MEDIUM;
@@ -2494,7 +2494,7 @@ void CheckIdentify(int pnum, int cii)
 		pi = &plr[pnum].InvBody[cii];
 
 	pi->_iIdentified = TRUE;
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
@@ -2510,7 +2510,7 @@ void DoRepair(int pnum, int cii)
 
 	PlaySfxLoc(IS_REPAIR, p->WorldX, p->WorldY);
 	RepairItem(pi, p->_pLevel);
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
@@ -2559,7 +2559,7 @@ void DoRecharge(int pnum, int cii)
 		r = spelldata[pi->_iSpell].sBookLvl;
 		r = random(38, p->_pLevel / r) + 1;
 		RechargeItem(pi, r);
-		CalcPlrInv(pnum, 1);
+		CalcPlrInv(pnum, TRUE);
 	}
 
 	if (pnum == myplr)
@@ -2587,67 +2587,67 @@ void PrintItemOil(char IDidx)
 	switch (IDidx) {
 	case IMISC_FULLHEAL:
 		strcpy(tempstr, "fully recover life");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_HEAL:
 		strcpy(tempstr, "recover partial life");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_OLDHEAL:
 		strcpy(tempstr, "recover life");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_DEADHEAL:
 		strcpy(tempstr, "deadly heal");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_MANA:
 		strcpy(tempstr, "recover mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_FULLMANA:
 		strcpy(tempstr, "fully recover mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXSTR:
 		strcpy(tempstr, "increase strength");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXMAG:
 		strcpy(tempstr, "increase magic");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXDEX:
 		strcpy(tempstr, "increase dexterity");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXVIT:
 		strcpy(tempstr, "increase vitality");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXWEAK:
 		strcpy(tempstr, "decrease strength");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXDIS:
 		strcpy(tempstr, "decrease strength");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXCLUM:
 		strcpy(tempstr, "decrease dexterity");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_ELIXSICK:
 		strcpy(tempstr, "decrease vitality");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_REJUV:
 		strcpy(tempstr, "recover life and mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	case IMISC_FULLREJUV:
 		strcpy(tempstr, "fully recover life and mana");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		break;
 	}
 }
@@ -2937,7 +2937,7 @@ void DrawULine(int y)
 		mov		edi, esi
 		add		esi, SCREENXY(26, 25)
 		add		edi, yy
-		mov		ebx, 768 - 266
+		mov		ebx, BUFFER_WIDTH - 266
 		mov		edx, 3
 	copyline:
 		mov		ecx, 266 / 4
@@ -2955,7 +2955,7 @@ void DrawULine(int y)
 	src = &gpBuffer[SCREENXY(26, 25)];
 	dst = &gpBuffer[PitchTbl[SStringY[y] + 198] + 26 + 64];
 
-	for (i = 0; i < 3; i++, src += 768, dst += 768)
+	for (i = 0; i < 3; i++, src += BUFFER_WIDTH, dst += BUFFER_WIDTH)
 		memcpy(dst, src, 266);
 #endif
 }
@@ -2999,30 +2999,30 @@ void PrintItemMisc(ItemStruct *x)
 {
 	if (x->_iMiscId == IMISC_SCROLL) {
 		strcpy(tempstr, "Right-click to read");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_SCROLLT) {
 		strcpy(tempstr, "Right-click to read, then");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		strcpy(tempstr, "left-click to target");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId >= IMISC_USEFIRST && x->_iMiscId <= IMISC_USELAST) {
 		PrintItemOil(x->_iMiscId);
 		strcpy(tempstr, "Right click to use");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_BOOK) {
 		strcpy(tempstr, "Right click to read");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_MAPOFDOOM) {
 		strcpy(tempstr, "Right click to view");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_EAR) {
 		sprintf(tempstr, "Level : %i", x->_ivalue);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 }
 
@@ -3033,30 +3033,30 @@ void PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iClass == ICLASS_ARMOR) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
 			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
 		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iPrePower != -1) {
 		PrintItemPower(x->_iPrePower, x);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iSufPower != -1) {
 		PrintItemPower(x->_iSufPower, x);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
-		AddPanelString("unique item", 1);
+		AddPanelString("unique item", TRUE);
 		uitemflag = 1;
 		curruitem = *x;
 	}
@@ -3069,7 +3069,7 @@ void PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "%s %i Mag", tempstr, x->_iMinMag);
 		if (x->_iMinDex)
 			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	pinfoflag = TRUE;
 }
@@ -3081,29 +3081,29 @@ void PrintItemDur(ItemStruct *x)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
 			sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		}
 		if (x->_iMagical != ITEM_QUALITY_NORMAL)
-			AddPanelString("Not Identified", 1);
+			AddPanelString("Not Identified", TRUE);
 	}
 	if (x->_iClass == ICLASS_ARMOR) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
 			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		if (x->_iMagical != ITEM_QUALITY_NORMAL)
-			AddPanelString("Not Identified", 1);
+			AddPanelString("Not Identified", TRUE);
 		if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
 			sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		}
 	}
 	if (x->_itype == ITYPE_RING || x->_itype == ITYPE_AMULET)
-		AddPanelString("Not Identified", 1);
+		AddPanelString("Not Identified", TRUE);
 	PrintItemMisc(x);
 	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
 		strcpy(tempstr, "Required:");

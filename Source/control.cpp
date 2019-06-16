@@ -78,31 +78,31 @@ const unsigned char fontkern[68] = {
 	4, 4, 9, 6, 6, 12, 3, 7
 };
 const int lineoffset[25] = {
-	768 * 594 + 241,
-	768 * 32,
-	768 * 32,
-	768 * 32,
-	768 * 32 + 180,
-	768 * 582 + 241,
-	768 * 606 + 241,
-	768 * 32,
-	768 * 32,
-	768 * 32,
-	768 * 576 + 241,
-	768 * 594 + 241,
-	768 * 612 + 241,
-	768 * 32,
-	768 * 32,
-	768 * 572 + 241,
-	768 * 587 + 241,
-	768 * 601 + 241,
-	768 * 616 + 241,
-	768 * 32,
-	768 * 570 + 241,
-	768 * 582 + 241,
-	768 * 594 + 241,
-	768 * 606 + 241,
-	768 * 617 + 241
+	BUFFER_WIDTH * 594 + 241,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 32 + 180,
+	BUFFER_WIDTH * 582 + 241,
+	BUFFER_WIDTH * 606 + 241,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 576 + 241,
+	BUFFER_WIDTH * 594 + 241,
+	BUFFER_WIDTH * 612 + 241,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 572 + 241,
+	BUFFER_WIDTH * 587 + 241,
+	BUFFER_WIDTH * 601 + 241,
+	BUFFER_WIDTH * 616 + 241,
+	BUFFER_WIDTH * 32,
+	BUFFER_WIDTH * 570 + 241,
+	BUFFER_WIDTH * 582 + 241,
+	BUFFER_WIDTH * 594 + 241,
+	BUFFER_WIDTH * 606 + 241,
+	BUFFER_WIDTH * 617 + 241
 };
 const unsigned char gbFontTransTbl[256] = {
 	// clang-format off
@@ -242,7 +242,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 		sub		edx, eax
 		jnz		label2
 	label7:
-		sub		edi, 768
+		sub		edi, BUFFER_WIDTH
 		sub		edi, w
 		cmp		esi, end
 		jnz		label1
@@ -257,7 +257,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 	src = &Trans[pFrameTable[0]];
 	end = &src[pFrameTable[1] - pFrameTable[0]];
 
-	for (; src != end; dst -= 768 + w) {
+	for (; src != end; dst -= BUFFER_WIDTH + w) {
 		for (i = w; i;) {
 			width = *src++;
 			if (!(width & 0x80)) {
@@ -438,7 +438,7 @@ void DrawSpellList()
 					sprintf(infostr, "%s Spell", spelldata[pSpell].sNameText);
 					if (pSpell == SPL_HBOLT) {
 						sprintf(tempstr, "Damages undead only");
-						AddPanelString(tempstr, 1);
+						AddPanelString(tempstr, TRUE);
 					}
 					if (s == 0)
 						sprintf(tempstr, "Spell Level 0 - Unusable");
@@ -481,8 +481,8 @@ void DrawSpellList()
 				for (t = 0; t < 4; t++) {
 					if (plr[myplr]._pSplHotKey[t] == pSpell && plr[myplr]._pSplTHotKey[t] == pSplType) {
 						DrawSpellCel(x, y, pSpellCels, t + 48, 56);
-						printf(tempstr, "Spell Hot Key #F%i", t + 5);
-						AddPanelString(tempstr, 1);
+						sprintf(tempstr, "Spell Hot Key #F%i", t + 5);
+						AddPanelString(tempstr, TRUE);
 					}
 				}
 			}
@@ -617,7 +617,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		sub		edx, eax
 		jnz		c0_label2
 	c0_label7:
-		sub		edi, 768 + 13
+		sub		edi, BUFFER_WIDTH + 13
 		cmp		ebx, esi
 		jnz		c0_label1
 		jmp		labret
@@ -654,7 +654,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		sub		edx, eax
 		jnz		c1_label2
 	c1_label7:
-		sub		edi, 768 + 13
+		sub		edi, BUFFER_WIDTH + 13
 		cmp		ebx, esi
 		jnz		c1_label1
 		jmp		labret
@@ -686,7 +686,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		sub		edx, eax
 		jnz		c2_label2
 	c2_label6:
-		sub		edi, 768 + 13
+		sub		edi, BUFFER_WIDTH + 13
 		cmp		ebx, esi
 		jnz		c2_label1
 		jmp		labret
@@ -723,7 +723,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		sub		edx, eax
 		jnz		d_label2
 	d_label7:
-		sub		edi, 768 + 13
+		sub		edi, BUFFER_WIDTH + 13
 		cmp		ebx, esi
 		jnz		d_label1
 
@@ -742,7 +742,7 @@ void CPrintString(int nOffset, int nCel, char col)
 
 	switch (col) {
 	case COL_WHITE:
-		for (; src != end; dst -= 768 + 13) {
+		for (; src != end; dst -= BUFFER_WIDTH + 13) {
 			for (i = 13; i;) {
 				width = *src++;
 				if (!(width & 0x80)) {
@@ -778,7 +778,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		}
 		break;
 	case COL_BLUE:
-		for (; src != end; dst -= 768 + 13) {
+		for (; src != end; dst -= BUFFER_WIDTH + 13) {
 			for (i = 13; i;) {
 				width = *src++;
 				if (!(width & 0x80)) {
@@ -801,7 +801,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		}
 		break;
 	case COL_RED:
-		for (; src != end; dst -= 768 + 13) {
+		for (; src != end; dst -= BUFFER_WIDTH + 13) {
 			for (i = 13; i;) {
 				width = *src++;
 				if (!(width & 0x80)) {
@@ -822,7 +822,7 @@ void CPrintString(int nOffset, int nCel, char col)
 		}
 		break;
 	default:
-		for (; src != end; dst -= 768 + 13) {
+		for (; src != end; dst -= BUFFER_WIDTH + 13) {
 			for (i = 13; i;) {
 				width = *src++;
 				if (!(width & 0x80)) {
@@ -872,7 +872,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	/// ASSERT: assert(gpBuffer);
 
 	nSrcOff = x + 640 * y;
-	nDstOff = sx + 768 * sy;
+	nDstOff = sx + BUFFER_WIDTH * sy;
 
 #ifdef USE_ASM
 	__asm {
@@ -900,7 +900,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	label4:
 		add		esi, 640
 		sub		esi, ebx
-		add		edi, 768
+		add		edi, BUFFER_WIDTH
 		sub		edi, ebx
 		dec		edx
 		jnz		label1
@@ -912,7 +912,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	src = &pBtmBuff[nSrcOff];
 	dst = &gpBuffer[nDstOff];
 
-	for (hgt = h; hgt; hgt--, src += 640 - w, dst += 768 - w) {
+	for (hgt = h; hgt; hgt--, src += 640 - w, dst += BUFFER_WIDTH - w) {
 		wdt = w;
 		if (wdt & 1) {
 			dst[0] = src[0];
@@ -947,7 +947,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 	/// ASSERT: assert(gpBuffer);
 
 	nSrcOff = 88 * min;
-	nDstOff = c + 768 * r;
+	nDstOff = c + BUFFER_WIDTH * r;
 	w = max - min;
 
 #ifdef USE_ASM
@@ -960,7 +960,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 	label1:
 		mov		ecx, 88 / 4
 		rep movsd
-		add		edi, 768 - 88
+		add		edi, BUFFER_WIDTH - 88
 		dec		edx
 		jnz		label1
 	}
@@ -970,7 +970,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 	src = &pCelBuff[nSrcOff];
 	dst = &gpBuffer[nDstOff];
 
-	for (; w; w--, src += 88, dst += 768)
+	for (; w; w--, src += 88, dst += BUFFER_WIDTH)
 		memcpy(dst, src, 88);
 #endif
 }
@@ -996,7 +996,7 @@ void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int
 		loop	label2
 		add		esi, w
 		sub		esi, 59
-		add		edi, 768 - 59
+		add		edi, BUFFER_WIDTH - 59
 		dec		edx
 		jnz		label1
 	}
@@ -1007,7 +1007,7 @@ void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int
 	src = &pCelBuff[nSrcOff];
 	dst = &pBuff[nDstOff];
 
-	for (hgt = h; hgt; hgt--, src += w - 59, dst += 768 - 59) {
+	for (hgt = h; hgt; hgt--, src += w - 59, dst += BUFFER_WIDTH - 59) {
 		for (wdt = 59; wdt; wdt--) {
 			if (*src)
 				*dst = *src;
@@ -1030,9 +1030,9 @@ void DrawLifeFlask()
 		filled = 11;
 	filled += 2;
 
-	DrawFlask(pLifeBuff, 88, 277, gpBuffer, 768 * 499 + 173, filled);
+	DrawFlask(pLifeBuff, 88, 277, gpBuffer, BUFFER_WIDTH * 499 + 173, filled);
 	if (filled != 13)
-		DrawFlask(pBtmBuff, 640, 640 * filled + 2029, gpBuffer, 768 * filled + 768 * 499 + 173, 13 - filled);
+		DrawFlask(pBtmBuff, 640, 640 * filled + 2029, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173, 13 - filled);
 }
 
 void UpdateLifeFlask()
@@ -1060,9 +1060,9 @@ void DrawManaFlask()
 		filled = 11;
 	filled += 2;
 
-	DrawFlask(pManaBuff, 88, 277, gpBuffer, 768 * 499 + 173 + 366, filled);
+	DrawFlask(pManaBuff, 88, 277, gpBuffer, BUFFER_WIDTH * 499 + 173 + 366, filled);
 	if (filled != 13)
-		DrawFlask(pBtmBuff, 640, 640 * filled + 2029 + 366, gpBuffer, 768 * filled + 768 * 499 + 173 + 366, 13 - filled);
+		DrawFlask(pBtmBuff, 640, 640 * filled + 2029 + 366, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173 + 366, 13 - filled);
 }
 
 void control_update_life_mana()
@@ -1344,7 +1344,7 @@ void CheckPanelInfo()
 			}
 			if (PanBtnHotKey[i]) {
 				sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[i]);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 			}
 			infoclr = COL_WHITE;
 			panelflag = 1;
@@ -1357,17 +1357,17 @@ void CheckPanelInfo()
 		panelflag = 1;
 		pinfoflag = TRUE;
 		strcpy(tempstr, "Hotkey : 's'");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		v = plr[myplr]._pRSpell;
 		if (v != -1) {
 			switch (plr[myplr]._pRSplType) {
 			case RSPLTYPE_SKILL:
 				sprintf(tempstr, "%s Skill", spelldata[v].sSkillText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			case RSPLTYPE_SPELL:
 				sprintf(tempstr, "%s Spell", spelldata[v].sNameText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				c = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v];
 				if (c < 0)
 					c = 0;
@@ -1375,11 +1375,11 @@ void CheckPanelInfo()
 					sprintf(tempstr, "Spell Level 0 - Unusable");
 				else
 					sprintf(tempstr, "Spell Level %i", c);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			case RSPLTYPE_SCROLL:
 				sprintf(tempstr, "Scroll of %s", spelldata[v].sNameText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				s = 0;
 				for (i = 0; i < plr[myplr]._pNumInv; i++) {
 					if (plr[myplr].InvList[i]._itype != -1
@@ -1399,16 +1399,16 @@ void CheckPanelInfo()
 					strcpy(tempstr, "1 Scroll");
 				else
 					sprintf(tempstr, "%i Scrolls", s);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			case RSPLTYPE_CHARGES:
 				sprintf(tempstr, "Staff of %s", spelldata[v].sNameText);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1)
 					strcpy(tempstr, "1 Charge");
 				else
 					sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 				break;
 			}
 		}
@@ -1553,7 +1553,7 @@ void DrawInfoBox()
 			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(plr[myplr].HoldItem._ivalue));
 		} else if (!plr[myplr].HoldItem._iStatFlag) {
 			ClearPanel();
-			AddPanelString("Requirements not met", 1);
+			AddPanelString("Requirements not met", TRUE);
 			pinfoflag = TRUE;
 		} else {
 			if (plr[myplr].HoldItem._iIdentified)
@@ -1590,9 +1590,9 @@ void DrawInfoBox()
 			strcpy(infostr, plr[pcursplr]._pName);
 			ClearPanel();
 			sprintf(tempstr, "Level : %i", plr[pcursplr]._pLevel);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 			sprintf(tempstr, "Hit Points %i of %i", plr[pcursplr]._pHitPoints >> 6, plr[pcursplr]._pMaxHP >> 6);
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		}
 	}
 	if (infostr[0] || pnumlines)
@@ -2102,7 +2102,7 @@ void RedBack()
 			xlat
 			stosb
 			loop	lx_label2
-			add		edi, 768 - 640
+			add		edi, BUFFER_WIDTH - 640
 			dec		edx
 			jnz		lx_label1
 		}
@@ -2123,7 +2123,7 @@ void RedBack()
 		l4_label3:
 			stosb
 			loop	l4_label2
-			add		edi, 768 - 640
+			add		edi, BUFFER_WIDTH - 640
 			dec		edx
 			jnz		l4_label1
 		}
@@ -2135,7 +2135,7 @@ void RedBack()
 	if (leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = VIEWPORT_HEIGHT; h; h--, dst += 768 - 640) {
+		for (h = VIEWPORT_HEIGHT; h; h--, dst += BUFFER_WIDTH - 640) {
 			for (w = 640; w; w--) {
 				*dst = tbl[*dst];
 				dst++;
@@ -2144,7 +2144,7 @@ void RedBack()
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = VIEWPORT_HEIGHT; h; h--, dst += 768 - 640) {
+		for (h = VIEWPORT_HEIGHT; h; h--, dst += BUFFER_WIDTH - 640) {
 			for (w = 640; w; w--) {
 				if (*dst >= 32)
 					*dst = tbl[*dst];
@@ -2399,14 +2399,14 @@ void control_remove_gold(int pnum, int gold_index)
 
 void control_set_gold_curs(int pnum)
 {
-	if (plr[pnum].HoldItem._ivalue >= 2500)
+	if (plr[pnum].HoldItem._ivalue >= GOLD_MEDIUM_LIMIT)
 		plr[pnum].HoldItem._iCurs = ICURS_GOLD_LARGE;
-	else if (plr[pnum].HoldItem._ivalue <= 1000)
+	else if (plr[pnum].HoldItem._ivalue <= GOLD_SMALL_LIMIT)
 		plr[pnum].HoldItem._iCurs = ICURS_GOLD_SMALL;
 	else
 		plr[pnum].HoldItem._iCurs = ICURS_GOLD_MEDIUM;
 
-	SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+	NewCursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 }
 
 void DrawTalkPan()

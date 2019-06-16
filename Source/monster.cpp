@@ -1638,7 +1638,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 
 	if (pnum >= 0)
 		monster[i].mWhoHit |= 1 << pnum;
-	if (pnum < 4 && i > 4)
+	if (pnum < MAX_PLRS && i > MAX_PLRS)
 		AddPlrMonstExper(monster[i].mLevel, monster[i].mExp, monster[i].mWhoHit);
 	monstkills[monster[i].MType->mtype]++;
 	monster[i]._mhitpoints = 0;
@@ -1693,14 +1693,14 @@ void M2MStartKill(int i, int mid)
 	NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[mid]._mx, monster[mid]._my, mid);
 
 	monster[mid].mWhoHit |= 1 << i;
-	if (i < 4)
+	if (i < MAX_PLRS)
 		AddPlrMonstExper(monster[mid].mLevel, monster[mid].mExp, monster[mid].mWhoHit);
 
 	monstkills[monster[mid].MType->mtype]++;
 	monster[mid]._mhitpoints = 0;
 	SetRndSeed(monster[mid]._mRndSeed);
 
-	if (mid >= 4)
+	if (mid >= MAX_PLRS)
 		SpawnItem(mid, monster[mid]._mx, monster[mid]._my, TRUE);
 
 	if (monster[mid].MType->mtype == MT_DIABLO)
@@ -4486,7 +4486,7 @@ void DeleteMonsterList()
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
-			i = 0; // TODO: check if this should be i=4.
+			i = 0; // TODO: check if this should be MAX_PLRS.
 		} else {
 			i++;
 		}
@@ -4997,7 +4997,7 @@ void PrintMonstHistory(int mt)
 	int minHP, maxHP, res;
 
 	sprintf(tempstr, "Total kills : %i", monstkills[mt]);
-	AddPanelString(tempstr, 1);
+	AddPanelString(tempstr, TRUE);
 	if (monstkills[mt] >= 30) {
 		minHP = monsterdata[mt].mMinHP;
 		maxHP = monsterdata[mt].mMaxHP;
@@ -5018,7 +5018,7 @@ void PrintMonstHistory(int mt)
 			maxHP = 4 * maxHP + 3;
 		}
 		sprintf(tempstr, "Hit Points : %i-%i", minHP, maxHP);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
 	if (monstkills[mt] >= 15) {
 		if (gnDifficulty != DIFF_HELL)
@@ -5028,7 +5028,7 @@ void PrintMonstHistory(int mt)
 		res = res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
 		if (!res) {
 			strcpy(tempstr, "No magic resistance");
-			AddPanelString(tempstr, 1);
+			AddPanelString(tempstr, TRUE);
 		} else{
 			if (res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING)) {
 				strcpy(tempstr, "Resists : ");
@@ -5039,7 +5039,7 @@ void PrintMonstHistory(int mt)
 				if (res & RESIST_LIGHTNING)
 					strcat(tempstr, "Lightning ");
 				tempstr[strlen(tempstr) - 1] = '\0';
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 			}
 			if (res & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
 				strcpy(tempstr, "Immune : ");
@@ -5050,7 +5050,7 @@ void PrintMonstHistory(int mt)
 				if (res & IMUNE_LIGHTNING)
 					strcat(tempstr, "Lightning ");
 				tempstr[strlen(tempstr) - 1] = '\0';
-				AddPanelString(tempstr, 1);
+				AddPanelString(tempstr, TRUE);
 			}
 		}
 	}
@@ -5064,21 +5064,21 @@ void PrintUniqueHistory()
 	res = monster[pcursmonst].mMagicRes & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING);
 	if (!res) {
 		strcpy(tempstr, "No resistances");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		strcpy(tempstr, "No Immunities");
 	} else {
 		if (res & (RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING))
 			strcpy(tempstr, "Some Magic Resistances");
 		else
 			strcpy(tempstr, "No resistances");
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 		if (res & (IMUNE_MAGIC | IMUNE_FIRE | IMUNE_LIGHTNING)) {
 			strcpy(tempstr, "Some Magic Immunities");
 		} else {
 			strcpy(tempstr, "No Immunities");
 		}
 	}
-	AddPanelString(tempstr, 1);
+	AddPanelString(tempstr, TRUE);
 	pinfoflag = TRUE;
 }
 
@@ -5508,21 +5508,21 @@ int encode_enemy(int m)
 
 	enemy = monster[m]._menemy;
 	if (monster[m]._mFlags & MFLAG_TARGETS_MONSTER)
-		enemy += 4;
+		enemy += MAX_PLRS;
 
 	return enemy;
 }
 
 void decode_enemy(int m, int enemy)
 {
-	if (enemy < 4) {
+	if (enemy < MAX_PLRS) {
 		monster[m]._mFlags &= ~MFLAG_TARGETS_MONSTER;
 		monster[m]._menemy = enemy;
 		monster[m]._menemyx = plr[enemy]._px;
 		monster[m]._menemyy = plr[enemy]._py;
 	} else {
 		monster[m]._mFlags |= MFLAG_TARGETS_MONSTER;
-		enemy -= 4;
+		enemy -= MAX_PLRS;
 		monster[m]._menemy = enemy;
 		monster[m]._menemyx = monster[enemy]._mfutx;
 		monster[m]._menemyy = monster[enemy]._mfuty;

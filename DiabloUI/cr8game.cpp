@@ -28,11 +28,11 @@ BOOL __fastcall cr8game_GetSnetCreaGame(HWND hWnd)
 	if (UiAuthCallback(2, a2, str, 0, a4, Text, 256)) {
 		v2 = cr8_somegamestruct;
 		if (cr8_somegamestruct[8] >= 8) {
-			*(_BYTE *)(cr8_somegamestruct[7] + 4) = cr8_gamedata.bDiff;
+			*(BYTE *)(cr8_somegamestruct[7] + 4) = cr8_gamedata.bDiff;
 			v2                                    = cr8_somegamestruct;
 		}
 		v3  = cr8game_playerID;
-		v4  = *(_DWORD *)(cr8_playercount + 8);
+		v4  = *(DWORD *)(cr8_playercount + 8);
 		v5  = v2[8];
 		v6  = (char *)v2[7];
 		v7  = Connect_GetRankFromLevel(str);
@@ -53,7 +53,7 @@ BOOL __fastcall cr8game_GetSnetCreaGame(HWND hWnd)
 	}
 	return result;
 }
-// 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
+// 10010406: using guessed type DWORD __stdcall SErrGetLastError();
 // 10029630: using guessed type int cr8_playercount;
 
 // ref: 0x100044AA
@@ -67,7 +67,7 @@ BOOL __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int 
 	cr8_dword_10029640 = a5;
 	cr8_dword_1002963C = a4;
 	cr8game_playerID   = (int *)a6;
-	v6                 = SDlgDialogBoxParam(ghUiInst, "DIALOG_CREATE_GAME", *(_DWORD *)(a4 + 8), cr8game_WndProc, 0);
+	v6                 = SDlgDialogBoxParam(ghUiInst, "DIALOG_CREATE_GAME", *(DWORD *)(a4 + 8), cr8game_WndProc, 0);
 	return v6 != -1 ? v6 : 0;
 }
 // 10029630: using guessed type int cr8_playercount;
@@ -172,7 +172,7 @@ LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, v4, (HDC)wParam, (HWND)lParam);
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10004828
 void __cdecl cr8game_FreeCreaStuff()

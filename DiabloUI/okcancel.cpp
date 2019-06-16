@@ -103,7 +103,7 @@ LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 		SDlgEndDialog(hWnd, (HANDLE)0xFF000000);
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10009117
 void __fastcall OkCancel_FreeDlgBmp(HWND hWnd)
@@ -191,7 +191,7 @@ BOOL __fastcall OkCancel_LoadOkCancGFX(HWND hWnd, DWORD *lParam)
 	}
 	return 1;
 }
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100092F5
 void __fastcall OkCancel_PlaySndEndDlg(HWND hWnd, int a2)

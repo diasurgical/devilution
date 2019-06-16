@@ -21,7 +21,7 @@ int __cdecl Focus_GetSpinWidthOrZero()
 // ref: 0x10007492
 void __fastcall Focus_BlitSpinner(HWND hWnd1, HWND hWnd2)
 {
-	_DWORD *v2;          // edi
+	DWORD *v2;          // edi
 	LONG v3;             // eax MAPDST
 	int v5;              // eax MAPDST
 	int v7;              // eax
@@ -29,10 +29,10 @@ void __fastcall Focus_BlitSpinner(HWND hWnd1, HWND hWnd2)
 	char *v9;            // [esp+18h] [ebp-8h]
 
 	v9 = (char *)hWnd1;
-	v2 = (_DWORD *)GetWindowLongA(hWnd1, -21);
+	v2 = (DWORD *)GetWindowLongA(hWnd1, -21);
 	v3 = GetWindowLongA(hWnd2, -21);
 	if (v2 && v3 && *v2) {
-		if (*(_DWORD *)v3) {
+		if (*(DWORD *)v3) {
 			GetWindowRect(hWnd2, &Rect);
 			ScreenToClient((HWND)v9, (LPPOINT)&Rect);
 			ScreenToClient((HWND)v9, (LPPOINT)&Rect.right);
@@ -40,8 +40,8 @@ void __fastcall Focus_BlitSpinner(HWND hWnd1, HWND hWnd2)
 			    *(void **)v3,
 			    (void *)(Rect.left + *v2 + Rect.top * v2[1]),
 			    focus_spin_width,
-			    *(_DWORD *)(v3 + 8),
-			    *(_DWORD *)(v3 + 4),
+			    *(DWORD *)(v3 + 8),
+			    *(DWORD *)(v3 + 4),
 			    v2[1],
 			    0,
 			    0xCC0020u);
@@ -49,10 +49,10 @@ void __fastcall Focus_BlitSpinner(HWND hWnd1, HWND hWnd2)
 			v7 = *v2 + Rect.top * v5;
 			v9 = *(char **)(v3 + 4);
 			SBltROP3(
-			    &v9[*(_DWORD *)v3 - focus_spin_width],
+			    &v9[*(DWORD *)v3 - focus_spin_width],
 			    &v9[v7 - focus_spin_width + Rect.left],
 			    focus_spin_width,
-			    *(_DWORD *)(v3 + 8),
+			    *(DWORD *)(v3 + 8),
 			    (int)v9,
 			    v5,
 			    0,

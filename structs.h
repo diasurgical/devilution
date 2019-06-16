@@ -866,7 +866,7 @@ typedef struct TSyncHeader {
 	BYTE bItemY;
 	WORD wItemIndx;
 	WORD wItemCI;
-	int dwItemSeed;
+	DWORD dwItemSeed;
 	BYTE bItemId;
 	BYTE bItemDur;
 	BYTE bItemMDur;
@@ -877,15 +877,15 @@ typedef struct TSyncHeader {
 	BYTE bPInvLoc;
 	WORD wPInvIndx;
 	WORD wPInvCI;
-	int dwPInvSeed;
+	DWORD dwPInvSeed;
 	BYTE bPInvId;
 } TSyncHeader;
 
 typedef struct TSyncMonster {
 	BYTE _mndx;
-	char _mx;
-	char _my;
-	char _menemy;
+	BYTE _mx;
+	BYTE _my;
+	BYTE _menemy;
 	BYTE _mdelta;
 } TSyncMonster;
 
@@ -1472,7 +1472,7 @@ typedef struct _FILEHEADER {
 	int signature;
 	int headersize;
 	int filesize;
-	short version;
+	WORD version;
 	short sectorsizeid;
 	int hashoffset;
 	int blockoffset;

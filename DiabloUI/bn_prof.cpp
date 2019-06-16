@@ -18,7 +18,7 @@ int __stdcall UiProfileGetString() { return 0; }
 
 // ref: 0x100014F9
 void __cdecl UiProfileCallback() { return; }
-//BOOL __stdcall UiProfileCallback(int a1, int a2, int a3, int a4, LPARAM a5, int a6, int a7, int a8, int (__stdcall *a9)(_DWORD, _DWORD, _DWORD, _DWORD)) { return 0; }
+//BOOL __stdcall UiProfileCallback(int a1, int a2, int a3, int a4, LPARAM a5, int a6, int a7, int a8, int (__stdcall *a9)(DWORD, DWORD, DWORD, DWORD)) { return 0; }
 /* {
 	const char *v9; // eax
 	int v10; // eax
@@ -31,14 +31,14 @@ void __cdecl UiProfileCallback() { return; }
 	v9 = "DIALOG_PROFILE";
 	if ( !a9 )
 		v9 = "DIALOG_STATIC_PROFILE";
-	v10 = SDlgDialogBoxParam(hInstance, v9, *(_DWORD *)(a3 + 8), bn_prof_1000155F, 0);
+	v10 = SDlgDialogBoxParam(hInstance, v9, *(DWORD *)(a3 + 8), bn_prof_1000155F, 0);
 	return v10 && v10 != -1;
 } */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(DWORD, DWORD, DWORD, DWORD, DWORD);
 // 10029408: using guessed type int dword_10029408;
 // 10029418: using guessed type int dword_10029418;
 // 1002941C: using guessed type int dword_1002941C;
-// 10029430: using guessed type int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10029430: using guessed type int (__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x1000155F
 HGDIOBJ __stdcall bn_prof_1000155F(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
@@ -111,10 +111,10 @@ HGDIOBJ __stdcall bn_prof_1000155F(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	SetTextColor((HDC)wParam, 0xFFFFu);
 	return GetStockObject(5);
 } */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
-// 10029430: using guessed type int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010376: using guessed type int __stdcall SDlgEndDialog(DWORD, DWORD);
+// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(DWORD, DWORD, DWORD, DWORD);
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
+// 10029430: using guessed type int (__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x100016DD
 void UNKCALL bn_prof_100016DD(HWND arg) { return; }
@@ -130,7 +130,7 @@ void UNKCALL bn_prof_100016DD(HWND arg) { return; }
 	size_t v9; // eax
 	char *v10; // eax
 	int v11; // ebx
-	_DWORD *v12; // edi
+	DWORD *v12; // edi
 	int v13; // eax
 	int v14; // ebx
 	size_t v15; // [esp+4h] [ebp-28h]
@@ -158,7 +158,7 @@ void UNKCALL bn_prof_100016DD(HWND arg) { return; }
 		v23 = 0;
 		if ( dword_10029408 > 0 )
 		{
-			v19 = v4 - (_DWORD)v3;
+			v19 = v4 - (DWORD)v3;
 			do
 			{
 				v5 = 0;
@@ -208,12 +208,12 @@ LABEL_13:
 		v11 = v1 - 1;
 		if ( v11 >= 0 )
 		{
-			v12 = (_DWORD *)(v22 + 4 * v11);
+			v12 = (DWORD *)(v22 + 4 * v11);
 			v13 = v18 - v22;
 			v14 = v11 + 1;
 			while ( 1 )
 			{
-				SMemFree(*(_DWORD *)((char *)v12 + v13), "C:\\Src\\Diablo\\DiabloUI\\bn_prof.cpp", 250, 0);
+				SMemFree(*(DWORD *)((char *)v12 + v13), "C:\\Src\\Diablo\\DiabloUI\\bn_prof.cpp", 250, 0);
 				SMemFree(*v12, "C:\\Src\\Diablo\\DiabloUI\\bn_prof.cpp", 251, 0);
 				--v12;
 				if ( !--v14 )
@@ -225,13 +225,13 @@ LABEL_13:
 		SMemFree(v22, "C:\\Src\\Diablo\\DiabloUI\\bn_prof.cpp", 254, 0);
 	}
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 // 1001F380: using guessed type int dword_1001F380[];
 // 10029408: using guessed type int dword_10029408;
 // 10029418: using guessed type int dword_10029418;
 // 1002941C: using guessed type int dword_1002941C;
-// 10029430: using guessed type int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10029430: using guessed type int (__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x100018CE
 void __fastcall bn_prof_100018CE(int a1, int a2) { return; }
@@ -242,7 +242,7 @@ void __fastcall bn_prof_100018CE(int a1, int a2) { return; }
 	char *v5; // ebx
 
 	v2 = a2;
-	if ( *(_DWORD *)(a2 + 24) && *(_DWORD *)a2 == 5 )
+	if ( *(DWORD *)(a2 + 24) && *(DWORD *)a2 == 5 )
 	{
 		v3 = SendMessageA(*(HWND *)(a2 + 20), 0xEu, 0, 0);
 		v4 = v3 + 1;
@@ -250,16 +250,16 @@ void __fastcall bn_prof_100018CE(int a1, int a2) { return; }
 		{
 			v5 = (char *)SMemAlloc(v3 + 1, "C:\\Src\\Diablo\\DiabloUI\\bn_prof.cpp", 362, 0);
 			SendMessageA(*(HWND *)(v2 + 20), 0xDu, v4, (LPARAM)v5);
-			bn_prof_10001938(*(HDC *)(v2 + 24), (_DWORD *)(v2 + 28), v5, 0, 0);
+			bn_prof_10001938(*(HDC *)(v2 + 24), (DWORD *)(v2 + 28), v5, 0, 0);
 			SMemFree(v5, "C:\\Src\\Diablo\\DiabloUI\\bn_prof.cpp", 367, 0);
 		}
 	}
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10001938
-int __fastcall bn_prof_10001938(HDC a1, _DWORD *a2, char *a3, int a4, int a5) { return 0; }
+int __fastcall bn_prof_10001938(HDC a1, DWORD *a2, char *a3, int a4, int a5) { return 0; }
 /* {
 	int result; // eax
 	char *v6; // edi
@@ -268,11 +268,11 @@ int __fastcall bn_prof_10001938(HDC a1, _DWORD *a2, char *a3, int a4, int a5) { 
 	char v9; // bl
 	char *v10; // eax
 	RECT rc; // [esp+Ch] [ebp-14h]
-	_DWORD *v12; // [esp+1Ch] [ebp-4h]
+	DWORD *v12; // [esp+1Ch] [ebp-4h]
 	char *v13; // [esp+28h] [ebp+8h]
 
 	result = (int)bn_prof_10002410(a1, a2);
-	v12 = (_DWORD *)result;
+	v12 = (DWORD *)result;
 	if ( result )
 	{
 		v6 = a3;
@@ -304,7 +304,7 @@ int __fastcall bn_prof_10001938(HDC a1, _DWORD *a2, char *a3, int a4, int a5) { 
 				if ( a4 && PtInRect(&rc, *(POINT *)a4) )
 				{
 					if ( a5 )
-						*(_DWORD *)a5 = v8;
+						*(DWORD *)a5 = v8;
 					return 1;
 				}
 				if ( !v6 )
@@ -372,8 +372,8 @@ int __fastcall bn_prof_10001A10(HWND a1, HWND a2) { return 0; }
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10001B0A
 HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2) { return 0; }
@@ -420,7 +420,7 @@ HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2) { return 0; }
 	}
 	return result;
 } */
-// 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
+// 10010382: using guessed type DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10001C0E
 HWND UNKCALL bn_prof_10001C0E(HWND hWnd) { return 0; }
@@ -440,9 +440,9 @@ HWND UNKCALL bn_prof_10001C0E(HWND hWnd) { return 0; }
 	v3 = GetDlgItem(v1, 1126);
 	SendMessageA(v3, 0xCu, 0, v2);
 	bn_prof_10001CB9(
-		(_DWORD *)dword_1002941C,
+		(DWORD *)dword_1002941C,
 		dword_10029418,
-		(void (__fastcall *)(_BYTE *, _DWORD, int))bn_prof_10001ED0,
+		(void (__fastcall *)(BYTE *, DWORD, int))bn_prof_10001ED0,
 		0);
 	bn_prof_10001E34(v1);
 	if ( dword_10029430 )
@@ -461,13 +461,13 @@ HWND UNKCALL bn_prof_10001C0E(HWND hWnd) { return 0; }
 } */
 // 10029418: using guessed type int dword_10029418;
 // 1002941C: using guessed type int dword_1002941C;
-// 10029430: using guessed type int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10029430: using guessed type int (__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10001CB9
-void __fastcall bn_prof_10001CB9(_DWORD *a1, int a2, void (__fastcall *a3)(_BYTE *, _DWORD, int), int a4) { return; }
+void __fastcall bn_prof_10001CB9(DWORD *a1, int a2, void (__fastcall *a3)(BYTE *, DWORD, int), int a4) { return; }
 /* {
-	_BYTE *v4; // eax
-	_DWORD *v5; // esi
+	BYTE *v4; // eax
+	DWORD *v5; // esi
 	int v6; // edi
 
 	if ( a1 )
@@ -476,18 +476,18 @@ void __fastcall bn_prof_10001CB9(_DWORD *a1, int a2, void (__fastcall *a3)(_BYTE
 		{
 			if ( a3 )
 			{
-				v4 = (_BYTE *)*a1;
-				if ( *(_BYTE *)*a1 )
+				v4 = (BYTE *)*a1;
+				if ( *(BYTE *)*a1 )
 				{
 					v5 = a1;
-					v6 = a2 - (_DWORD)a1;
+					v6 = a2 - (DWORD)a1;
 					do
 					{
-						a3(v4, *(_DWORD *)((char *)v5 + v6), a4);
+						a3(v4, *(DWORD *)((char *)v5 + v6), a4);
 						++v5;
-						v4 = (_BYTE *)*v5;
+						v4 = (BYTE *)*v5;
 					}
-					while ( *(_BYTE *)*v5 );
+					while ( *(BYTE *)*v5 );
 				}
 			}
 		}
@@ -519,10 +519,10 @@ int UNKCALL bn_prof_10001CF3(HWND hWnd) { return 0; }
 	local_10007944(0, 0, "Button", -1, 1, (int)"ui_art\\but_xsm.pcx", &dword_10029428, &v9, 1);
 	return SDlgSetControlBitmaps(v1, &v6, 0, dword_10029428, &v9, 1, -1);
 } */
-// 10010388: using guessed type int __stdcall SDlgSetControlBitmaps(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010388: using guessed type int __stdcall SDlgSetControlBitmaps(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 // 10029410: using guessed type int dword_10029410;
 // 10029428: using guessed type int dword_10029428;
-// 10029430: using guessed type int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10029430: using guessed type int (__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10001D81
 HFONT __fastcall bn_prof_10001D81(HWND hWnd, int a2, int a3) { return 0; }
@@ -575,9 +575,9 @@ HFONT __fastcall bn_prof_10001D81(HWND hWnd, int a2, int a3) { return 0; }
 void UNKCALL bn_prof_10001E34(void *arg) { return; }
 /* {
 	bn_prof_10001CB9(
-		(_DWORD *)dword_1002941C,
+		(DWORD *)dword_1002941C,
 		dword_10029418,
-		(void (__fastcall *)(_BYTE *, _DWORD, int))bn_prof_10001E4C,
+		(void (__fastcall *)(BYTE *, DWORD, int))bn_prof_10001E4C,
 		(int)arg);
 } */
 // 10029418: using guessed type int dword_10029418;
@@ -627,14 +627,14 @@ void __fastcall bn_prof_10001E4C(char *a1, LPARAM lParam, HWND hDlg) { return; }
 // 1001F380: using guessed type int dword_1001F380[];
 // 1001F384: using guessed type int dword_1001F384[];
 // 10022258: using guessed type int dword_10022258;
-// 10029430: using guessed type int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10029430: using guessed type int (__stdcall *dword_10029430)(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10001ED0
-void __fastcall bn_prof_10001ED0(char *a1, _BYTE *a2, int a3) { return; }
+void __fastcall bn_prof_10001ED0(char *a1, BYTE *a2, int a3) { return; }
 /* {
 	int v3; // esi
 	bool v4; // zf
-	_BYTE *v5; // edi
+	BYTE *v5; // edi
 	char *v6; // ebp
 	const char **v7; // ebx
 
@@ -685,7 +685,7 @@ void *bn_prof_10001F29() { return 0; }
 	dword_10029434 = 0;
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 // 10029434: using guessed type int dword_10029434;
 
 // ref: 0x10001F84
@@ -706,7 +706,7 @@ BYTE *bn_prof_10001F84() { return 0; }
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 // 10029410: using guessed type int dword_10029410;
 // 10029428: using guessed type int dword_10029428;
 
@@ -838,14 +838,14 @@ void __cdecl UiProfileDraw() { return; }
 	SGdiDeleteObject(v18, v20, v41);
 	return 1;
 } */
-// 1001038E: using guessed type int __fastcall SGdiDeleteObject(_DWORD, _DWORD, _DWORD);
-// 10010394: using guessed type int __stdcall SGdiExtTextOut(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1001039A: using guessed type int __stdcall SGdiGetTextExtent(_DWORD, _DWORD, _DWORD);
-// 100103A0: using guessed type int __stdcall SStrLen(_DWORD);
-// 100103A6: using guessed type int __stdcall SGdiSetPitch(_DWORD);
-// 100103AC: using guessed type int __stdcall SGdiSelectObject(_DWORD);
-// 100103B2: using guessed type int __stdcall SGdiImportFont(_DWORD, _DWORD);
-// 100103B8: using guessed type int __stdcall SBltROP3Clipped(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 1001038E: using guessed type int __fastcall SGdiDeleteObject(DWORD, DWORD, DWORD);
+// 10010394: using guessed type int __stdcall SGdiExtTextOut(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
+// 1001039A: using guessed type int __stdcall SGdiGetTextExtent(DWORD, DWORD, DWORD);
+// 100103A0: using guessed type int __stdcall SStrLen(DWORD);
+// 100103A6: using guessed type int __stdcall SGdiSetPitch(DWORD);
+// 100103AC: using guessed type int __stdcall SGdiSelectObject(DWORD);
+// 100103B2: using guessed type int __stdcall SGdiImportFont(DWORD, DWORD);
+// 100103B8: using guessed type int __stdcall SBltROP3Clipped(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002940C: using guessed type int dword_1002940C;
 // 10029414: using guessed type int dword_10029414;
 // 1002942C: using guessed type int dword_1002942C;
@@ -868,8 +868,8 @@ int bn_prof_100021C4() { return 0; }
 	dword_10029414 = v2;
 	return SBmpLoadImage("ui_Art\\profilebkg.pcx", 0, dword_1002942C, v0, &v3, &v2, 0);
 } */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 100103BE: using guessed type int __stdcall SBmpLoadImage(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
+// 100103BE: using guessed type int __stdcall SBmpLoadImage(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 // 1002940C: using guessed type int dword_1002940C;
 // 10029414: using guessed type int dword_10029414;
 // 1002942C: using guessed type int dword_1002942C;
@@ -889,7 +889,7 @@ void *bn_prof_10002247() { return 0; }
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 // 1002940C: using guessed type int dword_1002940C;
 // 10029414: using guessed type int dword_10029414;
 // 1002942C: using guessed type int dword_1002942C;
@@ -902,10 +902,10 @@ int j_bn_prof_10002282() { return 0; }
 } */
 
 // ref: 0x10002282
-_DWORD *bn_prof_10002282() { return 0; }
+DWORD *bn_prof_10002282() { return 0; }
 /* {
-	_DWORD *result; // eax
-	_DWORD *v1; // edx
+	DWORD *result; // eax
+	DWORD *v1; // edx
 
 	result = dword_10029460;
 	v1 = &dword_10029460[1];
@@ -1012,21 +1012,21 @@ HGDIOBJ bn_prof_100023D8() { return 0; }
 		v1 = dword_10029460[2];
 		if ( v1 <= 0 )
 			break;
-		bn_prof_100027D8((_DWORD *)dword_10029460[2]);
+		bn_prof_100027D8((DWORD *)dword_10029460[2]);
 		result = (HGDIOBJ)SMemFree(v1, ".?AU_DRAWTEXT@@", -2, 0);
 	}
 	return result;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10002410
-_DWORD *__fastcall bn_prof_10002410(HDC hdc, _DWORD *a2) { return 0; }
+DWORD *__fastcall bn_prof_10002410(HDC hdc, DWORD *a2) { return 0; }
 /* {
 	HDC v2; // ebp
-	_DWORD *v3; // esi
-	_DWORD *v4; // eax
-	_DWORD *v5; // ebx
-	_DWORD *v6; // esi
+	DWORD *v3; // esi
+	DWORD *v4; // eax
+	DWORD *v5; // ebx
+	DWORD *v6; // esi
 
 	v2 = hdc;
 	v3 = a2;
@@ -1048,7 +1048,7 @@ _DWORD *__fastcall bn_prof_10002410(HDC hdc, _DWORD *a2) { return 0; }
 } */
 
 // ref: 0x10002456
-signed int __fastcall bn_prof_10002456(int a1, const CHAR *a2, char a3, _DWORD *a4) { return 0; }
+signed int __fastcall bn_prof_10002456(int a1, const CHAR *a2, char a3, DWORD *a4) { return 0; }
 /* {
 	int v4; // esi
 	HGDIOBJ v6; // edi
@@ -1102,18 +1102,18 @@ signed int __fastcall bn_prof_10002456(int a1, const CHAR *a2, char a3, _DWORD *
 		h = SelectObject(*(HDC *)(v4 + 8), v6);
 	if ( a4 )
 	{
-		*a4 = *(_DWORD *)(v4 + 28);
-		a4[1] = *(_DWORD *)(v4 + 32);
+		*a4 = *(DWORD *)(v4 + 28);
+		a4[1] = *(DWORD *)(v4 + 32);
 	}
 	do
 	{
-		while ( cchString > 0 && *(_WORD *)lpszString == 2573 )
+		while ( cchString > 0 && *(WORD *)lpszString == 2573 )
 		{
-			v8 = *(_DWORD *)(v4 + 92);
+			v8 = *(DWORD *)(v4 + 92);
 			cchString -= 2;
-			*(_DWORD *)(v4 + 32) += v8;
+			*(DWORD *)(v4 + 32) += v8;
 			lpszString += 2;
-			*(_DWORD *)(v4 + 28) = 0;
+			*(DWORD *)(v4 + 28) = 0;
 		}
 		if ( !cchString )
 			break;
@@ -1122,7 +1122,7 @@ signed int __fastcall bn_prof_10002456(int a1, const CHAR *a2, char a3, _DWORD *
 			*(HDC *)(v4 + 8),
 			lpszString,
 			cchString,
-			*(_DWORD *)(v4 + 20) - *(_DWORD *)(v4 + 28) - *(_DWORD *)(v4 + 12) - v29 + 1,
+			*(DWORD *)(v4 + 20) - *(DWORD *)(v4 + 28) - *(DWORD *)(v4 + 12) - v29 + 1,
 			&nFit,
 			0,
 			&Size);
@@ -1147,7 +1147,7 @@ LABEL_26:
 						goto LABEL_27;
 					}
 				}
-				if ( *(_DWORD *)(v4 + 28) > 0 )
+				if ( *(DWORD *)(v4 + 28) > 0 )
 				{
 					if ( isspace(lpszString[v9]) )
 						goto LABEL_26;
@@ -1158,7 +1158,7 @@ LABEL_27:
 			v11 = 0;
 			if ( nFit > 0 )
 			{
-				while ( *(_WORD *)&lpszString[v11] != 2573 && lpszString[v11] != 9 )
+				while ( *(WORD *)&lpszString[v11] != 2573 && lpszString[v11] != 9 )
 				{
 					if ( ++v11 >= nFit )
 						goto LABEL_34;
@@ -1168,7 +1168,7 @@ LABEL_27:
 LABEL_34:
 			if ( a4 )
 			{
-				v12 = *(_DWORD *)(v4 + 28);
+				v12 = *(DWORD *)(v4 + 28);
 				if ( v12 < *a4 )
 					*a4 = v12;
 			}
@@ -1176,8 +1176,8 @@ LABEL_34:
 			{
 				ExtTextOutA(
 					*(HDC *)(v4 + 8),
-					*(_DWORD *)(v4 + 28),
-					*(_DWORD *)(v4 + 32),
+					*(DWORD *)(v4 + 28),
+					*(DWORD *)(v4 + 32),
 					4u,
 					(const RECT *)(v4 + 12),
 					lpszString,
@@ -1189,47 +1189,47 @@ LABEL_34:
 			v14 = Size.cx;
 			if ( a4 )
 			{
-				v15 = Size.cx + *(_DWORD *)(v4 + 28);
+				v15 = Size.cx + *(DWORD *)(v4 + 28);
 				if ( v15 > a4[2] )
 					a4[2] = v15;
-				v16 = Size.cy + *(_DWORD *)(v4 + 32);
+				v16 = Size.cy + *(DWORD *)(v4 + 32);
 				if ( v16 > a4[3] )
 					a4[3] = v16;
 			}
 			v17 = nFit;
-			*(_DWORD *)(v4 + 28) += v14;
-			v18 = *(_DWORD *)(v4 + 28);
+			*(DWORD *)(v4 + 28) += v14;
+			v18 = *(DWORD *)(v4 + 28);
 			if ( v17 < cchString )
 			{
 				v19 = &v13[v17];
 				if ( *v19 == 9 )
 				{
 					++nFit;
-					*(_DWORD *)(v4 + 28) = 8 * v29 + v18 - v18 % (8 * v29);
+					*(DWORD *)(v4 + 28) = 8 * v29 + v18 - v18 % (8 * v29);
 				}
 				else
 				{
-					if ( *(_WORD *)v19 == 2573 )
+					if ( *(WORD *)v19 == 2573 )
 						nFit += 2;
-					v20 = *(_DWORD *)(v4 + 92);
-					*(_DWORD *)(v4 + 28) = 0;
-					*(_DWORD *)(v4 + 32) += v20;
+					v20 = *(DWORD *)(v4 + 92);
+					*(DWORD *)(v4 + 28) = 0;
+					*(DWORD *)(v4 + 32) += v20;
 				}
 			}
 			cchString -= nFit;
 			lpszString += nFit;
 			continue;
 		}
-		v10 = *(_DWORD *)(v4 + 92);
-		*(_DWORD *)(v4 + 28) &= nFit;
-		*(_DWORD *)(v4 + 32) += v10;
+		v10 = *(DWORD *)(v4 + 92);
+		*(DWORD *)(v4 + 28) &= nFit;
+		*(DWORD *)(v4 + 32) += v10;
 	}
 	while ( cchString > 0 );
-	if ( *(_DWORD *)(v4 + 28) > *(_DWORD *)(v4 + 20) - *(_DWORD *)(v4 + 12) - v29 + 1 )
+	if ( *(DWORD *)(v4 + 28) > *(DWORD *)(v4 + 20) - *(DWORD *)(v4 + 12) - v29 + 1 )
 	{
-		v21 = *(_DWORD *)(v4 + 92);
-		*(_DWORD *)(v4 + 28) = 0;
-		*(_DWORD *)(v4 + 32) += v21;
+		v21 = *(DWORD *)(v4 + 92);
+		*(DWORD *)(v4 + 28) = 0;
+		*(DWORD *)(v4 + 32) += v21;
 	}
 	if ( h )
 		SelectObject(*(HDC *)(v4 + 8), h);
@@ -1251,7 +1251,7 @@ signed int bn_prof_100026B9() { return 0; }
 // 10029454: using guessed type int dword_10029454;
 
 // ref: 0x100026C4
-signed int UNKCALL bn_prof_100026C4(_DWORD *arg) { return 0; }
+signed int UNKCALL bn_prof_100026C4(DWORD *arg) { return 0; }
 /* {
 	if ( !arg )
 		return 0;
@@ -1260,9 +1260,9 @@ signed int UNKCALL bn_prof_100026C4(_DWORD *arg) { return 0; }
 } */
 
 // ref: 0x100026F0
-void UNKCALL bn_prof_100026F0(_DWORD *arg) { return; }
+void UNKCALL bn_prof_100026F0(DWORD *arg) { return; }
 /* {
-	_DWORD *v1; // esi
+	DWORD *v1; // esi
 
 	v1 = arg;
 	bn_prof_1000287D(arg);
@@ -1270,7 +1270,7 @@ void UNKCALL bn_prof_100026F0(_DWORD *arg) { return; }
 } */
 
 // ref: 0x10002749
-int UNKCALL bn_prof_10002749(char *arg, _DWORD *a2) { return 0; }
+int UNKCALL bn_prof_10002749(char *arg, DWORD *a2) { return 0; }
 /* {
 	int v2; // eax
 	int v3; // eax
@@ -1279,7 +1279,7 @@ int UNKCALL bn_prof_10002749(char *arg, _DWORD *a2) { return 0; }
 	v2 = (int)a2;
 	if ( !a2 )
 		v2 = (int)(arg + 4);
-	v3 = *(_DWORD *)(v2 + 4);
+	v3 = *(DWORD *)(v2 + 4);
 	if ( v3 > 0 )
 		v4 = v3;
 	else
@@ -1288,20 +1288,20 @@ int UNKCALL bn_prof_10002749(char *arg, _DWORD *a2) { return 0; }
 	SMemFree(a2, ".?AU_DRAWTEXT@@", -2, 0);
 	return v4;
 } */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010340: using guessed type int __stdcall SMemFree(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x10002782
-_DWORD *UNKCALL bn_prof_10002782(int *arg, int a2, int a3, int a4) { return 0; }
+DWORD *UNKCALL bn_prof_10002782(int *arg, int a2, int a3, int a4) { return 0; }
 /* {
 	int v4; // eax
 	int *v5; // edi
-	_DWORD *v6; // eax
-	_DWORD *v7; // esi
+	DWORD *v6; // eax
+	DWORD *v7; // esi
 
 	v4 = a4;
 	LOBYTE(v4) = a4 | 8;
 	v5 = arg;
-	v6 = (_DWORD *)SMemAlloc(a3 + 96, ".?AU_DRAWTEXT@@", -2, v4);
+	v6 = (DWORD *)SMemAlloc(a3 + 96, ".?AU_DRAWTEXT@@", -2, v4);
 	if ( v6 )
 		v7 = bn_prof_100027CE(v6);
 	else
@@ -1310,12 +1310,12 @@ _DWORD *UNKCALL bn_prof_10002782(int *arg, int a2, int a3, int a4) { return 0; }
 		bn_prof_1000280C(v5, v7, a2, 0);
 	return v7;
 } */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+// 10010364: using guessed type int __stdcall SMemAlloc(DWORD, DWORD, DWORD, DWORD);
 
 // ref: 0x100027CE
-_DWORD *UNKCALL bn_prof_100027CE(_DWORD *arg) { return 0; }
+DWORD *UNKCALL bn_prof_100027CE(DWORD *arg) { return 0; }
 /* {
-	_DWORD *result; // eax
+	DWORD *result; // eax
 
 	result = arg;
 	*arg = 0;
@@ -1324,9 +1324,9 @@ _DWORD *UNKCALL bn_prof_100027CE(_DWORD *arg) { return 0; }
 } */
 
 // ref: 0x100027D8
-void UNKCALL bn_prof_100027D8(_DWORD *arg) { return; }
+void UNKCALL bn_prof_100027D8(DWORD *arg) { return; }
 /* {
-	_DWORD *v1; // ST00_4
+	DWORD *v1; // ST00_4
 
 	v1 = arg;
 	bn_prof_10002890(arg);
@@ -1334,11 +1334,11 @@ void UNKCALL bn_prof_100027D8(_DWORD *arg) { return; }
 } */
 
 // ref: 0x1000280C
-_DWORD *UNKCALL bn_prof_1000280C(int *arg, _DWORD *a2, int a3, _DWORD *a4) { return 0; }
+DWORD *UNKCALL bn_prof_1000280C(int *arg, DWORD *a2, int a3, DWORD *a4) { return 0; }
 /* {
 	int *v4; // edi
-	_DWORD *v5; // esi
-	_DWORD *result; // eax
+	DWORD *v5; // esi
+	DWORD *result; // eax
 	int v7; // ecx
 	int v8; // edx
 	int v9; // ecx
@@ -1362,37 +1362,37 @@ _DWORD *UNKCALL bn_prof_1000280C(int *arg, _DWORD *a2, int a3, _DWORD *a4) { ret
 		if ( v8 > 0 )
 		{
 			if ( v9 < 0 )
-				v9 = (int)result - *(_DWORD *)(*result + 4);
+				v9 = (int)result - *(DWORD *)(*result + 4);
 			v10 = v9 + v8;
 		}
 		else
 		{
 			v10 = ~v8;
 		}
-		*(_DWORD *)v10 = v5;
+		*(DWORD *)v10 = v5;
 		result[1] = a2;
 	}
 	else if ( a3 == 2 )
 	{
 		v7 = *result;
 		*v5 = *result;
-		v5[1] = *(_DWORD *)(v7 + 4);
-		*(_DWORD *)(v7 + 4) = a2;
+		v5[1] = *(DWORD *)(v7 + 4);
+		*(DWORD *)(v7 + 4) = a2;
 		*result = v5;
 	}
 	return result;
 } */
 
 // ref: 0x1000287D
-void UNKCALL bn_prof_1000287D(_DWORD *arg) { return; }
+void UNKCALL bn_prof_1000287D(DWORD *arg) { return; }
 /* {
-	_DWORD *v1; // esi
-	_DWORD *v2; // ecx
+	DWORD *v1; // esi
+	DWORD *v2; // ecx
 
 	v1 = arg;
 	while ( 1 )
 	{
-		v2 = (_DWORD *)v1[2];
+		v2 = (DWORD *)v1[2];
 		if ( (signed int)v2 <= 0 )
 			break;
 		bn_prof_10002890(v2);
@@ -1400,7 +1400,7 @@ void UNKCALL bn_prof_1000287D(_DWORD *arg) { return; }
 } */
 
 // ref: 0x10002890
-void UNKCALL bn_prof_10002890(_DWORD *arg) { return; }
+void UNKCALL bn_prof_10002890(DWORD *arg) { return; }
 /* {
 	int v1; // esi
 	int v2; // edx
@@ -1411,11 +1411,11 @@ void UNKCALL bn_prof_10002890(_DWORD *arg) { return; }
 	{
 		v2 = arg[1];
 		if ( v2 > 0 )
-			v3 = (int)arg + v2 - *(_DWORD *)(v1 + 4);
+			v3 = (int)arg + v2 - *(DWORD *)(v1 + 4);
 		else
 			v3 = ~v2;
-		*(_DWORD *)v3 = v1;
-		*(_DWORD *)(*arg + 4) = arg[1];
+		*(DWORD *)v3 = v1;
+		*(DWORD *)(*arg + 4) = arg[1];
 		*arg = 0;
 		arg[1] = 0;
 	}
