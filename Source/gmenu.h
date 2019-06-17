@@ -2,15 +2,15 @@
 #ifndef __GMENU_H__
 #define __GMENU_H__
 
-extern void *optbar_cel;
+extern BYTE *optbar_cel;
 extern BOOLEAN mouseNavigation; // weak
-extern void *PentSpin_cel;
-extern void *BigTGold_cel;
+extern BYTE *PentSpin_cel;
+extern BYTE *BigTGold_cel;
 extern int dword_634474; // weak
 extern char byte_634478; // weak
 extern void(*dword_63447C)(TMenuItem *);
 extern TMenuItem *sgpCurrentMenu; // idb
-extern void *option_cel;
+extern BYTE *option_cel;
 extern int sgCurrentMenuIdx; // weak
 
 void gmenu_draw_pause();
