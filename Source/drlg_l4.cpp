@@ -322,9 +322,9 @@ void DRLG_L4SetSPRoom(int rx1, int ry1)
 
 	sp = (unsigned char *)&pSetPiece_2[4];
 
-	for(j = 0; j < rh; j++) {
-		for(i = 0; i < rw; i++) {
-			if(*sp != 0) {
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*sp != 0) {
 				dungeon[i + rx1][j + ry1] = *sp;
 				dflags[i + rx1][j + ry1] |= 0x80;
 			} else {
@@ -342,9 +342,9 @@ void L4SaveQuads()
 	int i, j, x, y;
 
 	y = 0;
-	for(j = 0; j < 14; j++) {
+	for (j = 0; j < 14; j++) {
 		x = 0;
-		for(i = 0; i < 14; i++) {
+		for (i = 0; i < 14; i++) {
 			dflags[i + l4holdx][j + l4holdy] = 1;
 			dflags[39 - x - l4holdx][j + l4holdy] = 1;
 			dflags[i + l4holdx][39 - y - l4holdy] = 1;
@@ -366,9 +366,9 @@ void DRLG_L4SetRoom(BYTE *pSetPiece, int rx1, int ry1)
 	rh = pSetPiece[2];
 	sp = &pSetPiece[4];
 
-	for(j = 0; j < rh; j++) {
-		for(i = 0; i < rw; i++) {
-			if(*sp != 0) {
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*sp != 0) {
 				dungeon[i + rx1][j + ry1] = *sp;
 				dflags[i + rx1][j + ry1] |= 0x80;
 			} else {
@@ -389,7 +389,7 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	DRLG_L4SetRoom(lpSetPiece, diabquad1x, diabquad1y);
 	mem_free_dbg(lpSetPiece);
 
-	if(preflag) {
+	if (preflag) {
 		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2b.DUN", 0);
 	} else {
 		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", 0);
@@ -399,7 +399,7 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	DRLG_L4SetRoom(lpSetPiece, diabquad2x, diabquad2y);
 	mem_free_dbg(lpSetPiece);
 
-	if(preflag) {
+	if (preflag) {
 		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3b.DUN", 0);
 	} else {
 		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", 0);
@@ -409,7 +409,7 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	DRLG_L4SetRoom(lpSetPiece, diabquad3x, diabquad3y);
 	mem_free_dbg(lpSetPiece);
 
-	if(preflag) {
+	if (preflag) {
 		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4b.DUN", 0);
 	} else {
 		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4a.DUN", 0);
@@ -422,13 +422,13 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 
 BOOL IsDURWall(char d)
 {
-	if(d == 25) {
+	if (d == 25) {
 		return TRUE;
 	}
-	if(d == 28) {
+	if (d == 28) {
 		return TRUE;
 	}
-	if(d == 23) {
+	if (d == 23) {
 		return TRUE;
 	}
 
@@ -437,13 +437,13 @@ BOOL IsDURWall(char d)
 
 BOOL IsDLLWall(char dd)
 {
-	if(dd == 27) {
+	if (dd == 27) {
 		return TRUE;
 	}
-	if(dd == 26) {
+	if (dd == 26) {
 		return TRUE;
 	}
-	if(dd == 22) {
+	if (dd == 22) {
 		return TRUE;
 	}
 
@@ -454,10 +454,10 @@ void L4FixRim()
 {
 	int i, j;
 
-	for(i = 0; i < 20; i++) {
+	for (i = 0; i < 20; i++) {
 		dung[i][0] = 0;
 	}
-	for(j = 0; j < 20; j++) {
+	for (j = 0; j < 20; j++) {
 		dung[0][j] = 0;
 	}
 }
@@ -466,9 +466,9 @@ void DRLG_L4GeneralFix()
 {
 	int i, j;
 
-	for(j = 0; j < 39; j++) {
-		for(i = 0; i < 39; i++) {
-			if((dungeon[i][j] == 24 || dungeon[i][j] == 122) && dungeon[i + 1][j] == 2 && dungeon[i][j + 1] == 5) {
+	for (j = 0; j < 39; j++) {
+		for (i = 0; i < 39; i++) {
+			if ((dungeon[i][j] == 24 || dungeon[i][j] == 122) && dungeon[i + 1][j] == 2 && dungeon[i][j + 1] == 5) {
 				dungeon[i][j] = 17;
 			}
 		}
@@ -506,17 +506,17 @@ void DRLG_L4(int entry)
 			InitL4Dungeon();
 			L4firstRoom();
 			L4FixRim();
-		} while(GetArea() < 173);
+		} while (GetArea() < 173);
 		uShape();
 		L4makeDungeon();
 		L4makeDmt();
 		L4tileFix();
-		if(currlevel == 16) {
+		if (currlevel == 16) {
 			L4SaveQuads();
 		}
-		if(QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
-			for(spi = SP4x1; spi < SP4x2; spi++) {
-				for(spj = SP4y1; spj < SP4y2; spj++) {
+		if (QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
+			for (spi = SP4x1; spi < SP4x2; spi++) {
+				for (spj = SP4y1; spj < SP4y2; spj++) {
 					dflags[spi][spj] = 1;
 				}
 			}
@@ -524,67 +524,67 @@ void DRLG_L4(int entry)
 		L4AddWall();
 		DRLG_L4FloodTVal();
 		DRLG_L4TransFix();
-		if(setloadflag_2) {
+		if (setloadflag_2) {
 			DRLG_L4SetSPRoom(SP4x1, SP4y1);
 		}
-		if(currlevel == 16) {
+		if (currlevel == 16) {
 			DRLG_LoadDiabQuads(TRUE);
 		}
-		if(QuestStatus(QTYPE_WARLRD)) {
-			if(entry == 0) {
+		if (QuestStatus(QTYPE_WARLRD)) {
+			if (entry == 0) {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-				if(doneflag && currlevel == 13) {
+				if (doneflag && currlevel == 13) {
 					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
 				ViewX++;
-			} else if(entry == 1) {
+			} else if (entry == 1) {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if(doneflag && currlevel == 13) {
+				if (doneflag && currlevel == 13) {
 					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
 				ViewX = 2 * setpc_x + 22;
 				ViewY = 2 * setpc_y + 22;
 			} else {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if(doneflag && currlevel == 13) {
+				if (doneflag && currlevel == 13) {
 					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 1, 6);
 				}
 				ViewX++;
 			}
-		} else if(currlevel != 15) {
-			if(entry == 0) {
+		} else if (currlevel != 15) {
+			if (entry == 0) {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-				if(doneflag && currlevel != 16) {
+				if (doneflag && currlevel != 16) {
 					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
 				}
-				if(doneflag && currlevel == 13) {
+				if (doneflag && currlevel == 13) {
 					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
 				ViewX++;
-			} else if(entry == 1) {
+			} else if (entry == 1) {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if(doneflag && currlevel != 16) {
+				if (doneflag && currlevel != 16) {
 					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
 				}
-				if(doneflag && currlevel == 13) {
+				if (doneflag && currlevel == 13) {
 					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
 				ViewY++;
 			} else {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if(doneflag && currlevel != 16) {
+				if (doneflag && currlevel != 16) {
 					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
 				}
-				if(doneflag && currlevel == 13) {
+				if (doneflag && currlevel == 13) {
 					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 1, 6);
 				}
 				ViewX++;
 			}
 		} else {
-			if(entry == 0) {
+			if (entry == 0) {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-				if(doneflag) {
-					if(gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
+				if (doneflag) {
+					if (gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
 						doneflag = DRLG_L4PlaceMiniSet(L4PENTA, 1, 1, -1, -1, 0, 1);
 					} else {
 						doneflag = DRLG_L4PlaceMiniSet(L4PENTA2, 1, 1, -1, -1, 0, 1);
@@ -593,8 +593,8 @@ void DRLG_L4(int entry)
 				ViewX++;
 			} else {
 				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if(doneflag) {
-					if(gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
+				if (doneflag) {
+					if (gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
 						doneflag = DRLG_L4PlaceMiniSet(L4PENTA, 1, 1, -1, -1, 1, 1);
 					} else {
 						doneflag = DRLG_L4PlaceMiniSet(L4PENTA2, 1, 1, -1, -1, 1, 1);
@@ -603,11 +603,11 @@ void DRLG_L4(int entry)
 				ViewY++;
 			}
 		}
-	} while(!doneflag);
+	} while (!doneflag);
 
 	DRLG_L4GeneralFix();
 
-	if(currlevel != 16) {
+	if (currlevel != 16) {
 		DRLG_PlaceThemeRooms(7, 10, 6, 8, 1);
 	}
 
@@ -616,9 +616,9 @@ void DRLG_L4(int entry)
 	DRLG_L4Subs();
 	DRLG_Init_Globals();
 
-	if(QuestStatus(QTYPE_WARLRD)) {
-		for(j = 0; j < DMAXY; j++) {
-			for(i = 0; i < DMAXX; i++) {
+	if (QuestStatus(QTYPE_WARLRD)) {
+		for (j = 0; j < DMAXY; j++) {
+			for (i = 0; i < DMAXX; i++) {
 				pdungeon[i][j] = dungeon[i][j];
 			}
 		}
@@ -626,21 +626,21 @@ void DRLG_L4(int entry)
 
 	DRLG_CheckQuests(SP4x1, SP4y1);
 
-	if(currlevel == 15) {
-		for(j = 0; j < DMAXY; j++) {
-			for(i = 0; i < DMAXX; i++) {
-				if(dungeon[i][j] == 98) {
+	if (currlevel == 15) {
+		for (j = 0; j < DMAXY; j++) {
+			for (i = 0; i < DMAXX; i++) {
+				if (dungeon[i][j] == 98) {
 					Make_SetPC(i - 1, j - 1, 5, 5);
 				}
-				if(dungeon[i][j] == 107) {
+				if (dungeon[i][j] == 107) {
 					Make_SetPC(i - 1, j - 1, 5, 5);
 				}
 			}
 		}
 	}
-	if(currlevel == 16) {
-		for(j = 0; j < DMAXY; j++) {
-			for(i = 0; i < DMAXX; i++) {
+	if (currlevel == 16) {
+		for (j = 0; j < DMAXY; j++) {
+			for (i = 0; i < DMAXX; i++) {
 				pdungeon[i][j] = dungeon[i][j];
 			}
 		}
@@ -653,28 +653,28 @@ void DRLG_L4Shadows()
 	int x, y;
 	BOOL okflag;
 
-	for(y = 1; y < 40; y++) {
-		for(x = 1; x < 40; x++) {
+	for (y = 1; y < 40; y++) {
+		for (x = 1; x < 40; x++) {
 			okflag = FALSE;
-			if(dungeon[x][y] == 3) {
+			if (dungeon[x][y] == 3) {
 				okflag = TRUE;
 			}
-			if(dungeon[x][y] == 4) {
+			if (dungeon[x][y] == 4) {
 				okflag = TRUE;
 			}
-			if(dungeon[x][y] == 8) {
+			if (dungeon[x][y] == 8) {
 				okflag = TRUE;
 			}
-			if(dungeon[x][y] == 15) {
+			if (dungeon[x][y] == 15) {
 				okflag = TRUE;
 			}
-			if(!okflag) {
+			if (!okflag) {
 				continue;
 			}
-			if(dungeon[x - 1][y] == 6) {
+			if (dungeon[x - 1][y] == 6) {
 				dungeon[x - 1][y] = 47;
 			}
-			if(dungeon[x - 1][y - 1] == 6) {
+			if (dungeon[x - 1][y - 1] == 6) {
 				dungeon[x - 1][y - 1] = 48;
 			}
 		}
@@ -688,8 +688,8 @@ void InitL4Dungeon()
 	memset(dung, 0, sizeof(dung));
 	memset(L4dungeon, 0, sizeof(L4dungeon));
 
-	for(j = 0; j < 40; j++) {
-		for(i = 0; i < 40; i++) {
+	for (j = 0; j < 40; j++) {
+		for (i = 0; i < 40; i++) {
 			dungeon[i][j] = 30;
 			dflags[i][j] = 0;
 		}
@@ -700,11 +700,11 @@ void L4makeDmt()
 {
 	int i, j, val, dmtx, dmty;
 
-	for(j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
-		for(i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
-			val = L4dungeon[dmtx+1][dmty+1];
-			val = 2 * val + L4dungeon[dmtx][dmty+1];
-			val = 2 * val + L4dungeon[dmtx+1][dmty];
+	for (j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
+		for (i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
+			val = L4dungeon[dmtx + 1][dmty + 1];
+			val = 2 * val + L4dungeon[dmtx][dmty + 1];
+			val = 2 * val + L4dungeon[dmtx + 1][dmty];
 			val = 2 * val + L4dungeon[dmtx][dmty];
 			dungeon[i][j] = L4ConvTbl[val];
 		}
@@ -715,98 +715,98 @@ void L4AddWall()
 {
 	int i, j, x, y;
 
-	for(j = 0; j < 40; j++) {
-		for(i = 0; i < 40; i++) {
-			if(dflags[i][j] != 0) {
+	for (j = 0; j < 40; j++) {
+		for (i = 0; i < 40; i++) {
+			if (dflags[i][j] != 0) {
 				continue;
 			}
-			if(dungeon[i][j] == 10 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 10 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 12 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 12 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 13 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 13 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 15 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 15 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 16 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 16 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 21 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 21 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 22 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 22 && random(0, 100) < 100) {
 				x = L4HWallOk(i, j);
-				if(x != -1) {
+				if (x != -1) {
 					L4HorizWall(i, j, x);
 				}
 			}
-			if(dungeon[i][j] == 8 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 8 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 9 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 9 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 11 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 11 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 14 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 14 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 15 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 15 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 16 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 16 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 21 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 21 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
-			if(dungeon[i][j] == 23 && random(0, 100) < 100) {
+			if (dungeon[i][j] == 23 && random(0, 100) < 100) {
 				y = L4VWallOk(i, j);
-				if(y != -1) {
+				if (y != -1) {
 					L4VertWall(i, j, y);
 				}
 			}
@@ -819,46 +819,46 @@ int L4HWallOk(int i, int j)
 	int x;
 	BOOL wallok;
 
-	for(x = 1; dungeon[i + x][j] == 6; x++) {
-		if(dflags[i + x][j] != 0) {
+	for (x = 1; dungeon[i + x][j] == 6; x++) {
+		if (dflags[i + x][j] != 0) {
 			break;
 		}
-		if(dungeon[i + x][j - 1] != 6) {
+		if (dungeon[i + x][j - 1] != 6) {
 			break;
 		}
-		if(dungeon[i + x][j + 1] != 6) {
+		if (dungeon[i + x][j + 1] != 6) {
 			break;
 		}
 	}
 
 	wallok = FALSE;
 
-	if(dungeon[i + x][j] == 10) {
+	if (dungeon[i + x][j] == 10) {
 		wallok = TRUE;
 	}
-	if(dungeon[i + x][j] == 12) {
+	if (dungeon[i + x][j] == 12) {
 		wallok = TRUE;
 	}
-	if(dungeon[i + x][j] == 13) {
+	if (dungeon[i + x][j] == 13) {
 		wallok = TRUE;
 	}
-	if(dungeon[i + x][j] == 15) {
+	if (dungeon[i + x][j] == 15) {
 		wallok = TRUE;
 	}
-	if(dungeon[i + x][j] == 16) {
+	if (dungeon[i + x][j] == 16) {
 		wallok = TRUE;
 	}
-	if(dungeon[i + x][j] == 21) {
+	if (dungeon[i + x][j] == 21) {
 		wallok = TRUE;
 	}
-	if(dungeon[i + x][j] == 22) {
+	if (dungeon[i + x][j] == 22) {
 		wallok = TRUE;
 	}
-	if(x <= 3) {
+	if (x <= 3) {
 		wallok = FALSE;
 	}
 
-	if(wallok) {
+	if (wallok) {
 		return x;
 	} else {
 		return -1;
@@ -870,49 +870,49 @@ int L4VWallOk(int i, int j)
 	int y;
 	BOOL wallok;
 
-	for(y = 1; dungeon[i][j + y] == 6; y++) {
-		if(dflags[i][j + y] != 0) {
+	for (y = 1; dungeon[i][j + y] == 6; y++) {
+		if (dflags[i][j + y] != 0) {
 			break;
 		}
-		if(dungeon[i - 1][j + y] != 6) {
+		if (dungeon[i - 1][j + y] != 6) {
 			break;
 		}
-		if(dungeon[i + 1][j + y] != 6) {
+		if (dungeon[i + 1][j + y] != 6) {
 			break;
 		}
 	}
 
 	wallok = FALSE;
 
-	if(dungeon[i][j + y] == 8) {
+	if (dungeon[i][j + y] == 8) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 9) {
+	if (dungeon[i][j + y] == 9) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 11) {
+	if (dungeon[i][j + y] == 11) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 14) {
+	if (dungeon[i][j + y] == 14) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 15) {
+	if (dungeon[i][j + y] == 15) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 16) {
+	if (dungeon[i][j + y] == 16) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 21) {
+	if (dungeon[i][j + y] == 21) {
 		wallok = TRUE;
 	}
-	if(dungeon[i][j + y] == 23) {
+	if (dungeon[i][j + y] == 23) {
 		wallok = TRUE;
 	}
-	if(y <= 3) {
+	if (y <= 3) {
 		wallok = FALSE;
 	}
 
-	if(wallok) {
+	if (wallok) {
 		return y;
 	} else {
 		return -1;
@@ -923,30 +923,30 @@ void L4HorizWall(int i, int j, int dx)
 {
 	int xx;
 
-	if(dungeon[i][j] == 13) {
+	if (dungeon[i][j] == 13) {
 		dungeon[i][j] = 17;
 	}
-	if(dungeon[i][j] == 16) {
+	if (dungeon[i][j] == 16) {
 		dungeon[i][j] = 11;
 	}
-	if(dungeon[i][j] == 12) {
+	if (dungeon[i][j] == 12) {
 		dungeon[i][j] = 14;
 	}
 
-	for(xx = 1; xx < dx; xx++) {
+	for (xx = 1; xx < dx; xx++) {
 		dungeon[i + xx][j] = 2;
 	}
 
-	if(dungeon[i + dx][j] == 15) {
+	if (dungeon[i + dx][j] == 15) {
 		dungeon[i + dx][j] = 14;
 	}
-	if(dungeon[i + dx][j] == 10) {
+	if (dungeon[i + dx][j] == 10) {
 		dungeon[i + dx][j] = 17;
 	}
-	if(dungeon[i + dx][j] == 21) {
+	if (dungeon[i + dx][j] == 21) {
 		dungeon[i + dx][j] = 23;
 	}
-	if(dungeon[i + dx][j] == 22) {
+	if (dungeon[i + dx][j] == 22) {
 		dungeon[i + dx][j] = 29;
 	}
 
@@ -955,10 +955,10 @@ void L4HorizWall(int i, int j, int dx)
 	dungeon[i + xx + 2][j] = 56;
 	dungeon[i + xx + 1][j] = 60;
 
-	if(dungeon[i + xx][j - 1] == 6) {
+	if (dungeon[i + xx][j - 1] == 6) {
 		dungeon[i + xx][j - 1] = 58;
 	}
-	if(dungeon[i + xx + 1][j - 1] == 6) {
+	if (dungeon[i + xx + 1][j - 1] == 6) {
 		dungeon[i + xx + 1][j - 1] = 59;
 	}
 }
@@ -967,33 +967,33 @@ void L4VertWall(int i, int j, int dy)
 {
 	int yy;
 
-	if(dungeon[i][j] == 14) {
+	if (dungeon[i][j] == 14) {
 		dungeon[i][j] = 17;
 	}
-	if(dungeon[i][j] == 8) {
+	if (dungeon[i][j] == 8) {
 		dungeon[i][j] = 9;
 	}
-	if(dungeon[i][j] == 15) {
+	if (dungeon[i][j] == 15) {
 		dungeon[i][j] = 10;
 	}
 
-	for(yy = 1; yy < dy; yy++) {
+	for (yy = 1; yy < dy; yy++) {
 		dungeon[i][j + yy] = 1;
 	}
 
-	if(dungeon[i][j + dy] == 11) {
+	if (dungeon[i][j + dy] == 11) {
 		dungeon[i][j + dy] = 17;
 	}
-	if(dungeon[i][j + dy] == 9) {
+	if (dungeon[i][j + dy] == 9) {
 		dungeon[i][j + dy] = 10;
 	}
-	if(dungeon[i][j + dy] == 16) {
+	if (dungeon[i][j + dy] == 16) {
 		dungeon[i][j + dy] = 13;
 	}
-	if(dungeon[i][j + dy] == 21) {
+	if (dungeon[i][j + dy] == 21) {
 		dungeon[i][j + dy] = 22;
 	}
-	if(dungeon[i][j + dy] == 23) {
+	if (dungeon[i][j + dy] == 23) {
 		dungeon[i][j + dy] = 29;
 	}
 
@@ -1002,10 +1002,10 @@ void L4VertWall(int i, int j, int dy)
 	dungeon[i][j + yy + 2] = 52;
 	dungeon[i][j + yy + 1] = 6;
 
-	if(dungeon[i - 1][j + yy] == 6) {
+	if (dungeon[i - 1][j + yy] == 6) {
 		dungeon[i - 1][j + yy] = 54;
 	}
-	if(dungeon[i - 1][j + yy - 1] == 6) {
+	if (dungeon[i - 1][j + yy - 1] == 6) {
 		dungeon[i - 1][j + yy - 1] = 55;
 	}
 }
@@ -1361,19 +1361,19 @@ void DRLG_L4Subs()
 	int x, y, i, rv;
 	BYTE c;
 
-	for(y = 0; y < 40; y++) {
-		for(x = 0; x < 40; x++) {
-			if(random(0, 3) == 0) {
+	for (y = 0; y < 40; y++) {
+		for (x = 0; x < 40; x++) {
+			if (random(0, 3) == 0) {
 				c = L4BTYPES[dungeon[x][y]];
-				if(c != 0 && dflags[x][y] == 0) {
+				if (c != 0 && dflags[x][y] == 0) {
 					rv = random(0, 16);
 					i = -1;
-					while(rv >= 0) {
+					while (rv >= 0) {
 						i++;
-						if(i == sizeof(L4BTYPES)) {
+						if (i == sizeof(L4BTYPES)) {
 							i = 0;
 						}
-						if(c == L4BTYPES[i]) {
+						if (c == L4BTYPES[i]) {
 							rv--;
 						}
 					}
@@ -1382,10 +1382,10 @@ void DRLG_L4Subs()
 			}
 		}
 	}
-	for(y = 0; y < 40; y++) {
-		for(x = 0; x < 40; x++) {
-			if(random(0, 10) == 0) {
-				if(L4BTYPES[dungeon[x][y]] == 6 && dflags[x][y] == 0) {
+	for (y = 0; y < 40; y++) {
+		for (x = 0; x < 40; x++) {
+			if (random(0, 10) == 0) {
+				if (L4BTYPES[dungeon[x][y]] == 6 && dflags[x][y] == 0) {
 					dungeon[x][y] = random(0, 3) + 95;
 				}
 			}
@@ -1397,8 +1397,8 @@ void L4makeDungeon()
 {
 	int i, j, k, l;
 
-	for(j = 0; j < 20; j++) {
-		for(i = 0; i < 20; i++) {
+	for (j = 0; j < 20; j++) {
+		for (i = 0; i < 20; i++) {
 			k = i << 1;
 			l = j << 1;
 			L4dungeon[k][l] = dung[i][j];
@@ -1407,8 +1407,8 @@ void L4makeDungeon()
 			L4dungeon[k + 1][l + 1] = dung[i][j];
 		}
 	}
-	for(j = 0; j < 20; j++) {
-		for(i = 0; i < 20; i++) {
+	for (j = 0; j < 20; j++) {
+		for (i = 0; i < 20; i++) {
 			k = i << 1;
 			l = j << 1;
 			L4dungeon[k][l + 40] = dung[i][19 - j];
@@ -1417,8 +1417,8 @@ void L4makeDungeon()
 			L4dungeon[k + 1][l + 41] = dung[i][19 - j];
 		}
 	}
-	for(j = 0; j < 20; j++) {
-		for(i = 0; i < 20; i++) {
+	for (j = 0; j < 20; j++) {
+		for (i = 0; i < 20; i++) {
 			k = i << 1;
 			l = j << 1;
 			L4dungeon[k + 40][l] = dung[19 - i][j];
@@ -1427,8 +1427,8 @@ void L4makeDungeon()
 			L4dungeon[k + 41][l + 1] = dung[19 - i][j];
 		}
 	}
-	for(j = 0; j < 20; j++) {
-		for(i = 0; i < 20; i++) {
+	for (j = 0; j < 20; j++) {
+		for (i = 0; i < 20; i++) {
 			k = i << 1;
 			l = j << 1;
 			L4dungeon[k + 40][l + 40] = dung[19 - i][19 - j];
@@ -1443,13 +1443,13 @@ void uShape()
 {
 	int j, i, rv;
 
-	for(j = 19; j >= 0; j--) {
-		for(i = 19; i >= 0; i--) {
-			if(dung[i][j] != 1) {
+	for (j = 19; j >= 0; j--) {
+		for (i = 19; i >= 0; i--) {
+			if (dung[i][j] != 1) {
 				hallok[j] = FALSE;
 			}
-			if(dung[i][j] == 1) {
-				if(dung[i][j + 1] == 1 && dung[i + 1][j + 1] == 0) {
+			if (dung[i][j] == 1) {
+				if (dung[i][j + 1] == 1 && dung[i + 1][j + 1] == 0) {
 					hallok[j] = TRUE;
 				} else {
 					hallok[j] = FALSE;
@@ -1461,9 +1461,9 @@ void uShape()
 
 	rv = random(0, 19) + 1;
 	do {
-		if(hallok[rv]) {
-			for(i = 19; i >= 0; i--) {
-				if(dung[i][rv] == 1) {
+		if (hallok[rv]) {
+			for (i = 19; i >= 0; i--) {
+				if (dung[i][rv] == 1) {
 					i = -1;
 					rv = 0;
 				} else {
@@ -1473,19 +1473,19 @@ void uShape()
 			}
 		} else {
 			rv++;
-			if(rv == 20) {
+			if (rv == 20) {
 				rv = 1;
 			}
 		}
-	} while(rv != 0);
+	} while (rv != 0);
 
-	for(i = 19; i >= 0; i--) {
-		for(j = 19; j >= 0; j--) {
-			if(dung[i][j] != 1) {
+	for (i = 19; i >= 0; i--) {
+		for (j = 19; j >= 0; j--) {
+			if (dung[i][j] != 1) {
 				hallok[i] = FALSE;
 			}
-			if(dung[i][j] == 1) {
-				if(dung[i + 1][j] == 1 && dung[i + 1][j + 1] == 0) {
+			if (dung[i][j] == 1) {
+				if (dung[i + 1][j] == 1 && dung[i + 1][j + 1] == 0) {
 					hallok[i] = TRUE;
 				} else {
 					hallok[i] = FALSE;
@@ -1497,9 +1497,9 @@ void uShape()
 
 	rv = random(0, 19) + 1;
 	do {
-		if(hallok[rv]) {
-			for(j = 19; j >= 0; j--) {
-				if(dung[rv][j] == 1) {
+		if (hallok[rv]) {
+			for (j = 19; j >= 0; j--) {
+				if (dung[rv][j] == 1) {
 					j = -1;
 					rv = 0;
 				} else {
@@ -1509,11 +1509,11 @@ void uShape()
 			}
 		} else {
 			rv++;
-			if(rv == 20) {
+			if (rv == 20) {
 				rv = 1;
 			}
 		}
-	} while(rv != 0);
+	} while (rv != 0);
 }
 
 long GetArea()
@@ -1523,9 +1523,9 @@ long GetArea()
 
 	rv = 0;
 
-	for(j = 0; j < 20; j++) {
-		for(i = 0; i < 20; i++) {
-			if(dung[i][j] == 1) {
+	for (j = 0; j < 20; j++) {
+		for (i = 0; i < 20; i++) {
+			if (dung[i][j] == 1) {
 				rv++;
 			}
 		}
@@ -1538,12 +1538,12 @@ void L4firstRoom()
 {
 	int x, y, w, h, rndx, rndy; /* xmin, xmax, ymin, ymax */
 
-	if(currlevel != 16) {
-		if(currlevel == quests[QTYPE_WARLRD]._qlevel && quests[QTYPE_WARLRD]._qactive) {
+	if (currlevel != 16) {
+		if (currlevel == quests[QTYPE_WARLRD]._qlevel && quests[QTYPE_WARLRD]._qactive) {
 			/// ASSERT: assert(gbMaxPlayers == 1);
 			w = 11;
 			h = 11;
-		} else if(currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
+		} else if (currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
 			w = 11;
 			h = 11;
 		} else {
@@ -1556,23 +1556,23 @@ void L4firstRoom()
 	}
 
 	rndx = random(0, 19 - w - ((20 - w) >> 1) + 1) + ((20 - w) >> 1);
-	if(rndx + w > 19) {
+	if (rndx + w > 19) {
 		x = 19 - w + 1;
 	} else {
 		x = rndx;
 	}
 	rndy = random(0, 19 - h - ((20 - h) >> 1) + 1) + ((20 - h) >> 1);
-	if(rndy + h > 19) {
+	if (rndy + h > 19) {
 		y = 19 - h + 1;
 	} else {
 		y = rndy;
 	}
 
-	if(currlevel == 16) {
+	if (currlevel == 16) {
 		l4holdx = x;
 		l4holdy = y;
 	}
-	if(QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
+	if (QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
 		SP4x1 = x + 1;
 		SP4y1 = y + 1;
 		SP4x2 = SP4x1 + w;
@@ -1592,8 +1592,8 @@ void L4drawRoom(int x, int y, int width, int height)
 {
 	int i, j;
 
-	for(j = 0; j < height; j++) {
-		for(i = 0; i < width; i++) {
+	for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
 			dung[i + x][j + y] = 1;
 		}
 	}
@@ -1608,51 +1608,51 @@ void L4roomGen(int x, int y, int w, int h, int dir)
 
 	int dirProb = random(0, 4);
 
-	switch(dir == 1 ? dirProb != 0 : dirProb == 0) {
-		case FALSE:
-			num = 0;
-			do {
-				cw = (random(0, 5) + 2) & ~1;
-				ch = (random(0, 5) + 2) & ~1;
-				cy1 = h/2 + y - ch/2;
-				cx1 = x-cw;
-				ran = L4checkRoom(cx1-1, cy1-1, ch+2, cw+1); /// BUGFIX: swap args 3 and 4 ("ch+2" and "cw+1")
-				num++;
-			} while(ran == FALSE && num < 20);
+	switch (dir == 1 ? dirProb != 0 : dirProb == 0) {
+	case FALSE:
+		num = 0;
+		do {
+			cw = (random(0, 5) + 2) & ~1;
+			ch = (random(0, 5) + 2) & ~1;
+			cy1 = h / 2 + y - ch / 2;
+			cx1 = x - cw;
+			ran = L4checkRoom(cx1 - 1, cy1 - 1, ch + 2, cw + 1); /// BUGFIX: swap args 3 and 4 ("ch+2" and "cw+1")
+			num++;
+		} while (ran == FALSE && num < 20);
 
-			if(ran == TRUE)
-				L4drawRoom(cx1, cy1, cw, ch);
-			cx2 = x+w;
-			ran2 = L4checkRoom(cx2, cy1-1, cw+1, ch+2);
-			if(ran2 == TRUE)
-				L4drawRoom(cx2, cy1, cw, ch);
-			if(ran == TRUE)
-				L4roomGen(cx1, cy1, cw, ch, 1);
-			if(ran2 == TRUE)
-				L4roomGen(cx2, cy1, cw, ch, 1);
-			break;
-		case TRUE:
-			num = 0;
-			do {
-				width = (random(0, 5) + 2) & ~1;
-				height = (random(0, 5) + 2) & ~1;
-				rx = w/2 + x - width/2;
-				ry = y-height;
-				ran = L4checkRoom(rx-1, ry-1, width+2, height+1);
-				num++;
-			} while(ran == FALSE && num < 20);
+		if (ran == TRUE)
+			L4drawRoom(cx1, cy1, cw, ch);
+		cx2 = x + w;
+		ran2 = L4checkRoom(cx2, cy1 - 1, cw + 1, ch + 2);
+		if (ran2 == TRUE)
+			L4drawRoom(cx2, cy1, cw, ch);
+		if (ran == TRUE)
+			L4roomGen(cx1, cy1, cw, ch, 1);
+		if (ran2 == TRUE)
+			L4roomGen(cx2, cy1, cw, ch, 1);
+		break;
+	case TRUE:
+		num = 0;
+		do {
+			width = (random(0, 5) + 2) & ~1;
+			height = (random(0, 5) + 2) & ~1;
+			rx = w / 2 + x - width / 2;
+			ry = y - height;
+			ran = L4checkRoom(rx - 1, ry - 1, width + 2, height + 1);
+			num++;
+		} while (ran == FALSE && num < 20);
 
-			if(ran == TRUE)
-				L4drawRoom(rx, ry, width, height);
-			ry2 = y+h;
-			ran2 = L4checkRoom(rx-1, ry2, width+2, height+1);
-			if(ran2 == TRUE)
-				L4drawRoom(rx, ry2, width, height);
-			if(ran == TRUE)
-				L4roomGen(rx, ry, width, height, 0);
-			if(ran2 == TRUE)
-				L4roomGen(rx, ry2, width, height, 0);
-			break;
+		if (ran == TRUE)
+			L4drawRoom(rx, ry, width, height);
+		ry2 = y + h;
+		ran2 = L4checkRoom(rx - 1, ry2, width + 2, height + 1);
+		if (ran2 == TRUE)
+			L4drawRoom(rx, ry2, width, height);
+		if (ran == TRUE)
+			L4roomGen(rx, ry, width, height, 0);
+		if (ran2 == TRUE)
+			L4roomGen(rx, ry2, width, height, 0);
+		break;
 	}
 }
 
@@ -1660,16 +1660,16 @@ BOOL L4checkRoom(int x, int y, int width, int height)
 {
 	int i, j;
 
-	if(x <= 0 || y <= 0) {
+	if (x <= 0 || y <= 0) {
 		return FALSE;
 	}
 
-	for(j = 0; j < height; j++) {
-		for(i = 0; i < width; i++) {
-			if(i + x < 0 || i + x >= 20 || j + y < 0 || j + y >= 20) {
+	for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
+			if (i + x < 0 || i + x >= 20 || j + y < 0 || j + y >= 20) {
 				return FALSE;
 			}
-			if(dung[i + x][j + y] != 0) {
+			if (dung[i + x][j + y] != 0) {
 				return FALSE;
 			}
 		}
@@ -1686,61 +1686,61 @@ BOOL DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int c
 	sw = miniset[0];
 	sh = miniset[1];
 
-	if(tmax - tmin == 0) {
+	if (tmax - tmin == 0) {
 		numt = 1;
 	} else {
 		numt = random(0, tmax - tmin) + tmin;
 	}
 
-	for(i = 0; i < numt; i++) {
+	for (i = 0; i < numt; i++) {
 		sx = random(0, 40 - sw);
 		sy = random(0, 40 - sh);
 		found = FALSE;
-		for(bailcnt = 0; !found && bailcnt < 200; bailcnt++) {
+		for (bailcnt = 0; !found && bailcnt < 200; bailcnt++) {
 			found = TRUE;
-			if(sx >= SP4x1 && sx <= SP4x2 && sy >= SP4y1 && sy <= SP4y2) {
+			if (sx >= SP4x1 && sx <= SP4x2 && sy >= SP4y1 && sy <= SP4y2) {
 				found = FALSE;
 			}
-			if(cx != -1 && sx >= cx - sw && sx <= cx + 12) {
+			if (cx != -1 && sx >= cx - sw && sx <= cx + 12) {
 				sx = random(0, 40 - sw);
 				sy = random(0, 40 - sh);
 				found = FALSE;
 			}
-			if(cy != -1 && sy >= cy - sh && sy <= cy + 12) {
+			if (cy != -1 && sy >= cy - sh && sy <= cy + 12) {
 				sx = random(0, 40 - sw);
 				sy = random(0, 40 - sh);
 				found = FALSE;
 			}
 			ii = 2;
-			for(yy = 0; yy < sh && found == TRUE; yy++) {
-				for(xx = 0; xx < sw && found == TRUE; xx++) {
-					if(miniset[ii] != 0 && dungeon[xx + sx][yy + sy] != miniset[ii]) {
+			for (yy = 0; yy < sh && found == TRUE; yy++) {
+				for (xx = 0; xx < sw && found == TRUE; xx++) {
+					if (miniset[ii] != 0 && dungeon[xx + sx][yy + sy] != miniset[ii]) {
 						found = FALSE;
 					}
-					if(dflags[xx + sx][yy + sy] != 0) {
+					if (dflags[xx + sx][yy + sy] != 0) {
 						found = FALSE;
 					}
 					ii++;
 				}
 			}
-			if(!found) {
+			if (!found) {
 				sx++;
-				if(sx == 40 - sw) {
+				if (sx == 40 - sw) {
 					sx = 0;
 					sy++;
-					if(sy == 40 - sh) {
+					if (sy == 40 - sh) {
 						sy = 0;
 					}
 				}
 			}
 		}
-		if(bailcnt >= 200) {
+		if (bailcnt >= 200) {
 			return FALSE;
 		}
 		ii = sw * sh + 2;
-		for(yy = 0; yy < sh; yy++) {
-			for(xx = 0; xx < sw; xx++) {
-				if(miniset[ii] != 0) {
+		for (yy = 0; yy < sh; yy++) {
+			for (xx = 0; xx < sw; xx++) {
+				if (miniset[ii] != 0) {
 					dungeon[xx + sx][yy + sy] = miniset[ii];
 					dflags[xx + sx][yy + sy] |= 8;
 				}
@@ -1749,15 +1749,15 @@ BOOL DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int c
 		}
 	}
 
-	if(currlevel == 15) {
+	if (currlevel == 15) {
 		quests[15]._qtx = sx + 1;
 		quests[15]._qty = sy + 1;
 	}
-	if(setview == TRUE) {
+	if (setview == TRUE) {
 		ViewX = 2 * sx + 21;
 		ViewY = 2 * sy + 22;
 	}
-	if(ldir == 0) {
+	if (ldir == 0) {
 		LvlViewX = 2 * sx + 21;
 		LvlViewY = 2 * sy + 22;
 	}
@@ -1770,10 +1770,10 @@ void DRLG_L4FloodTVal()
 	int i, j, xx, yy;
 
 	yy = 16;
-	for(j = 0; j < DMAXY; j++) {
+	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
-		for(i = 0; i < DMAXX; i++) {
-			if(dungeon[i][j] == 6 && dTransVal[xx][yy] == 0) {
+		for (i = 0; i < DMAXX; i++) {
+			if (dungeon[i][j] == 6 && dTransVal[xx][yy] == 0) {
 				DRLG_L4FTVR(i, j, xx, yy, 0);
 				TransVal++;
 			}
@@ -1785,33 +1785,33 @@ void DRLG_L4FloodTVal()
 
 void DRLG_L4FTVR(int i, int j, int x, int y, int d)
 {
-	if(dTransVal[x][y] != 0 || dungeon[i][j] != 6) {
-		if(d == 1) {
+	if (dTransVal[x][y] != 0 || dungeon[i][j] != 6) {
+		if (d == 1) {
 			dTransVal[x][y] = TransVal;
 			dTransVal[x][y + 1] = TransVal;
 		}
-		if(d == 2) {
+		if (d == 2) {
 			dTransVal[x + 1][y] = TransVal;
 			dTransVal[x + 1][y + 1] = TransVal;
 		}
-		if(d == 3) {
+		if (d == 3) {
 			dTransVal[x][y] = TransVal;
 			dTransVal[x + 1][y] = TransVal;
 		}
-		if(d == 4) {
+		if (d == 4) {
 			dTransVal[x][y + 1] = TransVal;
 			dTransVal[x + 1][y + 1] = TransVal;
 		}
-		if(d == 5) {
+		if (d == 5) {
 			dTransVal[x + 1][y + 1] = TransVal;
 		}
-		if(d == 6) {
+		if (d == 6) {
 			dTransVal[x][y + 1] = TransVal;
 		}
-		if(d == 7) {
+		if (d == 7) {
 			dTransVal[x + 1][y] = TransVal;
 		}
-		if(d == 8) {
+		if (d == 8) {
 			dTransVal[x][y] = TransVal;
 		}
 	} else {
@@ -1835,35 +1835,35 @@ void DRLG_L4TransFix()
 	int i, j, xx, yy;
 
 	yy = 16;
-	for(j = 0; j < DMAXY; j++) {
+	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
-		for(i = 0; i < DMAXX; i++) {
-			if(IsDURWall(dungeon[i][j]) && dungeon[i][j - 1] == 18) {
+		for (i = 0; i < DMAXX; i++) {
+			if (IsDURWall(dungeon[i][j]) && dungeon[i][j - 1] == 18) {
 				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
-			if(IsDLLWall(dungeon[i][j]) && dungeon[i + 1][j] == 19) {
+			if (IsDLLWall(dungeon[i][j]) && dungeon[i + 1][j] == 19) {
 				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
-			if(dungeon[i][j] == 18) {
+			if (dungeon[i][j] == 18) {
 				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
-			if(dungeon[i][j] == 19) {
+			if (dungeon[i][j] == 19) {
 				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
-			if(dungeon[i][j] == 24) {
+			if (dungeon[i][j] == 24) {
 				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
 				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
-			if(dungeon[i][j] == 57) {
+			if (dungeon[i][j] == 57) {
 				dTransVal[xx - 1][yy] = dTransVal[xx][yy + 1];
 				dTransVal[xx][yy] = dTransVal[xx][yy + 1];
 			}
-			if(dungeon[i][j] == 53) {
+			if (dungeon[i][j] == 53) {
 				dTransVal[xx][yy - 1] = dTransVal[xx + 1][yy];
 				dTransVal[xx][yy] = dTransVal[xx + 1][yy];
 			}
@@ -1877,12 +1877,12 @@ void DRLG_L4Corners()
 {
 	int i, j;
 
-	for(j = 1; j < DMAXY - 1; j++) {
-		for(i = 1; i < DMAXX - 1; i++) {
-			if(dungeon[i][j] >= 18 && dungeon[i][j] <= 30) {
-				if(dungeon[i + 1][j] < 18) {
+	for (j = 1; j < DMAXY - 1; j++) {
+		for (i = 1; i < DMAXX - 1; i++) {
+			if (dungeon[i][j] >= 18 && dungeon[i][j] <= 30) {
+				if (dungeon[i + 1][j] < 18) {
 					dungeon[i][j] += 98;
-				} else if(dungeon[i][j + 1] < 18) {
+				} else if (dungeon[i][j + 1] < 18) {
 					dungeon[i][j] += 98;
 				}
 			}

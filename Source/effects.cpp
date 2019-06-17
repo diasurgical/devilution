@@ -1095,7 +1095,7 @@ int RndSFX(int psfx)
 		nRand = 3;
 	else
 		return psfx;
-	 return psfx + random(165, nRand);
+	return psfx + random(165, nRand);
 }
 
 void PlaySfxLoc(int psfx, int x, int y)
@@ -1161,7 +1161,6 @@ void effects_update()
 		sfx_stop();
 	}
 }
-
 
 void effects_cleanup_sfx()
 {

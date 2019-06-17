@@ -101,8 +101,8 @@ void InitTownTriggers()
 
 	numtrigs = 1;
 
-	if(gbMaxPlayers == MAX_PLRS) {
-		for(i = 0; i < sizeof(townwarps) / sizeof(townwarps[0]); i++) {
+	if (gbMaxPlayers == MAX_PLRS) {
+		for (i = 0; i < sizeof(townwarps) / sizeof(townwarps[0]); i++) {
 			townwarps[i] = TRUE;
 		}
 		trigs[1]._tx = 49;
@@ -119,10 +119,10 @@ void InitTownTriggers()
 		trigs[3]._tlvl = 13;
 		numtrigs = 4;
 	} else {
-		for(i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			townwarps[i] = FALSE;
 		}
-		if(plr[myplr].pTownWarps & 1) {
+		if (plr[myplr].pTownWarps & 1) {
 			trigs[1]._tx = 49;
 			trigs[1]._ty = 21;
 			trigs[1]._tmsg = WM_DIABTOWNWARP;
@@ -130,7 +130,7 @@ void InitTownTriggers()
 			numtrigs = 2;
 			townwarps[0] = TRUE;
 		}
-		if(plr[myplr].pTownWarps & 2) {
+		if (plr[myplr].pTownWarps & 2) {
 			townwarps[1] = TRUE;
 			trigs[numtrigs]._tx = 17;
 			trigs[numtrigs]._ty = 69;
@@ -138,7 +138,7 @@ void InitTownTriggers()
 			trigs[numtrigs]._tlvl = 9;
 			numtrigs++;
 		}
-		if(plr[myplr].pTownWarps & 4) {
+		if (plr[myplr].pTownWarps & 4) {
 			townwarps[2] = TRUE;
 			trigs[numtrigs]._tx = 41;
 			trigs[numtrigs]._ty = 80;
@@ -204,7 +204,6 @@ void InitL2Triggers()
 				trigs[numtrigs]._tmsg = WM_DIABNEXTLVL;
 				numtrigs++;
 			}
-
 		}
 	}
 	trigflag = 0;
@@ -227,7 +226,7 @@ void InitL3Triggers()
 			if (dPiece[i][j] == 168) {
 				trigs[numtrigs]._tx = i;
 				trigs[numtrigs]._ty = j;
-				trigs[numtrigs] ._tmsg = WM_DIABNEXTLVL;
+				trigs[numtrigs]._tmsg = WM_DIABNEXTLVL;
 				numtrigs++;
 			}
 
@@ -238,7 +237,6 @@ void InitL3Triggers()
 				numtrigs++;
 			}
 		}
-
 	}
 	trigflag = 0;
 }
@@ -654,12 +652,12 @@ void CheckTrigForce()
 {
 	trigflag = FALSE;
 
-	if(MouseY > VIEWPORT_HEIGHT - 1) {
+	if (MouseY > VIEWPORT_HEIGHT - 1) {
 		return;
 	}
 
-	if(!setlevel) {
-		switch(leveltype) {
+	if (!setlevel) {
+		switch (leveltype) {
 		case DTYPE_TOWN:
 			trigflag = ForceTownTrig();
 			break;
@@ -676,11 +674,11 @@ void CheckTrigForce()
 			trigflag = ForceL4Trig();
 			break;
 		}
-		if(leveltype != DTYPE_TOWN && !trigflag) {
+		if (leveltype != DTYPE_TOWN && !trigflag) {
 			trigflag = ForceQuests();
 		}
 	} else {
-		switch(setlvlnum) {
+		switch (setlvlnum) {
 		case SL_SKELKING:
 			trigflag = ForceSKingTrig();
 			break;
@@ -693,7 +691,7 @@ void CheckTrigForce()
 		}
 	}
 
-	if(trigflag) {
+	if (trigflag) {
 		ClearPanel();
 	}
 }

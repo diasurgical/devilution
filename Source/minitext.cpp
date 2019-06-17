@@ -215,14 +215,14 @@ void DrawQText()
 	ty = qtexty;
 
 	doneflag = FALSE;
-	while(!doneflag) {
+	while (!doneflag) {
 		w = 0;
 		s = p;
 		l = 0;
-		while(*s != '\n' && *s != '|' && w < 543) {
+		while (*s != '\n' && *s != '|' && w < 543) {
 			c = gbFontTransTbl[(BYTE)*s];
 			s++;
-			if(c != '\0') {
+			if (c != '\0') {
 				tempstr[l] = c;
 				w += mfontkern[mfontframe[c]] + 2;
 			} else {
@@ -231,60 +231,60 @@ void DrawQText()
 			l++;
 		}
 		tempstr[l] = '\0';
-		if(*s == '|') {
+		if (*s == '|') {
 			tempstr[l] = '\0';
 			doneflag = TRUE;
-		} else if(*s != '\n') {
-			while(tempstr[l] != ' ' && l > 0) {
+		} else if (*s != '\n') {
+			while (tempstr[l] != ' ' && l > 0) {
 				tempstr[l] = '\0';
 				l--;
 			}
 		}
-		for(i = 0; tempstr[i]; i++) {
+		for (i = 0; tempstr[i]; i++) {
 			p++;
 			c = mfontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
-			if(*p == '\n') {
+			if (*p == '\n') {
 				p++;
 			}
-			if(c != 0) {
+			if (c != 0) {
 				PrintQTextChr(tx, ty, (BYTE *)pMedTextCels, c);
 			}
 			tx += mfontkern[c] + 2;
 		}
-		if(pnl == NULL) {
+		if (pnl == NULL) {
 			pnl = p;
 		}
 		tx = 112;
 		ty += 38;
-		if(ty > 501) {
+		if (ty > 501) {
 			doneflag = TRUE;
 		}
 	}
 
 	currTime = GetTickCount();
-	while(1) {
-		if(sgLastScroll <= 0) {
+	while (1) {
+		if (sgLastScroll <= 0) {
 			qtexty--;
 			qtexty += sgLastScroll;
 		} else {
 			scrolltexty--;
-			if(scrolltexty != 0) {
+			if (scrolltexty != 0) {
 				qtexty--;
 			}
 		}
-		if(scrolltexty == 0) {
+		if (scrolltexty == 0) {
 			scrolltexty = sgLastScroll;
 		}
-		if(qtexty <= 209) {
+		if (qtexty <= 209) {
 			qtexty += 38;
 			qtextptr = pnl;
-			if(*pnl == '|') {
+			if (*pnl == '|') {
 				qtextflag = 0;
 			}
 			break;
 		}
 		qtextSpd += 50;
-		if(currTime - qtextSpd >= 0x7FFFFFFF) {
+		if (currTime - qtextSpd >= 0x7FFFFFFF) {
 			break;
 		}
 	}

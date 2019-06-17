@@ -437,7 +437,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 	save_archive_open = FALSE;
 	sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
 	if (sghArchive == INVALID_HANDLE_VALUE) {
-		sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, dwFlagsAndAttributes  | (hidden ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
+		sghArchive = CreateFile(pszArchive, GENERIC_READ | GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, dwFlagsAndAttributes | (hidden ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0), NULL);
 		if (sghArchive == INVALID_HANDLE_VALUE)
 			return FALSE;
 		save_archive_open = TRUE;

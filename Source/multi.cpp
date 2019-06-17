@@ -14,7 +14,7 @@ BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS];
 BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
 BOOL gbShouldValidatePackage;
-BYTE gbActivePlayers;    // weak
+BYTE gbActivePlayers; // weak
 BOOLEAN gbGameDestroyed;
 BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
@@ -360,21 +360,21 @@ void multi_begin_timeout()
 	int i, nTicks, nState, nLowestActive, nLowestPlayer;
 	BYTE bGroupPlayers, bGroupCount;
 
-	if(!sgbTimeout) {
+	if (!sgbTimeout) {
 		return;
 	}
 #ifdef _DEBUG
-	if(debug_mode_key_i) {
+	if (debug_mode_key_i) {
 		return;
 	}
 #endif
 
 	nTicks = GetTickCount() - sglTimeoutStart;
-	if(nTicks > 20000) {
+	if (nTicks > 20000) {
 		gbRunGame = FALSE;
 		return;
 	}
-	if(nTicks < 10000) {
+	if (nTicks < 10000) {
 		return;
 	}
 
@@ -382,15 +382,15 @@ void multi_begin_timeout()
 	nLowestPlayer = -1;
 	bGroupPlayers = 0;
 	bGroupCount = 0;
-	for(i = 0; i < MAX_PLRS; i++) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		nState = player_state[i];
-		if(nState & 0x10000) {
-			if(nLowestPlayer == -1) {
+		if (nState & 0x10000) {
+			if (nLowestPlayer == -1) {
 				nLowestPlayer = i;
 			}
-			if(nState & 0x40000) {
+			if (nState & 0x40000) {
 				bGroupPlayers++;
-				if(nLowestActive == -1) {
+				if (nLowestActive == -1) {
 					nLowestActive = i;
 				}
 			} else {
@@ -405,23 +405,23 @@ void multi_begin_timeout()
 
 #ifdef _DEBUG
 	dumphist(
-		"(%d) grp:%d ngrp:%d lowp:%d lowa:%d",
-		myplr,
-		bGroupPlayers,
-		bGroupCount,
-		nLowestPlayer,
-		nLowestActive);
+	    "(%d) grp:%d ngrp:%d lowp:%d lowa:%d",
+	    myplr,
+	    bGroupPlayers,
+	    bGroupCount,
+	    nLowestPlayer,
+	    nLowestActive);
 #endif
 
-	if(bGroupPlayers < bGroupCount) {
+	if (bGroupPlayers < bGroupCount) {
 		gbGameDestroyed = TRUE;
-	} else if(bGroupPlayers == bGroupCount) {
-		if(nLowestPlayer != nLowestActive) {
+	} else if (bGroupPlayers == bGroupCount) {
+		if (nLowestPlayer != nLowestActive) {
 			gbGameDestroyed = TRUE;
-		} else if(nLowestActive == myplr) {
+		} else if (nLowestActive == myplr) {
 			multi_check_drop_player();
 		}
-	} else if(nLowestActive == myplr) {
+	} else if (nLowestActive == myplr) {
 		multi_check_drop_player();
 	}
 }
@@ -505,7 +505,7 @@ void multi_process_network_packets()
 				}
 			}
 		}
-		multi_handle_all_packets(dwID, (BYTE *)(pkt + 1), dwMsgSize - sizeof (TPktHdr));
+		multi_handle_all_packets(dwID, (BYTE *)(pkt + 1), dwMsgSize - sizeof(TPktHdr));
 	}
 	if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
 		nthread_terminate_game("SNetReceiveMsg");
@@ -517,9 +517,9 @@ void multi_handle_all_packets(int pnum, BYTE *pData, int nSize)
 {
 	int nLen;
 
-	while(nSize != 0) {
+	while (nSize != 0) {
 		nLen = ParseCmd(pnum, (TCmd *)pData);
-		if(nLen == 0) {
+		if (nLen == 0) {
 			break;
 		}
 		pData += nLen;
