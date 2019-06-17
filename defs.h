@@ -5,6 +5,9 @@
 
 #define LIGHTSIZE				6912 // 27 * 256
 
+#define GMENU_SLIDER			(DWORD)1 << 30
+#define GMENU_ENABLED			(DWORD)1 << 31
+
 // must be unsigned to generate unsigned comparisons with pnum
 #define MAX_PLRS				4
 
