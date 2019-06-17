@@ -160,3 +160,10 @@ typedef void (*_PVFV)(void);
 #else
 #define SEG_ALLOCATE(SEGMENT)
 #endif
+
+// To apply to certain functions which have local variables aligned by 1 for unknown yet reason
+#ifdef _MSC_VER
+#define ALIGN_BY_1 __declspec(align(1))
+#else
+#define ALIGN_BY_1
+#endif
