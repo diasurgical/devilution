@@ -657,7 +657,7 @@ void NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, BYTE cl)
 
 void NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
-	TCmdLoc cmd;
+	ALIGN_BY_1 TCmdLoc cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
@@ -715,7 +715,7 @@ void NetSendCmdLocParam3(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, W
 
 void NetSendCmdParam1(BOOL bHiPri, BYTE bCmd, WORD wParam1)
 {
-	TCmdParam1 cmd;
+	ALIGN_BY_1 TCmdParam1 cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.wParam1 = wParam1;

@@ -14,7 +14,16 @@ DEVILUTION_BEGIN_NAMESPACE
 struct EXTERNMESSAGE {
 	LIST_LINK(EXTERNMESSAGE) m_Link;
 	char command[COMMAND_LEN];
-
+	void *operator new(size_t n, DWORD extralen, int flags)
+	{
+		return SMemAlloc(n + extralen, (char *)OBJECT_NAME(EXTERNMESSAGE), SLOG_OBJECT, flags | (1 << 3));
+	}
+	void operator delete(void *address, DWORD extralen, int flags)
+	{
+	}
+	void operator delete(void *address)
+	{
+	}
 	void *Delete(DWORD flags);
 };
 

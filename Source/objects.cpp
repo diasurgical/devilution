@@ -1517,11 +1517,10 @@ void Obj_Circle(int i)
 				object[i]._oVar6 = 2;
 				return;
 			}
-		}
-		else {
+		} else {
 			if (object[i]._ox == 26 && object[i]._oy == 46) {
-			object[i]._oVar6 = 1;
-			return;
+				object[i]._oVar6 = 1;
+				return;
 			}
 		}
 		object[i]._oVar6 = 0;

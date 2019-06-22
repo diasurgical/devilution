@@ -1732,7 +1732,7 @@ void DrawChr()
 		mindam += plr[myplr]._pDamageMod;
 	}
 	maxdam = plr[myplr]._pIMaxDam;
-	maxdam +=  plr[myplr]._pIBonusDam * maxdam / 100;
+	maxdam += plr[myplr]._pIBonusDam * maxdam / 100;
 	maxdam += plr[myplr]._pIBonusDamMod;
 	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW) {
 		if (plr[myplr]._pClass == PC_ROGUE)

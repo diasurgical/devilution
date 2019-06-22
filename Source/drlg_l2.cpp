@@ -1654,45 +1654,34 @@ BOOL DL2_FillVoids()
 		if(predungeon[xx][yy] != 35) {
 			continue;
 		}
-		yf2 = FALSE;
-		yf1 = FALSE;
-		xf2 = FALSE;
-		xf1 = FALSE;
+		xf1 = xf2 = yf1 = yf2 = FALSE;
 		if(predungeon[xx - 1][yy] == 32 && predungeon[xx + 1][yy] == 46) {
 			if(predungeon[xx + 1][yy - 1] == 46
 			&& predungeon[xx + 1][yy + 1] == 46
 			&& predungeon[xx - 1][yy - 1] == 32
 			&& predungeon[xx - 1][yy + 1] == 32) {
-				yf2 = TRUE;
-				yf1 = TRUE;
-				xf1 = TRUE;
+				xf1 = yf1 = yf2 = TRUE;
 			}
 		} else if(predungeon[xx + 1][yy] == 32 && predungeon[xx - 1][yy] == 46) {
 			if(predungeon[xx - 1][yy - 1] == 46
 			&& predungeon[xx - 1][yy + 1] == 46
 			&& predungeon[xx + 1][yy - 1] == 32
 			&& predungeon[xx + 1][yy + 1] == 32) {
-				yf2 = TRUE;
-				yf1 = TRUE;
-				xf2 = TRUE;
+				xf2 = yf1 = yf2 = TRUE;
 			}
 		} else if(predungeon[xx][yy - 1] == 32 && predungeon[xx][yy + 1] == 46) {
 			if(predungeon[xx - 1][yy + 1] == 46
 			&& predungeon[xx + 1][yy + 1] == 46
 			&& predungeon[xx - 1][yy - 1] == 32
 			&& predungeon[xx + 1][yy - 1] == 32) {
-				xf2 = TRUE;
-				xf1 = TRUE;
-				yf1 = TRUE;
+				yf1 = xf1 = xf2 = TRUE;
 			}
 		} else if(predungeon[xx][yy + 1] == 32 && predungeon[xx][yy - 1] == 46) {
 			if(predungeon[xx - 1][yy - 1] == 46
 			&& predungeon[xx + 1][yy - 1] == 46
 			&& predungeon[xx - 1][yy + 1] == 32
 			&& predungeon[xx + 1][yy + 1] == 32) {
-				xf2 = TRUE;
-				xf1 = TRUE;
-				yf2 = TRUE;
+				yf2 = xf1 = xf2 = TRUE;
 			}
 		}
 		if(DL2_Cont(xf1, yf1, xf2, yf2)) {

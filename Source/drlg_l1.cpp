@@ -1497,7 +1497,7 @@ void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftfla
 {
 	int i, j;
 
-	if(topflag == TRUE) {
+	if (topflag == TRUE) {
 		dungeon[sx + 2][sy] = 12;
 		dungeon[sx + 3][sy] = 12;
 		dungeon[sx + 4][sy] = 3;
@@ -1505,19 +1505,19 @@ void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftfla
 		dungeon[sx + 8][sy] = 12;
 		dungeon[sx + 9][sy] = 2;
 	}
-	if(bottomflag == TRUE) {
+	if (bottomflag == TRUE) {
 		sy += 11;
 		dungeon[sx + 2][sy] = 10;
 		dungeon[sx + 3][sy] = 12;
 		dungeon[sx + 4][sy] = 8;
 		dungeon[sx + 7][sy] = 5;
 		dungeon[sx + 8][sy] = 12;
-		if(dungeon[sx + 9][sy] != 4) {
+		if (dungeon[sx + 9][sy] != 4) {
 			dungeon[sx + 9][sy] = 21;
 		}
 		sy -= 11;
 	}
-	if(leftflag == TRUE) {
+	if (leftflag == TRUE) {
 		dungeon[sx][sy + 2] = 11;
 		dungeon[sx][sy + 3] = 11;
 		dungeon[sx][sy + 4] = 3;
@@ -1525,21 +1525,21 @@ void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftfla
 		dungeon[sx][sy + 8] = 11;
 		dungeon[sx][sy + 9] = 1;
 	}
-	if(rightflag == TRUE) {
+	if (rightflag == TRUE) {
 		sx += 11;
 		dungeon[sx][sy + 2] = 14;
 		dungeon[sx][sy + 3] = 11;
 		dungeon[sx][sy + 4] = 9;
 		dungeon[sx][sy + 7] = 5;
 		dungeon[sx][sy + 8] = 11;
-		if(dungeon[sx][sy + 9] != 4) {
+		if (dungeon[sx][sy + 9] != 4) {
 			dungeon[sx][sy + 9] = 21;
 		}
 		sx -= 11;
 	}
 
-	for(j = 1; j < 11; j++) {
-		for(i = 1; i < 11; i++) {
+	for (j = 1; j < 11; j++) {
+		for (i = 1; i < 11; i++) {
 			dungeon[i + sx][j + sy] = 13;
 			L5dflags[i + sx][j + sy] |= 0x40;
 		}
@@ -1722,13 +1722,13 @@ void DRLG_L5CornerFix()
 {
 	int i, j;
 
-	for(j = 1; j < DMAXY - 1; j++) {
-		for(i = 1; i < DMAXX - 1; i++) {
-			if(!(L5dflags[i][j] & 0x80) && dungeon[i][j] == 17 && dungeon[i - 1][j] == 13 && dungeon[i][j - 1] == 1) {
+	for (j = 1; j < DMAXY - 1; j++) {
+		for (i = 1; i < DMAXX - 1; i++) {
+			if (!(L5dflags[i][j] & 0x80) && dungeon[i][j] == 17 && dungeon[i - 1][j] == 13 && dungeon[i][j - 1] == 1) {
 				dungeon[i][j] = 16;
 				L5dflags[i][j - 1] &= 0x80;
 			}
-			if(dungeon[i][j] == 202 && dungeon[i + 1][j] == 13 && dungeon[i][j + 1] == 1) {
+			if (dungeon[i][j] == 202 && dungeon[i + 1][j] == 13 && dungeon[i][j + 1] == 1) {
 				dungeon[i][j] = 8;
 			}
 		}

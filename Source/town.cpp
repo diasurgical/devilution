@@ -451,7 +451,7 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, 0, 8, 0);
 	}
-	if(dArch[x][y] != 0) {
+	if (dArch[x][y] != 0) {
 		town_special_lower(pBuff, dArch[x][y]);
 	}
 }
@@ -633,7 +633,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, a5, 8, 0);
 	}
-	if(dArch[x][y] != 0) {
+	if (dArch[x][y] != 0) {
 		town_special_lower(&pBuff[PitchTbl[16 * a5]], dArch[x][y]);
 	}
 }
@@ -827,7 +827,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawMissile(x, y, sx, sy, 0, dir, 0);
 	}
-	if(dArch[x][y] != 0) {
+	if (dArch[x][y] != 0) {
 		town_special_upper(pBuff, dArch[x][y]);
 	}
 }

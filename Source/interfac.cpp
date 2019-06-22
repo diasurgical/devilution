@@ -245,9 +245,9 @@ void InitCutscene(unsigned int uMsg)
 {
 	/// ASSERT: assert(! sgpBackCel);
 
-	switch(uMsg) {
+	switch (uMsg) {
 	case WM_DIABNEXTLVL:
-		switch(gnLevelTypeTbl[currlevel]) {
+		switch (gnLevelTypeTbl[currlevel]) {
 		case 0:
 			sgpBackCel = LoadFileInMem("Gendata\\Cuttt.CEL", 0);
 			LoadPalette("Gendata\\Cuttt.pal");
@@ -269,7 +269,7 @@ void InitCutscene(unsigned int uMsg)
 			progress_id = 1;
 			break;
 		case 4:
-			if(currlevel < 15) {
+			if (currlevel < 15) {
 				sgpBackCel = LoadFileInMem("Gendata\\Cut4.CEL", 0);
 				LoadPalette("Gendata\\Cut4.pal");
 				progress_id = 1;
@@ -287,12 +287,12 @@ void InitCutscene(unsigned int uMsg)
 		}
 		break;
 	case WM_DIABPREVLVL:
-		if(gnLevelTypeTbl[currlevel - 1] == 0) {
+		if (gnLevelTypeTbl[currlevel - 1] == 0) {
 			sgpBackCel = LoadFileInMem("Gendata\\Cuttt.CEL", 0);
 			LoadPalette("Gendata\\Cuttt.pal");
 			progress_id = 1;
 		} else {
-			switch(gnLevelTypeTbl[currlevel]) {
+			switch (gnLevelTypeTbl[currlevel]) {
 			case 0:
 				sgpBackCel = LoadFileInMem("Gendata\\Cuttt.CEL", 0);
 				LoadPalette("Gendata\\Cuttt.pal");
@@ -327,11 +327,11 @@ void InitCutscene(unsigned int uMsg)
 		}
 		break;
 	case WM_DIABSETLVL:
-		if(setlvlnum == SL_BONECHAMB) {
+		if (setlvlnum == SL_BONECHAMB) {
 			sgpBackCel = LoadFileInMem("Gendata\\Cut2.CEL", 0);
 			LoadPalette("Gendata\\Cut2.pal");
 			progress_id = 2;
-		} else if(setlvlnum == SL_VILEBETRAYER) {
+		} else if (setlvlnum == SL_VILEBETRAYER) {
 			sgpBackCel = LoadFileInMem("Gendata\\Cutportr.CEL", 0);
 			LoadPalette("Gendata\\Cutportr.pal");
 			progress_id = 1;
@@ -342,11 +342,11 @@ void InitCutscene(unsigned int uMsg)
 		}
 		break;
 	case WM_DIABRTNLVL:
-		if(setlvlnum == SL_BONECHAMB) {
+		if (setlvlnum == SL_BONECHAMB) {
 			sgpBackCel = LoadFileInMem("Gendata\\Cut2.CEL", 0);
 			LoadPalette("Gendata\\Cut2.pal");
 			progress_id = 2;
-		} else if(setlvlnum == SL_VILEBETRAYER) {
+		} else if (setlvlnum == SL_VILEBETRAYER) {
 			sgpBackCel = LoadFileInMem("Gendata\\Cutportr.CEL", 0);
 			LoadPalette("Gendata\\Cutportr.pal");
 			progress_id = 1;
@@ -373,7 +373,7 @@ void InitCutscene(unsigned int uMsg)
 		break;
 	case WM_DIABTOWNWARP:
 	case WM_DIABTWARPUP:
-		switch(gnLevelTypeTbl[plr[myplr].plrlevel]) {
+		switch (gnLevelTypeTbl[plr[myplr].plrlevel]) {
 		case 0:
 			sgpBackCel = LoadFileInMem("Gendata\\Cuttt.CEL", 0);
 			LoadPalette("Gendata\\Cuttt.pal");

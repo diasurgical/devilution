@@ -54,16 +54,16 @@ char nMissileTable[2049];
 char *pSetPiece_2;
 char setlvltype; // weak
 BOOLEAN setlevel;
-int LvlViewY;    // weak
-int LvlViewX;    // weak
-int dmaxx;       // weak
-int dmaxy;       // weak
-int setpc_h;     // weak
-int setpc_w;     // weak
-int setpc_x;     // idb
-int ViewX;       // idb
-int ViewY;       // idb
-int setpc_y;     // idb
+int LvlViewY; // weak
+int LvlViewX; // weak
+int dmaxx;    // weak
+int dmaxy;    // weak
+int setpc_h;  // weak
+int setpc_w;  // weak
+int setpc_x;  // idb
+int ViewX;    // idb
+int ViewY;    // idb
+int setpc_y;  // idb
 char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak
@@ -124,14 +124,14 @@ void FillSolidBlockTbls()
 
 void MakeSpeedCels()
 {
-	int i, j, k, x, y, mt, t, z;
+	int i, j, x, y, mt, t, z;
 	int total_frames, blocks, total_size, frameidx, blk_cnt, nDataSize;
 	WORD m;
 	BOOL blood_flag;
 	DWORD *pFrameTable;
 	MICROS *pMap;
 #ifndef USE_ASM
-	int l;
+	int l, k;
 	BYTE width, pix;
 	BYTE *src, *dst, *tbl;
 #endif
@@ -578,8 +578,8 @@ void DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 	x2 = 2 * x2 + 16;
 	y2 = 2 * y2 + 16;
 
-	for(j = y1; j <= y2; j++) {
-		for(i = x1; i <= x2; i++) {
+	for (j = y1; j <= y2; j++) {
+		for (i = x1; i <= x2; i++) {
 			dTransVal[i][j] = TransVal;
 		}
 	}
@@ -771,60 +771,60 @@ void DRLG_CreateThemeRoom(int themeIndex)
 {
 	int xx, yy;
 
-	for(yy = themeLoc[themeIndex].y; yy < themeLoc[themeIndex].y + themeLoc[themeIndex].height; yy++) {
-		for(xx = themeLoc[themeIndex].x; xx < themeLoc[themeIndex].x + themeLoc[themeIndex].width; xx++) {
-			if(leveltype == DTYPE_CATACOMBS) {
-				if(yy == themeLoc[themeIndex].y
-				&& xx >= themeLoc[themeIndex].x
-				&& xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width
-				|| yy == themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1
-				&& xx >= themeLoc[themeIndex].x
-				&& xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width) {
+	for (yy = themeLoc[themeIndex].y; yy < themeLoc[themeIndex].y + themeLoc[themeIndex].height; yy++) {
+		for (xx = themeLoc[themeIndex].x; xx < themeLoc[themeIndex].x + themeLoc[themeIndex].width; xx++) {
+			if (leveltype == DTYPE_CATACOMBS) {
+				if (yy == themeLoc[themeIndex].y
+				        && xx >= themeLoc[themeIndex].x
+				        && xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width
+				    || yy == themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1
+				        && xx >= themeLoc[themeIndex].x
+				        && xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width) {
 					dungeon[xx][yy] = 2;
-				} else if(xx == themeLoc[themeIndex].x
-				&& yy >= themeLoc[themeIndex].y
-				&& yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height
-				|| xx == themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1
-				&& yy >= themeLoc[themeIndex].y
-				&& yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height) {
+				} else if (xx == themeLoc[themeIndex].x
+				        && yy >= themeLoc[themeIndex].y
+				        && yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height
+				    || xx == themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1
+				        && yy >= themeLoc[themeIndex].y
+				        && yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height) {
 					dungeon[xx][yy] = 1;
 				} else {
 					dungeon[xx][yy] = 3;
 				}
 			}
-			if(leveltype == DTYPE_CAVES) {
-				if(yy == themeLoc[themeIndex].y
-				&& xx >= themeLoc[themeIndex].x
-				&& xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width
-				|| yy == themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1
-				&& xx >= themeLoc[themeIndex].x
-				&& xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width) {
+			if (leveltype == DTYPE_CAVES) {
+				if (yy == themeLoc[themeIndex].y
+				        && xx >= themeLoc[themeIndex].x
+				        && xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width
+				    || yy == themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1
+				        && xx >= themeLoc[themeIndex].x
+				        && xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width) {
 					dungeon[xx][yy] = 134;
-				} else if(xx == themeLoc[themeIndex].x
-				&& yy >= themeLoc[themeIndex].y
-				&& yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height
-				|| xx == themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1
-				&& yy >= themeLoc[themeIndex].y
-				&& yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height) {
+				} else if (xx == themeLoc[themeIndex].x
+				        && yy >= themeLoc[themeIndex].y
+				        && yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height
+				    || xx == themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1
+				        && yy >= themeLoc[themeIndex].y
+				        && yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height) {
 					dungeon[xx][yy] = 137;
 				} else {
 					dungeon[xx][yy] = 7;
 				}
 			}
-			if(leveltype == DTYPE_HELL) {
-				if(yy == themeLoc[themeIndex].y
-				&& xx >= themeLoc[themeIndex].x
-				&& xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width
-				|| yy == themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1
-				&& xx >= themeLoc[themeIndex].x
-				&& xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width) {
+			if (leveltype == DTYPE_HELL) {
+				if (yy == themeLoc[themeIndex].y
+				        && xx >= themeLoc[themeIndex].x
+				        && xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width
+				    || yy == themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1
+				        && xx >= themeLoc[themeIndex].x
+				        && xx <= themeLoc[themeIndex].x + themeLoc[themeIndex].width) {
 					dungeon[xx][yy] = 2;
-				} else if(xx == themeLoc[themeIndex].x
-				&& yy >= themeLoc[themeIndex].y
-				&& yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height
-				|| xx == themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1
-				&& yy >= themeLoc[themeIndex].y
-				&& yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height) {
+				} else if (xx == themeLoc[themeIndex].x
+				        && yy >= themeLoc[themeIndex].y
+				        && yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height
+				    || xx == themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1
+				        && yy >= themeLoc[themeIndex].y
+				        && yy <= themeLoc[themeIndex].y + themeLoc[themeIndex].height) {
 					dungeon[xx][yy] = 1;
 				} else {
 					dungeon[xx][yy] = 6;
@@ -833,27 +833,27 @@ void DRLG_CreateThemeRoom(int themeIndex)
 		}
 	}
 
-	if(leveltype == DTYPE_CATACOMBS) {
+	if (leveltype == DTYPE_CATACOMBS) {
 		dungeon[themeLoc[themeIndex].x][themeLoc[themeIndex].y] = 8;
 		dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y] = 7;
 		dungeon[themeLoc[themeIndex].x][themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1] = 9;
 		dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1] = 6;
 	}
-	if(leveltype == DTYPE_CAVES) {
+	if (leveltype == DTYPE_CAVES) {
 		dungeon[themeLoc[themeIndex].x][themeLoc[themeIndex].y] = 150;
 		dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y] = 151;
 		dungeon[themeLoc[themeIndex].x][themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1] = 152;
 		dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1] = 138;
 	}
-	if(leveltype == DTYPE_HELL) {
+	if (leveltype == DTYPE_HELL) {
 		dungeon[themeLoc[themeIndex].x][themeLoc[themeIndex].y] = 9;
 		dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y] = 16;
 		dungeon[themeLoc[themeIndex].x][themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1] = 15;
 		dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height - 1] = 12;
 	}
 
-	if(leveltype == DTYPE_CATACOMBS) {
-		switch(random(0, 2)) {
+	if (leveltype == DTYPE_CATACOMBS) {
+		switch (random(0, 2)) {
 		case 0:
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2] = 4;
 			break;
@@ -862,8 +862,8 @@ void DRLG_CreateThemeRoom(int themeIndex)
 			break;
 		}
 	}
-	if(leveltype == DTYPE_CAVES) {
-		switch(random(0, 2)) {
+	if (leveltype == DTYPE_CAVES) {
+		switch (random(0, 2)) {
 		case 0:
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2] = 147;
 			break;
@@ -872,8 +872,8 @@ void DRLG_CreateThemeRoom(int themeIndex)
 			break;
 		}
 	}
-	if(leveltype == DTYPE_HELL) {
-		switch(random(0, 2)) {
+	if (leveltype == DTYPE_HELL) {
+		switch (random(0, 2)) {
 		case 0:
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2 - 1] = 53;
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2] = 6;
@@ -936,9 +936,9 @@ void DRLG_HoldThemeRooms()
 {
 	int i, x, y, xx, yy;
 
-	for(i = 0; i < themeCount; i++) {
-		for(y = themeLoc[i].y; y < themeLoc[i].y + themeLoc[i].height - 1; y++) {
-			for(x = themeLoc[i].x; x < themeLoc[i].x + themeLoc[i].width - 1; x++) {
+	for (i = 0; i < themeCount; i++) {
+		for (y = themeLoc[i].y; y < themeLoc[i].y + themeLoc[i].height - 1; y++) {
+			for (x = themeLoc[i].x; x < themeLoc[i].x + themeLoc[i].width - 1; x++) {
 				xx = 2 * x + 16;
 				yy = 2 * y + 16;
 				dFlags[xx][yy] |= BFLAG_POPULATED;
