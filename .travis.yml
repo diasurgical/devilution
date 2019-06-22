@@ -15,6 +15,7 @@ addons:
   homebrew:
     packages:
       - mingw-w64
+    update: true
 
 env:
   - MAKE_BUILD=make
