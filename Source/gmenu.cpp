@@ -187,7 +187,7 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 		gmenu_clear_buffer(x + 2, y - 12, pos + 13, 28);
 		CelDecodeOnly(x + 2 + pos, y - 12, option_cel, 1, 27);
 	}
-	x = SCREEN_WIDTH - w / 2 + SCREEN_X;
+	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
 	light_table_index = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
 	gmenu_print_text(x, y, pItem->pszStr);
 	if (pItem == sgpCurrItem) {
@@ -392,7 +392,7 @@ void gmenu_slider_set(TMenuItem *pItem, int min, int max, int value)
 }
 
 /**
- * @brief Get the current value for the slider 
+ * @brief Get the current value for the slider
  */
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
