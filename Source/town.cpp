@@ -6,44 +6,6 @@ void town_clear_upper_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#ifdef USE_ASM
-	__asm {
-		mov		edi, pBuff
-		mov		edx, 30
-		mov		ebx, 1
-		xor		eax, eax
-	label1:
-		cmp		edi, gpBufEnd
-		jb		label4
-		add		edi, edx
-		mov		ecx, ebx
-		rep stosd
-		add		edi, edx
-		sub		edi, BUFFER_WIDTH + 64
-		or		edx, edx
-		jz		label2
-		sub		edx, 2
-		inc		ebx
-		jmp		label1
-	label2:
-		mov		edx, 2
-		mov		ebx, 15
-	label3:
-		cmp		edi, gpBufEnd
-		jb		label4
-		add		edi, edx
-		mov		ecx, ebx
-		rep stosd
-		add		edi, edx
-		sub		edi, BUFFER_WIDTH + 64
-		dec		ebx
-		add		edx, 2
-		cmp		edx, 32
-		jnz		label3
-	label4:
-		nop
-	}
-#else
 	int i, j, k;
 	BYTE *dst;
 
@@ -61,57 +23,12 @@ void town_clear_upper_buf(BYTE *pBuff)
 			*dst++ = 0;
 		dst += i;
 	}
-#endif
 }
 
 void town_clear_low_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#ifdef USE_ASM
-	__asm {
-		mov		edi, pBuff
-		mov		edx, 30
-		mov		ebx, 1
-		xor		eax, eax
-	label1:
-		cmp		edi, gpBufEnd
-		jb		label2
-		add		edi, 64
-		jmp		label3
-	label2:
-		add		edi, edx
-		mov		ecx, ebx
-		rep stosd
-		add		edi, edx
-	label3:
-		sub		edi, BUFFER_WIDTH + 64
-		or		edx, edx
-		jz		label4
-		sub		edx, 2
-		inc		ebx
-		jmp		label1
-	label4:
-		mov		edx, 2
-		mov		ebx, 15
-	label5:
-		cmp		edi, gpBufEnd
-		jb		label6
-		add		edi, 64
-		jmp		label7
-	label6:
-		add		edi, edx
-		mov		ecx, ebx
-		rep stosd
-		add		edi, edx
-	label7:
-		sub		edi, BUFFER_WIDTH + 64
-		dec		ebx
-		add		edx, 2
-		cmp		edx, 32
-		jnz		label5
-	}
-#else
 	int i, j, k;
 	BYTE *dst;
 
@@ -137,7 +54,6 @@ void town_clear_low_buf(BYTE *pBuff)
 			dst += 64;
 		}
 	}
-#endif
 }
 
 void town_special_lower(BYTE *pBuff, int nCel)
@@ -145,64 +61,6 @@ void town_special_lower(BYTE *pBuff, int nCel)
 #if 0
 	int w;
 	BYTE *end;
-
-#ifdef USE_ASM
-	__asm {
-		mov		ebx, pSpecialCels
-		mov		eax, nCel
-		shl		eax, 2
-		add		ebx, eax
-		mov		eax, [ebx+4]
-		sub		eax, [ebx]
-		mov		end, eax
-		mov		esi, pSpecialCels
-		add		esi, [ebx]
-		mov		edi, pBuff
-		mov		eax, BUFFER_WIDTH + 64
-		mov		w, eax
-		mov		ebx, end
-		add		ebx, esi
-	label1:
-		mov		edx, 64
-	label2:
-		xor		eax, eax
-		lodsb
-		or		al, al
-		js		label7
-		sub		edx, eax
-		cmp		edi, gpBufEnd
-		jb		label3
-		add		esi, eax
-		add		edi, eax
-		jmp		label6
-	label3:
-		mov		ecx, eax
-		shr		ecx, 1
-		jnb		label4
-		movsb
-		jecxz	label6
-	label4:
-		shr		ecx, 1
-		jnb		label5
-		movsw
-		jecxz	label6
-	label5:
-		rep movsd
-	label6:
-		or		edx, edx
-		jz		label8
-		jmp		label2
-	label7:
-		neg		al
-		add		edi, eax
-		sub		edx, eax
-		jnz		label2
-	label8:
-		sub		edi, w
-		cmp		ebx, esi
-		jnz		label1
-	}
-#else
 	BYTE width;
 	BYTE *src, *dst;
 	DWORD *pFrameTable;
@@ -251,7 +109,6 @@ void town_special_lower(BYTE *pBuff, int nCel)
 		}
 	}
 #endif
-#endif
 }
 
 void town_special_upper(BYTE *pBuff, int nCel)
@@ -259,62 +116,6 @@ void town_special_upper(BYTE *pBuff, int nCel)
 #if 0
 	int w;
 	BYTE *end;
-
-#ifdef USE_ASM
-	__asm {
-		mov		ebx, pSpecialCels
-		mov		eax, nCel
-		shl		eax, 2
-		add		ebx, eax
-		mov		eax, [ebx+4]
-		sub		eax, [ebx]
-		mov		end, eax
-		mov		esi, pSpecialCels
-		add		esi, [ebx]
-		mov		edi, pBuff
-		mov		eax, BUFFER_WIDTH + 64
-		mov		w, eax
-		mov		ebx, end
-		add		ebx, esi
-	label1:
-		mov		edx, 64
-	label2:
-		xor		eax, eax
-		lodsb
-		or		al, al
-		js		label6
-		sub		edx, eax
-		cmp		edi, gpBufEnd
-		jb		label8
-		mov		ecx, eax
-		shr		ecx, 1
-		jnb		label3
-		movsb
-		jecxz	label5
-	label3:
-		shr		ecx, 1
-		jnb		label4
-		movsw
-		jecxz	label5
-	label4:
-		rep movsd
-	label5:
-		or		edx, edx
-		jz		label7
-		jmp		label2
-	label6:
-		neg		al
-		add		edi, eax
-		sub		edx, eax
-		jnz		label2
-	label7:
-		sub		edi, w
-		cmp		ebx, esi
-		jnz		label1
-	label8:
-		nop
-	}
-#else
 	BYTE width;
 	BYTE *src, *dst;
 	DWORD *pFrameTable;
@@ -360,7 +161,6 @@ void town_special_upper(BYTE *pBuff, int nCel)
 			}
 		}
 	}
-#endif
 #endif
 }
 
@@ -1157,39 +957,6 @@ void T_DrawZoom(int x, int y)
 
 	/// ASSERT: assert(gpBuffer);
 
-#ifdef USE_ASM
-	__asm {
-		mov		esi, gpBuffer
-		mov		edx, nDstOff
-		mov		edi, esi
-		mov		ecx, nSrcOff
-		add		edi, edx
-		add		esi, ecx
-		mov		ebx, edi
-		add		ebx, BUFFER_WIDTH
-		mov		edx, 176
-	label1:
-		mov		ecx, wdt
-	label2:
-		mov		al, [esi]
-		inc		esi
-		mov		ah, al
-		mov		[edi], ax
-		mov		[ebx], ax
-		add		edi, 2
-		add		ebx, 2
-		dec		ecx
-		jnz		label2
-		mov		eax, BUFFER_WIDTH
-		add		eax, wdt
-		sub		esi, eax
-		add		eax, eax
-		sub		ebx, eax
-		sub		edi, eax
-		dec		edx
-		jnz		label1
-	}
-#else
 	int hgt;
 	BYTE *src, *dst1, *dst2;
 
@@ -1206,7 +973,6 @@ void T_DrawZoom(int x, int y)
 			src++;
 		}
 	}
-#endif
 }
 
 void T_DrawView(int StartX, int StartY)
@@ -1315,42 +1081,6 @@ void T_FillSector(BYTE *P3Tiles, BYTE *pSector, int xi, int yi, int w, int h)
 	for (j = 0; j < h; j++) {
 		xx = xi;
 		for (i = 0; i < w; i++) {
-#ifdef USE_ASM
-			__asm {
-				mov		esi, pSector
-				mov		eax, ii
-				add		esi, eax
-				xor		eax, eax
-				lodsw
-				or		eax, eax
-				jz		label1
-				dec		eax
-				mov		esi, P3Tiles
-				shl		eax, 3
-				add		esi, eax
-				xor		eax, eax
-				lodsw
-				inc		eax
-				mov		v1, eax
-				lodsw
-				inc		eax
-				mov		v2, eax
-				lodsw
-				inc		eax
-				mov		v3, eax
-				lodsw
-				inc		eax
-				mov		v4, eax
-				jmp		label2
-			label1:
-				mov		v1, eax
-				mov		v2, eax
-				mov		v3, eax
-				mov		v4, eax
-			label2:
-				nop
-			}
-#else
 			WORD *Map;
 
 			Map = (WORD *)&pSector[ii];
@@ -1365,7 +1095,6 @@ void T_FillSector(BYTE *P3Tiles, BYTE *pSector, int xi, int yi, int w, int h)
 				v3 = 0;
 				v4 = 0;
 			}
-#endif
 			dPiece[xx][yy] = v1;
 			dPiece[xx + 1][yy] = v2;
 			dPiece[xx][yy + 1] = v3;
@@ -1381,40 +1110,10 @@ void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 {
 	long v1, v2, v3, v4;
 
-#ifdef USE_ASM
-	__asm {
-		mov		eax, t
-		dec		eax
-		mov		esi, P3Tiles
-		shl		eax, 3
-		add		esi, eax
-		xor		eax, eax
-		lodsw
-		inc		eax
-		mov		v1, eax
-		lodsw
-		inc		eax
-		mov		v2, eax
-		lodsw
-		inc		eax
-		mov		v3, eax
-		lodsw
-		inc		eax
-		mov		v4, eax
-		jmp		label1
-		mov		v1, eax
-		mov		v2, eax
-		mov		v3, eax
-		mov		v4, eax
-	label1:
-		nop
-	}
-#else
 	v1 = *((WORD *)&P3Tiles[(t - 1) * 8]) + 1;
 	v2 = *((WORD *)&P3Tiles[(t - 1) * 8] + 1) + 1;
 	v3 = *((WORD *)&P3Tiles[(t - 1) * 8] + 2) + 1;
 	v4 = *((WORD *)&P3Tiles[(t - 1) * 8] + 3) + 1;
-#endif
 
 	dPiece[xx][yy] = v1;
 	dPiece[xx + 1][yy] = v2;

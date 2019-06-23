@@ -60,10 +60,6 @@ DEVILUTION_BEGIN_NAMESPACE
 #include "enums.h"
 #include "structs.h"
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
-#define USE_ASM
-#endif
-
 // If defined, use copy protection [Default -> Defined]
 #if !defined(_DEBUG) && !defined(SPAWN)
 //#define COPYPROT

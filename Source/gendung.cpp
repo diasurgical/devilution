@@ -130,11 +130,9 @@ void MakeSpeedCels()
 	BOOL blood_flag;
 	DWORD *pFrameTable;
 	MICROS *pMap;
-#ifndef USE_ASM
 	int l, k;
 	BYTE width, pix;
 	BYTE *src, *dst, *tbl;
-#endif
 
 	for (i = 0; i < MAXTILES; i++) {
 		tile_defs[i] = i;
@@ -166,19 +164,7 @@ void MakeSpeedCels()
 
 	for (i = 1; i < nlevel_frames; i++) {
 		z = i;
-#ifdef USE_ASM
-		__asm {
-			mov		ebx, pDungeonCels
-			mov		eax, z
-			shl		eax, 2
-			add		ebx, eax
-			mov		eax, [ebx+4]
-			sub		eax, [ebx]
-			mov		nDataSize, eax
-		}
-#else
 		nDataSize = pFrameTable[i + 1] - pFrameTable[i];
-#endif
 		level_frame_sizes[i] = nDataSize & 0xFFFF;
 	}
 
@@ -192,80 +178,13 @@ void MakeSpeedCels()
 			blood_flag = TRUE;
 			if (level_frame_count[i] != 0) {
 				if (level_frame_types[i] != 0x1000) {
-#ifdef USE_ASM
-					t = level_frame_sizes[i];
-					__asm {
-						mov		ebx, pDungeonCels
-						mov		eax, z
-						shl		eax, 2
-						add		ebx, eax
-						mov		esi, pDungeonCels
-						add		esi, [ebx]
-						xor		ebx, ebx
-						mov		ecx, t
-						jecxz	l1_label3
-					l1_label1:
-						lodsb
-						cmp		al, 0
-						jz		l1_label2
-						cmp		al, 32
-						jnb		l1_label2
-						mov		blood_flag, ebx
-					l1_label2:
-						loop	l1_label1
-					l1_label3:
-						nop
-					}
-#else
 					src = &pDungeonCels[pFrameTable[i]];
 					for (j = level_frame_sizes[i]; j; j--) {
 						pix = *src++;
 						if (pix && pix < 32)
 							blood_flag = FALSE;
 					}
-#endif
 				} else {
-#ifdef USE_ASM
-					__asm {
-						mov		ebx, pDungeonCels
-						mov		eax, z
-						shl		eax, 2
-						add		ebx, eax
-						mov		esi, pDungeonCels
-						add		esi, [ebx]
-						xor		ebx, ebx
-						mov		ecx, 32
-					l2_label1:
-						push	ecx
-						mov		edx, 32
-					l2_label2:
-						xor		eax, eax
-						lodsb
-						or		al, al
-						js		l2_label5
-						sub		edx, eax
-						mov		ecx, eax
-					l2_label3:
-						lodsb
-						cmp		al, 0
-						jz		l2_label4
-						cmp		al, 32
-						jnb		l2_label4
-						mov		blood_flag, ebx
-					l2_label4:
-						loop	l2_label3
-						or		edx, edx
-						jz		l2_label6
-						jmp		l2_label2
-					l2_label5:
-						neg		al
-						sub		edx, eax
-						jnz		l2_label2
-					l2_label6:
-						pop		ecx
-						loop	l2_label1
-					}
-#else
 					src = &pDungeonCels[pFrameTable[i]];
 					for (k = 32; k; k--) {
 						for (l = 32; l;) {
@@ -284,7 +203,6 @@ void MakeSpeedCels()
 							}
 						}
 					}
-#endif
 				}
 				if (!blood_flag)
 					level_frame_count[i] = 0;
@@ -326,84 +244,17 @@ void MakeSpeedCels()
 			t = level_frame_sizes[i];
 			for (j = 1; j < blk_cnt; j++) {
 				SpeedFrameTbl[i][j] = frameidx;
-#ifdef USE_ASM
-				__asm {
-					mov		ebx, pDungeonCels
-					mov		eax, z
-					shl		eax, 2
-					add		ebx, eax
-					mov		esi, pDungeonCels
-					add		esi, [ebx]
-					mov		edi, pSpeedCels
-					add		edi, frameidx
-					mov		ebx, j
-					shl		ebx, 8
-					add		ebx, pLightTbl
-					mov		ecx, t
-					jecxz	l3_label2
-				l3_label1:
-					lodsb
-					xlat
-					stosb
-					loop	l3_label1
-				l3_label2:
-					nop
-				}
-#else
 				src = &pDungeonCels[pFrameTable[z]];
 				dst = &pSpeedCels[frameidx];
 				tbl = &pLightTbl[256 * j];
 				for (k = t; k; k--) {
 					*dst++ = tbl[*src++];
 				}
-#endif
 				frameidx += t;
 			}
 		} else {
 			for (j = 1; j < blk_cnt; j++) {
 				SpeedFrameTbl[i][j] = frameidx;
-#ifdef USE_ASM
-				__asm {
-					mov		ebx, pDungeonCels
-					mov		eax, z
-					shl		eax, 2
-					add		ebx, eax
-					mov		esi, pDungeonCels
-					add		esi, [ebx]
-					mov		edi, pSpeedCels
-					add		edi, frameidx
-					mov		ebx, j
-					shl		ebx, 8
-					add		ebx, pLightTbl
-					mov		ecx, 32
-				l4_label1:
-					push	ecx
-					mov		edx, 32
-				l4_label2:
-					xor		eax, eax
-					lodsb
-					stosb
-					or		al, al
-					js		l4_label4
-					sub		edx, eax
-					mov		ecx, eax
-				l4_label3:
-					lodsb
-					xlat
-					stosb
-					loop	l4_label3
-					or		edx, edx
-					jz		l4_label5
-					jmp		l4_label2
-				l4_label4:
-					neg		al
-					sub		edx, eax
-					jnz		l4_label2
-				l4_label5:
-					pop		ecx
-					loop	l4_label1
-				}
-#else
 				src = &pDungeonCels[pFrameTable[z]];
 				dst = &pSpeedCels[frameidx];
 				tbl = &pLightTbl[256 * j];
@@ -423,7 +274,6 @@ void MakeSpeedCels()
 						}
 					}
 				}
-#endif
 				frameidx += level_frame_sizes[i];
 			}
 		}

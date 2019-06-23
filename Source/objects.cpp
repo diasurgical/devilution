@@ -1838,25 +1838,8 @@ void objects_set_door_piece(int x, int y)
 
 	pn = dPiece[x][y] - 1;
 
-#ifdef USE_ASM
-	__asm {
-	mov		esi, pLevelPieces
-	xor		eax, eax
-	mov		ax, word ptr pn
-	mov		ebx, 20
-	mul		ebx
-	add		esi, eax
-	add		esi, 16
-	xor		eax, eax
-	lodsw
-	mov		word ptr v1, ax
-	lodsw
-	mov		word ptr v2, ax
-	}
-#else
 	v1 = *((WORD *)pLevelPieces + 10 * pn + 8);
 	v2 = *((WORD *)pLevelPieces + 10 * pn + 9);
-#endif
 	dpiece_defs_map_1[IsometricCoord(x, y)].mt[0] = v1;
 	dpiece_defs_map_1[IsometricCoord(x, y)].mt[1] = v2;
 }
@@ -1866,34 +1849,10 @@ void ObjSetMini(int x, int y, int v)
 	int xx, yy;
 	long v1, v2, v3, v4;
 
-#ifdef USE_ASM
-	__asm {
-		mov		esi, pMegaTiles
-		xor		eax, eax
-		mov		ax, word ptr v
-		dec		eax
-		shl		eax, 3
-		add		esi, eax
-		xor		eax, eax
-		lodsw
-		inc		eax
-		mov		v1, eax
-		lodsw
-		inc		eax
-		mov		v2, eax
-		lodsw
-		inc		eax
-		mov		v3, eax
-		lodsw
-		inc		eax
-		mov		v4, eax
-	}
-#else
 	v1 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8]) + 1;
 	v2 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8] + 1) + 1;
 	v3 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8] + 2) + 1;
 	v4 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8] + 3) + 1;
-#endif
 
 	xx = 2 * x + 16;
 	yy = 2 * y + 16;

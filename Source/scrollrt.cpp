@@ -2040,39 +2040,6 @@ void DrawZoom(int x, int y)
 
 	/// ASSERT: assert(gpBuffer);
 
-#ifdef USE_ASM
-	__asm {
-		mov		esi, gpBuffer
-		mov		edx, nDstOff
-		mov		edi, esi
-		mov		ecx, nSrcOff
-		add		edi, edx
-		add		esi, ecx
-		mov		ebx, edi
-		add		ebx, BUFFER_WIDTH
-		mov		edx, 176
-	label1:
-		mov		ecx, wdt
-	label2:
-		mov		al, [esi]
-		inc		esi
-		mov		ah, al
-		mov		[edi], ax
-		mov		[ebx], ax
-		add		edi, 2
-		add		ebx, 2
-		dec		ecx
-		jnz		label2
-		mov		eax, BUFFER_WIDTH
-		add		eax, wdt
-		sub		esi, eax
-		add		eax, eax
-		sub		ebx, eax
-		sub		edi, eax
-		dec		edx
-		jnz		label1
-	}
-#else
 	int hgt;
 	BYTE *src, *dst1, *dst2;
 
@@ -2089,7 +2056,6 @@ void DrawZoom(int x, int y)
 			src++;
 		}
 	}
-#endif
 }
 
 void ClearScreenBuffer()
@@ -2098,20 +2064,6 @@ void ClearScreenBuffer()
 
 	/// ASSERT: assert(gpBuffer);
 
-#ifdef USE_ASM
-	__asm {
-		mov		edi, gpBuffer
-		add		edi, SCREENXY(0, 0)
-		mov		edx, SCREEN_HEIGHT
-		xor		eax, eax
-	zeroline:
-		mov		ecx, SCREEN_WIDTH / 4
-		rep stosd
-		add		edi, BUFFER_WIDTH - SCREEN_WIDTH
-		dec		edx
-		jnz		zeroline
-	}
-#else
 	int i;
 	BYTE *dst;
 
@@ -2120,7 +2072,6 @@ void ClearScreenBuffer()
 	for (i = 0; i < SCREEN_HEIGHT; i++, dst += BUFFER_WIDTH) {
 		memset(dst, 0, SCREEN_WIDTH);
 	}
-#endif
 
 	unlock_buf(3);
 }
@@ -2542,24 +2493,6 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 
 		/// ASSERT: assert(gpBuffer);
 
-#if defined(USE_ASM) && !defined(RGBMODE)
-		__asm {
-			mov		esi, gpBuffer
-			mov		edi, DDS_desc.lpSurface
-			add		esi, nSrcOff
-			add		edi, nDstOff
-			mov		eax, nSrcWdt
-			mov		ebx, nDstWdt
-			mov		edx, dwHgt
-		blitline:
-			mov		ecx, dwWdt
-			rep movsd
-			add		esi, eax
-			add		edi, ebx
-			dec		edx
-			jnz		blitline
-		}
-#else
 		int wdt, hgt;
 		BYTE *src, *dst;
 
@@ -2568,18 +2501,9 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 
 		for (hgt = 0; hgt < dwHgt; hgt++, src += nSrcWdt, dst += nDstWdt) {
 			for (wdt = 0; wdt < 4 * dwWdt; wdt++) {
-#ifndef RGBMODE
 				*dst++ = *src++;
-#else
-				PALETTEENTRY pal = system_palette[*src++];
-				dst[0] = pal.peBlue;
-				dst[1] = pal.peGreen;
-				dst[2] = pal.peRed;
-				dst += 4;
-#endif
 			}
 		}
-#endif
 
 		unlock_buf(6);
 	}

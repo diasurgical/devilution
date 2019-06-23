@@ -427,32 +427,10 @@ void DRLG_L2Pass3()
 
 	lv = 12 - 1;
 
-#ifdef USE_ASM
-	__asm {
-		mov		esi, pMegaTiles
-		mov		eax, lv
-		shl		eax, 3
-		add		esi, eax
-		xor		eax, eax
-		lodsw
-		inc		eax
-		mov		v1, eax
-		lodsw
-		inc		eax
-		mov		v2, eax
-		lodsw
-		inc		eax
-		mov		v3, eax
-		lodsw
-		inc		eax
-		mov		v4, eax
-	}
-#else
 	v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
 	v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
 	v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
 	v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
-#endif
 
 	for (j = 0; j < MAXDUNY; j += 2)
 	{
@@ -469,32 +447,10 @@ void DRLG_L2Pass3()
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
 			lv = dungeon[i][j] - 1;
-#ifdef USE_ASM
-			__asm {
-				mov		esi, pMegaTiles
-				mov		eax, lv
-				shl		eax, 3
-				add		esi, eax
-				xor		eax, eax
-				lodsw
-				inc		eax
-				mov		v1, eax
-				lodsw
-				inc		eax
-				mov		v2, eax
-				lodsw
-				inc		eax
-				mov		v3, eax
-				lodsw
-				inc		eax
-				mov		v4, eax
-			}
-#else
 			v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
 			v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
 			v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
 			v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
-#endif
 			dPiece[xx][yy] = v1;
 			dPiece[xx + 1][yy] = v2;
 			dPiece[xx][yy + 1] = v3;
