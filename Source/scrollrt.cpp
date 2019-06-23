@@ -995,7 +995,7 @@ void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
 		Cel2DrawHdrOnly(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
 }
 
-void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
+void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
 	int i, lti_old, cta_old, lpi_old;
 	BYTE *dst;
@@ -1036,7 +1036,7 @@ void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
 		}
 	}
 
-	scrollrt_draw_clipped_dungeon(pBuff, x, y, a4, a5, 0);
+	scrollrt_draw_clipped_dungeon(pBuff, x, y, sx, sy, 0);
 
 	light_table_index = lti_old;
 	cel_transparency_active = cta_old;
@@ -1120,23 +1120,25 @@ void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChu
 		pMap++;
 	}
 
-	if (eflag && (DWORD)y < MAXDUNY && (DWORD)x < MAXDUNX) {
-		level_piece_id = dPiece[x][y];
-		light_table_index = dLight[x][y];
-		if (level_piece_id != 0) {
-			dst = &gpBuffer[sx - BUFFER_WIDTH * 32 + PitchTbl[sy]];
-			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
-			for (i = 0; i < (MicroTileLen >> 1) - 1; i++) {
-				if (skipChunks <= i) {
-					level_cel_block = pMap->mt[2 * i + 2];
-					if (level_cel_block != 0) {
-						drawLowerScreen(dst);
+	if (eflag) {
+		if ((DWORD)y < MAXDUNY && (DWORD)x < MAXDUNX) {
+			level_piece_id = dPiece[x][y];
+			light_table_index = dLight[x][y];
+			if (level_piece_id != 0) {
+				dst = &gpBuffer[sx - BUFFER_WIDTH * 32 + PitchTbl[sy]];
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
+				for (i = 0; i < (MicroTileLen >> 1) - 1; i++) {
+					if (skipChunks <= i) {
+						level_cel_block = pMap->mt[2 * i + 2];
+						if (level_cel_block != 0) {
+							drawLowerScreen(dst);
+						}
 					}
+					dst -= BUFFER_WIDTH * 32;
 				}
-				dst -= BUFFER_WIDTH * 32;
-			}
-			if (CelSkip < 8) {
-				scrollrt_draw_clipped_dungeon_2(&gpBuffer[sx + PitchTbl[sy] - BUFFER_WIDTH * 16 * CelSkip], x, y, skipChunks, CelSkip, sx, sy, 0);
+				if (CelSkip < 8) {
+					scrollrt_draw_clipped_dungeon_2(&gpBuffer[sx + PitchTbl[sy] - BUFFER_WIDTH * 16 * CelSkip], x, y, skipChunks, CelSkip, sx, sy, 0);
+				}
 			}
 		}
 	}
@@ -1528,44 +1530,46 @@ void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks
 		pMap++;
 	}
 
-	if (eflag && y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-		level_piece_id = dPiece[x][y];
-		light_table_index = dLight[x][y];
-		if (level_piece_id != 0) {
-			dst = &gpBuffer[sx + PitchTbl[sy]];
-			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
-			arch_draw_type = 1;
-			if (capChunks >= 0) {
-				level_cel_block = pMap->mt[0];
-				if (level_cel_block != 0) {
-					drawUpperScreen(dst);
+	if (eflag) {
+		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
+			level_piece_id = dPiece[x][y];
+			light_table_index = dLight[x][y];
+			if (level_piece_id != 0) {
+				dst = &gpBuffer[sx + PitchTbl[sy]];
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
+				arch_draw_type = 1;
+				if (capChunks >= 0) {
+					level_cel_block = pMap->mt[0];
+					if (level_cel_block != 0) {
+						drawUpperScreen(dst);
+					}
 				}
-			}
-			arch_draw_type = 0;
-			dst -= BUFFER_WIDTH * 32;
-			if (capChunks >= 1) {
-				level_cel_block = pMap->mt[2];
-				if (level_cel_block != 0) {
-					drawUpperScreen(dst);
+				arch_draw_type = 0;
+				dst -= BUFFER_WIDTH * 32;
+				if (capChunks >= 1) {
+					level_cel_block = pMap->mt[2];
+					if (level_cel_block != 0) {
+						drawUpperScreen(dst);
+					}
 				}
-			}
-			dst -= BUFFER_WIDTH * 32;
-			if (capChunks >= 2) {
-				level_cel_block = pMap->mt[4];
-				if (level_cel_block != 0) {
-					drawUpperScreen(dst);
+				dst -= BUFFER_WIDTH * 32;
+				if (capChunks >= 2) {
+					level_cel_block = pMap->mt[4];
+					if (level_cel_block != 0) {
+						drawUpperScreen(dst);
+					}
 				}
-			}
-			dst -= BUFFER_WIDTH * 32;
-			if (capChunks >= 3) {
-				level_cel_block = pMap->mt[6];
-				if (level_cel_block != 0) {
-					drawUpperScreen(dst);
+				dst -= BUFFER_WIDTH * 32;
+				if (capChunks >= 3) {
+					level_cel_block = pMap->mt[6];
+					if (level_cel_block != 0) {
+						drawUpperScreen(dst);
+					}
 				}
+				scrollrt_draw_dungeon(&gpBuffer[sx + PitchTbl[sy]], x, y, capChunks, CelCap, sx, sy, 0);
+			} else {
+				world_draw_black_tile(&gpBuffer[sx + PitchTbl[sy]]);
 			}
-			scrollrt_draw_dungeon(&gpBuffer[sx + PitchTbl[sy]], x, y, capChunks, CelCap, sx, sy, 0);
-		} else {
-			world_draw_black_tile(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
