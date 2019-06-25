@@ -32,9 +32,9 @@ void dx_init(HWND hWnd)
 	SetFocus(hWnd);
 	ShowWindow(hWnd, SW_SHOWNORMAL);
 
-	lpGUID = (GUID *)DDCREATE_EMULATIONONLY;
-	if(!gbEmulate) {
-		lpGUID = NULL;
+	lpGUID = NULL;
+	if (gbEmulate) {
+		lpGUID = (GUID *)DDCREATE_EMULATIONONLY;
 	}
 	hDDVal = dx_DirectDrawCreate(lpGUID, &lpDDInterface, NULL);
 	if(hDDVal != DD_OK) {
@@ -76,7 +76,9 @@ void dx_init(HWND hWnd)
 			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
 		}
 #ifdef __cplusplus
-		hDDVal = lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
+		hDDVal = DD_OK;
+		if (hDDVal == DD_OK)
+			hDDVal = lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 #else
 		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 #endif
