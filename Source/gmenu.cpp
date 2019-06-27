@@ -173,18 +173,18 @@ void gmenu_draw()
 
 void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 {
-	DWORD x, w, nSteps, step, pos;
-
+	DWORD x, w, nSteps, step, pos, t;
+	t = y - 2;
 	w = gmenu_get_lfont(pItem);
 	if (pItem->dwFlags & GMENU_SLIDER) {
 		x = 16 + w / 2 + SCREEN_X;
-		CelDecodeOnly(x, y - 10, optbar_cel, 1, 287);
+		CelDecodeOnly(x, t - 8, optbar_cel, 1, 287);
+		step = pItem->dwFlags & 0xFFF;
 		nSteps = (pItem->dwFlags & 0xFFF000) >> 12;
 		if (nSteps < 2)
 			nSteps = 2;
-		step = pItem->dwFlags & 0xFFF;
 		pos = step * 256 / nSteps;
-		gmenu_clear_buffer(x + 2, y - 12, pos + 13, 28);
+		gmenu_clear_buffer(x + 2, t - 10, pos + 13, 28);
 		CelDecodeOnly(x + 2 + pos, y - 12, option_cel, 1, 27);
 	}
 	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
