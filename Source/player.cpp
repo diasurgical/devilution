@@ -2292,7 +2292,7 @@ BOOL WeaponDur(int pnum, int durrnd)
 BOOL PlrHitMonst(int pnum, int m)
 {
 	BOOL rv, ret;
-	int hit, hper, mind, maxd, dam, lvl, phanditype, mClass, tac;
+	int hit, hper, mind, maxd, ddp, dam, skdam, phanditype, tmac;
 
 	if ((DWORD)m >= MAXMONSTERS) {
 		app_fatal("PlrHitMonst: illegal monster %d", m);
@@ -2321,7 +2321,8 @@ BOOL PlrHitMonst(int pnum, int m)
 		hit = 0;
 	}
 
-	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (monster[m].mArmorClass - plr[pnum]._pIEnAc);
+	tmac = monster[m].mArmorClass - plr[pnum]._pIEnAc;
+	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - tmac;
 	if (plr[pnum]._pClass == PC_WARRIOR) {
 		hper += 20;
 	}
@@ -2344,10 +2345,11 @@ BOOL PlrHitMonst(int pnum, int m)
 		mind = plr[pnum]._pIMinDam;
 		maxd = plr[pnum]._pIMaxDam;
 		dam = random(5, maxd - mind + 1) + mind;
-		dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + dam * plr[pnum]._pIBonusDam / 100;
+		dam += dam * plr[pnum]._pIBonusDam / 100;
+		dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod;
 		if (plr[pnum]._pClass == PC_WARRIOR) {
-			lvl = plr[pnum]._pLevel;
-			if (random(6, 100) < lvl) {
+			ddp = plr[pnum]._pLevel;
+			if (random(6, 100) < ddp) {
 				dam *= 2;
 			}
 		}
@@ -2360,8 +2362,7 @@ BOOL PlrHitMonst(int pnum, int m)
 			phanditype = ITYPE_MACE;
 		}
 
-		mClass = monster[m].MData->mMonstClass;
-		switch (mClass) {
+		switch (monster[m].MData->mMonstClass) {
 		case MC_UNDEAD:
 			if (phanditype == ITYPE_SWORD) {
 				dam -= dam >> 1;
@@ -2390,12 +2391,12 @@ BOOL PlrHitMonst(int pnum, int m)
 		}
 
 		if (plr[pnum]._pIFlags & ISPL_RNDSTEALLIFE) {
-			tac = random(7, dam >> 3);
-			plr[pnum]._pHitPoints += tac;
+			skdam = random(7, dam >> 3);
+			plr[pnum]._pHitPoints += skdam;
 			if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
 				plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
 			}
-			plr[pnum]._pHPBase += tac;
+			plr[pnum]._pHPBase += skdam;
 			if (plr[pnum]._pHPBase > plr[pnum]._pMaxHPBase) {
 				plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 			}
@@ -2403,16 +2404,16 @@ BOOL PlrHitMonst(int pnum, int m)
 		}
 		if (plr[pnum]._pIFlags & (ISPL_STEALMANA_3 | ISPL_STEALMANA_5) && !(plr[pnum]._pIFlags & ISPL_NOMANA)) {
 			if (plr[pnum]._pIFlags & ISPL_STEALMANA_3) {
-				tac = 3 * dam / 100;
+				skdam = 3 * dam / 100;
 			}
 			if (plr[pnum]._pIFlags & ISPL_STEALMANA_5) {
-				tac = 5 * dam / 100;
+				skdam = 5 * dam / 100;
 			}
-			plr[pnum]._pMana += tac;
+			plr[pnum]._pMana += skdam;
 			if (plr[pnum]._pMana > plr[pnum]._pMaxMana) {
 				plr[pnum]._pMana = plr[pnum]._pMaxMana;
 			}
-			plr[pnum]._pManaBase += tac;
+			plr[pnum]._pManaBase += skdam;
 			if (plr[pnum]._pManaBase > plr[pnum]._pMaxManaBase) {
 				plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
 			}
@@ -2420,16 +2421,16 @@ BOOL PlrHitMonst(int pnum, int m)
 		}
 		if (plr[pnum]._pIFlags & (ISPL_STEALLIFE_3 | ISPL_STEALLIFE_5)) {
 			if (plr[pnum]._pIFlags & ISPL_STEALLIFE_3) {
-				tac = 3 * dam / 100;
+				skdam = 3 * dam / 100;
 			}
 			if (plr[pnum]._pIFlags & ISPL_STEALLIFE_5) {
-				tac = 5 * dam / 100;
+				skdam = 5 * dam / 100;
 			}
-			plr[pnum]._pHitPoints += tac;
+			plr[pnum]._pHitPoints += skdam;
 			if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
 				plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
 			}
-			plr[pnum]._pHPBase += tac;
+			plr[pnum]._pHPBase += skdam;
 			if (plr[pnum]._pHPBase > plr[pnum]._pMaxHPBase) {
 				plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 			}
