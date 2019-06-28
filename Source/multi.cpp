@@ -778,7 +778,7 @@ void SetupLocalCoords()
 
 	if (!leveldebug || gbMaxPlayers > 1) {
 		currlevel = 0;
-		leveltype = 0;
+		leveltype = DTYPE_TOWN;
 		setlevel = 0;
 	}
 	x = 75;

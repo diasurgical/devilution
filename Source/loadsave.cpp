@@ -58,7 +58,7 @@ void LoadGame(BOOL firstflag)
 	for (i = 0; i < MAXMONSTERS; i++)
 		monstkills[i] = ILoad();
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (i = 0; i < MAXMONSTERS; i++)
 			monstactive[i] = WLoad();
 		for (i = 0; i < nummonsters; i++)
@@ -118,7 +118,7 @@ void LoadGame(BOOL firstflag)
 			dItem[i][j] = BLoad();
 	}
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
 				dMonster[i][j] = WLoad();
@@ -161,7 +161,7 @@ void LoadGame(BOOL firstflag)
 	AutomapZoomReset();
 	ResyncQuests();
 
-	if (leveltype)
+	if (leveltype != DTYPE_TOWN)
 		ProcessLightList();
 
 	RedoPlayerVision();
@@ -309,7 +309,7 @@ void SaveGame()
 	for (i = 0; i < MAXMONSTERS; i++)
 		ISave(monstkills[i]);
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (i = 0; i < MAXMONSTERS; i++)
 			WSave(monstactive[i]);
 		for (i = 0; i < nummonsters; i++)
@@ -367,7 +367,7 @@ void SaveGame()
 			BSave(dItem[i][j]);
 	}
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
 				WSave(dMonster[i][j]);
@@ -523,7 +523,7 @@ void SaveLevel()
 	SaveBuff = DiabloAllocPtr(dwLen);
 	tbuff = SaveBuff;
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
 				BSave(dDead[i][j]);
@@ -534,7 +534,7 @@ void SaveLevel()
 	WSave(numitems);
 	WSave(nobjects);
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (i = 0; i < MAXMONSTERS; i++)
 			WSave(monstactive[i]);
 		for (i = 0; i < nummonsters; i++)
@@ -563,7 +563,7 @@ void SaveLevel()
 			BSave(dItem[i][j]);
 	}
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
 				WSave(dMonster[i][j]);
@@ -612,7 +612,7 @@ void LoadLevel()
 	LoadBuff = pfile_read(szName, &dwLen);
 	tbuff = LoadBuff;
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
 				dDead[i][j] = BLoad();
@@ -624,7 +624,7 @@ void LoadLevel()
 	numitems = WLoad();
 	nobjects = WLoad();
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (i = 0; i < MAXMONSTERS; i++)
 			monstactive[i] = WLoad();
 		for (i = 0; i < nummonsters; i++)
@@ -655,7 +655,7 @@ void LoadLevel()
 			dItem[i][j] = BLoad();
 	}
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
 				dMonster[i][j] = WLoad();

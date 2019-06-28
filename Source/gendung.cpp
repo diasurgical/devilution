@@ -965,7 +965,7 @@ void InitLevels()
 {
 	if (!leveldebug) {
 		currlevel = 0;
-		leveltype = 0;
+		leveltype = DTYPE_TOWN;
 		setlevel = 0;
 	}
 }
