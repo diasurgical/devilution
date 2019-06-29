@@ -446,7 +446,7 @@ void CheckCursMove()
 			cursmx = mx + 1;
 			cursmy = my + 1;
 		}
-		if (!towner[pcursmonst]._tSelFlag) { /// BUGFIX: Add check 'pcursmonst != -1'
+		if (pcursmonst != -1 && !towner[pcursmonst]._tSelFlag) {
 			pcursmonst = -1;
 		}
 	}
