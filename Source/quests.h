@@ -12,7 +12,7 @@ extern int numqlines;  // weak
 extern int WaterDone;  // idb
 extern int ReturnLvlY; // idb
 extern int ReturnLvlX; // idb
-extern int ReturnLvlT; // idb
+extern dungeon_type ReturnLvlT; // idb
 extern int ALLQUESTS;  // idb
 extern int ReturnLvl;  // idb
 

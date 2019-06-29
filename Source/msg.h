@@ -124,7 +124,7 @@ int On_SEND_PLRINFO(TCmdPlrInfoHdr *pCmd, int pnum);
 int On_ACK_PLRINFO(TCmdPlrInfoHdr *pCmd, int pnum);
 int On_PLAYER_JOINLEVEL(TCmdLocParam1 *pCmd, int pnum);
 int On_ACTIVATEPORTAL(TCmdLocParam3 *pCmd, int pnum);
-void delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bLType, BYTE bSetLvl);
+void delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, dungeon_type bLType, BYTE bSetLvl);
 int On_DEACTIVATEPORTAL(TCmd *pCmd, int pnum);
 int On_RETOWN(TCmd *pCmd, int pnum);
 int On_SETSTR(TCmdParam1 *pCmd, int pnum);

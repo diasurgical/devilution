@@ -86,7 +86,7 @@ extern "C" {
 extern HWND ghMainWnd;
 extern int glMid1Seed[NUMLEVELS];
 extern int glMid2Seed[NUMLEVELS];
-extern int gnLevelTypeTbl[NUMLEVELS];
+extern dungeon_type gnLevelTypeTbl[NUMLEVELS];
 extern int MouseY;             // idb
 extern int MouseX;             // idb
 extern BOOL gbGameLoopStartup; // idb

@@ -22,7 +22,7 @@ void LoadGame(BOOL firstflag)
 	setlevel = OLoad();
 	setlvlnum = WLoad();
 	currlevel = WLoad();
-	leveltype = WLoad();
+	leveltype = (dungeon_type) WLoad();
 	_ViewX = WLoad();
 	_ViewY = WLoad();
 	invflag = OLoad();
@@ -34,7 +34,7 @@ void LoadGame(BOOL firstflag)
 
 	for (i = 0; i < NUMLEVELS; i++) {
 		glSeedTbl[i] = ILoad();
-		gnLevelTypeTbl[i] = WLoad();
+		gnLevelTypeTbl[i] = (dungeon_type) WLoad();
 	}
 
 	LoadPlayer(myplr);
@@ -250,7 +250,7 @@ void LoadQuest(int i)
 	ReturnLvlX = WLoad();
 	ReturnLvlY = WLoad();
 	ReturnLvl = WLoad();
-	ReturnLvlT = WLoad();
+	ReturnLvlT = (dungeon_type) WLoad();
 	DoomQuestState = WLoad();
 }
 

@@ -10,7 +10,7 @@ int numqlines;  // weak
 int WaterDone;  // idb
 int ReturnLvlY; // idb
 int ReturnLvlX; // idb
-int ReturnLvlT; // idb
+dungeon_type ReturnLvlT; // idb
 int ALLQUESTS;  // idb
 int ReturnLvl;  // idb
 

@@ -27,7 +27,7 @@ char block_lvid[2049];
 //char byte_5B78EB;
 char dTransVal[MAXDUNX][MAXDUNY];
 BOOLEAN nTrapTable[2049];
-BYTE leveltype;
+dungeon_type leveltype;
 unsigned char currlevel; // idb
 char TransList[256];
 BOOLEAN nSolidTable[2049];
@@ -50,7 +50,7 @@ BYTE setlvlnum;
 int level_frame_sizes[MAXTILES];
 char nMissileTable[2049];
 char *pSetPiece_2;
-char setlvltype; // weak
+dungeon_type setlvltype; // weak
 BOOLEAN setlevel;
 int LvlViewY; // weak
 int LvlViewX; // weak

@@ -734,7 +734,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 
 	for (i = 0; i < 17; i++) {
 		glSeedTbl[i] = GetRndSeed();
-		gnLevelTypeTbl[i] = InitNewSeed(i);
+		gnLevelTypeTbl[i] = (dungeon_type) InitNewSeed(i);
 	}
 	if (!SNetGetGameInfo(GAMEINFO_NAME, szPlayerName, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo1");

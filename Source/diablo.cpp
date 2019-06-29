@@ -5,7 +5,7 @@
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
-int gnLevelTypeTbl[NUMLEVELS];
+dungeon_type gnLevelTypeTbl[NUMLEVELS];
 int MouseY;             // idb
 int MouseX;             // idb
 BOOL gbGameLoopStartup; // idb
@@ -386,7 +386,7 @@ void diablo_parse_flags(char *args)
 					i = *args + 10 * i - '0';
 					args++;
 				}
-				leveltype = i;
+				leveltype = (dungeon_type) i;
 				while (isspace(*args)) {
 					args++;
 				}

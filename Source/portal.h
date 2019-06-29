@@ -6,11 +6,11 @@ extern PortalStruct portal[MAXPORTAL];
 extern int portalindex;
 
 void InitPortals();
-void SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype);
+void SetPortalStats(int i, BOOL o, int x, int y, int lvl, dungeon_type lvltype);
 void AddWarpMissile(int i, int x, int y);
 void SyncPortals();
 void AddInTownPortal(int i);
-void ActivatePortal(int i, int x, int y, int lvl, int lvltype, BOOL sp);
+void ActivatePortal(int i, int x, int y, int lvl, dungeon_type lvltype, BOOL sp);
 void DeactivatePortal(int i);
 BOOL PortalOnLevel(int i);
 void RemovePortalMissile(int id);

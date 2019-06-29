@@ -1284,7 +1284,7 @@ void DeltaImportJunk(BYTE *src)
 		if (*src == 0xFF) {
 			memset(&sgJunk.portal[i], 0xFF, sizeof(DPortal));
 			src++;
-			SetPortalStats(i, 0, 0, 0, 0, 0);
+			SetPortalStats(i, 0, 0, 0, 0, DTYPE_TOWN);
 		} else {
 			memcpy(&sgJunk.portal[i], src, sizeof(DPortal));
 			src += sizeof(DPortal);
@@ -2297,7 +2297,7 @@ int On_ACTIVATEPORTAL(TCmdLocParam3 *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
 	else {
-		ActivatePortal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, pCmd->wParam2, pCmd->wParam3);
+		ActivatePortal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, (dungeon_type) pCmd->wParam2, pCmd->wParam3);
 		if (pnum != myplr) {
 			if (currlevel == 0)
 				AddInTownPortal(pnum);
@@ -2316,13 +2316,13 @@ int On_ACTIVATEPORTAL(TCmdLocParam3 *pCmd, int pnum)
 			} else
 				RemovePortalMissile(pnum);
 		}
-		delta_open_portal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, pCmd->wParam2, pCmd->wParam3);
+		delta_open_portal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, (dungeon_type) pCmd->wParam2, pCmd->wParam3);
 	}
 
 	return sizeof(*pCmd);
 }
 
-void delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bLType, BYTE bSetLvl)
+void delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, dungeon_type bLType, BYTE bSetLvl)
 {
 	sgbDeltaChanged = TRUE;
 	sgJunk.portal[pnum].x = x;

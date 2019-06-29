@@ -697,7 +697,7 @@ typedef struct PortalStruct {
 	int x;
 	int y;
 	int level;
-	int ltype;
+	dungeon_type ltype;
 	BOOL setlvl;
 } PortalStruct;
 
@@ -935,7 +935,7 @@ typedef struct DPortal {
 	BYTE x;
 	BYTE y;
 	BYTE level;
-	BYTE ltype;
+	dungeon_type ltype;
 	BYTE setlvl;
 } DPortal;
 
@@ -970,7 +970,7 @@ typedef struct QuestStruct {
 	unsigned char _qlevel;
 	unsigned char _qtype;
 	unsigned char _qactive;
-	unsigned char _qlvltype;
+	dungeon_type _qlvltype;
 	int _qtx;
 	int _qty;
 	unsigned char _qslvl;
@@ -984,7 +984,7 @@ typedef struct QuestStruct {
 typedef struct QuestData {
 	unsigned char _qdlvl;
 	char _qdmultlvl;
-	unsigned char _qlvlt;
+	dungeon_type _qlvlt;
 	unsigned char _qdtype;
 	unsigned char _qdrnd;
 	unsigned char _qslvl;

@@ -29,7 +29,7 @@ extern char block_lvid[2049];
 //char byte_5B78EB;
 extern char dTransVal[MAXDUNX][MAXDUNY];
 extern BOOLEAN nTrapTable[2049];
-extern BYTE leveltype;
+extern dungeon_type leveltype;
 extern unsigned char currlevel; // idb
 extern char TransList[256];
 extern BOOLEAN nSolidTable[2049];
@@ -52,7 +52,7 @@ extern BYTE setlvlnum;
 extern int level_frame_sizes[MAXTILES];
 extern char nMissileTable[2049];
 extern char *pSetPiece_2;
-extern char setlvltype; // weak
+extern dungeon_type setlvltype; // weak
 extern BOOLEAN setlevel;
 extern int LvlViewY;    // weak
 extern int LvlViewX;    // weak
