@@ -53,7 +53,7 @@ void CreateThemeRooms();
 
 /* rdata */
 
-extern int ThemeGood[4];
+extern theme_id ThemeGood[4];
 extern int trm5x[25];
 extern int trm5y[25];
 extern int trm3x[9];

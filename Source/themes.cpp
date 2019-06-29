@@ -17,7 +17,7 @@ BOOL pFountainFlag;
 BOOL bFountainFlag;
 BOOL bCrossFlag;
 
-int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
+theme_id ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
 
 int trm5x[25] = {
 	-2, -1, 0, 1, 2,
@@ -210,7 +210,7 @@ BOOL TFit_Obj3(int t)
 	return FALSE;
 }
 
-BOOL CheckThemeReqs(int t)
+BOOL CheckThemeReqs(theme_id t)
 {
 	BOOL rv;
 
@@ -263,7 +263,7 @@ BOOL CheckThemeReqs(int t)
 	return rv;
 }
 
-BOOL SpecialThemeFit(int i, int t)
+BOOL SpecialThemeFit(int i, theme_id t)
 {
 	BOOL rv;
 
@@ -389,7 +389,7 @@ BOOL CheckThemeRoom(int tv)
 
 void InitThemes()
 {
-	int i, j;
+	int i;
 
 	zharlib = -1;
 	numthemes = 0;
@@ -412,8 +412,9 @@ void InitThemes()
 
 		for (i = 0; i < 256 && numthemes < MAXTHEMES; i++) {
 			if (CheckThemeRoom(i)) {
+				theme_id j;
 				themes[numthemes].ttval = i;
-				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
+				for (j = ThemeGood[random(0, 4)];; j = (theme_id) random(0, 17)) {
 					if (SpecialThemeFit(numthemes, j)) {
 						break;
 					}
@@ -427,7 +428,7 @@ void InitThemes()
 		for (i = 0; i < themeCount; i++)
 			themes[i].ttype = THEME_NONE;
 		if (QuestStatus(QTYPE_ZHAR)) {
-			for (j = 0; j < themeCount; j++) {
+			for (int j = 0; j < themeCount; j++) {
 				themes[j].ttval = themeLoc[j].ttval;
 				if (SpecialThemeFit(j, THEME_LIBRARY)) {
 					themes[j].ttype = THEME_LIBRARY;
@@ -438,8 +439,9 @@ void InitThemes()
 		}
 		for (i = 0; i < themeCount; i++) {
 			if (themes[i].ttype == THEME_NONE) {
+				theme_id j;
 				themes[i].ttval = themeLoc[i].ttval;
-				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
+				for (j = ThemeGood[random(0, 4)];; j = (theme_id) random(0, 17)) {
 					if (SpecialThemeFit(i, j)) {
 						break;
 					}
