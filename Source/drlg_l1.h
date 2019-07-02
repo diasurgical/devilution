@@ -3,7 +3,7 @@
 #define __DRLG_L1_H__
 
 extern char L5dungeon[80][80];
-extern BYTE L5dflags[40][40];
+extern BYTE L5dflags[DMAXX][DMAXY];
 extern BOOL setloadflag;
 extern int HR1;
 extern int HR2;

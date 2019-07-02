@@ -5,7 +5,7 @@ int nSx2; // weak
 int nSy1;
 int nSy2; // weak
 int nRoomCnt;
-unsigned char predungeon[40][40];
+unsigned char predungeon[DMAXX][DMAXX];
 ROOMNODE RoomList[81];
 HALLNODE *pHallList;
 

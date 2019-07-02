@@ -5,7 +5,7 @@
 extern BOOLEAN lavapool;
 extern int abyssx;
 extern int lockoutcnt;
-extern BOOLEAN lockout[40][40];
+extern BOOLEAN lockout[DMAXX][DMAXY];
 
 void AddFenceDoors();
 void FenceDoorFix();
