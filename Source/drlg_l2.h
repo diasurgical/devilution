@@ -7,7 +7,7 @@ extern int nSx2; // weak
 extern int nSy1;
 extern int nSy2; // weak
 extern int nRoomCnt;
-extern unsigned char predungeon[40][40];
+extern unsigned char predungeon[DMAXX][DMAXX];
 extern ROOMNODE RoomList[81];
 extern HALLNODE *pHallList;
 
