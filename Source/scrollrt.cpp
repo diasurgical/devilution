@@ -2214,7 +2214,7 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
 
 	if (drawpanflag == 255) {
 		drawpanflag = 0;
-		hgt = 480;
+		hgt = SCREEN_HEIGHT;
 	} else {
 		hgt = 0;
 	}
@@ -2632,7 +2632,7 @@ void DrawAndBlit()
 	}
 	if (talkflag) {
 		DrawTalkPan();
-		hgt = 480;
+		hgt = SCREEN_HEIGHT;
 	}
 	scrollrt_draw_cursor_item();
 	unlock_buf(0);

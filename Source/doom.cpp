@@ -2,7 +2,7 @@
 
 int doom_quest_time;
 int doom_stars_drawn;
-void *pDoomCel;
+BYTE *pDoomCel;
 BOOL doomflag;
 int DoomQuestState;
 
@@ -91,5 +91,5 @@ void doom_draw()
 		}
 	}
 
-	CelDecodeOnly(SCREEN_X, PANEL_Y - 1, (BYTE *)pDoomCel, 1, 640);
+	CelDecodeOnly(SCREEN_X, PANEL_Y - 1, pDoomCel, 1, SCREEN_WIDTH);
 }
