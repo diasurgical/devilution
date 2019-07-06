@@ -17,7 +17,7 @@ void L2DoorFix();
 void LoadL2Dungeon(char *sFileName, int vx, int vy);
 void DRLG_L2Pass3();
 void LoadPreL2Dungeon(char *sFileName, int vx, int vy);
-void CreateL2Dungeon(int rseed, int entry);
+void CreateL2Dungeon(DWORD rseed, int entry);
 void DRLG_LoadL2SP();
 void DRLG_FreeL2SP();
 void DRLG_L2(int entry);

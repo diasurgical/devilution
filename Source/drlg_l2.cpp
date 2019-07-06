@@ -551,7 +551,7 @@ void LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 	mem_free_dbg(pLevelMap);
 }
 
-void CreateL2Dungeon(int rseed, int entry)
+void CreateL2Dungeon(DWORD rseed, int entry)
 {
 	if (gbMaxPlayers == 1) {
 		if (currlevel == 7 && !quests[8]._qactive) {

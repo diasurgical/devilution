@@ -469,7 +469,7 @@ void DRLG_L4GeneralFix()
 	}
 }
 
-void CreateL4Dungeon(int rseed, int entry)
+void CreateL4Dungeon(DWORD rseed, int entry)
 {
 	SetRndSeed(rseed);
 
