@@ -48,6 +48,6 @@ BOOL DropItemBeforeTrig();
 
 /* data */
 
-extern int AP2x2Tbl[10]; // weak
+extern int AP2x2Tbl[10];
 
 #endif /* __INV_H__ */

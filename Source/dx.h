@@ -3,13 +3,13 @@
 #define __DX_H__
 
 extern IDirectDraw *lpDDInterface;
-extern IDirectDrawPalette *lpDDPalette; // idb
+extern IDirectDrawPalette *lpDDPalette;
 extern BYTE *gpBuffer;
 extern IDirectDrawSurface *lpDDSBackBuf;
 extern IDirectDrawSurface *lpDDSPrimary;
-extern char gbBackBuf;    // weak
-extern char gbEmulate;    // weak
-extern HMODULE ghDiabMod; // idb
+extern char gbBackBuf;
+extern char gbEmulate;
+extern HMODULE ghDiabMod;
 
 void dx_init(HWND hWnd);
 void dx_create_back_buffer();
@@ -25,6 +25,6 @@ void j_dx_reinit();
 
 /* data */
 
-extern int dx_inf; // weak
+extern int dx_inf;
 
 #endif /* __DX_H__ */

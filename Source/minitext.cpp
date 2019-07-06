@@ -1,11 +1,11 @@
 #include "diablo.h"
 
-int qtexty; // weak
+int qtexty;
 char *qtextptr;
-int qtextSpd;     // weak
-char qtextflag;   // weak
-int scrolltexty;  // weak
-int sgLastScroll; // weak
+int qtextSpd;
+char qtextflag;
+int scrolltexty;
+int sgLastScroll;
 void *pMedTextCels;
 void *pTextBoxCels;
 
@@ -49,7 +49,6 @@ void InitQuestText()
 	pTextBoxCels = LoadFileInMem("Data\\TextBox.CEL", 0);
 	qtextflag = FALSE;
 }
-// 646D00: using guessed type char qtextflag;
 
 void InitQTextMsg(int m)
 {
@@ -64,11 +63,6 @@ void InitQTextMsg(int m)
 	}
 	PlaySFX(alltext[m].sfxnr);
 }
-// 646CF4: using guessed type int qtexty;
-// 646CFC: using guessed type int qtextSpd;
-// 646D00: using guessed type char qtextflag;
-// 646D04: using guessed type int scrolltexty;
-// 646D08: using guessed type int sgLastScroll;
 
 void DrawQTextBack()
 {
@@ -289,9 +283,3 @@ void DrawQText()
 		}
 	}
 }
-// 646CF4: using guessed type int qtexty;
-// 646CFC: using guessed type int qtextSpd;
-// 646D00: using guessed type char qtextflag;
-// 646D04: using guessed type int scrolltexty;
-// 646D08: using guessed type int sgLastScroll;
-// 428202: using guessed type char qstr[128];

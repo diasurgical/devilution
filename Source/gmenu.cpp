@@ -13,7 +13,7 @@ BYTE *option_cel;
 BYTE *sgpLogo;
 int sgCurrentMenuIdx;
 
-const unsigned char lfontframe[127] = {
+const BYTE lfontframe[127] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -28,7 +28,7 @@ const unsigned char lfontframe[127] = {
 	14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 	24, 25, 26, 20, 0, 21, 0
 };
-const unsigned char lfontkern[56] = {
+const BYTE lfontkern[56] = {
 	18, 33, 21, 26, 28, 19, 19, 26, 25, 11,
 	12, 25, 19, 34, 28, 32, 20, 32, 28, 20,
 	28, 36, 35, 46, 33, 33, 24, 11, 23, 22,

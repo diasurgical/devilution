@@ -3,7 +3,7 @@
 #include "../DiabloUI/diabloui.h"
 
 _SNETVERSIONDATA fileinfo;
-int gbActive; // weak
+int gbActive;
 char diablo_exe_path[MAX_PATH];
 HANDLE unused_mpq;
 char patch_rt_mpq_path[MAX_PATH];
@@ -11,7 +11,7 @@ WNDPROC CurrentProc;
 HANDLE diabdat_mpq;
 char diabdat_mpq_path[MAX_PATH];
 HANDLE patch_rt_mpq;
-BOOL killed_mom_parent; // weak
+BOOL killed_mom_parent;
 BOOLEAN screensaver_enabled_prev;
 
 /* data */
@@ -67,7 +67,6 @@ void init_run_office_from_start_menu()
 		init_run_office(szPath);
 	}
 }
-// 634CA0: using guessed type int killed_mom_parent;
 
 void init_run_office(char *dir)
 {
@@ -189,7 +188,6 @@ void init_kill_mom_parent()
 		killed_mom_parent = TRUE;
 	}
 }
-// 634CA0: using guessed type int killed_mom_parent;
 
 HWND init_find_mom_parent()
 {
@@ -415,7 +413,6 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
-// 52571C: using guessed type int drawpanflag;
 
 void init_activate_window(HWND hWnd, BOOL bActive)
 {
@@ -437,8 +434,6 @@ void init_activate_window(HWND hWnd, BOOL bActive)
 		ResetPal();
 	}
 }
-// 52571C: using guessed type int drawpanflag;
-// 634980: using guessed type int gbActive;
 
 LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {

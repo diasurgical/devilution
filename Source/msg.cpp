@@ -48,7 +48,6 @@ void msg_send_packet(int pnum, const void *packet, DWORD dwSize)
 	memcpy((char *)&packeta[1] - packeta->dwSpaceLeft, packet, dwSize);
 	sgpCurrPkt->dwSpaceLeft -= dwSize;
 }
-// 65AB24: using guessed type int sgnCurrMegaPlayer;
 
 TMegaPkt *msg_get_next_packet()
 {
@@ -98,11 +97,6 @@ BOOL msg_wait_resync()
 
 	return TRUE;
 }
-// 65AB18: using guessed type int sgdwOwnerWait;
-// 65AB24: using guessed type int sgnCurrMegaPlayer;
-// 67618D: using guessed type char sgbDeltaChunks;
-// 676194: using guessed type char gbBufferMsgs;
-// 67862D: using guessed type char gbGameDestroyed;
 
 void msg_free_packets()
 {
@@ -145,10 +139,6 @@ int msg_wait_for_turns()
 	}
 	return 100 * sgbDeltaChunks / 21;
 }
-// 65AB18: using guessed type int sgdwOwnerWait;
-// 67618D: using guessed type char sgbDeltaChunks;
-// 67862D: using guessed type char gbGameDestroyed;
-// 6796E4: using guessed type char gbDeltaSender;
 
 void msg_process_net_packets()
 {
@@ -159,8 +149,6 @@ void msg_process_net_packets()
 		msg_free_packets();
 	}
 }
-// 676194: using guessed type char gbBufferMsgs;
-// 679660: using guessed type char gbMaxPlayers;
 
 void msg_pre_packet()
 {
@@ -313,7 +301,6 @@ void delta_init()
 	memset(sgLocals, 0, sizeof(sgLocals));
 	deltaload = FALSE;
 }
-// 676190: using guessed type int deltaload;
 
 void delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
 {
@@ -328,7 +315,6 @@ void delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
 		pD->_mhitpoints = 0;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void delta_monster_hp(int mi, int hp, BYTE bLevel)
 {
@@ -341,7 +327,6 @@ void delta_monster_hp(int mi, int hp, BYTE bLevel)
 			pD->_mhitpoints = hp;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void delta_sync_monster(const TSyncMonster *pSync, BYTE bLevel)
 {
@@ -363,7 +348,6 @@ void delta_sync_monster(const TSyncMonster *pSync, BYTE bLevel)
 		pD->_menemy = pSync->_menemy;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 {
@@ -380,7 +364,6 @@ void delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 		pD->_mhitpoints = pG->_mhitpoints;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void delta_leave_sync(BYTE bLevel)
 {
@@ -409,8 +392,6 @@ void delta_leave_sync(BYTE bLevel)
 		}
 	}
 }
-// 43C17D: could not find valid save-restore pair for edi
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL delta_portal_inited(int i)
 {
@@ -431,7 +412,7 @@ void DeltaAddItem(int ii)
 		return;
 	}
 	pD = sgLevels[currlevel].item;
-	for (i = 0; i < MAXITEMS; i++,pD++) {
+	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != 0xFF
 		    && pD->wIndx == item[ii].IDidx
 		    && pD->wCI == item[ii]._iCreateInfo
@@ -475,7 +456,6 @@ void DeltaSaveLevel()
 		delta_leave_sync(currlevel);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void DeltaLoadLevel()
 {
@@ -626,7 +606,6 @@ void DeltaLoadLevel()
 	}
 	deltaload = FALSE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void NetSendCmd(BOOL bHiPri, BYTE bCmd)
 {
@@ -1159,9 +1138,6 @@ int ParseCmd(int pnum, TCmd *pCmd)
 
 	return On_DLEVEL(pnum, pCmd);
 }
-// 66E4A9: using guessed type char sbLastCmd;
-// 67618D: using guessed type char sgbDeltaChunks;
-// 6796E4: using guessed type char gbDeltaSender;
 
 int On_DLEVEL(int pnum, TCmd *pCmd)
 {
@@ -1169,30 +1145,30 @@ int On_DLEVEL(int pnum, TCmd *pCmd)
 
 	p = (TCmdPlrInfoHdr *)pCmd;
 
-	if(gbDeltaSender != pnum) {
-		if(p->bCmd == CMD_DLEVEL_END) {
+	if (gbDeltaSender != pnum) {
+		if (p->bCmd == CMD_DLEVEL_END) {
 			gbDeltaSender = pnum;
 			sgbRecvCmd = CMD_DLEVEL_END;
-		} else if(p->bCmd == CMD_DLEVEL_0 && p->wOffset == 0) {
+		} else if (p->bCmd == CMD_DLEVEL_0 && p->wOffset == 0) {
 			gbDeltaSender = pnum;
 			sgbRecvCmd = CMD_DLEVEL_END;
 		} else {
 			return p->wBytes + sizeof(*p);
 		}
 	}
-	if(sgbRecvCmd == CMD_DLEVEL_END) {
-		if(p->bCmd == CMD_DLEVEL_END) {
+	if (sgbRecvCmd == CMD_DLEVEL_END) {
+		if (p->bCmd == CMD_DLEVEL_END) {
 			sgbDeltaChunks = 20;
 			return p->wBytes + sizeof(*p);
-		} else if(p->bCmd == CMD_DLEVEL_0 && p->wOffset == 0) {
+		} else if (p->bCmd == CMD_DLEVEL_0 && p->wOffset == 0) {
 			sgdwRecvOffset = 0;
 			sgbRecvCmd = p->bCmd;
 		} else {
 			return p->wBytes + sizeof(*p);
 		}
-	} else if(sgbRecvCmd != p->bCmd) {
+	} else if (sgbRecvCmd != p->bCmd) {
 		DeltaImportData(sgbRecvCmd, sgdwRecvOffset);
-		if(p->bCmd == CMD_DLEVEL_END) {
+		if (p->bCmd == CMD_DLEVEL_END) {
 			sgbDeltaChunks = 20;
 			sgbRecvCmd = CMD_DLEVEL_END;
 			return p->wBytes + sizeof(*p);
@@ -1231,7 +1207,6 @@ void DeltaImportData(BYTE cmd, DWORD recv_offset)
 	sgbDeltaChunks++;
 	sgbDeltaChanged = TRUE;
 }
-// 67618D: using guessed type char sgbDeltaChunks;
 
 BYTE *DeltaImportItem(BYTE *src, TCmdPItem *dst)
 {
@@ -1444,7 +1419,6 @@ BOOL i_own_level(int nReqLevel)
 
 	return i == myplr;
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int On_GETITEM(TCmdGItem *pCmd, int pnum)
 {
@@ -1530,7 +1504,6 @@ BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 	}
 	return result;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int On_GOTOAGETITEM(TCmdLocParam1 *pCmd, int pnum)
 {
@@ -1665,7 +1638,6 @@ void check_update_plr(int pnum)
 	if (gbMaxPlayers != 1 && pnum == myplr)
 		pfile_update(1);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int On_SYNCPUTITEM(TCmdPItem *pCmd, int pnum)
 {
@@ -2142,7 +2114,6 @@ void delta_sync_object(int oi, BYTE bCmd, BYTE bLevel)
 		sgLevels[bLevel].object[oi].bCmd = bCmd;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int On_CLOSEDOOR(TCmdParam1 *pCmd, int pnum)
 {

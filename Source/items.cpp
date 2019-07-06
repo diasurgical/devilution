@@ -7,14 +7,14 @@ ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
-unsigned char *itemanims[35];
+BYTE *itemanims[35];
 BOOL UniqueItemFlag[128];
 int numitems;
 int gnNumGetRecords;
 
 /* data */
 
-unsigned char ItemCAnimTbl[169] = {
+BYTE ItemCAnimTbl[169] = {
 	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
 	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,
 	28, 28, 0, 0, 0, 32, 0, 0, 0, 24,
@@ -70,7 +70,7 @@ char *ItemDropStrs[35] = {
 	"Fanvil",
 	"FLazStaf"
 };
-unsigned char ItemAnimLs[35] = {
+BYTE ItemAnimLs[35] = {
 	15u,
 	13u,
 	16u,
@@ -181,7 +181,7 @@ int ItemInvSnds[35] = {
 	IS_IANVL,
 	IS_ISTAF
 };
-int idoppely = 16; // weak
+int idoppely = 16;
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
 void InitItemGFX()
@@ -1733,7 +1733,6 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 	if (preidx != -1 || sufidx != -1)
 		CalcItemValue(i);
 }
-// 4215EF: using guessed type int var_494[256];
 
 void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
 {
@@ -2218,7 +2217,7 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 	}
 }
 
-void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
+void RecreateItem(int ii, int idx, WORD ic, int iseed, int ivalue)
 {
 	int uper, onlygood, recreate, pregen;
 
@@ -2263,7 +2262,7 @@ void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
 	}
 }
 
-void RecreateEar(int ii, unsigned short ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff)
+void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff)
 {
 	SetPlrHandItem(&item[ii], IDI_EAR);
 	tempstr[0] = (ic >> 8) & 0x7F;
@@ -3863,7 +3862,7 @@ void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 	item[ii]._iIdentified = TRUE;
 }
 
-void RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)
+void RecreateTownItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 {
 	if (icreateinfo & 0x400)
 		RecreateSmithItem(ii, idx, icreateinfo & 0x3F, iseed);
