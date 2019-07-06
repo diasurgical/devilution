@@ -31,7 +31,7 @@ WEBHOOK_DATA='{
   "embeds": [ {
     "author": {
       "name": "Job #'"$TRAVIS_JOB_NUMBER"' (Build #'"$TRAVIS_BUILD_NUMBER"')",
-      "url": "https://travis-ci.com/'"$TRAVIS_REPO_SLUG"'/builds/'"$TRAVIS_BUILD_ID"'",
+      "url": "https://travis-ci.org/'"$TRAVIS_REPO_SLUG"'/builds/'"$TRAVIS_BUILD_ID"'",
       "icon_url": "https://travis-ci.com/images/logos/TravisCI-Mascot-1.png"
     },
     "title": "['"\`${TRAVIS_COMMIT:0:7}\`"'] '"$COMMIT_SUBJECT"'",
