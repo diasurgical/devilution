@@ -19,7 +19,7 @@ void DRLG_L1Floor();
 void DRLG_L1Pass3();
 void DRLG_InitL1Vals();
 void LoadPreL1Dungeon(char *sFileName, int vx, int vy);
-void CreateL5Dungeon(int rseed, int entry);
+void CreateL5Dungeon(DWORD rseed, int entry);
 void DRLG_LoadL1SP();
 void DRLG_FreeL1SP();
 void DRLG_L5(int entry);

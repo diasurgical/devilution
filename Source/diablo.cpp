@@ -9,7 +9,7 @@ int gnLevelTypeTbl[NUMLEVELS];
 int MouseY;             // idb
 int MouseX;             // idb
 BOOL gbGameLoopStartup; // idb
-int glSeedTbl[NUMLEVELS];
+DWORD glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
 int glMid3Seed[NUMLEVELS];
 BOOL gbRunGameResult;

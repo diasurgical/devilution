@@ -31,7 +31,7 @@ BOOL IsDURWall(char d);
 BOOL IsDLLWall(char dd);
 void L4FixRim();
 void DRLG_L4GeneralFix();
-void CreateL4Dungeon(int rseed, int entry);
+void CreateL4Dungeon(DWORD rseed, int entry);
 void DRLG_L4(int entry);
 void DRLG_L4Shadows();
 void InitL4Dungeon();

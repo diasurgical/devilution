@@ -371,7 +371,7 @@ void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 	mem_free_dbg(pLevelMap);
 }
 
-void CreateL5Dungeon(int rseed, int entry)
+void CreateL5Dungeon(DWORD rseed, int entry)
 {
 	SetRndSeed(rseed);
 

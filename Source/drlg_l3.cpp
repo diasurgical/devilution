@@ -287,7 +287,7 @@ BOOL DRLG_L3Lockout()
 	return t == lockoutcnt;
 }
 
-void CreateL3Dungeon(int rseed, int entry)
+void CreateL3Dungeon(DWORD rseed, int entry)
 {
 	int i, j;
 
