@@ -2266,6 +2266,13 @@ typedef enum _mainmenu_selections {
 	MAINMENU_ATTRACT_MODE  = 6,
 } _mainmenu_selections;
 
+typedef enum dlgresults
+{
+	NEW_GAME = 0,
+	LOAD_GAME = 2,
+	EXIT_MENU = 4,
+} dlgresults;
+
 typedef enum panel_button_id {
 	PANBTN_CHARINFO  = 0,
 	PANBTN_QLOG      = 1,

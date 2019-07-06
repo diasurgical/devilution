@@ -35,7 +35,7 @@ int __stdcall mainmenu_select_hero_dialog(
     BOOL *multi)
 {
 	BOOL hero_is_created = TRUE;
-	int dlgresult = 0;
+	int dlgresult = NEW_GAME;
 	if (gbMaxPlayers == 1) {
 		if (!UiSelHeroSingDialog(
 		        pfile_ui_set_hero_infos,
@@ -47,7 +47,7 @@ int __stdcall mainmenu_select_hero_dialog(
 		        &gnDifficulty))
 			app_fatal("Unable to display SelHeroSing");
 
-		if (dlgresult == 2)
+		if (dlgresult == LOAD_GAME)
 			gbLoadGame = TRUE;
 		else
 			gbLoadGame = FALSE;
@@ -62,7 +62,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	               gszHero)) {
 		app_fatal("Can't load multiplayer dialog");
 	}
-	if (dlgresult == 4) {
+	if (dlgresult == EXIT_MENU) {
 		SErrSetLastError(1223);
 		return 0;
 	}
