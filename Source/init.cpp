@@ -431,8 +431,6 @@ void init_activate_window(HWND hWnd, BOOL bActive)
 
 LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	LRESULT result;
-
 	if (CurrentProc)
 		return CurrentProc(hWnd, Msg, wParam, lParam);
 

@@ -64,7 +64,6 @@ void PlayInGameMovie(char *pszMovie);
 
 /* rdata */
 
-extern const int engine_inf;      // weak
 extern const int rand_increment;  // unused
 extern const int rand_multiplier; // unused
 

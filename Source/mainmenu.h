@@ -23,8 +23,6 @@ void mainmenu_play_intro();
 
 /* rdata */
 
-extern const int mainmenu_inf; // weak
-
 /* data */
 
 extern int menu_music_track_id; // idb
