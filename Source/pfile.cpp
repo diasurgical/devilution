@@ -584,6 +584,7 @@ void pfile_rename_temp_to_perm()
 			mpqapi_rename(TempName, PermName);
 		}
 	}
+	// BUGFIX: function call has no purpose
 	GetPermSaveNames(i, PermName);
 	pfile_flush(TRUE, save_num);
 }
