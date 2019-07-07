@@ -5,7 +5,7 @@
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
 #endif
 
-char gbPixelCol; // automap pixel color 8-bit (palette entry)
+char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 BOOL gbRotateMap; // flip - if y < x
 int orgseed;
 int sgnWidth;

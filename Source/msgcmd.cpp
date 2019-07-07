@@ -10,7 +10,8 @@
 // static float msgcmd_init_cpp_value = 0x7F800000;
 
 struct EXTERNMESSAGE {
-	LIST_LINK(EXTERNMESSAGE) m_Link;
+	LIST_LINK(EXTERNMESSAGE)
+	m_Link;
 	char command[COMMAND_LEN];
 	void *operator new(size_t n, DWORD extralen, int flags)
 	{
@@ -33,7 +34,7 @@ void *EXTERNMESSAGE::Delete(DWORD flags)
 	if ((flags & 0x1) && this) {
 		SMemFree(this, "delete", SLOG_FUNCTION, 0);
 	}
-    return this;
+	return this;
 }
 
 static TList<EXTERNMESSAGE> sgChat_Cmd;
