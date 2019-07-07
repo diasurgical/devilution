@@ -1211,12 +1211,12 @@ void T_DrawView(int StartX, int StartY)
 {
 	light_table_index = 0;
 	cel_transparency_active = 0;
-	if(zoomflag) {
+	if (zoomflag) {
 		T_DrawGame(StartX, StartY);
 	} else {
 		T_DrawZoom(StartX, StartY);
 	}
-	if(automapflag) {
+	if (automapflag) {
 		DrawAutomap();
 	}
 	if (stextflag && !qtextflag)
@@ -1233,25 +1233,25 @@ void T_DrawView(int StartX, int StartY)
 		DrawChr();
 	} else if (questlog) {
 		DrawQuestLog();
-	} else if(plr[myplr]._pStatPts != 0 && !spselflag) {
+	} else if (plr[myplr]._pStatPts != 0 && !spselflag) {
 		DrawLevelUpIcon();
 	}
-	if(uitemflag) {
+	if (uitemflag) {
 		DrawUniqueInfo();
 	}
-	if(qtextflag) {
+	if (qtextflag) {
 		DrawQText();
 	}
-	if(spselflag) {
+	if (spselflag) {
 		DrawSpellList();
 	}
-	if(dropGoldFlag) {
+	if (dropGoldFlag) {
 		DrawGoldSplit(dropGoldValue);
 	}
-	if(helpflag) {
+	if (helpflag) {
 		DrawHelp();
 	}
-	if(msgflag) {
+	if (msgflag) {
 		DrawDiabloMsg();
 	}
 	if (PauseMode != 0 && !deathflag) {
@@ -1303,7 +1303,7 @@ void SetTownMicros()
 	}
 }
 
-void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h)
+void T_FillSector(BYTE *P3Tiles, BYTE *pSector, int xi, int yi, int w, int h)
 {
 	int i, j, xx, yy;
 	long v1, v2, v3, v4, ii;
@@ -1375,7 +1375,7 @@ void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi
 	}
 }
 
-void T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
+void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 {
 	long v1, v2, v3, v4;
 
@@ -1423,7 +1423,7 @@ void T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 void T_Pass3()
 {
 	int xx, yy, x;
-	unsigned char *P3Tiles, *pSector;
+	BYTE *P3Tiles, *pSector;
 
 	for (yy = 0; yy < MAXDUNY; yy += 2) {
 		for (xx = 0; xx < MAXDUNX; xx += 2) {
