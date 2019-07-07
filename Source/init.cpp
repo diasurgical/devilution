@@ -177,30 +177,29 @@ void init_create_window(int nCmdShow)
 
 void init_kill_mom_parent()
 {
-	HWND v0; // eax
+	HWND handle;
 
-	v0 = init_find_mom_parent();
-	if (v0) {
-		PostMessage(v0, WM_CLOSE, 0, 0);
+	handle = init_find_mom_parent();
+	if (handle) {
+		PostMessage(handle, WM_CLOSE, 0, 0);
 		killed_mom_parent = TRUE;
 	}
 }
 
 HWND init_find_mom_parent()
 {
-	HWND i;              // eax
-	HWND v1;             // esi
-	char ClassName[256]; // [esp+4h] [ebp-100h]
+	HWND i, handle;
+	char ClassName[256];
 
-	for (i = GetForegroundWindow();; i = GetWindow(v1, GW_HWNDNEXT)) {
-		v1 = i;
+	for (i = GetForegroundWindow();; i = GetWindow(handle, GW_HWNDNEXT)) {
+		handle = i;
 		if (!i)
 			break;
 		GetClassName(i, ClassName, 255);
 		if (!_strcmpi(ClassName, "MOM Parent"))
 			break;
 	}
-	return v1;
+	return handle;
 }
 
 void init_await_mom_parent_exit()
@@ -307,7 +306,7 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags
 
 char *init_strip_trailing_slash(char *path)
 {
-	char *result; // eax
+	char *result;
 
 	result = strrchr(path, '\\');
 	if (result) {
@@ -351,20 +350,18 @@ BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phA
 
 void init_get_file_info()
 {
-	int v0;                     // eax
-	DWORD v1;                   // edi
-	void *v2;                   // ebx
-	unsigned int uBytes;        // [esp+8h] [ebp-Ch]
-	DWORD dwHandle;             // [esp+Ch] [ebp-8h]
-	VS_FIXEDFILEINFO *lpBuffer; // [esp+10h] [ebp-4h]
+	DWORD dwLen;
+	void *pBlock;
+	unsigned int uBytes;
+	DWORD dwHandle;
+	VS_FIXEDFILEINFO *lpBuffer;
 
 	if (GetModuleFileName(ghInst, diablo_exe_path, sizeof(diablo_exe_path))) {
-		v0 = GetFileVersionInfoSize(diablo_exe_path, &dwHandle);
-		v1 = v0;
-		if (v0) {
-			v2 = DiabloAllocPtr(v0);
-			if (GetFileVersionInfo(diablo_exe_path, 0, v1, v2)) {
-				if (VerQueryValue(v2, "\\", (LPVOID *)&lpBuffer, &uBytes))
+		dwLen = GetFileVersionInfoSize(diablo_exe_path, &dwHandle);
+		if (dwLen) {
+			pBlock = DiabloAllocPtr(dwLen);
+			if (GetFileVersionInfo(diablo_exe_path, 0, dwLen, pBlock)) {
+				if (VerQueryValue(pBlock, "\\", (LPVOID *)&lpBuffer, &uBytes))
 					sprintf(
 					    gszVersionNumber,
 					    "version %d.%d.%d.%d",
@@ -373,7 +370,7 @@ void init_get_file_info()
 					    lpBuffer->dwProductVersionLS >> 16,
 					    lpBuffer->dwProductVersionLS & 0xFFFF);
 			}
-			mem_free_dbg(v2);
+			mem_free_dbg(pBlock);
 		}
 	}
 }
@@ -413,7 +410,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 
 void init_activate_window(HWND hWnd, BOOL bActive)
 {
-	LONG dwNewLong; // eax
+	LONG dwNewLong;
 
 	gbActive = bActive;
 	UiAppActivate(bActive);
@@ -434,18 +431,17 @@ void init_activate_window(HWND hWnd, BOOL bActive)
 
 LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	LRESULT result; // eax
+	LRESULT result;
 
 	if (CurrentProc)
-		result = CurrentProc(hWnd, Msg, wParam, lParam);
-	else
-		result = MainWndProc(hWnd, Msg, wParam, lParam);
-	return result;
+		return CurrentProc(hWnd, Msg, wParam, lParam);
+
+	return MainWndProc(hWnd, Msg, wParam, lParam);
 }
 
 WNDPROC SetWindowProc(WNDPROC NewProc)
 {
-	WNDPROC OldProc; // eax
+	WNDPROC OldProc;
 
 	OldProc = CurrentProc;
 	CurrentProc = NewProc;
