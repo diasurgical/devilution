@@ -1530,7 +1530,7 @@ long GetArea()
 
 void L4firstRoom()
 {
-	int x, y, w, h, rndx, rndy; /* xmin, xmax, ymin, ymax */
+	int x, y, w, h, rndx, rndy, xmin, xmax, ymin, ymax;
 
 	if (currlevel != 16) {
 		if (currlevel == quests[QTYPE_WARLRD]._qlevel && quests[QTYPE_WARLRD]._qactive) {
@@ -1549,13 +1549,17 @@ void L4firstRoom()
 		h = 14;
 	}
 
-	rndx = random(0, 19 - w - ((20 - w) >> 1) + 1) + ((20 - w) >> 1);
+	xmin = (20 - w) >> 1;
+	xmax = 19 - w;
+	rndx = random(0, xmax - xmin + 1) + xmin;
 	if (rndx + w > 19) {
 		x = 19 - w + 1;
 	} else {
 		x = rndx;
 	}
-	rndy = random(0, 19 - h - ((20 - h) >> 1) + 1) + ((20 - h) >> 1);
+	ymin = (20 - h) >> 1;
+	ymax = 19 - h;
+	rndy = random(0, ymax - ymin + 1) + ymin;
 	if (rndy + h > 19) {
 		y = 19 - h + 1;
 	} else {
