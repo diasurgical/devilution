@@ -6,15 +6,15 @@
 #endif
 
 char gbPixelCol; // automap pixel color 8-bit (palette entry)
-int gbRotateMap; // BOOLEAN flip - if y < x
-int orgseed;     // weak
+BOOL gbRotateMap; // flip - if y < x
+int orgseed;
 int sgnWidth;
-int sglGameSeed; // weak
+int sglGameSeed;
 #ifdef __cplusplus
 static CCritSect sgMemCrit;
 #endif
-int SeedCount;   // weak
-int gbNotInView; // BOOLEAN valid - if x/y are in bounds
+int SeedCount;
+BOOL gbNotInView; // valid - if x/y are in bounds
 
 const int rand_increment = 1;
 const int rand_multiplier = 0x015A4E35;
@@ -388,7 +388,6 @@ void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 	}
 #endif
 }
-// 69BEF8: using guessed type int light_table_index;
 
 void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
@@ -576,7 +575,6 @@ void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	}
 #endif
 }
-// 69BEF8: using guessed type int light_table_index;
 
 void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
@@ -602,7 +600,6 @@ void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 	else
 		CelDrawDatOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -646,7 +643,6 @@ void CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth,
 	else
 		CelDrawDatOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -691,8 +687,6 @@ void CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, i
 	else
 		CelDrawDatOnly(pBuff, pRLEBytes, nDataSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF94: using guessed type int cel_transparency_active;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -810,7 +804,6 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 	}
 #endif
 }
-// 525728: using guessed type int light4flag;
 
 void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
@@ -924,7 +917,6 @@ void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	}
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -1171,8 +1163,6 @@ void Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	}
 #endif
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF0C: using guessed type int gpBufEnd;
 
 void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
@@ -1374,8 +1364,6 @@ void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int n
 	}
 #endif
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF0C: using guessed type int gpBufEnd;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -1419,7 +1407,6 @@ void Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 	else
 		Cel2DecDatOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -1461,8 +1448,6 @@ void Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int
 	else
 		Cel2DecDatOnly(pBuff, pRLEBytes, nDataSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF94: using guessed type int cel_transparency_active;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -1587,8 +1572,6 @@ void Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 	}
 #endif
 }
-// 525728: using guessed type int light4flag;
-// 69CF0C: using guessed type int gpBufEnd;
 
 void CelDecodeRect(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, int nCel, int nWidth)
 {
@@ -2029,7 +2012,6 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 	}
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void ENG_set_pixel(int sx, int sy, BYTE col)
 {
@@ -2056,7 +2038,6 @@ void ENG_set_pixel(int sx, int sy, BYTE col)
 		*dst = col;
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void engine_draw_pixel(int sx, int sy)
 {
@@ -2088,10 +2069,6 @@ void engine_draw_pixel(int sx, int sy)
 		*dst = gbPixelCol;
 #endif
 }
-// 52B96C: using guessed type char gbPixelCol;
-// 52B970: using guessed type int gbRotateMap;
-// 52B99C: using guessed type int gbNotInView;
-// 69CF0C: using guessed type int gpBufEnd;
 
 // Exact copy from https://github.com/erich666/GraphicsGems/blob/dad26f941e12c8bf1f96ea21c1c04cd2206ae7c9/gems/DoubleLine.c
 // Except:
@@ -2301,9 +2278,6 @@ void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 		}
 	}
 }
-// 52B96C: using guessed type char gbPixelCol;
-// 52B970: using guessed type int gbRotateMap;
-// 52B99C: using guessed type int gbNotInView;
 
 int GetDirection(int x1, int y1, int x2, int y2)
 {
@@ -2351,9 +2325,6 @@ void SetRndSeed(int s)
 	sglGameSeed = s;
 	orgseed = s;
 }
-// 52B974: using guessed type int orgseed;
-// 52B97C: using guessed type int sglGameSeed;
-// 52B998: using guessed type int SeedCount;
 
 int GetRndSeed()
 {
@@ -2361,8 +2332,6 @@ int GetRndSeed()
 	sglGameSeed = rand_multiplier * sglGameSeed + rand_increment;
 	return abs(sglGameSeed);
 }
-// 52B97C: using guessed type int sglGameSeed;
-// 52B998: using guessed type int SeedCount;
 
 int random(BYTE idx, int v)
 {
@@ -2942,7 +2911,6 @@ void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	    nWidth,
 	    &pLightTbl[idx]);
 }
-// 525728: using guessed type int light4flag;
 
 void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
@@ -3093,7 +3061,6 @@ void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 	}
 #endif
 }
-// 52B978: using guessed type int sgnWidth;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -3138,7 +3105,6 @@ void Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int
 	else
 		Cl2DecDatFrm1(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -3334,7 +3300,6 @@ void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	}
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -3379,7 +3344,6 @@ void Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	    col);
 	gpBufEnd += BUFFER_WIDTH;
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
@@ -3553,7 +3517,6 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 	}
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -3606,7 +3569,6 @@ void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	    nWidth,
 	    &pLightTbl[idx]);
 }
-// 525728: using guessed type int light4flag;
 
 void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
@@ -3770,8 +3732,6 @@ void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 	}
 #endif
 }
-// 52B978: using guessed type int sgnWidth;
-// 69CF0C: using guessed type int gpBufEnd;
 
 /**
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
@@ -3816,7 +3776,6 @@ void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	else
 		Cl2DecDatFrm4(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
-// 69BEF8: using guessed type int light_table_index;
 
 void PlayInGameMovie(char *pszMovie)
 {
@@ -3828,4 +3787,3 @@ void PlayInGameMovie(char *pszMovie)
 	PaletteFadeIn(8);
 	drawpanflag = 255;
 }
-// 52571C: using guessed type int drawpanflag;

@@ -5,11 +5,11 @@
 //offset 0
 //pCelBuff->pFrameTable[0]
 
-extern char gbPixelCol;  // automap pixel color 8-bit (palette entry)
-extern int gbRotateMap; // bool flip - if y < x
-extern int orgseed;      // weak
-extern int SeedCount;    // weak
-extern int gbNotInView; // bool valid - if x/y are in bounds
+extern char gbPixelCol; // automap pixel color 8-bit (palette entry)
+extern BOOL gbRotateMap; // flip - if y < x
+extern int orgseed;
+extern int SeedCount;
+extern BOOL gbNotInView; // valid - if x/y are in bounds
 
 void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth);
 void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth);
