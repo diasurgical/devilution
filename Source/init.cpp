@@ -109,28 +109,25 @@ void init_run_office(char *dir)
 
 void init_disable_screensaver(BOOLEAN disable)
 {
-	BOOLEAN v1;     // al
-	char Data[16];  // [esp+4h] [ebp-20h]
-	DWORD Type;     // [esp+14h] [ebp-10h]
-	DWORD cbData;   // [esp+18h] [ebp-Ch]
-	HKEY phkResult; // [esp+1Ch] [ebp-8h]
-	BOOLEAN v6;     // [esp+20h] [ebp-4h]
+	BOOLEAN enabled;
+	char Data[16];
+	DWORD Type, cbData;
+	HKEY phkResult;
 
 	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
 
-	v6 = disable;
 	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult)) {
-		if (v6) {
+		if (disable) {
 			cbData = 16;
 			if (!RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData))
 				screensaver_enabled_prev = Data[0] != '0';
-			v1 = 0;
+			enabled = FALSE;
 		} else {
-			v1 = screensaver_enabled_prev;
+			enabled = screensaver_enabled_prev;
 		}
 		Data[1] = 0;
-		Data[0] = (v1 != 0) + '0';
+		Data[0] = enabled ? '1' : '0';
 		RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2u);
 		RegCloseKey(phkResult);
 	}
