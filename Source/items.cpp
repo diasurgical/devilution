@@ -1650,7 +1650,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 
 	pre = random(23, 4);
 	post = random(23, 3);
-	if (pre && !post) {
+	if (pre != 0 && post == 0) {
 		if (random(23, 2))
 			post = 1;
 		else
@@ -1692,7 +1692,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 			goe = PL_Prefix[preidx].PLGOE;
 		}
 	}
-	if (post) {
+	if (post != 0) {
 		nl = 0;
 		for (j = 0; PL_Suffix[j].PLPower != -1; j++) {
 			if (PL_Suffix[j].PLIType & flgs
