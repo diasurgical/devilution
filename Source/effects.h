@@ -30,7 +30,6 @@ void __stdcall effects_play_sound(char *snd_file);
 
 /* rdata */
 
-extern const int effects_inf; // weak
 extern const char monster_action_sounds[];
 
 /* data */

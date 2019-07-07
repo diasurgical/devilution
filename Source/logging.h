@@ -15,8 +15,6 @@ void log_dump_computer_info();
 
 /* rdata */
 
-extern const int log_inf;
-
 /* data */
 
 extern int log_not_created;

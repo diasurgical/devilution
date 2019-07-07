@@ -151,8 +151,6 @@ void diablo_color_cyc_logic();
 
 /* data */
 
-extern int diablo_inf; // weak
-
 /* rdata */
 
 extern BOOL fullscreen;

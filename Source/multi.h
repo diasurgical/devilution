@@ -57,7 +57,6 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv);
 
 /* rdata */
 
-extern const int multi_inf; // weak
 extern const int event_types[3];
 
 #endif /* __MULTI_H__ */

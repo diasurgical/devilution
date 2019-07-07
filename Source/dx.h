@@ -25,6 +25,4 @@ void j_dx_reinit();
 
 /* data */
 
-extern int dx_inf;
-
 #endif /* __DX_H__ */
