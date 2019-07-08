@@ -1103,18 +1103,18 @@ void LoadMissileGFX(BYTE mi)
 	mfd = &misfiledata[mi];
 	if (mfd->mFlags & MFLAG_ALLOW_SPECIAL) {
 		sprintf(pszName, "Missiles\\%s.CL2", mfd->mName);
-		file = LoadFileInMem(pszName, 0);
+		file = LoadFileInMem(pszName, NULL);
 		for (i = 0; i < mfd->mAnimFAmt; i++)
 			mfd->mAnimData[i] = &file[((int *)file)[i]];
 	} else if (mfd->mAnimFAmt == 1) {
 		sprintf(pszName, "Missiles\\%s.CL2", mfd->mName);
 		if (!mfd->mAnimData[0])
-			mfd->mAnimData[0] = LoadFileInMem(pszName, 0);
+			mfd->mAnimData[0] = LoadFileInMem(pszName, NULL);
 	} else {
 		for (i = 0; i < mfd->mAnimFAmt; i++) {
 			sprintf(pszName, "Missiles\\%s%i.CL2", mfd->mName, i + 1);
 			if (!mfd->mAnimData[i]) {
-				file = LoadFileInMem(pszName, 0);
+				file = LoadFileInMem(pszName, NULL);
 				mfd->mAnimData[i] = file;
 			}
 		}

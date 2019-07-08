@@ -149,7 +149,7 @@ void SetTownerGPtrs(BYTE *pData, BYTE **pAnim)
 #endif
 }
 
-void NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay)
+void NewTownerAnim(int tnum, BYTE *pAnim, int numFrames, int Delay)
 {
 	towner[tnum]._tAnimCnt = 0;
 	towner[tnum]._tAnimLen = numFrames;
@@ -196,7 +196,7 @@ void InitSmith()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_SMITH, 62, 63, 0, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -213,7 +213,7 @@ void InitBarOwner()
 	bannerflag = 0; // unused
 	InitTownerInfo(numtowners, 96, 1, TOWN_TAVERN, 55, 62, 3, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -230,7 +230,7 @@ void InitTownDead()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_DEADGUY, 24, 32, -1, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\Butch\\Deadguy.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Butch\\Deadguy.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -246,7 +246,7 @@ void InitWitch()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_WITCH, 80, 20, 5, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -262,7 +262,7 @@ void InitBarmaid()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_BMAID, 43, 66, -1, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -279,7 +279,7 @@ void InitBoy()
 	boyloadflag = 1;
 	InitTownerInfo(numtowners, 96, 1, TOWN_PEGBOY, 11, 53, -1, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -296,7 +296,7 @@ void InitHealer()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_HEALER, 55, 79, 1, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\Healer\\Healer.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Healer\\Healer.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -312,7 +312,7 @@ void InitTeller()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_STORY, 62, 71, 2, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\Strytell\\Strytell.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Strytell\\Strytell.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -328,7 +328,7 @@ void InitDrunk()
 
 	InitTownerInfo(numtowners, 96, 1, TOWN_DRUNK, 71, 84, 4, 10);
 	InitQstSnds(numtowners);
-	towner[numtowners]._tNData = LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", 0);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", NULL);
 	for (i = 0; i < 8; i++) {
 		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
 	}
@@ -345,7 +345,7 @@ void InitCows()
 
 	//if ( pCowCels )
 	//	assertion_failed(300, "C:\\Diablo\\Direct\\towners.cpp", "! pCowCels");
-	pCowCels = LoadFileInMem("Towners\\Animals\\Cow.CEL", 0);
+	pCowCels = LoadFileInMem("Towners\\Animals\\Cow.CEL", NULL);
 	for (i = 0; i < 3; i++) {
 		x = TownCowX[i];
 		y = TownCowY[i];

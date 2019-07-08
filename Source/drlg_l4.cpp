@@ -291,11 +291,11 @@ void DRLG_LoadL4SP()
 {
 	setloadflag_2 = 0;
 	if (QuestStatus(QTYPE_WARLRD)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Warlord.DUN", NULL);
 		setloadflag_2 = 1;
 	}
 	if (currlevel == 15 && gbMaxPlayers != 1) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Vile1.DUN", 0);
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Vile1.DUN", NULL);
 		setloadflag_2 = 1;
 	}
 }
@@ -377,16 +377,16 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 {
 	BYTE *lpSetPiece;
 
-	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
+	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", NULL);
 	diabquad1x = 4 + l4holdx;
 	diabquad1y = 4 + l4holdy;
 	DRLG_L4SetRoom(lpSetPiece, diabquad1x, diabquad1y);
 	mem_free_dbg(lpSetPiece);
 
 	if (preflag) {
-		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2b.DUN", 0);
+		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2b.DUN", NULL);
 	} else {
-		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", 0);
+		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", NULL);
 	}
 	diabquad2x = 27 - l4holdx;
 	diabquad2y = 1 + l4holdy;
@@ -394,9 +394,9 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	mem_free_dbg(lpSetPiece);
 
 	if (preflag) {
-		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3b.DUN", 0);
+		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3b.DUN", NULL);
 	} else {
-		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", 0);
+		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", NULL);
 	}
 	diabquad3x = 1 + l4holdx;
 	diabquad3y = 27 - l4holdy;
@@ -404,9 +404,9 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	mem_free_dbg(lpSetPiece);
 
 	if (preflag) {
-		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4b.DUN", 0);
+		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4b.DUN", NULL);
 	} else {
-		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4a.DUN", 0);
+		lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4a.DUN", NULL);
 	}
 	diabquad4x = 28 - l4holdx;
 	diabquad4y = 28 - l4holdy;

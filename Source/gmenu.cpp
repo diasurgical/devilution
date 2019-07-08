@@ -77,11 +77,11 @@ void gmenu_init_menu()
 	dword_63447C = 0;
 	sgCurrentMenuIdx = 0;
 	mouseNavigation = FALSE;
-	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", 0);
-	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", 0);
-	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", 0);
-	option_cel = LoadFileInMem("Data\\option.CEL", 0);
-	optbar_cel = LoadFileInMem("Data\\optbar.CEL", 0);
+	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", NULL);
+	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", NULL);
+	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", NULL);
+	option_cel = LoadFileInMem("Data\\option.CEL", NULL);
+	optbar_cel = LoadFileInMem("Data\\optbar.CEL", NULL);
 }
 
 BOOL gmenu_exception()
