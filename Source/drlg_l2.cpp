@@ -879,8 +879,8 @@ void DRLG_L2PlaceRndSet(BYTE *miniset, int rndper)
 	sw = miniset[0];
 	sh = miniset[1];
 
-	for (sy = 0; sy < 40 - sh; sy++) {
-		for (sx = 0; sx < 40 - sw; sx++) {
+	for (sy = 0; sy < DMAXY - sh; sy++) {
+		for (sx = 0; sx < DMAXX - sw; sx++) {
 			found = TRUE;
 			ii = 2;
 			if (sx >= nSx1 && sx <= nSx2 && sy >= nSy1 && sy <= nSy2) {
