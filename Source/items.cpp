@@ -191,7 +191,7 @@ void InitItemGFX()
 
 	for (i = 0; i < 35; i++) {
 		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[i]);
-		itemanims[i] = LoadFileInMem(arglist, 0);
+		itemanims[i] = LoadFileInMem(arglist, NULL);
 	}
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
@@ -627,13 +627,13 @@ void CalcPlrScrolls(int p)
 	}
 }
 
-void CalcPlrStaff(int pnum)
+void CalcPlrStaff(int p)
 {
-	plr[pnum]._pISpells = 0;
-	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
-	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag
-	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
-		plr[pnum]._pISpells |= (__int64)1 << (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
+	plr[p]._pISpells = 0;
+	if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+	    && plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag
+	    && plr[p].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
+		plr[p]._pISpells |= (__int64)1 << (plr[p].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
 	}
 }
 
@@ -2217,14 +2217,14 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 	}
 }
 
-void RecreateItem(int ii, int idx, WORD ic, int iseed, int ivalue)
+void RecreateItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 {
 	int uper, onlygood, recreate, pregen;
 
 	if (!idx) {
 		SetPlrHandItem(&item[ii], IDI_GOLD);
 		item[ii]._iSeed = iseed;
-		item[ii]._iCreateInfo = ic;
+		item[ii]._iCreateInfo = icreateinfo;
 		item[ii]._ivalue = ivalue;
 		if (ivalue >= GOLD_MEDIUM_LIMIT)
 			item[ii]._iCurs = ICURS_GOLD_LARGE;
@@ -2233,30 +2233,30 @@ void RecreateItem(int ii, int idx, WORD ic, int iseed, int ivalue)
 		else
 			item[ii]._iCurs = ICURS_GOLD_MEDIUM;
 	} else {
-		if (!ic) {
+		if (!icreateinfo) {
 			SetPlrHandItem(&item[ii], idx);
 			SetPlrHandSeed(&item[ii], iseed);
 		} else {
-			if (ic & 0x7C00) {
-				RecreateTownItem(ii, idx, ic, iseed, ivalue);
-			} else if ((ic & 0x0180) == 0x0180) {
-				SetupAllUseful(ii, iseed, ic & 0x3F);
+			if (icreateinfo & 0x7C00) {
+				RecreateTownItem(ii, idx, icreateinfo, iseed, ivalue);
+			} else if ((icreateinfo & 0x0180) == 0x0180) {
+				SetupAllUseful(ii, iseed, icreateinfo & 0x3F);
 			} else {
 				uper = 0;
 				onlygood = 0;
 				recreate = 0;
 				pregen = 0;
-				if (ic & 0x0100)
+				if (icreateinfo & 0x0100)
 					uper = 1;
-				if (ic & 0x80)
+				if (icreateinfo & 0x80)
 					uper = 15;
-				if (ic & 0x40)
+				if (icreateinfo & 0x40)
 					onlygood = 1;
-				if (ic & 0x0200)
+				if (icreateinfo & 0x0200)
 					recreate = 1;
-				if (ic & 0x8000)
+				if (icreateinfo & 0x8000)
 					pregen = 1;
-				SetupAllItems(ii, idx, iseed, ic & 0x3F, uper, onlygood, recreate, pregen);
+				SetupAllItems(ii, idx, iseed, icreateinfo & 0x3F, uper, onlygood, recreate, pregen);
 			}
 		}
 	}
@@ -3782,29 +3782,29 @@ void SpawnStoreGold()
 	golditem._iStatFlag = TRUE;
 }
 
-void RecreateSmithItem(int ii, int idx, int plvl, int iseed)
+void RecreateSmithItem(int ii, int idx, int lvl, int iseed)
 {
 	int itype;
 
 	SetRndSeed(iseed);
-	itype = RndSmithItem(plvl) - 1;
-	GetItemAttrs(ii, itype, plvl);
+	itype = RndSmithItem(lvl) - 1;
+	GetItemAttrs(ii, itype, lvl);
 
-	item[ii]._iCreateInfo = plvl | 0x400;
+	item[ii]._iCreateInfo = lvl | 0x400;
 	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
 }
 
-void RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
+void RecreatePremiumItem(int ii, int idx, int plvl, int iseed)
 {
 	int itype;
 
 	SetRndSeed(iseed);
-	itype = RndPremiumItem(lvl >> 2, lvl) - 1;
-	GetItemAttrs(ii, itype, lvl);
-	GetItemBonus(ii, itype, lvl >> 1, lvl, 1);
+	itype = RndPremiumItem(plvl >> 2, plvl) - 1;
+	GetItemAttrs(ii, itype, plvl);
+	GetItemBonus(ii, itype, plvl >> 1, plvl, 1);
 
-	item[ii]._iCreateInfo = lvl | 0x800;
+	item[ii]._iCreateInfo = plvl | 0x800;
 	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
 }

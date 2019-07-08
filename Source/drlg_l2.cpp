@@ -334,7 +334,7 @@ void LoadL2Dungeon(char *sFileName, int vx, int vy)
 
 	InitDungeon();
 	DRLG_InitTrans();
-	pLevelMap = LoadFileInMem(sFileName, 0);
+	pLevelMap = LoadFileInMem(sFileName, NULL);
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -509,7 +509,7 @@ void LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 
 	InitDungeon();
 	DRLG_InitTrans();
-	pLevelMap = LoadFileInMem(sFileName, 0);
+	pLevelMap = LoadFileInMem(sFileName, NULL);
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -594,13 +594,13 @@ void DRLG_LoadL2SP()
 	setloadflag_2 = 0;
 
 	if (QuestStatus(QTYPE_BLIND)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blind2.DUN", NULL);
 		setloadflag_2 = 1;
 	} else if (QuestStatus(QTYPE_BLOOD)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blood1.DUN", 0);
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blood1.DUN", NULL);
 		setloadflag_2 = 1;
 	} else if (QuestStatus(QTYPE_BONE)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Bonestr2.DUN", 0);
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Bonestr2.DUN", NULL);
 		setloadflag_2 = 1;
 	}
 }

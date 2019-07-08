@@ -2388,7 +2388,7 @@ void engine_debug_trap(BOOL show_cursor)
 */
 }
 
-unsigned char *DiabloAllocPtr(int dwBytes)
+BYTE *DiabloAllocPtr(DWORD dwBytes)
 {
 	BYTE *buf;
 
@@ -2420,7 +2420,7 @@ void mem_free_dbg(void *p)
 	}
 }
 
-BYTE *LoadFileInMem(char *pszName, int *pdwFileLen)
+BYTE *LoadFileInMem(char *pszName, DWORD *pdwFileLen)
 {
 	HANDLE file;
 	BYTE *buf;

@@ -674,7 +674,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		UiData.getdatacallback = (void (*)())UiGetDataCallback;
 		UiData.categorycallback = (void (*)())UiCategoryCallback;
 		UiData.selectnamecallback = mainmenu_select_hero_dialog;
-		UiData.changenamecallback = (void (*)())mainmenu_create_hero;
+		UiData.changenamecallback = (void (*)())mainmenu_change_name;
 		UiData.profilebitmapcallback = (void (*)())UiProfileDraw;
 		UiData.profilecallback = (void (*)())UiProfileCallback;
 		UiData.profilefields = UiProfileGetString();

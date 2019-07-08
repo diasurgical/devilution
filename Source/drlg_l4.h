@@ -50,7 +50,7 @@ void L4firstRoom();
 void L4drawRoom(int x, int y, int width, int height);
 void L4roomGen(int x, int y, int w, int h, int dir);
 BOOL L4checkRoom(int x, int y, int width, int height);
-BOOL DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int ldir);
+BOOL DRLG_L4PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int ldir);
 void DRLG_L4FloodTVal();
 void DRLG_L4FTVR(int i, int j, int x, int y, int d);
 void DRLG_L4TransFix();

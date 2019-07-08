@@ -158,7 +158,7 @@ BOOL pfile_create_player_description(char *dst, DWORD len)
 	return TRUE;
 }
 
-BOOL pfile_create_save_file(const char *name_1, const char *name_2)
+BOOL pfile_rename_hero(const char *name_1, const char *name_2)
 {
 	int i;
 	DWORD save_num;

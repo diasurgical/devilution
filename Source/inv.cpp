@@ -96,11 +96,11 @@ void FreeInvGFX()
 void InitInv()
 {
 	if (plr[myplr]._pClass == PC_WARRIOR) {
-		pInvCels = LoadFileInMem("Data\\Inv\\Inv.CEL", 0);
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv.CEL", NULL);
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
-		pInvCels = LoadFileInMem("Data\\Inv\\Inv_rog.CEL", 0);
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv_rog.CEL", NULL);
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
-		pInvCels = LoadFileInMem("Data\\Inv\\Inv_Sor.CEL", 0);
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv_Sor.CEL", NULL);
 	}
 
 	invflag = 0;
@@ -639,7 +639,7 @@ BOOL GoldAutoPlace(int pnum)
 	return done;
 }
 
-int WeaponAutoPlace(int pnum)
+BOOL WeaponAutoPlace(int pnum)
 {
 	if (plr[pnum].HoldItem._iLoc != ILOC_TWOHAND) {
 		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON)
@@ -1621,7 +1621,7 @@ void AutoGetItem(int pnum, int ii)
 	}
 }
 
-int FindGetItem(int indx, WORD ci, int iseed)
+int FindGetItem(int idx, WORD ci, int iseed)
 {
 	int i, ii;
 
@@ -1631,7 +1631,7 @@ int FindGetItem(int indx, WORD ci, int iseed)
 
 	while (1) {
 		ii = itemactive[i];
-		if (item[ii].IDidx == indx && item[ii]._iSeed == iseed && item[ii]._iCreateInfo == ci)
+		if (item[ii].IDidx == idx && item[ii]._iSeed == iseed && item[ii]._iCreateInfo == ci)
 			break;
 
 		i++;
@@ -1816,7 +1816,7 @@ int InvPutItem(int pnum, int x, int y)
 	return ii;
 }
 
-int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff)
+int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, DWORD ibuff)
 {
 	BOOL done;
 	int d, ii;

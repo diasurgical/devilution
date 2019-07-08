@@ -138,7 +138,7 @@ void LoadL1Dungeon(char *sFileName, int vx, int vy)
 	dmaxy = 96;
 
 	DRLG_InitTrans();
-	pLevelMap = LoadFileInMem(sFileName, 0);
+	pLevelMap = LoadFileInMem(sFileName, NULL);
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -333,7 +333,7 @@ void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 	dmaxx = 96;
 	dmaxy = 96;
 
-	pLevelMap = LoadFileInMem(sFileName, 0);
+	pLevelMap = LoadFileInMem(sFileName, NULL);
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -394,15 +394,15 @@ void DRLG_LoadL1SP()
 {
 	setloadflag = FALSE;
 	if (QuestStatus(QTYPE_BUTCH)) {
-		pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", 0);
+		pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", NULL);
 		setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_KING) && gbMaxPlayers == 1) {
-		pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", 0);
+		pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", NULL);
 		setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_BOL)) {
-		pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", 0);
+		pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", NULL);
 		setloadflag = TRUE;
 	}
 }
