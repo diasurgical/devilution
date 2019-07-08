@@ -677,6 +677,7 @@ BOOL DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, in
 	xCount = 0;
 	yCount = 0;
 
+	// BUGFIX: change '&&' to '||'
 	if (x > DMAXX - maxSize && y > DMAXY - maxSize) {
 		return FALSE;
 	}

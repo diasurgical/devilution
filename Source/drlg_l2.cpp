@@ -901,6 +901,7 @@ void DRLG_L2PlaceRndSet(BYTE *miniset, int rndper)
 			if (found == TRUE) {
 				for (yy = sy - sh; yy < sy + 2 * sh && found == TRUE; yy++) {
 					for (xx = sx - sw; xx < sx + 2 * sw; xx++) {
+						// BUGFIX: yy and xx can go out of bounds
 						if (dungeon[xx][yy] == miniset[kk]) {
 							found = FALSE;
 						}
