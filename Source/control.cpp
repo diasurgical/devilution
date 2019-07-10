@@ -2327,7 +2327,7 @@ void DrawGoldSplit(int amount)
 	} else {
 		screen_x = 450;
 	}
-	CelDecodeOnly(screen_x, 300, pCelBuff, nGoldFrame, 12);
+	CelDecodeOnly(screen_x, 300, pSPentSpn2Cels, nGoldFrame, 12);
 	nGoldFrame = (nGoldFrame & 7) + 1;
 }
 
@@ -2434,7 +2434,7 @@ void DrawTalkPan()
 	}
 	if (msg)
 		*msg = '\0';
-	CelDecDatOnly(gpBuffer + x, pCelBuff, frame, 12);
+	CelDecDatOnly(gpBuffer + x, pSPentSpn2Cels, frame, 12);
 	talk_btn = 0;
 	frame = (frame & 7) + 1;
 	for (i = 0; i < 4; i++) {
