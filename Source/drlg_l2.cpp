@@ -261,7 +261,7 @@ void L2LockoutFix()
 	}
 	for (j = 1; j < DMAXY - 1; j++) {
 		for (i = 1; i < DMAXX - 1; i++) {
-			if (dflags[i][j] & 0x80) {
+			if (dflags[i][j] & BFLAG_EXPLORED) {
 				continue;
 			}
 			if ((dungeon[i][j] == 2 || dungeon[i][j] == 5) && dungeon[i][j - 1] == 3 && dungeon[i][j + 1] == 3) {
@@ -278,7 +278,7 @@ void L2LockoutFix()
 					}
 					i++;
 				}
-				if (!doorok && !(dflags[i - 1][j] & 0x80)) {
+				if (!doorok && !(dflags[i - 1][j] & BFLAG_EXPLORED)) {
 					dungeon[i - 1][j] = 5;
 				}
 			}
@@ -286,7 +286,7 @@ void L2LockoutFix()
 	}
 	for (j = 1; j < DMAXX - 1; j++) { /* check: might be flipped */
 		for (i = 1; i < DMAXY - 1; i++) {
-			if (dflags[j][i] & 0x80) {
+			if (dflags[j][i] & BFLAG_EXPLORED) {
 				continue;
 			}
 			if ((dungeon[j][i] == 1 || dungeon[j][i] == 4) && dungeon[j - 1][i] == 3 && dungeon[j + 1][i] == 3) {
@@ -303,7 +303,7 @@ void L2LockoutFix()
 					}
 					i++;
 				}
-				if (!doorok && !(dflags[j][i - 1] & 0x80)) {
+				if (!doorok && !(dflags[j][i - 1] & BFLAG_EXPLORED)) {
 					dungeon[j][i - 1] = 4;
 				}
 			}
@@ -315,8 +315,8 @@ void L2DoorFix()
 {
 	int i, j;
 
-	for (j = 1; j < 40; j++) {
-		for (i = 1; i < 40; i++) {
+	for (j = 1; j < DMAXY; j++) {
+		for (i = 1; i < DMAXX; i++) {
 			if (dungeon[i][j] == 4 && dungeon[i][j - 1] == 3) {
 				dungeon[i][j] = 7;
 			}
@@ -353,7 +353,7 @@ void LoadL2Dungeon(char *sFileName, int vx, int vy)
 		for (i = 0; i < rw; i++) {
 			if (*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= 0x80;
+				dflags[i][j] |= BFLAG_EXPLORED;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -528,7 +528,7 @@ void LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 		for (i = 0; i < rw; i++) {
 			if (*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= 0x80;
+				dflags[i][j] |= BFLAG_EXPLORED;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -775,8 +775,8 @@ void DRLG_L2(int entry)
 	DRLG_L2Subs();
 	DRLG_L2Shadows();
 
-	for (j = 0; j < 40; j++) {
-		for (i = 0; i < 40; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			pdungeon[i][j] = dungeon[i][j];
 		}
 	}
@@ -800,8 +800,8 @@ BOOL DRLG_L2PlaceMiniSet(BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL
 	}
 
 	for (i = 0; i < numt; i++) {
-		sx = random(0, 40 - sw);
-		sy = random(0, 40 - sh);
+		sx = random(0, DMAXX - sw);
+		sy = random(0, DMAXY - sh);
 		found = FALSE;
 		for (bailcnt = 0; !found && bailcnt < 200; bailcnt++) {
 			found = TRUE;
@@ -809,13 +809,13 @@ BOOL DRLG_L2PlaceMiniSet(BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL
 				found = FALSE;
 			}
 			if (cx != -1 && sx >= cx - sw && sx <= cx + 12) {
-				sx = random(0, 40 - sw);
-				sy = random(0, 40 - sh);
+				sx = random(0, DMAXX - sw);
+				sy = random(0, DMAXY - sh);
 				found = FALSE;
 			}
 			if (cy != -1 && sy >= cy - sh && sy <= cy + 12) {
-				sx = random(0, 40 - sw);
-				sy = random(0, 40 - sh);
+				sx = random(0, DMAXX - sw);
+				sy = random(0, DMAXY - sh);
 				found = FALSE;
 			}
 			ii = 2;
@@ -832,10 +832,10 @@ BOOL DRLG_L2PlaceMiniSet(BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL
 			}
 			if (!found) {
 				sx++;
-				if (sx == 40 - sw) {
+				if (sx == DMAXX - sw) {
 					sx = 0;
 					sy++;
-					if (sy == 40 - sh) {
+					if (sy == DMAXY - sh) {
 						sy = 0;
 					}
 				}
@@ -927,8 +927,8 @@ void DRLG_L2Subs()
 	int x, y, i, j, k, rv;
 	BYTE c;
 
-	for (y = 0; y < 40; y++) {
-		for (x = 0; x < 40; x++) {
+	for (y = 0; y < DMAXY; y++) {
+		for (x = 0; x < DMAXX; x++) {
 			if ((x < nSx1 || x > nSx2) && (y < nSy1 || y > nSy2) && random(0, 4) == 0) {
 				c = BTYPESL2[dungeon[x][y]];
 				if (c != 0) {
@@ -966,8 +966,8 @@ void DRLG_L2Shadows()
 	BOOL patflag;
 	BYTE sd[2][2];
 
-	for (y = 1; y < 40; y++) {
-		for (x = 1; x < 40; x++) {
+	for (y = 1; y < DMAXY; y++) {
+		for (x = 1; x < DMAXX; x++) {
 			sd[0][0] = BSTYPESL2[dungeon[x][y]];
 			sd[1][0] = BSTYPESL2[dungeon[x - 1][y]];
 			sd[0][1] = BSTYPESL2[dungeon[x][y - 1]];
@@ -1020,7 +1020,7 @@ void DRLG_L2SetRoom(int rx1, int ry1)
 		for (i = 0; i < rw; i++) {
 			if (*sp != 0) {
 				dungeon[i + rx1][j + ry1] = *sp;
-				dflags[i + rx1][j + ry1] |= 0x80;
+				dflags[i + rx1][j + ry1] |= BFLAG_EXPLORED;
 			} else {
 				dungeon[i + rx1][j + ry1] = 3;
 			}
@@ -1033,8 +1033,8 @@ void L2TileFix()
 {
 	int i, j;
 
-	for (j = 0; j < 40; j++) {
-		for (i = 0; i < 40; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 1 && dungeon[i][j + 1] == 3) {
 				dungeon[i][j + 1] = 1;
 			}
@@ -1299,7 +1299,7 @@ void DefineRoom(int nX1, int nY1, int nX2, int nY2, BOOL ForceHW)
 	if (ForceHW == TRUE) {
 		for (i = nX1; i < nX2; i++) {
 			while (i < nY2) {
-				dflags[i][nY1] |= 0x80;
+				dflags[i][nY1] |= BFLAG_EXPLORED;
 				i++;
 			}
 		}
@@ -1444,7 +1444,7 @@ void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 				nRp = 30;
 			}
 			if (random(0, 100) < nRp) {
-				if (nX2 <= nX1 || nX1 >= 40) {
+				if (nX2 <= nX1 || nX1 >= DMAXX) {
 					nCurrd = 4;
 				} else {
 					nCurrd = 2;
@@ -1456,7 +1456,7 @@ void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 				nRp = 80;
 			}
 			if (random(0, 100) < nRp) {
-				if (nY2 <= nY1 || nY1 >= 40) {
+				if (nY2 <= nY1 || nY1 >= DMAXY) {
 					nCurrd = 1;
 				} else {
 					nCurrd = 3;
@@ -1464,42 +1464,42 @@ void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			}
 		}
 		if (nDy < 10 && nX1 == nX2 && (nCurrd == 2 || nCurrd == 4)) {
-			if (nY2 <= nY1 || nY1 >= 40) {
+			if (nY2 <= nY1 || nY1 >= DMAXY) {
 				nCurrd = 1;
 			} else {
 				nCurrd = 3;
 			}
 		}
 		if (nDx < 10 && nY1 == nY2 && (nCurrd == 1 || nCurrd == 3)) {
-			if (nX2 <= nX1 || nX1 >= 40) {
+			if (nX2 <= nX1 || nX1 >= DMAXX) {
 				nCurrd = 4;
 			} else {
 				nCurrd = 2;
 			}
 		}
 		if (nDy == 1 && nDx > 1 && (nCurrd == 1 || nCurrd == 3)) {
-			if (nX2 <= nX1 || nX1 >= 40) {
+			if (nX2 <= nX1 || nX1 >= DMAXX) {
 				nCurrd = 4;
 			} else {
 				nCurrd = 2;
 			}
 		}
 		if (nDx == 1 && nDy > 1 && (nCurrd == 2 || nCurrd == 4)) {
-			if (nY2 <= nY1 || nX1 >= 40) {
+			if (nY2 <= nY1 || nX1 >= DMAXX) {
 				nCurrd = 1;
 			} else {
 				nCurrd = 3;
 			}
 		}
 		if (nDx == 0 && predungeon[nX1][nY1] != 32 && (nCurrd == 2 || nCurrd == 4)) {
-			if (nX2 <= nOrigX1 || nX1 >= 40) {
+			if (nX2 <= nOrigX1 || nX1 >= DMAXX) {
 				nCurrd = 1;
 			} else {
 				nCurrd = 3;
 			}
 		}
 		if (nDy == 0 && predungeon[nX1][nY1] != 32 && (nCurrd == 1 || nCurrd == 3)) {
-			if (nY2 <= nOrigY1 || nY1 >= 40) {
+			if (nY2 <= nOrigY1 || nY1 >= DMAXY) {
 				nCurrd = 4;
 			} else {
 				nCurrd = 2;
@@ -1559,7 +1559,7 @@ void DoPatternCheck(int i, int j)
 				y++;
 				x = i - 1;
 			}
-			if (x >= 0 && x < 40 && y >= 0 && y < 40) {
+			if (x >= 0 && x < DMAXX && y >= 0 && y < DMAXY) {
 				switch (Patterns[k][l]) {
 				case 0:
 					nOk = 254;
@@ -1908,8 +1908,8 @@ int DL2_NumNoChar()
 	int t, ii, jj;
 
 	t = 0;
-	for (jj = 0; jj < 40; jj++) {
-		for (ii = 0; ii < 40; ii++) {
+	for (jj = 0; jj < DMAXY; jj++) {
+		for (ii = 0; ii < DMAXX; ii++) {
 			if (predungeon[ii][jj] == 32) {
 				t++;
 			}
@@ -1977,9 +1977,9 @@ void DRLG_L2FloodTVal()
 	int i, j, xx, yy;
 
 	yy = 16;
-	for (j = 0; j < 40; j++) {
+	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
-		for (i = 0; i < 40; i++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 3 && dTransVal[xx][yy] == 0) {
 				DRLG_L2FTVR(i, j, xx, yy, 0);
 				TransVal++;
@@ -2042,9 +2042,9 @@ void DRLG_L2TransFix()
 	int i, j, xx, yy;
 
 	yy = 16;
-	for (j = 0; j < 40; j++) {
+	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
-		for (i = 0; i < 40; i++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 14 && dungeon[i][j - 1] == 10) {
 				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
@@ -2076,8 +2076,8 @@ void L2DirtFix()
 {
 	int i, j;
 
-	for (j = 0; j < 40; j++) {
-		for (i = 0; i < 40; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 13 && dungeon[i + 1][j] != 11) {
 				dungeon[i][j] = 146;
 			}
