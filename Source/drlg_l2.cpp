@@ -1089,7 +1089,7 @@ BOOL CreateDungeon()
 		break;
 	}
 
-	CreateRoom(2, 2, 39, 39, 0, 0, ForceHW, ForceH, ForceW);
+	CreateRoom(2, 2, DMAXX - 1, DMAXY - 1, 0, 0, ForceHW, ForceH, ForceW);
 
 	while (pHallList != NULL) {
 		GetHall(&nHx1, &nHy1, &nHx2, &nHy2, &nHd);
@@ -1685,7 +1685,7 @@ BOOL DL2_FillVoids()
 					if (y1 == 0) {
 						yf1 = FALSE;
 					}
-					if (y2 == 39) {
+					if (y2 == DMAXY - 1) {
 						yf2 = FALSE;
 					}
 					if (y2 - y1 >= 14) {
@@ -1735,7 +1735,7 @@ BOOL DL2_FillVoids()
 					if (y1 == 0) {
 						yf1 = FALSE;
 					}
-					if (y2 == 39) {
+					if (y2 == DMAXY - 1) {
 						yf2 = FALSE;
 					}
 					if (y2 - y1 >= 14) {
@@ -1785,7 +1785,7 @@ BOOL DL2_FillVoids()
 					if (x1 == 0) {
 						xf1 = FALSE;
 					}
-					if (x2 == 39) {
+					if (x2 == DMAXX - 1) {
 						xf2 = FALSE;
 					}
 					if (x2 - x1 >= 14) {
@@ -1809,7 +1809,7 @@ BOOL DL2_FillVoids()
 				x2 -= 2;
 				if (x2 - x1 > 5) {
 					while (yf2) {
-						if (y2 == 39) {
+						if (y2 == DMAXY - 1) {
 							yf2 = FALSE;
 						}
 						if (y2 - y1 >= 12) {
@@ -1835,7 +1835,7 @@ BOOL DL2_FillVoids()
 					if (x1 == 0) {
 						xf1 = FALSE;
 					}
-					if (x2 == 39) {
+					if (x2 == DMAXX - 1) {
 						xf2 = FALSE;
 					}
 					if (x2 - x1 >= 14) {

@@ -691,8 +691,8 @@ int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, B
 		numt = random(0, tmax - tmin) + tmin;
 
 	for (i = 0; i < numt; i++) {
-		sx = random(0, 40 - sw);
-		sy = random(0, 40 - sh);
+		sx = random(0, DMAXX - sw);
+		sy = random(0, DMAXY - sh);
 		abort = FALSE;
 		found = 0;
 
@@ -739,9 +739,9 @@ int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, B
 			}
 
 			if (abort == FALSE) {
-				if (++sx == 40 - sw) {
+				if (++sx == DMAXX - sw) {
 					sx = 0;
-					if (++sy == 40 - sh)
+					if (++sy == DMAXY - sh)
 						sy = 0;
 				}
 				if (++found > 4000)
@@ -820,7 +820,7 @@ void L5firstRoom()
 
 	if (random(0, 2) == 0) {
 		ys = 1;
-		ye = 39;
+		ye = DMAXY - 1;
 
 		VR1 = random(0, 2);
 		VR2 = random(0, 2);
@@ -861,7 +861,7 @@ void L5firstRoom()
 		HR1 = 0;
 	} else {
 		xs = 1;
-		xe = 39;
+		xe = DMAXX - 1;
 
 		HR1 = random(0, 2);
 		HR2 = random(0, 2);
@@ -1009,8 +1009,8 @@ void L5makeDungeon()
 	int i, j;
 	int i_2, j_2;
 
-	for (j = 0; j < 40; j++) {
-		for (i = 0; i < 40; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			j_2 = j << 1;
 			i_2 = i << 1;
 			L5dungeon[i_2][j_2] = dungeon[i][j];
