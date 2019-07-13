@@ -8,6 +8,7 @@
 #include "controls/controller_motion.h"
 #include "controls/game_controls.h"
 #include "controls/plrctrls.h"
+#include "controls/touch.h"
 #include "miniwin/ddraw.h"
 
 /** @file
@@ -357,6 +358,10 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 		lpMsg->message = DVL_WM_QUIT;
 		return true;
 	}
+
+#ifndef USE_SDL1
+	handle_touch(&e, MouseX, MouseY);
+#endif
 
 #ifdef USE_SDL1
 	if (e.type == SDL_MOUSEMOTION) {
