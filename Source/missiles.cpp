@@ -2283,12 +2283,16 @@ void AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 
 void AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, char micaster, int id, int dam)
 {
+	/// ASSERT: assert((DWORD)mi < MAXMISSILES);
+
 	if (micaster == 0) {
-		if (id != -1)
+		if (id == myplr) {
 			missile[mi]._mirnd = random(63, 15) + 1;
-		else
+			missile[mi]._midam = random(68, plr[id]._pMagic >> 2) + 1;
+		} else {
 			missile[mi]._mirnd = random(63, 15) + 1;
-		missile[mi]._midam = random(68, plr[id]._pMagic >> 2) + 1;
+			missile[mi]._midam = random(68, plr[id]._pMagic >> 2) + 1;
+		}
 	} else {
 		missile[mi]._mirnd = random(63, 15) + 1;
 		missile[mi]._midam = 15;
