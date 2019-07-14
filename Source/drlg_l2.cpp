@@ -1153,6 +1153,8 @@ BOOL CreateDungeon()
 	return TRUE;
 }
 
+// Draws a random room rectangle, and then subdivides the rest of the passed in rectangle
+// into 4 pieces and recurses.
 void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, BOOL ForceHW, int nH, int nW)
 {
 	int nAw, nAh, nRw, nRh, nRx1, nRy1, nRx2, nRy2, nHw, nHh, nHx1, nHy1, nHx2, nHy2, nRid;
