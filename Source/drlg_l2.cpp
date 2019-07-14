@@ -1153,8 +1153,18 @@ BOOL CreateDungeon()
 	return TRUE;
 }
 
-// Draws a random room rectangle, and then subdivides the rest of the passed in rectangle
-// into 4 pieces and recurses.
+/**
+ * Draws a random room rectangle, and then subdivides the rest of the passed in rectangle into 4 and recurses.
+ * @param nX1 Lower X boundary of the area to draw into.
+ * @param nY1 Lower Y boundary of the area to draw into.
+ * @param nX2 Upper X boundary of the area to draw into.
+ * @param nY2 Upper Y boundary of the area to draw into.
+ * @param nRDest The room number of the parent room this call was invoked for. Zero for empty
+ * @param nHDir The direction of the hall from nRDest to this room.
+ * @param ForceHW If set, nH and nW are used for room size instead of random values.
+ * @param nH Height of the room, if ForceHW is set.
+ * @param nW Width of the room, if ForceHW is set.
+ */
 void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, BOOL ForceHW, int nH, int nW)
 {
 	int nAw, nAh, nRw, nRh, nRx1, nRy1, nRx2, nRy2, nHw, nHh, nHx1, nHy1, nHx2, nHy2, nRid;
