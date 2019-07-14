@@ -1298,6 +1298,7 @@ void DefineRoom(int nX1, int nY1, int nX2, int nY2, BOOL ForceHW)
 
 	if (ForceHW == TRUE) {
 		for (i = nX1; i < nX2; i++) {
+			/// BUGFIX: Should loop j between nY1 and nY2 instead of always using nY1.
 			while (i < nY2) {
 				dflags[i][nY1] |= DLRG_PROTECTED;
 				i++;
