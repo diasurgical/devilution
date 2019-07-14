@@ -261,7 +261,7 @@ void L2LockoutFix()
 	}
 	for (j = 1; j < DMAXY - 1; j++) {
 		for (i = 1; i < DMAXX - 1; i++) {
-			if (dflags[i][j] & BFLAG_EXPLORED) {
+			if (dflags[i][j] & DLRG_PROTECTED) {
 				continue;
 			}
 			if ((dungeon[i][j] == 2 || dungeon[i][j] == 5) && dungeon[i][j - 1] == 3 && dungeon[i][j + 1] == 3) {
@@ -278,7 +278,7 @@ void L2LockoutFix()
 					}
 					i++;
 				}
-				if (!doorok && !(dflags[i - 1][j] & BFLAG_EXPLORED)) {
+				if (!doorok && !(dflags[i - 1][j] & DLRG_PROTECTED)) {
 					dungeon[i - 1][j] = 5;
 				}
 			}
@@ -286,7 +286,7 @@ void L2LockoutFix()
 	}
 	for (j = 1; j < DMAXX - 1; j++) { /* check: might be flipped */
 		for (i = 1; i < DMAXY - 1; i++) {
-			if (dflags[j][i] & BFLAG_EXPLORED) {
+			if (dflags[j][i] & DLRG_PROTECTED) {
 				continue;
 			}
 			if ((dungeon[j][i] == 1 || dungeon[j][i] == 4) && dungeon[j - 1][i] == 3 && dungeon[j + 1][i] == 3) {
@@ -303,7 +303,7 @@ void L2LockoutFix()
 					}
 					i++;
 				}
-				if (!doorok && !(dflags[j][i - 1] & BFLAG_EXPLORED)) {
+				if (!doorok && !(dflags[j][i - 1] & DLRG_PROTECTED)) {
 					dungeon[j][i - 1] = 4;
 				}
 			}
@@ -353,7 +353,7 @@ void LoadL2Dungeon(char *sFileName, int vx, int vy)
 		for (i = 0; i < rw; i++) {
 			if (*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= BFLAG_EXPLORED;
+				dflags[i][j] |= DLRG_PROTECTED;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -528,7 +528,7 @@ void LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 		for (i = 0; i < rw; i++) {
 			if (*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= BFLAG_EXPLORED;
+				dflags[i][j] |= DLRG_PROTECTED;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -1020,7 +1020,7 @@ void DRLG_L2SetRoom(int rx1, int ry1)
 		for (i = 0; i < rw; i++) {
 			if (*sp != 0) {
 				dungeon[i + rx1][j + ry1] = *sp;
-				dflags[i + rx1][j + ry1] |= BFLAG_EXPLORED;
+				dflags[i + rx1][j + ry1] |= DLRG_PROTECTED;
 			} else {
 				dungeon[i + rx1][j + ry1] = 3;
 			}
@@ -1299,7 +1299,7 @@ void DefineRoom(int nX1, int nY1, int nX2, int nY2, BOOL ForceHW)
 	if (ForceHW == TRUE) {
 		for (i = nX1; i < nX2; i++) {
 			while (i < nY2) {
-				dflags[i][nY1] |= BFLAG_EXPLORED;
+				dflags[i][nY1] |= DLRG_PROTECTED;
 				i++;
 			}
 		}

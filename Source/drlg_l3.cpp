@@ -189,7 +189,7 @@ BOOL DRLG_L3Anvil()
 			if (L3ANVIL[ii] != 0) {
 				dungeon[xx + sx][yy + sy] = L3ANVIL[ii];
 			}
-			dflags[xx + sx][yy + sy] |= 0x80;
+			dflags[xx + sx][yy + sy] |= DLRG_PROTECTED;
 			ii++;
 		}
 	}
