@@ -727,7 +727,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 
 	for (i = 0; i < 17; i++) {
 		glSeedTbl[i] = GetRndSeed();
-		gnLevelTypeTbl[i] = DTypeFromDLvl(i);
+		gnLevelTypeTbl[i] = InitLevelType(i);
 	}
 	if (!SNetGetGameInfo(GAMEINFO_NAME, szPlayerName, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo1");
