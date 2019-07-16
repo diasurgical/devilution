@@ -868,7 +868,7 @@ void InitPlayer(int pnum, BOOL FirstTime)
 		if (pnum == myplr) {
 			plr[pnum]._plid = AddLight(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum]._pLightRad);
 		} else {
-			plr[pnum]._plid = WALK_NONE;
+			plr[pnum]._plid = -1;
 		}
 		plr[pnum]._pvid = AddVision(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum]._pLightRad, pnum == myplr);
 	}
