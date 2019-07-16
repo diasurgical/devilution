@@ -751,15 +751,15 @@ void multi_send_pinfo(int pnum, char cmd)
 	dthread_send_delta(pnum, cmd, &pkplr, sizeof(pkplr));
 }
 
-int DTypeFromDLvl(int dlvl)
+int InitLevelType(int l)
 {
-	if (dlvl == 0)
+	if (l == 0)
 		return 0;
-	if (dlvl >= 1 && dlvl <= 4)
+	if (l >= 1 && l <= 4)
 		return 1;
-	if (dlvl >= 5 && dlvl <= 8)
+	if (l >= 5 && l <= 8)
 		return 2;
-	if (dlvl >= 9 && dlvl <= 12)
+	if (l >= 9 && l <= 12)
 		return 3;
 
 	return 4;
