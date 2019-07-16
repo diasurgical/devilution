@@ -186,14 +186,14 @@ public:
 
 	T *Next()
 	{
-		if ((int)m_nextNode <= 0)
+		if ((ptrdiff_t)m_nextNode <= 0)
 			return NULL;
 		return m_nextNode;
 	}
 
 	TLink<T> *NextLink(size_t offset = -1)
 	{
-		if ((int)m_nextNode <= 0)
+		if ((ptrdiff_t)m_nextNode <= 0)
 			return (TLink<T> *)~((size_t)m_nextNode);
 
 		if ((int)offset < 0) {
