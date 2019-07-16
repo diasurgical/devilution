@@ -2882,6 +2882,6 @@ typedef enum action_id {
 typedef enum dlrg_flag {
 	DLRG_HDOOR = 0x01,
 	DLRG_VDOOR = 0x02,
-	DLRG_CHAMBER = 0x04,
+	DLRG_CHAMBER = 0x40,
 	DLRG_PROTECTED = 0x80,
 } dlrg_flag;
