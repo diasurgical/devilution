@@ -727,7 +727,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 
 	for (i = 0; i < 17; i++) {
 		glSeedTbl[i] = GetRndSeed();
-		gnLevelTypeTbl[i] = InitNewSeed(i);
+		gnLevelTypeTbl[i] = DTypeFromDLvl(i);
 	}
 	if (!SNetGetGameInfo(GAMEINFO_NAME, szPlayerName, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo1");
@@ -751,15 +751,15 @@ void multi_send_pinfo(int pnum, char cmd)
 	dthread_send_delta(pnum, cmd, &pkplr, sizeof(pkplr));
 }
 
-int InitNewSeed(int newseed)
+int DTypeFromDLvl(int dlvl)
 {
-	if (newseed == 0)
+	if (dlvl == 0)
 		return 0;
-	if (newseed >= 1 && newseed <= 4)
+	if (dlvl >= 1 && dlvl <= 4)
 		return 1;
-	if (newseed >= 5 && newseed <= 8)
+	if (dlvl >= 5 && dlvl <= 8)
 		return 2;
-	if (newseed >= 9 && newseed <= 12)
+	if (dlvl >= 9 && dlvl <= 12)
 		return 3;
 
 	return 4;
