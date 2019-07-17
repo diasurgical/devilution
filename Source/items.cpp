@@ -510,9 +510,9 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	plr[p]._pILMaxDam = lmax;
 
 	if (iflgs & ISPL_INFRAVISION) {
-		plr[p]._pInfraFlag = 1;
+		plr[p]._pInfraFlag = TRUE;
 	} else {
-		plr[p]._pInfraFlag = 0;
+		plr[p]._pInfraFlag = FALSE;
 	}
 
 	plr[p]._pBlockFlag = FALSE;

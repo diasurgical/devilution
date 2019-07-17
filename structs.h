@@ -267,7 +267,7 @@ typedef struct PlayerStruct {
 	char _pFireResist;
 	char _pLghtResist;
 	int _pGold;
-	int _pInfraFlag;
+	BOOL _pInfraFlag;
 	int _pVar1;
 	int _pVar2;
 	int _pVar3;

@@ -587,7 +587,7 @@ void CreatePlayer(int pnum, char c)
 	plr[pnum]._pFireResist = 0;
 	plr[pnum]._pLghtResist = 0;
 	plr[pnum]._pLightRad = 10;
-	plr[pnum]._pInfraFlag = 0;
+	plr[pnum]._pInfraFlag = FALSE;
 
 	if (c == PC_WARRIOR) {
 		plr[pnum]._pAblSpells = (__int64)1 << (SPL_REPAIR - 1);
