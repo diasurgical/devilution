@@ -628,7 +628,7 @@ void CreatePlayer(int pnum, char c)
 	}
 
 	for (i = 0; i < NUMLEVELS; i++) {
-		plr[pnum]._pLvlVisited[i] = 0;
+		plr[pnum]._pLvlVisited[i] = FALSE;
 	}
 
 	for (i = 0; i < 10; i++) {
@@ -1957,7 +1957,7 @@ void InitLevelChange(int pnum)
 	if (pnum == myplr) {
 		dPlayer[plr[myplr].WorldX][plr[myplr].WorldY] = myplr + 1;
 	} else {
-		plr[pnum]._pLvlVisited[plr[pnum].plrlevel] = 1;
+		plr[pnum]._pLvlVisited[plr[pnum].plrlevel] = TRUE;
 	}
 
 	ClrPlrPath(pnum);

@@ -452,7 +452,7 @@ void DeltaSaveLevel()
 			if (i != myplr)
 				plr[i]._pGFXLoad = 0;
 		}
-		plr[myplr]._pLvlVisited[currlevel] = 1;
+		plr[myplr]._pLvlVisited[currlevel] = TRUE;
 		delta_leave_sync(currlevel);
 	}
 }

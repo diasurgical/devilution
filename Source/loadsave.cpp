@@ -596,7 +596,7 @@ void SaveLevel()
 	mem_free_dbg(SaveBuff);
 
 	if (setlevel == 0)
-		plr[myplr]._pLvlVisited[currlevel] = 1;
+		plr[myplr]._pLvlVisited[currlevel] = TRUE;
 	else
 		plr[myplr]._pSLvlVisited[setlvlnum] = 1;
 }
