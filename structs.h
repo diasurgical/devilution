@@ -277,7 +277,7 @@ typedef struct PlayerStruct {
 	int _pVar7;
 	int _pVar8;
 	BOOLEAN _pLvlVisited[NUMLEVELS];
-	unsigned char _pSLvlVisited[NUMLEVELS]; // only 10 used
+	BOOLEAN _pSLvlVisited[NUMLEVELS]; // only 10 used
 	int _pGFXLoad;
 	unsigned char *_pNAnim[8];
 	int _pNFrames;

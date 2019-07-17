@@ -632,7 +632,7 @@ void CreatePlayer(int pnum, char c)
 	}
 
 	for (i = 0; i < 10; i++) {
-		plr[pnum]._pSLvlVisited[i] = 0;
+		plr[pnum]._pSLvlVisited[i] = FALSE;
 	}
 
 	plr[pnum]._pLvlChanging = FALSE;
