@@ -2576,7 +2576,7 @@ DWORD On_NOVA(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pnum != myplr) {
 		ClrPlrPath(pnum);
 		plr[pnum]._pSpell = SPL_NOVA;
-		plr[pnum]._pSplType = 4;
+		plr[pnum]._pSplType = RSPLTYPE_INVALID;
 		plr[pnum]._pSplFrom = 3;
 		plr[pnum].destAction = ACTION_SPELL;
 		plr[pnum].destParam1 = p->x;
