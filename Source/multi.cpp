@@ -791,7 +791,7 @@ void SetupLocalCoords()
 	plr[myplr]._ptargx = x;
 	plr[myplr]._ptargy = y;
 	plr[myplr].plrlevel = currlevel;
-	plr[myplr]._pLvlChanging = 1;
+	plr[myplr]._pLvlChanging = TRUE;
 	plr[myplr].pLvlLoad = 0;
 	plr[myplr]._pmode = PM_NEWLVL;
 	plr[myplr].destAction = ACTION_NONE;

@@ -227,7 +227,7 @@ typedef struct PlayerStruct {
 	BOOLEAN _pBlockFlag;
 	BOOLEAN _pInvincible;
 	char _pLightRad;
-	unsigned char _pLvlChanging;
+	BOOLEAN _pLvlChanging;
 	char _pName[PLR_NAME_LEN];
 	// plr_class enum value.
 	// TODO: this could very well be `enum plr_class _pClass`

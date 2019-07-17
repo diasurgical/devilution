@@ -635,7 +635,7 @@ void CreatePlayer(int pnum, char c)
 		plr[pnum]._pSLvlVisited[i] = 0;
 	}
 
-	plr[pnum]._pLvlChanging = 0;
+	plr[pnum]._pLvlChanging = FALSE;
 	plr[pnum].pTownWarps = 0;
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pBattleNet = 0;
@@ -1962,7 +1962,7 @@ void InitLevelChange(int pnum)
 
 	ClrPlrPath(pnum);
 	plr[pnum].destAction = ACTION_NONE;
-	plr[pnum]._pLvlChanging = 1;
+	plr[pnum]._pLvlChanging = TRUE;
 
 	if (pnum == myplr) {
 		plr[pnum].pLvlLoad = 10;
