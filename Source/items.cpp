@@ -2811,21 +2811,21 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		strcpy(tempstr, "damages target's armor");
 		break;
 	case IPL_FASTATTACK:
-		if (x->_iFlags & 0x20000)
+		if (x->_iFlags & ISPL_QUICKATTACK)
 			strcpy(tempstr, "quick attack");
-		if (x->_iFlags & 0x40000)
+		if (x->_iFlags & ISPL_FASTATTACK)
 			strcpy(tempstr, "fast attack");
-		if (x->_iFlags & 0x80000)
+		if (x->_iFlags & ISPL_FASTERATTACK)
 			strcpy(tempstr, "faster attack");
-		if (x->_iFlags & 0x100000)
+		if (x->_iFlags & ISPL_FASTESTATTACK)
 			strcpy(tempstr, "fastest attack");
 		break;
 	case IPL_FASTRECOVER:
-		if (x->_iFlags & 0x200000)
+		if (x->_iFlags & ISPL_FASTRECOVER)
 			strcpy(tempstr, "fast hit recovery");
-		if (x->_iFlags & 0x400000)
+		if (x->_iFlags & ISPL_FASTERRECOVER)
 			strcpy(tempstr, "faster hit recovery");
-		if (x->_iFlags & 0x800000)
+		if (x->_iFlags & ISPL_FASTESTRECOVER)
 			strcpy(tempstr, "fastest hit recovery");
 		break;
 	case IPL_FASTBLOCK:

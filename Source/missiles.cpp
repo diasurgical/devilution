@@ -1240,7 +1240,7 @@ void AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	}
 	if (!mienemy) {
 		av = 32;
-		if (plr[id]._pIFlags & 4) {
+		if (plr[id]._pIFlags & ISPL_RNDARROWVEL) {
 			av = random(64, 32) + 16;
 		}
 		if (plr[id]._pClass == PC_ROGUE)
