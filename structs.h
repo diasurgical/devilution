@@ -225,7 +225,7 @@ typedef struct PlayerStruct {
 	char _pSplTHotKey[4];
 	int _pwtype;
 	BOOLEAN _pBlockFlag;
-	unsigned char _pInvincible;
+	BOOLEAN _pInvincible;
 	char _pLightRad;
 	unsigned char _pLvlChanging;
 	char _pName[PLR_NAME_LEN];
