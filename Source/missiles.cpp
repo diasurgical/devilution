@@ -1299,7 +1299,7 @@ void AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 
 	missile[mi]._miVar1 = 0;
 	missile[mi]._mirange = 2;
-	if (setlevel == 0 || setlvlnum != SL_VILEBETRAYER) {
+	if (!setlevel || setlvlnum != SL_VILEBETRAYER) {
 		missile[mi]._mix = sx + r1;
 		missile[mi]._miy = sy + r2;
 		if (!mienemy)

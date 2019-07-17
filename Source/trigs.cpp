@@ -695,7 +695,6 @@ void CheckTrigForce()
 		ClearPanel();
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void CheckTriggers()
 {
