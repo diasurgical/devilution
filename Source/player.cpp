@@ -32,11 +32,14 @@ char PlrGFXAnimLens[3][11] = {
 	{ 8, 18, 8, 4, 20, 16, 7, 20, 8, 10, 12 },
 	{ 8, 16, 8, 6, 20, 12, 8, 20, 8, 12, 8 }
 };
-int PWVel[4][3] = {
+int PWVel[3][3] = {
 	{ 2048, 1024, 512 },
 	{ 2048, 1024, 512 },
-	{ 2048, 1024, 512 },
-	{ 8, 8, 8 }
+	{ 2048, 1024, 512 }
+};
+// Total number of frames in walk animation.
+int AnimLenFromClass[3] = {
+	8, 8, 8
 };
 int StrengthTbl[3] = { 30, 20, 15 };
 int MagicTbl[3] = { 10, 15, 35 };
@@ -2060,7 +2063,7 @@ BOOL PM_DoStand(int pnum)
 
 BOOL PM_DoWalk(int pnum)
 {
-	int vel;
+	int anim_len;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk: illegal player %d", pnum);
@@ -2072,12 +2075,12 @@ BOOL PM_DoWalk(int pnum)
 		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
-	vel = 8;
+	anim_len = 8;
 	if (currlevel != 0) {
-		vel = PWVel[3][plr[pnum]._pClass];
+		anim_len = AnimLenFromClass[plr[pnum]._pClass];
 	}
 
-	if (plr[pnum]._pVar8 == vel) {
+	if (plr[pnum]._pVar8 == anim_len) {
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
 		plr[pnum].WorldX += plr[pnum]._pVar1;
 		plr[pnum].WorldY += plr[pnum]._pVar2;
@@ -2113,7 +2116,7 @@ BOOL PM_DoWalk(int pnum)
 
 BOOL PM_DoWalk2(int pnum)
 {
-	int vel;
+	int anim_len;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk2: illegal player %d", pnum);
@@ -2125,12 +2128,12 @@ BOOL PM_DoWalk2(int pnum)
 		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
-	vel = 8;
+	anim_len = 8;
 	if (currlevel != 0) {
-		vel = PWVel[3][plr[pnum]._pClass];
+		anim_len = AnimLenFromClass[plr[pnum]._pClass];
 	}
 
-	if (plr[pnum]._pVar8 == vel) {
+	if (plr[pnum]._pVar8 == anim_len) {
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = 0;
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
@@ -2163,7 +2166,7 @@ BOOL PM_DoWalk2(int pnum)
 
 BOOL PM_DoWalk3(int pnum)
 {
-	int vel;
+	int anim_len;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk3: illegal player %d", pnum);
@@ -2175,12 +2178,12 @@ BOOL PM_DoWalk3(int pnum)
 		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
-	vel = 8;
+	anim_len = 8;
 	if (currlevel != 0) {
-		vel = PWVel[3][plr[pnum]._pClass];
+		anim_len = AnimLenFromClass[plr[pnum]._pClass];
 	}
 
-	if (plr[pnum]._pVar8 == vel) {
+	if (plr[pnum]._pVar8 == anim_len) {
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
 		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~BFLAG_PLAYERLR;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
