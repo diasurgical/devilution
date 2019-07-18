@@ -241,7 +241,7 @@ void AddInitItems()
 		item[i]._iCreateInfo = currlevel - 32768;
 		SetupItem(i);
 		item[i]._iAnimFrame = item[i]._iAnimLen;
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 		DeltaAddItem(i);
 		numitems++;
@@ -315,7 +315,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	signed int mr = 0; // magic resistance
 
 	int dmod = 0; // bonus damage mod?
-	int ghit = 0; // (reduced) chance to get hit
+	int ghit = 0; // increased damage from enemies
 
 	signed int lrad = 10; // light radius
 
