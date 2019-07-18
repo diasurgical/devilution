@@ -590,7 +590,7 @@ void CreatePlayer(int pnum, char c)
 	plr[pnum]._pFireResist = 0;
 	plr[pnum]._pLghtResist = 0;
 	plr[pnum]._pLightRad = 10;
-	plr[pnum]._pInfraFlag = 0;
+	plr[pnum]._pInfraFlag = FALSE;
 
 	if (c == PC_WARRIOR) {
 		plr[pnum]._pAblSpells = (__int64)1 << (SPL_REPAIR - 1);
@@ -631,14 +631,14 @@ void CreatePlayer(int pnum, char c)
 	}
 
 	for (i = 0; i < NUMLEVELS; i++) {
-		plr[pnum]._pLvlVisited[i] = 0;
+		plr[pnum]._pLvlVisited[i] = FALSE;
 	}
 
 	for (i = 0; i < 10; i++) {
-		plr[pnum]._pSLvlVisited[i] = 0;
+		plr[pnum]._pSLvlVisited[i] = FALSE;
 	}
 
-	plr[pnum]._pLvlChanging = 0;
+	plr[pnum]._pLvlChanging = FALSE;
 	plr[pnum].pTownWarps = 0;
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pBattleNet = 0;
@@ -1960,12 +1960,12 @@ void InitLevelChange(int pnum)
 	if (pnum == myplr) {
 		dPlayer[plr[myplr].WorldX][plr[myplr].WorldY] = myplr + 1;
 	} else {
-		plr[pnum]._pLvlVisited[plr[pnum].plrlevel] = 1;
+		plr[pnum]._pLvlVisited[plr[pnum].plrlevel] = TRUE;
 	}
 
 	ClrPlrPath(pnum);
 	plr[pnum].destAction = ACTION_NONE;
-	plr[pnum]._pLvlChanging = 1;
+	plr[pnum]._pLvlChanging = TRUE;
 
 	if (pnum == myplr) {
 		plr[pnum].pLvlLoad = 10;

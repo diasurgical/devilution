@@ -1240,7 +1240,7 @@ void AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	}
 	if (!mienemy) {
 		av = 32;
-		if (plr[id]._pIFlags & 4) {
+		if (plr[id]._pIFlags & ISPL_RNDARROWVEL) {
 			av = random(64, 32) + 16;
 		}
 		if (plr[id]._pClass == PC_ROGUE)
@@ -1299,7 +1299,7 @@ void AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 
 	missile[mi]._miVar1 = 0;
 	missile[mi]._mirange = 2;
-	if (setlevel == 0 || setlvlnum != SL_VILEBETRAYER) {
+	if (!setlevel || setlvlnum != SL_VILEBETRAYER) {
 		missile[mi]._mix = sx + r1;
 		missile[mi]._miy = sy + r2;
 		if (!mienemy)

@@ -376,7 +376,7 @@ void diablo_parse_flags(char *args)
 			*/
 				break;
 			case 'l':
-				setlevel = 0;
+				setlevel = FALSE;
 				leveldebug = 1;
 				while (isspace(*args)) {
 					args++;
@@ -440,7 +440,7 @@ void diablo_parse_flags(char *args)
 				break;
 			case 't':
 				leveldebug = 1;
-				setlevel = 1;
+				setlevel = TRUE;
 				while (isspace(*args)) {
 					args++;
 				}
@@ -1834,7 +1834,6 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		PlaySFX(USFX_SKING1);
 }
 // 525738: using guessed type int setseed;
-// 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
 void game_loop(BOOL bStartup)

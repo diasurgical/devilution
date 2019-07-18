@@ -452,7 +452,7 @@ void DeltaSaveLevel()
 			if (i != myplr)
 				plr[i]._pGFXLoad = 0;
 		}
-		plr[myplr]._pLvlVisited[currlevel] = 1;
+		plr[myplr]._pLvlVisited[currlevel] = TRUE;
 		delta_leave_sync(currlevel);
 	}
 }
@@ -2337,7 +2337,7 @@ DWORD On_PLAYER_JOINLEVEL(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, p, sizeof(*p));
 	else {
-		plr[pnum]._pLvlChanging = 0;
+		plr[pnum]._pLvlChanging = FALSE;
 		if (plr[pnum]._pName[0] && !plr[pnum].plractive) {
 			plr[pnum].plractive = TRUE;
 			gbActivePlayers++;

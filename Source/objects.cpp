@@ -2462,7 +2462,7 @@ void OperateBook(int pnum, int i)
 	}
 	object[i]._oAnimFrame++;
 	object[i]._oSelFlag = 0;
-	if (setlevel == 0)
+	if (!setlevel)
 		return;
 
 	if (setlvlnum == SL_BONECHAMB) {
@@ -2485,7 +2485,7 @@ void OperateBook(int pnum, int i)
 		    0,
 		    0);
 	}
-	if (setlevel != 0 && setlvlnum == SL_VILEBETRAYER) {
+	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
 		ObjChangeMapResync(
 		    object[i]._oVar1,
 		    object[i]._oVar2,
