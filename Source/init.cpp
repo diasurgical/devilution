@@ -396,6 +396,15 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	case WM_ACTIVATEAPP:
 		init_activate_window(hWnd, wParam);
 		break;
+#ifdef _DEBUG
+	case WM_SYSKEYUP:
+		if(wParam == VK_RETURN) {
+			fullscreen = !fullscreen;
+			dx_reinit();
+			return 0;
+		}
+		break;
+#endif
 	case WM_QUERYNEWPALETTE:
 		SDrawRealizePalette();
 		return 1;
