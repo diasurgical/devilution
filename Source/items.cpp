@@ -71,41 +71,41 @@ char *ItemDropStrs[35] = {
 	"FLazStaf"
 };
 BYTE ItemAnimLs[35] = {
-	15u,
-	13u,
-	16u,
-	13u,
-	10u,
-	13u,
-	13u,
-	13u,
-	13u,
-	10u,
-	13u,
-	13u,
-	13u,
-	13u,
-	13u,
-	13u,
-	13u,
-	13u,
-	13u,
-	1u,
-	16u,
-	16u,
-	16u,
-	16u,
-	16u,
-	16u,
-	16u,
-	16u,
-	13u,
-	12u,
-	12u,
-	13u,
-	13u,
-	13u,
-	8u
+	15,
+	13,
+	16,
+	13,
+	10,
+	13,
+	13,
+	13,
+	13,
+	10,
+	13,
+	13,
+	13,
+	13,
+	13,
+	13,
+	13,
+	13,
+	13,
+	1,
+	16,
+	16,
+	16,
+	16,
+	16,
+	16,
+	16,
+	16,
+	13,
+	12,
+	12,
+	13,
+	13,
+	13,
+	8
 };
 int ItemDropSnds[35] = {
 	IS_FHARM,
@@ -238,10 +238,10 @@ void AddInitItems()
 			GetItemAttrs(i, IDI_HEAL, currlevel);
 		else
 			GetItemAttrs(i, IDI_MANA, currlevel);
-		item[i]._iCreateInfo = currlevel - 32768;
+		item[i]._iCreateInfo = currlevel - 0x8000;
 		SetupItem(i);
 		item[i]._iAnimFrame = item[i]._iAnimLen;
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 		DeltaAddItem(i);
 		numitems++;
@@ -264,7 +264,7 @@ void InitItems()
 		item[i]._isin = 0;
 		item[i]._iSelFlag = 0;
 		item[i]._iIdentified = FALSE;
-		item[i]._iPostDraw = 0;
+		item[i]._iPostDraw = FALSE;
 	}
 
 	for (i = 0; i < MAXITEMS; i++) {
@@ -315,7 +315,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	signed int mr = 0; // magic resistance
 
 	int dmod = 0; // bonus damage mod?
-	int ghit = 0; // (reduced) chance to get hit
+	int ghit = 0; // increased damage from enemies
 
 	signed int lrad = 10; // light radius
 
@@ -2355,7 +2355,7 @@ void SpawnRock()
 		GetItemAttrs(i, IDI_ROCK, currlevel);
 		SetupItem(i);
 		item[i]._iSelFlag = 2;
-		item[i]._iPostDraw = 1;
+		item[i]._iPostDraw = TRUE;
 		item[i]._iAnimFrame = 11;
 		numitems++;
 	}
