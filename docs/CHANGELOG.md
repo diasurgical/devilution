@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### June 16, 2019
-- All functions except one are now binery identical to Diablo 1.09b
+- All functions except one are now binary identical to Diablo 1.09b
 
 ## 0.9.6
 ### May 19, 2019
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Mute buttons now work correctly
 
 ### April 15, 2019
-- Code is once again compiled as C++ as some parts appear to require despite the indications in RICH
+- Code is once again compiled as C++ as some parts appear to require despite the indications in Rich header
 
 ## 0.8.0
 ### April 12, 2019
@@ -28,10 +28,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## 0.7.0
 ### April 9, 2019
 - [70% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
-- The last of the compiler flags are figgured out
 
 ### April 9, 2019
-- The last of the compiler flags are figgured out
+- The last of the compiler flags are figured out
 
 ## 0.6.0
 ### March 19, 2019
@@ -42,10 +41,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## 0.5.0
 ### January 14, 2019
 - [50% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
-- #456 Assets can now be loaded directly form disk (no need for MPQ-files when modding)
-- #528 Code ported to C (can still be compiled as C++)
-- #111 Rich Header no longer contains incorrect sections
-- #182 defined a [Code Style](https://github.com/diasurgical/devilution/wiki/Code-style-guide) with accompanying clang-format definition
+- [#456](https://github.com/diasurgical/devilution/pull/456) Assets can now be loaded directly form disk (no need for MPQ-files when modding)
+- [#528](https://github.com/diasurgical/devilution/pull/528) Code ported to C (can still be compiled as C++)
+- [#111](https://github.com/diasurgical/devilution/pull/111) Rich Header no longer contains incorrect sections
+- [#182](https://github.com/diasurgical/devilution/pull/182) defined a [Code Style](https://github.com/diasurgical/devilution/wiki/Code-style-guide) with accompanying clang-format definition
 - `Diabloui.dll` is now also part of the source tree
 - Added [Contribution Guide](https://github.com/diasurgical/devilution/blob/master/docs/CONTRIBUTING.md)
 - Added PDB build option for comparing with [devilution-comparer](https://github.com/diasurgical/devilution-comparer)
@@ -58,7 +57,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - An older and more original PSX symbol file is discovered
 
 ### October 1, 2018
-- Compiler version is confirmed to be correct by discovery of the RICH header
+- Compiler version is confirmed to be correct by discovery of the [Rich header](http://bytepointer.com/articles/the_microsoft_rich_header.htm)
 
 ### September 18, 2018
 - Merge nightly back in to devilution
@@ -67,7 +66,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Travis is configured to report the overall project delta to 1.09b on every change
 
 ### September 1, 2018
-- Devilution-comparer is developed for comparing binery diff in compiled functions
+- Devilution-comparer is developed for comparing binary diff in compiled functions
 
 ### August 28, 2018
 - The correct compiler combination is found by trial and error plus a bit of luck
@@ -77,22 +76,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix crash
 - Get the first functions bin exact
 - Fix render issues
-- Introduce debug functions from the 1.00 deubg release
+- Introduce debug functions from the 1.00 debug release
 - Fix missiles
 - More consts, sizeof and defines
-- Fix several issues with dungion generation code
+- Fix several issues with dungeon generation code
 - Fix multiplayer
 - Fix error messages
-- Corect names based on PSX symbols and DX SDK
+- Correct names based on PSX symbols and DX SDK
 
 ### August 20, 2018
-- Created nightly fork where code clean up can take place untill major bugs are fixed in the main project
+- Created nightly fork where code clean up can take place until major bugs are fixed in the main project
 
 ### July 6, 2018
 - Setup a Discord channel
 
 ### July 1, 2018
-- Diablo 1.09b is determined to have been compiled wtih the /O1 flag
+- Diablo 1.09b is determined to have been compiled with the /O1 flag
 
 ## 0.3.0
 ### June 28, 2018
@@ -100,7 +99,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Windows binary can now be compiled under VS 5.10
 - Fix multiple crashes
 - Remove cheesy copyright notice
-- Set up continious building via Travis and AppVeyor
+- Set up continuous building via Travis and AppVeyor
 - Icon added
 - Fix Zhar quest, monster squelching and golems
 - Use consts for various values
