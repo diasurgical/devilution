@@ -1696,7 +1696,10 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 		}
 	}
 	if (bFlag & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
+		if (light_table_index)
+			DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
+		else
+			DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
 	}
 	if (bPlr > 0) {
 		p = bPlr - 1;
