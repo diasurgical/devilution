@@ -238,7 +238,7 @@ void AddInitItems()
 			GetItemAttrs(i, IDI_HEAL, currlevel);
 		else
 			GetItemAttrs(i, IDI_MANA, currlevel);
-		item[i]._iCreateInfo = currlevel - 32768;
+		item[i]._iCreateInfo = currlevel - 0x8000;
 		SetupItem(i);
 		item[i]._iAnimFrame = item[i]._iAnimLen;
 		item[i]._iAnimFlag = FALSE;
@@ -264,7 +264,7 @@ void InitItems()
 		item[i]._isin = 0;
 		item[i]._iSelFlag = 0;
 		item[i]._iIdentified = FALSE;
-		item[i]._iPostDraw = 0;
+		item[i]._iPostDraw = FALSE;
 	}
 
 	for (i = 0; i < MAXITEMS; i++) {
@@ -2355,7 +2355,7 @@ void SpawnRock()
 		GetItemAttrs(i, IDI_ROCK, currlevel);
 		SetupItem(i);
 		item[i]._iSelFlag = 2;
-		item[i]._iPostDraw = 1;
+		item[i]._iPostDraw = TRUE;
 		item[i]._iAnimFrame = 11;
 		numitems++;
 	}
