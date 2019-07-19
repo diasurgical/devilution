@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### June 16, 2019
 - All functions except one are now binary identical to Diablo 1.09b
 
-## 0.9.6
+## [0.9.6](https://github.com/diasurgical/devilution/compare/0.9.0...0.9.6)
 ### May 19, 2019
 - [96% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - Fix several item corruption issues introduced in 0.9.0
 
-## 0.9.0
+## [0.9.0](https://github.com/diasurgical/devilution/compare/0.8.0...0.9.0)
 ### May 2, 2019
 - [90% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - Mute buttons now work correctly
@@ -20,25 +20,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### April 15, 2019
 - Code is once again compiled as C++ as some parts appear to require despite the indications in Rich header
 
-## 0.8.0
+## [0.8.0](https://github.com/diasurgical/devilution/compare/0.7.0...0.8.0)
 ### April 12, 2019
 - [80% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - Fixes a few minor issues with generated items
 
-## 0.7.0
+## [0.7.0](https://github.com/diasurgical/devilution/compare/0.6.0...0.7.0)
 ### April 9, 2019
 - [70% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 
 ### April 9, 2019
 - The last of the compiler flags are figured out
 
-## 0.6.0
+## [0.6.0](https://github.com/diasurgical/devilution/compare/v0.5.0...0.6.0)
 ### March 19, 2019
 - [60% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - Added a guide for people wanting to join in [Cleaning the code](https://github.com/diasurgical/devilution/wiki/Cleaning-Code)
 - File size is now only 968 bytes (0.13%) larger than the original Diablo 1.09b.
 
-## 0.5.0
+## [0.5.0](https://github.com/diasurgical/devilution/compare/0.4...v0.5.0)
 ### January 14, 2019
 - [50% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - [#456](https://github.com/diasurgical/devilution/pull/456) Assets can now be loaded directly form disk (no need for MPQ-files when modding)
@@ -71,7 +71,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### August 28, 2018
 - The correct compiler combination is found by trial and error plus a bit of luck
 
-## 0.4.0
+## [0.4.0](https://github.com/diasurgical/devilution/compare/0.3...0.4)
 ### September 16, 2018
 - Fix crash
 - Get the first functions bin exact
@@ -93,7 +93,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### July 1, 2018
 - Diablo 1.09b is determined to have been compiled with the /O1 flag
 
-## 0.3.0
+## [0.3.0](https://github.com/diasurgical/devilution/compare/0.1.0...0.3)
 ### June 28, 2018
 - Windows binary can now be compiled under Linux and Mac OS X
 - Windows binary can now be compiled under VS 5.10
