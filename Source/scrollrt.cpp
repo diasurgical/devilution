@@ -1358,7 +1358,7 @@ void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks
 	}
 }
 
-void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, signed int CelSkip, int sx, int sy)
+void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, int CelSkip, int sx, int sy)
 {
 	int lti_old, cta_old, lpi_old;
 	BYTE *dst;

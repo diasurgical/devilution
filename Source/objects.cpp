@@ -53,7 +53,7 @@ char shrinemax[NUM_SHRINETYPE] = {
 	16, 16, 16, 16, 16, 16
 };
 // 0 - sp+mp, 1 - sp only, 2 - mp only
-unsigned char shrineavail[NUM_SHRINETYPE] = {
+BYTE shrineavail[NUM_SHRINETYPE] = {
 	0, 0, 1, 1, 0, 0, 0, 0, 1, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
 	0, 0, 0, 0, 0, 2
@@ -1250,7 +1250,7 @@ void AddStoryBook(int i)
 		object[i]._oVar2 = StoryText[bookframe][1];
 	if (currlevel == 12)
 		object[i]._oVar2 = StoryText[bookframe][2];
-	object[i]._oVar3 = ((unsigned int)currlevel >> 2) + 3 * bookframe - 1;
+	object[i]._oVar3 = (currlevel >> 2) + 3 * bookframe - 1;
 	object[i]._oAnimFrame = 5 - 2 * bookframe;
 	object[i]._oVar4 = object[i]._oAnimFrame + 1;
 }
@@ -2371,7 +2371,7 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 
 	for (j = y1; j <= y2; j++) {
 		for (i = x1; i <= x2; i++) {
-			ObjSetMini(i, j, (unsigned char)pdungeon[i][j]);
+			ObjSetMini(i, j, (BYTE)pdungeon[i][j]);
 			dungeon[i][j] = pdungeon[i][j];
 		}
 	}

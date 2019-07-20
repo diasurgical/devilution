@@ -163,7 +163,7 @@ void decode_enemy(int m, int enemy);
 /* rdata */
 
 extern const char plr2monst[9];
-extern const unsigned char counsmiss[4];
+extern const BYTE counsmiss[4];
 
 /* data */
 

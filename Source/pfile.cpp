@@ -208,13 +208,13 @@ void game_2_ui_player(const PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSav
 	heroinfo->vitality = p->_pVitality;
 	heroinfo->gold = p->_pGold;
 	heroinfo->hassaved = bHasSaveFile;
-	heroinfo->herorank = (unsigned char)p->pDiabloKillLevel;
+	heroinfo->herorank = p->pDiabloKillLevel;
 	heroinfo->spawned = 0;
 }
 
-unsigned char game_2_ui_class(const PlayerStruct *p)
+BYTE game_2_ui_class(const PlayerStruct *p)
 {
-	unsigned char uiclass;
+	BYTE uiclass;
 	if (p->_pClass == PC_WARRIOR)
 		uiclass = UI_WARRIOR;
 	else if (p->_pClass == PC_ROGUE)

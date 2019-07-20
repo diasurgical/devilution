@@ -159,7 +159,7 @@ extern int byadd[8];
 extern char *shrinestrs[NUM_SHRINETYPE];
 extern char shrinemin[NUM_SHRINETYPE];
 extern char shrinemax[NUM_SHRINETYPE];
-extern unsigned char shrineavail[NUM_SHRINETYPE];
+extern BYTE shrineavail[NUM_SHRINETYPE];
 extern char *StoryBookName[9];
 extern int StoryText[3][3];
 

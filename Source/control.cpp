@@ -56,7 +56,7 @@ BOOL panbtndown;
 BYTE *pTalkPanel;
 int spselflag;
 
-const unsigned char fontframe[128] = {
+const BYTE fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 54, 44, 57, 58, 56, 55, 47, 40, 41, 59, 39, 50, 37, 51, 52,
@@ -66,7 +66,7 @@ const unsigned char fontframe[128] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 40, 66, 41, 67, 0
 };
-const unsigned char fontkern[68] = {
+const BYTE fontkern[68] = {
 	8, 10, 7, 9, 8, 7, 6, 8, 8, 3,
 	3, 8, 6, 11, 9, 10, 6, 9, 9, 6,
 	9, 11, 10, 13, 10, 11, 7, 5, 7, 7,
@@ -102,7 +102,7 @@ const int lineoffset[25] = {
 	BUFFER_WIDTH * 606 + 241,
 	BUFFER_WIDTH * 617 + 241
 };
-const unsigned char gbFontTransTbl[256] = {
+const BYTE gbFontTransTbl[256] = {
 	// clang-format off
 	'\0', 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,

@@ -310,14 +310,14 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	unsigned __int64 spl = 0; // bitarray for all enabled/active spells
 
-	signed int fr = 0; // fire resistance
-	signed int lr = 0; // lightning resistance
-	signed int mr = 0; // magic resistance
+	int fr = 0; // fire resistance
+	int lr = 0; // lightning resistance
+	int mr = 0; // magic resistance
 
 	int dmod = 0; // bonus damage mod?
 	int ghit = 0; // increased damage from enemies
 
-	signed int lrad = 10; // light radius
+	int lrad = 10; // light radius
 
 	int ihp = 0;   // increased HP
 	int imana = 0; // increased mana
