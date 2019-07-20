@@ -95,7 +95,7 @@ void pfile_encode_hero(const PkPlayerStruct *pPack)
 	mem_free_dbg(packed);
 }
 
-BOOL pfile_open_archive(BOOL a1, DWORD save_num)
+BOOL pfile_open_archive(BOOL update, DWORD save_num)
 {
 	char FileName[MAX_PATH];
 
@@ -103,7 +103,7 @@ BOOL pfile_open_archive(BOOL a1, DWORD save_num)
 	if (OpenMPQ(FileName, FALSE, save_num))
 		return TRUE;
 
-	if (a1 && gbMaxPlayers > 1)
+	if (update && gbMaxPlayers > 1)
 		mpqapi_store_default_time(save_num);
 	return FALSE;
 }
