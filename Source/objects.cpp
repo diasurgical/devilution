@@ -831,7 +831,7 @@ void InitObjects()
 		InitRndLocObj(1, 5, 7);
 		if (leveltype != DTYPE_HELL)
 			AddObjTraps();
-		if (leveltype > 1u)
+		if (leveltype > 1)
 			AddChestTraps();
 		InitObjFlag = FALSE;
 	}
@@ -2351,7 +2351,7 @@ void ObjChangeMap(int x1, int y1, int x2, int y2)
 
 	for (j = y1; j <= y2; j++) {
 		for (i = x1; i <= x2; i++) {
-			ObjSetMini(i, j, (BYTE)pdungeon[i][j]);
+			ObjSetMini(i, j, pdungeon[i][j]);
 			dungeon[i][j] = pdungeon[i][j];
 		}
 	}
@@ -2371,7 +2371,7 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 
 	for (j = y1; j <= y2; j++) {
 		for (i = x1; i <= x2; i++) {
-			ObjSetMini(i, j, (BYTE)pdungeon[i][j]);
+			ObjSetMini(i, j, pdungeon[i][j]);
 			dungeon[i][j] = pdungeon[i][j];
 		}
 	}
@@ -2580,7 +2580,7 @@ void OperateChest(int pnum, int i, BOOL sendmsg)
 			SetRndSeed(object[i]._oRndSeed);
 			if (setlevel) {
 				for (j = 0; j < object[i]._oVar1; j++) {
-					CreateRndItem(object[i]._ox, object[i]._oy, 1u, sendmsg, 0);
+					CreateRndItem(object[i]._ox, object[i]._oy, TRUE, sendmsg, 0);
 				}
 			} else {
 				for (j = 0; j < object[i]._oVar1; j++) {

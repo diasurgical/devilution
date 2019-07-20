@@ -9,7 +9,7 @@ BYTE dungeon[DMAXX][DMAXY];
 char dObject[MAXDUNX][MAXDUNY];
 BYTE *pSpeedCels;
 int nlevel_frames;
-char pdungeon[DMAXX][DMAXY];
+BYTE pdungeon[DMAXX][DMAXY];
 char dDead[MAXDUNX][MAXDUNY];
 MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY];
 char dPreLight[MAXDUNX][MAXDUNY];

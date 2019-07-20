@@ -165,7 +165,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					do {
 						while (1) {
 							width = *src++;
-							if ((width & 0x80u) == 0)
+							if ((width & 0x80) == 0)
 								break;
 							width = -(char)width;
 							dst += width;
@@ -360,7 +360,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			while (1) {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) == 0)
+					if ((width & 0x80) == 0)
 						break;
 					width = -(char)width;
 					dst += width;
@@ -776,7 +776,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			do {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) != 0)
+					if ((width & 0x80) != 0)
 						break;
 					yy_32 -= width;
 					if (dst < gpBufEnd)
@@ -1188,7 +1188,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				do {
 					while (1) {
 						width = *src++;
-						if ((width & 0x80u) == 0)
+						if ((width & 0x80) == 0)
 							break;
 						width = -(char)width;
 						dst += width;
@@ -1415,7 +1415,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 					do {
 						while (1) {
 							width = *src++;
-							if ((width & 0x80u) == 0)
+							if ((width & 0x80) == 0)
 								break;
 							width = -(char)width;
 							dst += width;
@@ -1568,7 +1568,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			do {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) == 0)
+					if ((width & 0x80) == 0)
 						break;
 					width = -(char)width;
 					dst += width;
@@ -1831,7 +1831,7 @@ void drawUpperScreen(BYTE *pBuff)
 				do {
 					while (1) {
 						width = *src++;
-						if ((width & 0x80u) == 0)
+						if ((width & 0x80) == 0)
 							break;
 						width = -(char)width;
 						dst += width;
@@ -2051,7 +2051,7 @@ void drawUpperScreen(BYTE *pBuff)
 					do {
 						while (1) {
 							width = *src++;
-							if ((width & 0x80u) == 0)
+							if ((width & 0x80) == 0)
 								break;
 							width = -(char)width;
 							dst += width;
@@ -2190,7 +2190,7 @@ void drawUpperScreen(BYTE *pBuff)
 			do {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) == 0)
+					if ((width & 0x80) == 0)
 						break;
 					width = -(char)width;
 					dst += width;
@@ -2458,7 +2458,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 			while (1) {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) == 0)
+					if ((width & 0x80) == 0)
 						break;
 					width = -(char)width;
 					dst += width;
@@ -2888,7 +2888,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 				do {
 					while (1) {
 						width = *src++;
-						if ((width & 0x80u) == 0)
+						if ((width & 0x80) == 0)
 							break;
 						width = -(char)width;
 						dst += width;
@@ -3168,7 +3168,7 @@ LABEL_11:
 			do {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) != 0)
+					if ((width & 0x80) != 0)
 						break;
 					yy_32 -= width;
 					if (dst < gpBufEnd) {
@@ -3677,7 +3677,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 					do {
 						while (1) {
 							width = *src++;
-							if ((width & 0x80u) != 0)
+							if ((width & 0x80) != 0)
 								break;
 							yy_32 -= width;
 							if (dst < gpBufEnd) {
@@ -3928,7 +3928,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 					do {
 						while (1) {
 							width = *src++;
-							if ((width & 0x80u) != 0)
+							if ((width & 0x80) != 0)
 								break;
 							yy_32 -= width;
 							if (dst < gpBufEnd) {
@@ -4148,7 +4148,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 			do {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) != 0)
+					if ((width & 0x80) != 0)
 						break;
 					yy_32 -= width;
 					if (dst < gpBufEnd) {
@@ -4480,7 +4480,7 @@ void drawLowerScreen(BYTE *pBuff)
 					do {
 						while (1) {
 							width = *src++;
-							if ((width & 0x80u) == 0)
+							if ((width & 0x80) == 0)
 								break;
 							width = -(char)width;
 							dst += width;
@@ -4724,7 +4724,7 @@ void drawLowerScreen(BYTE *pBuff)
 					yy_32 = 32;
 					do {
 						width = *src++;
-						if ((width & 0x80u) == 0) {
+						if ((width & 0x80) == 0) {
 							yy_32 -= width;
 							if (dst < gpBufEnd) {
 								asm_cel_light_edge(width, tbl, &dst, &src);
@@ -4927,7 +4927,7 @@ void drawLowerScreen(BYTE *pBuff)
 			do {
 				while (1) {
 					width = *src++;
-					if ((width & 0x80u) == 0)
+					if ((width & 0x80) == 0)
 						break;
 					width = -(char)width;
 					dst += width;

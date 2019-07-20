@@ -106,7 +106,7 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 	1583495809
 };
 char *ClassStrTbl[3] = { "Warrior", "Rogue", "Sorceror" };
-BYTE fix[9] = { 0u, 0u, 3u, 3u, 3u, 6u, 6u, 6u, 8u }; /* PM_ChangeLightOff local type */
+BYTE fix[9] = { 0, 0, 3, 3, 3, 6, 6, 6, 8 }; /* PM_ChangeLightOff local type */
 
 void SetPlayerGPtrs(BYTE *pData, BYTE **pAnim)
 {
