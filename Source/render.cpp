@@ -167,7 +167,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 							width = *src++;
 							if ((width & 0x80u) == 0)
 								break;
-							_LOBYTE(width) = -(char)width;
+							width = -(char)width;
 							dst += width;
 							yy_32 -= width;
 							if (!yy_32)
@@ -362,7 +362,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					width = *src++;
 					if ((width & 0x80u) == 0)
 						break;
-					_LOBYTE(width) = -(char)width;
+					width = -(char)width;
 					dst += width;
 					xx_32 -= width;
 					if (!xx_32) {
@@ -831,7 +831,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					if (!yy_32)
 						goto LABEL_391;
 				}
-				_LOBYTE(width) = -(char)width;
+				width = -(char)width;
 				dst += width;
 				yy_32 -= width;
 			} while (yy_32);
@@ -1190,7 +1190,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 						width = *src++;
 						if ((width & 0x80u) == 0)
 							break;
-						_LOBYTE(width) = -(char)width;
+						width = -(char)width;
 						dst += width;
 						if (width & 0x1F)
 							gdwCurrentMask <<= width & 0x1F;
@@ -1417,7 +1417,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 							width = *src++;
 							if ((width & 0x80u) == 0)
 								break;
-							_LOBYTE(width) = -(char)width;
+							width = -(char)width;
 							dst += width;
 							if (width & 0x1F)
 								gdwCurrentMask <<= width & 0x1F;
@@ -1570,7 +1570,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 					width = *src++;
 					if ((width & 0x80u) == 0)
 						break;
-					_LOBYTE(width) = -(char)width;
+					width = -(char)width;
 					dst += width;
 					if (width & 0x1F)
 						gdwCurrentMask <<= width & 0x1F;
@@ -1833,7 +1833,7 @@ void drawUpperScreen(BYTE *pBuff)
 						width = *src++;
 						if ((width & 0x80u) == 0)
 							break;
-						_LOBYTE(width) = -(char)width;
+						width = -(char)width;
 						dst += width;
 						yy_32 -= width;
 						if (!yy_32)
@@ -2053,7 +2053,7 @@ void drawUpperScreen(BYTE *pBuff)
 							width = *src++;
 							if ((width & 0x80u) == 0)
 								break;
-							_LOBYTE(width) = -(char)width;
+							width = -(char)width;
 							dst += width;
 							yy_32 -= width;
 							if (!yy_32)
@@ -2192,7 +2192,7 @@ void drawUpperScreen(BYTE *pBuff)
 					width = *src++;
 					if ((width & 0x80u) == 0)
 						break;
-					_LOBYTE(width) = -(char)width;
+					width = -(char)width;
 					dst += width;
 					yy_32 -= width;
 					if (!yy_32)
@@ -2460,7 +2460,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 					width = *src++;
 					if ((width & 0x80u) == 0)
 						break;
-					_LOBYTE(width) = -(char)width;
+					width = -(char)width;
 					dst += width;
 					yy_32 -= width;
 					if (!yy_32) {
@@ -2890,7 +2890,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 						width = *src++;
 						if ((width & 0x80u) == 0)
 							break;
-						_LOBYTE(width) = -(char)width;
+						width = -(char)width;
 						dst += width;
 						yy_32 -= width;
 						if (!yy_32)
@@ -3230,7 +3230,7 @@ LABEL_11:
 					if (!yy_32)
 						goto LABEL_293;
 				}
-				_LOBYTE(width) = -(char)width;
+				width = -(char)width;
 				dst += width;
 				yy_32 -= width;
 			} while (yy_32);
@@ -3699,7 +3699,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 							if (!yy_32)
 								goto LABEL_252;
 						}
-						_LOBYTE(width) = -(char)width;
+						width = -(char)width;
 						dst += width;
 						if (width & 0x1F)
 							gdwCurrentMask <<= width & 0x1F;
@@ -3940,7 +3940,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 							if (!yy_32)
 								goto LABEL_52;
 						}
-						_LOBYTE(width) = -(char)width;
+						width = -(char)width;
 						dst += width;
 						if (width & 0x1F)
 							gdwCurrentMask <<= width & 0x1F;
@@ -4170,7 +4170,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 					if (!yy_32)
 						goto LABEL_152;
 				}
-				_LOBYTE(width) = -(char)width;
+				width = -(char)width;
 				dst += width;
 				if (width & 0x1F)
 					gdwCurrentMask <<= width & 0x1F;
@@ -4482,7 +4482,7 @@ void drawLowerScreen(BYTE *pBuff)
 							width = *src++;
 							if ((width & 0x80u) == 0)
 								break;
-							_LOBYTE(width) = -(char)width;
+							width = -(char)width;
 							dst += width;
 							yy_32 -= width;
 							if (!yy_32)
@@ -4733,7 +4733,7 @@ void drawLowerScreen(BYTE *pBuff)
 								dst += width;
 							}
 						} else {
-							_LOBYTE(width) = -(char)width;
+							width = -(char)width;
 							dst += width;
 							yy_32 -= width;
 						}
@@ -4929,7 +4929,7 @@ void drawLowerScreen(BYTE *pBuff)
 					width = *src++;
 					if ((width & 0x80u) == 0)
 						break;
-					_LOBYTE(width) = -(char)width;
+					width = -(char)width;
 					dst += width;
 					yy_32 -= width;
 					if (!yy_32)

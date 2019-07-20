@@ -151,15 +151,6 @@
 #define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
 #endif
 
-/////////////////////////////////////////////////////////////////////////
-/* temporary stuff from the decompiler */
-/* remove all the garbage below in the future */
-/////////////////////////////////////////////////////////////////////////
-#ifndef IDA_GARBAGE
-#define IDA_GARBAGE
-#define _LOBYTE(x)  (*((BYTE*)&(x)))
-#endif /* IDA_GARBAGE */
-
 // Typedef for the function pointer
 typedef void (*_PVFV)(void);
 
