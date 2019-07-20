@@ -1576,7 +1576,7 @@ void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks
 
 void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCap, int dx, int dy, int eflag)
 {
-	int px, py, nCel, nMon, negMon, p;
+	int px, py, nCel, nMon, negMon, p, tx, ty;
 	char bFlag, bDead, bObj, bItem, bPlr, bArch, bMap, negPlr, dd;
 	DeadStruct *pDeadGuy;
 	ItemStruct *pItem;
@@ -1603,9 +1603,13 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 	if (visiondebug && bFlag & BFLAG_LIT) {
 		CelDecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, 0, CelCap);
 	}
+	tx = dx - 96;
+	ty = dy - 16;
+
 	if (MissilePreFlag && bFlag & BFLAG_MISSILE) {
 		DrawMissile(sx, sy, dx, dy, 0, CelCap, 1);
 	}
+
 	if (light_table_index < lightmax) {
 		if (bDead != 0) {
 			pDeadGuy = &dead[(bDead & 0x1F) - 1];
@@ -1664,7 +1668,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 			DrawPlayer(p, sx, sy - 1, px, py, pPlayer->_pAnimData, pPlayer->_pAnimFrame, pPlayer->_pAnimWidth, 0, CelCap);
 			if (eflag && pPlayer->_peflag != 0) {
 				if (pPlayer->_peflag == 2) {
-					scrollrt_draw_e_flag(pBuff - (BUFFER_WIDTH * 16 + 96), sx - 2, sy + 1, capChunks, CelCap, dx - 96, dy - 16);
+					scrollrt_draw_e_flag(pBuff - (BUFFER_WIDTH * 16 + 96), sx - 2, sy + 1, capChunks, CelCap, tx, ty);
 				}
 				scrollrt_draw_e_flag(pBuff - 64, sx - 1, sy + 1, capChunks, CelCap, dx - 64, dy);
 			}
@@ -1696,10 +1700,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 		}
 	}
 	if (bFlag & BFLAG_DEAD_PLAYER) {
-		if (light_table_index)
-			DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
-		else
-			DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
+		DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
 	}
 	if (bPlr > 0) {
 		p = bPlr - 1;
