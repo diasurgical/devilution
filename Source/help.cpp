@@ -1,10 +1,10 @@
 #include "diablo.h"
 
-int help_select_line; // weak
-int dword_634494;     // weak
+int help_select_line;
+int dword_634494;
 int helpflag;
 int displayinghelp[22]; /* check, does nothing? */
-int HelpTop;            // weak
+int HelpTop;
 
 const char gszHelpText[] = {
 	"$Keyboard Shortcuts:|"
@@ -81,7 +81,6 @@ void InitHelp()
 	dword_634494 = 0;
 	displayinghelp[0] = 0;
 }
-// 634494: using guessed type int dword_634494;
 
 void DrawHelp()
 {
@@ -171,8 +170,6 @@ void DrawHelp()
 
 	PrintSString(0, 23, 1, "Press ESC to end or the arrow keys to scroll.", COL_GOLD, 0);
 }
-// 634490: using guessed type int help_select_line;
-// 634960: using guessed type int HelpTop;
 
 void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 {
@@ -200,20 +197,15 @@ void DisplayHelp()
 	helpflag = 1;
 	HelpTop = 5000;
 }
-// 634490: using guessed type int help_select_line;
-// 634960: using guessed type int HelpTop;
 
 void HelpScrollUp()
 {
 	if (help_select_line > 0)
 		help_select_line--;
 }
-// 634490: using guessed type int help_select_line;
 
 void HelpScrollDown()
 {
 	if (help_select_line < HelpTop)
 		help_select_line++;
 }
-// 634490: using guessed type int help_select_line;
-// 634960: using guessed type int HelpTop;

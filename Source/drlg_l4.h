@@ -19,7 +19,7 @@ extern int SP4y1;
 extern int SP4y2;
 extern unsigned char L4dungeon[80][80];
 extern unsigned char dung[20][20];
-//int dword_52A4DC; // weak
+//int dword_52A4DC;
 
 void DRLG_LoadL4SP();
 void DRLG_FreeL4SP();

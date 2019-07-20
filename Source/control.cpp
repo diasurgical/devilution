@@ -4,17 +4,17 @@ BYTE sgbNextTalkSave;
 BYTE sgbTalkSavePos;
 BYTE *pDurIcons;
 BYTE *pChrButtons;
-BOOL drawhpflag; // idb
+BOOL drawhpflag;
 BOOL dropGoldFlag;
 int panbtn[8];
 int chrbtn[4];
 BYTE *pMultiBtns;
 BYTE *pPanelButtons;
 BYTE *pChrPanel;
-int lvlbtndown; // weak
+int lvlbtndown;
 char sgszTalkSave[8][80];
-int dropGoldValue; // idb
-BOOL drawmanaflag; // idb
+int dropGoldValue;
+BOOL drawmanaflag;
 BOOL chrbtnactive;
 char sgszTalkMsg[MAX_SEND_STR_LEN];
 BYTE *pPanelText;
@@ -23,38 +23,38 @@ BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 BYTE *pTalkBtns;
 int pstrjust[4];
-int pnumlines; // idb
+int pnumlines;
 BOOL pinfoflag;
 BOOL talkbtndown[3];
-int pSpell; // weak
+int pSpell;
 BYTE *pManaBuff;
-char infoclr;      // weak
-int sgbPlrTalkTbl; // weak // should be char [4]
+char infoclr;
+int sgbPlrTalkTbl; // should be char [4]
 BYTE *pGBoxBuff;
 BYTE *pSBkBtnCel;
 char tempstr[256];
 BOOLEAN whisper[MAX_PLRS];
-int sbooktab;             // weak
-int pSplType;             // weak
-int frame;                // idb
-int initialDropGoldIndex; // idb
-int talkflag;             // weak
+int sbooktab;
+int pSplType;
+int frame;
+int initialDropGoldIndex;
+int talkflag;
 BYTE *pSBkIconCels;
-int sbookflag; // weak
+int sbookflag;
 int chrflag;
 BOOL drawbtnflag;
 BYTE *pSpellBkCel;
 char infostr[MAX_PATH];
-int numpanbtns; // weak
+int numpanbtns;
 BYTE *pStatusPanel;
 char panelstr[256];
-int panelflag; // weak
-unsigned char SplTransTbl[256];
-int initialDropGoldValue; // idb
+int panelflag;
+BYTE SplTransTbl[256];
+int initialDropGoldValue;
 BYTE *pSpellCels;
 BOOL panbtndown;
 BYTE *pTalkPanel;
-int spselflag; // weak
+int spselflag;
 
 const unsigned char fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -498,8 +498,6 @@ void DrawSpellList()
 		}
 	}
 }
-// 4B8834: using guessed type int pSpell;
-// 4B8954: using guessed type int pSplType;
 
 void SetSpell()
 {
@@ -1414,12 +1412,6 @@ void CheckPanelInfo()
 	if (MouseX > 190 && MouseX < 437 && MouseY > 356 && MouseY < 385)
 		pcursinvitem = CheckInvHLight();
 }
-// 484368: using guessed type int FriendlyMode;
-// 4B883C: using guessed type int infoclr;
-// 4B8A7C: using guessed type int numpanbtns;
-// 4B8B84: using guessed type int panelflag;
-// 4B8C98: using guessed type int spselflag;
-// 4B8CB8: using guessed type char pcursinvitem;
 
 void CheckBtnUp()
 {

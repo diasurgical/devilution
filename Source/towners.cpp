@@ -1,11 +1,11 @@
 #include "diablo.h"
 
-int storeflag; // weak
+int storeflag;
 int sgnCowMsg;
-int numtowners; // idb
+int numtowners;
 DWORD sgdwCowClicks;
-int bannerflag;  // weak // unused 0x6AAC28
-int boyloadflag; // weak
+int bannerflag; // unused 0x6AAC28
+int boyloadflag;
 BYTE *pCowCels;
 TownerStruct towner[16];
 
@@ -222,7 +222,6 @@ void InitBarOwner()
 	strcpy(towner[numtowners]._tName, "Ogden the Tavern owner");
 	numtowners++;
 }
-// 6AAC28: using guessed type int bannerflag;
 
 void InitTownDead()
 {
@@ -288,7 +287,6 @@ void InitBoy()
 	strcpy(towner[numtowners]._tName, "Wirt the Peg-legged boy");
 	numtowners++;
 }
-// 6AAC2C: using guessed type int boyloadflag;
 
 void InitHealer()
 {
@@ -371,7 +369,6 @@ void InitCows()
 		numtowners++;
 	}
 }
-// 6AAC2C: using guessed type int boyloadflag;
 
 void InitTowners()
 {
@@ -389,7 +386,6 @@ void InitTowners()
 	InitBoy();
 	InitCows();
 }
-// 6AAC2C: using guessed type int boyloadflag;
 
 void FreeTownerGFX()
 {
@@ -423,7 +419,6 @@ void TownCtrlMsg(int i)
 		}
 	}
 }
-// 646D00: using guessed type char qtextflag;
 
 void TownBlackSmith()
 {
@@ -593,7 +588,6 @@ void TownerTalk(int first, int t)
 	storeflag = 1;
 	InitQTextMsg(first);
 }
-// 6AAC18: using guessed type int storeflag;
 
 void TalkToTowner(int p, int t)
 {
@@ -938,9 +932,6 @@ void TalkToTowner(int p, int t)
 		CowSFX(p);
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 679660: using guessed type char gbMaxPlayers;
-// 6AAC18: using guessed type int storeflag;
 
 void CowSFX(int pnum)
 {

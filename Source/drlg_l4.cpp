@@ -17,7 +17,7 @@ int SP4y1;
 int SP4y2;
 BYTE L4dungeon[80][80];
 BYTE dung[20][20];
-//int dword_52A4DC; // weak
+//int dword_52A4DC;
 
 const BYTE L4ConvTbl[16] = { 30u, 6u, 1u, 6u, 2u, 6u, 6u, 6u, 9u, 6u, 1u, 6u, 2u, 6u, 3u, 6u };
 const BYTE L4USTAIRS[42] = {

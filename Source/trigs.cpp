@@ -4,7 +4,7 @@ BOOL townwarps[3];
 BOOL trigflag;
 int numtrigs;
 TriggerStruct trigs[MAXTRIGGERS];
-int TWarpFrom; // weak
+int TWarpFrom;
 
 int TownDownList[11] = { 716, 715, 719, 720, 721, 723, 724, 725, 726, 727, -1 };
 int TownWarp1List[13] = {
@@ -150,7 +150,6 @@ void InitTownTriggers()
 
 	trigflag = FALSE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void InitL1Triggers()
 {
@@ -776,5 +775,3 @@ void CheckTriggers()
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 6ABB30: using guessed type int TWarpFrom;
