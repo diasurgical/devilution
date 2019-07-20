@@ -11,7 +11,7 @@ BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
 int totalmonsters;
 CMonster Monsters[16];
-// int END_Monsters_17; // weak
+// int END_Monsters_17;
 int monstimgtot;
 int uniquetrans;
 int nummtypes;
@@ -1025,7 +1025,7 @@ void PlaceUniques()
 	}
 }
 
-void SetMapMonsters(unsigned char *pMap, int startx, int starty)
+void SetMapMonsters(BYTE *pMap, int startx, int starty)
 {
 	WORD rw, rh;
 	WORD *lm;

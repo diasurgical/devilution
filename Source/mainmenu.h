@@ -25,6 +25,6 @@ void mainmenu_play_intro();
 
 /* data */
 
-extern int menu_music_track_id; // idb
+extern int menu_music_track_id;
 
 #endif /* __MAINMENU_H__ */

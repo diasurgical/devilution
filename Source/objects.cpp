@@ -1,16 +1,16 @@
 #include "diablo.h"
 
-int trapid;  // weak
-int trapdir; // weak
-unsigned char *pObjCels[40];
+int trapid;
+int trapdir;
+BYTE *pObjCels[40];
 char ObjFileList[40];
 int objectactive[MAXOBJECTS];
-int nobjects; // idb
-int leverid;  // idb
+int nobjects;
+int leverid;
 int objectavail[MAXOBJECTS];
 ObjectStruct object[MAXOBJECTS];
 BOOL InitObjFlag;
-int numobjfiles; // weak
+int numobjfiles;
 
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -837,11 +837,11 @@ void InitObjects()
 	}
 }
 
-void SetMapObjects(unsigned char *pMap, int startx, int starty)
+void SetMapObjects(BYTE *pMap, int startx, int starty)
 {
 	int rw, rh;
 	int i, j;
-	unsigned char *lm, *h;
+	BYTE *lm, *h;
 	long mapoff;
 	int fileload[56];
 	char filestr[32];
@@ -3446,8 +3446,6 @@ void OperateShrine(int pnum, int i, int sType)
 	if (pnum == myplr)
 		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
 }
-// 52571C: using guessed type int drawpanflag;
-// 676190: using guessed type int deltaload;
 
 void OperateSkelBook(int pnum, int i, BOOL sendmsg)
 {
