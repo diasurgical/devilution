@@ -11,7 +11,7 @@ extern BYTE dungeon[DMAXX][DMAXY];
 extern char dObject[MAXDUNX][MAXDUNY];
 extern BYTE *pSpeedCels;
 extern int nlevel_frames;
-extern char pdungeon[DMAXX][DMAXY];
+extern BYTE pdungeon[DMAXX][DMAXY];
 extern char dDead[MAXDUNX][MAXDUNY];
 extern MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY];
 extern char dPreLight[MAXDUNX][MAXDUNY];
