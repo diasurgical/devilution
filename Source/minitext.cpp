@@ -9,7 +9,7 @@ int sgLastScroll;
 void *pMedTextCels;
 void *pTextBoxCels;
 
-const unsigned char mfontframe[127] = {
+const BYTE mfontframe[127] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -24,7 +24,7 @@ const unsigned char mfontframe[127] = {
 	14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 	24, 25, 26, 48, 0, 49, 0
 };
-const unsigned char mfontkern[56] = {
+const BYTE mfontkern[56] = {
 	5, 15, 10, 13, 14, 10, 9, 13, 11, 5,
 	5, 11, 10, 16, 13, 16, 10, 15, 12, 10,
 	14, 17, 17, 22, 17, 16, 11, 5, 11, 11,

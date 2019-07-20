@@ -1201,7 +1201,7 @@ void PressKey(int vkey)
 
 void diablo_pause_game()
 {
-	if ((unsigned char)gbMaxPlayers <= 1u) {
+	if (gbMaxPlayers <= 1) {
 		if (PauseMode) {
 			PauseMode = 0;
 		} else {
@@ -1483,7 +1483,7 @@ void LoadLvlGFX()
 {
 	/// ASSERT: assert(! pDungeonCels);
 
-	switch ((unsigned char)leveltype) {
+	switch (leveltype) {
 	case DTYPE_TOWN:
 		pDungeonCels = LoadFileInMem("Levels\\TownData\\Town.CEL", NULL);
 		pMegaTiles = LoadFileInMem("Levels\\TownData\\Town.TIL", NULL);

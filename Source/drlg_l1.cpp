@@ -1,6 +1,6 @@
 #include "diablo.h"
 
-char L5dungeon[80][80];
+BYTE L5dungeon[80][80];
 BYTE L5dflags[DMAXX][DMAXY];
 BOOL setloadflag;
 int HR1;
@@ -1033,10 +1033,10 @@ void L5makeDmt()
 
 	for (j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
 		for (i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
-			int val = (unsigned char)L5dungeon[dmtx + 1][dmty + 1]; /* todo: unsigned */
-			val = 2 * val + (unsigned char)L5dungeon[dmtx][dmty + 1];
-			val = 2 * val + (unsigned char)L5dungeon[dmtx + 1][dmty];
-			val = 2 * val + (unsigned char)L5dungeon[dmtx][dmty];
+			int val = L5dungeon[dmtx + 1][dmty + 1];
+			val = 2 * val + L5dungeon[dmtx][dmty + 1];
+			val = 2 * val + L5dungeon[dmtx + 1][dmty];
+			val = 2 * val + L5dungeon[dmtx][dmty];
 			dungeon[i][j] = L5ConvTbl[val];
 		}
 	}

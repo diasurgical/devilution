@@ -22,7 +22,7 @@ char byte_678640;
 int sglTimeoutStart;
 int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 TBuffer sgLoPriBuf;
-unsigned int sgdwGameLoops;
+DWORD sgdwGameLoops;
 BYTE gbMaxPlayers;
 BOOLEAN sgbTimeout;
 char szPlayerName[128];

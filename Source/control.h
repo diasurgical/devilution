@@ -121,10 +121,10 @@ void control_press_enter();
 void control_up_down(int v);
 
 /* rdata */
-extern const unsigned char fontframe[128];
-extern const unsigned char fontkern[68];
+extern const BYTE fontframe[128];
+extern const BYTE fontkern[68];
 extern const int lineoffset[25];
-extern const unsigned char gbFontTransTbl[256];
+extern const BYTE gbFontTransTbl[256];
 
 /* data */
 

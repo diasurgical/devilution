@@ -16,7 +16,7 @@ BOOL pfile_create_player_description(char *dst, DWORD len);
 BOOL pfile_rename_hero(const char *name_1, const char *name_2);
 void pfile_flush_W();
 void game_2_ui_player(const PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile);
-unsigned char game_2_ui_class(const PlayerStruct *p);
+BYTE game_2_ui_class(const PlayerStruct *p);
 BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uiheroinfo *));
 char *GetSaveDirectory(char *dst, int dst_size, DWORD save_num);
 BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack);

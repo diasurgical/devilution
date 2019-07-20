@@ -19,8 +19,8 @@ void DrawQText();
 
 /* rdata */
 
-extern const unsigned char mfontframe[127];
-extern const unsigned char mfontkern[56];
+extern const BYTE mfontframe[127];
+extern const BYTE mfontkern[56];
 
 /* data */
 
