@@ -652,7 +652,7 @@ void CheckTrigForce()
 {
 	trigflag = FALSE;
 
-	if (MouseY > VIEWPORT_HEIGHT - 1) {
+	if (MouseY > PANEL_TOP - 1) {
 		return;
 	}
 

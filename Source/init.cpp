@@ -154,12 +154,12 @@ void init_create_window(int nCmdShow)
 	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	if (!RegisterClassEx(&wcex))
 		app_fatal("Unable to register window class");
-	if (GetSystemMetrics(SM_CXSCREEN) < 640)
-		nWidth = 640;
+	if (GetSystemMetrics(SM_CXSCREEN) < SCREEN_WIDTH)
+		nWidth = SCREEN_WIDTH;
 	else
 		nWidth = GetSystemMetrics(SM_CXSCREEN);
-	if (GetSystemMetrics(SM_CYSCREEN) < 480)
-		nHeight = 480;
+	if (GetSystemMetrics(SM_CYSCREEN) < SCREEN_HEIGHT)
+		nHeight = SCREEN_HEIGHT;
 	else
 		nHeight = GetSystemMetrics(SM_CYSCREEN);
 	hWnd = CreateWindowEx(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);

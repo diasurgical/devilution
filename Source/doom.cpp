@@ -91,5 +91,5 @@ void doom_draw()
 		}
 	}
 
-	CelDecodeOnly(64, 511, (BYTE *)pDoomCel, 1, 640);
+	CelDecodeOnly(SCREEN_X, PANEL_Y - 1, (BYTE *)pDoomCel, 1, 640);
 }

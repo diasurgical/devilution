@@ -431,10 +431,10 @@ void DrawGame(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 
-	scr_pix_width = 640;
+	scr_pix_width = SCREEN_WIDTH;
 	scr_pix_height = VIEWPORT_HEIGHT;
-	dword_5C2FF8 = 10;
-	dword_5C2FFC = 11;
+	dword_5C2FF8 = SCREEN_WIDTH / 64;
+	dword_5C2FFC = VIEWPORT_HEIGHT / 32;
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 175;
@@ -1937,10 +1937,10 @@ void DrawZoom(int x, int y)
 	int i, sx, sy, chunks, blocks;
 	int wdt, nSrcOff, nDstOff;
 
-	scr_pix_width = 384;
+	scr_pix_width = ZOOM_WIDTH;
 	scr_pix_height = 192;
-	dword_5C2FF8 = 6;
-	dword_5C2FFC = 6;
+	dword_5C2FF8 = ZOOM_WIDTH / 64;
+	dword_5C2FFC = 192 / 32;
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 143;
@@ -2024,15 +2024,15 @@ void DrawZoom(int x, int y)
 	if (chrflag || questlog) {
 		nSrcOff = SCREENXY(112, 159);
 		nDstOff = SCREENXY(320, 350);
-		wdt = 160;
+		wdt = (SCREEN_WIDTH - 320) / 2;
 	} else if (invflag || sbookflag) {
 		nSrcOff = SCREENXY(112, 159);
 		nDstOff = SCREENXY(0, 350);
-		wdt = 160;
+		wdt = (SCREEN_WIDTH - 320) / 2;
 	} else {
 		nSrcOff = SCREENXY(32, 159);
 		nDstOff = SCREENXY(0, 350);
-		wdt = 320;
+		wdt = SCREEN_WIDTH / 2;
 	}
 
 	/// ASSERT: assert(gpBuffer);
@@ -2357,7 +2357,7 @@ void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw
 		}
 #endif
 		ResetPal();
-		ysize = 480;
+		ysize = SCREEN_HEIGHT;
 	}
 
 	if (lpDDSBackBuf == NULL) {
@@ -2386,7 +2386,7 @@ void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw
 				}
 				retry = FALSE;
 				dx_reinit();
-				ysize = 480;
+				ysize = SCREEN_HEIGHT;
 				dwTicks = GetTickCount();
 			}
 		}
@@ -2400,12 +2400,12 @@ void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw
 		}
 	}
 
-	/// ASSERT: assert(ysize >= 0 && ysize <= 480);
+	/// ASSERT: assert(ysize >= 0 && ysize <= 480); // SCREEN_HEIGHT
 
 	if (ysize > 0) {
-		DoBlitScreen(0, 0, 640, ysize);
+		DoBlitScreen(0, 0, SCREEN_WIDTH, ysize);
 	}
-	if (ysize < 480) {
+	if (ysize < SCREEN_HEIGHT) {
 		if (draw_sbar) {
 			DoBlitScreen(204, 357, 232, 28);
 		}
@@ -2598,11 +2598,11 @@ void DrawAndBlit()
 		drawsbarflag = TRUE;
 		ddsdesc = FALSE;
 		ctrlPan = TRUE;
-		hgt = 480;
+		hgt = SCREEN_HEIGHT;
 	} else if (drawpanflag == 1) {
 		ddsdesc = TRUE;
 		ctrlPan = FALSE;
-		hgt = 352;
+		hgt = VIEWPORT_HEIGHT;
 	} else {
 		return;
 	}
