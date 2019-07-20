@@ -2459,14 +2459,14 @@ void DrawTalkPan()
 	}
 }
 
-char *control_print_talk_msg(char *msg, int x, int y, int *a4, int color)
+char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 {
 	BYTE c;
 	int width;
 
 	x += 264;
 	width = x;
-	*a4 = PitchTbl[y + 534] + x;
+	*nOffset = PitchTbl[y + 534] + x;
 	while (*msg) {
 
 		c = fontframe[gbFontTransTbl[(BYTE)*msg]];
@@ -2475,11 +2475,11 @@ char *control_print_talk_msg(char *msg, int x, int y, int *a4, int color)
 			return msg;
 		msg++;
 		if (c) {
-			CPrintString(*a4, c, color);
+			CPrintString(*nOffset, c, color);
 		}
-		*a4 += fontkern[c] + 1;
+		*nOffset += fontkern[c] + 1;
 	}
-	return 0;
+	return NULL;
 }
 
 BOOL control_check_talk_btn()

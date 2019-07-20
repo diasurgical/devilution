@@ -109,7 +109,7 @@ void control_drop_gold(char vkey);
 void control_remove_gold(int pnum, int gold_index);
 void control_set_gold_curs(int pnum);
 void DrawTalkPan();
-char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just);
+char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int just);
 BOOL control_check_talk_btn();
 void control_release_talk_btn();
 void control_reset_talk_msg();

@@ -17,7 +17,7 @@ int __stdcall mainmenu_select_hero_dialog(
     BOOL *multi);             // new character? - unsure about this
 void mainmenu_loop();
 BOOL mainmenu_single_player();
-BOOL mainmenu_init_menu(int a1);
+BOOL mainmenu_init_menu(int type);
 BOOL mainmenu_multi_player();
 void mainmenu_play_intro();
 
