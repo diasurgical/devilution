@@ -801,7 +801,7 @@ BOOL LeftMouseDown(int wParam)
 				SetSpell();
 			} else if (stextflag) {
 				CheckStoreBtn();
-			} else if (MouseY < VIEWPORT_HEIGHT) {
+			} else if (MouseY < PANEL_TOP) {
 				if (!gmenu_exception() && !TryIconCurs()) {
 					if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
 						QuestlogESC();
@@ -844,7 +844,7 @@ BOOL LeftMouseCmd(BOOL bShift)
 {
 	BOOL bNear;
 
-	/// ASSERT: assert(MouseY < VIEWPORT_HEIGHT);
+	/// ASSERT: assert(MouseY < 352); // PANEL_TOP
 
 	if (leveltype == DTYPE_TOWN) {
 		if (pcursitem != -1 && pcurs == CURSOR_HAND)
@@ -972,7 +972,7 @@ void RightMouseDown()
 		} else if (!stextflag) {
 			if (spselflag) {
 				SetSpell();
-			} else if (MouseY >= VIEWPORT_HEIGHT
+			} else if (MouseY >= PANEL_TOP
 			    || (!sbookflag || MouseX <= 320)
 			        && !TryIconCurs()
 			        && (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))) {
@@ -1210,10 +1210,10 @@ void PressKey(int vkey)
 	} else if (vkey == VK_TAB) {
 		DoAutoMap();
 	} else if (vkey == VK_SPACE) {
-		if (!chrflag && invflag && MouseX < 480 && MouseY < VIEWPORT_HEIGHT) {
+		if (!chrflag && invflag && MouseX < 480 && MouseY < PANEL_TOP) {
 			SetCursorPos(MouseX + 160, MouseY);
 		}
-		if (!invflag && chrflag && MouseX > 160 && MouseY < VIEWPORT_HEIGHT) {
+		if (!invflag && chrflag && MouseX > 160 && MouseY < PANEL_TOP) {
 			SetCursorPos(MouseX - 160, MouseY);
 		}
 		helpflag = 0;
@@ -1294,11 +1294,11 @@ void PressChar(int vkey)
 			sbookflag = 0;
 			invflag = invflag == 0;
 			if (!invflag || chrflag) {
-				if (MouseX < 480 && MouseY < VIEWPORT_HEIGHT) {
+				if (MouseX < 480 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX + 160, MouseY);
 				}
 			} else {
-				if (MouseX > 160 && MouseY < VIEWPORT_HEIGHT) {
+				if (MouseX > 160 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX - 160, MouseY);
 				}
 			}
@@ -1310,11 +1310,11 @@ void PressChar(int vkey)
 			questlog = FALSE;
 			chrflag = chrflag == 0;
 			if (!chrflag || invflag) {
-				if (MouseX > 160 && MouseY < VIEWPORT_HEIGHT) {
+				if (MouseX > 160 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX - 160, MouseY);
 				}
 			} else {
-				if (MouseX < 480 && MouseY < VIEWPORT_HEIGHT) {
+				if (MouseX < 480 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX + 160, MouseY);
 				}
 			}

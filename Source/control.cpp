@@ -869,7 +869,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 
 	/// ASSERT: assert(gpBuffer);
 
-	nSrcOff = x + 640 * y;
+	nSrcOff = x + PANEL_WIDTH * y;
 	nDstOff = sx + BUFFER_WIDTH * sy;
 
 #ifdef USE_ASM
@@ -896,7 +896,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	label3:
 		rep movsd
 	label4:
-		add		esi, 640
+		add		esi, PANEL_WIDTH
 		sub		esi, ebx
 		add		edi, BUFFER_WIDTH
 		sub		edi, ebx
@@ -910,7 +910,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	src = &pBtmBuff[nSrcOff];
 	dst = &gpBuffer[nDstOff];
 
-	for (hgt = h; hgt; hgt--, src += 640 - w, dst += BUFFER_WIDTH - w) {
+	for (hgt = h; hgt; hgt--, src += PANEL_WIDTH - w, dst += BUFFER_WIDTH - w) {
 		wdt = w;
 		if (wdt & 1) {
 			dst[0] = src[0];
@@ -1030,7 +1030,7 @@ void DrawLifeFlask()
 
 	DrawFlask(pLifeBuff, 88, 277, gpBuffer, BUFFER_WIDTH * 499 + 173, filled);
 	if (filled != 13)
-		DrawFlask(pBtmBuff, 640, 640 * filled + 2029, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173, 13 - filled);
+		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * filled + 2029, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173, 13 - filled);
 }
 
 void UpdateLifeFlask()
@@ -1060,7 +1060,7 @@ void DrawManaFlask()
 
 	DrawFlask(pManaBuff, 88, 277, gpBuffer, BUFFER_WIDTH * 499 + 173 + 366, filled);
 	if (filled != 13)
-		DrawFlask(pBtmBuff, 640, 640 * filled + 2029 + 366, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173 + 366, 13 - filled);
+		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * filled + 2029 + 366, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173 + 366, 13 - filled);
 }
 
 void control_update_life_mana()
@@ -1112,11 +1112,11 @@ void InitControlPan()
 	int i;
 
 	if (gbMaxPlayers == 1) {
-		pBtmBuff = DiabloAllocPtr(144 * 640);
-		memset(pBtmBuff, 0, 144 * 640);
+		pBtmBuff = DiabloAllocPtr((PANEL_HEIGHT + 16) * PANEL_WIDTH);
+		memset(pBtmBuff, 0, (PANEL_HEIGHT + 16) * PANEL_WIDTH);
 	} else {
-		pBtmBuff = DiabloAllocPtr(288 * 640);
-		memset(pBtmBuff, 0, 288 * 640);
+		pBtmBuff = DiabloAllocPtr((PANEL_HEIGHT + 16) * 2 * PANEL_WIDTH);
+		memset(pBtmBuff, 0, (PANEL_HEIGHT + 16) * 2 * PANEL_WIDTH);
 	}
 	pManaBuff = DiabloAllocPtr(88 * 88);
 	memset(pManaBuff, 0, 88 * 88);
@@ -1127,7 +1127,7 @@ void InitControlPan()
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", NULL);
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", NULL);
-	CelDecodeRect(pBtmBuff, 0, 143, 640, pStatusPanel, 1, 640);
+	CelDecodeRect(pBtmBuff, 0, (PANEL_HEIGHT + 16) - 1, PANEL_WIDTH, pStatusPanel, 1, PANEL_WIDTH);
 	MemFreeDbg(pStatusPanel);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", NULL);
 	CelDecodeRect(pLifeBuff, 0, 87, 88, pStatusPanel, 1, 88);
@@ -1136,7 +1136,7 @@ void InitControlPan()
 	talkflag = 0;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", NULL);
-		CelDecodeRect(pBtmBuff, 0, 287, 640, pTalkPanel, 1, 640);
+		CelDecodeRect(pBtmBuff, 0, (PANEL_HEIGHT + 16) * 2 - 1, PANEL_WIDTH, pTalkPanel, 1, PANEL_WIDTH);
 		MemFreeDbg(pTalkPanel);
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", NULL);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", NULL);
@@ -1191,7 +1191,7 @@ void InitControlPan()
 
 void ClearCtrlPan()
 {
-	DrawPanelBox(0, sgbPlrTalkTbl + 16, 640, 128, 64, 512);
+	DrawPanelBox(0, sgbPlrTalkTbl + 16, PANEL_WIDTH, PANEL_HEIGHT, 64, 512);
 	DrawInfoBox();
 }
 
@@ -2092,15 +2092,15 @@ void RedBack()
 			add		edi, SCREENXY(0, 0)
 			mov		ebx, pLightTbl
 			add		ebx, idx
-			mov		edx, VIEWPORT_HEIGHT
+			mov		edx, PANEL_TOP
 		lx_label1:
-			mov		ecx, 640
+			mov		ecx, SCREEN_WIDTH
 		lx_label2:
 			mov		al, [edi]
 			xlat
 			stosb
 			loop	lx_label2
-			add		edi, BUFFER_WIDTH - 640
+			add		edi, BUFFER_WIDTH - SCREEN_WIDTH
 			dec		edx
 			jnz		lx_label1
 		}
@@ -2110,9 +2110,9 @@ void RedBack()
 			add		edi, SCREENXY(0, 0)
 			mov		ebx, pLightTbl
 			add		ebx, idx
-			mov		edx, VIEWPORT_HEIGHT
+			mov		edx, PANEL_TOP
 		l4_label1:
-			mov		ecx, 640
+			mov		ecx, SCREEN_WIDTH
 		l4_label2:
 			mov		al, [edi]
 			cmp		al, 32
@@ -2121,7 +2121,7 @@ void RedBack()
 		l4_label3:
 			stosb
 			loop	l4_label2
-			add		edi, BUFFER_WIDTH - 640
+			add		edi, BUFFER_WIDTH - SCREEN_WIDTH
 			dec		edx
 			jnz		l4_label1
 		}
@@ -2133,8 +2133,8 @@ void RedBack()
 	if (leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = VIEWPORT_HEIGHT; h; h--, dst += BUFFER_WIDTH - 640) {
-			for (w = 640; w; w--) {
+		for (h = PANEL_TOP; h; h--, dst += BUFFER_WIDTH - SCREEN_WIDTH) {
+			for (w = SCREEN_WIDTH; w; w--) {
 				*dst = tbl[*dst];
 				dst++;
 			}
@@ -2142,8 +2142,8 @@ void RedBack()
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = VIEWPORT_HEIGHT; h; h--, dst += BUFFER_WIDTH - 640) {
-			for (w = 640; w; w--) {
+		for (h = PANEL_TOP; h; h--, dst += BUFFER_WIDTH - SCREEN_WIDTH) {
+			for (w = SCREEN_WIDTH; w; w--) {
 				if (*dst >= 32)
 					*dst = tbl[*dst];
 				dst++;
@@ -2563,7 +2563,7 @@ void control_type_message()
 	for (i = 0; i < 3; i++) {
 		talkbtndown[i] = FALSE;
 	}
-	sgbPlrTalkTbl = 144;
+	sgbPlrTalkTbl = PANEL_HEIGHT + 16;
 	drawpanflag = 255;
 	sgbTalkSavePos = sgbNextTalkSave;
 }
