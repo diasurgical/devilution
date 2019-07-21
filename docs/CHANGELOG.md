@@ -44,7 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The last of the compiler flags are figured out
 
 ### March 22, 2019
-- Deviliution appears on [Phoronix](https://www.phoronix.com/scan.php?page=news_item&px=DeviluitionX-Open-Diablo)
+- Devilution appears on [Phoronix](https://www.phoronix.com/scan.php?page=news_item&px=DeviluitionX-Open-Diablo)
 
 ## [0.6.0](https://github.com/diasurgical/devilution/compare/v0.5.0...0.6.0)
 ### March 19, 2019
