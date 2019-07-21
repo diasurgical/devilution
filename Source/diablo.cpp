@@ -327,7 +327,7 @@ void diablo_parse_flags(char *args)
 			gbBackBuf = 1;
 			args += strlen("dd_backbuf");
 		} else if (_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
-			gbDupSounds = 0;
+			gbDupSounds = FALSE;
 			args += strlen("ds_noduplicates");
 		} else {
 			c = tolower(*args);

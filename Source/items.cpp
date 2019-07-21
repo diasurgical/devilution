@@ -2884,7 +2884,7 @@ void PrintItemPower(char plidx, ItemStruct *x)
 
 void DrawUTextBack()
 {
-	CelDecodeOnly(88, 487, (BYTE *)pSTextBoxCels, 1, 271);
+	CelDecodeOnly(88, 487, pSTextBoxCels, 1, 271);
 
 #define TRANS_RECT_X 27
 #define TRANS_RECT_Y 28

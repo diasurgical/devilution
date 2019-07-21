@@ -705,7 +705,7 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 	negMon = dMonster[sx][sy - 1];
 
 	if (visiondebug && bFlag & BFLAG_LIT) {
-		Cel2DecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, 0, 8);
+		Cel2DecodeHdrOnly(pBuff, pSquareCel, 1, 64, 0, 8);
 	}
 	if (MissilePreFlag && bFlag & BFLAG_MISSILE) {
 		DrawClippedMissile(sx, sy, dx, dy, 0, 8, 1);
@@ -1171,7 +1171,7 @@ void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks
 	negMon = dMonster[sx][sy - 1];
 
 	if (visiondebug && bFlag & BFLAG_LIT) {
-		Cel2DecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, CelSkip, 8);
+		Cel2DecodeHdrOnly(pBuff, pSquareCel, 1, 64, CelSkip, 8);
 	}
 	if (MissilePreFlag && bFlag & BFLAG_MISSILE) {
 		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, 1);
@@ -1601,7 +1601,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 	negMon = dMonster[sx][sy - 1];
 
 	if (visiondebug && bFlag & BFLAG_LIT) {
-		CelDecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, 0, CelCap);
+		CelDecodeHdrOnly(pBuff, pSquareCel, 1, 64, 0, CelCap);
 	}
 	tx = dx - 96;
 	ty = dy - 16;
@@ -2322,14 +2322,14 @@ void scrollrt_draw_cursor_item()
 		if (!plr[myplr].HoldItem._iStatFlag) {
 			col = PAL16_RED + 5;
 		}
-		CelDrawHdrClrHL(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+		CelDrawHdrClrHL(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
 		if (col != PAL16_RED + 5) {
-			Cel2DrawHdrOnly(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+			Cel2DrawHdrOnly(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
 		} else {
-			Cel2DrawHdrLightRed(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8, 1);
+			Cel2DrawHdrLightRed(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8, 1);
 		}
 	} else {
-		Cel2DrawHdrOnly(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+		Cel2DrawHdrOnly(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
 	}
 }
 

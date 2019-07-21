@@ -7,8 +7,8 @@ extern char *qtextptr;
 extern int qtextSpd;
 extern char qtextflag;
 extern int scrolltexty;
-extern void *pMedTextCels;
-extern void *pTextBoxCels;
+extern BYTE *pMedTextCels;
+extern BYTE *pTextBoxCels;
 
 void FreeQuestText();
 void InitQuestText();
