@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - All functions are now [binary identical](https://github.com/diasurgical/devilution/milestone/3) to Diablo 1.09b
 
 ### June 1, 2019
-- MVG posts [a video about the project](https://www.youtube.com/watch?v=5tADL_fmsHQ) at releases a Nintendo Switch port
+- MVG posts [a video about the project](https://www.youtube.com/watch?v=5tADL_fmsHQ) and releases a Nintendo Switch port
 
 ## [0.9.6](https://github.com/diasurgical/devilution/compare/0.9.0...0.9.6)
 ### May 19, 2019
