@@ -60,7 +60,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Devilution appears on [Phoronix](https://www.phoronix.com/scan.php?page=news_item&px=DeviluitionX-Open-Diablo)
 
 ## DevilutionX 0.3.0
-### March 17, 2019
+### March 20, 2019
 - Fix dialog volume
 - 32bit macOS build
 - Fix crash in town during multiplayer
