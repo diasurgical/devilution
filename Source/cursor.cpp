@@ -5,7 +5,7 @@ int icursH28;
 int cursW;
 int pcursmonst;
 int icursW28;
-void *pCursCels;
+BYTE *pCursCels;
 int icursH;
 
 // inv_item value

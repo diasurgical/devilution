@@ -6,8 +6,8 @@ int qtextSpd;
 char qtextflag;
 int scrolltexty;
 int sgLastScroll;
-void *pMedTextCels;
-void *pTextBoxCels;
+BYTE *pMedTextCels;
+BYTE *pTextBoxCels;
 
 const BYTE mfontframe[127] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -66,7 +66,7 @@ void InitQTextMsg(int m)
 
 void DrawQTextBack()
 {
-	CelDecodeOnly(88, 487, (BYTE *)pTextBoxCels, 1, 591);
+	CelDecodeOnly(88, 487, pTextBoxCels, 1, 591);
 
 #define TRANS_RECT_X 27
 #define TRANS_RECT_Y 28
@@ -241,7 +241,7 @@ void DrawQText()
 				p++;
 			}
 			if (c != 0) {
-				PrintQTextChr(tx, ty, (BYTE *)pMedTextCels, c);
+				PrintQTextChr(tx, ty, pMedTextCels, c);
 			}
 			tx += mfontkern[c] + 2;
 		}
