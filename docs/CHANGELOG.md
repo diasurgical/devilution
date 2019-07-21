@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.10.0](https://github.com/diasurgical/devilution/compare/0.9.6...0.10.0)
+### May 19, 2019
+- [All functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
+- Fix buying from Wirt
+- Replace many magic numbers with constants
+- Fix a handful of minor issues
+- Add toggle fullscreen with alt+enter in debug builds
+
 ### June 21, 2019
 - All functions are now binary identical to Diablo 1.09b
 
@@ -115,6 +123,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### June 20, 2018
 - The [media](https://www.pcgamer.com/a-coder-spent-1200-hours-reverse-engineering-diablos-source-code/) catches wind and [several](https://bloody-disgusting.com/video-games/3505673/fan-completes-reverse-engineering-source-code-diablo/) [articles](https://kotaku.com/coder-spends-1-200-hours-piecing-together-diablos-sourc-1827001247) [appear](https://www.diabloii.net/blog/comments/reverse-engineered-diablo-source-code-released)
+
+### June 18, 2018
+- Devilution gets posted on [Y Combinator](https://news.ycombinator.com/item?id=17338886)
 
 ## 0.1.0
 ### June 6, 2018
