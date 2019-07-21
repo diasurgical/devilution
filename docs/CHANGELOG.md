@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-### June 16, 2019
-- All functions except one are now binary identical to Diablo 1.09b
+### June 21, 2019
+- All functions are now binary identical to Diablo 1.09b
+
+### June 1, 2019
+- MVG posts [a video about the project](https://www.youtube.com/watch?v=5tADL_fmsHQ) at releases a Nintendo Switch port
 
 ## [0.9.6](https://github.com/diasurgical/devilution/compare/0.9.0...0.9.6)
 ### May 19, 2019
@@ -32,11 +35,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### April 9, 2019
 - The last of the compiler flags are figured out
 
+### March 22, 2019
+- Deviliution appears on [Phoronix](https://www.phoronix.com/scan.php?page=news_item&px=DeviluitionX-Open-Diablo)
+
 ## [0.6.0](https://github.com/diasurgical/devilution/compare/v0.5.0...0.6.0)
 ### March 19, 2019
 - [60% of functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - Added a guide for people wanting to join in [Cleaning the code](https://github.com/diasurgical/devilution/wiki/Cleaning-Code)
 - File size is now only 968 bytes (0.13%) larger than the original Diablo 1.09b.
+
+### March 7, 2019
+- [GOG re-release Diablo](https://www.gog.com/news/release_diablo)
 
 ## [0.5.0](https://github.com/diasurgical/devilution/compare/0.4...v0.5.0)
 ### January 14, 2019
@@ -103,6 +112,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Icon added
 - Fix Zhar quest, monster squelching and golems
 - Use consts for various values
+
+### June 20, 2018
+- The [media](https://www.pcgamer.com/a-coder-spent-1200-hours-reverse-engineering-diablos-source-code/) catches wind and [several](https://bloody-disgusting.com/video-games/3505673/fan-completes-reverse-engineering-source-code-diablo/) [articles](https://kotaku.com/coder-spends-1-200-hours-piecing-together-diablos-sourc-1827001247) [appear](https://www.diabloii.net/blog/comments/reverse-engineered-diablo-source-code-released)
 
 ## 0.1.0
 ### June 6, 2018
