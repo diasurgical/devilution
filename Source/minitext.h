@@ -5,7 +5,7 @@
 extern int qtexty;
 extern char *qtextptr;
 extern int qtextSpd;
-extern char qtextflag;
+extern BOOLEAN qtextflag;
 extern int scrolltexty;
 extern BYTE *pMedTextCels;
 extern BYTE *pTextBoxCels;

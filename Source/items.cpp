@@ -1,7 +1,7 @@
 #include "diablo.h"
 
 int itemactive[MAXITEMS];
-int uitemflag;
+BOOL uitemflag;
 int itemavail[MAXITEMS];
 ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
@@ -282,7 +282,7 @@ void InitItems()
 			AddInitItems();
 	}
 
-	uitemflag = 0;
+	uitemflag = FALSE;
 }
 
 void CalcPlrItemVals(int p, BOOL Loadgfx)
@@ -3054,7 +3054,7 @@ void PrintItemDetails(ItemStruct *x)
 	}
 	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
 		AddPanelString("unique item", TRUE);
-		uitemflag = 1;
+		uitemflag = TRUE;
 		curruitem = *x;
 	}
 	PrintItemMisc(x);

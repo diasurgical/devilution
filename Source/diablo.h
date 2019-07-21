@@ -100,14 +100,14 @@ extern int glEndSeed[NUMLEVELS];
 extern BOOL gbLoadGame;
 extern HINSTANCE ghInst;
 extern int DebugMonsters[10];
-extern char cineflag;
+extern BOOLEAN cineflag;
 extern int drawpanflag;
-extern int visiondebug;
-extern int scrollflag; /* unused */
+extern BOOL visiondebug;
+extern BOOL scrollflag; /* unused */
 extern BOOL light4flag;
-extern int leveldebug;
-extern int monstdebug;
-extern int trigdebug; /* unused */
+extern BOOL leveldebug;
+extern BOOL monstdebug;
+extern BOOL trigdebug; /* unused */
 extern int setseed;
 extern int debugmonsttypes;
 extern int PauseMode;

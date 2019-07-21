@@ -3,7 +3,7 @@
 int qtexty;
 char *qtextptr;
 int qtextSpd;
-char qtextflag;
+BOOLEAN qtextflag;
 int scrolltexty;
 int sgLastScroll;
 BYTE *pMedTextCels;
@@ -273,7 +273,7 @@ void DrawQText()
 			qtexty += 38;
 			qtextptr = pnl;
 			if (*pnl == '|') {
-				qtextflag = 0;
+				qtextflag = FALSE;
 			}
 			break;
 		}
