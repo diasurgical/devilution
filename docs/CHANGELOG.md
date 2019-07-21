@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [0.10.0](https://github.com/diasurgical/devilution/compare/0.9.6...0.10.0)
-### May 19, 2019
+### June 22, 2019
 - [All functions are now binary identical](https://github.com/diasurgical/devilution/milestone/3) to the 1.09b version
 - Fix buying from Wirt
 - Replace many magic numbers with constants
