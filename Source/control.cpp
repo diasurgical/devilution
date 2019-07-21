@@ -11,7 +11,7 @@ int chrbtn[4];
 BYTE *pMultiBtns;
 BYTE *pPanelButtons;
 BYTE *pChrPanel;
-int lvlbtndown;
+BOOL lvlbtndown;
 char sgszTalkSave[8][80];
 int dropGoldValue;
 BOOL drawmanaflag;
@@ -38,17 +38,17 @@ int sbooktab;
 int pSplType;
 int frame;
 int initialDropGoldIndex;
-int talkflag;
+BOOL talkflag;
 BYTE *pSBkIconCels;
-int sbookflag;
-int chrflag;
+BOOL sbookflag;
+BOOL chrflag;
 BOOL drawbtnflag;
 BYTE *pSpellBkCel;
 char infostr[MAX_PATH];
 int numpanbtns;
 BYTE *pStatusPanel;
 char panelstr[256];
-int panelflag;
+BOOL panelflag;
 BYTE SplTransTbl[256];
 int initialDropGoldValue;
 BYTE *pSpellCels;
@@ -1131,7 +1131,7 @@ void InitControlPan()
 	CelDecodeRect(pLifeBuff, 0, 87, 88, pStatusPanel, 1, 88);
 	CelDecodeRect(pManaBuff, 0, 87, 88, pStatusPanel, 2, 88);
 	MemFreeDbg(pStatusPanel);
-	talkflag = 0;
+	talkflag = FALSE;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", NULL);
 		CelDecodeRect(pBtmBuff, 0, (PANEL_HEIGHT + 16) * 2 - 1, PANEL_WIDTH, pTalkPanel, 1, PANEL_WIDTH);
@@ -1145,8 +1145,8 @@ void InitControlPan()
 		for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++)
 			talkbtndown[i] = FALSE;
 	}
-	panelflag = 0;
-	lvlbtndown = 0;
+	panelflag = FALSE;
+	lvlbtndown = FALSE;
 	pPanelButtons = LoadFileInMem("CtrlPan\\Panel8bu.CEL", NULL);
 	for (i = 0; i < sizeof(panbtn) / sizeof(panbtn[0]); i++)
 		panbtn[i] = 0;
@@ -1164,13 +1164,13 @@ void InitControlPan()
 	ClearPanel();
 	drawhpflag = TRUE;
 	drawmanaflag = TRUE;
-	chrflag = 0;
+	chrflag = FALSE;
 	spselflag = 0;
 	pSpellBkCel = LoadFileInMem("Data\\SpellBk.CEL", NULL);
 	pSBkBtnCel = LoadFileInMem("Data\\SpellBkB.CEL", NULL);
 	pSBkIconCels = LoadFileInMem("Data\\SpellI2.CEL", NULL);
 	sbooktab = 0;
-	sbookflag = 0;
+	sbookflag = FALSE;
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 		SpellPages[0][0] = SPL_REPAIR;
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
@@ -1323,7 +1323,7 @@ void CheckPanelInfo()
 {
 	int i, c, v, s;
 
-	panelflag = 0;
+	panelflag = FALSE;
 	ClearPanel();
 	for (i = 0; i < numpanbtns; i++) {
 		if (MouseX >= PanBtnPos[i][0]
@@ -1343,14 +1343,14 @@ void CheckPanelInfo()
 				AddPanelString(tempstr, TRUE);
 			}
 			infoclr = COL_WHITE;
-			panelflag = 1;
+			panelflag = TRUE;
 			pinfoflag = TRUE;
 		}
 	}
 	if (!spselflag && MouseX >= 565 && MouseX < 621 && MouseY >= 416 && MouseY < 472) {
 		strcpy(infostr, "Select current spell button");
 		infoclr = COL_WHITE;
-		panelflag = 1;
+		panelflag = TRUE;
 		pinfoflag = TRUE;
 		strcpy(tempstr, "Hotkey : 's'");
 		AddPanelString(tempstr, TRUE);
@@ -1439,10 +1439,10 @@ void CheckBtnUp()
 		switch (i) {
 		case PANBTN_CHARINFO:
 			questlog = FALSE;
-			chrflag = chrflag == 0;
+			chrflag = !chrflag;
 			break;
 		case PANBTN_QLOG:
-			chrflag = 0;
+			chrflag = FALSE;
 			if (!questlog)
 				StartQuestlog();
 			else
@@ -1457,7 +1457,7 @@ void CheckBtnUp()
 			gamemenuOff = 0;
 			break;
 		case PANBTN_INVENTORY:
-			sbookflag = 0;
+			sbookflag = FALSE;
 			invflag = invflag == 0;
 			if (dropGoldFlag) {
 				dropGoldFlag = FALSE;
@@ -1470,7 +1470,7 @@ void CheckBtnUp()
 				dropGoldFlag = FALSE;
 				dropGoldValue = 0;
 			}
-			sbookflag = sbookflag == 0;
+			sbookflag = !sbookflag;
 			break;
 		case PANBTN_SENDMSG:
 			if (talkflag)
@@ -1923,14 +1923,14 @@ void MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base)
 void CheckLvlBtn()
 {
 	if (!lvlbtndown && MouseX >= 40 && MouseX <= 81 && MouseY >= 313 && MouseY <= 335)
-		lvlbtndown = 1;
+		lvlbtndown = TRUE;
 }
 
 void ReleaseLvlBtn()
 {
 	if (MouseX >= 40 && MouseX <= 81 && MouseY >= 313 && MouseY <= 335)
-		chrflag = 1;
-	lvlbtndown = 0;
+		chrflag = TRUE;
+	lvlbtndown = FALSE;
 }
 
 void DrawLevelUpIcon()
@@ -2549,7 +2549,7 @@ void control_type_message()
 		return;
 	}
 
-	talkflag = 1;
+	talkflag = TRUE;
 	sgszTalkMsg[0] = 0;
 	frame = 1;
 	for (i = 0; i < 3; i++) {
@@ -2562,7 +2562,7 @@ void control_type_message()
 
 void control_reset_talk()
 {
-	talkflag = 0;
+	talkflag = FALSE;
 	sgbPlrTalkTbl = 0;
 	drawpanflag = 255;
 }

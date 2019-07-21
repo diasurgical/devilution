@@ -1,11 +1,11 @@
 #include "diablo.h"
 
-int storeflag;
+BOOL storeflag;
 int sgnCowMsg;
 int numtowners;
 DWORD sgdwCowClicks;
-int bannerflag; // unused 0x6AAC28
-int boyloadflag;
+BOOL bannerflag; // unused 0x6AAC28
+BOOL boyloadflag;
 BYTE *pCowCels;
 TownerStruct towner[16];
 
@@ -210,7 +210,7 @@ void InitBarOwner()
 {
 	int i;
 
-	bannerflag = 0; // unused
+	bannerflag = FALSE; // unused
 	InitTownerInfo(numtowners, 96, 1, TOWN_TAVERN, 55, 62, 3, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", NULL);
@@ -275,7 +275,7 @@ void InitBoy()
 {
 	int i;
 
-	boyloadflag = 1;
+	boyloadflag = TRUE;
 	InitTownerInfo(numtowners, 96, 1, TOWN_PEGBOY, 11, 53, -1, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", NULL);
@@ -373,7 +373,7 @@ void InitCows()
 void InitTowners()
 {
 	numtowners = 0;
-	boyloadflag = 0;
+	boyloadflag = FALSE;
 	InitSmith();
 	InitHealer();
 	if (quests[QTYPE_BUTCH]._qactive && quests[QTYPE_BUTCH]._qactive != 3)
@@ -585,7 +585,7 @@ void TownerTalk(int first, int t)
 {
 	sgdwCowClicks = 0;
 	sgnCowMsg = 0;
-	storeflag = 1;
+	storeflag = TRUE;
 	InitQTextMsg(first);
 }
 

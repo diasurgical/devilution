@@ -1432,9 +1432,9 @@ void StartStore(char s)
 	int i;
 
 	for (t = s;; t = STORE_SMITH) {
-		sbookflag = 0;
+		sbookflag = FALSE;
 		invflag = 0;
-		chrflag = 0;
+		chrflag = FALSE;
 		questlog = FALSE;
 		dropGoldFlag = FALSE;
 		ClearSText(0, 24);

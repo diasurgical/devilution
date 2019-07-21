@@ -19,14 +19,14 @@ int glEndSeed[NUMLEVELS];
 BOOL gbLoadGame;
 HINSTANCE ghInst;
 int DebugMonsters[10];
-char cineflag;
+BOOLEAN cineflag;
 int drawpanflag;
-int visiondebug;
-int scrollflag; /* unused */
+BOOL visiondebug;
+BOOL scrollflag; /* unused */
 BOOL light4flag;
-int leveldebug;
-int monstdebug;
-int trigdebug; /* unused */
+BOOL leveldebug;
+BOOL monstdebug;
+BOOL trigdebug; /* unused */
 int setseed;
 int debugmonsttypes;
 int PauseMode;
@@ -370,7 +370,7 @@ void diablo_parse_flags(char *args)
 				break;
 			case 'l':
 				setlevel = FALSE;
-				leveldebug = 1;
+				leveldebug = TRUE;
 				while (isspace(*args)) {
 					args++;
 				}
@@ -392,7 +392,7 @@ void diablo_parse_flags(char *args)
 				plr[0].plrlevel = i;
 				break;
 			case 'm':
-				monstdebug = 1;
+				monstdebug = TRUE;
 				while (isspace(*args)) {
 					args++;
 				}
@@ -432,7 +432,7 @@ void diablo_parse_flags(char *args)
 				debug_mode_key_s = 1;
 				break;
 			case 't':
-				leveldebug = 1;
+				leveldebug = TRUE;
 				setlevel = TRUE;
 				while (isspace(*args)) {
 					args++;
@@ -445,7 +445,7 @@ void diablo_parse_flags(char *args)
 				setlvlnum = i;
 				break;
 			case 'v':
-				visiondebug = 1;
+				visiondebug = TRUE;
 				break;
 			case 'w':
 				debug_mode_key_w = 1;
@@ -1066,11 +1066,11 @@ void PressKey(int vkey)
 			track_repeat_walk(0);
 		} else {
 			invflag = 0;
-			chrflag = 0;
-			sbookflag = 0;
+			chrflag = FALSE;
+			sbookflag = FALSE;
 			spselflag = 0;
 			if (qtextflag && leveltype == DTYPE_TOWN) {
-				qtextflag = 0;
+				qtextflag = FALSE;
 				sfx_stop();
 			}
 			questlog = FALSE;
@@ -1184,11 +1184,11 @@ void PressKey(int vkey)
 		}
 		helpflag = 0;
 		invflag = 0;
-		chrflag = 0;
-		sbookflag = 0;
+		chrflag = FALSE;
+		sbookflag = FALSE;
 		spselflag = 0;
 		if (qtextflag && leveltype == DTYPE_TOWN) {
-			qtextflag = 0;
+			qtextflag = FALSE;
 			sfx_stop();
 		}
 		questlog = FALSE;
@@ -1247,7 +1247,7 @@ void PressChar(int vkey)
 	case 'I':
 	case 'i':
 		if (!stextflag) {
-			sbookflag = 0;
+			sbookflag = FALSE;
 			invflag = invflag == 0;
 			if (!invflag || chrflag) {
 				if (MouseX < 480 && MouseY < PANEL_TOP) {
@@ -1264,7 +1264,7 @@ void PressChar(int vkey)
 	case 'c':
 		if (!stextflag) {
 			questlog = FALSE;
-			chrflag = chrflag == 0;
+			chrflag = !chrflag;
 			if (!chrflag || invflag) {
 				if (MouseX > 160 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX - 160, MouseY);
@@ -1279,7 +1279,7 @@ void PressChar(int vkey)
 	case 'Q':
 	case 'q':
 		if (!stextflag) {
-			chrflag = 0;
+			chrflag = FALSE;
 			if (!questlog) {
 				StartQuestlog();
 			} else {
@@ -1307,7 +1307,7 @@ void PressChar(int vkey)
 	case 'b':
 		if (!stextflag) {
 			invflag = 0;
-			sbookflag = sbookflag == 0;
+			sbookflag = !sbookflag;
 		}
 		return;
 	case '+':

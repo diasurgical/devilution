@@ -1017,7 +1017,7 @@ void PlrClrTrans(int x, int y)
 
 	for (i = y - 1; i <= y + 1; i++) {
 		for (j = x - 1; j <= x + 1; j++) {
-			TransList[dTransVal[j][i]] = 0;
+			TransList[dTransVal[j][i]] = FALSE;
 		}
 	}
 }
@@ -1027,12 +1027,12 @@ void PlrDoTrans(int x, int y)
 	int i, j;
 
 	if (leveltype != DTYPE_CATHEDRAL && leveltype != DTYPE_CATACOMBS) {
-		TransList[1] = 1;
+		TransList[1] = TRUE;
 	} else {
 		for (i = y - 1; i <= y + 1; i++) {
 			for (j = x - 1; j <= x + 1; j++) {
 				if (!nSolidTable[dPiece[j][i]] && dTransVal[j][i]) {
-					TransList[dTransVal[j][i]] = 1;
+					TransList[dTransVal[j][i]] = TRUE;
 				}
 			}
 		}
