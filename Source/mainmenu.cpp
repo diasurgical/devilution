@@ -90,7 +90,7 @@ void mainmenu_loop()
 
 	do {
 		menu = 0;
-		if (!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
+		if (!UiMainMenuDialog(gszProductName, &menu, effects_play_sound, 30))
 			app_fatal("Unable to display mainmenu");
 
 		switch (menu) {
