@@ -35,7 +35,7 @@ int __stdcall mainmenu_select_hero_dialog(
     BOOL *multi)
 {
 	BOOL hero_is_created = TRUE;
-	int dlgresult = NEW_GAME;
+	int dlgresult = 0;
 	if (gbMaxPlayers == 1) {
 		if (!UiSelHeroSingDialog(
 		        pfile_ui_set_hero_infos,
@@ -47,7 +47,7 @@ int __stdcall mainmenu_select_hero_dialog(
 		        &gnDifficulty))
 			app_fatal("Unable to display SelHeroSing");
 
-		if (dlgresult == LOAD_GAME)
+		if (dlgresult == SELHERO_CONTINUE)
 			gbLoadGame = TRUE;
 		else
 			gbLoadGame = FALSE;
@@ -62,7 +62,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	               gszHero)) {
 		app_fatal("Can't load multiplayer dialog");
 	}
-	if (dlgresult == EXIT_MENU) {
+	if (dlgresult == SELHERO_PREVIOUS) {
 		SErrSetLastError(1223);
 		return 0;
 	}
@@ -122,19 +122,19 @@ void mainmenu_loop()
 BOOL mainmenu_single_player()
 {
 	gbMaxPlayers = 1;
-	return mainmenu_init_menu(1);
+	return mainmenu_init_menu(SELHERO_NEW_DUNGEON);
 }
 
 BOOL mainmenu_init_menu(int type)
 {
 	BOOL success;
 
-	if (type == 4)
+	if (type == SELHERO_PREVIOUS)
 		return TRUE;
 
 	music_stop();
 
-	success = StartGame(type != 2, type != 3);
+	success = StartGame(type != SELHERO_CONTINUE, type != SELHERO_CONNECT);
 	if (success)
 		mainmenu_refresh_music();
 
@@ -144,7 +144,7 @@ BOOL mainmenu_init_menu(int type)
 BOOL mainmenu_multi_player()
 {
 	gbMaxPlayers = MAX_PLRS;
-	return mainmenu_init_menu(3);
+	return mainmenu_init_menu(SELHERO_CONNECT);
 }
 
 void mainmenu_play_intro()
