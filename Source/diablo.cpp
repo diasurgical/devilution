@@ -86,7 +86,7 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 	BOOL fExitProgram;
 	unsigned int uMsg;
 
-	byte_678640 = 1;
+	gbGameUninitialized = TRUE;
 
 	do {
 		fExitProgram = FALSE;
@@ -97,7 +97,7 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 			break;
 		}
 
-		byte_678640 = 0;
+		gbGameUninitialized = FALSE;
 
 		if (bNewGame || !gbValidSaveFile) {
 			InitLevels();
@@ -272,12 +272,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		init_create_window(nCmdShow);
 		sound_init();
 		UiInitialize();
+#ifdef SPAWN
+		UiSetSpawned(TRUE);
+#endif
 
 #ifdef _DEBUG
 		if (showintrodebug)
 #endif
 			play_movie("gendata\\logo.smk", TRUE);
 
+#ifndef SPAWN
 		{
 			char szValueName[] = "Intro";
 			if (!SRegLoadValue("Diablo", szValueName, 0, &nData))
@@ -286,6 +290,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				play_movie("gendata\\diablo1.smk", TRUE);
 			SRegSaveValue("Diablo", szValueName, 0, 0);
 		}
+#endif
 
 #ifdef _DEBUG
 		if (showintrodebug) {
@@ -1496,6 +1501,7 @@ void LoadLvlGFX()
 		pLevelPieces = LoadFileInMem("Levels\\L1Data\\L1.MIN", NULL);
 		pSpecialCels = LoadFileInMem("Levels\\L1Data\\L1S.CEL", NULL);
 		break;
+#ifndef SPAWN
 	case DTYPE_CATACOMBS:
 		pDungeonCels = LoadFileInMem("Levels\\L2Data\\L2.CEL", NULL);
 		pMegaTiles = LoadFileInMem("Levels\\L2Data\\L2.TIL", NULL);
@@ -1514,6 +1520,7 @@ void LoadLvlGFX()
 		pLevelPieces = LoadFileInMem("Levels\\L4Data\\L4.MIN", NULL);
 		pSpecialCels = LoadFileInMem("Levels\\L2Data\\L2S.CEL", NULL);
 		break;
+#endif
 	default:
 		app_fatal("LoadLvlGFX");
 		break;
@@ -1546,6 +1553,7 @@ void CreateLevel(int lvldir)
 		Freeupstairs();
 		LoadRndLvlPal(1);
 		break;
+#ifndef SPAWN
 	case DTYPE_CATACOMBS:
 		CreateL2Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL2Triggers();
@@ -1564,6 +1572,7 @@ void CreateLevel(int lvldir)
 		Freeupstairs();
 		LoadRndLvlPal(4);
 		break;
+#endif
 	default:
 		app_fatal("CreateLevel");
 		break;
@@ -1707,6 +1716,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 			ResyncQuests();
 		else
 			ResyncMPQuests();
+#ifndef SPAWN
 	} else {
 		/// ASSERT: assert(! pSpeedCels);
 		pSpeedCels = DiabloAllocPtr(0x100000);
@@ -1742,6 +1752,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 
 		InitMissiles();
 		IncProgress();
+#endif
 	}
 
 	SyncPortals();
@@ -1780,8 +1791,10 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 	while (!IncProgress())
 		;
 
+#ifndef SPAWN
 	if (setlevel && setlvlnum == SL_SKELKING && quests[QTYPE_KING]._qactive == 2)
 		PlaySFX(USFX_SKING1);
+#endif
 }
 
 void game_loop(BOOL bStartup)
@@ -1876,7 +1889,7 @@ void diablo_color_cyc_logic()
 	DWORD tc;
 
 	tc = GetTickCount();
-	if (tc - color_cycle_timer >= 0x32) {
+	if (tc - color_cycle_timer >= 50) {
 		color_cycle_timer = tc;
 		if (palette_get_colour_cycling()) {
 			if (leveltype == DTYPE_HELL) {

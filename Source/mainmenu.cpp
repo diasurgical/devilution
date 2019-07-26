@@ -11,11 +11,13 @@ int menu_music_track_id = 5;
 void mainmenu_refresh_music()
 {
 	music_start(menu_music_track_id);
+#ifndef SPAWN
 	do {
 		menu_music_track_id++;
 		if (menu_music_track_id == 6)
 			menu_music_track_id = 0;
 	} while (!menu_music_track_id || menu_music_track_id == 1);
+#endif
 }
 
 void __stdcall mainmenu_change_name(int arg1, int arg2, int arg3, int arg4, char *name_1, char *name_2)
@@ -104,8 +106,12 @@ void mainmenu_loop()
 			break;
 		case MAINMENU_REPLAY_INTRO:
 		case MAINMENU_ATTRACT_MODE:
+#ifdef SPAWN
+			done = FALSE;
+#else
 			if (gbActive)
 				mainmenu_play_intro();
+#endif
 			break;
 		case MAINMENU_SHOW_CREDITS:
 			UiCreditsDialog(16);
@@ -147,9 +153,11 @@ BOOL mainmenu_multi_player()
 	return mainmenu_init_menu(SELHERO_CONNECT);
 }
 
+#ifndef SPAWN
 void mainmenu_play_intro()
 {
 	music_stop();
 	play_movie("gendata\\diablo1.smk", 1);
 	mainmenu_refresh_music();
 }
+#endif

@@ -1,3 +1,4 @@
+#ifndef SPAWN
 #include "diablo.h"
 
 int nSx1;
@@ -2151,3 +2152,4 @@ void DRLG_InitL2Vals()
 		}
 	}
 }
+#endif

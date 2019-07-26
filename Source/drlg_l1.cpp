@@ -127,6 +127,7 @@ void DRLG_Init_Globals()
 	memset(dLight, c, sizeof(dLight));
 }
 
+#ifndef SPAWN
 void LoadL1Dungeon(char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
@@ -175,6 +176,7 @@ void LoadL1Dungeon(char *sFileName, int vx, int vy)
 	SetMapObjects(pLevelMap, 0, 0);
 	mem_free_dbg(pLevelMap);
 }
+#endif
 
 void DRLG_L1Floor()
 {
@@ -323,6 +325,7 @@ void DRLG_InitL1Vals()
 	}
 }
 
+#ifndef SPAWN
 void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
@@ -370,6 +373,7 @@ void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 
 	mem_free_dbg(pLevelMap);
 }
+#endif
 
 void CreateL5Dungeon(DWORD rseed, int entry)
 {

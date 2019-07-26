@@ -18,7 +18,7 @@ BYTE gbActivePlayers;
 BOOLEAN gbGameDestroyed;
 BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
-char byte_678640;
+BOOLEAN gbGameUninitialized;
 int sglTimeoutStart;
 int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 TBuffer sgLoPriBuf;
@@ -651,7 +651,11 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		sgGameInitInfo.bDiff = gnDifficulty;
 		memset(&ProgramData, 0, sizeof(ProgramData));
 		ProgramData.size = sizeof(ProgramData);
+#ifdef SPAWN
+		ProgramData.programname = "Diablo Shareware";
+#else
 		ProgramData.programname = "Diablo Retail";
+#endif
 		ProgramData.programdescription = gszVersionNumber;
 		ProgramData.programid = 'DRTL';
 		ProgramData.versionid = 42;
@@ -720,7 +724,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		if (sgbPlayerTurnBitTbl[myplr] == 0 || msg_wait_resync())
 			break;
 		NetClose();
-		byte_678640 = 0;
+		gbGameUninitialized = FALSE;
 	}
 	gnDifficulty = sgGameInitInfo.bDiff;
 	SetRndSeed(sgGameInitInfo.dwSeed);
@@ -825,7 +829,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 
 	for (first = TRUE;; first = FALSE) {
 		type = 0x00;
-		if (byte_678640) {
+		if (gbGameUninitialized) {
 			if (!UiSelectProvider(0, client_info, user_info, ui_info, &fileinfo, &type)
 			    && (!first || SErrGetLastError() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(pfExitProgram))) {
 				return FALSE;
@@ -838,7 +842,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 		if (UiSelectGame(1, client_info, user_info, ui_info, &fileinfo, &playerId))
 			break;
 
-		byte_678640 = 1;
+		gbGameUninitialized = TRUE;
 	}
 
 	if ((DWORD)playerId >= MAX_PLRS) {
