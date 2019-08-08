@@ -6,7 +6,7 @@ int sfxdnum;
 HANDLE sfx_stream;
 TSFX *sfx_data_cur;
 
-const char monster_action_sounds[] = { 'a', 'h', 'd', 's' };
+const char MonstSndChar[] = { 'a', 'h', 'd', 's' };
 
 /* data */
 
@@ -909,9 +909,9 @@ void InitMonsterSND(int monst)
 
 	mtype = Monsters[monst].mtype;
 	for (i = 0; i < 4; i++) {
-		if (monster_action_sounds[i] != 's' || monsterdata[mtype].snd_special) {
+		if (MonstSndChar[i] != 's' || monsterdata[mtype].snd_special) {
 			for (j = 0; j < 2; j++) {
-				sprintf(name, monsterdata[mtype].sndfile, monster_action_sounds[i], j + 1);
+				sprintf(name, monsterdata[mtype].sndfile, MonstSndChar[i], j + 1);
 				path = (char *)DiabloAllocPtr(strlen(name) + 1);
 				strcpy(path, name);
 				pSnd = sound_file_load(path);
