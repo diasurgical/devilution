@@ -14,6 +14,22 @@ int visionid;
 BYTE *pLightTbl;
 BOOL lightflag;
 
+// CrawlTable specifies X- and Y-coordinate deltas from a missile target
+// coordinate.
+//
+// n=4
+//
+//     1
+//    3#4
+//     2
+//
+// n=16
+//
+//     314
+//    B7 8C
+//    F # G
+//    D9 AE
+//     526
 char CrawlTable[2749] = {
 	1,
 	0, 0,
@@ -378,7 +394,9 @@ char CrawlTable[2749] = {
 	-18, -1, 18, -1, -18, 0, 18, 0
 };
 
-char *pCrawlTable[19] = /* figure out what this is for */
+// pCrawlTable maps from circle radius to the X- and Y-coordinate deltas from
+// the center of a circle.
+char *pCrawlTable[19] =
     {
 	    CrawlTable,
 	    CrawlTable + 3,
