@@ -56,13 +56,13 @@ int framerate;
 int framestart;
 #endif
 BOOL FriendlyMode = TRUE;
-char *NetMsgStr[4] = {
+char *spszMsgTbl[4] = {
 	"I need help! Come Here!",
 	"Follow me.",
 	"Here's something for you.",
 	"Now you DIE!"
 };
-char *NetMsgHotKey[4] = { "F9", "F10", "F11", "F12" };
+char *spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
 void FreeGameMem()
 {
@@ -994,8 +994,8 @@ void diablo_hotkey_msg(DWORD dwMsg)
 	}
 
 	strcat(szFileName, "\\Diablo.ini");
-	/// ASSERT: assert(dwMsg < sizeof(NetMsgStr) / sizeof(NetMsgStr[0]));
-	GetPrivateProfileString("NetMsg", NetMsgHotKey[dwMsg], NetMsgStr[dwMsg], szMsg, sizeof(szMsg), szFileName);
+	/// ASSERT: assert(dwMsg < sizeof(spszMsgTbl) / sizeof(spszMsgTbl[0]));
+	GetPrivateProfileString("NetMsg", spszMsgHotKeyTbl[dwMsg], spszMsgTbl[dwMsg], szMsg, sizeof(szMsg), szFileName);
 	NetSendCmdString(-1, szMsg);
 }
 

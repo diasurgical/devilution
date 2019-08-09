@@ -173,7 +173,7 @@ extern int framerate;
 extern int framestart;
 #endif
 extern BOOL FriendlyMode;
-extern char *NetMsgStr[4];
-extern char *NetMsgHotKey[4];
+extern char *spszMsgTbl[4];
+extern char *spszMsgHotKeyTbl[4];
 
 #endif /* __DIABLO_H__ */
