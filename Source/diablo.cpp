@@ -251,6 +251,7 @@ void free_game()
 
 void diablo_init(const char *lpCmdLine)
 {
+	diablo_parse_flags(lpCmdLine);
 	init_create_window();
 
 	SFileEnableDirectAccess(TRUE);
@@ -269,7 +270,6 @@ void diablo_init(const char *lpCmdLine)
 	InitHash();
 
 	diablo_init_screen();
-	diablo_parse_flags(lpCmdLine);
 
 	snd_init(NULL);
 	atexit(sound_cleanup);
@@ -279,10 +279,8 @@ void diablo_init(const char *lpCmdLine)
 
 void diablo_splash()
 {
-#ifdef _DEBUG
 	if (!showintrodebug)
 		return;
-#endif
 
 	play_movie("gendata\\logo.smk", TRUE);
 #ifndef SPAWN
@@ -331,7 +329,6 @@ void diablo_parse_flags(const char *args)
 			*/
 				break;
 			case 'd':
-				showintrodebug = 0;
 				debug_mode_key_d = 1;
 				break;
 #endif
@@ -390,9 +387,11 @@ void diablo_parse_flags(const char *args)
 				}
 				DebugMonsters[debugmonsttypes++] = i;
 				break;
+#endif
 			case 'n':
 				showintrodebug = 0;
 				break;
+#ifdef _DEBUG
 			case 'q':
 				while (isspace(*args)) {
 					args++;
@@ -437,10 +436,10 @@ void diablo_parse_flags(const char *args)
 			case 'w':
 				debug_mode_key_w = 1;
 				break;
+#endif
 			case 'x':
 				fullscreen = FALSE;
 				break;
-#endif
 			}
 		}
 	}

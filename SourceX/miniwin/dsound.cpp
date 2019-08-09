@@ -27,7 +27,7 @@ void DirectSoundBuffer::Play(int lVolume, int lPan)
 {
 	int channel = Mix_PlayChannel(-1, chunk, 0);
 	if (channel == -1) {
-		SDL_Log("Too few channels, skipping sound\n");
+		SDL_Log("Too few channels, skipping sound");
 		return;
 	}
 
