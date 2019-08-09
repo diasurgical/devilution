@@ -33,7 +33,7 @@ BYTE ItemCAnimTbl[169] = {
 	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
 	8, 8, 6, 1, 3, 3, 11, 3, 4
 };
-char *ItemDropStrs[35] = {
+char *ItemDropNames[35] = {
 	"Armor2",
 	"Axe",
 	"FBttle",
@@ -190,7 +190,7 @@ void InitItemGFX()
 	char arglist[64];
 
 	for (i = 0; i < 35; i++) {
-		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[i]);
+		sprintf(arglist, "Items\\%s.CEL", ItemDropNames[i]);
 		itemanims[i] = LoadFileInMem(arglist, NULL);
 	}
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
