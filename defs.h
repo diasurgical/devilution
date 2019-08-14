@@ -36,6 +36,7 @@
 #define MDMAXX					40
 #define MDMAXY					40
 #define MAXCHARLEVEL			51
+#define ITEMTYPES				35
 
 // number of inventory grid cells
 #define NUM_INV_GRID_ELEM		40
