@@ -805,10 +805,12 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 			} else {
 				if (plr[pnum]._pClass == PC_WARRIOR) {
 					PlaySfxLoc(PS_WARR69, plr[pnum].WorldX, plr[pnum].WorldY);
+#ifndef SPAWN
 				} else if (plr[pnum]._pClass == PC_ROGUE) {
 					PlaySfxLoc(PS_ROGUE69, plr[pnum].WorldX, plr[pnum].WorldY);
 				} else if (plr[pnum]._pClass == PC_SORCERER) {
 					PlaySfxLoc(PS_MAGE69, plr[pnum].WorldX, plr[pnum].WorldY);
+#endif
 				}
 				drawhpflag = TRUE;
 			}
@@ -930,10 +932,12 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 				NetSendCmdDamage(TRUE, p, dam - resper * dam / 100);
 			if (plr[pnum]._pClass == PC_WARRIOR) {
 				tac = PS_WARR69;
+#ifndef SPAWN
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
 				tac = PS_ROGUE69;
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
 				tac = PS_MAGE69;
+#endif
 			} else {
 				return TRUE;
 			}

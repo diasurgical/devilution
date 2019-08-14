@@ -115,6 +115,13 @@ void InitQuests()
 	if (questdebug != -1)
 		quests[questdebug]._qactive = 2;
 #endif
+
+#ifdef SPAWN
+	for (z = 0; z < MAXQUESTS; z++) {
+		quests[z]._qactive = 0;
+	}
+#endif
+
 	if (!quests[QTYPE_KING]._qactive)
 		quests[QTYPE_KING]._qvar2 = 2;
 	if (!quests[QTYPE_INFRA]._qactive)
@@ -126,6 +133,7 @@ void InitQuests()
 
 void CheckQuests()
 {
+#ifndef SPAWN
 	int i, rportx, rporty;
 
 	if (QuestStatus(QTYPE_VB) && gbMaxPlayers != 1 && quests[QTYPE_VB]._qvar1 == 2) {
@@ -193,10 +201,12 @@ void CheckQuests()
 			}
 		}
 	}
+#endif
 }
 
 BOOL ForceQuests()
 {
+#ifndef SPAWN
 	int i, j, qx, qy, ql;
 
 	if (gbMaxPlayers != 1) {
@@ -220,6 +230,7 @@ BOOL ForceQuests()
 			}
 		}
 	}
+#endif
 
 	return FALSE;
 }
@@ -239,6 +250,7 @@ BOOL QuestStatus(int i)
 
 void CheckQuestKill(int m, BOOL sendmsg)
 {
+#ifndef SPAWN
 	int i, j;
 
 	if (monster[m].MType->mtype == MT_SKING) {
@@ -339,6 +351,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			sfxdnum = PS_MAGE94;
 		}
 	}
+#endif
 }
 
 void DrawButcher()
@@ -574,6 +587,7 @@ void GetReturnLvlPos()
 
 void ResyncMPQuests()
 {
+#ifndef SPAWN
 	if (quests[QTYPE_KING]._qactive == 1
 	    && currlevel >= quests[QTYPE_KING]._qlevel - 1
 	    && currlevel <= quests[QTYPE_KING]._qlevel + 1) {
@@ -592,10 +606,12 @@ void ResyncMPQuests()
 	}
 	if (QuestStatus(QTYPE_VB))
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
+#endif
 }
 
 void ResyncQuests()
 {
+#ifndef SPAWN
 	int i, tren, x, y;
 
 	if (setlevel && setlvlnum == quests[QTYPE_PW]._qslvl && quests[QTYPE_PW]._qactive != 1 && leveltype == quests[QTYPE_PW]._qlvltype) {
@@ -677,6 +693,7 @@ void ResyncQuests()
 	    && (quests[QTYPE_VB]._qactive == 2 || quests[QTYPE_VB]._qactive == 3)) {
 		quests[QTYPE_VB]._qvar2 = 2;
 	}
+#endif
 }
 
 void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
@@ -807,6 +824,7 @@ void QuestlogESC()
 
 void SetMultiQuest(int q, int s, int l, int v1)
 {
+#ifndef SPAWN
 	if (quests[q]._qactive != 3) {
 		if (s > quests[q]._qactive)
 			quests[q]._qactive = s;
@@ -814,4 +832,5 @@ void SetMultiQuest(int q, int s, int l, int v1)
 		if (v1 > quests[q]._qvar1)
 			quests[q]._qvar1 = v1;
 	}
+#endif
 }

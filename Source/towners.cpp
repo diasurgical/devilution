@@ -9,11 +9,13 @@ BOOL boyloadflag;
 BYTE *pCowCels;
 TownerStruct towner[16];
 
+#ifndef SPAWN
 const int snSFX[3][3] = {
 	{ PS_WARR52, PS_ROGUE52, PS_MAGE52 },
 	{ PS_WARR49, PS_ROGUE49, PS_MAGE49 },
 	{ PS_WARR50, PS_ROGUE50, PS_MAGE50 }
 };
+#endif
 
 /* data */
 
@@ -686,6 +688,7 @@ void TalkToTowner(int p, int t)
 			towner[t]._tbtcnt = 150;
 			towner[t]._tVar1 = p;
 			quests[QTYPE_BUTCH]._qvar1 = 1;
+#ifndef SPAWN
 			if (plr[p]._pClass == 0 && !effect_is_playing(PS_WARR8)) {
 				PlaySFX(PS_WARR8);
 			} else if (plr[p]._pClass == 1 && !effect_is_playing(PS_ROGUE8)) {
@@ -693,6 +696,7 @@ void TalkToTowner(int p, int t)
 			} else if (plr[p]._pClass == 2 && !effect_is_playing(PS_MAGE8)) {
 				PlaySFX(PS_MAGE8);
 			}
+#endif
 			towner[t]._tMsgSaid = TRUE;
 		} else if (quests[QTYPE_BUTCH]._qactive == 3 && quests[QTYPE_BUTCH]._qvar1 == 1) {
 			quests[QTYPE_BUTCH]._qvar1 = 1;
@@ -937,6 +941,14 @@ void CowSFX(int pnum)
 {
 	if (CowPlaying == -1 || !effect_is_playing(CowPlaying)) {
 		sgdwCowClicks++;
+#ifdef SPAWN
+		if (sgdwCowClicks == 4) {
+			sgdwCowClicks = 0;
+			CowPlaying = TSFX_COW2;
+		} else {
+			CowPlaying = TSFX_COW1;
+		}
+#else
 		if (sgdwCowClicks >= 8) {
 			PlaySfxLoc(TSFX_COW1, plr[pnum].WorldX, plr[pnum].WorldY + 5);
 			sgdwCowClicks = 4;
@@ -947,6 +959,7 @@ void CowSFX(int pnum)
 		} else {
 			CowPlaying = sgdwCowClicks == 4 ? TSFX_COW2 : TSFX_COW1;
 		}
+#endif
 		PlaySfxLoc(CowPlaying, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 }

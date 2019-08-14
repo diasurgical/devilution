@@ -43,6 +43,10 @@ ifeq ($(COPYPROT),1)
 	CFLAGS += /D "COPYPROT"
 endif
 
+ifeq ($(SPAWN),1)
+	CFLAGS += /D "SPAWN"
+endif
+
 ifeq ($(MAKE_BUILD),pdb)
 	VC_LINK = $(VC6_LINK)
 	LINKFLAGS += /pdb:"Diablo.pdb" /LIBPATH:$(VC6_LIB_DIR) /debug

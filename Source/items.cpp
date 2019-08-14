@@ -560,12 +560,14 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		g++;
 	}
 
+#ifndef SPAWN
 	if (plr[p].InvBody[INVLOC_CHEST]._itype == ITYPE_MARMOR && plr[p].InvBody[INVLOC_CHEST]._iStatFlag) {
 		g += ANIM_ID_MEDIUM_ARMOR;
 	}
 	if (plr[p].InvBody[INVLOC_CHEST]._itype == ITYPE_HARMOR && plr[p].InvBody[INVLOC_CHEST]._iStatFlag) {
 		g += ANIM_ID_HEAVY_ARMOR;
 	}
+#endif
 
 	if (plr[p]._pgfxnum != g && Loadgfx) {
 		plr[p]._pgfxnum = g;
@@ -897,6 +899,7 @@ void CreatePlrItems(int p)
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
+#ifndef SPAWN
 	case PC_ROGUE:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_ROGUE);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
@@ -917,6 +920,7 @@ void CreatePlrItems(int p)
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
+#endif
 	}
 
 	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
@@ -1100,9 +1104,13 @@ void GetBookSpell(int i, int lvl)
 {
 	int rv, s, bs;
 
-	if (!lvl)
+	if (lvl == 0)
 		lvl = 1;
 	rv = random(14, MAX_SPELLS) + 1;
+#ifdef SPAWN
+	if (lvl > 5)
+		lvl = 5;
+#endif
 	s = 1;
 	while (rv > 0) {
 		if (spelldata[s].sBookLvl != -1 && lvl >= spelldata[s].sBookLvl) {
@@ -1197,9 +1205,13 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
 	} else {
 		l = lvl >> 1;
-		if (!l)
+		if (l == 0)
 			l = 1;
 		rv = random(18, MAX_SPELLS) + 1;
+#ifdef SPAWN
+		if (lvl > 10)
+			lvl = 10;
+#endif
 		s = 1;
 		while (rv > 0) {
 			if (spelldata[s].sStaffLvl != -1 && l >= spelldata[s].sStaffLvl) {

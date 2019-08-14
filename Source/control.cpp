@@ -1173,10 +1173,12 @@ void InitControlPan()
 	sbookflag = FALSE;
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 		SpellPages[0][0] = SPL_REPAIR;
+#ifndef SPAWN
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
 		SpellPages[0][0] = SPL_DISARM;
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		SpellPages[0][0] = SPL_RECHARGE;
+#endif
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", NULL);
 	pGBoxBuff = LoadFileInMem("CtrlPan\\Golddrop.cel", NULL);
@@ -1665,10 +1667,12 @@ void DrawChr()
 
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 		ADD_PlrStringXY(168, 32, 299, "Warrior", COL_WHITE);
+#ifndef SPAWN
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
 		ADD_PlrStringXY(168, 32, 299, "Rogue", COL_WHITE); /* should use ClassStrTbl ? */
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		ADD_PlrStringXY(168, 32, 299, "Sorceror", COL_WHITE);
+#endif
 	}
 
 	sprintf(chrstr, "%i", plr[myplr]._pLevel);
