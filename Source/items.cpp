@@ -7,7 +7,7 @@ ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
-BYTE *itemanims[35];
+BYTE *itemanims[ITEMTYPES];
 BOOL UniqueItemFlag[128];
 int numitems;
 int gnNumGetRecords;
@@ -33,7 +33,7 @@ BYTE ItemCAnimTbl[169] = {
 	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
 	8, 8, 6, 1, 3, 3, 11, 3, 4
 };
-char *ItemDropNames[35] = {
+char *ItemDropNames[ITEMTYPES] = {
 	"Armor2",
 	"Axe",
 	"FBttle",
@@ -70,7 +70,7 @@ char *ItemDropNames[35] = {
 	"Fanvil",
 	"FLazStaf"
 };
-BYTE ItemAnimLs[35] = {
+BYTE ItemAnimLs[ITEMTYPES] = {
 	15,
 	13,
 	16,
@@ -107,7 +107,7 @@ BYTE ItemAnimLs[35] = {
 	13,
 	8
 };
-int ItemDropSnds[35] = {
+int ItemDropSnds[ITEMTYPES] = {
 	IS_FHARM,
 	IS_FAXE,
 	IS_FPOT,
@@ -144,7 +144,7 @@ int ItemDropSnds[35] = {
 	IS_FANVL,
 	IS_FSTAF
 };
-int ItemInvSnds[35] = {
+int ItemInvSnds[ITEMTYPES] = {
 	IS_IHARM,
 	IS_IAXE,
 	IS_IPOT,
@@ -2024,7 +2024,7 @@ void ItemRndDur(int ii)
 		item[ii]._iDurability = random(0, item[ii]._iMaxDur >> 1) + (item[ii]._iMaxDur >> 2) + 1;
 }
 
-void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen)
+void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, BOOL recreate, BOOL pregen)
 {
 	int iblvl, uid;
 
@@ -2109,9 +2109,9 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
 		if (monster[m]._uniqtype) {
-			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 15, onlygood, 0, 0);
+			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 15, onlygood, FALSE, FALSE);
 		} else {
-			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 1, onlygood, 0, 0);
+			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 1, onlygood, FALSE, FALSE);
 		}
 		numitems++;
 		if (sendmsg)
@@ -2142,7 +2142,7 @@ void CreateItem(int uid, int x, int y)
 	}
 }
 
-void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, int delta)
+void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, BOOL delta)
 {
 	int idx, ii;
 
@@ -2156,7 +2156,7 @@ void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, int delta)
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
-		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
+		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, FALSE, delta);
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
 		if (delta)
@@ -2202,7 +2202,7 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 	}
 }
 
-void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL sendmsg, int delta)
+void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL sendmsg, BOOL delta)
 {
 	int idx, ii;
 
@@ -2216,7 +2216,7 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
-		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
+		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, FALSE, delta);
 
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
@@ -2229,7 +2229,8 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 
 void RecreateItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 {
-	int uper, onlygood, recreate, pregen;
+	int uper, onlygood, recreate;
+	BOOL pregen;
 
 	if (!idx) {
 		SetPlrHandItem(&item[ii], IDI_GOLD);
@@ -2255,7 +2256,7 @@ void RecreateItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 				uper = 0;
 				onlygood = 0;
 				recreate = 0;
-				pregen = 0;
+				pregen = FALSE;
 				if (icreateinfo & 0x0100)
 					uper = 1;
 				if (icreateinfo & 0x80)
@@ -2265,7 +2266,7 @@ void RecreateItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 				if (icreateinfo & 0x0200)
 					recreate = 1;
 				if (icreateinfo & 0x8000)
-					pregen = 1;
+					pregen = TRUE;
 				SetupAllItems(ii, idx, iseed, icreateinfo & 0x3F, uper, onlygood, recreate, pregen);
 			}
 		}
@@ -3936,20 +3937,20 @@ int ItemNoFlippy()
 	return r;
 }
 
-void CreateSpellBook(int x, int y, int ispell, BOOL sendmsg, int delta)
+void CreateSpellBook(int x, int y, int ispell, BOOL sendmsg, BOOL delta)
 {
 	int ii, idx;
 	BOOL done;
 
 	done = FALSE;
-	idx = RndTypeItems(0, 24);
+	idx = RndTypeItems(0, IMISC_BOOK);
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
 		while (!done) {
-			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
 			if (item[ii]._iMiscId == IMISC_BOOK && item[ii]._iSpell == ispell)
 				done = TRUE;
 		}
@@ -3961,7 +3962,7 @@ void CreateSpellBook(int x, int y, int ispell, BOOL sendmsg, int delta)
 	}
 }
 
-void CreateMagicArmor(int x, int y, int imisc, int icurs, BOOL sendmsg, int delta)
+void CreateMagicArmor(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL delta)
 {
 	int ii, idx;
 	BOOL done;
@@ -3972,13 +3973,13 @@ void CreateMagicArmor(int x, int y, int imisc, int icurs, BOOL sendmsg, int delt
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
-		idx = RndTypeItems(imisc, 0);
+		idx = RndTypeItems(imisc, IMISC_NONE);
 		while (!done) {
-			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
 			if (item[ii]._iCurs == icurs)
 				done = TRUE;
 			else
-				idx = RndTypeItems(imisc, 0);
+				idx = RndTypeItems(imisc, IMISC_NONE);
 		}
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
@@ -3988,7 +3989,7 @@ void CreateMagicArmor(int x, int y, int imisc, int icurs, BOOL sendmsg, int delt
 	}
 }
 
-void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, int delta)
+void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL delta)
 {
 	int ii, idx;
 	BOOL done;
@@ -3999,13 +4000,13 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, int del
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
-		idx = RndTypeItems(imisc, 0);
+		idx = RndTypeItems(imisc, IMISC_NONE);
 		while (!done) {
-			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
 			if (item[ii]._iCurs == icurs)
 				done = TRUE;
 			else
-				idx = RndTypeItems(imisc, 0);
+				idx = RndTypeItems(imisc, IMISC_NONE);
 		}
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);

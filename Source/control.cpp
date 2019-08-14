@@ -379,7 +379,7 @@ void DrawSpellList()
 	int i, j, x, y, c, s, t, v, lx, ly, trans;
 	unsigned __int64 mask, spl;
 
-	pSpell = -1;
+	pSpell = SPL_INVALID;
 	infostr[0] = '\0';
 	x = 636;
 	y = 495;
@@ -1224,7 +1224,7 @@ void DoSpeedBook()
 	yo = 495;
 	X = 600;
 	Y = 307;
-	if (plr[myplr]._pRSpell != -1) {
+	if (plr[myplr]._pRSpell != SPL_INVALID) {
 		for (i = 0; i < 4; i++) {
 			switch (i) {
 			case RSPLTYPE_SKILL:
@@ -1357,7 +1357,7 @@ void CheckPanelInfo()
 		strcpy(tempstr, "Hotkey : 's'");
 		AddPanelString(tempstr, TRUE);
 		v = plr[myplr]._pRSpell;
-		if (v != -1) {
+		if (v != SPL_INVALID) {
 			switch (plr[myplr]._pRSplType) {
 			case RSPLTYPE_SKILL:
 				sprintf(tempstr, "%s Skill", spelldata[v].sSkillText);
