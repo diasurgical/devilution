@@ -8,9 +8,7 @@ BOOL gbRotateMap; // flip - if y < x
 int orgseed;
 int sgnWidth;
 int sglGameSeed;
-#ifdef __cplusplus
 static CCritSect sgMemCrit;
-#endif
 int SeedCount;
 BOOL gbNotInView; // valid - if x/y are in bounds
 
@@ -1701,13 +1699,9 @@ BYTE *DiabloAllocPtr(DWORD dwBytes)
 {
 	BYTE *buf;
 
-#ifdef __cplusplus
 	sgMemCrit.Enter();
-#endif
 	buf = (BYTE *)SMemAlloc(dwBytes, __FILE__, __LINE__, 0);
-#ifdef __cplusplus
 	sgMemCrit.Leave();
-#endif
 
 	if (buf == NULL) {
 		ERR_DLG(IDD_DIALOG2, GetLastError());
@@ -1719,13 +1713,9 @@ BYTE *DiabloAllocPtr(DWORD dwBytes)
 void mem_free_dbg(void *p)
 {
 	if (p) {
-#ifdef __cplusplus
 		sgMemCrit.Enter();
-#endif
 		SMemFree(p, __FILE__, __LINE__, 0);
-#ifdef __cplusplus
 		sgMemCrit.Leave();
-#endif
 	}
 }
 

@@ -412,12 +412,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		break;
 #endif
 	case WM_QUERYNEWPALETTE:
-		SDrawRealizePalette();
 		return 1;
-	case WM_PALETTECHANGED:
-		if ((HWND)wParam != hWnd)
-			SDrawRealizePalette();
-		break;
 	}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);

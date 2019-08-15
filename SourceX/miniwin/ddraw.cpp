@@ -96,12 +96,6 @@ HRESULT StubDraw::CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSUR
 	return DVL_DS_OK;
 }
 
-HRESULT StubDraw::SetCooperativeLevel(HWND hWnd, DWORD dwFlags)
-{
-	DUMMY();
-	return DVL_DS_OK;
-}
-
 HRESULT StubDraw::SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP)
 {
 	DUMMY();

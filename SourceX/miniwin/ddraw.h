@@ -16,7 +16,6 @@ public:
 	virtual ULONG Release();
 	HRESULT CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDIRECTDRAWPALETTE *lplpDDPalette, IUnknown *pUnkOuter);
 	HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface, IUnknown *pUnkOuter);
-	HRESULT SetCooperativeLevel(HWND hWnd, DWORD dwFlags);
 	HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP);
 	HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent);
 

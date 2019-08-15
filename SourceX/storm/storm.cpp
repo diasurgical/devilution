@@ -759,11 +759,6 @@ BOOL SFileSetBasePath(char *)
 	return true;
 }
 
-void SDrawRealizePalette(void)
-{
-	DUMMY();
-}
-
 BOOL SFileEnableDirectAccess(BOOL enable)
 {
 	directFileAccess = enable;

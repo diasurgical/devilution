@@ -2299,60 +2299,6 @@ void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw
 		return;
 	}
 
-#ifdef __cplusplus
-	if (lpDDSPrimary->IsLost() == DDERR_SURFACELOST) {
-		if (lpDDSPrimary->Restore() != DD_OK) {
-			return;
-		}
-#else
-	if (lpDDSPrimary->lpVtbl->IsLost(lpDDSPrimary) == DDERR_SURFACELOST) {
-		if (lpDDSPrimary->lpVtbl->Restore(lpDDSPrimary) != DD_OK) {
-			return;
-		}
-#endif
-		ResetPal();
-		ysize = SCREEN_HEIGHT;
-	}
-
-	if (lpDDSBackBuf == NULL) {
-		retry = TRUE;
-		dwTicks = GetTickCount();
-		while (1) {
-			DDS_desc.dwSize = sizeof(DDS_desc);
-#ifdef __cplusplus
-			hDDVal = lpDDSPrimary->Lock(NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
-#else
-			hDDVal = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
-#endif
-			if (hDDVal == DD_OK) {
-				break;
-			}
-			if (dwTicks - GetTickCount() > 5000) {
-				break;
-			}
-			Sleep(1);
-			if (hDDVal == DDERR_SURFACELOST) {
-				return;
-			}
-			if (hDDVal != DDERR_WASSTILLDRAWING && hDDVal != DDERR_SURFACEBUSY) {
-				if (!retry || hDDVal != DDERR_GENERIC) {
-					break;
-				}
-				retry = FALSE;
-				dx_reinit();
-				ysize = SCREEN_HEIGHT;
-				dwTicks = GetTickCount();
-			}
-		}
-		if (hDDVal == DDERR_SURFACELOST
-		    || hDDVal == DDERR_WASSTILLDRAWING
-		    || hDDVal == DDERR_SURFACEBUSY) {
-			return;
-		}
-		if (hDDVal != DD_OK) {
-			DD_ERR_MSG(hDDVal);
-		}
-	}
 
 	/// ASSERT: assert(ysize >= 0 && ysize <= 480); // SCREEN_HEIGHT
 
@@ -2389,17 +2335,6 @@ void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw
 		}
 	}
 
-	if (lpDDSBackBuf == NULL) {
-#ifdef __cplusplus
-		hDDVal = lpDDSPrimary->Unlock(NULL);
-#else
-		hDDVal = lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
-#endif
-		if (hDDVal != DDERR_SURFACELOST && hDDVal != DD_OK) {
-			DD_ERR_MSG(hDDVal);
-		}
-	}
-
 #ifdef _DEBUG
 	DrawFPS();
 #endif
@@ -2424,17 +2359,10 @@ void DrawFPS()
 		if (framerate > 99)
 			framerate = 99;
 		wsprintf(String, "%2d", framerate);
-#ifdef __cplusplus
 		if (!lpDDSPrimary->GetDC(&hdc)) {
 			TextOut(hdc, 0, 400, String, strlen(String));
 			lpDDSPrimary->ReleaseDC(hdc);
 		}
-#else
-		if (!lpDDSPrimary->lpVtbl->GetDC(lpDDSPrimary, &hdc)) {
-			TextOut(hdc, 0, 400, String, strlen(String));
-			lpDDSPrimary->lpVtbl->ReleaseDC(lpDDSPrimary, hdc);
-		}
-#endif
 	}
 }
 #endif
@@ -2457,11 +2385,7 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 		/// ASSERT: assert(! gpBuffer);
 		dwTicks = GetTickCount();
 		while (1) {
-#ifdef __cplusplus
 			hDDVal = lpDDSPrimary->BltFast(dwX, dwY, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
-#else
-			hDDVal = lpDDSPrimary->lpVtbl->BltFast(lpDDSPrimary, dwX, dwY, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
-#endif
 			if (hDDVal == DD_OK) {
 				break;
 			}
@@ -2482,30 +2406,6 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 		    && hDDVal != DD_OK) {
 			DD_ERR_MSG(hDDVal);
 		}
-	} else {
-		nSrcOff = SCREENXY(dwX, dwY);
-		nDstOff = dwX * (SCREEN_BPP / 8) + dwY * DDS_desc.lPitch;
-		nSrcWdt = BUFFER_WIDTH - dwWdt;
-		nDstWdt = DDS_desc.lPitch - dwWdt * (SCREEN_BPP / 8);
-		dwWdt >>= 2;
-
-		lock_buf(6);
-
-		/// ASSERT: assert(gpBuffer);
-
-		int wdt, hgt;
-		BYTE *src, *dst;
-
-		src = &gpBuffer[nSrcOff];
-		dst = (BYTE *)DDS_desc.lpSurface + nDstOff;
-
-		for (hgt = 0; hgt < dwHgt; hgt++, src += nSrcWdt, dst += nDstWdt) {
-			for (wdt = 0; wdt < 4 * dwWdt; wdt++) {
-				*dst++ = *src++;
-			}
-		}
-
-		unlock_buf(6);
 	}
 }
 
