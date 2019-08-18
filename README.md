@@ -82,19 +82,13 @@ Below are a few examples of some simple improvements made to the game. It is pla
 
 > Wow, does this mean I can download and play Diablo for free now?
 
-No, you'll need access to the data from the original game. Blizzard discontinued Diablo, but it is available on the GOG.com platform. Additionally there are plenty of used copies for sale online. (I'm still using an original 1996-disc without problems)
+No, you'll need access to the data from the original game. If you don't have an original CD then you can [buy Diablo from GoG.com](https://www.gog.com/game/diablo). Alternatly you can also use the spawn.mpq from the [http://ftp.blizzard.com/pub/demos/diablosw.exe](shareware) version and compile the with the SPAWN flag defined.
 > Cool, so I fired your mod up, but there's no 1080p or new features?
 
 Devilution aims to keep the original code unaltered, for documentation purposes.
 > So will you ever add cross-platform support or new features in the future?
 
 Yes! This has been done as a side project, please see [DevilutionX](https://github.com/diasurgical/devilutionX).
-> Ok, so I'm playing Devilution now and all the sudden it crashed. NOW WHAT??
-
-Open an issue and provide as much information as possible (OS version, etc.) including any crash logs.
-> I thought I'd fix the crash myself, but after looking at the code its a disaster. Do you speak v2-34-v8?
-
-That is the result of decompiled code. Whenever a program is compiled, much of the source is optimized and stripped away, so it's nearly impossible to decompile it back. Have patience. Everything will be cleaned up eventually. :)
 > What about Hellfire?
 
 Hellfire was a bit of a flop on the developer's part. Support may come in the future once the base game is finished.
