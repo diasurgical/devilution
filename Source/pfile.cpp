@@ -613,7 +613,7 @@ void pfile_rename_temp_to_perm()
 		}
 	}
 	/// ASSERT: assert(! GetPermSaveNames(dwIndex,szPerm));
-	GetPermSaveNames(dwIndex, szPerm);
+	GetPermSaveNames(dwIndex, szPerm); // BUGFIX: function call has no purpose
 	pfile_flush(TRUE, dwChar);
 }
 
