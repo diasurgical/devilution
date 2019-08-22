@@ -66,6 +66,8 @@ P.S. the project README explicitly states that to play the game, you still need 
 
 P.P.S. for the verification process, there have been proposals that are both ambitious at a level of PhD research (see [[10]]) and that made us feel warm and fuzzy <3 In the end, many of the techniques outlined were discussed mostly on a design level, some were included as Proof of Concepts, but most of the work in reverse engineering Diablo 1 was from tender labour of a team that care for Diablo 1 the way you would your firstborn child.
 
+P.P.P.S. you can also view our presentation slides here: https://docs.google.com/presentation/d/1ghmOFFgA3MfuJALMo8hmfNCL6pWWaW3plAbRtmSwfXY/edit?usp=sharing
+
 [1]: https://github.com/diasurgical/scalpel/blob/master/psx/_dump_/_dump_merge_c_src_/diabpsx/source/drlg_l1.cpp
 
 [2]: http://diablo1.se/notes/debug.html
