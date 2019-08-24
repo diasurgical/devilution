@@ -251,6 +251,7 @@ void AddInitItems()
 void InitItems()
 {
 	int i;
+	long s;
 
 	GetItemAttrs(0, IDI_GOLD, 1);
 	golditem = item[0];
@@ -261,7 +262,7 @@ void InitItems()
 		item[i]._itype = ITYPE_MISC;
 		item[i]._ix = 0;
 		item[i]._iy = 0;
-		item[i]._isin = 0;
+		item[i]._iAnimFlag = 0;
 		item[i]._iSelFlag = 0;
 		item[i]._iIdentified = FALSE;
 		item[i]._iPostDraw = FALSE;
@@ -273,7 +274,7 @@ void InitItems()
 	}
 
 	if (!setlevel) {
-		GetRndSeed();
+		s = GetRndSeed(); /* unused */
 		if (QuestStatus(QTYPE_INFRA))
 			SpawnRock();
 		if (QuestStatus(QTYPE_ANVIL))

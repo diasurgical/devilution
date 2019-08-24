@@ -90,6 +90,8 @@ typedef enum item_effect_type {
 	IPL_LIGHTRES         = 0x9,
 	IPL_MAGICRES         = 0xA,
 	IPL_ALLRES           = 0xB,
+	IPL_SPLCOST          = 0xC, /* only used in beta */
+	IPL_SPLDUR           = 0xD, /* only used in beta */
 	IPL_SPLLVLADD        = 0xE,
 	IPL_CHARGES          = 0xF,
 	IPL_FIREDAM          = 0x10,
