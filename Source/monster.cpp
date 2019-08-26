@@ -4,6 +4,7 @@
 // Tracks which missile files are already loaded
 int MissileFileFlag;
 
+// BUGFIX: replace monstkills[MAXMONSTERS] with monstkills[NUM_MTYPES].
 int monstkills[MAXMONSTERS];
 int monstactive[MAXMONSTERS];
 int nummonsters;
