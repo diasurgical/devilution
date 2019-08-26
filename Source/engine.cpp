@@ -256,111 +256,6 @@ void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	if (!pRLEBytes)
 		return;
 
-#ifdef USE_ASM
-	__asm {
-		mov		eax, light_table_index
-		shl		eax, 8
-		add		eax, pLightTbl
-		mov		tbl, eax
-		mov		esi, pRLEBytes
-		mov		edi, pDecodeTo
-		mov		eax, BUFFER_WIDTH
-		add		eax, nWidth
-		mov		w, eax
-		mov		ebx, nDataSize
-		add		ebx, esi
-		mov		eax, edi
-		and		eax, 1
-		mov		shift, eax
-	label1:
-		mov		edx, nWidth
-	label2:
-		xor		eax, eax
-		lodsb
-		or		al, al
-		js		label9
-		push	ebx
-		mov		ebx, tbl
-		sub		edx, eax
-		mov		ecx, eax
-		mov		eax, edi
-		and		eax, 1
-		cmp		eax, shift
-		jnz		label5
-		shr		ecx, 1
-		jnb		label3
-		inc		esi
-		inc		edi
-		jecxz	label8
-		jmp		label6
-	label3:
-		shr		ecx, 1
-		jnb		label4
-		inc		esi
-		inc		edi
-		lodsb
-		xlat
-		stosb
-		jecxz	label8
-	label4:
-		lodsd
-		inc		edi
-		ror		eax, 8
-		xlat
-		stosb
-		ror		eax, 10h
-		inc		edi
-		xlat
-		stosb
-		loop	label4
-		jmp		label8
-	label5:
-		shr		ecx, 1
-		jnb		label6
-		lodsb
-		xlat
-		stosb
-		jecxz	label8
-		jmp		label3
-	label6:
-		shr		ecx, 1
-		jnb		label7
-		lodsb
-		xlat
-		stosb
-		inc		esi
-		inc		edi
-		jecxz	label8
-	label7:
-		lodsd
-		xlat
-		stosb
-		inc		edi
-		ror		eax, 10h
-		xlat
-		stosb
-		inc		edi
-		loop	label7
-	label8:
-		pop		ebx
-		or		edx, edx
-		jz		label10
-		jmp		label2
-	label9:
-		neg		al
-		add		edi, eax
-		sub		edx, eax
-		jnz		label2
-	label10:
-		sub		edi, w
-		mov		eax, shift
-		inc		eax
-		and		eax, 1
-		mov		shift, eax
-		cmp		ebx, esi
-		jnz		label1
-	}
-#else
 	int i;
 	BYTE width;
 	BYTE *src, *dst;
@@ -427,7 +322,6 @@ void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 			}
 		}
 	}
-#endif
 }
 
 void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
@@ -831,117 +725,6 @@ void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int n
 	if (!gpBuffer)
 		return;
 
-#ifdef USE_ASM
-	__asm {
-		mov		eax, light_table_index
-		shl		eax, 8
-		add		eax, pLightTbl
-		mov		tbl, eax
-		mov		esi, pRLEBytes
-		mov		edi, pDecodeTo
-		mov		eax, BUFFER_WIDTH
-		add		eax, nWidth
-		mov		w, eax
-		mov		ebx, nDataSize
-		add		ebx, esi
-		mov		eax, edi
-		and		eax, 1
-		mov		shift, eax
-	label1:
-		mov		edx, nWidth
-	label2:
-		xor		eax, eax
-		lodsb
-		or		al, al
-		js		label10
-		push	ebx
-		mov		ebx, tbl
-		sub		edx, eax
-		cmp		edi, gpBufEnd
-		jb		label3
-		add		esi, eax
-		add		edi, eax
-		jmp		label9
-	label3:
-		mov		ecx, eax
-		mov		eax, edi
-		and		eax, 1
-		cmp		eax, shift
-		jnz		label6
-		shr		ecx, 1
-		jnb		label4
-		inc		esi
-		inc		edi
-		jecxz	label9
-		jmp		label7
-	label4:
-		shr		ecx, 1
-		jnb		label5
-		inc		esi
-		inc		edi
-		lodsb
-		xlat
-		stosb
-		jecxz	label9
-	label5:
-		lodsd
-		inc		edi
-		ror		eax, 8
-		xlat
-		stosb
-		ror		eax, 10h
-		inc		edi
-		xlat
-		stosb
-		loop	label5
-		jmp		label9
-	label6:
-		shr		ecx, 1
-		jnb		label7
-		lodsb
-		xlat
-		stosb
-		jecxz	label9
-		jmp		label4
-	label7:
-		shr		ecx, 1
-		jnb		label8
-		lodsb
-		xlat
-		stosb
-		inc		esi
-		inc		edi
-		jecxz	label9
-	label8:
-		lodsd
-		xlat
-		stosb
-		inc		edi
-		ror		eax, 10h
-		xlat
-		stosb
-		inc		edi
-		loop	label8
-	label9:
-		pop		ebx
-		or		edx, edx
-		jz		label11
-		jmp		label2
-	label10:
-		neg		al
-		add		edi, eax
-		sub		edx, eax
-		jnz		label2
-	label11:
-		sub		edi, w
-		mov		eax, shift
-		inc		eax
-		and		eax, 1
-		mov		shift, eax
-		cmp		ebx, esi
-		jnz		label1
-	}
-#else
 	int i;
 	BYTE width;
 	BYTE *src, *dst;
@@ -1013,7 +796,6 @@ void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int n
 			}
 		}
 	}
-#endif
 }
 
 /**
