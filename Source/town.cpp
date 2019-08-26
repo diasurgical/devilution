@@ -59,55 +59,14 @@ void town_clear_low_buf(BYTE *pBuff)
 void town_special_lower(BYTE *pBuff, int nCel)
 {
 #if 0
-	int w;
-	BYTE *end;
-	BYTE width;
-	BYTE *src, *dst;
+	int nDataSize;
+	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
 	pFrameTable = (DWORD *)pSpecialCels;
-	src = &pSpecialCels[pFrameTable[nCel]];
-	dst = pBuff;
-	end = &src[pFrameTable[nCel + 1] - pFrameTable[nCel]];
-
-	for(; src != end; dst -= BUFFER_WIDTH + 64) {
-		for(w = 64; w;) {
-			width = *src++;
-			if(!(width & 0x80)) {
-				w -= width;
-				if(dst < gpBufEnd) {
-					if(width & 1) {
-						dst[0] = src[0];
-						src++;
-						dst++;
-					}
-					width >>= 1;
-					if(width & 1) {
-						dst[0] = src[0];
-						dst[1] = src[1];
-						src += 2;
-						dst += 2;
-					}
-					width >>= 1;
-					for(; width; width--) {
-						dst[0] = src[0];
-						dst[1] = src[1];
-						dst[2] = src[2];
-						dst[3] = src[3];
-						src += 4;
-						dst += 4;
-					}
-				} else {
-					src += width;
-					dst += width;
-				}
-			} else {
-				width = -(char)width;
-				dst += width;
-				w -= width;
-			}
-		}
-	}
+	pRLEBytes = &pSpecialCels[pFrameTable[nCel]];
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	Cel2DecDatOnly(pBuff, pRLEBytes, nDataSize, 64);
 #endif
 }
 
