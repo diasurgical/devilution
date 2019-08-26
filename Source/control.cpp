@@ -1944,7 +1944,8 @@ void control_set_gold_curs(int pnum)
 }
 
 void DrawTalkPan()
-{	int i, off, talk_btn, color, nCel, x;
+{
+	int i, off, talk_btn, color, nCel, x;
 	char *msg;
 
 	off = 0;
