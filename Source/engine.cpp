@@ -187,10 +187,9 @@ void CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	CelDrawDatOnly(pBuff, pRLEBytes + nDataStart, nDataSize, nWidth);
 }
 
-void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *tbl)
 {
 	int w;
-	BYTE *tbl;
 
 	/// ASSERT: assert(pDecodeTo != NULL);
 	if (!pDecodeTo)
@@ -205,7 +204,8 @@ void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	if (!tbl)
+		tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 
 	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
