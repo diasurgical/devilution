@@ -849,12 +849,12 @@ void SetMapObjects(BYTE *pMap, int startx, int starty)
 
 	ClrAllObjects();
 	for (i = 0; i < 56; i++)
-		fileload[i] = 0;
+		fileload[i] = FALSE;
 	InitObjFlag = TRUE;
 
 	for (i = 0; AllObjects[i].oload != -1; i++) {
 		if (AllObjects[i].oload == 1 && leveltype == AllObjects[i].olvltype)
-			fileload[AllObjects[i].ofindex] = 1;
+			fileload[AllObjects[i].ofindex] = TRUE;
 	}
 
 	lm = pMap;
@@ -871,7 +871,7 @@ void SetMapObjects(BYTE *pMap, int startx, int starty)
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
 			if (*lm) {
-				fileload[AllObjects[ObjTypeConv[*lm]].ofindex] = 1;
+				fileload[AllObjects[ObjTypeConv[*lm]].ofindex] = TRUE;
 			}
 			lm += 2;
 		}
