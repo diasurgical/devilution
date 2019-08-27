@@ -21,8 +21,6 @@ HMODULE ghDiabMod;
 
 void dx_init(HWND hWnd)
 {
-	HRESULT hDDVal;
-	int winw, winh;
 	BOOL bSuccess;
 
 	SetFocus(hWnd);
@@ -33,18 +31,7 @@ void dx_init(HWND hWnd)
 #ifndef _DEBUG
 	fullscreen = true;
 #endif
-	if (!fullscreen) {
-		if (hDDVal == 1) {
-			TriggerBreak();
-		} else if (hDDVal != DVL_S_OK) {
-			ERR_DLG(IDD_DIALOG1, hDDVal);
-		}
-	} else {
-		if (hDDVal == 1) {
-			TriggerBreak();
-		} else if (hDDVal != DVL_S_OK) {
-			ERR_DLG(IDD_DIALOG1, hDDVal);
-		}
+	if (fullscreen) {
 		lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 	}
 
