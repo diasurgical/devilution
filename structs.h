@@ -20,7 +20,7 @@ typedef struct PLStruct {
 	int PLParam2;
 	char PLMinLvl;
 	int PLIType;
-	int PLGOE;
+	BYTE PLGOE;
 	BOOL PLDouble;
 	BOOL PLOk;
 	int PLMinVal;
