@@ -263,9 +263,6 @@ void snd_init(HWND hWnd)
 	if (sglpDS)
 		sound_create_primary_buffer(NULL);
 
-	SVidInitialize(sglpDS);
-	SFileDdaInitialize(sglpDS);
-
 	gbSndInited = sglpDS != NULL;
 }
 
@@ -353,7 +350,6 @@ HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pU
 void sound_cleanup()
 {
 	snd_update(true);
-	SVidDestroy();
 	SFileDdaDestroy();
 
 	if (sglpDS) {

@@ -96,11 +96,6 @@ BOOL SFileDdaGetPos(HANDLE hFile, DWORD *current, DWORD *end)
 	return true;
 }
 
-BOOL SFileDdaInitialize(HANDLE directsound)
-{
-	return true;
-}
-
 BOOL SFileDdaSetVolume(HANDLE hFile, signed int bigvolume, signed int volume)
 {
 	Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * bigvolume / VOLUME_MIN);
@@ -421,18 +416,6 @@ BOOL SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD
 	return true;
 }
 
-BOOL SVidInitialize(HANDLE video)
-{
-	DUMMY();
-	return true;
-}
-
-BOOL SVidDestroy()
-{
-	DUMMY();
-	return true;
-}
-
 double SVidFrameEnd;
 double SVidFrameLength;
 BYTE SVidLoop;
@@ -740,17 +723,6 @@ int SStrCmpI(const char *string1, const char *string2, unsigned int size)
 void SDrawMessageBox(char *Text, char *Title, int Flags)
 {
 	MessageBoxA(NULL, Text, Title, Flags);
-}
-
-void SDrawDestroy(void)
-{
-	DUMMY();
-}
-
-BOOLEAN StormDestroy(void)
-{
-	DUMMY();
-	return true;
 }
 
 BOOL SFileSetBasePath(char *)

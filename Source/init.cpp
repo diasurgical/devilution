@@ -46,7 +46,6 @@ void init_cleanup(BOOL show_cursor)
 	NetClose();
 	dx_cleanup();
 	engine_debug_trap(show_cursor);
-	StormDestroy();
 
 	if (show_cursor)
 		ShowCursor(TRUE);

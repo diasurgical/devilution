@@ -156,7 +156,6 @@ void dx_cleanup()
 
 	if (ghMainWnd)
 		ShowWindow(ghMainWnd, 0);
-	SDrawDestroy();
 	sgMemCrit.Enter();
 	if (sgpBackBuf != NULL) {
 		v0 = sgpBackBuf;
