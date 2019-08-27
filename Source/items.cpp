@@ -1309,9 +1309,6 @@ void GetItemAttrs(int i, int idata, int lvl)
 	if (item[i]._itype == ITYPE_GOLD) {
 		if (gnDifficulty == DIFF_NORMAL)
 			rndv = 5 * currlevel + random(21, 10 * currlevel);
-		else
-			rndv = lvl;
-
 		if (gnDifficulty == DIFF_NIGHTMARE)
 			rndv = 5 * (currlevel + 16) + random(21, 10 * (currlevel + 16));
 		if (gnDifficulty == DIFF_HELL)
@@ -1710,7 +1707,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		for (j = 0; PL_Suffix[j].PLPower != -1; j++) {
 			if (PL_Suffix[j].PLIType & flgs
 			    && PL_Suffix[j].PLMinLvl >= minlvl && PL_Suffix[j].PLMinLvl <= maxlvl
-			    && (goe | LOBYTE(PL_Suffix[j].PLGOE)) != 17
+			    && (goe | PL_Suffix[j].PLGOE) != 0x11
 			    && (!onlygood || PL_Suffix[j].PLOk)) {
 				l[nl] = j;
 				nl++;
@@ -2516,9 +2513,14 @@ void DoRepair(int pnum, int cii)
 	ItemStruct *pi;
 
 	p = &plr[pnum];
-	pi = &p->InvBody[cii];
-
 	PlaySfxLoc(IS_REPAIR, p->WorldX, p->WorldY);
+
+	if (cii >= 7) {
+		pi = &p->InvList[cii - 7];
+	} else {
+		pi = &p->InvBody[cii];
+	}
+
 	RepairItem(pi, p->_pLevel);
 	CalcPlrInv(pnum, TRUE);
 
@@ -2564,7 +2566,11 @@ void DoRecharge(int pnum, int cii)
 	int r;
 
 	p = &plr[pnum];
-	pi = &p->InvBody[cii];
+	if (cii >= 7) {
+		pi = &p->InvList[cii - 7];
+	} else {
+		pi = &p->InvBody[cii];
+	}
 	if (pi->_itype == ITYPE_STAFF && pi->_iSpell) {
 		r = spelldata[pi->_iSpell].sBookLvl;
 		r = random(38, p->_pLevel / r) + 1;
@@ -2980,7 +2986,7 @@ void DrawUniqueInfo()
 		PrintUString(0, 2, 1, UniqueItemList[uid].UIName, 3);
 		DrawULine(5);
 		PrintItemPower(UniqueItemList[uid].UIPower1, &curruitem);
-		y = 14 - UniqueItemList[uid].UINumPL;
+		y = 6 - UniqueItemList[uid].UINumPL + 8;
 		PrintUString(0, y, 1, tempstr, 0);
 		if (UniqueItemList[uid].UINumPL > 1) {
 			PrintItemPower(UniqueItemList[uid].UIPower2, &curruitem);
@@ -3749,7 +3755,7 @@ void SortHealer()
 
 void SpawnHealer(int lvl)
 {
-	int i, nsi, srnd;
+	int i, nsi, srnd, itype;
 
 	GetItemAttrs(0, IDI_HEAL, 1);
 	healitem[0] = item[0];
@@ -3767,16 +3773,16 @@ void SpawnHealer(int lvl)
 		healitem[2]._iCreateInfo = lvl;
 		healitem[2]._iStatFlag = TRUE;
 
-		i = 3;
+		srnd = 3;
 	} else {
-		i = 2;
+		srnd = 2;
 	}
 	nsi = random(50, 8) + 10;
-	for (; i < nsi; i++) {
+	for (i = srnd; i < nsi; i++) {
 		item[0]._iSeed = GetRndSeed();
 		SetRndSeed(item[0]._iSeed);
-		srnd = RndHealerItem(lvl) - 1;
-		GetItemAttrs(0, srnd, lvl);
+		itype = RndHealerItem(lvl) - 1;
+		GetItemAttrs(0, itype, lvl);
 		healitem[i] = item[0];
 		healitem[i]._iCreateInfo = lvl | 0x4000;
 		healitem[i]._iIdentified = TRUE;
@@ -3862,12 +3868,14 @@ void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 
 void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 {
+	int itype;
+
 	if (idx == IDI_HEAL || idx == IDI_FULLHEAL || idx == IDI_RESURRECT) {
 		GetItemAttrs(ii, idx, lvl);
 	} else {
 		SetRndSeed(iseed);
-		idx = RndHealerItem(lvl) - 1;
-		GetItemAttrs(ii, idx, lvl);
+		itype = RndHealerItem(lvl) - 1;
+		GetItemAttrs(ii, itype, lvl);
 	}
 
 	item[ii]._iCreateInfo = lvl | 0x4000;
