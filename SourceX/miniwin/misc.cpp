@@ -279,12 +279,6 @@ HWND GetLastActivePopup(HWND hWnd)
 	return hWnd;
 }
 
-DWORD GdiSetBatchLimit(DWORD dw)
-{
-	DUMMY();
-	return 1;
-}
-
 HWND GetTopWindow(HWND hWnd)
 {
 	UNIMPLEMENTED();

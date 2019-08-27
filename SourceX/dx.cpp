@@ -24,7 +24,7 @@ void dx_init(HWND hWnd)
 	BOOL bSuccess;
 
 	SetFocus(hWnd);
-	ShowWindow(hWnd, 1);
+	SDL_ShowWindow(window);
 
 	lpDDInterface = new StubDraw();
 
@@ -37,10 +37,7 @@ void dx_init(HWND hWnd)
 
 	dx_create_primary_surface();
 	palette_init();
-	GdiSetBatchLimit(1);
 	dx_create_back_buffer();
-	bSuccess = SDrawManualInitialize(hWnd, lpDDInterface, lpDDSPrimary, NULL, NULL, lpDDSBackBuf, lpDDPalette, NULL);
-	/// ASSERT: assert(bSuccess);
 }
 
 void dx_create_back_buffer()

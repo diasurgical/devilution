@@ -31,10 +31,8 @@ void palette_init()
 	if (error_code)
 		ERR_DLG(IDD_DIALOG8, error_code);
 	error_code = lpDDSPrimary->SetPalette(lpDDPalette);
-#ifndef RGBMODE
 	if (error_code)
 		ERR_DLG(IDD_DIALOG8, error_code);
-#endif
 }
 
 void LoadGamma()
