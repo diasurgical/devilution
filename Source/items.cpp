@@ -184,6 +184,21 @@ int ItemInvSnds[ITEMTYPES] = {
 int idoppely = 16;
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
+#ifdef HELLFIRE
+int items_get_currlevel()
+{
+	int lvl;
+
+	lvl = currlevel;
+	if (currlevel >= 17 && currlevel <= 20)
+		lvl = currlevel - 8;
+	if (currlevel >= 21 && currlevel <= 24)
+		lvl = currlevel - 7;
+
+	return lvl;
+}
+#endif
+
 void InitItemGFX()
 {
 	int i;

@@ -14,6 +14,9 @@ extern BOOL UniqueItemFlag[128];
 extern int numitems;
 extern int gnNumGetRecords;
 
+#ifdef HELLFIRE
+int items_get_currlevel();
+#endif
 void InitItemGFX();
 BOOL ItemPlace(int xp, int yp);
 void AddInitItems();
