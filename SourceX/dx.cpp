@@ -21,19 +21,10 @@ HMODULE ghDiabMod;
 
 void dx_init(HWND hWnd)
 {
-	BOOL bSuccess;
-
 	SetFocus(hWnd);
 	SDL_ShowWindow(window);
 
 	lpDDInterface = new StubDraw();
-
-#ifndef _DEBUG
-	fullscreen = true;
-#endif
-	if (fullscreen) {
-		lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
-	}
 
 	dx_create_primary_surface();
 	palette_init();
