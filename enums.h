@@ -1163,7 +1163,7 @@ typedef enum sfx_flag {
 	SFX_STREAM   = 0x01,
 	SFX_MISC     = 0x02,
 	SFX_UI       = 0x04,
-	SFX_08       = 0x08,
+	SFX_MONK     = 0x08,
 	SFX_ROGUE    = 0x10,
 	SFX_WARRIOR  = 0x20,
 	SFX_SORCEROR = 0x40,
@@ -2854,7 +2854,7 @@ typedef enum anim_weapon_id {
 } anim_weapon_id;
 
 typedef enum anim_armor_id {
-	ANIM_ID_LIGHT_ARMOR  = 0x00,
+	ANIM_ID_LIGHT_ARMOR = 0x00,
 #ifndef SPAWN
 	ANIM_ID_MEDIUM_ARMOR = 0x10,
 	ANIM_ID_HEAVY_ARMOR  = 0x20

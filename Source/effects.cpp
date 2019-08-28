@@ -895,7 +895,7 @@ TSFX sgSFX[] = {
 	{ SFX_STREAM,                "Sfx\\Monsters\\Wlock01.wav",  NULL },
 	{ SFX_STREAM,                "Sfx\\Monsters\\Zhar01.wav",   NULL },
 	{ SFX_STREAM,                "Sfx\\Monsters\\Zhar02.wav",   NULL },
-	{ SFX_STREAM,                "Sfx\\Monsters\\DiabloD.wav",  NULL }
+	{ SFX_STREAM,                "Sfx\\Monsters\\DiabloD.wav",  NULL },
 #endif
 	// clang-format on
 };
@@ -1226,7 +1226,7 @@ void stream_update()
 
 void priv_sound_init(BYTE bLoadMask)
 {
-	BYTE pc, bFlags;
+	BYTE pc;
 	DWORD i;
 
 	if (!gbSndInited) {
@@ -1241,16 +1241,15 @@ void priv_sound_init(BYTE bLoadMask)
 			continue;
 		}
 
-		bFlags = sgSFX[i].bFlags;
-		if (bFlags & SFX_STREAM) {
+		if (sgSFX[i].bFlags & SFX_STREAM) {
 			continue;
 		}
 
-		if (bLoadMask && !(bFlags & bLoadMask)) {
+		if (bLoadMask && !(sgSFX[i].bFlags & bLoadMask)) {
 			continue;
 		}
 
-		if (bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(bFlags & pc)) {
+		if (sgSFX[i].bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(sgSFX[i].bFlags & pc)) {
 			continue;
 		}
 

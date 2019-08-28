@@ -5,7 +5,7 @@
 _SNETVERSIONDATA fileinfo;
 int gbActive;
 char diablo_exe_path[MAX_PATH];
-HANDLE unused_mpq;
+HANDLE hellfire_mpq;
 char patch_rt_mpq_path[MAX_PATH];
 WNDPROC CurrentProc;
 HANDLE diabdat_mpq;
@@ -33,9 +33,9 @@ void init_cleanup(BOOL show_cursor)
 		SFileCloseArchive(patch_rt_mpq);
 		patch_rt_mpq = NULL;
 	}
-	if (unused_mpq) {
-		SFileCloseArchive(unused_mpq);
-		unused_mpq = NULL;
+	if (hellfire_mpq) {
+		SFileCloseArchive(hellfire_mpq);
+		hellfire_mpq = NULL;
 	}
 
 	UiDestroy();
@@ -241,7 +241,7 @@ void init_archives()
 #endif
 #endif
 #ifdef COPYPROT
-		if (diabdat_mpq)
+		if (diabdat_mpq != NULL)
 			break;
 		UiCopyProtError(&result);
 		if (result == COPYPROT_CANCEL)
