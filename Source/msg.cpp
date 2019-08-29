@@ -2523,6 +2523,25 @@ DWORD On_SYNCQUEST(TCmd *pCmd, int pnum)
 	return sizeof(*p);
 }
 
+#ifdef HELLFIRE
+DWORD On_ENDREFLECT(TCmd *pCmd, int pnum)
+{
+	int i;
+
+	if (gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel) {
+		for (i = 0; i < nummissiles; i++) {
+			int mi = missileactive[i];
+			if (missile[mi]._mitype == MIS_REFLECT && missile[mi]._misource == pnum) {
+				ClearMissileSpot(mi);
+				DeleteMissile(mi, i);
+			}
+		}
+	}
+
+	return sizeof(*pCmd);
+}
+#endif
+
 DWORD On_ENDSHIELD(TCmd *pCmd, int pnum)
 {
 	int i;
