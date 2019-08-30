@@ -336,20 +336,26 @@ BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phA
 	}
 
 	pszDrive = szDrive;
-	while (*pszDrive != '\0') {
+	if (*pszDrive == '\0') {
+		return FALSE;
+	}
+	while (1) {
 		pszRoot = pszDrive;
 		while (*pszDrive++ != '\0')
 			;
 		if (GetDriveType(pszRoot) == DRIVE_CDROM) {
 			strcpy(pszPath, pszRoot);
 			strcat(pszPath, pszArchive);
-			if (SFileOpenArchive(pszPath, flags, 1, phArchive)) {
-				return TRUE;
+			if (SFileOpenArchive(pszPath, flags, FS_CD, phArchive)) {
+				break;
 			}
+		}
+		if (*pszDrive == '\0') {
+			return FALSE;
 		}
 	}
 
-	return FALSE;
+	return TRUE;
 }
 
 void init_get_file_info()
