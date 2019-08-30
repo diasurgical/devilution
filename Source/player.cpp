@@ -3831,6 +3831,15 @@ void CheckStats(int p)
 	} else if (plr[p]._pClass == PC_SORCERER) {
 		c = PC_SORCERER;
 	}
+#ifdef HELLFIRE
+	else if (plr[p]._pClass == PC_MONK) {
+		c = PC_MONK;
+	} else if (plr[p]._pClass == PC_BARD) {
+		c = PC_BARD;
+	} else if (plr[p]._pClass == PC_BARBARIAN) {
+		c = PC_BARBARIAN;
+	}
+#endif
 
 	for (i = 0; i < 4; i++) {
 		switch (i) {
