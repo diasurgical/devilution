@@ -4065,6 +4065,7 @@ void SetPlrDex(int p, int v)
 	plr[p]._pBaseDex = v;
 	CalcPlrInv(p, TRUE);
 
+#ifndef HELLFIRE
 	if (plr[p]._pClass == PC_ROGUE) {
 		dm = plr[p]._pLevel * (plr[p]._pStrength + plr[p]._pDexterity) / 200;
 	} else {
@@ -4072,6 +4073,7 @@ void SetPlrDex(int p, int v)
 	}
 
 	plr[p]._pDamageMod = dm;
+#endif
 }
 
 void SetPlrVit(int p, int v)
