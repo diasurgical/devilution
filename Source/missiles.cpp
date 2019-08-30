@@ -512,7 +512,7 @@ BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, BOOLEAN shif
 		return ret;
 	}
 #ifdef _DEBUG
-	else if (hit < hper || debug_mode_dollar_sign || debug_mode_key_inverted_v || monster[m]._mmode = MM_STONE) {
+	else if (hit < hper || debug_mode_dollar_sign || debug_mode_key_inverted_v || monster[m]._mmode == MM_STONE) {
 #else
 	else if (hit < hper || monster[m]._mmode == MM_STONE) {
 #endif
