@@ -608,7 +608,9 @@ void NetClose()
 	tmsg_cleanup();
 	multi_event_handler(FALSE);
 	SNetLeaveGame(3);
+#ifndef HELLFIRE
 	msgcmd_cmd_cleanup();
+#endif
 	if (gbMaxPlayers > 1)
 		Sleep(2000);
 }

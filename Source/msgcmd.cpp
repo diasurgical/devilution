@@ -1,3 +1,4 @@
+#ifndef HELLFIRE
 #include <new>      // for placement new
 #include <stddef.h> // for offsetof
 #include <typeinfo> // for typeid
@@ -76,3 +77,4 @@ void msgcmd_add_server_cmd(const char *command)
 		memcpy(msg->command, command, len);
 	}
 }
+#endif

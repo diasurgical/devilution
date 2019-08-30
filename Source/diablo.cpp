@@ -167,7 +167,9 @@ void run_game_loop(unsigned int uMsg)
 		}
 		multi_process_network_packets();
 		game_loop(gbGameLoopStartup);
+#ifndef HELLFIRE
 		msgcmd_send_chat();
+#endif
 		gbGameLoopStartup = FALSE;
 		DrawAndBlit();
 	}

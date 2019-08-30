@@ -2541,7 +2541,9 @@ void control_reset_talk_msg(char *msg)
 			pmask |= 1 << i;
 	}
 
+#ifndef HELLFIRE
 	if (!msgcmd_add_server_cmd_W(sgszTalkMsg))
+#endif
 		NetSendCmdString(pmask, sgszTalkMsg);
 }
 
