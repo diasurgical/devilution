@@ -522,7 +522,11 @@ typedef struct MonsterData {
 } MonsterData;
 
 typedef struct CMonster {
+#ifdef HELLFIRE
+	int mtype;
+#else
 	unsigned char mtype;
+#endif
 	// TODO: Add enum for place flags
 	unsigned char mPlaceFlags;
 	AnimStruct Anims[6];
