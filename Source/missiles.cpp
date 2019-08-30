@@ -991,9 +991,9 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				missile[i]._miHitFlag = 1;
 			}
 		} else {
-			if (monster[missile[i]._misource]._mFlags & 0x10
+			if (monster[missile[i]._misource]._mFlags & MFLAG_TARGETS_MONSTER
 			    && dMonster[mx][my] > 0
-			    && monster[dMonster[mx][my] - 1]._mFlags & 0x20
+			    && monster[dMonster[mx][my] - 1]._mFlags & MFLAG_GOLEM
 			    && MonsterTrapHit(dMonster[mx][my] - 1, mindam, maxdam, missile[i]._midist, missile[i]._mitype, shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
