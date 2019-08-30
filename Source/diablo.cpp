@@ -260,6 +260,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ShowCursor(FALSE);
 	srand(GetTickCount());
 	InitHash();
+#ifdef HELLFIRE
+	alloc_plr();
+#endif
 	fault_get_filter();
 
 	bNoEvent = diablo_get_not_running();
@@ -1901,3 +1904,38 @@ void diablo_color_cyc_logic()
 		}
 	}
 }
+
+#ifdef HELLFIRE
+void alloc_plr()
+{
+	plr = get_plr_mem(NULL);
+
+	if(plr == NULL) {
+		app_fatal("Unable to initialize memory");
+	}
+
+	memset(plr, 0, sizeof(PlayerStruct) * MAX_PLRS);
+}
+
+PlayerStruct *get_plr_mem(PlayerStruct *p)
+{
+	void *r;
+	PlayerStruct *pPlayer;
+
+	r = malloc(rand() & 0x7FFF);
+	pPlayer = (PlayerStruct *)malloc(sizeof(PlayerStruct) * MAX_PLRS);
+
+	if(r != NULL) {
+		free(r);
+	}
+	if(pPlayer == NULL) {
+		return p;
+	}
+	if(p != NULL) {
+		memcpy(pPlayer, p, sizeof(PlayerStruct) * MAX_PLRS);
+		free(p);
+	}
+
+	return pPlayer;
+}
+#endif

@@ -163,6 +163,9 @@ typedef struct ItemStruct {
 	BOOL _iStatFlag;
 	int IDidx;
 	int offs016C; // _oldlight or _iInvalid
+#ifdef HELLFIRE
+	int field_170;
+#endif
 } ItemStruct;
 
 //////////////////////////////////////////////////

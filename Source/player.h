@@ -7,7 +7,11 @@ extern int plr_wframe_size;
 extern BYTE plr_gfx_flag;
 extern int plr_aframe_size;
 extern int myplr;
+#ifdef HELLFIRE
+extern PlayerStruct *plr;
+#else
 extern PlayerStruct plr[MAX_PLRS];
+#endif
 extern int plr_fframe_size;
 extern int plr_qframe_size;
 extern BOOL deathflag;

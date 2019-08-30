@@ -148,6 +148,10 @@ void game_loop(BOOL bStartup);
 void game_logic();
 void timeout_cursor(BOOL bTimeout);
 void diablo_color_cyc_logic();
+#ifdef HELLFIRE
+void alloc_plr();
+PlayerStruct *get_plr_mem(PlayerStruct *p);
+#endif
 
 /* data */
 
