@@ -11,6 +11,9 @@ int numchains;
 
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+#ifdef HELLFIRE
+int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
+#endif
 
 void GetDamageAmt(int i, int *mind, int *maxd)
 {
@@ -3315,7 +3318,9 @@ void MI_Guardian(int i)
 void MI_Chain(int i)
 {
 	int sx, sy, id, l, n, m, k, rad, tx, ty, dir;
+#ifndef HELLFIRE
 	int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
+#endif
 
 	id = missile[i]._misource;
 	sx = missile[i]._mix;
@@ -3328,7 +3333,11 @@ void MI_Chain(int i)
 	for (m = 1; m < rad; m++) {
 		k = CrawlNum[m];
 		l = k + 2;
+#ifdef HELLFIRE
+		for (n = CrawlTable[k]; n > 0; n--) {
+#else
 		for (n = (BYTE)CrawlTable[k]; n > 0; n--) {
+#endif
 			tx = sx + CrawlTable[l - 1];
 			ty = sy + CrawlTable[l];
 			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY && dMonster[tx][ty] > 0) {
