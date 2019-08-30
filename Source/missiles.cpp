@@ -345,6 +345,7 @@ int GetDirection16(int x1, int y1, int x2, int y2)
 
 void DeleteMissile(int mi, int i)
 {
+#ifndef HELLFIRE
 	int src;
 
 	if (missile[mi]._mitype == MIS_MANASHIELD) {
@@ -353,6 +354,7 @@ void DeleteMissile(int mi, int i)
 			NetSendCmd(TRUE, CMD_REMSHIELD);
 		plr[src].pManaShield = FALSE;
 	}
+#endif
 	missileavail[MAXMISSILES - nummissiles] = mi;
 	nummissiles--;
 	if (nummissiles > 0 && i != nummissiles)
