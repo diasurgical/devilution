@@ -2953,8 +2953,8 @@ BOOL PM_DoDeath(int pnum)
 			}
 		}
 
-		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
 		plr[pnum]._pAnimDelay = 10000;
+		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
 		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
 	}
 
