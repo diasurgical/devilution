@@ -1920,7 +1920,11 @@ int RndAllItems()
 	return ril[random(26, ri)];
 }
 
+#ifdef HELLFIRE
+int RndTypeItems(int itype, int imid, int lvl)
+#else
 int RndTypeItems(int itype, int imid)
+#endif
 {
 	int i, ri;
 	BOOL okflag;
@@ -1931,7 +1935,11 @@ int RndTypeItems(int itype, int imid)
 		okflag = TRUE;
 		if (!AllItemsList[i].iRnd)
 			okflag = FALSE;
+#ifdef HELLFIRE
+		if (lvl << 1 < AllItemsList[i].iMinMLvl)
+#else
 		if (currlevel << 1 < AllItemsList[i].iMinMLvl)
+#endif
 			okflag = FALSE;
 		if (AllItemsList[i].itype != itype)
 			okflag = FALSE;
@@ -2222,7 +2230,11 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 	int idx, ii;
 
 	if (itype != ITYPE_GOLD)
+#ifdef HELLFIRE
+		idx = RndTypeItems(itype, imisc, currlevel);
+#else
 		idx = RndTypeItems(itype, imisc);
+#endif
 	else
 		idx = 0;
 
@@ -3958,7 +3970,11 @@ void CreateSpellBook(int x, int y, int ispell, BOOL sendmsg, BOOL delta)
 	BOOL done;
 
 	done = FALSE;
+#ifdef HELLFIRE
+	idx = RndTypeItems(0, IMISC_BOOK, currlevel);
+#else
 	idx = RndTypeItems(0, IMISC_BOOK);
+#endif
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
@@ -3988,13 +4004,21 @@ void CreateMagicArmor(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL del
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
+#ifdef HELLFIRE
+		idx = RndTypeItems(imisc, IMISC_NONE, currlevel);
+#else
 		idx = RndTypeItems(imisc, IMISC_NONE);
+#endif
 		while (!done) {
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
 			if (item[ii]._iCurs == icurs)
 				done = TRUE;
 			else
+#ifdef HELLFIRE
+				idx = RndTypeItems(imisc, IMISC_NONE, currlevel);
+#else
 				idx = RndTypeItems(imisc, IMISC_NONE);
+#endif
 		}
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
@@ -4010,18 +4034,37 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL de
 	BOOL done;
 
 	done = FALSE;
+#ifdef HELLFIRE
+	int imid = IMISC_NONE;
+	if (imisc == ITYPE_STAFF) {
+		imid = IMISC_STAFF;
+	}
+	int lvl = items_get_currlevel();
+#endif
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
+#ifdef HELLFIRE
+		idx = RndTypeItems(imisc, IMISC_NONE, lvl);
+#else
 		idx = RndTypeItems(imisc, IMISC_NONE);
+#endif
 		while (!done) {
+#ifdef HELLFIRE
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * lvl, 1, 1, FALSE, delta);
+#else
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
+#endif
 			if (item[ii]._iCurs == icurs)
 				done = TRUE;
 			else
+#ifdef HELLFIRE
+				idx = RndTypeItems(imisc, imid, lvl);
+#else
 				idx = RndTypeItems(imisc, IMISC_NONE);
+#endif
 		}
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
