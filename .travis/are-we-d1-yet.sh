@@ -2,8 +2,11 @@
 
 # based on https://github.com/k3rn31p4nic/travis-ci-discord-webhook
 
-# Only run for commits/builds on master, not for PRs for now
-if [[ "$TRAVIS_BRANCH" != "master" || $TRAVIS_PULL_REQUEST != "false" ]]; then
+# Only run for commits/builds on master|hellfire, not for PRs for now
+if [[ "$TRAVIS_BRANCH" != "master" && "$TRAVIS_BRANCH" != "hellfire" ]]; then
+  exit
+fi
+if [[ $TRAVIS_PULL_REQUEST != "false" ]]; then
   exit
 fi
 
@@ -30,7 +33,7 @@ WEBHOOK_DATA='{
   "avatar_url": "https://travis-ci.com/images/logos/TravisCI-Mascot-1.png",
   "embeds": [ {
     "author": {
-      "name": "Job #'"$TRAVIS_JOB_NUMBER"' (Build #'"$TRAVIS_BUILD_NUMBER"')",
+      "name": "'"$3"' #'"$TRAVIS_JOB_NUMBER"' (Build #'"$TRAVIS_BUILD_NUMBER"')",
       "url": "https://travis-ci.org/'"$TRAVIS_REPO_SLUG"'/builds/'"$TRAVIS_BUILD_ID"'",
       "icon_url": "https://travis-ci.com/images/logos/TravisCI-Mascot-1.png"
     },

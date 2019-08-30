@@ -320,34 +320,40 @@ void InitPlrGFXMem(int pnum)
 
 DWORD GetPlrGFXSize(char *szCel)
 {
-	char prefix[16];
-	char pszName[256];
-	HANDLE file;
 	int c, a, w;
-	DWORD size, result;
+	DWORD dwSize, dwMaxSize;
+	HANDLE hsFile;
+	char pszName[256];
+	char Type[16];
 
-	size = 0;
-	result = 0;
-	a = 0;
-	w = 0;
+	dwMaxSize = 0;
 
-	for (c = 0; c < sizeof(ClassStrTbl) / sizeof(ClassStrTbl[0]); c++) {
+	for (c = 0; c < sizeof(ClassStrTbl) / sizeof(*ClassStrTbl); c++) {
+#ifdef SPAWN
+		if (c != 0)
+			continue;
+#endif
 		for (a = 0; ArmourChar[a]; a++) {
+#ifdef SPAWN
+			if (&ArmourChar[a] != &ArmourChar[0])
+				break;
+#endif
 			for (w = 0; WepChar[w]; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
-				sprintf(prefix, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
-				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
-				if (WOpenFile(pszName, &file, TRUE)) {
-					size = WGetFileSize(file, 0);
-					WCloseFile(file);
-					if (result <= size) {
-						result = size;
+				sprintf(Type, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
+				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], Type, Type, szCel);
+				if (WOpenFile(pszName, &hsFile, TRUE)) {
+					/// ASSERT: assert(hsFile);
+					dwSize = WGetFileSize(hsFile, NULL);
+					WCloseFile(hsFile);
+					if (dwMaxSize <= dwSize) {
+						dwMaxSize = dwSize;
 					}
 				}
 			}
 		}
 	}
 
-	return result;
+	return dwMaxSize;
 }
 
 void FreePlayerGFX(int pnum)

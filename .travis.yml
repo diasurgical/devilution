@@ -21,16 +21,9 @@ env:
   - MAKE_BUILD=make
   - MAKE_BUILD=debug
 
-before_script:
-  - touch storm.dll
-  - touch diabloui.dll
-
 script:
   - if [ $MAKE_BUILD = make ]; then make; fi
   - if [ $MAKE_BUILD = debug ]; then make debug; fi
-
-after_script:
-  - make clean
 
 stages:
   - Riivaaja
@@ -39,15 +32,15 @@ stages:
 jobs:
   include:
     - stage: Riivaaja
-      name: "Build using Riivaaja (original toolset)"
+      name: "Diablo 1.09b: original toolchain"
       language: minimal
       sudo: required
       services:
         - docker
       addons: {}
       script: docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable
-    - stage: test
-      name: "Riivaaja: Calculate binary accuracy"
+    - stage: Riivaaja
+      name: "Diablo 1.09b: Calculate binary accuracy"
       language: minimal
       sudo: required
       services:
@@ -63,10 +56,28 @@ jobs:
           echo '#!/bin/sh' | sudo tee /bin/wine
           echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
           sudo chmod +x /bin/wine
-          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e COPYPROT=1 diasurgical/riivaaja:stable
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja:stable
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../status.sh
-      after_success:
+          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Diablo 1.09b"
+    - stage: Riivaaja
+      name: "Spawn 1.09: Calculate binary accuracy"
+      language: minimal
+      sudo: required
+      services:
+        - docker
+      addons: {}
+      script:
         - |
           set -e
-          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK
+          wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          rm comparer-config.toml
+          wget https://raw.githubusercontent.com/diasurgical/devilution-comparer/master/shareware-comparer-config.toml -O comparer-config.toml
+          echo '#!/bin/sh' | sudo tee /bin/wine
+          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
+          sudo chmod +x /bin/wine
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e SPAWN=1 diasurgical/riivaaja:stable
+          ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
+          docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../spawn-status.sh
+          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Spawn 1.09b"
