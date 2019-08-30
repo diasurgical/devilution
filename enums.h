@@ -1432,6 +1432,9 @@ typedef enum missile_id {
 	MIS_RPORTAL       = 0x41,
 	MIS_BOOM2         = 0x42,
 	MIS_DIABAPOCA     = 0x43,
+#ifdef HELLFIRE
+	MIS_REFLECT       = 0x4F,
+#endif
 } missile_id;
 
 typedef enum missile_graphic_id {
