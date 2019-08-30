@@ -3891,11 +3891,13 @@ void ModifyPlrStr(int p, int l)
 	plr[p]._pStrength += l;
 	plr[p]._pBaseStr += l;
 
+#ifndef HELLFIRE
 	if (plr[p]._pClass == PC_ROGUE) {
 		plr[p]._pDamageMod = plr[p]._pLevel * (plr[p]._pStrength + plr[p]._pDexterity) / 200;
 	} else {
 		plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
 	}
+#endif
 
 	CalcPlrInv(p, TRUE);
 
