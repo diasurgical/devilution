@@ -2045,10 +2045,18 @@ void AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 	}
 
 	if (plr[id]._pClass == PC_WARRIOR)
-		HealAmount += HealAmount;
+		HealAmount <<= 1;
+#ifdef HELLFIRE
+	else if (plr[id]._pClass == PC_BARBARIAN || plr[id]._pClass == PC_MONK)
+		HealAmount <<= 1;
+#endif
 
 	if (plr[id]._pClass == PC_ROGUE)
 		HealAmount += HealAmount >> 1;
+#ifdef HELLFIRE
+	else if (plr[id]._pClass == PC_BARD)
+		HealAmount += HealAmount >> 1;
+#endif
 
 	plr[id]._pHitPoints += HealAmount;
 	if (plr[id]._pHitPoints > plr[id]._pMaxHP)
