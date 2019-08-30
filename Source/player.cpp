@@ -4101,6 +4101,9 @@ void InitDungMsgs(int pnum)
 	}
 
 	plr[pnum].pDungMsgs = 0;
+#ifdef HELLFIRE
+	plr[pnum].pBattleNet = 0;
+#endif
 }
 
 void PlayDungMsgs()
