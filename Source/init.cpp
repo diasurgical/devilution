@@ -5,7 +5,7 @@
 _SNETVERSIONDATA fileinfo;
 int gbActive;
 char diablo_exe_path[MAX_PATH];
-HANDLE unused_mpq;
+HANDLE hellfire_mpq;
 char patch_rt_mpq_path[MAX_PATH];
 WNDPROC CurrentProc;
 HANDLE diabdat_mpq;
@@ -13,6 +13,23 @@ char diabdat_mpq_path[MAX_PATH];
 HANDLE patch_rt_mpq;
 BOOL killed_mom_parent;
 BOOLEAN screensaver_enabled_prev;
+#ifdef HELLFIRE
+char hellfire_mpq_path[MAX_PATH];
+char hfmonk_mpq_path[MAX_PATH];
+char hfbard_mpq_path[MAX_PATH];
+char hfbarb_mpq_path[MAX_PATH];
+char hfmusic_mpq_path[MAX_PATH];
+char hfvoice_mpq_path[MAX_PATH];
+char hfopt1_mpq_path[MAX_PATH];
+char hfopt2_mpq_path[MAX_PATH];
+HANDLE hfmonk_mpq;
+HANDLE hfbard_mpq;
+HANDLE hfbarb_mpq;
+HANDLE hfmusic_mpq;
+HANDLE hfvoice_mpq;
+HANDLE hfopt1_mpq;
+HANDLE hfopt2_mpq;
+#endif
 
 /* data */
 
@@ -33,11 +50,40 @@ void init_cleanup(BOOL show_cursor)
 		SFileCloseArchive(patch_rt_mpq);
 		patch_rt_mpq = NULL;
 	}
-	if (unused_mpq) {
-		SFileCloseArchive(unused_mpq);
-		unused_mpq = NULL;
+	if (hellfire_mpq) {
+		SFileCloseArchive(hellfire_mpq);
+		hellfire_mpq = NULL;
 	}
-
+#ifdef HELLFIRE
+	if (hfmonk_mpq) {
+		SFileCloseArchive(hfmonk_mpq);
+		hfmonk_mpq = NULL;
+	}
+	if (hfbard_mpq) {
+		SFileCloseArchive(hfbard_mpq);
+		hfbard_mpq = NULL;
+	}
+	if (hfbarb_mpq) {
+		SFileCloseArchive(hfbarb_mpq);
+		hfbarb_mpq = NULL;
+	}
+	if (hfmusic_mpq) {
+		SFileCloseArchive(hfmusic_mpq);
+		hfmusic_mpq = NULL;
+	}
+	if (hfvoice_mpq) {
+		SFileCloseArchive(hfvoice_mpq);
+		hfvoice_mpq = NULL;
+	}
+	if (hfopt1_mpq) {
+		SFileCloseArchive(hfopt1_mpq);
+		hfopt1_mpq = NULL;
+	}
+	if (hfopt2_mpq) {
+		SFileCloseArchive(hfopt2_mpq);
+		hfopt2_mpq = NULL;
+	}
+#endif
 	UiDestroy();
 	effects_cleanup_sfx();
 	sound_cleanup();
@@ -241,7 +287,7 @@ void init_archives()
 #endif
 #endif
 #ifdef COPYPROT
-		if (diabdat_mpq)
+		if (diabdat_mpq != NULL)
 			break;
 		UiCopyProtError(&result);
 		if (result == COPYPROT_CANCEL)
@@ -259,6 +305,16 @@ void init_archives()
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_sh.mpq", "DiabloSpawn", 2000, FS_PC);
 #else
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, FS_PC);
+#endif
+#ifdef HELLFIRE
+	hellfire_mpq = init_test_access(hellfire_mpq_path, "\\hellfire.mpq", "DiabloInstall", 8000, FS_PC);
+	hfmonk_mpq = init_test_access(hfmonk_mpq_path, "\\hfmonk.mpq", "DiabloInstall", 8100, FS_PC);
+	hfbard_mpq = init_test_access(hfbard_mpq_path, "\\hfbard.mpq", "DiabloInstall", 8110, FS_PC);
+	hfbarb_mpq = init_test_access(hfbarb_mpq_path, "\\hfbarb.mpq", "DiabloInstall", 8120, FS_PC);
+	hfmusic_mpq = init_test_access(hfmusic_mpq_path, "\\hfmusic.mpq", "DiabloInstall", 8200, FS_PC);
+	hfvoice_mpq = init_test_access(hfvoice_mpq_path, "\\hfvoice.mpq", "DiabloInstall", 8500, FS_PC);
+	hfopt1_mpq = init_test_access(hfopt1_mpq_path, "\\hfopt1.mpq", "DiabloInstall", 8600, FS_PC);
+	hfopt2_mpq = init_test_access(hfopt2_mpq_path, "\\hfopt2.mpq", "DiabloInstall", 8610, FS_PC);
 #endif
 }
 

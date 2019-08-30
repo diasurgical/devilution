@@ -2698,6 +2698,17 @@ void OperateSlainHero(int pnum, int i, BOOL sendmsg)
 #ifndef SPAWN
 				PlaySfxLoc(PS_MAGE9, plr[myplr].WorldX, plr[myplr].WorldY);
 #endif
+#ifdef HELLFIRE
+			} else if (plr[pnum]._pClass == PC_MONK) {
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_STAFF, ICURS_WAR_STAFF, FALSE, TRUE);
+				PlaySfxLoc(PS_MONK9, plr[myplr].WorldX, plr[myplr].WorldY);
+			} else if (plr[pnum]._pClass == PC_BARD) {
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_SWORD, ICURS_BASTARD_SWORD, FALSE, TRUE);
+				PlaySfxLoc(PS_ROGUE9, plr[myplr].WorldX, plr[myplr].WorldY);
+			} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_AXE, ICURS_BATTLE_AXE, FALSE, TRUE);
+				PlaySfxLoc(PS_WARR9, plr[myplr].WorldX, plr[myplr].WorldY);
+#endif
 			}
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
