@@ -11,7 +11,9 @@ int numchains;
 
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+#ifdef HELLFIRE
 int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
+#endif
 
 void GetDamageAmt(int i, int *mind, int *maxd)
 {
@@ -217,13 +219,19 @@ BOOL CheckBlock(int fx, int fy, int tx, int ty)
 int FindClosest(int sx, int sy, int rad)
 {
 	int j, i, mid, tx, ty, cr;
-
+#ifndef HELLFIRE
+	int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
+#endif
 	if (rad > 19)
 		rad = 19;
 
 	for (i = 1; i < rad; i++) {
 		cr = CrawlNum[i] + 2;
+#ifdef HELLFIRE
 		for (j = CrawlTable[CrawlNum[i]]; j > 0; j--) {
+#else
+		for (j = (BYTE)CrawlTable[CrawlNum[i]]; j > 0; j--) {
+#endif
 			tx = sx + CrawlTable[cr - 1];
 			ty = sy + CrawlTable[cr];
 			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
@@ -345,6 +353,16 @@ int GetDirection16(int x1, int y1, int x2, int y2)
 
 void DeleteMissile(int mi, int i)
 {
+#ifndef HELLFIRE
+	int src;
+
+	if (missile[mi]._mitype == MIS_MANASHIELD) {
+		src = missile[mi]._misource;
+		if (src == myplr)
+			NetSendCmd(TRUE, CMD_REMSHIELD);
+		plr[src].pManaShield = FALSE;
+	}
+#endif
 	missileavail[MAXMISSILES - nummissiles] = mi;
 	nummissiles--;
 	if (nummissiles > 0 && i != nummissiles)
