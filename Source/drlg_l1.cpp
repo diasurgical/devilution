@@ -615,10 +615,8 @@ void DRLG_L1Shadows()
 							dungeon[x - 1][y - 1] = SPATS[i].nv1;
 						if (SPATS[i].nv2 && !L5dflags[x][y - 1])
 							dungeon[x][y - 1] = SPATS[i].nv2;
-						if (SPATS[i].nv3) {
-							if (!L5dflags[x - 1][y])
-								dungeon[x - 1][y] = SPATS[i].nv3;
-						}
+						if (SPATS[i].nv3 && !L5dflags[x - 1][y])
+							dungeon[x - 1][y] = SPATS[i].nv3;
 					}
 				}
 			}

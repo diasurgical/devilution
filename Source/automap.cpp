@@ -577,7 +577,7 @@ void SetAutomapView(int x, int y)
 		return;
 	}
 
-	automapview[xx][yy] = 1;
+	automapview[xx][yy] = TRUE;
 
 	maptype = GetAutomapType(xx, yy, FALSE);
 	solid = maptype & 0x4000;
