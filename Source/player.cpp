@@ -4093,8 +4093,13 @@ void SetPlrVit(int p, int v)
 
 	hp = v << 6;
 	if (plr[p]._pClass == PC_WARRIOR) {
-		hp *= 2;
+		hp <<= 1;
 	}
+#ifdef HELLFIRE
+	else if (plr[p]._pClass == PC_BARBARIAN) {
+		hp <<= 1;
+	}
+#endif
 
 	plr[p]._pHPBase = hp;
 	plr[p]._pMaxHPBase = hp;
