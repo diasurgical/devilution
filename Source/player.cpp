@@ -3963,9 +3963,11 @@ void ModifyPlrDex(int p, int l)
 	plr[p]._pBaseDex += l;
 	CalcPlrInv(p, TRUE);
 
+#ifndef HELLFIRE
 	if (plr[p]._pClass == PC_ROGUE) {
 		plr[p]._pDamageMod = plr[p]._pLevel * (plr[p]._pDexterity + plr[p]._pStrength) / 200;
 	}
+#endif
 
 	if (p == myplr) {
 		NetSendCmdParam1(FALSE, CMD_SETDEX, plr[p]._pBaseDex);
