@@ -6,7 +6,11 @@ int plr_wframe_size;
 BYTE plr_gfx_flag = 0;
 int plr_aframe_size;
 int myplr;
+#ifdef HELLFIRE
+PlayerStruct *plr;
+#else
 PlayerStruct plr[MAX_PLRS];
+#endif
 int plr_fframe_size;
 int plr_qframe_size;
 BOOL deathflag;

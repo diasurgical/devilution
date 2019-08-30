@@ -49,7 +49,11 @@
 #define VOLUME_MAX				0
 
 // todo: enums
+#ifdef HELLFIRE
+#define NUMLEVELS				25
+#else
 #define NUMLEVELS				17
+#endif
 
 // from diablo 2 beta
 #define MAXEXP					2000000000
