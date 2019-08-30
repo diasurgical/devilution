@@ -2025,7 +2025,7 @@ void AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 	}
 
 	if (plr[id]._pClass == PC_WARRIOR)
-		HealAmount += HealAmount;
+		HealAmount <<= 1;
 
 	if (plr[id]._pClass == PC_ROGUE)
 		HealAmount += HealAmount >> 1;

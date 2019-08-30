@@ -3909,7 +3909,7 @@ void ModifyPlrMag(int p, int l)
 
 	ms = l << 6;
 	if (plr[p]._pClass == PC_SORCERER) {
-		ms *= 2;
+		ms <<= 1;
 	}
 
 	plr[p]._pMaxManaBase += ms;
@@ -3970,7 +3970,7 @@ void ModifyPlrVit(int p, int l)
 
 	ms = l << 6;
 	if (plr[p]._pClass == PC_WARRIOR) {
-		ms *= 2;
+		ms <<= 1;
 	}
 
 	plr[p]._pHPBase += ms;
@@ -4031,7 +4031,7 @@ void SetPlrMag(int p, int v)
 
 	m = v << 6;
 	if (plr[p]._pClass == PC_SORCERER) {
-		m *= 2;
+		m <<= 1;
 	}
 
 	plr[p]._pMaxManaBase = m;
@@ -4071,7 +4071,7 @@ void SetPlrVit(int p, int v)
 
 	hp = v << 6;
 	if (plr[p]._pClass == PC_WARRIOR) {
-		hp *= 2;
+		hp <<= 1;
 	}
 
 	plr[p]._pHPBase = hp;
