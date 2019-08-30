@@ -4046,8 +4046,13 @@ void SetPlrMag(int p, int v)
 
 	m = v << 6;
 	if (plr[p]._pClass == PC_SORCERER) {
-		m *= 2;
+		m <<= 1;
 	}
+#ifdef HELLFIRE
+	else if (plr[p]._pClass == PC_BARD) {
+		m += m >> 1;
+	}
+#endif
 
 	plr[p]._pMaxManaBase = m;
 	plr[p]._pMaxMana = m;
