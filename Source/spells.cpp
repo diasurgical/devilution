@@ -185,7 +185,7 @@ void DoResurrect(int pnum, int rid)
 		if (plr[rid].plrlevel == currlevel) {
 			StartStand(rid, plr[rid]._pdir);
 		} else {
-			plr[rid]._pmode = 0;
+			plr[rid]._pmode = PM_STAND;
 		}
 	}
 }

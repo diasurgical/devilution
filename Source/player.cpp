@@ -1114,7 +1114,7 @@ void StartWalkStand(int pnum)
 		app_fatal("StartWalkStand: illegal player %d", pnum);
 	}
 
-	plr[pnum]._pmode = 0;
+	plr[pnum]._pmode = PM_STAND;
 	plr[pnum]._px = plr[pnum].WorldX;
 	plr[pnum]._py = plr[pnum].WorldY;
 	plr[pnum]._pxoff = 0;
