@@ -251,6 +251,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #endif
 	ghInst = hInst;
 
+#ifndef HELLFIRE
 	if (RestrictedTest())
 		ErrOkDlg(IDD_DIALOG10, 0, "C:\\Src\\Diablo\\Source\\DIABLO.CPP", 877);
 	if (ReadOnlyTest()) {
@@ -258,6 +259,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			szFileName[0] = '\0';
 		DirErrorDlg(szFileName);
 	}
+#endif
 
 	ShowCursor(FALSE);
 	srand(GetTickCount());
