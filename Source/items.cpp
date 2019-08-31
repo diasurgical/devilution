@@ -890,9 +890,9 @@ void CreatePlrItems(int p)
 
 	pi = plr[p].SpdList;
 	for (i = MAXBELTITEMS; i != 0; i--) {
-        pi->_itype = ITYPE_NONE;
-        pi++;
-    }
+		pi->_itype = ITYPE_NONE;
+		pi++;
+	}
 
 	switch (plr[p]._pClass) {
 	case PC_WARRIOR:
@@ -912,31 +912,33 @@ void CreatePlrItems(int p)
 		}
 #endif
 
-#ifndef HELLFIRE
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
 
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
-#endif
 		break;
 #ifndef SPAWN
 	case PC_ROGUE:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_ROGUE);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
-#ifndef HELLFIRE
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
 
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
-#endif
 		break;
 	case PC_SORCERER:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_SORCEROR);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
-#ifndef HELLFIRE
+#ifdef HELLFIRE
+		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[0]);
+
+		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[1]);
+#else
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
 
@@ -944,11 +946,17 @@ void CreatePlrItems(int p)
 		GetPlrHandSeed(&plr[p].SpdList[1]);
 #endif
 		break;
+#endif
 
 #ifdef HELLFIRE
 	case PC_MONK:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 36);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[0]);
+
+		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
 	case PC_BARD:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 37);
@@ -956,6 +964,11 @@ void CreatePlrItems(int p)
 
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], 38);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
+		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[0]);
+
+		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
 	case PC_BARBARIAN:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 139);
@@ -963,19 +976,14 @@ void CreatePlrItems(int p)
 
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], 2);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
+		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[0]);
 
+		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
 #endif
-#endif
 	}
-
-#ifdef HELLFIRE
-	SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
-	GetPlrHandSeed(&plr[p].SpdList[0]);
-
-	SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
-	GetPlrHandSeed(&plr[p].SpdList[1]);
-#endif
 
 	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
 	GetPlrHandSeed(&plr[p].HoldItem);
