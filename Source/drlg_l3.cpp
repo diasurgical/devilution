@@ -6,10 +6,20 @@ int abyssx;
 int lockoutcnt;
 BOOLEAN lockout[DMAXX][DMAXY];
 
+/* todo: correct size of hellfire data */
 const BYTE L3ConvTbl[16] = { 8, 11, 3, 10, 1, 9, 12, 12, 6, 13, 4, 13, 2, 14, 5, 7 };
 const BYTE L3UP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 51, 50, 0, 48, 49, 0, 0, 0, 0 };
+#ifdef HELLFIRE
+const BYTE L6UP[24] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 20, 19, 0, 17, 18, 0, 0, 0, 0, 0, 0, 0, 0 };
+#endif
 const BYTE L3DOWN[20] = { 3, 3, 8, 9, 7, 8, 9, 7, 0, 0, 0, 0, 47, 0, 0, 46, 0, 0, 0, 0 };
+#ifdef HELLFIRE
+const BYTE L6DOWN[24] = { 3, 3, 8, 9, 7, 8, 9, 7, 0, 0, 0, 0, 16, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0 };
+#endif
 const BYTE L3HOLDWARP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 125, 125, 0, 125, 125, 0, 0, 0, 0 };
+#ifdef HELLFIRE
+const BYTE L6HOLDWARP[24] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 24, 23, 0, 21, 22, 0, 0, 0, 0, 0, 0, 0, 0 };
+#endif
 const BYTE L3TITE1[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 57, 58, 0, 0, 56, 55, 0, 0, 0, 0, 0 };
 const BYTE L3TITE2[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 61, 62, 0, 0, 60, 59, 0, 0, 0, 0, 0 };
 const BYTE L3TITE3[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 65, 66, 0, 0, 64, 63, 0, 0, 0, 0, 0 };
@@ -67,8 +77,56 @@ const BYTE L3ANVIL[244] = {
 	0, 0, 31, 36, 33, 33, 35, 34, 33, 37,
 	32, 0, 0, 0, 31, 27, 27, 27, 27, 27,
 	32, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0
-};
+	0, 0, 0, 0 };
+#ifdef HELLFIRE
+const BYTE byte_48A76C[4] = { 1, 1, 8, 25 };
+const BYTE byte_48A770[4] = { 1, 1, 8, 26 };
+const BYTE byte_48A774[4] = { 1, 1, 8, 27 };
+const BYTE byte_48A778[4] = { 1, 1, 8, 28 };
+const BYTE byte_48A77C[4] = { 1, 1, 7, 29 };
+const BYTE byte_48A780[4] = { 1, 1, 7, 30 };
+const BYTE byte_48A784[4] = { 1, 1, 7, 31 };
+const BYTE byte_48A788[8] = { 1, 1, 7, 32, 0, 0, 0, 0 };
+const BYTE byte_48A790[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A7A8[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 124, 0, 0, 0, 0 };
+const BYTE byte_48A7BC[4] = { 1, 1, 9, 33 };
+const BYTE byte_48A7C0[4] = { 1, 1, 9, 34 };
+const BYTE byte_48A7C4[4] = { 1, 1, 9, 35 };
+const BYTE byte_48A7C8[4] = { 1, 1, 9, 36 };
+const BYTE byte_48A7CC[4] = { 1, 1, 9, 37 };
+const BYTE byte_48A7D0[4] = { 1, 1, 11, 38 };
+const BYTE byte_48A7D4[4] = { 1, 1, 10, 39 };
+const BYTE byte_48A7D8[4] = { 1, 1, 10, 40 };
+const BYTE byte_48A7DC[4] = { 1, 1, 10, 41 };
+const BYTE byte_48A7E0[4] = { 1, 1, 10, 42 };
+const BYTE byte_48A7E4[4] = { 1, 1, 10, 43 };
+const BYTE byte_48A7E8[4] = { 1, 1, 11, 44 };
+const BYTE byte_48A7EC[4] = { 1, 1, 9, 45 };
+const BYTE byte_48A7F0[4] = { 1, 1, 9, 46 };
+const BYTE byte_48A7F4[4] = { 1, 1, 10, 47 };
+const BYTE byte_48A7F8[4] = { 1, 1, 10, 48 };
+const BYTE byte_48A7FC[4] = { 1, 1, 11, 49 };
+const BYTE byte_48A800[8] = { 1, 1, 11, 50, 0, 0, 0, 0 };
+const BYTE byte_48A808[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 67, 0, 0, 66, 51, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A820[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 69, 0, 0, 68, 52, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A838[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 70, 0, 0, 71, 53, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A850[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 73, 0, 0, 72, 54, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A868[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 75, 0, 0, 74, 55, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A880[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 77, 0, 0, 76, 56, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A898[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 79, 0, 0, 78, 57, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A8B0[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 81, 0, 0, 80, 58, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A8C8[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 83, 0, 0, 82, 59, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A8E0[24] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 84, 0, 0, 85, 60, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE L6ISLE1[16] = { 2, 3, 5, 14, 4, 9, 13, 12, 7, 7, 7, 7, 7, 7, 0, 0 };
+const BYTE L6ISLE2[16] = { 3, 2, 5, 2, 14, 13, 10, 12, 7, 7, 7, 7, 7, 7, 0, 0 };
+const BYTE L6ISLE3[16] = { 2, 3, 5, 14, 4, 9, 13, 12, 107, 115, 119, 122, 131, 123, 0, 0 };
+const BYTE L6ISLE4[16] = { 3, 2, 5, 2, 14, 13, 10, 12, 107, 120, 115, 131, 121, 123, 0, 0 };
+const BYTE L6ISLE5[16] = { 2, 2, 5, 14, 13, 12, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A948[40] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 107, 115, 7, 7, 131, 123, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A970[40] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 108, 7, 7, 109, 112, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A998[48] = { 4, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 107, 115, 7, 7, 119, 122, 7, 7, 131, 123, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A9C8[48] = { 4, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 126, 108, 7, 7, 7, 117, 7, 7, 109, 112, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0 };
+#endif
 
 void AddFenceDoors()
 {
@@ -302,19 +360,33 @@ void CreateL3Dungeon(DWORD rseed, int entry)
 	DRLG_L3(entry);
 	DRLG_L3Pass3();
 
-	for (j = 0; j < 112; j++) {
-		for (i = 0; i < 112; i++) {
-			if (dPiece[i][j] >= 56 && dPiece[i][j] <= 147) {
-				DoLighting(i, j, 7, -1);
-			} else if (dPiece[i][j] >= 154 && dPiece[i][j] <= 161) {
-				DoLighting(i, j, 7, -1);
-			} else if (dPiece[i][j] == 150) {
-				DoLighting(i, j, 7, -1);
-			} else if (dPiece[i][j] == 152) {
-				DoLighting(i, j, 7, -1);
+#ifdef HELLFIRE
+	if (currlevel < 17) {
+#endif
+		for (j = 0; j < 112; j++) {
+			for (i = 0; i < 112; i++) {
+				if (dPiece[i][j] >= 56 && dPiece[i][j] <= 147) {
+					DoLighting(i, j, 7, -1);
+				} else if (dPiece[i][j] >= 154 && dPiece[i][j] <= 161) {
+					DoLighting(i, j, 7, -1);
+				} else if (dPiece[i][j] == 150) {
+					DoLighting(i, j, 7, -1);
+				} else if (dPiece[i][j] == 152) {
+					DoLighting(i, j, 7, -1);
+				}
+			}
+		}
+#ifdef HELLFIRE
+	} else {
+		for (j = 0; j < 112; j++) {
+			for (i = 0; i < 112; i++) {
+				if (dPiece[i][j] >= 382 && dPiece[i][j] <= 457) {
+					DoLighting(i, j, 9, -1);
+				}
 			}
 		}
 	}
+#endif
 
 	DRLG_SetPC();
 }
@@ -359,27 +431,91 @@ void DRLG_L3(int entry)
 			} while (!found);
 			DRLG_L3MakeMegas();
 			if (entry == 0) {
-				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 1, 0);
+#ifdef HELLFIRE
+				if (currlevel < 17) {
+#endif
+					genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 1, 0);
+#ifdef HELLFIRE
+				} else {
+					if ( currlevel != 17 )
+						genok = DRLG_L3PlaceMiniSet(L6UP, 1, 1, -1, -1, 1, 0);
+					else
+						genok = DRLG_L3PlaceMiniSet(L6HOLDWARP, 1, 1, -1, -1, 1, 6);
+				}
+#endif
 				if (!genok) {
-					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
+#ifdef HELLFIRE
+					if (currlevel < 17) {
+#endif
+						genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
+#ifdef HELLFIRE
+					} else {
+						if ( currlevel != 20 )
+							genok = DRLG_L3PlaceMiniSet(L6DOWN, 1, 1, -1, -1, 0, 1);
+					}
+#endif
 					if (!genok && currlevel == 9) {
 						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
 					}
 				}
 			} else if (entry == 1) {
-				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
+#ifdef HELLFIRE
+				if (currlevel < 17) {
+#endif
+					genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
+#ifdef HELLFIRE
+				} else {
+					if ( currlevel != 17 )
+						genok = DRLG_L3PlaceMiniSet(L6UP, 1, 1, -1, -1, 0, 0);
+					else
+						genok = DRLG_L3PlaceMiniSet(L6HOLDWARP, 1, 1, -1, -1, 0, 6);
+				}
+#endif
 				if (!genok) {
-					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 1, 1);
-					ViewX += 2;
-					ViewY -= 2;
+#ifdef HELLFIRE
+					if (currlevel < 17) {
+#endif
+						genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 1, 1);
+						ViewX += 2;
+						ViewY -= 2;
+#ifdef HELLFIRE
+					} else {
+						if ( currlevel != 20 )
+						{
+							genok = DRLG_L3PlaceMiniSet(L6DOWN, 1, 1, -1, -1, 1, 1);
+							ViewX += 2;
+							ViewY -= 2;
+						}
+					}
+#endif
 					if (!genok && currlevel == 9) {
 						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
 					}
 				}
 			} else {
-				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
+#ifdef HELLFIRE
+				if (currlevel < 17) {
+#endif
+					genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
+#ifdef HELLFIRE
+				} else {
+					if ( currlevel != 17 )
+						genok = DRLG_L3PlaceMiniSet(L6UP, 1, 1, -1, -1, 0, 0);
+					else
+						genok = DRLG_L3PlaceMiniSet(L6HOLDWARP, 1, 1, -1, -1, 1, 6);
+				}
+#endif
 				if (!genok) {
-					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
+#ifdef HELLFIRE
+					if (currlevel < 17) {
+#endif
+						genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
+#ifdef HELLFIRE
+					} else {
+						if ( currlevel != 20 )
+							genok = DRLG_L3PlaceMiniSet(L6DOWN, 1, 1, -1, -1, 0, 1);
+					}
+#endif
 					if (!genok && currlevel == 9) {
 						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 1, 6);
 					}
@@ -389,20 +525,61 @@ void DRLG_L3(int entry)
 				genok = DRLG_L3Anvil();
 			}
 		} while (genok == TRUE);
-		DRLG_L3Pool();
+#ifdef HELLFIRE
+		if (currlevel < 17) {
+#endif
+			DRLG_L3Pool();
+#ifdef HELLFIRE
+		} else {
+			lavapool += drlg_l3_hive_rnd_piece(byte_48A998, 30);
+			lavapool += drlg_l3_hive_rnd_piece(byte_48A9C8, 40);
+			lavapool += drlg_l3_hive_rnd_piece(byte_48A948, 50);
+			lavapool += drlg_l3_hive_rnd_piece(byte_48A970, 60);
+			if ( lavapool < 3 )
+				lavapool = FALSE;
+		}
+#endif
 	} while (!lavapool);
 
-	DRLG_L3PoolFix();
-	FixL3Warp();
-	DRLG_L3PlaceRndSet(L3ISLE1, 70);
-	DRLG_L3PlaceRndSet(L3ISLE2, 70);
-	DRLG_L3PlaceRndSet(L3ISLE3, 30);
-	DRLG_L3PlaceRndSet(L3ISLE4, 30);
-	DRLG_L3PlaceRndSet(L3ISLE1, 100);
-	DRLG_L3PlaceRndSet(L3ISLE2, 100);
-	DRLG_L3PlaceRndSet(L3ISLE5, 90);
-	FixL3HallofHeroes();
-	DRLG_L3River();
+#ifdef HELLFIRE
+	if (currlevel < 17)
+#endif
+		DRLG_L3PoolFix();
+#ifdef HELLFIRE
+	if (currlevel < 17)
+#endif
+		FixL3Warp();
+
+#ifdef HELLFIRE
+	if (currlevel < 17) {
+#endif
+		DRLG_L3PlaceRndSet(L3ISLE1, 70);
+		DRLG_L3PlaceRndSet(L3ISLE2, 70);
+		DRLG_L3PlaceRndSet(L3ISLE3, 30);
+		DRLG_L3PlaceRndSet(L3ISLE4, 30);
+		DRLG_L3PlaceRndSet(L3ISLE1, 100);
+		DRLG_L3PlaceRndSet(L3ISLE2, 100);
+		DRLG_L3PlaceRndSet(L3ISLE5, 90);
+#ifdef HELLFIRE
+	} else {
+		DRLG_L3PlaceRndSet(L6ISLE1, 70);
+		DRLG_L3PlaceRndSet(L6ISLE2, 70);
+		DRLG_L3PlaceRndSet(L6ISLE3, 30);
+		DRLG_L3PlaceRndSet(L6ISLE4, 30);
+		DRLG_L3PlaceRndSet(L6ISLE1, 100);
+		DRLG_L3PlaceRndSet(L6ISLE2, 100);
+		DRLG_L3PlaceRndSet(L6ISLE5, 90);
+	}
+#endif
+
+#ifdef HELLFIRE
+	if (currlevel < 17)
+#endif
+		FixL3HallofHeroes();
+#ifdef HELLFIRE
+	if (currlevel < 17)
+#endif
+		DRLG_L3River();
 
 	if (QuestStatus(QTYPE_ANVIL)) {
 		dungeon[setpc_x + 7][setpc_y + 5] = 7;
@@ -413,35 +590,94 @@ void DRLG_L3(int entry)
 		}
 	}
 
-	DRLG_PlaceThemeRooms(5, 10, 7, 0, 0);
-	DRLG_L3Wood();
-	DRLG_L3PlaceRndSet(L3TITE1, 10);
-	DRLG_L3PlaceRndSet(L3TITE2, 10);
-	DRLG_L3PlaceRndSet(L3TITE3, 10);
-	DRLG_L3PlaceRndSet(L3TITE6, 20);
-	DRLG_L3PlaceRndSet(L3TITE7, 20);
-	DRLG_L3PlaceRndSet(L3TITE8, 20);
-	DRLG_L3PlaceRndSet(L3TITE9, 20);
-	DRLG_L3PlaceRndSet(L3TITE10, 20);
-	DRLG_L3PlaceRndSet(L3TITE11, 30);
-	DRLG_L3PlaceRndSet(L3TITE12, 20);
-	DRLG_L3PlaceRndSet(L3TITE13, 20);
-	DRLG_L3PlaceRndSet(L3CREV1, 30);
-	DRLG_L3PlaceRndSet(L3CREV2, 30);
-	DRLG_L3PlaceRndSet(L3CREV3, 30);
-	DRLG_L3PlaceRndSet(L3CREV4, 30);
-	DRLG_L3PlaceRndSet(L3CREV5, 30);
-	DRLG_L3PlaceRndSet(L3CREV6, 30);
-	DRLG_L3PlaceRndSet(L3CREV7, 30);
-	DRLG_L3PlaceRndSet(L3CREV8, 30);
-	DRLG_L3PlaceRndSet(L3CREV9, 30);
-	DRLG_L3PlaceRndSet(L3CREV10, 30);
-	DRLG_L3PlaceRndSet(L3CREV11, 30);
-	DRLG_L3PlaceRndSet(L3XTRA1, 25);
-	DRLG_L3PlaceRndSet(L3XTRA2, 25);
-	DRLG_L3PlaceRndSet(L3XTRA3, 25);
-	DRLG_L3PlaceRndSet(L3XTRA4, 25);
-	DRLG_L3PlaceRndSet(L3XTRA5, 25);
+#ifdef HELLFIRE
+	if (currlevel < 17)
+#endif
+		DRLG_PlaceThemeRooms(5, 10, 7, 0, 0);
+
+#ifdef HELLFIRE
+	if (currlevel < 17) {
+#endif
+		DRLG_L3Wood();
+		DRLG_L3PlaceRndSet(L3TITE1, 10);
+		DRLG_L3PlaceRndSet(L3TITE2, 10);
+		DRLG_L3PlaceRndSet(L3TITE3, 10);
+		DRLG_L3PlaceRndSet(L3TITE6, 20);
+		DRLG_L3PlaceRndSet(L3TITE7, 20);
+		DRLG_L3PlaceRndSet(L3TITE8, 20);
+		DRLG_L3PlaceRndSet(L3TITE9, 20);
+		DRLG_L3PlaceRndSet(L3TITE10, 20);
+		DRLG_L3PlaceRndSet(L3TITE11, 30);
+		DRLG_L3PlaceRndSet(L3TITE12, 20);
+		DRLG_L3PlaceRndSet(L3TITE13, 20);
+		DRLG_L3PlaceRndSet(L3CREV1, 30);
+		DRLG_L3PlaceRndSet(L3CREV2, 30);
+		DRLG_L3PlaceRndSet(L3CREV3, 30);
+		DRLG_L3PlaceRndSet(L3CREV4, 30);
+		DRLG_L3PlaceRndSet(L3CREV5, 30);
+		DRLG_L3PlaceRndSet(L3CREV6, 30);
+		DRLG_L3PlaceRndSet(L3CREV7, 30);
+		DRLG_L3PlaceRndSet(L3CREV8, 30);
+		DRLG_L3PlaceRndSet(L3CREV9, 30);
+		DRLG_L3PlaceRndSet(L3CREV10, 30);
+		DRLG_L3PlaceRndSet(L3CREV11, 30);
+		DRLG_L3PlaceRndSet(L3XTRA1, 25);
+		DRLG_L3PlaceRndSet(L3XTRA2, 25);
+		DRLG_L3PlaceRndSet(L3XTRA3, 25);
+		DRLG_L3PlaceRndSet(L3XTRA4, 25);
+		DRLG_L3PlaceRndSet(L3XTRA5, 25);
+#ifdef HELLFIRE
+	} else {
+		DRLG_L3PlaceRndSet(byte_48A76C, 20);
+		DRLG_L3PlaceRndSet(byte_48A770, 20);
+		DRLG_L3PlaceRndSet(byte_48A774, 20);
+		DRLG_L3PlaceRndSet(byte_48A778, 20);
+		DRLG_L3PlaceRndSet(byte_48A808, 10);
+		DRLG_L3PlaceRndSet(byte_48A820, 15);
+		DRLG_L3PlaceRndSet(byte_48A838, 20);
+		DRLG_L3PlaceRndSet(byte_48A850, 25);
+		DRLG_L3PlaceRndSet(byte_48A868, 30);
+		DRLG_L3PlaceRndSet(byte_48A880, 35);
+		DRLG_L3PlaceRndSet(byte_48A898, 40);
+		DRLG_L3PlaceRndSet(byte_48A8B0, 45);
+		DRLG_L3PlaceRndSet(byte_48A8C8, 50);
+		DRLG_L3PlaceRndSet(byte_48A8E0, 55);
+		DRLG_L3PlaceRndSet(byte_48A8E0, 10);
+		DRLG_L3PlaceRndSet(byte_48A8C8, 15);
+		DRLG_L3PlaceRndSet(byte_48A8B0, 20);
+		DRLG_L3PlaceRndSet(byte_48A898, 25);
+		DRLG_L3PlaceRndSet(byte_48A880, 30);
+		DRLG_L3PlaceRndSet(byte_48A868, 35);
+		DRLG_L3PlaceRndSet(byte_48A850, 40);
+		DRLG_L3PlaceRndSet(byte_48A838, 45);
+		DRLG_L3PlaceRndSet(byte_48A820, 50);
+		DRLG_L3PlaceRndSet(byte_48A808, 55);
+		DRLG_L3PlaceRndSet(byte_48A790, 40);
+		DRLG_L3PlaceRndSet(byte_48A7A8, 45);
+		DRLG_L3PlaceRndSet(byte_48A77C, 25);
+		DRLG_L3PlaceRndSet(byte_48A780, 25);
+		DRLG_L3PlaceRndSet(byte_48A784, 25);
+		DRLG_L3PlaceRndSet(byte_48A788, 25);
+		DRLG_L3PlaceRndSet(byte_48A7BC, 25);
+		DRLG_L3PlaceRndSet(byte_48A7C0, 25);
+		DRLG_L3PlaceRndSet(byte_48A7C4, 25);
+		DRLG_L3PlaceRndSet(byte_48A7C8, 25);
+		DRLG_L3PlaceRndSet(byte_48A7CC, 25);
+		DRLG_L3PlaceRndSet(byte_48A7D4, 25);
+		DRLG_L3PlaceRndSet(byte_48A7D8, 25);
+		DRLG_L3PlaceRndSet(byte_48A7DC, 25);
+		DRLG_L3PlaceRndSet(byte_48A7E0, 25);
+		DRLG_L3PlaceRndSet(byte_48A7E4, 25);
+		DRLG_L3PlaceRndSet(byte_48A7EC, 25);
+		DRLG_L3PlaceRndSet(byte_48A7F0, 25);
+		DRLG_L3PlaceRndSet(byte_48A7F4, 25);
+		DRLG_L3PlaceRndSet(byte_48A7F8, 25);
+		DRLG_L3PlaceRndSet(byte_48A7D0, 25);
+		DRLG_L3PlaceRndSet(byte_48A7E8, 25);
+		DRLG_L3PlaceRndSet(byte_48A7FC, 25);
+		DRLG_L3PlaceRndSet(byte_48A800, 25);
+	}
+#endif
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -1340,6 +1576,147 @@ void DRLG_L3PlaceRndSet(const BYTE *miniset, int rndper)
 		}
 	}
 }
+
+#ifdef HELLFIRE
+BOOL drlg_l3_hive_rnd_piece(const BYTE *miniset, int rndper)
+{
+	int v3; // edi
+	int v4; // eax
+	int v5; // ecx
+	BYTE *v6; // ecx
+	int v7; // esi
+	signed int i; // edx
+	int v9; // eax
+	BYTE v10; // cl
+	int v11; // esi
+	BYTE v12; // al
+	BYTE v13; // al
+	int v14; // edx
+	int v15; // edi
+	BYTE *v16; // eax
+	BYTE v17; // cl
+	bool v18; // zf
+	int v20; // [esp+8h] [ebp-30h]
+	int v21; // [esp+Ch] [ebp-2Ch]
+	int v22; // [esp+10h] [ebp-28h]
+	int v23; // [esp+14h] [ebp-24h]
+	int v24; // [esp+18h] [ebp-20h]
+	int v25; // [esp+1Ch] [ebp-1Ch]
+	int v26; // [esp+20h] [ebp-18h]
+	BYTE *v27; // [esp+24h] [ebp-14h]
+	int v28; // [esp+28h] [ebp-10h]
+	int v29; // [esp+2Ch] [ebp-Ch]
+	signed int v30; // [esp+30h] [ebp-8h]
+	BOOL j; // [esp+37h] [ebp-1h]
+
+	j = 0;
+	v21 = rndper;
+	v3 = miniset[1];
+	v4 = *miniset;
+	v5 = 0;
+	v29 = v4;
+	v25 = 40 - v3;
+	v20 = v3;
+	v26 = 0;
+	if ( 40 - v3 > 0 )
+	{
+		v24 = 40 - v4;
+		while ( v24 <= 0 )
+		{
+LABEL_45:
+			v5 = v26++ + 1;
+			if ( v26 >= v25 )
+				return j;
+		}
+		v28 = 0;
+		v6 = (BYTE *)dungeon + v5;
+		v27 = v6;
+		v22 = v24;
+		while ( 1 )
+		{
+			v7 = 0;
+			v30 = 1;
+			for ( i = 2; v7 < v3; ++v7 )
+			{
+				if ( v30 != 1 )
+					break;
+				v23 = 0;
+				if ( v29 > 0 )
+				{
+					v9 = v28 + v7 + v26;
+					do
+					{
+						if ( v30 != 1 )
+							break;
+						v10 = miniset[i];
+						if ( v10 && dungeon[0][v9] != v10 )
+							v30 = 0;
+						if ( dflags[0][v9] )
+							v30 = 0;
+						++i;
+						++v23;
+						v9 += 40;
+					}
+					while ( v23 < v29 );
+					v6 = v27;
+				}
+			}
+			v11 = v29 * v3 + 2;
+			v12 = miniset[v11];
+			if ( v12 < 0x54u || v12 > 0x64u )
+				goto LABEL_33;
+			if ( v30 == 1 )
+				break;
+LABEL_44:
+			v28 += 40;
+			v6 += 40;
+			v18 = v22-- == 1;
+			v27 = v6;
+			if ( v18 )
+				goto LABEL_45;
+		}
+		v13 = *(v6 - 40);
+		if ( v13 >= 0x54u && v13 <= 0x64u )
+			v30 = 0;
+		if ( v6[40] >= 0x54u && v13 <= 0x64u )
+			v30 = 0;
+		if ( v6[1] >= 0x54u && v13 <= 0x64u )
+			v30 = 0;
+		if ( *(v6 - 1) >= 0x54u && v13 <= 0x64u )
+			v30 = 0;
+LABEL_33:
+		if ( v30 == 1 )
+		{
+			if ( random(0, 100) < v21 )
+			{
+				v14 = 0;
+				for ( j = 1; v14 < v3; ++v14 )
+				{
+					if ( v29 > 0 )
+					{
+						v15 = v29;
+						v16 = (BYTE *)dungeon + v14 + v26 + v28;
+						do
+						{
+							v17 = miniset[v11];
+							if ( v17 )
+								*v16 = v17;
+							++v11;
+							v16 += 40;
+							--v15;
+						}
+						while ( v15 );
+						v3 = v20;
+					}
+				}
+			}
+			v6 = v27;
+		}
+		goto LABEL_44;
+	}
+	return j;
+}
+#endif
 
 void DRLG_L3Wood()
 {
