@@ -514,9 +514,18 @@ void DRLG_L5(int entry)
 	}
 
 	DRLG_L5Subs();
-	DRLG_L1Shadows();
-	DRLG_PlaceMiniSet(LAMPS, 5, 10, 0, 0, 0, -1, 4);
-	DRLG_L1Floor();
+#ifdef HELLFIRE
+	if (currlevel < 21)
+#endif
+		DRLG_L1Shadows();
+#ifdef HELLFIRE
+	if (currlevel < 21)
+#endif
+		DRLG_PlaceMiniSet(LAMPS, 5, 10, 0, 0, 0, -1, 4);
+#ifdef HELLFIRE
+	if (currlevel < 21)
+#endif
+		DRLG_L1Floor();
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
