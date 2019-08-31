@@ -2043,7 +2043,7 @@ void RestartTownLvl(int pnum)
 	SetPlayerHitPoints(pnum, 64);
 
 	plr[pnum]._pMana = 0;
-	plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase - plr[pnum]._pMaxMana;
+	plr[pnum]._pManaBase = plr[pnum]._pMana - (plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase);
 
 	CalcPlrInv(pnum, FALSE);
 
