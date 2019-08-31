@@ -1560,7 +1560,10 @@ BOOL CheckIfTrig(int x, int y)
 void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, mx, tx, ty;
+
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	tx = dx;
 	if (currlevel) {
@@ -2391,10 +2394,19 @@ void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._miVar5 = dy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 	if (!mienemy) {
+	
 		UseMana(id, SPL_BONESPIRIT);
+		#ifndef HELLFIRE
 		drawhpflag = TRUE;
+		#endif
 		plr[id]._pHitPoints -= 384;
 		plr[id]._pHPBase -= 384;
+
+		#ifdef HELLFIRE
+		drawhpflag = TRUE;
+		#endif
+
+
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	}
