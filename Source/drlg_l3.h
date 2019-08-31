@@ -33,6 +33,9 @@ BOOL DRLG_L3Spawn(int x, int y, int *totarea);
 void DRLG_L3PoolFix();
 BOOL DRLG_L3PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int ldir);
 void DRLG_L3PlaceRndSet(const BYTE *miniset, int rndper);
+#ifdef HELLFIRE
+BOOL drlg_l3_hive_rnd_piece(const BYTE *miniset, int rndper);
+#endif
 void DRLG_L3Wood();
 BOOL WoodVertU(int i, int y);
 BOOL WoodVertD(int i, int y);
