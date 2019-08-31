@@ -2364,13 +2364,21 @@ BYTE *DiabloAllocPtr(DWORD dwBytes)
 #ifdef __cplusplus
 	sgMemCrit.Enter();
 #endif
+#ifdef HELLFIRE
+	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2242, 0);
+#else
 	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
+#endif
 #ifdef __cplusplus
 	sgMemCrit.Leave();
 #endif
 
 	if (buf == NULL) {
+#ifdef HELLFIRE
+		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2275);
+#else
 		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
+#endif
 	}
 
 	return buf;
