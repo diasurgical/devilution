@@ -2373,9 +2373,9 @@ void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 	if (!mienemy) {
 		UseMana(id, SPL_BONESPIRIT);
-		drawhpflag = TRUE;
 		plr[id]._pHitPoints -= 384;
 		plr[id]._pHPBase -= 384;
+		drawhpflag = TRUE;
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	}
