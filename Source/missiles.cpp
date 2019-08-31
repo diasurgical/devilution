@@ -2396,17 +2396,9 @@ void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	if (!mienemy) {
 	
 		UseMana(id, SPL_BONESPIRIT);
-		#ifndef HELLFIRE
-		drawhpflag = TRUE;
-		#endif
 		plr[id]._pHitPoints -= 384;
 		plr[id]._pHPBase -= 384;
-
-		#ifdef HELLFIRE
 		drawhpflag = TRUE;
-		#endif
-
-
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	}
