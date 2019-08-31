@@ -871,8 +871,9 @@ void CreatePlrItems(int p)
 	int i;
 	ItemStruct *pi = plr[p].InvBody;
 
-	for (i = 0; i < NUM_INVLOC; i++) {
-		pi[i]._itype = ITYPE_NONE;
+	for (i = NUM_INVLOC; i != 0; i--) {
+		pi->_itype = ITYPE_NONE;
+		pi++;
 	}
 
 	// converting this to a for loop creates a `rep stosd` instruction,
@@ -880,16 +881,18 @@ void CreatePlrItems(int p)
 	memset(&plr[p].InvGrid, 0, sizeof(plr[p].InvGrid));
 
 	pi = plr[p].InvList;
-	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
-		pi[i]._itype = ITYPE_NONE;
+	for (i = NUM_INV_GRID_ELEM; i != 0; i--) {
+		pi->_itype = ITYPE_NONE;
+		pi++;
 	}
 
 	plr[p]._pNumInv = 0;
 
 	pi = plr[p].SpdList;
-	for (i = 0; i < MAXBELTITEMS; i++) {
-		pi[i]._itype = ITYPE_NONE;
-	}
+	for (i = MAXBELTITEMS; i != 0; i--) {
+        pi->_itype = ITYPE_NONE;
+        pi++;
+    }
 
 	switch (plr[p]._pClass) {
 	case PC_WARRIOR:
@@ -909,35 +912,70 @@ void CreatePlrItems(int p)
 		}
 #endif
 
+#ifndef HELLFIRE
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
 
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
+#endif
 		break;
 #ifndef SPAWN
 	case PC_ROGUE:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_ROGUE);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
-
+#ifndef HELLFIRE
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
 
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
+#endif
 		break;
 	case PC_SORCERER:
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_SORCEROR);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
+#ifndef HELLFIRE
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
 
 		SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
 		GetPlrHandSeed(&plr[p].SpdList[1]);
+#endif
+		break;
+
+#ifdef HELLFIRE
+	case PC_MONK:
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 36);
+		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+		break;
+	case PC_BARD:
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 37);
+		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], 38);
+		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
+		break;
+	case PC_BARBARIAN:
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 139);
+		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], 2);
+		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
+
 		break;
 #endif
+#endif
 	}
+
+#ifdef HELLFIRE
+	SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+	GetPlrHandSeed(&plr[p].SpdList[0]);
+
+	SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+	GetPlrHandSeed(&plr[p].SpdList[1]);
+#endif
 
 	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
 	GetPlrHandSeed(&plr[p].HoldItem);
