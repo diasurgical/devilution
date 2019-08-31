@@ -238,7 +238,7 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 		if (nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
 			/*
 			const char *szMode = "unknown action";
-			if(plr[pnum]._pmode <= 11)
+			if(plr[pnum]._pmode <= PM_QUIT)
 				szMode = szPlrModeAssert[plr[pnum]._pmode];
 			app_fatal(
 				"Drawing player %d \"%s\" %s: facing %d, frame %d of %d",
@@ -311,7 +311,7 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 		if (nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
 			/*
 			const char *szMode = "unknown action";
-			if(plr[pnum]._pmode <= 11)
+			if(plr[pnum]._pmode <= PM_QUIT)
 				szMode = szPlrModeAssert[plr[pnum]._pmode];
 			app_fatal(
 				"Drawing player %d \"%s\" %s clipped: facing %d, frame %d of %d",
