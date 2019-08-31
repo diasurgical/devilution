@@ -1118,7 +1118,7 @@ void StartWalkStand(int pnum)
 		app_fatal("StartWalkStand: illegal player %d", pnum);
 	}
 
-	plr[pnum]._pmode = 0;
+	plr[pnum]._pmode = PM_STAND;
 	plr[pnum]._px = plr[pnum].WorldX;
 	plr[pnum]._py = plr[pnum].WorldY;
 	plr[pnum]._pxoff = 0;
@@ -2047,7 +2047,7 @@ void RestartTownLvl(int pnum)
 	SetPlayerHitPoints(pnum, 64);
 
 	plr[pnum]._pMana = 0;
-	plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase - plr[pnum]._pMaxMana;
+	plr[pnum]._pManaBase = plr[pnum]._pMana - (plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase);
 
 	CalcPlrInv(pnum, FALSE);
 
@@ -2957,8 +2957,8 @@ BOOL PM_DoDeath(int pnum)
 			}
 		}
 
-		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
 		plr[pnum]._pAnimDelay = 10000;
+		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
 		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
 	}
 
@@ -3993,12 +3993,11 @@ void ModifyPlrVit(int p, int l)
 	ms = l << 6;
 	if (plr[p]._pClass == PC_WARRIOR) {
 		ms <<= 1;
-	}
 #ifdef HELLFIRE
-	else if (plr[p]._pClass == PC_BARBARIAN) {
+	} else if (plr[p]._pClass == PC_BARBARIAN) {
 		ms <<= 1;
-	}
 #endif
+	}
 
 	plr[p]._pHPBase += ms;
 	plr[p]._pMaxHPBase += ms;
@@ -4061,12 +4060,11 @@ void SetPlrMag(int p, int v)
 	m = v << 6;
 	if (plr[p]._pClass == PC_SORCERER) {
 		m <<= 1;
-	}
 #ifdef HELLFIRE
-	else if (plr[p]._pClass == PC_BARD) {
+	} else if (plr[p]._pClass == PC_BARD) {
 		m += m >> 1;
-	}
 #endif
+	}
 
 	plr[p]._pMaxManaBase = m;
 	plr[p]._pMaxMana = m;
