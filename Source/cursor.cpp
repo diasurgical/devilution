@@ -6,6 +6,9 @@ int cursW;
 int pcursmonst;
 int icursW28;
 BYTE *pCursCels;
+#ifdef HELLFIRE
+BYTE *pCursCels2;
+#endif
 int icursH;
 
 // inv_item value
@@ -70,12 +73,18 @@ void InitCursor()
 {
 	/// ASSERT: assert(! pCursCels);
 	pCursCels = LoadFileInMem("Data\\Inv\\Objcurs.CEL", NULL);
+#ifdef HELLFIRE
+	pCursCels2 = LoadFileInMem("Data\\Inv\\Objcurs2.CEL", NULL);
+#endif
 	ClearCursor();
 }
 
 void FreeCursor()
 {
 	MemFreeDbg(pCursCels);
+#ifdef HELLFIRE
+	MemFreeDbg(pCursCels2);
+#endif
 	ClearCursor();
 }
 

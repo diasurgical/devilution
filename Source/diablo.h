@@ -113,6 +113,9 @@ extern int debugmonsttypes;
 extern int PauseMode;
 extern char sgbMouseDown;
 extern int color_cycle_timer;
+#ifdef HELLFIRE
+extern BOOLEAN UseNestArt;
+#endif
 
 void FreeGameMem();
 BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer);
