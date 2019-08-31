@@ -2382,7 +2382,11 @@ void mem_free_dbg(void *p)
 #ifdef __cplusplus
 		sgMemCrit.Enter();
 #endif
+#ifdef HELLFIRE
+		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2333, 0);
+#else
 		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
+#endif
 #ifdef __cplusplus
 		sgMemCrit.Leave();
 #endif
