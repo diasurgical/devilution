@@ -8,6 +8,9 @@ extern int cursW;
 extern int pcursmonst;
 extern int icursW28;
 extern BYTE *pCursCels;
+#ifdef HELLFIRE
+extern BYTE *pCursCels2;
+#endif
 extern int icursH;
 extern char pcursinvitem;
 extern int icursW;
