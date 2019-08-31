@@ -856,8 +856,9 @@ void CreatePlrItems(int p)
 	int i;
 	ItemStruct *pi = plr[p].InvBody;
 
-	for (i = 0; i < NUM_INVLOC; i++) {
-		pi[i]._itype = ITYPE_NONE;
+	for (i = NUM_INVLOC; i != 0; i--) {
+		pi->_itype = ITYPE_NONE;
+		pi++;
 	}
 
 	// converting this to a for loop creates a `rep stosd` instruction,
@@ -865,15 +866,17 @@ void CreatePlrItems(int p)
 	memset(&plr[p].InvGrid, 0, sizeof(plr[p].InvGrid));
 
 	pi = plr[p].InvList;
-	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
-		pi[i]._itype = ITYPE_NONE;
+	for (i = NUM_INV_GRID_ELEM; i != 0; i--) {
+		pi->_itype = ITYPE_NONE;
+		pi++;
 	}
 
 	plr[p]._pNumInv = 0;
 
 	pi = plr[p].SpdList;
-	for (i = 0; i < MAXBELTITEMS; i++) {
-		pi[i]._itype = ITYPE_NONE;
+	for (i = MAXBELTITEMS; i != 0; i--) {
+		pi->_itype = ITYPE_NONE;
+		pi++;
 	}
 
 	switch (plr[p]._pClass) {
