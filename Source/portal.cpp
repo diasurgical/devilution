@@ -18,12 +18,24 @@ void InitPortals()
 
 void SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype)
 {
+	#ifndef HELLFIRE
 	portal[i].setlvl = FALSE;
 	portal[i].x = x;
 	portal[i].y = y;
 	portal[i].open = o;
 	portal[i].level = lvl;
 	portal[i].ltype = lvltype;
+	#endif
+	#ifdef HELLFIRE
+	portal[i].open = o;
+	portal[i].x = x;
+	portal[i].y = y;
+	portal[i].level = lvl;
+	portal[i].ltype = lvltype;
+	portal[i].setlvl = FALSE;
+	#endif
+
+
 }
 
 void AddWarpMissile(int i, int x, int y)
