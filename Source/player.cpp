@@ -302,63 +302,135 @@ void InitPlrGFXMem(int pnum)
 
 	if (!(plr_gfx_flag & 0x1)) { //STAND
 		plr_gfx_flag |= 0x1;
-		if (GetPlrGFXSize("ST") > GetPlrGFXSize("AS")) {
-			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_sframe_size = 0x35e28;
 		} else {
-			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGION
+#endif
+			if (GetPlrGFXSize("AS") > GetPlrGFXSize("ST")) {
+				plr_sframe_size = GetPlrGFXSize("AS"); //DUNGION
+			} else {
+				plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
+			}
+#ifdef HELLFIRE
 		}
+#endif
 	}
 	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
 
 	if (!(plr_gfx_flag & 0x2)) { //WALK
 		plr_gfx_flag |= 0x2;
-		if (GetPlrGFXSize("WL") > GetPlrGFXSize("AW")) {
-			plr_wframe_size = GetPlrGFXSize("WL"); //TOWN
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_wframe_size = 0x16eb9;
 		} else {
-			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGION
+#endif
+			if (GetPlrGFXSize("WL") > GetPlrGFXSize("AW")) {
+				plr_wframe_size = GetPlrGFXSize("WL"); //TOWN
+			} else {
+				plr_wframe_size = GetPlrGFXSize("AW"); //DUNGION
+			}
+#ifdef HELLFIRE
 		}
+#endif
 	}
 	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);
 
 	if (!(plr_gfx_flag & 0x4)) { //ATTACK
 		plr_gfx_flag |= 0x4;
-		plr_aframe_size = GetPlrGFXSize("AT");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_aframe_size = 0x40047;
+		} else {
+#endif
+			plr_aframe_size = GetPlrGFXSize("AT");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pAData = DiabloAllocPtr(plr_aframe_size);
 
 	if (!(plr_gfx_flag & 0x8)) { //HIT
 		plr_gfx_flag |= 0x8;
-		plr_hframe_size = GetPlrGFXSize("HT");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_hframe_size = 0x16484;
+		} else {
+#endif
+			plr_hframe_size = GetPlrGFXSize("HT");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pHData = DiabloAllocPtr(plr_hframe_size);
 
 	if (!(plr_gfx_flag & 0x10)) { //LIGHTNING
 		plr_gfx_flag |= 0x10;
-		plr_lframe_size = GetPlrGFXSize("LM");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_lframe_size = 0x4ad88;
+		} else {
+#endif
+			plr_lframe_size = GetPlrGFXSize("LM");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pLData = DiabloAllocPtr(plr_lframe_size);
 
 	if (!(plr_gfx_flag & 0x20)) { //FIRE
 		plr_gfx_flag |= 0x20;
-		plr_fframe_size = GetPlrGFXSize("FM");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_fframe_size = 0x67aed;
+		} else {
+#endif
+			plr_fframe_size = GetPlrGFXSize("FM");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pFData = DiabloAllocPtr(plr_fframe_size);
 
 	if (!(plr_gfx_flag & 0x40)) { //MAGIC
 		plr_gfx_flag |= 0x40;
-		plr_qframe_size = GetPlrGFXSize("QM");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_qframe_size = 0x92f55;
+		} else {
+#endif
+			plr_qframe_size = GetPlrGFXSize("QM");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pTData = DiabloAllocPtr(plr_qframe_size);
 
 	if (!(plr_gfx_flag & 0x80)) { //DEATH
 		plr_gfx_flag |= 0x80;
-		plr_dframe_size = GetPlrGFXSize("DT");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_dframe_size = 0x3a8a6;
+		} else {
+#endif
+			plr_dframe_size = GetPlrGFXSize("DT");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pDData = DiabloAllocPtr(plr_dframe_size);
 
 	if (!(plr_gfx_bflag & 0x1)) { //BLOCK
 		plr_gfx_bflag |= 0x1;
-		plr_bframe_size = GetPlrGFXSize("BL");
+#ifdef HELLFIRE
+		if (hfbard_mpq == NULL && hfbarb_mpq == NULL) {
+			plr_bframe_size = 0x10fe3;
+		} else {
+#endif
+			plr_bframe_size = GetPlrGFXSize("BL");
+#ifdef HELLFIRE
+		}
+#endif
 	}
 	plr[pnum]._pBData = DiabloAllocPtr(plr_bframe_size);
 
