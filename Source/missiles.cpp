@@ -1560,14 +1560,23 @@ BOOL CheckIfTrig(int x, int y)
 void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, mx, tx, ty;
+
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	tx = dx;
 	if (currlevel) {
 		missile[mi]._miDelFlag = TRUE;
 		for (j = 0; j < 6; j++) {
 			k = CrawlNum[j] + 2;
+
+#ifdef HELLFIRE
+			for (i = CrawlTable[CrawlNum[j]]; i > 0; i--) {
+#else
 			for (i = (BYTE)CrawlTable[CrawlNum[j]]; i > 0; i--) {
+#endif
+
 				tx = dx + CrawlTable[k - 1];
 				ty = dy + CrawlTable[k];
 				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
