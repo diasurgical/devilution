@@ -44,7 +44,7 @@ void doom_cleanup()
 #ifdef HELLFIRE
 	if (pDoomCel) {
 		MemFreeDbg(pDoomCel);
-		pDoomCel = 0;
+		pDoomCel = NULL;
 	}
 #else
 	MemFreeDbg(pDoomCel);
