@@ -39,16 +39,6 @@ int doom_get_frame_from_time()
 	return DoomQuestState / 1200;
 }
 
-void doom_alloc_cel()
-{
-#ifdef HELLFIRE
-	doom_cleanup();
-	pDoomCel = DiabloAllocPtr(0x39000);
-#else
-	pDoomCel = DiabloAllocPtr(229376);
-#endif
-}
-
 void doom_cleanup()
 {
 #ifdef HELLFIRE
@@ -64,10 +54,54 @@ void doom_cleanup()
 #endif
 }
 
-void doom_load_graphics()
+void doom_init()
 {
 #ifdef HELLFIRE
+	if (doom_alloc_cel()) {
+		doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
+		if (doom_load_graphics()) {
+			doomflag = TRUE;
+		} else {
+			doom_close();
+		}
+	}
+#else
+	doomflag = TRUE;
+	doom_alloc_cel();
+	doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
+	doom_load_graphics();
+#endif
+}
+
+#ifdef HELLFIRE
+BOOLEAN doom_alloc_cel()
+#else
+void doom_alloc_cel()
+#endif
+{
+#ifdef HELLFIRE
+	doom_cleanup();
+	pDoomCel = DiabloAllocPtr(0x39000);
+	return pDoomCel ? TRUE : FALSE;
+#else
+	pDoomCel = DiabloAllocPtr(229376);
+#endif
+}
+
+#ifdef HELLFIRE
+BOOLEAN doom_load_graphics()
+#else
+void doom_load_graphics()
+#endif
+{
+#ifdef HELLFIRE
+	BOOLEAN ret;
+
+	ret = FALSE;
 	strcpy(tempstr, "Items\\Map\\MapZtown.CEL");
+	if (LoadFileWithMem(tempstr, pDoomCel))
+		ret = TRUE;
+	return ret;
 #else
 	if (doom_quest_time == 31) {
 		strcpy(tempstr, "Items\\Map\\MapZDoom.CEL");
@@ -76,16 +110,8 @@ void doom_load_graphics()
 	} else {
 		sprintf(tempstr, "Items\\Map\\MapZ00%i.CEL", doom_quest_time);
 	}
-#endif
 	LoadFileWithMem(tempstr, pDoomCel);
-}
-
-void doom_init()
-{
-	doomflag = TRUE;
-	doom_alloc_cel();
-	doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
-	doom_load_graphics();
+#endif
 }
 
 void doom_close()
@@ -98,14 +124,14 @@ void doom_close()
 #ifndef HELLFIRE
 	}
 #endif
-		}
+}
 
 void doom_draw()
 {
 	if (!doomflag) {
 		return;
 	}
-
+#ifndef HELLFIRE
 	if (doom_quest_time != 31) {
 		doom_stars_drawn++;
 		if (doom_stars_drawn >= 5) {
@@ -117,6 +143,6 @@ void doom_draw()
 			doom_load_graphics();
 		}
 	}
-
+#endif
 	CelDecodeOnly(SCREEN_X, PANEL_Y - 1, pDoomCel, 1, SCREEN_WIDTH);
 }
