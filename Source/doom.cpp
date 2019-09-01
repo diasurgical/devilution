@@ -42,11 +42,8 @@ int doom_get_frame_from_time()
 void doom_cleanup()
 {
 #ifdef HELLFIRE
-	void *v0; // eax
 	if (pDoomCel) {
-		v0 = pDoomCel;
-		pDoomCel = 0;
-		mem_free_dbg(v0);
+		MemFreeDbg(pDoomCel);
 		pDoomCel = 0;
 	}
 #else
