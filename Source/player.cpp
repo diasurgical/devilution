@@ -534,10 +534,15 @@ void SetPlrAnims(int pnum)
 void ClearPlrRVars(PlayerStruct *p)
 {
 	// TODO: Missing debug assert p != NULL
+#ifdef HELLFIRE
+	p->pManaShield = 0;
+#endif
 	p->bReserved[0] = 0;
 	p->bReserved[1] = 0;
 	p->bReserved[2] = 0;
+#ifndef HELLFIRE
 	p->wReserved[0] = 0;
+#endif
 	p->wReserved[1] = 0;
 	p->wReserved[2] = 0;
 	p->wReserved[3] = 0;
@@ -545,8 +550,10 @@ void ClearPlrRVars(PlayerStruct *p)
 	p->wReserved[5] = 0;
 	p->wReserved[6] = 0;
 	p->wReserved[7] = 0;
+#ifndef HELLFIRE
 	p->dwReserved[0] = 0;
 	p->dwReserved[1] = 0;
+#endif
 	p->dwReserved[2] = 0;
 	p->dwReserved[3] = 0;
 	p->dwReserved[4] = 0;
