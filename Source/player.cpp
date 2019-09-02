@@ -19,7 +19,12 @@ int plr_dframe_size;
 
 const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
 const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
-const char CharChar[4] = { 'W', 'R', 'S', 0 };
+const char CharChar[] = {
+	'W',
+	'R',
+	'S',
+	0
+};
 
 /* data */
 
@@ -46,7 +51,11 @@ int MagicTbl[3] = { 10, 15, 35 };
 int DexterityTbl[3] = { 20, 30, 15 };
 int VitalityTbl[3] = { 25, 20, 20 };
 int ToBlkTbl[3] = { 30, 20, 10 };
-char *ClassStrTblOld[3] = { "Warrior", "Rogue", "Sorceror" }; // unused
+char *ClassStrTblOld[] = {
+	"Warrior",
+	"Rogue",
+	"Sorceror",
+};
 int MaxStats[3][4] = {
 	{ 250, 50, 60, 100 },
 	{ 55, 70, 250, 80 },
@@ -105,7 +114,11 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 	1310707109,
 	1583495809
 };
-char *ClassStrTbl[3] = { "Warrior", "Rogue", "Sorceror" };
+char *ClassStrTbl[] = {
+	"Warrior",
+	"Rogue",
+	"Sorceror",
+};
 BYTE fix[9] = { 0, 0, 3, 3, 3, 6, 6, 6, 8 }; /* PM_ChangeLightOff local type */
 
 void SetPlayerGPtrs(BYTE *pData, BYTE **pAnim)

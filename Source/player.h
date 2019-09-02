@@ -113,7 +113,7 @@ void PlayDungMsgs();
 
 extern const char ArmourChar[4];
 extern const char WepChar[10];
-extern const char CharChar[4];
+extern const char CharChar[];
 
 /* data */
 
@@ -129,10 +129,10 @@ extern int MagicTbl[3];
 extern int DexterityTbl[3];
 extern int VitalityTbl[3];
 extern int ToBlkTbl[3];
-extern char *ClassStrTblOld[3];
+extern char *ClassStrTblOld[];
 extern int MaxStats[3][4];
 extern int ExpLvlsTbl[MAXCHARLEVEL];
-extern char *ClassStrTbl[3];
+extern char *ClassStrTbl[];
 extern BYTE fix[9];
 
 #endif /* __PLAYER_H__ */
