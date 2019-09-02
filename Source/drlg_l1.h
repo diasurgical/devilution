@@ -8,6 +8,16 @@ extern BOOL setloadflag;
 extern int HR1;
 extern int HR2;
 extern int HR3;
+#ifdef HELLFIRE
+extern int UberRow;
+extern int UberCol;
+extern int dword_577368;
+extern int IsUberRoomOpened;
+extern int UberLeverRow;
+extern int UberLeverCol;
+extern int IsUberLeverActivated;
+extern int UberDiabloMonsterIndex;
+#endif
 extern int VR1;
 extern int VR2;
 extern int VR3;
@@ -22,8 +32,14 @@ void LoadPreL1Dungeon(char *sFileName, int vx, int vy);
 void CreateL5Dungeon(DWORD rseed, int entry);
 void DRLG_LoadL1SP();
 void DRLG_FreeL1SP();
+#ifdef HELLFIRE
+void DRLG_InitL5Vals();
+#endif
 void DRLG_L5(int entry);
 void DRLG_PlaceDoor(int x, int y);
+#ifdef HELLFIRE
+void drlg_l1_crypt_lavafloor();
+#endif
 void DRLG_L1Shadows();
 int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir);
 void InitL5Dungeon();
@@ -41,16 +57,32 @@ int L5VWallOk(int i, int j);
 void L5HorizWall(int i, int j, char p, int dx);
 void L5VertWall(int i, int j, char p, int dy);
 void L5tileFix();
+#ifdef HELLFIRE
+void drlg_l1_crypt_rndset(const BYTE *miniset, int rndper);
+#endif
 void DRLG_L5Subs();
 void L5FillChambers();
 void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftflag, BOOL rightflag);
 void DRLG_L5GHall(int x1, int y1, int x2, int y2);
 void DRLG_L5SetRoom(int rx1, int ry1);
+#ifdef HELLFIRE
+void drlg_l1_set_crypt_room(int rx1, int ry1);
+void drlg_l1_set_corner_room(int rx1, int ry1);
+#endif
 void DRLG_L5FloodTVal();
 void DRLG_L5FTVR(int i, int j, int x, int y, int d);
 void DRLG_L5TransFix();
 void DRLG_L5DirtFix();
 void DRLG_L5CornerFix();
+#ifdef HELLFIRE
+void drlg_l1_crypt_pattern1(int rndper);
+void drlg_l1_crypt_pattern2(int rndper);
+void drlg_l1_crypt_pattern3(int rndper);
+void drlg_l1_crypt_pattern4(int rndper);
+void drlg_l1_crypt_pattern5(int rndper);
+void drlg_l1_crypt_pattern6(int rndper);
+void drlg_l1_crypt_pattern7(int rndper);
+#endif
 
 /* rdata */
 extern const ShadowStruct SPATS[37];

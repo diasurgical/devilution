@@ -797,7 +797,18 @@ int InitLevelType(int l)
 	if (l >= 9 && l <= 12)
 		return 3;
 
+#ifdef HELLFIRE
+	if (l >= 13 && l <= 16)
+		return 4;
+	if (l >= 21 && l <= 24)
+		return 1;
+	if (l >= 17 && l <= 20)
+		return 3;
+
+	return 1;
+#else
 	return 4;
+#endif
 }
 
 void SetupLocalCoords()
