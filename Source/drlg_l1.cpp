@@ -291,7 +291,12 @@ void LoadL1Dungeon(char *sFileName, int vx, int vy)
 	ViewY = vy;
 	DRLG_L1Pass3();
 	DRLG_Init_Globals();
-	DRLG_InitL1Vals();
+
+#ifdef HELLFIRE
+	if (currlevel < 17)
+#endif
+		DRLG_InitL1Vals();
+
 	SetMapMonsters(pLevelMap, 0, 0);
 	SetMapObjects(pLevelMap, 0, 0);
 	mem_free_dbg(pLevelMap);
@@ -2452,6 +2457,41 @@ void DRLG_L5DirtFix()
 {
 	int i, j;
 
+#ifdef HELLFIRE
+	if (currlevel < 21) {
+		for (j = 0; j < DMAXY - 1; j++) {
+			for (i = 0; i < DMAXX - 1; i++) {
+				if (dungeon[i][j] == 21 && dungeon[i + 1][j] != 19)
+					dungeon[i][j] = 202;
+				if (dungeon[i][j] == 19 && dungeon[i + 1][j] != 19)
+					dungeon[i][j] = 200;
+				if (dungeon[i][j] == 24 && dungeon[i + 1][j] != 19)
+					dungeon[i][j] = 205;
+				if (dungeon[i][j] == 18 && dungeon[i][j + 1] != 18)
+					dungeon[i][j] = 199;
+				if (dungeon[i][j] == 21 && dungeon[i][j + 1] != 18)
+					dungeon[i][j] = 202;
+				if (dungeon[i][j] == 23 && dungeon[i][j + 1] != 18)
+					dungeon[i][j] = 204;
+			}
+		}
+	} else {
+		for (j = 0; j < DMAXY - 1; j++) {
+			for (i = 0; i < DMAXX - 1; i++) {
+				if ( dungeon[i][j] == 19 )
+					dungeon[i][j] = 83;
+				if ( dungeon[i][j] == 21 )
+					dungeon[i][j] = 85;
+				if ( dungeon[i][j] == 23 )
+					dungeon[i][j] = 87;
+				if ( dungeon[i][j] == 24 )
+					dungeon[i][j] = 88;
+				if ( dungeon[i][j] == 18 )
+					dungeon[i][j] = 82;
+			}
+		}
+	}
+#else
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 21 && dungeon[i + 1][j] != 19)
@@ -2468,6 +2508,7 @@ void DRLG_L5DirtFix()
 				dungeon[i][j] = 204;
 		}
 	}
+#endif
 }
 
 void DRLG_L5CornerFix()
