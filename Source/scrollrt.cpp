@@ -787,7 +787,7 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 		draw_monster_num = -(negMon + 1);
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
-			if (!(pMonster->_mFlags & 1)) {
+			if (!(pMonster->_mFlags & MFLAG_HIDDEN)) {
 				if (pMonster->MType != NULL) {
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
 					py = dy + pMonster->_myoff;
@@ -830,7 +830,7 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 		draw_monster_num = nMon - 1;
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
-			if (!(pMonster->_mFlags & 1)) {
+			if (!(pMonster->_mFlags & MFLAG_HIDDEN)) {
 				if (pMonster->MType != NULL) {
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
 					py = dy + pMonster->_myoff;
@@ -1253,7 +1253,7 @@ void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks
 		draw_monster_num = -(negMon + 1);
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
-			if (!(pMonster->_mFlags & 1)) {
+			if (!(pMonster->_mFlags & MFLAG_HIDDEN)) {
 				if (pMonster->MType != NULL) {
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
 					py = dy + pMonster->_myoff;
@@ -1296,7 +1296,7 @@ void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks
 		draw_monster_num = nMon - 1;
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
-			if (!(pMonster->_mFlags & 1)) {
+			if (!(pMonster->_mFlags & MFLAG_HIDDEN)) {
 				if (pMonster->MType != NULL) {
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
 					py = dy + pMonster->_myoff;
@@ -1680,7 +1680,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 		draw_monster_num = -(negMon + 1);
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
-			if (!(pMonster->_mFlags & 1)) {
+			if (!(pMonster->_mFlags & MFLAG_HIDDEN)) {
 				if (pMonster->MType != NULL) {
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
 					py = dy + pMonster->_myoff;
@@ -1723,7 +1723,7 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 		draw_monster_num = nMon - 1;
 		if ((DWORD)draw_monster_num < MAXMONSTERS) {
 			pMonster = &monster[draw_monster_num];
-			if (!(pMonster->_mFlags & 1)) {
+			if (!(pMonster->_mFlags & MFLAG_HIDDEN)) {
 				if (pMonster->MType != NULL) {
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
 					py = dy + pMonster->_myoff;

@@ -2640,7 +2640,7 @@ void control_press_enter()
 		}
 		if (i >= 8) {
 			strcpy(sgszTalkSave[sgbNextTalkSave], sgszTalkMsg);
-			sgbNextTalkSave = sgbNextTalkSave + 1;
+			sgbNextTalkSave++;
 			sgbNextTalkSave &= 7;
 		} else {
 			talk_save = sgbNextTalkSave - 1;

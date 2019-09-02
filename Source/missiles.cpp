@@ -1002,9 +1002,9 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				missile[i]._miHitFlag = 1;
 			}
 		} else {
-			if (monster[missile[i]._misource]._mFlags & 0x10
+			if (monster[missile[i]._misource]._mFlags & MFLAG_TARGETS_MONSTER
 			    && dMonster[mx][my] > 0
-			    && monster[dMonster[mx][my] - 1]._mFlags & 0x20
+			    && monster[dMonster[mx][my] - 1]._mFlags & MFLAG_GOLEM
 			    && MonsterTrapHit(dMonster[mx][my] - 1, mindam, maxdam, missile[i]._midist, missile[i]._mitype, shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
@@ -2392,9 +2392,9 @@ void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 	if (!mienemy) {
 		UseMana(id, SPL_BONESPIRIT);
-		drawhpflag = TRUE;
 		plr[id]._pHitPoints -= 384;
 		plr[id]._pHPBase -= 384;
+		drawhpflag = TRUE;
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	}

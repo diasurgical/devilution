@@ -105,6 +105,6 @@ diablo.res: Diablo.rc
 	$(RC) /i $(VC_INC_DIR) /l 0x409 /fo $@ $<
 
 clean:
-	@$(RM) -v $(OBJS)
+	@$(RM) -v $(OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch
 
 .PHONY: clean all

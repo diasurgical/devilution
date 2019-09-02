@@ -993,8 +993,8 @@ void DRLG_L3MakeMegas()
 {
 	int i, j, v, rv;
 
-	for (j = 0; j < DMAXY-1; j++) {
-		for (i = 0; i < DMAXX-1; i++) {
+	for (j = 0; j < DMAXY - 1; j++) {
+		for (i = 0; i < DMAXX - 1; i++) {
 			v = dungeon[i + 1][j + 1] + 2 * dungeon[i][j + 1] + 4 * dungeon[i + 1][j] + 8 * dungeon[i][j];
 			if (v == 6) {
 				rv = random(0, 2);
@@ -1014,10 +1014,10 @@ void DRLG_L3MakeMegas()
 			}
 			dungeon[i][j] = L3ConvTbl[v];
 		}
-		dungeon[DMAXX-1][j] = 8;
+		dungeon[DMAXX - 1][j] = 8;
 	}
 	for (i = 0; i < DMAXX; i++) {
-		dungeon[i][DMAXY-1] = 8;
+		dungeon[i][DMAXY - 1] = 8;
 	}
 }
 
@@ -1430,7 +1430,7 @@ void DRLG_L3PoolFix()
 {
 	int dunx, duny;
 
-	for (duny = 0; duny < DMAXY; duny++) { // BUGFIX: Change '0' to '1' and 'DMAXY' to 'DMAXY - 1'
+	for (duny = 0; duny < DMAXY; duny++) {     // BUGFIX: Change '0' to '1' and 'DMAXY' to 'DMAXY - 1'
 		for (dunx = 0; dunx < DMAXX; dunx++) { // BUGFIX: Change '0' to '1' and 'DMAXX' to 'DMAXX - 1'
 			if (dungeon[dunx][duny] == 8) {
 				if (dungeon[dunx - 1][duny - 1] >= 25 && dungeon[dunx - 1][duny - 1] <= 41
@@ -1649,7 +1649,7 @@ void DRLG_L3Wood()
 	int i, j, x, y, xx, yy, rt, rp, x1, y1, x2, y2;
 	BOOL skip;
 
-	for (j = 0; j < DMAXY - 1; j++) { // BUGFIX: Change '0' to '1'
+	for (j = 0; j < DMAXY - 1; j++) {     // BUGFIX: Change '0' to '1'
 		for (i = 0; i < DMAXX - 1; i++) { // BUGFIX: Change '0' to '1'
 			if (dungeon[i][j] == 10 && random(0, 2) != 0) {
 				x = i;
@@ -1719,7 +1719,7 @@ void DRLG_L3Wood()
 		}
 	}
 
-	for (j = 0; j < DMAXY; j++) { // BUGFIX: Change '0' to '1'
+	for (j = 0; j < DMAXY; j++) {     // BUGFIX: Change '0' to '1'
 		for (i = 0; i < DMAXX; i++) { // BUGFIX: Change '0' to '1'
 			if (dungeon[i][j] == 7 && random(0, 1) == 0 && SkipThemeRoom(i, j)) {
 				rt = random(0, 2);

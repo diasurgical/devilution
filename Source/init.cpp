@@ -159,24 +159,30 @@ void init_disable_screensaver(BOOLEAN disable)
 	char Data[16];
 	DWORD Type, cbData;
 	HKEY phkResult;
+	LRESULT success;
 
 	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
 
-	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult)) {
-		if (disable) {
-			cbData = 16;
-			if (!RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData))
-				screensaver_enabled_prev = Data[0] != '0';
-			enabled = FALSE;
-		} else {
-			enabled = screensaver_enabled_prev;
-		}
-		Data[1] = 0;
-		Data[0] = enabled ? '1' : '0';
-		RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2);
-		RegCloseKey(phkResult);
+	success = RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult);
+	if (success != ERROR_SUCCESS) {
+		return;
 	}
+
+	if (disable) {
+		cbData = 16;
+		success = RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData);
+		if (success == ERROR_SUCCESS)
+			screensaver_enabled_prev = Data[0] != '0';
+		enabled = FALSE;
+	} else {
+		enabled = screensaver_enabled_prev;
+	}
+
+	Data[1] = 0;
+	Data[0] = enabled ? '1' : '0';
+	RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2);
+	RegCloseKey(phkResult);
 }
 
 void init_create_window(int nCmdShow)
