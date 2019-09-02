@@ -9,6 +9,12 @@ extern ItemStruct curruitem;
 extern ItemGetRecordStruct itemrecord[MAXITEMS];
 extern ItemStruct item[MAXITEMS + 1];
 extern BOOL itemhold[3][3];
+#ifdef HELLFIRE
+extern int RowOfCornerStone;
+extern int ColOfCornerStone;
+extern int dword_691CB0;
+extern ItemStruct CornerItemMaybe;
+#endif
 extern BYTE *itemanims[35];
 extern BOOL UniqueItemFlag[128];
 extern int numitems;

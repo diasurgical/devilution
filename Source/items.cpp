@@ -7,6 +7,12 @@ ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
+#ifdef HELLFIRE
+int RowOfCornerStone;
+int ColOfCornerStone;
+int dword_691CB0;
+ItemStruct CornerItemMaybe;
+#endif
 BYTE *itemanims[ITEMTYPES];
 BOOL UniqueItemFlag[128];
 int numitems;

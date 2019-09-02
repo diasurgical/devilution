@@ -6,6 +6,16 @@ BOOL setloadflag;
 int HR1;
 int HR2;
 int HR3;
+#ifdef HELLFIRE
+int UberRow;
+int UberCol;
+int dword_577368;
+int IsUberRoomOpened;
+int UberLeverRow;
+int UberLeverCol;
+int IsUberLeverActivated;
+int UberDiabloMonsterIndex;
+#endif
 int VR1;
 int VR2;
 int VR3;
@@ -102,10 +112,120 @@ const BYTE L5BTYPES[206] = {
 const BYTE STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
 const BYTE L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
 const BYTE STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
+#ifdef HELLFIRE
+const BYTE L5STAIRSDOWN[48] = { 4, 5, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 52, 0, 0, 48, 51, 0, 0, 47, 50, 0, 45, 46, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE L5STAIRSTOWN[48] = { 4, 5, 22, 22, 22, 22, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 62, 23, 0, 0, 61, 18, 0, 63, 64, 65, 0, 66, 67, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+#endif
 const BYTE LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
 const BYTE PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
+#ifdef HELLFIRE
+const BYTE byte_48A1B4[4] = { 1, 1, 11, 95 };
+const BYTE byte_48A1B8[8] = { 1, 1, 12, 96, 0, 0, 0, 0 };
+const BYTE byte_48A1C0[8] = { 1, 3, 1, 1, 1, 91, 90, 89 };
+const BYTE byte_48A1C8[8] = { 3, 1, 2, 2, 2, 94, 93, 92 };
+const BYTE byte_48A1D0[4] = { 1, 1, 13, 97 };
+const BYTE byte_48A1D4[4] = { 1, 1, 13, 98 };
+const BYTE byte_48A1D8[4] = { 1, 1, 13, 99 };
+const BYTE byte_48A1DC[4] = { 1, 1, 13, 100 };
+const BYTE byte_48A1E0[20] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 101, 0, 0, 0, 0 };
+const BYTE byte_48A1F4[4] = { 1, 1, 11, 185 };
+const BYTE byte_48A1F8[4] = { 1, 1, 11, 186 };
+const BYTE byte_48A1FC[4] = { 1, 1, 12, 187 };
+const BYTE byte_48A200[4] = { 1, 1, 12, 188 };
+const BYTE byte_48A204[4] = { 1, 1, 89, 173 };
+const BYTE byte_48A208[4] = { 1, 1, 89, 174 };
+const BYTE byte_48A20C[4] = { 1, 1, 90, 175 };
+const BYTE byte_48A210[4] = { 1, 1, 90, 176 };
+const BYTE byte_48A214[4] = { 1, 1, 91, 177 };
+const BYTE byte_48A218[4] = { 1, 1, 91, 178 };
+const BYTE byte_48A21C[4] = { 1, 1, 92, 179 };
+const BYTE byte_48A220[4] = { 1, 1, 92, 180 };
+const BYTE byte_48A224[4] = { 1, 1, 92, 181 };
+const BYTE byte_48A228[4] = { 1, 1, 92, 182 };
+const BYTE byte_48A22C[4] = { 1, 1, 92, 183 };
+const BYTE byte_48A230[4] = { 1, 1, 92, 184 };
+const BYTE byte_48A234[4] = { 1, 1, 98, 189 };
+const BYTE byte_48A238[4] = { 1, 1, 98, 190 };
+const BYTE byte_48A23C[4] = { 1, 1, 97, 191 };
+const BYTE byte_48A240[4] = { 1, 1, 15, 192 };
+const BYTE byte_48A244[4] = { 1, 1, 99, 193 };
+const BYTE byte_48A248[4] = { 1, 1, 99, 194 };
+const BYTE byte_48A24C[4] = { 1, 1, 100, 195 };
+const BYTE byte_48A250[4] = { 1, 1, 101, 196 };
+const BYTE byte_48A254[4] = { 1, 1, 101, 197 };
+const BYTE byte_48A258[8] = { 1, 1, 101, 198, 0, 0, 0, 0 };
+const BYTE byte_48A260[24] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 167, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A278[24] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 168, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A290[24] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 169, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A2A8[24] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 170, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A2C0[24] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 171, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE byte_48A2D8[20] = { 3, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 172, 0, 0, 0, 0 };
+const BYTE byte_48A2EC[4] = { 1, 1, 13, 163 };
+const BYTE byte_48A2F0[4] = { 1, 1, 13, 164 };
+const BYTE byte_48A2F4[4] = { 1, 1, 13, 165 };
+const BYTE byte_48A2F8[4] = { 1, 1, 13, 166 };
+const BYTE byte_48A2FC[4] = { 1, 1, 1, 112 };
+const BYTE byte_48A300[4] = { 1, 1, 2, 113 };
+const BYTE byte_48A304[4] = { 1, 1, 3, 114 };
+const BYTE byte_48A308[4] = { 1, 1, 4, 115 };
+const BYTE byte_48A30C[4] = { 1, 1, 5, 116 };
+const BYTE byte_48A310[4] = { 1, 1, 6, 117 };
+const BYTE byte_48A314[4] = { 1, 1, 7, 118 };
+const BYTE byte_48A318[4] = { 1, 1, 8, 119 };
+const BYTE byte_48A31C[4] = { 1, 1, 9, 120 };
+const BYTE byte_48A320[4] = { 1, 1, 10, 121 };
+const BYTE byte_48A324[4] = { 1, 1, 11, 122 };
+const BYTE byte_48A328[4] = { 1, 1, 12, 123 };
+const BYTE byte_48A32C[4] = { 1, 1, 13, 124 };
+const BYTE byte_48A330[4] = { 1, 1, 14, 125 };
+const BYTE byte_48A334[4] = { 1, 1, 15, 126 };
+const BYTE byte_48A338[4] = { 1, 1, 16, 127 };
+const BYTE byte_48A33C[4] = { 1, 1, 17, 128 };
+const BYTE byte_48A340[4] = { 1, 1, 1, 129 };
+const BYTE byte_48A344[4] = { 1, 1, 2, 130 };
+const BYTE byte_48A348[4] = { 1, 1, 3, 131 };
+const BYTE byte_48A34C[4] = { 1, 1, 4, 132 };
+const BYTE byte_48A350[4] = { 1, 1, 5, 133 };
+const BYTE byte_48A354[4] = { 1, 1, 6, 134 };
+const BYTE byte_48A358[4] = { 1, 1, 7, 135 };
+const BYTE byte_48A35C[4] = { 1, 1, 8, 136 };
+const BYTE byte_48A360[4] = { 1, 1, 9, 137 };
+const BYTE byte_48A364[4] = { 1, 1, 10, 138 };
+const BYTE byte_48A368[4] = { 1, 1, 11, 139 };
+const BYTE byte_48A36C[4] = { 1, 1, 12, 140 };
+const BYTE byte_48A370[4] = { 1, 1, 13, 141 };
+const BYTE byte_48A374[4] = { 1, 1, 14, 142 };
+const BYTE byte_48A378[4] = { 1, 1, 15, 143 };
+const BYTE byte_48A37C[4] = { 1, 1, 16, 144 };
+const BYTE byte_48A380[4] = { 1, 1, 17, 145 };
+const BYTE byte_48A384[4] = { 1, 1, 1, 146 };
+const BYTE byte_48A388[4] = { 1, 1, 2, 147 };
+const BYTE byte_48A38C[4] = { 1, 1, 3, 148 };
+const BYTE byte_48A390[4] = { 1, 1, 4, 149 };
+const BYTE byte_48A394[4] = { 1, 1, 5, 150 };
+const BYTE byte_48A398[4] = { 1, 1, 6, 151 };
+const BYTE byte_48A39C[4] = { 1, 1, 7, 152 };
+const BYTE byte_48A3A0[4] = { 1, 1, 8, 153 };
+const BYTE byte_48A3A4[4] = { 1, 1, 9, 154 };
+const BYTE byte_48A3A8[4] = { 1, 1, 10, 155 };
+const BYTE byte_48A3AC[4] = { 1, 1, 11, 156 };
+const BYTE byte_48A3B0[4] = { 1, 1, 12, 157 };
+const BYTE byte_48A3B4[4] = { 1, 1, 13, 158 };
+const BYTE byte_48A3B8[4] = { 1, 1, 14, 159 };
+const BYTE byte_48A3BC[4] = { 1, 1, 15, 160 };
+const BYTE byte_48A3C0[4] = { 1, 1, 16, 161 };
+const BYTE byte_48A3C4[4] = { 1, 1, 17, 162 };
+const BYTE byte_48A3C8[4] = { 1, 1, 1, 199 };
+const BYTE byte_48A3CC[4] = { 1, 1, 1, 201 };
+const BYTE byte_48A3D0[4] = { 1, 1, 2, 200 };
+const BYTE byte_48A3D4[4] = { 1, 1, 2, 202 };
+#endif
 
 /* data */
+#ifdef HELLFIRE
+BYTE UberRoomPattern[32] = { 4, 6, 115, 130, 6, 13, 129, 108, 1, 13, 1, 107, 103, 13, 146, 106, 102, 13, 129, 168, 1, 13, 7, 2, 3, 13, 0, 0, 0, 0, 0, 0 };
+BYTE CornerstoneRoomPattern[32] = { 5, 5, 4, 2, 2, 2, 6, 1, 111, 172, 0, 1, 1, 172, 0, 0, 25, 1, 0, 0, 0, 1, 7, 2, 2, 2, 3, 0, 0, 0, 0, 0 };
+#endif
 BYTE L5ConvTbl[16] = { 22, 13, 1, 13, 2, 13, 13, 13, 4, 13, 1, 13, 2, 13, 16, 13 };
 
 void DRLG_Init_Globals()
@@ -377,6 +497,10 @@ void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 
 void CreateL5Dungeon(DWORD rseed, int entry)
 {
+#ifdef HELLFIRE
+	int i, j;
+#endif
+
 	SetRndSeed(rseed);
 
 	dminx = 16;
@@ -384,14 +508,52 @@ void CreateL5Dungeon(DWORD rseed, int entry)
 	dmaxx = 96;
 	dmaxy = 96;
 
+#ifdef HELLFIRE
+	UberRow = 0;
+	UberCol = 0;
+	IsUberRoomOpened = 0;
+	dword_577368 = 0;
+	UberLeverRow = 0;
+	UberLeverCol = 0;
+	IsUberLeverActivated = 0;
+	UberDiabloMonsterIndex = 0;
+#endif
+
 	DRLG_InitTrans();
 	DRLG_InitSetPC();
 	DRLG_LoadL1SP();
 	DRLG_L5(entry);
 	DRLG_L1Pass3();
 	DRLG_FreeL1SP();
+
+#ifdef HELLFIRE
+	if ( currlevel < 17 )
+		DRLG_InitL1Vals();
+	else
+		DRLG_InitL5Vals();
+
+	DRLG_SetPC();
+
+	for ( j = dminy; j < dmaxy; j++ )
+	{
+		for ( i = dminx; i < dmaxx; i++ )
+		{
+			if ( dPiece[i][j] == 290 )
+			{
+				UberRow = i;
+				UberCol = j;
+			}
+			if ( dPiece[i][j] == 317 )
+			{
+				RowOfCornerStone = i;
+				ColOfCornerStone = j;
+			}
+		}
+	}
+#else
 	DRLG_InitL1Vals();
 	DRLG_SetPC();
+#endif
 }
 
 void DRLG_LoadL1SP()
@@ -416,6 +578,26 @@ void DRLG_FreeL1SP()
 	MemFreeDbg(pSetPiece);
 }
 
+#ifdef HELLFIRE
+void DRLG_InitL5Vals()
+{
+	int i, j, pc;
+
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 77) {
+				pc = 1;
+			} else if (dPiece[i][j] == 80) {
+				pc = 2;
+			} else {
+				continue;
+			}
+			dArch[i][j] = pc;
+		}
+	}
+}
+#endif
+
 void DRLG_L5(int entry)
 {
 	int i, j;
@@ -433,6 +615,11 @@ void DRLG_L5(int entry)
 	case 4:
 		minarea = 761;
 		break;
+#ifdef HELLFIRE
+	default:
+		minarea = 761;
+		break;
+#endif
 	}
 
 	do {
@@ -477,6 +664,88 @@ void DRLG_L5(int entry)
 					ViewY--;
 				}
 			}
+#ifdef HELLFIRE
+		} else if (entry == 0) {
+			if ( currlevel < 21 )
+			{
+				if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+					doneflag = 0;
+				if ( DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+					doneflag = 0;
+			}
+			else if ( currlevel == 21 )
+			{
+				if ( DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 0, -1, 6) < 0 )
+					doneflag = 0;
+				if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+					doneflag = 0;
+				ViewY++;
+			}
+			else
+			{
+				if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+					doneflag = 0;
+				if ( currlevel != 24 )
+				{
+					if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+						doneflag = 0;
+				}
+				ViewY++;
+			}
+		} else if ( entry == 1 ) {
+			if ( currlevel < 21 )
+			{
+				if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
+					doneflag = 0;
+				if ( DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+					doneflag = 0;
+				ViewY--;
+			}
+			else if ( currlevel == 21 )
+			{
+				if ( DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 0, -1, 6) < 0 )
+					doneflag = 0;
+				if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+					doneflag = 0;
+				ViewY += 3;
+			}
+			else
+			{
+				if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+					doneflag = 0;
+				if ( currlevel != 24 )
+				{
+					if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+						doneflag = 0;
+				}
+				ViewY += 3;
+			}
+		} else {
+			if ( currlevel < 21 )
+			{
+				if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
+					doneflag = 0;
+				if ( DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+					doneflag = 0;
+			}
+			else if ( currlevel == 21 )
+			{
+				if ( DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 1, -1, 6) < 0 )
+					doneflag = 0;
+				if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+					doneflag = 0;
+			}
+			else
+			{
+				if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+					doneflag = 0;
+				if ( currlevel != 24 )
+				{
+					if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+						doneflag = 0;
+				}
+			}
+#else
 		} else if (entry == 0) {
 			if (DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
 				doneflag = FALSE;
@@ -488,6 +757,7 @@ void DRLG_L5(int entry)
 			else if (DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0)
 				doneflag = FALSE;
 			ViewY--;
+#endif
 		}
 	} while (doneflag == FALSE);
 
@@ -513,7 +783,64 @@ void DRLG_L5(int entry)
 		}
 	}
 
+#ifdef HELLFIRE
+	if ( currlevel < 21 )
+	{
+		DRLG_L5Subs();
+	}
+	else
+	{
+		drlg_l1_crypt_pattern1(10);
+		drlg_l1_crypt_rndset(byte_48A1B4, 95);
+		drlg_l1_crypt_rndset(byte_48A1B8, 95);
+		drlg_l1_crypt_rndset(byte_48A1C0, 100);
+		drlg_l1_crypt_rndset(byte_48A1C8, 100);
+		drlg_l1_crypt_rndset(byte_48A1E0, 60);
+		drlg_l1_crypt_lavafloor();
+		switch ( currlevel )
+		{
+		case 21:
+			drlg_l1_crypt_pattern2(30);
+			drlg_l1_crypt_pattern3(15);
+			drlg_l1_crypt_pattern4(5);
+			drlg_l1_crypt_lavafloor();
+			drlg_l1_crypt_pattern7(10);
+			drlg_l1_crypt_pattern6(5);
+			drlg_l1_crypt_pattern5(20);
+			break;
+		case 22:
+			drlg_l1_crypt_pattern7(10);
+			drlg_l1_crypt_pattern6(10);
+			drlg_l1_crypt_pattern5(20);
+			drlg_l1_crypt_pattern2(30);
+			drlg_l1_crypt_pattern3(20);
+			drlg_l1_crypt_pattern4(10);
+			drlg_l1_crypt_lavafloor();
+			break;
+		case 23:
+			drlg_l1_crypt_pattern7(10);
+			drlg_l1_crypt_pattern6(15);
+			drlg_l1_crypt_pattern5(30);
+			drlg_l1_crypt_pattern2(30);
+			drlg_l1_crypt_pattern3(20);
+			drlg_l1_crypt_pattern4(15);
+			drlg_l1_crypt_lavafloor();
+			break;
+		default:
+			drlg_l1_crypt_pattern7(10);
+			drlg_l1_crypt_pattern6(20);
+			drlg_l1_crypt_pattern5(30);
+			drlg_l1_crypt_pattern2(30);
+			drlg_l1_crypt_pattern3(20);
+			drlg_l1_crypt_pattern4(20);
+			drlg_l1_crypt_lavafloor();
+			break;
+		}
+	}
+#else
 	DRLG_L5Subs();
+#endif
+
 #ifdef HELLFIRE
 	if (currlevel < 21)
 #endif
@@ -595,6 +922,183 @@ void DRLG_PlaceDoor(int x, int y)
 
 	L5dflags[x][y] = DLRG_PROTECTED;
 }
+
+#ifdef HELLFIRE
+void drlg_l1_crypt_lavafloor()
+{
+	int i, j;
+
+	for ( j = 1; j < 40; j++ )
+	{
+		for ( i = 1; i < 40; i++ )
+		{
+			switch ( dungeon[i][j] )
+			{
+			case 5:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 7:
+			case 15:
+			case 17:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 206;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 207;
+				break;
+			case 8:
+			case 11:
+			case 14:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				break;
+			case 9:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 206;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 207;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 10:
+			case 12:
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 95:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				break;
+			case 96:
+			case 187:
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 208;
+				break;
+			case 116:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 118:
+			case 126:
+			case 128:
+			case 135:
+			case 152:
+			case 160:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 206;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 207;
+				break;
+			case 119:
+			case 125:
+			case 136:
+			case 142:
+			case 153:
+			case 156:
+			case 159:
+			case 185:
+			case 186:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				break;
+			case 120:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 206;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 207;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 121:
+			case 123:
+			case 138:
+			case 155:
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 122:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 211;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 212;
+				break;
+			case 133:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 137:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 213;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 214;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 139:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 215;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 216;
+				break;
+			case 140:
+			case 157:
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 217;
+				break;
+			case 143:
+			case 145:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 213;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 214;
+				break;
+			case 150:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 203;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 204;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 217;
+				break;
+			case 154:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 206;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 207;
+				if ( dungeon[i][j - 1] == 13 )
+					dungeon[i][j - 1] = 205;
+				break;
+			case 162:
+			case 167:
+			case 192:
+				if ( dungeon[i - 1][j] == 13 )
+					dungeon[i - 1][j] = 209;
+				if ( dungeon[i - 1][j - 1] == 13 )
+					dungeon[i - 1][j - 1] = 210;
+				break;
+			}
+		}
+	}
+}
+#endif
 
 void DRLG_L1Shadows()
 {
@@ -1355,6 +1859,62 @@ void L5tileFix()
 	}
 }
 
+#ifdef HELLFIRE
+void drlg_l1_crypt_rndset(const BYTE *miniset, int rndper)
+{
+	int sx, sy, sw, sh, xx, yy, ii, kk;
+	BOOL found;
+
+	sw = miniset[0];
+	sh = miniset[1];
+
+	for (sy = 0; sy < DMAXX - sh; sy++) {
+		for (sx = 0; sx < DMAXY - sw; sx++) {
+			found = TRUE;
+			ii = 2;
+			for (yy = 0; yy < sh && found == TRUE; yy++) {
+				for (xx = 0; xx < sw && found == TRUE; xx++) {
+					if (miniset[ii] != 0 && dungeon[xx + sx][yy + sy] != miniset[ii]) {
+						found = FALSE;
+					}
+					if (dflags[xx + sx][yy + sy] != 0) {
+						found = FALSE;
+					}
+					ii++;
+				}
+			}
+			kk = sw * sh + 2;
+			if (miniset[kk] >= 84 && miniset[kk] <= 100 && found == TRUE) {
+				// BUGFIX: accesses to dungeon can go out of bounds
+				// BUGFIX: Comparisons vs 100 should use same tile as comparisons vs 84.
+				if (dungeon[sx - 1][sy] >= 84 && dungeon[sx - 1][sy] <= 100) {
+					found = FALSE;
+				}
+				if (dungeon[sx + 1][sy] >= 84 && dungeon[sx - 1][sy] <= 100) {
+					found = FALSE;
+				}
+				if (dungeon[sx][sy + 1] >= 84 && dungeon[sx - 1][sy] <= 100) {
+					found = FALSE;
+				}
+				if (dungeon[sx][sy - 1] >= 84 && dungeon[sx - 1][sy] <= 100) {
+					found = FALSE;
+				}
+			}
+			if (found == TRUE && random(0, 100) < rndper) {
+				for (yy = 0; yy < sh; yy++) {
+					for (xx = 0; xx < sw; xx++) {
+						if (miniset[kk] != 0) {
+							dungeon[xx + sx][yy + sy] = miniset[kk];
+						}
+						kk++;
+					}
+				}
+			}
+		}
+	}
+}
+#endif
+
 void DRLG_L5Subs()
 {
 	int x, y, rv, i;
@@ -1443,6 +2003,126 @@ void L5FillChambers()
 	if (VR1 && !VR2 && VR3)
 		DRLG_L5GHall(18, 12, 18, 28);
 
+#ifdef HELLFIRE
+	if (currlevel == 24) {
+		if (VR1 || VR2 || VR3) {
+			c = 1;
+			if (!VR1 && VR2 && VR3 && random(0, 2))
+				c = 2;
+			if (VR1 && VR2 && !VR3 && random(0, 2))
+				c = 0;
+
+			if (VR1 && !VR2 && VR3) {
+				if (random(0, 2))
+					c = 0;
+				else
+					c = 2;
+			}
+
+			if (VR1 && VR2 && VR3)
+				c = random(0, 3);
+
+			switch (c) {
+			case 0:
+				drlg_l1_set_crypt_room(16, 2);
+				break;
+			case 1:
+				drlg_l1_set_crypt_room(16, 16);
+				break;
+			case 2:
+				drlg_l1_set_crypt_room(16, 30);
+				break;
+			}
+		} else {
+			c = 1;
+			if (!HR1 && HR2 && HR3 && random(0, 2))
+				c = 2;
+			if (HR1 && HR2 && !HR3 && random(0, 2))
+				c = 0;
+
+			if (HR1 && !HR2 && HR3) {
+				if (random(0, 2))
+					c = 0;
+				else
+					c = 2;
+			}
+
+			if (HR1 && HR2 && HR3)
+				c = random(0, 3);
+
+			switch (c) {
+			case 0:
+				drlg_l1_set_crypt_room(2, 16);
+				break;
+			case 1:
+				drlg_l1_set_crypt_room(16, 16);
+				break;
+			case 2:
+				drlg_l1_set_crypt_room(30, 16);
+				break;
+			}
+		}
+	}
+	if (currlevel == 21) {
+		if (VR1 || VR2 || VR3) {
+			c = 1;
+			if (!VR1 && VR2 && VR3 && random(0, 2))
+				c = 2;
+			if (VR1 && VR2 && !VR3 && random(0, 2))
+				c = 0;
+
+			if (VR1 && !VR2 && VR3) {
+				if (random(0, 2))
+					c = 0;
+				else
+					c = 2;
+			}
+
+			if (VR1 && VR2 && VR3)
+				c = random(0, 3);
+
+			switch (c) {
+			case 0:
+				drlg_l1_set_corner_room(16, 2);
+				break;
+			case 1:
+				drlg_l1_set_corner_room(16, 16);
+				break;
+			case 2:
+				drlg_l1_set_corner_room(16, 30);
+				break;
+			}
+		} else {
+			c = 1;
+			if (!HR1 && HR2 && HR3 && random(0, 2))
+				c = 2;
+			if (HR1 && HR2 && !HR3 && random(0, 2))
+				c = 0;
+
+			if (HR1 && !HR2 && HR3) {
+				if (random(0, 2))
+					c = 0;
+				else
+					c = 2;
+			}
+
+			if (HR1 && HR2 && HR3)
+				c = random(0, 3);
+
+			switch (c) {
+			case 0:
+				drlg_l1_set_corner_room(2, 16);
+				break;
+			case 1:
+				drlg_l1_set_corner_room(16, 16);
+				break;
+			case 2:
+				drlg_l1_set_corner_room(30, 16);
+				break;
+			}
+		}
+	}
+#endif
 	if (setloadflag) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
@@ -1607,6 +2287,67 @@ void DRLG_L5SetRoom(int rx1, int ry1)
 	}
 }
 
+#ifdef HELLFIRE
+void drlg_l1_set_crypt_room(int rx1, int ry1)
+{
+	int rw, rh, i, j, sp;
+
+	rw = UberRoomPattern[0];
+	rh = UberRoomPattern[1];
+
+	UberRow = 2 * rx1 + 6;
+	UberCol = 2 * ry1 + 8;
+	setpc_x = rx1;
+	setpc_y = ry1;
+	setpc_w = rw;
+	setpc_h = rh;
+	IsUberRoomOpened = 0;
+	dword_577368 = 0;
+	IsUberLeverActivated = 0;
+
+	sp = 2;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (UberRoomPattern[sp]) {
+				dungeon[rx1 + i][ry1 + j] = UberRoomPattern[sp];
+				L5dflags[rx1 + i][ry1 + j] |= DLRG_PROTECTED;
+			} else {
+				dungeon[rx1 + i][ry1 + j] = 13;
+			}
+			sp++;
+		}
+	}
+}
+
+void drlg_l1_set_corner_room(int rx1, int ry1)
+{
+	int rw, rh, i, j, sp;
+
+	rw = CornerstoneRoomPattern[0];
+	rh = CornerstoneRoomPattern[1];
+
+	setpc_x = rx1;
+	setpc_y = ry1;
+	setpc_w = rw;
+	setpc_h = rh;
+
+	sp = 2;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (CornerstoneRoomPattern[sp]) {
+				dungeon[rx1 + i][ry1 + j] = CornerstoneRoomPattern[sp];
+				L5dflags[rx1 + i][ry1 + j] |= DLRG_PROTECTED;
+			} else {
+				dungeon[rx1 + i][ry1 + j] = 13;
+			}
+			sp++;
+		}
+	}
+}
+#endif
+
 void DRLG_L5FloodTVal()
 {
 	int xx, yy, i, j;
@@ -1745,3 +2486,128 @@ void DRLG_L5CornerFix()
 		}
 	}
 }
+
+#ifdef HELLFIRE
+void drlg_l1_crypt_pattern1(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A3C8, rndper);
+	drlg_l1_crypt_rndset(byte_48A3CC, rndper);
+	drlg_l1_crypt_rndset(byte_48A3D0, rndper);
+	drlg_l1_crypt_rndset(byte_48A3D4, rndper);
+}
+
+void drlg_l1_crypt_pattern2(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A2FC, rndper);
+	drlg_l1_crypt_rndset(byte_48A300, rndper);
+	drlg_l1_crypt_rndset(byte_48A304, rndper);
+	drlg_l1_crypt_rndset(byte_48A308, rndper);
+	drlg_l1_crypt_rndset(byte_48A30C, rndper);
+	drlg_l1_crypt_rndset(byte_48A310, rndper);
+	drlg_l1_crypt_rndset(byte_48A314, rndper);
+	drlg_l1_crypt_rndset(byte_48A318, rndper);
+	drlg_l1_crypt_rndset(byte_48A31C, rndper);
+	drlg_l1_crypt_rndset(byte_48A320, rndper);
+	drlg_l1_crypt_rndset(byte_48A324, rndper);
+	drlg_l1_crypt_rndset(byte_48A328, rndper);
+	drlg_l1_crypt_rndset(byte_48A32C, rndper);
+	drlg_l1_crypt_rndset(byte_48A330, rndper);
+	drlg_l1_crypt_rndset(byte_48A334, rndper);
+	drlg_l1_crypt_rndset(byte_48A338, rndper);
+	drlg_l1_crypt_rndset(byte_48A33C, rndper);
+}
+
+void drlg_l1_crypt_pattern3(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A340, rndper);
+	drlg_l1_crypt_rndset(byte_48A344, rndper);
+	drlg_l1_crypt_rndset(byte_48A348, rndper);
+	drlg_l1_crypt_rndset(byte_48A34C, rndper);
+	drlg_l1_crypt_rndset(byte_48A350, rndper);
+	drlg_l1_crypt_rndset(byte_48A354, rndper);
+	drlg_l1_crypt_rndset(byte_48A358, rndper);
+	drlg_l1_crypt_rndset(byte_48A35C, rndper);
+	drlg_l1_crypt_rndset(byte_48A360, rndper);
+	drlg_l1_crypt_rndset(byte_48A364, rndper);
+	drlg_l1_crypt_rndset(byte_48A368, rndper);
+	drlg_l1_crypt_rndset(byte_48A36C, rndper);
+	drlg_l1_crypt_rndset(byte_48A370, rndper);
+	drlg_l1_crypt_rndset(byte_48A374, rndper);
+	drlg_l1_crypt_rndset(byte_48A378, rndper);
+	drlg_l1_crypt_rndset(byte_48A37C, rndper);
+	drlg_l1_crypt_rndset(byte_48A380, rndper);
+}
+
+void drlg_l1_crypt_pattern4(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A384, rndper);
+	drlg_l1_crypt_rndset(byte_48A388, rndper);
+	drlg_l1_crypt_rndset(byte_48A38C, rndper);
+	drlg_l1_crypt_rndset(byte_48A390, rndper);
+	drlg_l1_crypt_rndset(byte_48A394, rndper);
+	drlg_l1_crypt_rndset(byte_48A398, rndper);
+	drlg_l1_crypt_rndset(byte_48A39C, rndper);
+	drlg_l1_crypt_rndset(byte_48A3A0, rndper);
+	drlg_l1_crypt_rndset(byte_48A3A4, rndper);
+	drlg_l1_crypt_rndset(byte_48A3A8, rndper);
+	drlg_l1_crypt_rndset(byte_48A3AC, rndper);
+	drlg_l1_crypt_rndset(byte_48A3B0, rndper);
+	drlg_l1_crypt_rndset(byte_48A3B4, rndper);
+	drlg_l1_crypt_rndset(byte_48A3B8, rndper);
+	drlg_l1_crypt_rndset(byte_48A3BC, rndper);
+	drlg_l1_crypt_rndset(byte_48A3C0, rndper);
+	drlg_l1_crypt_rndset(byte_48A3C4, rndper);
+}
+
+void drlg_l1_crypt_pattern5(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A260, rndper);
+	drlg_l1_crypt_rndset(byte_48A278, rndper);
+	drlg_l1_crypt_rndset(byte_48A290, rndper);
+	drlg_l1_crypt_rndset(byte_48A2A8, rndper);
+	drlg_l1_crypt_rndset(byte_48A2C0, rndper);
+	drlg_l1_crypt_rndset(byte_48A2D8, rndper);
+	drlg_l1_crypt_rndset(byte_48A2EC, rndper);
+	drlg_l1_crypt_rndset(byte_48A2F0, rndper);
+	drlg_l1_crypt_rndset(byte_48A2F4, rndper);
+	drlg_l1_crypt_rndset(byte_48A2F8, rndper);
+}
+
+void drlg_l1_crypt_pattern6(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A1F4, rndper);
+	drlg_l1_crypt_rndset(byte_48A1FC, rndper);
+	drlg_l1_crypt_rndset(byte_48A1F8, rndper);
+	drlg_l1_crypt_rndset(byte_48A200, rndper);
+	drlg_l1_crypt_rndset(byte_48A204, rndper);
+	drlg_l1_crypt_rndset(byte_48A208, rndper);
+	drlg_l1_crypt_rndset(byte_48A20C, rndper);
+	drlg_l1_crypt_rndset(byte_48A210, rndper);
+	drlg_l1_crypt_rndset(byte_48A214, rndper);
+	drlg_l1_crypt_rndset(byte_48A218, rndper);
+	drlg_l1_crypt_rndset(byte_48A21C, rndper);
+	drlg_l1_crypt_rndset(byte_48A220, rndper);
+	drlg_l1_crypt_rndset(byte_48A224, rndper);
+	drlg_l1_crypt_rndset(byte_48A228, rndper);
+	drlg_l1_crypt_rndset(byte_48A22C, rndper);
+	drlg_l1_crypt_rndset(byte_48A230, rndper);
+	drlg_l1_crypt_rndset(byte_48A234, rndper);
+	drlg_l1_crypt_rndset(byte_48A238, rndper);
+	drlg_l1_crypt_rndset(byte_48A23C, rndper);
+	drlg_l1_crypt_rndset(byte_48A240, rndper);
+	drlg_l1_crypt_rndset(byte_48A244, rndper);
+	drlg_l1_crypt_rndset(byte_48A248, rndper);
+	drlg_l1_crypt_rndset(byte_48A24C, rndper);
+	drlg_l1_crypt_rndset(byte_48A250, rndper);
+	drlg_l1_crypt_rndset(byte_48A254, rndper);
+	drlg_l1_crypt_rndset(byte_48A258, rndper);
+}
+
+void drlg_l1_crypt_pattern7(int rndper)
+{
+	drlg_l1_crypt_rndset(byte_48A1D0, rndper);
+	drlg_l1_crypt_rndset(byte_48A1D4, rndper);
+	drlg_l1_crypt_rndset(byte_48A1D8, rndper);
+	drlg_l1_crypt_rndset(byte_48A1DC, rndper);
+}
+#endif
