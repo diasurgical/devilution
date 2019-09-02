@@ -11,7 +11,12 @@ int nummonsters;
 BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
 int totalmonsters;
+#ifdef HELLFIRE
+CMonster Monsters[24];
+int unused_6AAE30[600];
+#else
 CMonster Monsters[16];
+#endif
 // int END_Monsters_17;
 int monstimgtot;
 int uniquetrans;
