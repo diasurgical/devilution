@@ -164,7 +164,7 @@ typedef struct ItemStruct {
 	int IDidx;
 	int offs016C; // _oldlight or _iInvalid
 #ifdef HELLFIRE
-	int field_170;
+	int _iDamAcFlags;
 #endif
 } ItemStruct;
 
@@ -335,12 +335,27 @@ typedef struct PlayerStruct {
 	unsigned char pTownWarps;
 	unsigned char pDungMsgs;
 	unsigned char pLvlLoad;
+/*
+#ifdef HELLFIRE
+	unsigned char pDungMsgs2;
+	char bReserved[4];
+	short wReflection;
+	short wReserved[7];
+	int pDiabloKillLevel;
+	int pDifficulty;
+	int pDamAcFlags;
+	int dwReserved[5];
+#else
+*/
 	unsigned char pBattleNet;
 	BOOLEAN pManaShield;
 	char bReserved[3];
 	short wReserved[8];
 	DWORD pDiabloKillLevel;
 	int dwReserved[7];
+/*
+#endif
+*/
 	unsigned char *_pNData;
 	unsigned char *_pWData;
 	unsigned char *_pAData;
@@ -522,15 +537,24 @@ typedef struct MonsterData {
 } MonsterData;
 
 typedef struct CMonster {
+#ifdef HELLFIRE
+	int mtype;
+#else
 	unsigned char mtype;
+#endif
 	// TODO: Add enum for place flags
 	unsigned char mPlaceFlags;
 	AnimStruct Anims[6];
 	TSnd *Snds[4][2];
 	int width;
 	int width2;
+#ifdef HELLFIRE
+	int mMinHP;
+	int mMaxHP;
+#else
 	unsigned char mMinHP;
 	unsigned char mMaxHP;
+#endif
 	BOOL has_special;
 	unsigned char mAFNum;
 	char mdeadval;

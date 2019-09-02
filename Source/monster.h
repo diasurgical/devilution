@@ -8,7 +8,12 @@ extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
 extern MonsterStruct monster[MAXMONSTERS];
 extern int totalmonsters;
+#ifdef HELLFIRE
+extern CMonster Monsters[24];
+extern int unused_6AAE30[600];
+#else
 extern CMonster Monsters[16];
+#endif
 // int END_Monsters_17;
 extern int monstimgtot;
 extern int uniquetrans;
