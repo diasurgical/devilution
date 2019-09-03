@@ -960,7 +960,7 @@ void RightMouseDown()
 			if (spselflag) {
 				SetSpell();
 #ifdef HELLFIRE
-				} else if ((!sbookflag || MouseX <= 320) && (MouseY >= PANEL_TOP || (!TryIconCurs() && (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))))) {
+			} else if ((!sbookflag || MouseX <= 320) && (MouseY >= PANEL_TOP || (!TryIconCurs() && (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))))) {
 #else
 			} else if (MouseY >= PANEL_TOP
 			    || (!sbookflag || MouseX <= 320)
