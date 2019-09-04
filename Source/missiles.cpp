@@ -2262,9 +2262,9 @@ void AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 	GetMissileVel(mi, sx, sy, dx, dy, 32);
 	if (!mienemy)
 		UseMana(id, SPL_FLAME);
-	missile[mi]._miVar3 = 0;
-	missile[mi]._miVar2 = sy;
 	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar3 = 0;
 	missile[mi]._mirange = 256;
 }
 
