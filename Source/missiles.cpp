@@ -1692,12 +1692,12 @@ void AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			pn = dPiece[tx][ty];
 			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
 				if (LineClear(sx, sy, tx, ty)) {
-					if (!(dMonster[tx][ty] | dObject[tx][ty] | dMissile[tx][ty] | nSolidTable[pn] | nMissileTable[pn])) {
-						missile[mi]._miDelFlag = FALSE;
+					if (!(dMonster[tx][ty] | nSolidTable[pn] | nMissileTable[pn] | dObject[tx][ty] | dMissile[tx][ty])) {
 						missile[mi]._mix = tx;
 						missile[mi]._miy = ty;
 						missile[mi]._misx = tx;
 						missile[mi]._misy = ty;
+						missile[mi]._miDelFlag = FALSE;
 						UseMana(id, SPL_GUARDIAN);
 						i = 6;
 						break;
@@ -1711,9 +1711,7 @@ void AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 	if (missile[mi]._miDelFlag != TRUE) {
 		missile[mi]._misource = id;
 		missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 1);
-
-		missile[mi]._mirange = plr[id]._pLevel >> 1;
-		missile[mi]._mirange += missile[mi]._mispllvl;
+		missile[mi]._mirange = missile[mi]._mispllvl + (plr[id]._pLevel >> 1);
 		missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
 
 		if (missile[mi]._mirange > 30)
@@ -1723,8 +1721,8 @@ void AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			missile[mi]._mirange = 30;
 
 		missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
-		missile[mi]._miVar3 = 1;
 		missile[mi]._miVar2 = 0;
+		missile[mi]._miVar3 = 1;
 	}
 }
 
