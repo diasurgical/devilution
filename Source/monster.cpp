@@ -403,19 +403,23 @@ void InitMonster(int i, int rd, int mtype, int x, int y)
 	monster[i]._mfuty = y;
 	monster[i]._moldx = x;
 	monster[i]._moldy = y;
-	monster[i]._mmode = MM_STAND;
 	monster[i]._mMTidx = mtype;
+	monster[i]._mmode = MM_STAND;
 	monster[i].mName = monst->MData->mName;
 	monster[i].MType = monst;
 	monster[i].MData = monst->MData;
 	monster[i]._mAnimData = monst->Anims[MA_STAND].Data[rd];
 	monster[i]._mAnimDelay = monst->Anims[MA_STAND].Rate;
-	monster[i]._mAnimCnt = random(88, monst->Anims[MA_STAND].Rate - 1);
+	monster[i]._mAnimCnt = random(88, monster[i]._mAnimDelay - 1);
 	monster[i]._mAnimLen = monst->Anims[MA_STAND].Frames;
-	monster[i]._mAnimFrame = random(88, monst->Anims[MA_STAND].Frames - 1) + 1;
+	monster[i]._mAnimFrame = random(88, monster[i]._mAnimLen - 1) + 1;
 
 	if (monst->mtype == MT_DIABLO) {
+#ifdef HELLFIRE
+		monster[i]._mmaxhp = (random(88, 1) + 3333) << 6;
+#else
 		monster[i]._mmaxhp = (random(88, 1) + 1666) << 6;
+#endif
 	} else {
 		monster[i]._mmaxhp = (monst->mMinHP + random(88, monst->mMaxHP - monst->mMinHP + 1)) << 6;
 	}
@@ -434,11 +438,14 @@ void InitMonster(int i, int rd, int mtype, int x, int y)
 	monster[i]._mgoalvar1 = 0;
 	monster[i]._mgoalvar2 = 0;
 	monster[i]._mgoalvar3 = 0;
+	monster[i].field_18 = 0;
 	monster[i]._pathcount = 0;
+	monster[i]._mDelFlag = FALSE;
 	monster[i]._uniqtype = 0;
 	monster[i]._msquelch = 0;
-	monster[i].field_18 = 0;
-	monster[i]._mDelFlag = FALSE;
+#ifdef HELLFIRE
+	monster[i].mlid = 0;
+#endif
 	monster[i]._mRndSeed = GetRndSeed();
 	monster[i]._mAISeed = GetRndSeed();
 	monster[i].mWhoHit = 0;
@@ -465,28 +472,39 @@ void InitMonster(int i, int rd, int mtype, int x, int y)
 	}
 
 	if (gnDifficulty == DIFF_NIGHTMARE) {
-		monster[i].mLevel += 15;
-		monster[i].mHit += 85;
-		monster[i].mHit2 += 85;
+#ifdef HELLFIRE
+		monster[i]._mmaxhp = 3 * monster[i]._mmaxhp + ((gbMaxPlayers != 1 ? 100 : 50) << 6);
+#else
 		monster[i]._mmaxhp = 3 * monster[i]._mmaxhp + 64;
+#endif
 		monster[i]._mhitpoints = monster[i]._mmaxhp;
+		monster[i].mLevel += 15;
 		monster[i].mExp = 2 * (monster[i].mExp + 1000);
+		monster[i].mHit += 85;
 		monster[i].mMinDamage = 2 * (monster[i].mMinDamage + 2);
 		monster[i].mMaxDamage = 2 * (monster[i].mMaxDamage + 2);
+		monster[i].mHit2 += 85;
 		monster[i].mMinDamage2 = 2 * (monster[i].mMinDamage2 + 2);
 		monster[i].mMaxDamage2 = 2 * (monster[i].mMaxDamage2 + 2);
 		monster[i].mArmorClass += 50;
 	}
 
+#ifdef HELLFIRE
+	else
+#endif
 	if (gnDifficulty == DIFF_HELL) {
-		monster[i].mLevel += 30;
+#ifdef HELLFIRE
+		monster[i]._mmaxhp = 4 * monster[i]._mmaxhp + ((gbMaxPlayers != 1 ? 200 : 100) << 6);
+#else
 		monster[i]._mmaxhp = 4 * monster[i]._mmaxhp + 192;
+#endif
 		monster[i]._mhitpoints = monster[i]._mmaxhp;
-		monster[i].mHit += 120;
-		monster[i].mHit2 += 120;
+		monster[i].mLevel += 30;
 		monster[i].mExp = 4 * (monster[i].mExp + 1000);
+		monster[i].mHit += 120;
 		monster[i].mMinDamage = 4 * monster[i].mMinDamage + 6;
 		monster[i].mMaxDamage = 4 * monster[i].mMaxDamage + 6;
+		monster[i].mHit2 += 120;
 		monster[i].mMinDamage2 = 4 * monster[i].mMinDamage2 + 6;
 		monster[i].mMaxDamage2 = 4 * monster[i].mMaxDamage2 + 6;
 		monster[i].mArmorClass += 80;
