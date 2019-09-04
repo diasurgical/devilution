@@ -1355,7 +1355,14 @@ void AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 	missile[mi]._mitxoff += 3 * missile[mi]._mixvel;
 	missile[mi]._mityoff += 3 * missile[mi]._miyvel;
 	GetMissilePos(mi);
+#ifdef HELLFIRE
+	if (missile[mi]._mixvel & 0xFFFF0000 || missile[mi]._miyvel & 0xFFFF0000)
+		missile[mi]._mirange = 256;
+	else
+		missile[mi]._mirange = 1;
+#else
 	missile[mi]._mirange = 256;
+#endif
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
