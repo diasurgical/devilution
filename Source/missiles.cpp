@@ -1432,7 +1432,7 @@ void AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 	}
 	if (!mienemy) {
 		missile[mi]._midam = 2 * (plr[id]._pLevel + random(60, 10) + random(60, 10)) + 4;
-		for (i = 0; i < missile[mi]._mispllvl; i++) {
+		for (i = missile[mi]._mispllvl; i > 0; i--) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
 		i = 2 * missile[mi]._mispllvl + 16;
