@@ -1243,10 +1243,26 @@ void AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		if (plr[id]._pIFlags & ISPL_RNDARROWVEL) {
 			av = random(64, 32) + 16;
 		}
+#ifdef HELLFIRE
+		if (plr[id]._pClass == PC_ROGUE)
+			av += (plr[id]._pLevel - 1) >> 2;
+		else if (plr[id]._pClass == PC_WARRIOR || plr[id]._pClass == PC_BARD)
+			av += (plr[id]._pLevel - 1) >> 3;
+
+		if (plr[id]._pIFlags & 0x20000)
+			av++;
+		if (plr[id]._pIFlags & 0x40000)
+			av += 2;
+		if (plr[id]._pIFlags & 0x80000)
+			av += 4;
+		if (plr[id]._pIFlags & 0x100000)
+			av += 8;
+#else
 		if (plr[id]._pClass == PC_ROGUE)
 			av += (plr[id]._pLevel - 1) >> 2;
 		if (plr[id]._pClass == PC_WARRIOR)
 			av += (plr[id]._pLevel - 1) >> 3;
+#endif
 		GetMissileVel(mi, sx, sy, dx, dy, av);
 	} else {
 		GetMissileVel(mi, sx, sy, dx, dy, 32);
