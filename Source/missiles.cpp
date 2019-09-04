@@ -2158,8 +2158,10 @@ void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 	missile[mi]._miVar1 = dx;
 	missile[mi]._miVar2 = dy;
 	if (id != -1) {
-		missile[mi]._midam = (random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + plr[id]._pLevel + 5) >> 1;
-		for (k = 0; k < missile[mi]._mispllvl; k++) {
+		missile[mi]._midam = (random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6));
+		missile[mi]._midam += plr[id]._pLevel + 5;
+		missile[mi]._midam >>= 1;
+		for (k = missile[mi]._mispllvl; k > 0; k--) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
 		if (!mienemy)
