@@ -255,6 +255,7 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 			Cl2DecodeFrm2(165, px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
 		if (pnum == myplr) {
 			Cl2DecodeFrm1(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DecodeFrm1(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -264,8 +265,10 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 		} else if (!(dFlags[x][y] & BFLAG_LIT) || plr[myplr]._pInfraFlag && light_table_index > 8) {
 			Cl2DecodeFrm3(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap, 1);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DecodeFrm3(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -276,6 +279,7 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 				    CelSkip,
 				    CelCap,
 				    1);
+#endif
 		} else {
 			l = light_table_index;
 			if (light_table_index < 5)
@@ -283,6 +287,7 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 			else
 				light_table_index -= 5;
 			Cl2DecodeLightTbl(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DecodeLightTbl(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -292,6 +297,7 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 			light_table_index = l;
 		}
 	}
@@ -328,6 +334,7 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 			Cl2DecodeClrHL(165, px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
 		if (pnum == myplr) {
 			Cl2DecodeFrm4(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DecodeFrm4(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -337,8 +344,10 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 		} else if (!(dFlags[x][y] & BFLAG_LIT) || plr[myplr]._pInfraFlag && light_table_index > 8) {
 			Cl2DecodeFrm5(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap, 1);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DecodeFrm5(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -349,6 +358,7 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    CelSkip,
 				    CelCap,
 				    1);
+#endif
 		} else {
 			l = light_table_index;
 			if (light_table_index < 5)
@@ -356,6 +366,7 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 			else
 				light_table_index -= 5;
 			Cl2DecodeFrm6(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DecodeFrm6(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -365,6 +376,7 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 			light_table_index = l;
 		}
 	}

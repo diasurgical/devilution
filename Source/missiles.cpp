@@ -2432,9 +2432,14 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 {
 	int i, mi;
 
+#ifdef HELLFIRE
+	if (nummissiles >= MAXMISSILES - 1)
+#else
 	if (nummissiles >= MAXMISSILES)
+#endif
 		return -1;
 
+#ifndef HELLFIRE
 	if (mitype == MIS_MANASHIELD && plr[id].pManaShield == TRUE) {
 		if (currlevel != plr[id].plrlevel)
 			return -1;
@@ -2445,12 +2450,17 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 				return -1;
 		}
 	}
+#endif
 
 	mi = missileavail[0];
 
 	missileavail[0] = missileavail[MAXMISSILES - nummissiles - 1];
 	missileactive[nummissiles] = mi;
 	nummissiles++;
+
+#ifdef HELLFIRE
+	memset(&missile[mi], 0, sizeof(*missile));
+#endif
 
 	missile[mi]._mitype = mitype;
 	missile[mi]._micaster = micaster;
@@ -2485,7 +2495,7 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 	missile[mi]._mirnd = 0;
 
 	if (missiledata[mitype].mlSFX != -1) {
-		PlaySfxLoc(missiledata[mitype].mlSFX, sx, sy);
+		PlaySfxLoc(missiledata[mitype].mlSFX, missile[mi]._misx, missile[mi]._misy);
 	}
 
 	missiledata[mitype].mAddProc(mi, sx, sy, dx, dy, midir, micaster, id, midam);
