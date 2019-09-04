@@ -1872,10 +1872,17 @@ void AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+#ifdef HELLFIRE
+	if (missile[mi]._mixvel & 0xFFFF0000 || missile[mi]._miyvel & 0xFFFF0000)
+#endif
+		missile[mi]._mirange = 5 * (monster[id]._mint + 4);
+#ifdef HELLFIRE
+	else
+		missile[mi]._mirange = 1;
+#endif
 	missile[mi]._mlid = -1;
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
-	missile[mi]._mirange = 5 * (monster[id]._mint + 4);
 	PutMissile(mi);
 }
 
