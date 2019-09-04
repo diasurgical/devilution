@@ -1159,7 +1159,6 @@ void PM_ChangeLightOff(int pnum)
 	}
 
 	l = &LightList[plr[pnum]._plid];
-	ymul = -1;
 	x = 2 * plr[pnum]._pyoff + plr[pnum]._pxoff;
 	y = 2 * plr[pnum]._pyoff - plr[pnum]._pxoff;
 	if (x < 0) {
@@ -1169,6 +1168,7 @@ void PM_ChangeLightOff(int pnum)
 		xmul = 1;
 	}
 	if (y < 0) {
+		ymul = -1;
 		y = -y;
 	} else {
 		ymul = 1;
