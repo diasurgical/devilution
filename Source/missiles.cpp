@@ -2484,9 +2484,11 @@ int Sentfire(int i, int sx, int sy)
 			missile[i]._miVar3 = missileavail[0];
 			AddMissile(missile[i]._mix, missile[i]._miy, sx, sy, dir, MIS_FIREBOLT, 0, missile[i]._misource, missile[i]._midam, GetSpellLevel(missile[i]._misource, SPL_FIREBOLT));
 			ex = -1;
-			SetMissDir(i, 2);
-			missile[i]._miVar2 = 3;
 		}
+	}
+	if (ex == -1) {
+		SetMissDir(i, 2);
+		missile[i]._miVar2 = 3;
 	}
 
 	return ex;
