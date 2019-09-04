@@ -1666,9 +1666,11 @@ void AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._miVar8 = -1;
 	if (!mienemy)
 		UseMana(id, SPL_MANASHIELD);
+#ifndef HELLFIRE
 	if (id == myplr)
 		NetSendCmd(TRUE, CMD_SETSHIELD);
 	plr[id].pManaShield = TRUE;
+#endif
 }
 
 void AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
