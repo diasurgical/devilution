@@ -1048,9 +1048,11 @@ void CheckEFlag(int pnum, BOOL flag)
 
 BOOL SolidLoc(int x, int y)
 {
+#ifndef HELLFIRE
 	if (x < 0 || y < 0 || x >= MAXDUNX || y >= MAXDUNY) {
 		return FALSE;
 	}
+#endif
 
 	return nSolidTable[dPiece[x][y]];
 }
