@@ -2726,9 +2726,9 @@ void MI_Lightball(int i)
 	char obj;
 
 	tx = missile[i]._miVar1;
-	missile[i]._mitxoff += missile[i]._mixvel;
 	ty = missile[i]._miVar2;
 	missile[i]._mirange--;
+	missile[i]._mitxoff += missile[i]._mixvel;
 	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
 	j = missile[i]._mirange;
