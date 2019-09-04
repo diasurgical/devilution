@@ -2211,24 +2211,24 @@ void AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	int i;
 
 	missile[mi]._miVar1 = 8;
-	missile[mi]._miVar2 = sy - 8;
-	missile[mi]._miVar3 = sy + 8;
-	missile[mi]._miVar4 = sx - 8;
-	missile[mi]._miVar5 = sx + 8;
-	missile[mi]._miVar6 = sx - 8;
-	if (sy - 8 <= 0)
+	missile[mi]._miVar2 = sy - missile[mi]._miVar1;
+	missile[mi]._miVar3 = missile[mi]._miVar1 + sy;
+	missile[mi]._miVar4 = sx - missile[mi]._miVar1;
+	missile[mi]._miVar5 = missile[mi]._miVar1 + sx;
+	missile[mi]._miVar6 = missile[mi]._miVar4;
+	if (missile[mi]._miVar2 <= 0)
 		missile[mi]._miVar2 = 1;
-	if (sy + 8 >= MAXDUNY)
+	if (missile[mi]._miVar3 >= MAXDUNY)
 		missile[mi]._miVar3 = MAXDUNY - 1;
-	if (sx - 8 <= 0)
+	if (missile[mi]._miVar4 <= 0)
 		missile[mi]._miVar4 = 1;
-	if (sx + 8 >= MAXDUNX)
+	if (missile[mi]._miVar5 >= MAXDUNX)
 		missile[mi]._miVar5 = MAXDUNX - 1;
 	for (i = 0; i < plr[id]._pLevel; i++) {
 		missile[mi]._midam += random(67, 6) + 1;
 	}
-	missile[mi]._miDelFlag = FALSE;
 	missile[mi]._mirange = 255;
+	missile[mi]._miDelFlag = FALSE;
 	UseMana(id, SPL_APOCA);
 }
 
