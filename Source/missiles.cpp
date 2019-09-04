@@ -2813,8 +2813,8 @@ void MI_Fireball(int i)
 {
 	int dam, id, px, py, mx, my;
 
-	dam = missile[i]._midam;
 	id = missile[i]._misource;
+	dam = missile[i]._midam;
 	missile[i]._mirange--;
 
 	if (missile[i]._micaster == 0) {
@@ -2877,10 +2877,12 @@ void MI_Fireball(int i)
 			missile[i]._mimfnum = 0;
 			SetMissAnim(i, MFILE_BIGEXP);
 			missile[i]._mirange = missile[i]._miAnimLen - 1;
-		} else if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
-			missile[i]._miVar1 = missile[i]._mix;
-			missile[i]._miVar2 = missile[i]._miy;
-			ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, 8);
+		} else {
+			if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
+				missile[i]._miVar1 = missile[i]._mix;
+				missile[i]._miVar2 = missile[i]._miy;
+				ChangeLight(missile[i]._mlid, missile[i]._miVar1, missile[i]._miVar2, 8);
+			}
 		}
 	}
 
