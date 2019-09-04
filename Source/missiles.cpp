@@ -1878,12 +1878,12 @@ void AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy,
 {
 	int monst;
 
-	monst = missile[mi]._misource;
 	missile[mi]._mixvel = 0;
 	missile[mi]._miyvel = 0;
 	missile[mi]._mixoff = 0;
 	missile[mi]._miyoff = 0;
 	missile[mi]._miLightFlag = TRUE;
+	monst = missile[mi]._misource;
 	missile[mi]._mirange = random(50, 15) + 40 * (monster[monst]._mint + 1);
 	missile[mi]._miPreFlag = TRUE;
 }
