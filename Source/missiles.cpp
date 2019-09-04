@@ -1249,13 +1249,13 @@ void AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		else if (plr[id]._pClass == PC_WARRIOR || plr[id]._pClass == PC_BARD)
 			av += (plr[id]._pLevel - 1) >> 3;
 
-		if (plr[id]._pIFlags & 0x20000)
+		if (plr[id]._pIFlags & ISPL_QUICKATTACK)
 			av++;
-		if (plr[id]._pIFlags & 0x40000)
+		if (plr[id]._pIFlags & ISPL_FASTATTACK)
 			av += 2;
-		if (plr[id]._pIFlags & 0x80000)
+		if (plr[id]._pIFlags & ISPL_FASTERATTACK)
 			av += 4;
-		if (plr[id]._pIFlags & 0x100000)
+		if (plr[id]._pIFlags & ISPL_FASTESTATTACK)
 			av += 8;
 #else
 		if (plr[id]._pClass == PC_ROGUE)
