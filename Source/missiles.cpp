@@ -2235,8 +2235,9 @@ void AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	int i;
 
 	missile[mi]._miVar2 = 0;
-	if (dam > 0)
-		missile[mi]._miVar2 = 5 * dam;
+	for (i = dam; i > 0; i--) {
+		missile[mi]._miVar2 += 5;
+	}
 	missile[mi]._misx = dx;
 	missile[mi]._misy = dy;
 	missile[mi]._mixoff = missile[midir]._mixoff;
