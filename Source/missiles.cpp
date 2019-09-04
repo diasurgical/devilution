@@ -1358,7 +1358,7 @@ void AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 #ifdef HELLFIRE
 	if (missile[mi]._mixvel & 0xFFFF0000 || missile[mi]._miyvel & 0xFFFF0000)
 #endif
-		missile[mi]._mirange = 256;
+	missile[mi]._mirange = 256;
 #ifdef HELLFIRE
 	else
 		missile[mi]._mirange = 1;
