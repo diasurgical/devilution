@@ -15,7 +15,9 @@ BOOLEAN sgbFadedIn = TRUE;
 void SaveGamma()
 {
 	SRegSaveValue("Diablo", "Gamma Correction", 0, gamma_correction);
+#ifndef HELLFIRE
 	SRegSaveValue("Diablo", "Color Cycling", FALSE, color_cycling_enabled);
+#endif
 }
 
 void palette_init()
