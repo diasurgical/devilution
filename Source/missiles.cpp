@@ -3485,8 +3485,10 @@ void MI_Stone(int i)
 	missile[i]._mirange--;
 	m = missile[i]._miVar2;
 	if (!monster[m]._mhitpoints && missile[i]._miAnimType != MFILE_SHATTER1) {
+#ifndef HELLFIRE
 		missile[i]._mimfnum = 0;
 		missile[i]._miDrawFlag = TRUE;
+#endif
 		SetMissAnim(i, MFILE_SHATTER1);
 		missile[i]._mirange = 11;
 	}
