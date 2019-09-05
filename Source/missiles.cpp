@@ -3422,11 +3422,11 @@ void MI_Teleport(int i)
 		PlrClrTrans(plr[id].WorldX, plr[id].WorldY);
 		plr[id].WorldX = missile[i]._mix;
 		plr[id].WorldY = missile[i]._miy;
-		plr[id]._px = missile[i]._mix;
-		plr[id]._py = missile[i]._miy;
-		plr[id]._poldx = missile[i]._mix;
-		plr[id]._poldy = missile[i]._miy;
-		PlrDoTrans(missile[i]._mix, missile[i]._miy);
+		plr[id]._px = plr[id].WorldX;
+		plr[id]._py = plr[id].WorldY;
+		plr[id]._poldx = plr[id].WorldX;
+		plr[id]._poldy = plr[id].WorldY;
+		PlrDoTrans(plr[id].WorldX, plr[id].WorldY);
 		missile[i]._miVar1 = 1;
 		dPlayer[plr[id].WorldX][plr[id].WorldY] = id + 1;
 		if (leveltype != DTYPE_TOWN) {
