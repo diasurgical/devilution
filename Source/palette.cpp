@@ -60,9 +60,11 @@ void LoadGamma()
 		gamma_value = 100;
 	}
 	gamma_correction = gamma_value - gamma_value % 5;
+#ifndef HELLFIRE
 	if (!SRegLoadValue("Diablo", "Color Cycling", 0, &value))
 		value = 1;
 	color_cycling_enabled = value;
+#endif
 }
 
 void LoadSysPal()
