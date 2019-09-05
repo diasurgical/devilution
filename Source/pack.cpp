@@ -68,12 +68,19 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 		pi++;
 	}
 
+#ifdef HELLFIRE
+	pPack->wReflection = pPlayer->wReflection;
+	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
+	pPack->pDifficulty = pPlayer->pDifficulty;
+	pPack->pDamAcFlags = pPlayer->pDamAcFlags;
+#else
 	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
 
 	if (gbMaxPlayers == 1 || manashield)
 		pPack->pManaShield = pPlayer->pManaShield;
 	else
 		pPack->pManaShield = FALSE;
+#endif
 }
 
 void PackItem(PkItemStruct *id, ItemStruct *is)
@@ -212,9 +219,16 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->pTownWarps = 0;
 	pPlayer->pDungMsgs = 0;
 	pPlayer->pLvlLoad = 0;
+#ifdef HELLFIRE
+	pPlayer->wReflection = pPack->wReflection;
+	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
+	pPlayer->pDifficulty = pPack->pDifficulty;
+	pPlayer->pDamAcFlags = pPack->pDamAcFlags;
+#else
 	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
 	pPlayer->pBattleNet = pPack->pBattleNet;
 	pPlayer->pManaShield = pPack->pManaShield;
+#endif
 }
 
 // Note: last slot of item[MAXITEMS+1] used as temporary buffer

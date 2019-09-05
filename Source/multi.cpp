@@ -876,8 +876,10 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 			    && (!first || SErrGetLastError() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(pfExitProgram))) {
 				return FALSE;
 			}
+#ifndef HELLFIRE
 			if (type == 'BNET')
 				plr[0].pBattleNet = 1;
+#endif
 		}
 
 		multi_event_handler(TRUE);
@@ -895,8 +897,10 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 
 		pfile_read_player_from_save();
 
+#ifndef HELLFIRE
 		if (type == 'BNET')
 			plr[myplr].pBattleNet = 1;
+#endif
 
 		return TRUE;
 	}

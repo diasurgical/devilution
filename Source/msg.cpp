@@ -1125,10 +1125,12 @@ DWORD ParseCmd(int pnum, TCmd *pCmd)
 		return On_CHEAT_SPELL_LEVEL(pCmd, pnum);
 	case CMD_NOVA:
 		return On_NOVA(pCmd, pnum);
+#ifndef HELLFIRE
 	case CMD_SETSHIELD:
 		return On_SETSHIELD(pCmd, pnum);
 	case CMD_REMSHIELD:
 		return On_REMSHIELD(pCmd, pnum);
+#endif
 	}
 
 	if (pCmd->bCmd < CMD_DLEVEL_0 || pCmd->bCmd > CMD_DLEVEL_END) {
@@ -2605,6 +2607,7 @@ DWORD On_NOVA(TCmd *pCmd, int pnum)
 	return sizeof(*p);
 }
 
+#ifndef HELLFIRE
 DWORD On_SETSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1)
@@ -2620,3 +2623,4 @@ DWORD On_REMSHIELD(TCmd *pCmd, int pnum)
 
 	return sizeof(*pCmd);
 }
+#endif
