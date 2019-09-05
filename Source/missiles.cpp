@@ -3153,8 +3153,8 @@ void MI_Etherealize(int i)
 {
 	int src;
 
-	src = missile[i]._misource;
 	missile[i]._mirange--;
+	src = missile[i]._misource;
 	missile[i]._mix = plr[src].WorldX;
 	missile[i]._miy = plr[src].WorldY;
 	missile[i]._mitxoff = plr[src]._pxoff << 16;
@@ -3163,8 +3163,8 @@ void MI_Etherealize(int i)
 		missile[i]._misx = plr[src]._px;
 		missile[i]._misy = plr[src]._py;
 	} else {
-		missile[i]._misx = missile[i]._mix;
-		missile[i]._misy = missile[i]._miy;
+		missile[i]._misx = plr[src].WorldX;
+		missile[i]._misy = plr[src].WorldY;
 	}
 	GetMissilePos(i);
 	if (plr[src]._pmode == PM_WALK3) {
