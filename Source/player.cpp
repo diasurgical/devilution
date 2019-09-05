@@ -2067,7 +2067,11 @@ void SyncPlrKill(int pnum, int earflag)
 {
 	int ma, i;
 
+#ifdef HELLFIRE
+	if (plr[pnum]._pHitPoints <= 0 && currlevel == 0) {
+#else
 	if (plr[pnum]._pHitPoints == 0 && currlevel == 0) {
+#endif
 		SetPlayerHitPoints(pnum, 64);
 		return;
 	}
