@@ -1856,9 +1856,9 @@ void AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 	if (!mienemy) {
 		UseMana(id, SPL_FLARE);
-		drawhpflag = TRUE;
 		plr[id]._pHitPoints -= 320;
 		plr[id]._pHPBase -= 320;
+		drawhpflag = TRUE;
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	} else {
@@ -1873,6 +1873,11 @@ void AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 				SetMissAnim(mi, MFILE_SCUBMISC);
 		}
 	}
+#ifdef HELLFIRE
+	if (misfiledata[missile[mi]._miAnimType].mAnimFAmt == 16) {
+		SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	}
+#endif
 }
 
 void AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
