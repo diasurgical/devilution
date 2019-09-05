@@ -3731,8 +3731,8 @@ void MI_Flame(int i)
 	int k;
 
 	missile[i]._mirange--;
-	k = missile[i]._mirange;
 	missile[i]._miVar2--;
+	k = missile[i]._mirange;
 	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 0);
 	if (missile[i]._mirange == 0 && missile[i]._miHitFlag == TRUE)
 		missile[i]._mirange = k;
