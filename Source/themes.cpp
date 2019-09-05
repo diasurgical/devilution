@@ -734,9 +734,12 @@ void Theme_Library(int t)
 		}
 	}
 
-	if (!QuestStatus(QTYPE_ZHAR)) {
+	if (QuestStatus(QTYPE_ZHAR)) {
+		if (t == zharlib) {
+			return;
+		}
 		PlaceThemeMonsts(t, monstrnd[leveltype]); /// BUGFIX: `leveltype - 1`
-	} else if (t != zharlib) {
+	} else {
 		PlaceThemeMonsts(t, monstrnd[leveltype]); /// BUGFIX: `leveltype - 1`
 	}
 }

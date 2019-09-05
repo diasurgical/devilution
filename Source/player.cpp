@@ -862,8 +862,10 @@ void AddPlrMonstExper(int lvl, int exp, char pmask)
 		}
 	}
 
-	if (totplrs && (1 << myplr) & pmask) {
-		AddPlrExperience(myplr, lvl, exp / totplrs);
+	if (totplrs) {
+		exp = exp / totplrs;
+		if (pmask & (1 << myplr))
+			AddPlrExperience(myplr, lvl, exp);
 	}
 }
 
