@@ -1870,7 +1870,7 @@ void miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 	missile[mi]._mixvel = 0;
 	missile[mi]._miyvel = 0;
 	missile[mi]._mirange = 50;
-	missile[mi]._miVar1 = 50 - missile[mi]._miAnimLen;
+	missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
 	missile[mi]._miVar2 = 0;
 }
 
