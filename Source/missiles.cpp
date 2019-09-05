@@ -3757,8 +3757,8 @@ void MI_Flamec(int i)
 	int id, src;
 
 	missile[i]._mirange--;
-	missile[i]._mitxoff += missile[i]._mixvel;
 	src = missile[i]._misource;
+	missile[i]._mitxoff += missile[i]._mixvel;
 	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
 	if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
