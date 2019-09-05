@@ -1548,10 +1548,9 @@ BOOL CheckIfTrig(int x, int y)
 
 void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	int i, j, k, mx, tx, ty;
+	int i, j, k, mx, tx, ty, dp;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 
-	tx = dx;
 	if (currlevel) {
 		missile[mi]._miDelFlag = TRUE;
 		for (j = 0; j < 6; j++) {
@@ -1560,13 +1559,14 @@ void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 				tx = dx + CrawlTable[k - 1];
 				ty = dy + CrawlTable[k];
 				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
-					if (!(dObject[tx][ty] | dPlayer[tx][ty] | dMissile[tx][ty] | nSolidTable[dPiece[tx][ty]] | nMissileTable[dPiece[tx][ty]])) {
+					dp = dPiece[tx][ty];
+					if (!(dMissile[tx][ty] | nSolidTable[dp] | nMissileTable[dp] | dObject[tx][ty] | dPlayer[tx][ty])) {
 						if (!CheckIfTrig(tx, ty)) {
-							missile[mi]._miDelFlag = FALSE;
 							missile[mi]._mix = tx;
 							missile[mi]._miy = ty;
 							missile[mi]._misx = tx;
 							missile[mi]._misy = ty;
+							missile[mi]._miDelFlag = FALSE;
 							j = 6;
 							break;
 						}
@@ -1576,6 +1576,7 @@ void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 			}
 		}
 	} else {
+		tx = dx;
 		ty = dy;
 		missile[mi]._mix = tx;
 		missile[mi]._miy = ty;
@@ -1584,7 +1585,7 @@ void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 		missile[mi]._miDelFlag = FALSE;
 	}
 	missile[mi]._mirange = 100;
-	missile[mi]._miVar1 = 100 - missile[mi]._miAnimLen;
+	missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
 	missile[mi]._miVar2 = 0;
 	for (i = 0; i < nummissiles; i++) {
 		mx = missileactive[i];
