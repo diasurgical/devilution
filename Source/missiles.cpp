@@ -1606,22 +1606,22 @@ void AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 {
 	int i;
 
-	if (!mienemy && id != -1) {
-		missile[mi]._midam = 0;
-		for (i = 0; i <= plr[id]._pLevel; i++) {
-			missile[mi]._midam += random(55, 20) + 1;
-		}
-		for (i = 0; i < missile[mi]._mispllvl; i++) {
-			missile[mi]._midam += missile[mi]._midam >> 3;
-		}
-		missile[mi]._midam += missile[mi]._midam >> 1;
-		UseMana(id, SPL_FLASH);
-	} else {
-		if (!mienemy) {
-			missile[mi]._midam = currlevel >> 1;
+	if (!mienemy) {
+		if (id != -1) {
+			missile[mi]._midam = 0;
+			for (i = 0; i <= plr[id]._pLevel; i++) {
+				missile[mi]._midam += random(55, 20) + 1;
+			}
+			for (i = missile[mi]._mispllvl; i > 0; i--) {
+				missile[mi]._midam += missile[mi]._midam >> 3;
+			}
+			missile[mi]._midam += missile[mi]._midam >> 1;
+			UseMana(id, SPL_FLASH);
 		} else {
-			missile[mi]._midam = monster[id].mLevel << 1;
+			missile[mi]._midam = currlevel >> 1;
 		}
+	} else {
+		missile[mi]._midam = monster[id].mLevel << 1;
 	}
 	missile[mi]._mirange = 19;
 }
