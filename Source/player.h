@@ -125,7 +125,7 @@ extern int plrxoff[9];
 extern int plryoff[9];
 extern int plrxoff2[9];
 extern int plryoff2[9];
-extern char PlrGFXAnimLens[3][11];
+extern char PlrGFXAnimLens[][11];
 extern int PWVel[3][3];
 extern int AnimLenFromClass[3];
 extern int StrengthTbl[3];

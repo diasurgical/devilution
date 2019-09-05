@@ -50,10 +50,15 @@ int plrxoff[9] = { 0, 2, 0, 2, 1, 0, 1, 2, 1 };
 int plryoff[9] = { 0, 2, 2, 0, 1, 1, 0, 1, 2 };
 int plrxoff2[9] = { 0, 1, 0, 1, 2, 0, 1, 2, 2 };
 int plryoff2[9] = { 0, 0, 1, 1, 0, 2, 2, 1, 2 };
-char PlrGFXAnimLens[3][11] = {
+char PlrGFXAnimLens[][11] = {
 	{ 10, 16, 8, 2, 20, 20, 6, 20, 8, 9, 14 },
 	{ 8, 18, 8, 4, 20, 16, 7, 20, 8, 10, 12 },
-	{ 8, 16, 8, 6, 20, 12, 8, 20, 8, 12, 8 }
+	{ 8, 16, 8, 6, 20, 12, 8, 20, 8, 12, 8 },
+#ifdef HELLFIRE
+	{ 8, 16, 8, 3, 20, 18, 6, 20, 8, 12, 13 },
+	{ 8, 18, 8, 4, 20, 16, 7, 20, 8, 10, 12 },
+	{ 10, 16, 8, 2, 20, 20, 6, 20, 8, 9, 14 },
+#endif
 };
 int PWVel[3][3] = {
 	{ 2048, 1024, 512 },
@@ -470,8 +475,6 @@ void SetPlrAnims(int pnum)
 		app_fatal("SetPlrAnims: illegal player %d", pnum);
 	}
 
-	pc = plr[pnum]._pClass;
-
 	plr[pnum]._pNWidth = 96;
 	plr[pnum]._pWWidth = 96;
 	plr[pnum]._pAWidth = 128;
@@ -479,6 +482,8 @@ void SetPlrAnims(int pnum)
 	plr[pnum]._pSWidth = 96;
 	plr[pnum]._pDWidth = 128;
 	plr[pnum]._pBWidth = 96;
+
+	pc = plr[pnum]._pClass;
 
 	if (leveltype == DTYPE_TOWN) {
 		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][7];
@@ -536,6 +541,65 @@ void SetPlrAnims(int pnum)
 		} else if (gn == ANIM_ID_AXE) {
 			plr[pnum]._pAFrames = 24;
 			plr[pnum]._pAFNum = 16;
+		}
+#endif
+#ifdef HELLFIRE
+	} else if (pc == PC_MONK) {
+		plr[pnum]._pNWidth = 112;
+		plr[pnum]._pWWidth = 112;
+		plr[pnum]._pAWidth = 130;
+		plr[pnum]._pHWidth = 98;
+		plr[pnum]._pSWidth = 114;
+		plr[pnum]._pDWidth = 160;
+		plr[pnum]._pBWidth = 98;
+
+		switch (gn) {
+		case ANIM_ID_UNARMED:
+		case ANIM_ID_UNARMED_SHIELD:
+			plr[pnum]._pAFrames = 12;
+			plr[pnum]._pAFNum = 7;
+			break;
+		case ANIM_ID_BOW:
+			plr[pnum]._pAFrames = 20;
+			plr[pnum]._pAFNum = 14;
+			break;
+		case ANIM_ID_AXE:
+			plr[pnum]._pAFrames = 23;
+			plr[pnum]._pAFNum = 14;
+			break;
+		case ANIM_ID_STAFF:
+			plr[pnum]._pAFrames = 13;
+			plr[pnum]._pAFNum = 8;
+			break;
+		}
+	} else if (pc == PC_BARD) {
+		if (gn == ANIM_ID_AXE) {
+			plr[pnum]._pAFrames = 22;
+			plr[pnum]._pAFNum = 13;
+		} else if (gn == ANIM_ID_BOW) {
+			plr[pnum]._pAFrames = 12;
+			plr[pnum]._pAFNum = 11;
+		} else if (gn == ANIM_ID_STAFF) {
+			plr[pnum]._pAFrames = 16;
+			plr[pnum]._pAFNum = 11;
+		} else if (gn == ANIM_ID_SWORD_SHIELD || gn == ANIM_ID_SWORD) {
+			plr[pnum]._pAFrames = 10;
+		}
+	} else if (pc == PC_BARBARIAN) {
+		if (gn == ANIM_ID_AXE) {
+			plr[pnum]._pAFrames = 20;
+			plr[pnum]._pAFNum = 8;
+		} else if (gn == ANIM_ID_BOW) {
+			if (leveltype != DTYPE_TOWN) {
+				plr[pnum]._pNFrames = 8;
+			}
+			plr[pnum]._pAWidth = 96;
+			plr[pnum]._pAFNum = 11;
+		} else if (gn == ANIM_ID_STAFF) {
+			plr[pnum]._pAFrames = 16;
+			plr[pnum]._pAFNum = 11;
+		} else if (gn == ANIM_ID_MACE || gn == ANIM_ID_MACE_SHIELD) {
+			plr[pnum]._pAFNum = 8;
 		}
 #endif
 	}
