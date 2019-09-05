@@ -2504,6 +2504,7 @@ void MI_Golem(int i)
 {
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 	int tx, ty, dp, l, m, src, k, tid;
+	char *ct;
 
 	src = missile[i]._misource;
 	if (monster[src]._mx == 1 && !monster[src]._my) {
@@ -2511,8 +2512,9 @@ void MI_Golem(int i)
 			k = CrawlNum[l];
 			tid = k + 2;
 			for (m = (BYTE)CrawlTable[k]; m > 0; m--) {
-				tx = missile[i]._miVar4 + CrawlTable[tid - 1];
-				ty = missile[i]._miVar5 + CrawlTable[tid];
+				ct = &CrawlTable[tid];
+				tx = missile[i]._miVar4 + *(ct - 1);
+				ty = missile[i]._miVar5 + *ct;
 				if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
 					dp = dPiece[tx][ty];
 					if (LineClear(missile[i]._miVar1, missile[i]._miVar2, tx, ty)) {
