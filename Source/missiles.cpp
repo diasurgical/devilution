@@ -3266,8 +3266,10 @@ void MI_Guardian(int i)
 
 	/// ASSERT: assert((DWORD)i < MAXMISSILES);
 
+#ifndef HELLFIRE
 	sx1 = 0;
 	sy1 = 0;
+#endif
 	missile[i]._mirange--;
 
 	if (missile[i]._miVar2 > 0) {
