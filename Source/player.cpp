@@ -367,7 +367,8 @@ void InitPlrGFXMem(int pnum)
 
 DWORD GetPlrGFXSize(char *szCel)
 {
-	int c, a, w;
+	int c;
+	const char *a, *w;
 	DWORD dwSize, dwMaxSize;
 	HANDLE hsFile;
 	char pszName[256];
@@ -380,14 +381,23 @@ DWORD GetPlrGFXSize(char *szCel)
 		if (c != 0)
 			continue;
 #endif
-		for (a = 0; ArmourChar[a]; a++) {
+		for (a = &ArmourChar[0]; *a; a++) {
 #ifdef SPAWN
-			if (&ArmourChar[a] != &ArmourChar[0])
+			if (a != &ArmourChar[0])
 				break;
 #endif
-			for (w = 0; WepChar[w]; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
-				sprintf(Type, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
-				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], Type, Type, szCel);
+			for (w = &WepChar[0]; *w; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
+#ifdef HELLFIRE
+				if ((c == PC_BARD && hfbard_mpq == NULL) || (c == PC_BARBARIAN && hfbarb_mpq == NULL)) {
+#endif
+					sprintf(Type, "%c%c%c", CharChar[c], *a, *w);
+					sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], Type, Type, szCel);
+#ifdef HELLFIRE
+				} else {
+					sprintf(Type, "%c%c%c", CharCharHF[c], *a, *w);
+					sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTblOld[c], Type, Type, szCel);
+				}
+#endif
 				if (WOpenFile(pszName, &hsFile, TRUE)) {
 					/// ASSERT: assert(hsFile);
 					dwSize = WGetFileSize(hsFile, NULL);
