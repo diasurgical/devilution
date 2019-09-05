@@ -3655,8 +3655,15 @@ void MI_Apoca(int i)
 	for (j = missile[i]._miVar2; j < missile[i]._miVar3 && !exit; j++) {
 		for (k = missile[i]._miVar4; k < missile[i]._miVar5 && !exit; k++) {
 			if (dMonster[k][j] > 3 && !nSolidTable[dPiece[k][j]]) {
+#ifdef HELLFIRE
+				if (LineClear(missile[i]._mix, missile[i]._miy, k, j)) {
+					AddMissile(k, j, k, j, plr[id]._pdir, MIS_BOOM, 0, id, missile[i]._midam, 0);
+					exit = TRUE;
+				}
+#else
 				AddMissile(k, j, k, j, plr[id]._pdir, MIS_BOOM, 0, id, missile[i]._midam, 0);
 				exit = TRUE;
+#endif
 			}
 		}
 		if (!exit) {
