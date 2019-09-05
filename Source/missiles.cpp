@@ -1835,9 +1835,9 @@ void AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 	if (!mienemy) {
 		UseMana(id, SPL_FLARE);
-		drawhpflag = TRUE;
 		plr[id]._pHitPoints -= 320;
 		plr[id]._pHPBase -= 320;
+		drawhpflag = TRUE;
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	} else {
@@ -1858,10 +1858,10 @@ void AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	missile[mi]._mirange = 5 * (monster[id]._mint + 4);
 	missile[mi]._mlid = -1;
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
-	missile[mi]._mirange = 5 * (monster[id]._mint + 4);
 	PutMissile(mi);
 }
 
@@ -2104,11 +2104,11 @@ void AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 				k = dPiece[tx][ty];
 				if (LineClear(sx, sy, tx, ty)) {
 					if ((sx != tx || sy != ty) && !(nSolidTable[k] | dObject[tx][ty])) {
-						missile[mi]._miDelFlag = FALSE;
 						missile[mi]._miVar1 = tx;
 						missile[mi]._miVar2 = ty;
 						missile[mi]._miVar5 = tx;
 						missile[mi]._miVar6 = ty;
+						missile[mi]._miDelFlag = FALSE;
 						i = 6;
 						break;
 					}
@@ -2466,7 +2466,7 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 	missile[mi]._mirnd = 0;
 
 	if (missiledata[mitype].mlSFX != -1) {
-		PlaySfxLoc(missiledata[mitype].mlSFX, sx, sy);
+		PlaySfxLoc(missiledata[mitype].mlSFX, missile[mi]._misx, missile[mi]._misy);
 	}
 
 	missiledata[mitype].mAddProc(mi, sx, sy, dx, dy, midir, micaster, id, midam);

@@ -32,10 +32,10 @@ int plrxoff[9] = { 0, 2, 0, 2, 1, 0, 1, 2, 1 };
 int plryoff[9] = { 0, 2, 2, 0, 1, 1, 0, 1, 2 };
 int plrxoff2[9] = { 0, 1, 0, 1, 2, 0, 1, 2, 2 };
 int plryoff2[9] = { 0, 0, 1, 1, 0, 2, 2, 1, 2 };
-char PlrGFXAnimLens[3][11] = {
+char PlrGFXAnimLens[][11] = {
 	{ 10, 16, 8, 2, 20, 20, 6, 20, 8, 9, 14 },
 	{ 8, 18, 8, 4, 20, 16, 7, 20, 8, 10, 12 },
-	{ 8, 16, 8, 6, 20, 12, 8, 20, 8, 12, 8 }
+	{ 8, 16, 8, 6, 20, 12, 8, 20, 8, 12, 8 },
 };
 int PWVel[3][3] = {
 	{ 2048, 1024, 512 },
@@ -329,7 +329,8 @@ void InitPlrGFXMem(int pnum)
 
 DWORD GetPlrGFXSize(char *szCel)
 {
-	int c, a, w;
+	int c;
+	const char *a, *w;
 	DWORD dwSize, dwMaxSize;
 	HANDLE hsFile;
 	char pszName[256];
@@ -342,13 +343,13 @@ DWORD GetPlrGFXSize(char *szCel)
 		if (c != 0)
 			continue;
 #endif
-		for (a = 0; ArmourChar[a]; a++) {
+		for (a = &ArmourChar[0]; *a; a++) {
 #ifdef SPAWN
-			if (&ArmourChar[a] != &ArmourChar[0])
+			if (a != &ArmourChar[0])
 				break;
 #endif
-			for (w = 0; WepChar[w]; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
-				sprintf(Type, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
+			for (w = &WepChar[0]; *w; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
+				sprintf(Type, "%c%c%c", CharChar[c], *a, *w);
 				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], Type, Type, szCel);
 				if (WOpenFile(pszName, &hsFile, TRUE)) {
 					/// ASSERT: assert(hsFile);
@@ -422,8 +423,6 @@ void SetPlrAnims(int pnum)
 		app_fatal("SetPlrAnims: illegal player %d", pnum);
 	}
 
-	pc = plr[pnum]._pClass;
-
 	plr[pnum]._pNWidth = 96;
 	plr[pnum]._pWWidth = 96;
 	plr[pnum]._pAWidth = 128;
@@ -431,6 +430,8 @@ void SetPlrAnims(int pnum)
 	plr[pnum]._pSWidth = 96;
 	plr[pnum]._pDWidth = 128;
 	plr[pnum]._pBWidth = 96;
+
+	pc = plr[pnum]._pClass;
 
 	if (leveltype == DTYPE_TOWN) {
 		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][7];
@@ -666,7 +667,7 @@ void CreatePlayer(int pnum, char c)
 	plr[pnum]._pLvlChanging = FALSE;
 	plr[pnum].pTownWarps = 0;
 	plr[pnum].pLvlLoad = 0;
-	plr[pnum].pBattleNet = 0;
+	plr[pnum].pBattleNet = FALSE;
 	plr[pnum].pManaShield = FALSE;
 
 	InitDungMsgs(pnum);
@@ -691,7 +692,6 @@ int CalcStatDiff(int pnum)
 
 void NextPlrLevel(int pnum)
 {
-	char l, c;
 	int hp, mana;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
@@ -699,8 +699,6 @@ void NextPlrLevel(int pnum)
 	}
 
 	plr[pnum]._pLevel++;
-	l = plr[pnum]._pLevel;
-
 	plr[pnum]._pMaxLvl++;
 
 	if (CalcStatDiff(pnum) < 5) {
@@ -709,11 +707,9 @@ void NextPlrLevel(int pnum)
 		plr[pnum]._pStatPts += 5;
 	}
 
-	plr[pnum]._pNextExper = ExpLvlsTbl[l];
+	plr[pnum]._pNextExper = ExpLvlsTbl[plr[pnum]._pLevel];
 
-	c = plr[pnum]._pClass;
-
-	hp = c == PC_SORCERER ? 64 : 128;
+	hp = plr[pnum]._pClass == PC_SORCERER ? 64 : 128;
 	if (gbMaxPlayers == 1) {
 		hp++;
 	}
@@ -726,7 +722,11 @@ void NextPlrLevel(int pnum)
 		drawhpflag = TRUE;
 	}
 
-	mana = c != PC_WARRIOR ? 128 : 64;
+	if (plr[pnum]._pClass == PC_WARRIOR)
+		mana = 64;
+	else
+		mana = 128;
+
 	if (gbMaxPlayers == 1) {
 		mana++;
 	}
