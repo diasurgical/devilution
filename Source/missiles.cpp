@@ -3400,9 +3400,9 @@ void MI_Acidsplat(int i)
 	}
 	missile[i]._mirange--;
 	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
 		monst = missile[i]._misource;
 		dam = missile[i]._mispllvl;
-		missile[i]._miDelFlag = TRUE;
 		AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_ACIDPUD, 1, monst, (monster[monst].MData->mLevel >= 2) + 1, dam);
 	} else {
 		PutMissile(i);
