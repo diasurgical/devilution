@@ -2127,24 +2127,30 @@ void AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 void AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, tx, ty, pn;
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	missile[mi]._miDelFlag = TRUE;
 	for (i = 0; i < 6; i++) {
 		k = CrawlNum[i];
 		pn = k + 2;
+#ifdef HELLFIRE
+		for (j = CrawlTable[k]; j > 0; j--) {
+#else
 		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
+#endif
 			tx = dx + CrawlTable[pn - 1];
 			ty = dy + CrawlTable[pn];
 			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
 				k = dPiece[tx][ty];
 				if (LineClear(sx, sy, tx, ty)) {
 					if ((sx != tx || sy != ty) && !(nSolidTable[k] | dObject[tx][ty])) {
-						missile[mi]._miDelFlag = FALSE;
 						missile[mi]._miVar1 = tx;
 						missile[mi]._miVar2 = ty;
 						missile[mi]._miVar5 = tx;
 						missile[mi]._miVar6 = ty;
+						missile[mi]._miDelFlag = FALSE;
 						i = 6;
 						break;
 					}
