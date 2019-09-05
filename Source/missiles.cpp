@@ -3847,7 +3847,7 @@ void MI_Hbolt(int i)
 			if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
 				missile[i]._miVar1 = missile[i]._mix;
 				missile[i]._miVar2 = missile[i]._miy;
-				ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, 8);
+				ChangeLight(missile[i]._mlid, missile[i]._miVar1, missile[i]._miVar2, 8);
 			}
 		}
 	} else {
