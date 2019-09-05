@@ -1696,7 +1696,9 @@ void AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 void AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, pn, k, j, tx, ty;
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	missile[mi]._midam = random(62, 10) + (plr[id]._pLevel >> 1) + 1;
 	for (i = missile[mi]._mispllvl; i > 0; i--) {
@@ -1707,7 +1709,11 @@ void AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 	for (i = 0; i < 6; i++) {
 		pn = CrawlNum[i];
 		k = pn + 2;
+#ifdef HELLFIRE
+		for (j = CrawlTable[pn]; j > 0; j--) {
+#else
 		for (j = (BYTE)CrawlTable[pn]; j > 0; j--) {
+#endif
 			tx = dx + CrawlTable[k - 1];
 			ty = dy + CrawlTable[k];
 			pn = dPiece[tx][ty];
