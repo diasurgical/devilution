@@ -872,22 +872,14 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 			dMonster[monster[nummonsters]._mx][monster[nummonsters]._my] = 0;
 		}
 
-		x1 = 0;
-		y1 = 0;
-		xp = 0;
-		yp = 0;
 		if (leaderf & 1) {
 			int offset = random(92, 8);
-			xp = monster[leader]._mx + offset_x[offset];
-			yp = monster[leader]._my + offset_y[offset];
-			x1 = xp;
-			y1 = yp;
+			x1 = xp = monster[leader]._mx + offset_x[offset];
+			y1 = yp = monster[leader]._my + offset_y[offset];
 		} else {
 			do {
-				xp = random(93, 80) + 16;
-				x1 = xp;
-				yp = random(93, 80) + 16;
-				y1 = yp;
+				x1 = xp = random(93, 80) + 16;
+				y1 = yp = random(93, 80) + 16;
 			} while (!MonstPlace(xp, yp));
 		}
 
