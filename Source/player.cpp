@@ -810,7 +810,6 @@ int CalcStatDiff(int pnum)
 
 void NextPlrLevel(int pnum)
 {
-	char l, c;
 	int hp, mana;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
@@ -818,9 +817,11 @@ void NextPlrLevel(int pnum)
 	}
 
 	plr[pnum]._pLevel++;
-	l = plr[pnum]._pLevel;
-
 	plr[pnum]._pMaxLvl++;
+
+#ifdef HELLFIRE
+	CalcPlrInv(pnum, TRUE);
+#endif
 
 	if (CalcStatDiff(pnum) < 5) {
 		plr[pnum]._pStatPts = CalcStatDiff(pnum);
@@ -828,11 +829,9 @@ void NextPlrLevel(int pnum)
 		plr[pnum]._pStatPts += 5;
 	}
 
-	plr[pnum]._pNextExper = ExpLvlsTbl[l];
+	plr[pnum]._pNextExper = ExpLvlsTbl[plr[pnum]._pLevel];
 
-	c = plr[pnum]._pClass;
-
-	hp = c == PC_SORCERER ? 64 : 128;
+	hp = plr[pnum]._pClass == PC_SORCERER ? 64 : 128;
 	if (gbMaxPlayers == 1) {
 		hp++;
 	}
@@ -845,7 +844,15 @@ void NextPlrLevel(int pnum)
 		drawhpflag = TRUE;
 	}
 
-	mana = c != PC_WARRIOR ? 128 : 64;
+	if (plr[pnum]._pClass == PC_WARRIOR)
+		mana = 64;
+#ifdef HELLFIRE
+	else if (plr[pnum]._pClass == PC_BARBARIAN)
+		mana = 0;
+#endif
+	else
+		mana = 128;
+
 	if (gbMaxPlayers == 1) {
 		mana++;
 	}
@@ -858,7 +865,10 @@ void NextPlrLevel(int pnum)
 	}
 
 	if (pnum == myplr) {
-		drawmanaflag = TRUE;
+#ifdef HELLFIRE
+		if (plr[pnum]._pMana > 0)
+#endif
+			drawmanaflag = TRUE;
 	}
 }
 
