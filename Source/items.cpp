@@ -20,6 +20,10 @@ int gnNumGetRecords;
 
 /* data */
 
+#ifdef HELLFIRE
+int MaxGold = GOLD_MAX_LIMIT;
+#endif
+
 BYTE ItemCAnimTbl[169] = {
 	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
 	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,

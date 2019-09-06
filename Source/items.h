@@ -137,6 +137,10 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex);
 
 /* data */
 
+#ifdef HELLFIRE
+extern int MaxGold;
+#endif
+
 extern BYTE ItemCAnimTbl[169];
 extern char *ItemDropNames[35];
 extern BYTE ItemAnimLs[35];
