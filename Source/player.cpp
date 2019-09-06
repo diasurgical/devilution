@@ -1962,7 +1962,12 @@ void DropHalfPlayersGold(int pnum)
 
 	hGold = plr[pnum]._pGold >> 1;
 	for (i = 0; i < MAXBELTITEMS && hGold > 0; i++) {
-		if (plr[pnum].SpdList[i]._itype == ITYPE_GOLD && plr[pnum].SpdList[i]._ivalue != GOLD_MAX_LIMIT) {
+		if (plr[pnum].SpdList[i]._itype == ITYPE_GOLD &&
+#ifndef HELLFIRE
+			plr[pnum].SpdList[i]._ivalue != GOLD_MAX_LIMIT) {
+#else
+			plr[pnum].SpdList[i]._ivalue != MaxGold) {
+#endif
 			if (hGold < plr[pnum].SpdList[i]._ivalue) {
 				plr[pnum].SpdList[i]._ivalue -= hGold;
 				SetSpdbarGoldCurs(pnum, i);
@@ -2012,7 +2017,12 @@ void DropHalfPlayersGold(int pnum)
 	drawpanflag = 255;
 	if (hGold > 0) {
 		for (i = 0; i < plr[pnum]._pNumInv && hGold > 0; i++) {
-			if (plr[pnum].InvList[i]._itype == ITYPE_GOLD && plr[pnum].InvList[i]._ivalue != GOLD_MAX_LIMIT) {
+			if (plr[pnum].InvList[i]._itype == ITYPE_GOLD &&
+#ifndef HELLFIRE
+				plr[pnum].InvList[i]._ivalue != GOLD_MAX_LIMIT) {
+#else
+				plr[pnum].InvList[i]._ivalue != MaxGold) {
+#endif
 				if (hGold < plr[pnum].InvList[i]._ivalue) {
 					plr[pnum].InvList[i]._ivalue -= hGold;
 					SetGoldCurs(pnum, i);
