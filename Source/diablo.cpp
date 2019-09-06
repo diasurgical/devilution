@@ -239,7 +239,7 @@ BOOL diablo_get_not_running()
 	SetLastError(0);
 	CreateEvent(NULL, FALSE, FALSE, "DiabloEvent");
 #ifdef HELLFIRE
-	CreateEventA(0, 0, 0, "HellfireEvent");
+	CreateEvent(NULL, FALSE, FALSE, "HellfireEvent");
 #endif
 	return GetLastError() != ERROR_ALREADY_EXISTS;
 }
