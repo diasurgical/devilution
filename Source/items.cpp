@@ -21,6 +21,21 @@ int gnNumGetRecords;
 /* data */
 
 #ifdef HELLFIRE
+int OilLevels[10] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
+int OilValues[10] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
+int OilMagic[10] = { 31, 32, 33, 34, 35, 36, 37, 38, 39, 40 };
+char OilNames[10][25] = {
+	"Oil of Accuracy",
+	"Oil of Mastery",
+	"Oil of Sharpness",
+	"Oil of Death",
+	"Oil of Skill",
+	"Blacksmith Oil",
+	"Oil of Fortitude",
+	"Oil of Permanence",
+	"Oil of Hardening",
+	"Oil of Imperviousness"
+};
 int MaxGold = GOLD_MAX_LIMIT;
 #endif
 
@@ -1319,9 +1334,43 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 	}
 }
 
+#ifdef HELLFIRE
+void GetOilType(int i, int max_lvl)
+{
+	int cnt, t, j, r;
+	char rnd[32];
+
+	if (gbMaxPlayers == 1) {
+		if (max_lvl == 0)
+			max_lvl = 1;
+		cnt = 0;
+
+		for (j = 0; j < (int)(sizeof(OilLevels) / sizeof(OilLevels[0])); j++) {
+			if (OilLevels[j] <= max_lvl) {
+				rnd[cnt] = j;
+				cnt++;
+			}
+		}
+		r = random(165, cnt);
+		t = rnd[r];
+	} else {
+		r = random(165, 2);
+		t = (r != 0 ? 6 : 5);
+	}
+	strcpy(item[i]._iName, OilNames[t]);
+	strcpy(item[i]._iIName, OilNames[t]);
+	item[i]._iMiscId = OilMagic[t];
+	item[i]._ivalue = OilValues[t];
+	item[i]._iIvalue = OilValues[t];
+}
+#endif
+
 void GetItemAttrs(int i, int idata, int lvl)
 {
 	int rndv;
+#ifdef HELLFIRE
+	int itemlevel;
+#endif
 
 	item[i]._itype = AllItemsList[idata].itype;
 	item[i]._iCurs = AllItemsList[idata].iCurs;
@@ -1332,7 +1381,9 @@ void GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iMinDam = AllItemsList[idata].iMinDam;
 	item[i]._iMaxDam = AllItemsList[idata].iMaxDam;
 	item[i]._iAC = AllItemsList[idata].iMinAC + random(20, AllItemsList[idata].iMaxAC - AllItemsList[idata].iMinAC + 1);
+#ifndef HELLFIRE
 	item[i]._iFlags = AllItemsList[idata].iFlags;
+#endif
 	item[i]._iMiscId = AllItemsList[idata].iMiscId;
 	item[i]._iSpell = AllItemsList[idata].iSpell;
 	item[i]._iMagical = ITEM_QUALITY_NORMAL;
@@ -1375,6 +1426,7 @@ void GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPrePower = -1;
 	item[i]._iSufPower = -1;
 
+#ifndef HELLFIRE
 	if (AllItemsList[idata].iMiscId == IMISC_BOOK)
 		GetBookSpell(i, lvl);
 
@@ -1385,6 +1437,25 @@ void GetItemAttrs(int i, int idata, int lvl)
 			rndv = 5 * (currlevel + 16) + random(21, 10 * (currlevel + 16));
 		if (gnDifficulty == DIFF_HELL)
 			rndv = 5 * (currlevel + 32) + random(21, 10 * (currlevel + 32));
+#else
+	item[i]._iFlags = 0;
+	item[i]._iDamAcFlags = 0;
+
+	if (item[i]._iMiscId == IMISC_BOOK)
+		GetBookSpell(i, lvl);
+
+	if (item[i]._iMiscId == IMISC_OILOF)
+		GetOilType(i, lvl);
+
+	itemlevel = items_get_currlevel();
+	if (item[i]._itype == ITYPE_GOLD) {
+		if (gnDifficulty == DIFF_NORMAL)
+			rndv = 5 * itemlevel + random(21, 10 * itemlevel);
+		else if (gnDifficulty == DIFF_NIGHTMARE)
+			rndv = 5 * (itemlevel + 16) + random(21, 10 * (itemlevel + 16));
+		else if (gnDifficulty == DIFF_HELL)
+			rndv = 5 * (itemlevel + 32) + random(21, 10 * (itemlevel + 32));
+#endif
 
 		if (leveltype == DTYPE_HELL)
 			rndv += rndv >> 3;

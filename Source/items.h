@@ -138,6 +138,10 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex);
 /* data */
 
 #ifdef HELLFIRE
+extern int OilLevels[10];
+extern int OilValues[10];
+extern int OilMagic[10];
+extern char OilNames[10][25];
 extern int MaxGold;
 #endif
 
