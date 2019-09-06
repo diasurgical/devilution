@@ -1954,28 +1954,31 @@ void SyncPlrKill(int pnum, int earflag)
 
 void RemovePlrMissiles(int pnum)
 {
-	int mi, am;
+	int i, am;
+	int mx, my;
 
 	if (currlevel != 0 && pnum == myplr && (monster[myplr]._mx != 1 || monster[myplr]._my != 0)) {
 		M_StartKill(myplr, myplr);
-		AddDead(monster[myplr]._mx, monster[myplr]._my, monster[myplr].MType->mdeadval, (direction)monster[myplr]._mdir);
-		dMonster[monster[myplr]._mx][monster[myplr]._my] = 0;
+		AddDead(monster[myplr]._mx, monster[myplr]._my, (monster[myplr].MType)->mdeadval, monster[myplr]._mdir);
+		mx = monster[myplr]._mx;
+		my = monster[myplr]._my;
+		dMonster[mx][my] = 0;
 		monster[myplr]._mDelFlag = TRUE;
 		DeleteMonsterList();
 	}
 
-	for (mi = 0; mi < nummissiles; mi++) {
-		am = missileactive[mi];
+	for (i = 0; i < nummissiles; i++) {
+		am = missileactive[i];
 		if (missile[am]._mitype == MIS_STONE && missile[am]._misource == pnum) {
 			monster[missile[am]._miVar2]._mmode = missile[am]._miVar1;
 		}
 		if (missile[am]._mitype == MIS_MANASHIELD && missile[am]._misource == pnum) {
 			ClearMissileSpot(am);
-			DeleteMissile(am, mi);
+			DeleteMissile(am, i);
 		}
 		if (missile[am]._mitype == MIS_ETHEREALIZE && missile[am]._misource == pnum) {
 			ClearMissileSpot(am);
-			DeleteMissile(am, mi);
+			DeleteMissile(am, i);
 		}
 	}
 }
