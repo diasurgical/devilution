@@ -142,7 +142,9 @@ extern int OilLevels[10];
 extern int OilValues[10];
 extern int OilMagic[10];
 extern char OilNames[10][25];
+extern int MaxGold;
 #endif
+
 extern BYTE ItemCAnimTbl[169];
 extern char *ItemDropNames[35];
 extern BYTE ItemAnimLs[35];

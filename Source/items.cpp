@@ -19,6 +19,7 @@ int numitems;
 int gnNumGetRecords;
 
 /* data */
+
 #ifdef HELLFIRE
 int OilLevels[10] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
 int OilValues[10] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
@@ -35,7 +36,9 @@ char OilNames[10][25] = {
 	"Oil of Hardening",
 	"Oil of Imperviousness"
 };
+int MaxGold = GOLD_MAX_LIMIT;
 #endif
+
 BYTE ItemCAnimTbl[169] = {
 	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
 	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,
