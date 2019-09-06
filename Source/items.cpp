@@ -1427,7 +1427,7 @@ void GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iSufPower = -1;
 
 #ifndef HELLFIRE
-	if (AllItemsList[idata].iMiscId == IMISC_BOOK)
+	if (item[i]._iMiscId == IMISC_BOOK)
 		GetBookSpell(i, lvl);
 
 	if (item[i]._itype == ITYPE_GOLD) {
