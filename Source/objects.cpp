@@ -122,7 +122,11 @@ void FreeObjectGFX()
 	numobjfiles = 0;
 }
 
+#ifdef HELLFIRE
+BOOLEAN RndLocOk(int xp, int yp)
+#else
 BOOL RndLocOk(int xp, int yp)
+#endif
 {
 	if (dMonster[xp][yp])
 		return FALSE;
