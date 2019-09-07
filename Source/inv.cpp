@@ -171,6 +171,7 @@ void DrawInv()
 {
 	BOOL invtest[40];
 	int frame, frame_width, colour, screen_x, screen_y, i, j, ii;
+	BYTE *pBuff;
 
 	CelDecodeOnly(384, 511, pInvCels, 1, 320);
 
@@ -188,13 +189,37 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, 517, 219, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, 517, 219, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, 517, 219, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag) {
-			CelDrawHdrOnly(517, 219, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(517, 219, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(517, 219, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(517, 219, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(517, 219, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(517, 219, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 	}
 
@@ -212,13 +237,37 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, 432, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, 432, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, 432, 365, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag) {
-			CelDrawHdrOnly(432, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(432, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(432, 365, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(432, 365, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(432, 365, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(432, 365, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 	}
 
@@ -236,13 +285,37 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, 633, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, 633, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, 633, 365, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag) {
-			CelDrawHdrOnly(633, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(633, 365, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(633, 365, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(633, 365, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(633, 365, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(633, 365, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 	}
 
@@ -260,13 +333,37 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, 589, 220, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, 589, 220, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, 589, 220, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag) {
-			CelDrawHdrOnly(589, 220, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(589, 220, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(589, 220, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(589, 220, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(589, 220, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(589, 220, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 	}
 
@@ -287,27 +384,64 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag) {
-			CelDrawHdrOnly(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND) {
-			InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
-			light_table_index = 0;
-			cel_transparency_active = 1;
+#ifdef HELLFIRE
+			if (plr[myplr]._pClass != PC_BARBARIAN
+			|| plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SWORD
+			&& plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_MACE) {
+#endif
+				InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
+				light_table_index = 0;
+				cel_transparency_active = 1;
 
-			CelDecodeHdrLightTrans(
-			    frame_width == INV_SLOT_SIZE_PX
-			        ? &gpBuffer[SCREENXY(581, 160)]
-			        : &gpBuffer[SCREENXY(567, 160)],
-			    pCursCels, frame, frame_width, 0, 8);
+				pBuff = frame_width == INV_SLOT_SIZE_PX ? &gpBuffer[SCREENXY(581, 160)] : &gpBuffer[SCREENXY(567, 160)];
+#ifdef HELLFIRE
+				if (frame <= 179) {
+#endif
+					CelDecodeHdrLightTrans(pBuff, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+				} else {
+					CelDecodeHdrLightTrans(pBuff, pCursCels2, frame - 179, frame_width, 0, 8);
+				}
+#endif
 
-			cel_transparency_active = 0;
+				cel_transparency_active = 0;
+#ifdef HELLFIRE
+			}
+#endif
 		}
 	}
 	if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
@@ -327,13 +461,37 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag) {
-			CelDrawHdrOnly(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 	}
 
@@ -351,17 +509,42 @@ void DrawInv()
 			if (!plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag) {
 				colour = ICOL_RED;
 			}
-			CelDecodeClr(colour, 517, 320, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDecodeClr(colour, 517, 320, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDecodeClr(colour, 517, 320, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag) {
-			CelDrawHdrOnly(517, 320, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrOnly(517, 320, pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrOnly(517, 320, pCursCels2, frame - 179, frame_width, 0, 8);
+			}
+#endif
 		} else {
-			CelDrawHdrLightRed(517, 320, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			if (frame <= 179) {
+#endif
+				CelDrawHdrLightRed(517, 320, pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+			} else {
+				CelDrawHdrLightRed(517, 320, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+			}
+#endif
 		}
 	}
 
 	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
+		invtest[i] = FALSE;
 		if (plr[myplr].InvGrid[i] != 0) {
 			InvDrawSlotBack(
 			    InvRect[i + SLOTXY_INV_FIRST].X + 64,
@@ -388,23 +571,57 @@ void DrawInv()
 				if (!plr[myplr].InvList[ii]._iStatFlag) {
 					colour = ICOL_RED;
 				}
-				CelDecodeClr(
-				    colour,
-				    InvRect[j + SLOTXY_INV_FIRST].X + 64,
-				    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-				    pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+				if (frame <= 179) {
+#endif
+					CelDecodeClr(
+						colour,
+						InvRect[j + SLOTXY_INV_FIRST].X + 64,
+						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+						pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+				} else {
+					CelDecodeClr(
+						colour,
+						InvRect[j + SLOTXY_INV_FIRST].X + 64,
+						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+						pCursCels2, frame - 179, frame_width, 0, 8);
+				}
+#endif
 			}
 
 			if (plr[myplr].InvList[ii]._iStatFlag) {
-				CelDrawHdrOnly(
-				    InvRect[j + SLOTXY_INV_FIRST].X + 64,
-				    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-				    pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+				if (frame <= 179) {
+#endif
+					CelDrawHdrOnly(
+						InvRect[j + SLOTXY_INV_FIRST].X + 64,
+						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+						pCursCels, frame, frame_width, 0, 8);
+#ifdef HELLFIRE
+				} else {
+					CelDrawHdrOnly(
+						InvRect[j + SLOTXY_INV_FIRST].X + 64,
+						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+						pCursCels2, frame - 179, frame_width, 0, 8);
+				}
+#endif
 			} else {
-				CelDrawHdrLightRed(
-				    InvRect[j + SLOTXY_INV_FIRST].X + 64,
-				    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-				    pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+				if (frame <= 179) {
+#endif
+					CelDrawHdrLightRed(
+						InvRect[j + SLOTXY_INV_FIRST].X + 64,
+						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+						pCursCels, frame, frame_width, 0, 8, 1);
+#ifdef HELLFIRE
+				} else {
+					CelDrawHdrLightRed(
+						InvRect[j + SLOTXY_INV_FIRST].X + 64,
+						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+						pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				}
+#endif
 			}
 		}
 	}
