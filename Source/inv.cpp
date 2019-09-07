@@ -2068,7 +2068,7 @@ BOOL UseStaff()
 #ifdef HELLFIRE
 		    && (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF || plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_UNIQUE)
 #else
-			&& plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+		   && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
 #endif
 		    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[myplr]._pRSpell
 		    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
