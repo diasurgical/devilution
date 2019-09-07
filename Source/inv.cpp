@@ -2063,7 +2063,7 @@ void UseStaffCharge(int pnum)
 
 BOOL UseStaff()
 {
-	#ifdef HELLFIRE
+#ifdef HELLFIRE
 	if (pcurs == CURSOR_HAND) {
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
 		    && (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF || plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_UNIQUE)
@@ -2072,7 +2072,7 @@ BOOL UseStaff()
 			return TRUE;
 		}
 	}
-	#else
+#else
 	if (pcurs == CURSOR_HAND) {
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
 		    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
@@ -2081,7 +2081,7 @@ BOOL UseStaff()
 			return TRUE;
 		}
 	}
-	#endif
+#endif
 
 	return FALSE;
 }
