@@ -4224,7 +4224,11 @@ void SyncL1Doors(int i)
 
 void SyncCrux(int i)
 {
+#ifdef HELLFIRE
+	BOOLEAN found;
+#else
 	BOOL found;
+#endif
 	int j, oi, type;
 
 	found = TRUE;
