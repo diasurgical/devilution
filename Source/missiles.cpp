@@ -3450,7 +3450,11 @@ void MI_Weapexp(int i)
 
 void MI_Misexp(int i)
 {
+#ifdef HELLFIRE
+	int ExpLight[] = { 9, 10, 11, 12, 11, 10, 8, 6, 4, 2, 1, 0, 0, 0, 0 };
+#else
 	int ExpLight[10] = { 9, 10, 11, 12, 11, 10, 8, 6, 4, 2 };
+#endif
 
 	missile[i]._mirange--;
 	if (!missile[i]._mirange) {
