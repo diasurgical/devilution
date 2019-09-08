@@ -1903,9 +1903,17 @@ int M_DoStand(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return 0;
+#else
 		app_fatal("M_DoStand: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return 0;
+#else
 		app_fatal("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	Monst = &monster[i];
 	if (Monst->MType->mtype == MT_GOLEM)
