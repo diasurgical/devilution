@@ -3933,8 +3933,8 @@ int ItemNoFlippy()
 	int r;
 
 	r = itemactive[numitems - 1];
-	item[r]._iAnimFlag = FALSE;
 	item[r]._iAnimFrame = item[r]._iAnimLen;
+	item[r]._iAnimFlag = FALSE;
 	item[r]._iSelFlag = 1;
 
 	return r;
