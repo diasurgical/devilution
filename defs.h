@@ -28,7 +28,11 @@
 #define MAXMULTIQUESTS			4
 #define MAXOBJECTS				127
 #define MAXPORTAL				4
+#ifdef HELLFIRE
+#define MAXQUESTS				24
+#else
 #define MAXQUESTS				16
+#endif
 #define MAXTHEMES				50
 #define MAXTILES				2048
 #define MAXTRIGGERS				5

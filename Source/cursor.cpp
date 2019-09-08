@@ -179,7 +179,7 @@ void CheckRportal()
 
 void CheckCursMove()
 {
-	int i, sx, sy, mx, my, tx, ty, px, py, xx, yy, mi;
+	int i, sx, sy, fx, fy, mx, my, tx, ty, px, py, xx, yy, mi;
 	char bv;
 	BOOL flipflag, flipx, flipy;
 
@@ -210,9 +210,14 @@ void CheckCursMove()
 	sx -= ScrollInfo._sxoff;
 	sy -= ScrollInfo._syoff;
 
+	fx = plr[myplr]._pVar6 >> 8;
+	fy = plr[myplr]._pVar7 >> 8;
+	fx -= (plr[myplr]._pVar6 + plr[myplr]._pxvel) >> 8;
+	fy -= (plr[myplr]._pVar7 + plr[myplr]._pyvel) >> 8;
+
 	if (ScrollInfo._sdir != 0) {
-		sx += ((plr[myplr]._pVar6 + plr[myplr]._pxvel) >> 8) - (plr[myplr]._pVar6 >> 8);
-		sy += ((plr[myplr]._pVar7 + plr[myplr]._pyvel) >> 8) - (plr[myplr]._pVar7 >> 8);
+		sx -= fx;
+		sy -= fy;
 	}
 
 	if (sx < 0) {
@@ -361,9 +366,15 @@ void CheckCursMove()
 				cursmx = mx;
 				cursmy = my;
 			}
+#ifdef HELLFIRE
+			if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_UNUSED)) {
+				pcursmonst = -1;
+			}
+#else
 			if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM) {
 				pcursmonst = -1;
 			}
+#endif
 			if (pcursmonst != -1) {
 				return;
 			}
@@ -429,9 +440,15 @@ void CheckCursMove()
 			cursmx = mx;
 			cursmy = my;
 		}
+#ifdef HELLFIRE
+		if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_UNUSED)) {
+			pcursmonst = -1;
+		}
+#else
 		if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM) {
 			pcursmonst = -1;
 		}
+#endif
 	} else {
 		if (!flipflag && dMonster[mx + 1][my] > 0) {
 			pcursmonst = dMonster[mx + 1][my] - 1;
@@ -599,7 +616,13 @@ void CheckCursMove()
 		cursmx = mx;
 		cursmy = my;
 	}
+#ifdef HELLFIRE
+	if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_UNUSED)) {
+		pcursmonst = -1;
+	}
+#else
 	if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM) {
 		pcursmonst = -1;
 	}
+#endif
 }
