@@ -1806,7 +1806,11 @@ void M_StartKill(int i, int pnum)
 void M_SyncStartKill(int i, int x, int y, int pnum)
 {
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_SyncStartKill: Invalid monster %d", i);
+#endif
 
 	if (monster[i]._mhitpoints == 0 || monster[i]._mmode == MM_DEATH) {
 		return;
@@ -1820,12 +1824,16 @@ void M_SyncStartKill(int i, int x, int y, int pnum)
 		monster[i]._moldy = y;
 	}
 
+#ifdef HELLFIRE
+	MonstStartKill(i, pnum, FALSE);
+#else
 	if (monster[i]._mmode == MM_STONE) {
 		MonstStartKill(i, pnum, FALSE);
 		monster[i]._mmode = MM_STONE;
 	} else {
 		MonstStartKill(i, pnum, FALSE);
 	}
+#endif
 }
 
 void M_StartFadein(int i, int md, BOOL backwards)
