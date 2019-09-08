@@ -1766,7 +1766,11 @@ void M2MStartKill(int i, int mid)
 void M_StartKill(int i, int pnum)
 {
 	if ((DWORD)i >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartKill: Invalid monster %d", i);
+#endif
 	}
 
 	if (myplr == pnum) {
