@@ -4109,6 +4109,10 @@ void ProcessMissiles()
 	for (i = 0; i < nummissiles; i++) {
 		dFlags[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] &= ~BFLAG_MISSILE;
 		dMissile[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] = 0;
+#ifdef HELLFIRE
+		if (missile[missileactive[i]]._mix < 0 || missile[missileactive[i]]._mix >= MAXDUNX - 1 || missile[missileactive[i]]._miy < 0 || missile[missileactive[i]]._miy >= MAXDUNY - 1)
+			missile[missileactive[i]]._miDelFlag = TRUE;
+#endif
 	}
 
 	i = 0;
@@ -4150,7 +4154,11 @@ void ProcessMissiles()
 
 	i = 0;
 	while (i < nummissiles) {
+#ifdef HELLFIRE
+		if (missile[missileactive[i]]._miDelFlag == TRUE) {
+#else
 		if (missile[missileactive[i]]._miDelFlag) {
+#endif
 			DeleteMissile(missileactive[i], i);
 			i = 0;
 		} else {
