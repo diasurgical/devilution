@@ -2476,6 +2476,10 @@ typedef enum _music_id {
 	TMUSIC_L3,
 	TMUSIC_L4,
 #endif
+#ifdef HELLFIRE
+	TMUSIC_L5,
+	TMUSIC_L6,
+#endif
 	TMUSIC_INTRO,
 	NUM_MUSIC,
 } _music_id;
@@ -2750,6 +2754,16 @@ typedef enum quest_id {
 	QTYPE_PW      = 0xD,
 	QTYPE_BONE    = 0xE,
 	QTYPE_VB      = 0xF,
+#ifdef HELLFIRE
+	QTYPE_GRAVE   = 0x10,
+	QTYPE_FARMER  = 0x11,
+	QTYPE_GIRL    = 0x12,
+	QTYPE_TRADER  = 0x13,
+	QTYPE_DEFILER = 0x14,
+	QTYPE_NAKRUL  = 0x15,
+	QTYPE_CORNSTN = 0x16,
+	QTYPE_JERSEY  = 0x17,
+#endif
 	QTYPE_INVALID = 0xFFFFFFFF,
 } quest_id;
 

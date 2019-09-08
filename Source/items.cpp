@@ -1,4 +1,7 @@
 #include "diablo.h"
+#ifdef HELLFIRE
+#include "../3rdParty/Storm/Source/storm.h"
+#endif
 
 int itemactive[MAXITEMS];
 BOOL uitemflag;
@@ -206,6 +209,9 @@ int ItemInvSnds[ITEMTYPES] = {
 	IS_IANVL,
 	IS_ISTAF
 };
+#ifdef HELLFIRE
+char *off_4A5AC4 = "SItem";
+#endif
 int idoppely = 16;
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
@@ -2442,6 +2448,53 @@ void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, 
 	item[ii]._ivalue = ivalue & 0x3F;
 	item[ii]._iSeed = iseed;
 }
+
+#ifdef HELLFIRE
+void items_427ABA(int x, int y)
+{
+	int i, ii;
+	DWORD dwSize;
+	PkItemStruct PkSItem;
+
+	if ( dword_691CB0 || x == 0 || y == 0 )
+	{
+		return;
+	}
+
+	CornerItemMaybe.IDidx = 0;
+	dword_691CB0 = 1;
+	if ( dItem[x][y] )
+	{
+		ii = dItem[x][y] - 1;
+		for ( i = 0; i < numitems; i++ )
+		{
+			if ( itemactive[i] == ii )
+			{
+				DeleteItem(ii, i);
+				break;
+			}
+		}
+		dItem[x][y] = 0;
+	}
+	dwSize = 0;
+	if ( SRegLoadData("Hellfire", off_4A5AC4, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize) )
+	{
+		if ( dwSize == sizeof(PkSItem) )
+		{
+			ii = itemavail[0];
+			dItem[x][y] = ii + 1;
+			itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+			itemactive[numitems] = ii;
+			UnPackItem(&PkSItem, &item[ii]);
+			item[ii]._ix = x;
+			item[ii]._iy = y;
+			RespawnItem(ii, FALSE);
+			CornerItemMaybe = item[ii];
+			numitems++;
+		}
+	}
+}
+#endif
 
 void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 {

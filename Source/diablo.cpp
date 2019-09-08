@@ -1728,7 +1728,10 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 				glMid2Seed[currlevel] = GetRndSeed();
 				InitObjects();
 				InitItems();
-				CreateThemeRooms();
+#ifdef HELLFIRE
+				if ( currlevel < 17 )
+#endif
+					CreateThemeRooms();
 				glMid3Seed[currlevel] = GetRndSeed();
 				InitMissiles();
 				InitDead();
@@ -1839,7 +1842,28 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		ProcessVisionList();
 	}
 
+#ifdef HELLFIRE
+	if ( currlevel >= 21 )
+	{
+		if ( currlevel == 21 )
+		{
+			items_427ABA(RowOfCornerStone, ColOfCornerStone);
+		}
+		if ( quests[QTYPE_NAKRUL]._qactive == 3 && currlevel == 24 ) // fix quest struct
+		{
+			objects_454BA8();
+		}
+	}
+#endif
+
+#ifdef HELLFIRE
+	if ( currlevel >= 17 )
+		music_start(currlevel > 20 ? TMUSIC_L5 : TMUSIC_L6);
+	else
+		music_start(leveltype);
+#else
 	music_start(leveltype);
+#endif
 
 	while (!IncProgress())
 		;

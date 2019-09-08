@@ -155,6 +155,9 @@ void SyncL2Doors(int i);
 void SyncL3Doors(int i);
 void SyncObjectAnim(int o);
 void GetObjectStr(int i);
+#ifdef HELLFIRE
+void objects_454BA8();
+#endif
 
 /* rdata */
 
