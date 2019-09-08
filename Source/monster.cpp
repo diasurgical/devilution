@@ -1880,9 +1880,17 @@ void M_StartHeal(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartHeal: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartHeal: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	Monst = &monster[i];
 	Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[Monst->_mdir];
