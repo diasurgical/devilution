@@ -1489,6 +1489,17 @@ void M_ClearSquares(int i)
 	m1 = -1 - i;
 	m2 = i + 1;
 
+#ifdef HELLFIRE
+	for (y = my - 1; y <= my + 1; y++) {
+		for (x = mx - 1; x <= mx + 1; x++) {
+			if (dMonster[x][y] == m1 || dMonster[x][y] == m2)
+				dMonster[x][y] = 0;
+		}
+	}
+
+	dFlags[mx + 1][my] &= ~BFLAG_MONSTLR;
+	dFlags[mx][my + 1] &= ~BFLAG_MONSTLR;
+#else
 	for (y = my - 1; y <= my + 1; y++) {
 		if (y >= 0 && y < MAXDUNY) {
 			for (x = mx - 1; x <= mx + 1; x++) {
@@ -1502,6 +1513,7 @@ void M_ClearSquares(int i)
 		dFlags[mx + 1][my] &= ~BFLAG_MONSTLR;
 	if (my + 1 < MAXDUNY)
 		dFlags[mx][my + 1] &= ~BFLAG_MONSTLR;
+#endif
 }
 
 void M_GetKnockback(int i)
