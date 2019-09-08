@@ -1833,9 +1833,17 @@ void M_StartFadein(int i, int md, BOOL backwards)
 void M_StartFadeout(int i, int md, BOOL backwards)
 {
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartFadeout: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartFadeout: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
 	monster[i]._mmode = MM_FADEOUT;
