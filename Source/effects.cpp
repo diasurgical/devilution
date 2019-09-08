@@ -1407,10 +1407,10 @@ void stream_update()
 #ifdef HELLFIRE
 	} else if (plr[myplr]._pClass == PC_MONK) {
 		mask = SFX_MONK;
-	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
-		mask = SFX_WARRIOR;
 	} else if (plr[myplr]._pClass == PC_BARD) {
 		mask = SFX_ROGUE;
+	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+		mask = SFX_WARRIOR;
 #endif
 	} else {
 		app_fatal("effects:1");
