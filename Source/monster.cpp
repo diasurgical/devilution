@@ -1243,6 +1243,11 @@ void M_CheckEFlag(int i)
 	y = monster[i]._my + 1;
 	f = 0;
 	m = dpiece_defs_map_2[x][y].mt;
+#ifdef HELLFIRE
+	for (j = 2; j < 10; j++) {
+		f |= m[j];
+	}
+#else
 	if (m >= dpiece_defs_map_2[0][0].mt) {
 		for (j = 2; j < 10; j++) {
 			f |= m[j];
@@ -1251,6 +1256,7 @@ void M_CheckEFlag(int i)
 		monster[i]._meflag = FALSE;
 		return;
 	}
+#endif
 
 	if (f | dArch[x][y])
 		monster[i]._meflag = TRUE;
