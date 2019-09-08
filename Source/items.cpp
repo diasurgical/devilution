@@ -4014,8 +4014,8 @@ void RecreateSmithItem(int ii, int idx, int lvl, int iseed)
 	itype = RndSmithItem(lvl) - 1;
 	GetItemAttrs(ii, itype, lvl);
 
-	item[ii]._iCreateInfo = lvl | 0x400;
 	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = lvl | 0x400;
 	item[ii]._iIdentified = TRUE;
 }
 
@@ -4083,8 +4083,8 @@ void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 		GetItemAttrs(ii, itype, lvl);
 	}
 
-	item[ii]._iCreateInfo = lvl | 0x4000;
 	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = lvl | 0x4000;
 	item[ii]._iIdentified = TRUE;
 }
 
@@ -4134,8 +4134,8 @@ int ItemNoFlippy()
 	int r;
 
 	r = itemactive[numitems - 1];
-	item[r]._iAnimFlag = FALSE;
 	item[r]._iAnimFrame = item[r]._iAnimLen;
+	item[r]._iAnimFlag = FALSE;
 	item[r]._iSelFlag = 1;
 
 	return r;

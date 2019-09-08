@@ -1630,22 +1630,22 @@ void AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 {
 	int i;
 
-	if (!mienemy && id != -1) {
-		missile[mi]._midam = 0;
-		for (i = 0; i <= plr[id]._pLevel; i++) {
-			missile[mi]._midam += random(55, 20) + 1;
-		}
-		for (i = 0; i < missile[mi]._mispllvl; i++) {
-			missile[mi]._midam += missile[mi]._midam >> 3;
-		}
-		missile[mi]._midam += missile[mi]._midam >> 1;
-		UseMana(id, SPL_FLASH);
-	} else {
-		if (!mienemy) {
-			missile[mi]._midam = currlevel >> 1;
+	if (!mienemy) {
+		if (id != -1) {
+			missile[mi]._midam = 0;
+			for (i = 0; i <= plr[id]._pLevel; i++) {
+				missile[mi]._midam += random(55, 20) + 1;
+			}
+			for (i = missile[mi]._mispllvl; i > 0; i--) {
+				missile[mi]._midam += missile[mi]._midam >> 3;
+			}
+			missile[mi]._midam += missile[mi]._midam >> 1;
+			UseMana(id, SPL_FLASH);
 		} else {
-			missile[mi]._midam = monster[id].mLevel << 1;
+			missile[mi]._midam = currlevel >> 1;
 		}
+	} else {
+		missile[mi]._midam = monster[id].mLevel << 1;
 	}
 	missile[mi]._mirange = 19;
 }
@@ -2572,6 +2572,7 @@ void MI_Golem(int i)
 {
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 	int tx, ty, dp, l, m, src, k, tid;
+	char *ct;
 
 	src = missile[i]._misource;
 	if (monster[src]._mx == 1 && !monster[src]._my) {
@@ -2579,8 +2580,9 @@ void MI_Golem(int i)
 			k = CrawlNum[l];
 			tid = k + 2;
 			for (m = (BYTE)CrawlTable[k]; m > 0; m--) {
-				tx = missile[i]._miVar4 + CrawlTable[tid - 1];
-				ty = missile[i]._miVar5 + CrawlTable[tid];
+				ct = &CrawlTable[tid];
+				tx = missile[i]._miVar4 + *(ct - 1);
+				ty = missile[i]._miVar5 + *ct;
 				if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
 					dp = dPiece[tx][ty];
 					if (LineClear(missile[i]._miVar1, missile[i]._miVar2, tx, ty)) {
@@ -2674,7 +2676,7 @@ void MI_LArrow(int i)
 			if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
 				missile[i]._miVar1 = missile[i]._mix;
 				missile[i]._miVar2 = missile[i]._miy;
-				ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, 5);
+				ChangeLight(missile[i]._mlid, missile[i]._miVar1, missile[i]._miVar2, 5);
 			}
 		}
 	}
@@ -2887,8 +2889,8 @@ void MI_Fireball(int i)
 {
 	int dam, id, px, py, mx, my;
 
-	dam = missile[i]._midam;
 	id = missile[i]._misource;
+	dam = missile[i]._midam;
 	missile[i]._mirange--;
 
 	if (missile[i]._micaster == 0) {
@@ -2954,7 +2956,7 @@ void MI_Fireball(int i)
 		} else if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
 			missile[i]._miVar1 = missile[i]._mix;
 			missile[i]._miVar2 = missile[i]._miy;
-			ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, 8);
+			ChangeLight(missile[i]._mlid, missile[i]._miVar1, missile[i]._miVar2, 8);
 		}
 	}
 

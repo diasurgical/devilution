@@ -4069,13 +4069,13 @@ void BreakCrux(int i)
 	int j, oi;
 	BOOL triggered;
 
-	object[i]._oBreak = -1;
-	object[i]._oSelFlag = 0;
 	object[i]._oAnimFlag = 1;
 	object[i]._oAnimFrame = 1;
 	object[i]._oAnimDelay = 1;
 	object[i]._oSolidFlag = TRUE;
 	object[i]._oMissFlag = TRUE;
+	object[i]._oBreak = -1;
+	object[i]._oSelFlag = 0;
 	triggered = TRUE;
 	for (j = 0; j < nobjects; j++) {
 		oi = objectactive[j];

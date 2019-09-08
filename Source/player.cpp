@@ -939,7 +939,7 @@ void AddPlrExperience(int pnum, int lvl, int exp)
 
 void AddPlrMonstExper(int lvl, int exp, char pmask)
 {
-	int totplrs, i;
+	int totplrs, i, e;
 
 	totplrs = 0;
 	for (i = 0; i < MAX_PLRS; i++) {
@@ -949,9 +949,9 @@ void AddPlrMonstExper(int lvl, int exp, char pmask)
 	}
 
 	if (totplrs) {
-		exp = exp / totplrs;
+		e = exp / totplrs;
 		if (pmask & (1 << myplr))
-			AddPlrExperience(myplr, lvl, exp);
+			AddPlrExperience(myplr, lvl, e);
 	}
 }
 
@@ -1294,7 +1294,6 @@ void PM_ChangeLightOff(int pnum)
 	}
 
 	l = &LightList[plr[pnum]._plid];
-	ymul = -1;
 	x = 2 * plr[pnum]._pyoff + plr[pnum]._pxoff;
 	y = 2 * plr[pnum]._pyoff - plr[pnum]._pxoff;
 	if (x < 0) {
@@ -1304,6 +1303,7 @@ void PM_ChangeLightOff(int pnum)
 		xmul = 1;
 	}
 	if (y < 0) {
+		ymul = -1;
 		y = -y;
 	} else {
 		ymul = 1;
@@ -2099,28 +2099,31 @@ void SyncPlrKill(int pnum, int earflag)
 
 void RemovePlrMissiles(int pnum)
 {
-	int mi, am;
+	int i, am;
+	int mx, my;
 
 	if (currlevel != 0 && pnum == myplr && (monster[myplr]._mx != 1 || monster[myplr]._my != 0)) {
 		M_StartKill(myplr, myplr);
-		AddDead(monster[myplr]._mx, monster[myplr]._my, monster[myplr].MType->mdeadval, (direction)monster[myplr]._mdir);
-		dMonster[monster[myplr]._mx][monster[myplr]._my] = 0;
+		AddDead(monster[myplr]._mx, monster[myplr]._my, (monster[myplr].MType)->mdeadval, monster[myplr]._mdir);
+		mx = monster[myplr]._mx;
+		my = monster[myplr]._my;
+		dMonster[mx][my] = 0;
 		monster[myplr]._mDelFlag = TRUE;
 		DeleteMonsterList();
 	}
 
-	for (mi = 0; mi < nummissiles; mi++) {
-		am = missileactive[mi];
+	for (i = 0; i < nummissiles; i++) {
+		am = missileactive[i];
 		if (missile[am]._mitype == MIS_STONE && missile[am]._misource == pnum) {
 			monster[missile[am]._miVar2]._mmode = missile[am]._miVar1;
 		}
 		if (missile[am]._mitype == MIS_MANASHIELD && missile[am]._misource == pnum) {
 			ClearMissileSpot(am);
-			DeleteMissile(am, mi);
+			DeleteMissile(am, i);
 		}
 		if (missile[am]._mitype == MIS_ETHEREALIZE && missile[am]._misource == pnum) {
 			ClearMissileSpot(am);
-			DeleteMissile(am, mi);
+			DeleteMissile(am, i);
 		}
 	}
 }
