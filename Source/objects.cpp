@@ -4530,3 +4530,15 @@ void GetObjectStr(int i)
 		}
 	}
 }
+
+#ifdef HELLFIRE
+void objects_454BA8()
+{
+	dPiece[UberRow][UberCol] = 298;
+	dPiece[UberRow][UberCol - 1] = 301;
+	dPiece[UberRow][UberCol - 2] = 300;
+	dPiece[UberRow][UberCol + 1] = 299;
+
+	SetDungeonMicros();
+}
+#endif
