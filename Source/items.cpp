@@ -3813,8 +3813,8 @@ void RecreateSmithItem(int ii, int idx, int lvl, int iseed)
 	itype = RndSmithItem(lvl) - 1;
 	GetItemAttrs(ii, itype, lvl);
 
-	item[ii]._iCreateInfo = lvl | 0x400;
 	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = lvl | 0x400;
 	item[ii]._iIdentified = TRUE;
 }
 
