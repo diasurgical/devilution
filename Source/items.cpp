@@ -3921,8 +3921,11 @@ void SpawnHealer(int lvl)
 	} else {
 		srnd = 2;
 	}
+#ifdef HELLFIRE
+	nsi = random(50, 10) + 10;
+#else
 	nsi = random(50, 8) + 10;
-	for (i = srnd; i < nsi; i++) {
+#endif for (i = srnd; i < nsi; i++) {
 		item[0]._iSeed = GetRndSeed();
 		SetRndSeed(item[0]._iSeed);
 		itype = RndHealerItem(lvl) - 1;
