@@ -1809,9 +1809,17 @@ void M_SyncStartKill(int i, int x, int y, int pnum)
 void M_StartFadein(int i, int md, BOOL backwards)
 {
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartFadein: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_StartFadein: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
 	monster[i]._mmode = MM_FADEIN;
