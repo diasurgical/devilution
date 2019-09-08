@@ -288,7 +288,8 @@ PATHNODE *path_get_node2(int dx, int dy)
 	while (result != NULL && (result->x != dx || result->y != dy))
 		result = result->NextNode;
 	return result;
-#endif }
+#endif
+}
 
 /**
  * @brief insert pPath into the frontier (keeping the frontier sorted by total distance)
