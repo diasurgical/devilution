@@ -2763,7 +2763,7 @@ typedef enum quest_id {
 	QTYPE_NAKRUL  = 0x15,
 	QTYPE_CORNSTN = 0x16,
 	QTYPE_JERSEY  = 0x17,
-#endfi
+#endif
 	QTYPE_INVALID = 0xFFFFFFFF,
 } quest_id;
 
