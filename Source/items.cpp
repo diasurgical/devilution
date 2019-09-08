@@ -3882,8 +3882,8 @@ void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 		GetItemAttrs(ii, itype, lvl);
 	}
 
-	item[ii]._iCreateInfo = lvl | 0x4000;
 	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = lvl | 0x4000;
 	item[ii]._iIdentified = TRUE;
 }
 
