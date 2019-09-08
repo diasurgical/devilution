@@ -262,10 +262,22 @@ BOOL path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
  */
 PATHNODE *path_get_node1(int dx, int dy)
 {
+#ifdef HELLFIRE
+	PATHNODE *result = path_2_nodes;
+	while (1) {
+		result = result->NextNode;
+		if (!result)
+			break;
+		if (result->x == dx && result->y == dy)
+			return result;
+	}
+	return result;
+#else
 	PATHNODE *result = path_2_nodes->NextNode;
 	while (result != NULL && (result->x != dx || result->y != dy))
 		result = result->NextNode;
 	return result;
+#endif
 }
 
 /**
