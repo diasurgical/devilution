@@ -1214,12 +1214,31 @@ void AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 		dy += YDirAdd[midir];
 	}
 	if (!mienemy) {
+#ifdef HELLFIRE
+		int av = 32;
+
+		if (plr[id]._pClass == PC_ROGUE)
+			av += (plr[id]._pLevel) >> 2;
+		else if (plr[id]._pClass == PC_WARRIOR || plr[id]._pClass == PC_BARD)
+			av += (plr[id]._pLevel) >> 3;
+
+		if (plr[id]._pIFlags & ISPL_QUICKATTACK)
+			av++;
+		if (plr[id]._pIFlags & ISPL_FASTATTACK)
+			av += 2;
+		if (plr[id]._pIFlags & ISPL_FASTERATTACK)
+			av += 4;
+		if (plr[id]._pIFlags & ISPL_FASTESTATTACK)
+			av += 8;
+		GetMissileVel(mi, sx, sy, dx, dy, av);
+#else
 		if (plr[id]._pClass == PC_ROGUE)
 			GetMissileVel(mi, sx, sy, dx, dy, (plr[id]._pLevel >> 2) + 31);
 		else if (plr[id]._pClass == PC_WARRIOR)
 			GetMissileVel(mi, sx, sy, dx, dy, (plr[id]._pLevel >> 3) + 31);
 		else
 			GetMissileVel(mi, sx, sy, dx, dy, 32);
+#endif
 	} else
 		GetMissileVel(mi, sx, sy, dx, dy, 32);
 
