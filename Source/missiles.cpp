@@ -1209,7 +1209,6 @@ void InitMissiles()
 
 void AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-#ifdef HELLFIRE
 	int av;
 
 	if (sx == dx && sy == dy) {
