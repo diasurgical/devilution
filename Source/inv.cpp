@@ -823,6 +823,7 @@ BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 	return done;
 }
 
+#ifndef HELLFIRE
 BOOL GoldAutoPlace(int pnum)
 {
 	BOOL done;
@@ -887,6 +888,80 @@ BOOL GoldAutoPlace(int pnum)
 
 	return done;
 }
+#else
+BOOL GoldAutoPlace(int pnum)
+{
+	int ii;
+	int xx, yy;
+	int max_gold, gold;
+	BOOL done;
+
+	done = FALSE;
+	for (int i = 0; i < plr[pnum]._pNumInv && !done; i++) {
+		if (plr[pnum].InvList[i]._itype == ITYPE_GOLD) {
+			gold = plr[pnum].InvList[i]._ivalue + plr[pnum].HoldItem._ivalue;
+			if (gold <= MaxGold) {
+				plr[pnum].InvList[i]._ivalue = gold;
+				if (gold >= GOLD_MEDIUM_LIMIT)
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
+				else if (gold <= GOLD_SMALL_LIMIT)
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
+				else
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
+				plr[pnum]._pGold = CalculateGold(pnum);
+				done = TRUE;
+				plr[pnum].HoldItem._ivalue = 0;
+			} else {
+				max_gold = MaxGold;
+				if (plr[pnum].InvList[i]._ivalue < max_gold) {
+					gold = max_gold - plr[pnum].InvList[i]._ivalue;
+					plr[pnum].InvList[i]._ivalue = max_gold;
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
+					plr[pnum].HoldItem._ivalue -= gold;
+					if (plr[pnum].HoldItem._ivalue < 0) {
+						plr[pnum].HoldItem._ivalue = 0;
+						done = TRUE;
+					}
+					GetPlrHandSeed(&plr[pnum].HoldItem);
+					control_set_gold_curs(pnum);
+					plr[pnum]._pGold = CalculateGold(pnum);
+				}
+			}
+		}
+	}
+	if (!done)
+		for (int i = 39; i >= 0 && !done; i--) {
+			yy = 10 * (i / 10);
+			xx = i % 10;
+			if (!plr[pnum].InvGrid[xx + yy]) {
+				ii = plr[pnum]._pNumInv;
+				plr[pnum].InvList[ii] = plr[pnum].HoldItem;
+				plr[pnum]._pNumInv = plr[pnum]._pNumInv + 1;
+				plr[pnum].InvGrid[xx + yy] = plr[pnum]._pNumInv;
+				if (plr[pnum].HoldItem._ivalue >= GOLD_MEDIUM_LIMIT)
+					plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_LARGE;
+				else if (plr[pnum].HoldItem._ivalue <= GOLD_SMALL_LIMIT)
+					plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_SMALL;
+				else
+					plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_MEDIUM;
+
+				gold = plr[pnum].HoldItem._ivalue;
+				if (gold > MaxGold) {
+					gold -= MaxGold;
+					plr[pnum].HoldItem._ivalue = gold;
+					GetPlrHandSeed(&plr[pnum].HoldItem);
+					plr[pnum].InvList[ii]._ivalue = MaxGold;
+				} else {
+					plr[pnum].HoldItem._ivalue = 0;
+					done = TRUE;
+					plr[pnum]._pGold = CalculateGold(pnum);
+					SetCursor_(CURSOR_HAND);
+				}
+			}
+		}
+	return done;
+}
+#endif
 
 BOOL WeaponAutoPlace(int pnum)
 {
