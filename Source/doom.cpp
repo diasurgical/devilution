@@ -81,7 +81,7 @@ void doom_alloc_cel()
 	pDoomCel = DiabloAllocPtr(0x39000);
 	return pDoomCel ? TRUE : FALSE;
 #else
-	pDoomCel = DiabloAllocPtr(229376);
+	pDoomCel = DiabloAllocPtr(0x38000);
 #endif
 }
 
