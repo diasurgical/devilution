@@ -1212,7 +1212,6 @@ void AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 #ifdef HELLFIRE
 	int av;
 
-#endif
 	if (sx == dx && sy == dy) {
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
