@@ -8,7 +8,7 @@ extern BYTE *PentSpin_cel;
 extern BYTE *BigTGold_cel;
 extern int dword_634474;
 extern char byte_634478;
-extern void (*dword_63447C)(TMenuItem *);
+extern void (*gmenu_enable_func)(TMenuItem *);
 extern TMenuItem *sgpCurrentMenu;
 extern BYTE *option_cel;
 extern int sgCurrentMenuIdx;

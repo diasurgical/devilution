@@ -7,7 +7,7 @@ TMenuItem *sgpCurrItem;
 BYTE *BigTGold_cel;
 int PentSpin_tick;
 BYTE PentSpin_frame;
-void (*dword_63447C)(TMenuItem *);
+void (*gmenu_enable_func)(TMenuItem *);
 TMenuItem *sgpCurrentMenu;
 BYTE *option_cel;
 BYTE *sgpLogo;
@@ -74,7 +74,7 @@ void gmenu_init_menu()
 	PentSpin_frame = 1;
 	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
-	dword_63447C = 0;
+	gmenu_enable_func = NULL;
 	sgCurrentMenuIdx = 0;
 	mouseNavigation = FALSE;
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", NULL);
@@ -96,9 +96,9 @@ void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 	PauseMode = 0;
 	mouseNavigation = FALSE;
 	sgpCurrentMenu = pItem;
-	dword_63447C = gmFunc;
+	gmenu_enable_func = gmFunc;
 	if (gmFunc) {
-		dword_63447C(sgpCurrentMenu);
+		gmenu_enable_func(sgpCurrentMenu);
 		pItem = sgpCurrentMenu;
 	}
 	sgCurrentMenuIdx = 0;
@@ -148,8 +148,8 @@ void gmenu_draw()
 	DWORD ticks;
 
 	if (sgpCurrentMenu) {
-		if (dword_63447C)
-			dword_63447C(sgpCurrentMenu);
+		if (gmenu_enable_func)
+			gmenu_enable_func(sgpCurrentMenu);
 		CelDecodeOnly((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
 		y = 160 + SCREEN_Y;
 		i = sgpCurrentMenu;
@@ -236,7 +236,7 @@ BOOL gmenu_presskeys(int vkey)
 		break;
 	case VK_ESCAPE:
 		PlaySFX(IS_TITLEMOV);
-		gmenu_call_proc(0, 0);
+		gmenu_call_proc(NULL, NULL);
 		break;
 	case VK_SPACE:
 		return FALSE;
