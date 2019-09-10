@@ -1219,7 +1219,7 @@ void AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 	}
 	if (!mienemy) {
 #ifdef HELLFIRE
-		av = 32;
+		int av = 32;
 
 		if (plr[id]._pClass == PC_ROGUE)
 			av += (plr[id]._pLevel) >> 2;
