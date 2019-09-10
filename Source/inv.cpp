@@ -103,6 +103,14 @@ void InitInv()
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		pInvCels = LoadFileInMem("Data\\Inv\\Inv_Sor.CEL", NULL);
 #endif
+#ifdef HELLFIRE
+	} else if (plr[myplr]._pClass == PC_MONK) {
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv_Sor.CEL", NULL);
+	} else if (plr[myplr]._pClass == PC_BARD) {
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv_rog.CEL", NULL);
+	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv.CEL", NULL);
+#endif
 	}
 
 	invflag = 0;
