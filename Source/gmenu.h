@@ -6,7 +6,7 @@ extern BYTE *optbar_cel;
 extern BOOLEAN mouseNavigation;
 extern BYTE *PentSpin_cel;
 extern BYTE *BigTGold_cel;
-extern int dword_634474;
+extern int PentSpin_tick;
 extern char byte_634478;
 extern void (*gmenu_enable_func)(TMenuItem *);
 extern TMenuItem *sgpCurrentMenu;
