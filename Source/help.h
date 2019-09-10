@@ -3,7 +3,7 @@
 #define __HELP_H__
 
 extern int help_select_line;
-extern int dword_634494;
+extern int unused_help;
 extern int helpflag;
 extern int displayinghelp[22];
 extern int HelpTop;
