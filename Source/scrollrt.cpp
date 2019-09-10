@@ -433,8 +433,8 @@ void DrawGame(int x, int y)
 
 	scr_pix_width = SCREEN_WIDTH;
 	scr_pix_height = VIEWPORT_HEIGHT;
-	dword_5C2FF8 = SCREEN_WIDTH / 64;
-	dword_5C2FFC = VIEWPORT_HEIGHT / 32;
+	game_world_width = SCREEN_WIDTH / 64;
+	game_world_height = VIEWPORT_HEIGHT / 32;
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 175;
@@ -1940,8 +1940,8 @@ void DrawZoom(int x, int y)
 
 	scr_pix_width = ZOOM_WIDTH;
 	scr_pix_height = 192;
-	dword_5C2FF8 = ZOOM_WIDTH / 64;
-	dword_5C2FFC = 192 / 32;
+	game_world_width = ZOOM_WIDTH / 64;
+	game_world_height = 192 / 32;
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 143;
