@@ -7,7 +7,7 @@ extern BOOLEAN mouseNavigation;
 extern BYTE *PentSpin_cel;
 extern BYTE *BigTGold_cel;
 extern int PentSpin_tick;
-extern char byte_634478;
+extern BYTE PentSpin_frame;
 extern void (*gmenu_enable_func)(TMenuItem *);
 extern TMenuItem *sgpCurrentMenu;
 extern BYTE *option_cel;
