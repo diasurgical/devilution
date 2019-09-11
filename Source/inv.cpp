@@ -868,11 +868,25 @@ BOOL GoldAutoPlace(int pnum)
 
 BOOL WeaponAutoPlace(int pnum)
 {
-	if (plr[pnum].HoldItem._iLoc != ILOC_TWOHAND) {
-		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON)
-			return FALSE;
-		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON)
-			return FALSE;
+#ifdef HELLFIRE
+	if (plr[pnum]._pClass == PC_MONK)
+		return FALSE;
+#endif
+	if (plr[pnum].HoldItem._iLoc != ILOC_TWOHAND
+#ifdef HELLFIRE
+		|| (plr[pnum]._pClass == PC_BARBARIAN && (plr[pnum].HoldItem._itype == ITYPE_SWORD || plr[pnum].HoldItem._itype == ITYPE_MACE))
+#endif
+		) {
+#ifdef HELLFIRE
+		if (plr[pnum]._pClass != PC_BARD)
+#endif
+		{
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON)
+				return FALSE;
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON)
+				return FALSE;
+		}
+
 		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE) {
 			NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
 			plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
