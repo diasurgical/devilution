@@ -753,10 +753,10 @@ BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 			xx = 0;
 		}
 		for (i = 0; i < sx && done; i++) {
-			if (xx < 10) {
-				done = plr[pnum].InvGrid[xx + yy] == 0;
-			} else {
+			if (xx >= 10) {
 				done = FALSE;
+			} else {
+				done = plr[pnum].InvGrid[xx + yy] == 0;
 			}
 			xx++;
 		}
