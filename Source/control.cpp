@@ -1049,8 +1049,10 @@ void UpdateLifeFlask()
 void DrawManaFlask()
 {
 	int filled = plr[myplr]._pManaPer;
+#ifndef HELLFIRE
 	if (filled > 80)
 		filled = 80;
+#endif
 	filled = 80 - filled;
 	if (filled > 11)
 		filled = 11;
