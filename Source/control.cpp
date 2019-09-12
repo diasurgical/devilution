@@ -2658,15 +2658,11 @@ void control_up_down(int v)
 {
 	int i;
 
-	i = 0;
-	while (1) {
+	for (i = 0; i < 8; i++) {
 		sgbTalkSavePos = (v + sgbTalkSavePos) & 7;
-		if (sgszTalkSave[sgbTalkSavePos][0])
-			break;
-		i++;
-		if (i >= 8) {
+		if (sgszTalkSave[sgbTalkSavePos][0]) {
+			strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 			return;
 		}
 	}
-	strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 }
