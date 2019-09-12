@@ -1355,7 +1355,7 @@ void CheckInvCut(int pnum, int mx, int my)
 	int r;
 	BOOL done;
 	char ii;
-	int iv, i, j, offs;
+	int iv, i, j, offs, ig;
 
 	if (plr[pnum]._pmode > PM_WALK3) {
 		return;
@@ -1368,7 +1368,6 @@ void CheckInvCut(int pnum, int mx, int my)
 
 	done = FALSE;
 
-	// TODO: this loop is compiled differently (via InvRect pointers)
 	for (r = 0; (DWORD)r < NUM_XY_SLOTS && !done; r++) {
 		// check which inventory rectangle the mouse is in, if any
 		if (mx >= InvRect[r].X
@@ -1448,7 +1447,8 @@ void CheckInvCut(int pnum, int mx, int my)
 	}
 
 	if (r >= SLOTXY_INV_FIRST && r <= SLOTXY_INV_LAST) {
-		ii = plr[pnum].InvGrid[r - SLOTXY_INV_FIRST];
+		ig = r - SLOTXY_INV_FIRST;
+		ii = plr[pnum].InvGrid[ig];
 		if (ii) {
 			iv = ii;
 			if (ii <= 0) {
