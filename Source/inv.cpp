@@ -428,8 +428,8 @@ void DrawInv()
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND) {
 #ifdef HELLFIRE
 			if (plr[myplr]._pClass != PC_BARBARIAN
-			|| plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SWORD
-			&& plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_MACE) {
+			    || plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SWORD
+			        && plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_MACE) {
 #endif
 				InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 				light_table_index = 0;
@@ -583,17 +583,17 @@ void DrawInv()
 				if (frame <= 179) {
 #endif
 					CelDecodeClr(
-						colour,
-						InvRect[j + SLOTXY_INV_FIRST].X + 64,
-						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-						pCursCels, frame, frame_width, 0, 8);
+					    colour,
+					    InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					    pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 				} else {
 					CelDecodeClr(
-						colour,
-						InvRect[j + SLOTXY_INV_FIRST].X + 64,
-						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-						pCursCels2, frame - 179, frame_width, 0, 8);
+					    colour,
+					    InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					    pCursCels2, frame - 179, frame_width, 0, 8);
 				}
 #endif
 			}
@@ -603,15 +603,15 @@ void DrawInv()
 				if (frame <= 179) {
 #endif
 					CelDrawHdrOnly(
-						InvRect[j + SLOTXY_INV_FIRST].X + 64,
-						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-						pCursCels, frame, frame_width, 0, 8);
+					    InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					    pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 				} else {
 					CelDrawHdrOnly(
-						InvRect[j + SLOTXY_INV_FIRST].X + 64,
-						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-						pCursCels2, frame - 179, frame_width, 0, 8);
+					    InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					    pCursCels2, frame - 179, frame_width, 0, 8);
 				}
 #endif
 			} else {
@@ -619,15 +619,15 @@ void DrawInv()
 				if (frame <= 179) {
 #endif
 					CelDrawHdrLightRed(
-						InvRect[j + SLOTXY_INV_FIRST].X + 64,
-						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-						pCursCels, frame, frame_width, 0, 8, 1);
+					    InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					    pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 				} else {
 					CelDrawHdrLightRed(
-						InvRect[j + SLOTXY_INV_FIRST].X + 64,
-						InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-						pCursCels2, frame - 179, frame_width, 0, 8, 1);
+					    InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					    pCursCels2, frame - 179, frame_width, 0, 8, 1);
 				}
 #endif
 			}
@@ -874,9 +874,9 @@ BOOL WeaponAutoPlace(int pnum)
 #endif
 	if (plr[pnum].HoldItem._iLoc != ILOC_TWOHAND
 #ifdef HELLFIRE
-		|| (plr[pnum]._pClass == PC_BARBARIAN && (plr[pnum].HoldItem._itype == ITYPE_SWORD || plr[pnum].HoldItem._itype == ITYPE_MACE))
+	    || (plr[pnum]._pClass == PC_BARBARIAN && (plr[pnum].HoldItem._itype == ITYPE_SWORD || plr[pnum].HoldItem._itype == ITYPE_MACE))
 #endif
-		) {
+	) {
 #ifdef HELLFIRE
 		if (plr[pnum]._pClass != PC_BARD)
 #endif
@@ -1580,7 +1580,7 @@ BOOL inv_420FD0(int pnum)
 		item->_itype = ITYPE_NONE;
 	}
 	old_item_cnt = plr[pnum]._pNumInv;
-	memset(plr[pnum].InvGrid, 0, sizeof (plr[pnum].InvGrid));
+	memset(plr[pnum].InvGrid, 0, sizeof(plr[pnum].InvGrid));
 	plr[pnum]._pNumInv = 0;
 	for (i = 0; i < old_item_cnt; i++) {
 		item = &plr[pnum].InvList[i];
@@ -1592,12 +1592,10 @@ BOOL inv_420FD0(int pnum)
 			plr[pnum].InvList[new_item_index] = tmp;
 			plr[pnum]._pNumInv++;
 			plr[pnum].InvGrid[i] = plr[pnum]._pNumInv;
-		}
-		else {
+		} else {
 			item->_itype = ITYPE_NONE;
 		}
-	}
-	;
+	};
 	for (i = 0, item = plr[pnum].SpdList; i < MAXBELTITEMS; i++, item++) {
 		item->_itype = ITYPE_NONE;
 	}
