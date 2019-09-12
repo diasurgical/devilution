@@ -1209,6 +1209,14 @@ void InitControlPan()
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		SpellPages[0][0] = SPL_RECHARGE;
 #endif
+#ifdef HELLFIRE
+	} else if (plr[myplr]._pClass == PC_MONK) {
+		SpellPages[0][0] = 46; // TODO: replace with hellfire enum when it gets added
+	} else if (plr[myplr]._pClass == PC_BARD) {
+		SpellPages[0][0] = SPL_IDENTIFY;
+	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+		SpellPages[0][0] = 22; // TODO: replace with hellfire enum when it gets added
+#endif
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", NULL);
 	pGBoxBuff = LoadFileInMem("CtrlPan\\Golddrop.cel", NULL);
