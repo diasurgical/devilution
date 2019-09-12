@@ -1033,13 +1033,27 @@ void DrawLifeFlask()
 
 void UpdateLifeFlask()
 {
-	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	double p;
+	int filled;
+
+#ifdef HELLFIRE
+	if (plr[myplr]._pMaxHP > 0) {
+		p = 0.0;
+	} else {
+		p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	}
+#else
+	p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+#endif
+	filled = p;
 	plr[myplr]._pHPPer = filled;
 
 	if (filled > 69)
 		filled = 69;
+#ifndef HELLFIRE
 	else if (filled < 0)
 		filled = 0;
+#endif
 	if (filled != 69)
 		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 160, 512);
 	if (filled)
