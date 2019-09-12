@@ -1016,11 +1016,25 @@ void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int
 
 void DrawLifeFlask()
 {
-	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
-	plr[myplr]._pHPPer = filled;
+	double p;
+	int filled;
 
+#ifdef HELLFIRE
+	if (plr[myplr]._pMaxHP <= 0) {
+		p = 0.0;
+	} else {
+		p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	}
+#else
+	p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+#endif
+	plr[myplr]._pHPPer = p;
+	filled = plr[myplr]._pHPPer;
+
+#ifndef HELLFIRE
 	if (filled > 80)
 		filled = 80;
+#endif
 	filled = 80 - filled;
 	if (filled > 11)
 		filled = 11;
