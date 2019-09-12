@@ -2635,7 +2635,18 @@ void control_press_enter()
 	BYTE talk_save;
 
 	if (sgszTalkMsg[0]) {
+#ifdef HELLFIRE
+		int pmask;
+		pmask = 0;
+
+		for (i = 0; i < MAX_PLRS; i++) {
+			if (whisper[i])
+				pmask |= 1 << i;
+		}
+		NetSendCmdString(pmask, sgszTalkMsg);
+#else
 		control_reset_talk_msg(sgszTalkMsg);
+#endif
 		for (i = 0; i < 8; i++) {
 			if (!strcmp(sgszTalkSave[i], sgszTalkMsg))
 				break;
