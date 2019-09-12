@@ -1512,10 +1512,10 @@ void inv_update_rem_item(int pnum, BYTE iv)
 		plr[pnum].InvBody[iv]._itype = ITYPE_NONE;
 	}
 
-	if (plr[pnum]._pmode == PM_DEATH) {
-		CalcPlrInv(pnum, FALSE);
-	} else {
+	if (plr[pnum]._pmode != PM_DEATH) {
 		CalcPlrInv(pnum, TRUE);
+	} else {
+		CalcPlrInv(pnum, FALSE);
 	}
 }
 
