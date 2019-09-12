@@ -1581,7 +1581,11 @@ void DrawInfoBox()
 			infoclr = COL_GOLD;
 			strcpy(infostr, plr[pcursplr]._pName);
 			ClearPanel();
+#ifdef HELLFIRE
+			sprintf(tempstr, "%s, Level : %i", ClassStrTbl[plr[pcursplr]._pClass], plr[pcursplr]._pLevel);
+#else
 			sprintf(tempstr, "Level : %i", plr[pcursplr]._pLevel);
+#endif
 			AddPanelString(tempstr, TRUE);
 			sprintf(tempstr, "Hit Points %i of %i", plr[pcursplr]._pHitPoints >> 6, plr[pcursplr]._pMaxHP >> 6);
 			AddPanelString(tempstr, TRUE);
