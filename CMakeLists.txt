@@ -112,7 +112,6 @@ add_library(devilution STATIC
   Source/debug.cpp
   Source/diablo.cpp
   Source/doom.cpp
-# Source/dx.cpp
   Source/drlg_l1.cpp
   Source/drlg_l2.cpp
   Source/drlg_l3.cpp
@@ -163,7 +162,6 @@ add_library(devilution STATIC
   Source/scrollrt.cpp
   Source/setmaps.cpp
   Source/sha.cpp
-# Source/sound.cpp
   Source/spells.cpp
   Source/stores.cpp
   Source/sync.cpp
