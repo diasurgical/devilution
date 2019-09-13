@@ -15,17 +15,6 @@ int cleanup_thread_id;
 //	}
 //}
 
-void TriggerBreak()
-{
-#ifdef _DEBUG
-	LPTOP_LEVEL_EXCEPTION_FILTER pFilter;
-
-	pFilter = SetUnhandledExceptionFilter(BreakFilter);
-	__debugbreak();
-	SetUnhandledExceptionFilter(pFilter);
-#endif
-}
-
 #ifdef _DEBUG
 LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 {
@@ -452,9 +441,6 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 
 	va_start(va, pszFmt);
 	FreeDlg();
-#ifdef _DEBUG
-	TriggerBreak();
-#endif
 
 	if (pszFmt)
 		MsgBox(pszFmt, va);

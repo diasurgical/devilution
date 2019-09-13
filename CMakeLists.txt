@@ -121,7 +121,6 @@ add_library(devilution STATIC
   Source/encrypt.cpp
   Source/engine.cpp
   Source/error.cpp
-  Source/fault.cpp
   Source/gamemenu.cpp
   Source/gendung.cpp
   Source/gmenu.cpp
@@ -133,7 +132,6 @@ add_library(devilution STATIC
   Source/items.cpp
   Source/lighting.cpp
   Source/loadsave.cpp
-  Source/logging.cpp
   Source/mainmenu.cpp
   Source/minitext.cpp
   Source/misdat.cpp

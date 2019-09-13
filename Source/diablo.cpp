@@ -262,7 +262,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	ShowCursor(FALSE);
 	srand(GetTickCount());
 	InitHash();
-	fault_get_filter();
 
 	bNoEvent = diablo_get_not_running();
 	if (!diablo_find_window("DIABLO") && bNoEvent) {
