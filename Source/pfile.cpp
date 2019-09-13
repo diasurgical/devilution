@@ -388,7 +388,7 @@ HANDLE pfile_open_save_archive(BOOL *showFixedMsg, DWORD save_num)
 	HANDLE archive;
 
 	pfile_get_save_path(SrcStr, sizeof(SrcStr), save_num);
-	if (SFileOpenArchive(SrcStr, 0x7000, 0, &archive))
+	if (SFileOpenArchive(SrcStr, 0x7000, FS_PC, &archive))
 		return archive;
 	return NULL;
 }
@@ -614,7 +614,7 @@ void pfile_rename_temp_to_perm()
 		}
 	}
 	/// ASSERT: assert(! GetPermSaveNames(dwIndex,szPerm));
-	GetPermSaveNames(dwIndex, szPerm);
+	GetPermSaveNames(dwIndex, szPerm); // BUGFIX: function call has no purpose
 	pfile_flush(TRUE, dwChar);
 }
 

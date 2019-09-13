@@ -36,6 +36,7 @@
 #define MDMAXX					40
 #define MDMAXY					40
 #define MAXCHARLEVEL			51
+#define ITEMTYPES				35
 
 // number of inventory grid cells
 #define NUM_INV_GRID_ELEM		40
@@ -176,7 +177,7 @@ typedef void (*_PVFV)(void);
 #endif
 
 // To apply to certain functions which have local variables aligned by 1 for unknown yet reason
-#ifdef _MSC_VER
+#if (_MSC_VER == 1200)
 #define ALIGN_BY_1 __declspec(align(1))
 #else
 #define ALIGN_BY_1

@@ -225,7 +225,7 @@ Below are a few examples of some simple improvements made to the game. It is pla
 
 > Wow, does this mean I can download and play Diablo for free now?
 
-No, you'll need access to the data from the original game. If you don't have an original CD then you can [buy Diablo from GoG.com](https://www.gog.com/game/diablo).
+No, you'll need access to the data from the original game. If you don't have an original CD then you can [buy Diablo from GoG.com](https://www.gog.com/game/diablo). Alternatively you can also use `spawn.mpq` from the [http://ftp.blizzard.com/pub/demos/diablosw.exe](shareware) version and compile the with the SPAWN flag defined.
 > Cool, so I fired your mod up, but there's no 1080p or new features?
 
 We're working on it.

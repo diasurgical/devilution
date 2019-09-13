@@ -5,7 +5,7 @@
 extern _SNETVERSIONDATA fileinfo;
 extern int gbActive;
 extern char diablo_exe_path[MAX_PATH];
-extern HANDLE unused_mpq;
+extern HANDLE hellfire_mpq;
 extern char patch_rt_mpq_path[MAX_PATH];
 extern WNDPROC CurrentProc;
 extern HANDLE diabdat_mpq;

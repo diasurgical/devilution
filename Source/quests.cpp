@@ -679,7 +679,7 @@ void ResyncQuests()
 		quests[QTYPE_VEIL]._qvar1 = 1;
 		SpawnQuestItem(IDI_GLDNELIX, 0, 0, 5, 1);
 	}
-	if (setlevel && setlvlnum == 5) {
+	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
 		if (quests[QTYPE_VB]._qvar1 >= 4)
 			ObjChangeMapResync(1, 11, 20, 18);
 		if (quests[QTYPE_VB]._qvar1 >= 6)

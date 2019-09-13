@@ -494,7 +494,7 @@ void CreateL4Dungeon(DWORD rseed, int entry)
 
 void DRLG_L4(int entry)
 {
-	int i, j, spi, spj;
+	int i, j, spi, spj, ar;
 	BOOL doneflag;
 
 	do {
@@ -503,8 +503,11 @@ void DRLG_L4(int entry)
 			InitL4Dungeon();
 			L4firstRoom();
 			L4FixRim();
-		} while (GetArea() < 173);
-		uShape();
+			ar = GetArea();
+			if (ar >= 173) {
+				uShape();
+			}
+		} while (ar < 173);
 		L4makeDungeon();
 		L4makeDmt();
 		L4tileFix();

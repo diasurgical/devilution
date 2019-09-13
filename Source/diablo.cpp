@@ -479,25 +479,24 @@ void diablo_init_screen()
 
 BOOL diablo_find_window(LPCSTR lpClassName)
 {
-	HWND result; // eax
-	HWND v2;     // esi
-	HWND v3;     // eax
-	HWND v4;     // edi
+	HWND hWnd, active;
 
-	result = FindWindow(lpClassName, 0);
-	v2 = result;
-	if (!result)
-		return 0;
+	hWnd = FindWindow(lpClassName, 0);
+	if (!hWnd)
+		return FALSE;
 
-	v3 = GetLastActivePopup(result);
-	if (v3)
-		v2 = v3;
-	v4 = GetTopWindow(v2);
-	if (!v4)
-		v4 = v2;
-	SetForegroundWindow(v2);
-	SetFocus(v4);
-	return 1;
+	active = GetLastActivePopup(hWnd);
+	if (active)
+		hWnd = active;
+
+	active = GetTopWindow(hWnd);
+	if (!active)
+		active = hWnd;
+
+	SetForegroundWindow(hWnd);
+	SetFocus(active);
+
+	return TRUE;
 }
 
 BOOL PressEscKey()

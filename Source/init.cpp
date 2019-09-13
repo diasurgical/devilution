@@ -7,7 +7,7 @@ DEVILUTION_BEGIN_NAMESPACE
 _SNETVERSIONDATA fileinfo;
 int gbActive;
 char diablo_exe_path[MAX_PATH];
-HANDLE unused_mpq;
+HANDLE hellfire_mpq;
 char patch_rt_mpq_path[MAX_PATH];
 WNDPROC CurrentProc;
 HANDLE diabdat_mpq;
@@ -33,9 +33,9 @@ void init_cleanup(BOOL show_cursor)
 		SFileCloseArchive(patch_rt_mpq);
 		patch_rt_mpq = NULL;
 	}
-	if (unused_mpq) {
-		SFileCloseArchive(unused_mpq);
-		unused_mpq = NULL;
+	if (hellfire_mpq) {
+		SFileCloseArchive(hellfire_mpq);
+		hellfire_mpq = NULL;
 	}
 
 	UiDestroy();
@@ -55,24 +55,30 @@ void init_disable_screensaver(BOOLEAN disable)
 	char Data[16];
 	DWORD Type, cbData;
 	HKEY phkResult;
+	LRESULT success;
 
 	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
 
-	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult)) {
-		if (disable) {
-			cbData = 16;
-			if (!RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData))
-				screensaver_enabled_prev = Data[0] != '0';
-			enabled = FALSE;
-		} else {
-			enabled = screensaver_enabled_prev;
-		}
-		Data[1] = 0;
-		Data[0] = enabled ? '1' : '0';
-		RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2);
-		RegCloseKey(phkResult);
+	success = RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult);
+	if (success != ERROR_SUCCESS) {
+		return;
 	}
+
+	if (disable) {
+		cbData = 16;
+		success = RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData);
+		if (success == ERROR_SUCCESS)
+			screensaver_enabled_prev = Data[0] != '0';
+		enabled = FALSE;
+	} else {
+		enabled = screensaver_enabled_prev;
+	}
+
+	Data[1] = 0;
+	Data[0] = enabled ? '1' : '0';
+	RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2);
+	RegCloseKey(phkResult);
 }
 
 void init_create_window(int nCmdShow)
@@ -141,7 +147,7 @@ void init_archives()
 #endif
 #endif
 #ifdef COPYPROT
-		if (diabdat_mpq)
+		if (diabdat_mpq != NULL)
 			break;
 		UiCopyProtError(&result);
 		if (result == COPYPROT_CANCEL)
@@ -183,12 +189,12 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags
 	init_strip_trailing_slash(Filename);
 	strcpy(mpq_path, Buffer);
 	strcat(mpq_path, mpq_name);
-	if (SFileOpenArchive(mpq_path, flags, fs, &archive))
+	if (SFileOpenArchive(mpq_path, 0, flags, &archive))
 		return archive;
 	if (strcmp(Filename, Buffer)) {
 		strcpy(mpq_path, Filename);
 		strcat(mpq_path, mpq_name);
-		if (SFileOpenArchive(mpq_path, flags, fs, &archive))
+		if (SFileOpenArchive(mpq_path, 0, flags, &archive))
 			return archive;
 	}
 	archive_path[0] = '\0';
@@ -197,7 +203,7 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags
 			init_strip_trailing_slash(archive_path);
 			strcpy(mpq_path, archive_path);
 			strcat(mpq_path, mpq_name);
-			if (SFileOpenArchive(mpq_path, flags, fs, &archive))
+			if (SFileOpenArchive(mpq_path, 0, flags, &archive))
 				return archive;
 		}
 	}
@@ -236,7 +242,10 @@ BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phA
 	}
 
 	pszDrive = szDrive;
-	while (*pszDrive != '\0') {
+	if (*pszDrive == '\0') {
+		return FALSE;
+	}
+	while (1) {
 		pszRoot = pszDrive;
 		while (*pszDrive++ != '\0')
 			;
@@ -247,9 +256,12 @@ BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phA
 				return TRUE;
 			}
 		}
+		if (*pszDrive == '\0') {
+			return FALSE;
+		}
 	}
 
-	return FALSE;
+	return TRUE;
 }
 
 void init_get_file_info()
