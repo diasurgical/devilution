@@ -504,12 +504,6 @@ int _findnext(long, struct DVL_finddata_t *finder)
 	return -1;
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
-{
-	DUMMY();
-	return lpTopLevelExceptionFilter;
-}
-
 HMODULE GetModuleHandleA(LPCSTR lpModuleName)
 {
 	UNIMPLEMENTED();
@@ -520,13 +514,6 @@ BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer)
 {
 	UNIMPLEMENTED();
 	return false;
-}
-
-void GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
-{
-	DUMMY();
-	memset(lpSystemInfo, 0, sizeof(*lpSystemInfo));
-	lpSystemInfo->dwPageSize = 4096;
 }
 
 HDC GetDC(HWND hWnd)
@@ -591,64 +578,6 @@ BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)
 void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength)
 {
 	strncpy(lpString1, lpString2, iMaxLength);
-}
-
-WINBOOL CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
-    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation)
-{
-	UNIMPLEMENTED();
-	return false;
-}
-
-void ExitProcess(UINT uExitCode)
-{
-	UNIMPLEMENTED();
-}
-
-DWORD GetCurrentProcessId()
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
-HANDLE CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
-{
-	DUMMY();
-	return NULL;
-}
-
-LPVOID MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
-    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
-{
-	UNIMPLEMENTED();
-	return NULL;
-}
-
-WINBOOL UnmapViewOfFile(LPCVOID lpBaseAddress)
-{
-	UNIMPLEMENTED();
-	return false;
-}
-
-DWORD WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds)
-{
-	UNIMPLEMENTED();
-	return 0;
-}
-
-HWND GetWindow(HWND hWnd, UINT uCmd)
-{
-	UNIMPLEMENTED();
-	return NULL;
-}
-
-DWORD GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
-{
-	UNIMPLEMENTED();
-	return 0;
 }
 
 DWORD GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
@@ -742,10 +671,5 @@ LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong)
 {
 	DUMMY();
 	return 0;
-}
-
-void __debugbreak()
-{
-	DUMMY();
 }
 }
