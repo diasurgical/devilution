@@ -584,19 +584,6 @@ void TextDlg(HWND hDlg, char *text)
 		SetDlgItemText(hDlg, 1000, text);
 }
 
-void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
-{
-	char *size;
-	LPARAM dwInitParam[128];
-
-	size = strrchr(log_file_path, '\\');
-	if (size)
-		log_file_path = size + 1;
-
-	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
-	DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
-}
-
 void FileErrDlg(const char *error)
 {
 	FreeDlg();

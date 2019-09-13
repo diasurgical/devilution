@@ -251,8 +251,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #endif
 	ghInst = hInst;
 
-	if (RestrictedTest())
-		ERR_OK_DLG(IDD_DIALOG10, 0);
 	if (ReadOnlyTest()) {
 		if (!GetModuleFileName(ghInst, szFileName, sizeof(szFileName)))
 			szFileName[0] = '\0';
