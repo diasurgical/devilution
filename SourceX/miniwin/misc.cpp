@@ -504,14 +504,6 @@ int _findnext(long, struct DVL_finddata_t *finder)
 	return -1;
 }
 
-/**
- * @brief Used to shutdown a MS Office 95 tool bar
- */
-HWND GetForegroundWindow()
-{
-	return NULL;
-}
-
 LPTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
 {
 	DUMMY();
@@ -527,54 +519,6 @@ HMODULE GetModuleHandleA(LPCSTR lpModuleName)
 BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer)
 {
 	UNIMPLEMENTED();
-	return false;
-}
-
-/**
- * @brief Used to shutdown a MS Office 95 tool bar
- */
-int GetClassName(HWND hWnd, LPTSTR lpClassName, int nMaxCount)
-{
-	return 0;
-}
-
-/**
- * @brief Used to find MS Office 95
- */
-HRESULT SHGetSpecialFolderLocation(HWND hwnd, int csidl, PIDLIST_ABSOLUTE *ppidl)
-{
-	return 0;
-}
-
-/**
- * @brief Used to find MS Office 95
- */
-HINSTANCE ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
-{
-	return NULL;
-}
-
-/**
- * @brief Used to find MS Office 95
- */
-HWND GetDesktopWindow()
-{
-	return NULL;
-}
-
-/**
- * @brief Used to find MS Office 95
- */
-BOOL SHGetPathFromIDListA(PCIDLIST_ABSOLUTE pidl, LPSTR pszPath)
-{
-	return false;
-}
-
-/**
- * @brief Used to find MS Office 95
- */
-BOOL FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
-{
 	return false;
 }
 
