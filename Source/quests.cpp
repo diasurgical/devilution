@@ -32,7 +32,18 @@ QuestData questlist[MAXQUESTS] = {
 	{       3,          3, DTYPE_CATHEDRAL, QTYPE_KING,   100,      1,       1, QUEST_KING2,    "The Curse of King Leoric" },
 	{       2,         -1, DTYPE_CAVES,     QTYPE_PW,     100,      4,       0, QUEST_POISON3,  "Poisoned Water Supply"    },
 	{       6,         -1, DTYPE_CATACOMBS, QTYPE_BONE,   100,      2,       0, QUEST_BONER,    "The Chamber of Bone"      },
-	{      15,         15, DTYPE_CATHEDRAL, QTYPE_VB,     100,      5,       1, QUEST_VILE1,    "Archbishop Lazarus"       }
+	{      15,         15, DTYPE_CATHEDRAL, QTYPE_VB,     100,      5,       1, QUEST_VILE1,    "Archbishop Lazarus"       },
+#ifdef HELLFIRE
+	// TODO: apply msg enum in second to last column:
+	{      17,         17, DTYPE_NONE,      QTYPE_GRAVE,  100,      0,       1, 0x111,          "Grave Matters"            },
+	{      9,           9, DTYPE_NONE,      QTYPE_FARMER, 100,      0,       1, 0x115,          "Farmer's Orchard"         },
+	{      17,         -1, DTYPE_NONE,      QTYPE_GIRL,   100,      0,       0, 0x11B,          "Little Girl"              },
+	{      19,         -1, DTYPE_NONE,      QTYPE_TRADER, 100,      0,       0, 0x132,          "Wandering Trader"         },
+	{      17,         17, DTYPE_NONE,      QTYPE_DEFILER,100,      0,       1, 0x11E,          "The Defiler"              },
+	{      21,         21, DTYPE_NONE,      QTYPE_NAKRUL, 100,      0,       1, 0x123,          "Na-Krul"                  },
+	{      21,         -1, DTYPE_NONE,      QTYPE_CORNSTN,100,      0,       0, 0x128,          "Cornerstone of the World" },
+	{       9,          9, DTYPE_NONE,      QTYPE_JERSEY, 100,      0,       1, 0x12C,          "The Jersey's Jersey"      },
+#endif
 	// clang-format on
 };
 char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };
