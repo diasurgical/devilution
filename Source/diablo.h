@@ -46,7 +46,6 @@
 #include "movie.h"
 #include "mpqapi.h"
 #include "msg.h"
-#include "msgcmd.h"
 #include "multi.h"
 #include "nthread.h"
 #include "objdat.h"

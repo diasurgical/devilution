@@ -140,7 +140,6 @@ add_library(devilution STATIC
   Source/monster.cpp
   Source/movie.cpp
   Source/mpqapi.cpp
-  Source/msgcmd.cpp
   Source/msg.cpp
   Source/multi.cpp
   Source/nthread.cpp

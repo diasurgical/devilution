@@ -169,7 +169,6 @@ void run_game_loop(unsigned int uMsg)
 		}
 		multi_process_network_packets();
 		game_loop(gbGameLoopStartup);
-		msgcmd_send_chat();
 		gbGameLoopStartup = FALSE;
 		DrawAndBlit();
 	}
