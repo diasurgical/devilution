@@ -962,7 +962,6 @@ typedef struct TMegaPkt {
 	BYTE data[32000];
 } TMegaPkt;
 #pragma pack(pop)
-#define TMEGAPKT_SIZE sizeof(TMegaPkt)
 
 typedef struct TBuffer {
 	DWORD dwNextWriteOffset;

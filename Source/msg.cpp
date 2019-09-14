@@ -55,7 +55,7 @@ TMegaPkt *msg_get_next_packet()
 {
 	TMegaPkt *result;
 
-	sgpCurrPkt = (TMegaPkt *)DiabloAllocPtr(TMEGAPKT_SIZE);
+	sgpCurrPkt = (TMegaPkt *)DiabloAllocPtr(sizeof(TMegaPkt));
 	sgpCurrPkt->pNext = NULL;
 	sgpCurrPkt->dwSpaceLeft = 32000;
 
