@@ -1876,6 +1876,9 @@ void CheckQuestItem(int pnum)
 void InvGetItem(int pnum, int ii)
 {
 	int i;
+#ifdef HELLFIRE
+	BOOL cursor_updated;
+#endif
 
 	if (dropGoldFlag) {
 		dropGoldFlag = FALSE;
@@ -1885,12 +1888,32 @@ void InvGetItem(int pnum, int ii)
 	if (dItem[item[ii]._ix][item[ii]._iy]) {
 		if (myplr == pnum && pcurs >= CURSOR_FIRSTITEM)
 			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr].WorldX, plr[myplr].WorldY);
-		item[ii]._iCreateInfo &= ~0x8000;
+#ifdef HELLFIRE
+		if (item[ii]._iUid != 0)
+#endif
+			item[ii]._iCreateInfo &= ~0x8000;
 		plr[pnum].HoldItem = item[ii];
 		CheckQuestItem(pnum);
 		CheckBookLevel(pnum);
 		CheckItemStats(pnum);
+#ifdef HELLFIRE
+		cursor_updated = FALSE;
+		if (plr[pnum].HoldItem._itype == ITYPE_GOLD && GoldAutoPlace(pnum))
+			cursor_updated = TRUE;
+#endif
 		dItem[item[ii]._ix][item[ii]._iy] = 0;
+#ifdef HELLFIRE
+		if (currlevel == 21 && item[ii]._ix == RowOfCornerStone && item[ii]._iy == ColOfCornerStone) {
+			CornerItemMaybe.IDidx = -1;
+			CornerItemMaybe._itype = ITYPE_MISC;
+			CornerItemMaybe._iSelFlag = FALSE;
+			CornerItemMaybe._ix = 0;
+			CornerItemMaybe._iy = 0;
+			CornerItemMaybe._iAnimFlag = FALSE;
+			CornerItemMaybe._iIdentified = FALSE;
+			CornerItemMaybe._iPostDraw = FALSE;
+	}
+#endif
 		i = 0;
 		while (i < numitems) {
 			if (itemactive[i] == ii) {
@@ -1901,7 +1924,10 @@ void InvGetItem(int pnum, int ii)
 			}
 		}
 		pcursitem = -1;
-		SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+#ifdef HELLFIRE
+		if (!cursor_updated)
+#endif
+			SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	}
 }
 
