@@ -998,7 +998,11 @@ typedef struct QuestStruct {
 	int _qty;
 	unsigned char _qslvl;
 	unsigned char _qidx;
+#ifndef HELLFIRE
 	unsigned char _qmsg;
+#else
+	unsigned int _qmsg;
+#endif
 	unsigned char _qvar1;
 	unsigned char _qvar2;
 	int _qlog;
