@@ -77,10 +77,10 @@ void InitQuests()
 		}
 	}
 
-	initiatedQuests = 0;
 	questlog = FALSE;
 	ALLQUESTS = 1;
 	WaterDone = 0;
+	initiatedQuests = 0;
 
 	for (z = 0; z < MAXQUESTS; z++) {
 		if (gbMaxPlayers <= 1 || questlist[z]._qflags & 1) {
@@ -100,11 +100,11 @@ void InitQuests()
 				quests[z]._qlog = 0;
 			}
 
-			quests[z]._qtx = 0;
 			quests[z]._qslvl = questlist[z]._qslvl;
+			quests[z]._qtx = 0;
+			quests[z]._qty = 0;
 			quests[z]._qidx = z;
 			quests[z]._qlvltype = questlist[z]._qlvlt;
-			quests[z]._qty = 0;
 			quests[z]._qvar2 = 0;
 			quests[z]._qmsg = questlist[z]._qdmsg;
 		}
