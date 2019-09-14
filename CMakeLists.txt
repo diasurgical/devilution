@@ -59,11 +59,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 
-if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
-  message(WARNING "sizeof(void*) == ${CMAKE_SIZEOF_VOID_P}.")
-  message(WARNING [[Not 32-bit, highly experimental!]])
-endif()
-
 find_package(Threads REQUIRED)
 find_package(SDL2 CONFIG QUIET)
 if (NOT SDL2_FOUND)

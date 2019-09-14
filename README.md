@@ -18,57 +18,53 @@ Status | Platform
 Please keep in mind that this is still being worked on and is missing parts of UI and some minor bugs, see [milestone 1](https://github.com/diasurgical/devilutionX/milestone/1) for a full list of known issues.
 
 # Building from Source
-## 32-bit building on 64-bit platforms
 <details><summary>Linux</summary>
 
 ### Installing dependencies on Debian and Ubuntu
 ```
-sudo apt-get install cmake g++-multilib libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
+sudo apt-get install cmake g++ libsdl2-mixer-dev libsdl2-ttf-dev libsodium-dev
 ```
 ### Installing dependencies on Fedora
 ```
-sudo dnf install cmake glibc-devel.i686 SDL2-devel.i686 SDL2_ttf-devel.i686 SDL2_mixer-devel.i686 libsodium-devel.i686 libasan.i686
+sudo dnf install cmake glibc-devel SDL2-devel SDL2_ttf-devel SDL2_mixer-devel libsodium-devel libasan
 ```
 ### Compiling
 ```
 mkdir build
 cd build
-linux32 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
-linux32 make -j$(nproc)
+cmake ..
+make -j$(nproc)
 ```
 </details>
+
 <details><summary>macOS</summary>
 
-### Installing dependencies
-Install [Xcode 9.4.1 and Xcode Command Line tools](https://developer.apple.com/download/more/?=xcode%209.4.1), this is the last version with **32 bits** support.
-
-Note: Be sure that your to select the command line Xcode if you have more then one installed:
-```
-$ sudo xcode-select --switch /Applications/Xcode.app
-```
-
-Verify that you don't have FreeType and HarfBuzz installed from
-[Homebrew](https://brew.sh/), which will cause build errors for SDL2_ttf:
+Make sure you have [Homebrew](https://brew.sh/) installed, then run:
 
 ```
-brew info freetype
-brew info harfbuzz
-```
-
-If you do have those installed, you'll have to temporarily uninstall them:
-
-```
-brew uninstall --ignore-dependencies freetype
-brew uninstall --ignore-dependencies harfbuzz
-```
-
-You can install FreeType and HarfBuzz from Homebrew again after devilutionX builds successfully.
-
-Now you can run the build script:
-```
-./macos-build.sh --build-all-x86
+brew bundle
+mkdir build
+cd build
+cmake ..
+make -j$(sysctl -n hw.physicalcpu)
 ```
 </details>
+<details><summary>FreeBSD</summary>
+*Note: At the moment this only appears to work from a 32bit system.*
+
+### Installing dependencies
+```
+pkg install cmake gcc8 sdl2_mixer sdl2_ttf libsodium
+```
+### Compiling
+```
+mkdir build
+cd build
+cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc8 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++8 ..
+make -j$(sysctl -n hw.ncpu)
+```
+</details>
+
 <details><summary>Windows via MinGW</summary>
 
 ### Installing dependencies on Debian and Ubuntu
@@ -124,53 +120,6 @@ Make sure to install the `C++ CMake tools for Windows` component for Visual Stud
 7. Use build/debug etc. commands inside Visual Studio Solution like with any normal Visual Studio project.
 </details>
 
-## Building for the native platform
-*Note: Since 64-bit builds are currently not in a playable state, it is advised to build in a 32-bit environment. Another possibility is a 32-bit build on a 64-bit system (see above).*
-<details><summary>Linux</summary>
-
-### Installing dependencies on Debian and Ubuntu
-```
-sudo apt-get install cmake g++ libsdl2-mixer-dev libsdl2-ttf-dev libsodium-dev
-```
-### Installing dependencies on Fedora
-```
-sudo dnf install cmake glibc-devel SDL2-devel SDL2_ttf-devel SDL2_mixer-devel libsodium-devel libasan
-```
-### Compiling
-```
-mkdir build
-cd build
-cmake ..
-make -j$(nproc)
-```
-</details>
-<details><summary>macOS</summary>
-
-Make sure you have [Homebrew](https://brew.sh/) installed, then run:
-
-```
-brew bundle
-mkdir build
-cd build
-cmake ..
-make -j$(sysctl -n hw.physicalcpu)
-```
-</details>
-<details><summary>FreeBSD</summary>
-*Note: At the moment this only appears to work from a 32bit system.*
-
-### Installing dependencies
-```
-pkg install cmake gcc8 sdl2_mixer sdl2_ttf libsodium
-```
-### Compiling
-```
-mkdir build
-cd build
-cmake -DCMAKE_C_COMPILER=/usr/local/bin/gcc8 -DCMAKE_CXX_COMPILER=/usr/local/bin/g++8 ..
-make -j$(sysctl -n hw.ncpu)
-```
-</details>
 <details><summary>Haiku</summary>
 
 ### Installing dependencies on 32 bit Haiku
@@ -200,6 +149,7 @@ make -j$(nproc)
 ## CMake arguments
 ### General
 The default build type is `Debug`. This can be changed with `-DBINARY_RELEASE=ON`. Independently of this, the debug mode of the Diablo engine is always enabled by default. It can be disabled with `-DDEBUG=OFF`. Finally, in debug builds the address sanitizer is enabled by default. This can be disabled with `-DASAN=OFF`.
+You can also generate 32bit builds on 64bit platforms by setting `-DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake` (remember to use the `linux32` command if on Linux).
 ### mingw32
 Use `-DCROSS_PREFIX=/path/to/prefix` if the `i686-w64-mingw32` directory is not in `/usr`.
 
