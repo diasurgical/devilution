@@ -3744,12 +3744,10 @@ void SortHealer()
 	sorted = FALSE;
 	while (j > 2 && !sorted) {
 		sorted = TRUE;
-		if (j > 2) {
-			for (k = 2; k < j; k++) {
-				if (healitem[k].IDidx > healitem[k + 1].IDidx) {
-					BubbleSwapItem(&healitem[k], &healitem[k + 1]);
-					sorted = FALSE;
-				}
+		for (k = 2; k < j; k++) {
+			if (healitem[k].IDidx > healitem[k + 1].IDidx) {
+				BubbleSwapItem(&healitem[k], &healitem[k + 1]);
+				sorted = FALSE;
 			}
 		}
 		j--;
