@@ -1998,6 +1998,9 @@ int RndUItem(int m)
 	if (m != -1 && (monster[m].MData->mTreasure & 0x8000) != 0 && gbMaxPlayers == 1)
 		return -1 - (monster[m].MData->mTreasure & 0xFFF);
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		okflag = TRUE;
@@ -2007,8 +2010,13 @@ int RndUItem(int m)
 			if (monster[m].mLevel < AllItemsList[i].iMinMLvl)
 				okflag = FALSE;
 		} else {
+#ifdef HELLFIRE
+			if (2 * curlv < AllItemsList[i].iMinMLvl)
+				okflag = FALSE;
+#else
 			if (2 * currlevel < AllItemsList[i].iMinMLvl)
 				okflag = FALSE;
+#endif
 		}
 		if (AllItemsList[i].itype == ITYPE_MISC)
 			okflag = FALSE;
@@ -2022,7 +2030,11 @@ int RndUItem(int m)
 			okflag = FALSE;
 		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
 			okflag = FALSE;
+#ifdef HELLFIRE
+		if (okflag && ri < 512) {
+#else
 		if (okflag) {
+#endif
 			ril[ri] = i;
 			ri++;
 		}
