@@ -2232,12 +2232,18 @@ int InvPutItem(int pnum, int x, int y)
 	return ii;
 }
 
-int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, DWORD ibuff)
+int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, DWORD ibuff
+#ifdef HELLFIRE
+    ,
+    int to_hit, int max_dam, int min_str, int min_mag, int min_dex, int ac
+#endif
+)
 {
 	BOOL done;
 	int d, ii;
 	int i, j, l;
 	int xx, yy;
+	int xp, yp;
 
 	if (numitems >= 127)
 		return -1;
@@ -2266,13 +2272,13 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 				done = FALSE;
 				for (l = 1; l < 50 && !done; l++) {
 					for (j = -l; j <= l && !done; j++) {
-						yy = j + plr[pnum].WorldY;
+						yp = j + plr[pnum].WorldY;
 						for (i = -l; i <= l && !done; i++) {
-							xx = i + plr[pnum].WorldX;
-							if (CanPut(xx, yy)) {
+							xp = i + plr[pnum].WorldX;
+							if (CanPut(xp, yp)) {
 								done = TRUE;
-								x = xx;
-								y = yy;
+								x = xp;
+								y = yp;
 							}
 						}
 					}
@@ -2300,12 +2306,28 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 		item[ii]._iMaxDur = mdur;
 		item[ii]._iCharges = ch;
 		item[ii]._iMaxCharges = mch;
+#ifdef HELLFIRE
+		item[ii]._iPLToHit = to_hit;
+		item[ii]._iMaxDam = max_dam;
+		item[ii]._iMinStr = min_str;
+		item[ii]._iMinMag = min_mag;
+		item[ii]._iMinDex = min_dex;
+		item[ii]._iAC = ac;
+#endif
 	}
 
 	item[ii]._ix = x;
 	item[ii]._iy = y;
 	RespawnItem(ii, 1);
 	numitems++;
+#ifdef HELLFIRE
+	if (currlevel == 21 && x == RowOfCornerStone && y == ColOfCornerStone) {
+		CornerItemMaybe = item[ii];
+		InitQTextMsg(296);
+		quests[QTYPE_CORNSTN]._qlog = 0;
+		quests[QTYPE_CORNSTN]._qactive = 3;
+	}
+#endif
 	return ii;
 }
 

@@ -818,6 +818,14 @@ typedef struct TCmdGItem {
 	WORD wValue;
 	DWORD dwBuff;
 	int dwTime;
+#ifdef HELLFIRE
+	WORD wToHit;
+	WORD wMaxDam;
+	BYTE bMinStr;
+	BYTE bMinMag;
+	BYTE bMinDex;
+	BYTE bAC;
+#endif
 } TCmdGItem;
 
 typedef struct TCmdPItem {
@@ -834,6 +842,14 @@ typedef struct TCmdPItem {
 	BYTE bMCh;
 	WORD wValue;
 	DWORD dwBuff;
+#ifdef HELLFIRE
+	WORD wToHit;
+	WORD wMaxDam;
+	BYTE bMinStr;
+	BYTE bMinMag;
+	BYTE bMinDex;
+	BYTE bAC;
+#endif
 } TCmdPItem;
 
 typedef struct TCmdChItem {
