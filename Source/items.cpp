@@ -3651,7 +3651,11 @@ int RndPremiumItem(int minlvl, int maxlvl)
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd) {
 			if (PremiumItemOk(i)) {
+#ifdef HELLFIRE
+				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl && ri < 512) {
+#else
 				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl) {
+#endif
 					ril[ri] = i;
 					ri++;
 				}
