@@ -173,13 +173,13 @@ void DoResurrect(int pnum, int rid)
 		plr[rid]._pInvincible = FALSE;
 #ifndef HELLFIRE
 		PlacePlayer(rid);
+#endif
 
 		hp = 640;
+#ifndef HELLFIRE
 		if (plr[rid]._pMaxHPBase < 640) {
 			hp = plr[rid]._pMaxHPBase;
 		}
-#else
-		hp = 640;
 #endif
 		SetPlayerHitPoints(rid, hp);
 
