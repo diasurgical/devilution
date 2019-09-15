@@ -3701,6 +3701,20 @@ BOOL WitchItemOk(int i)
 	BOOL rv;
 
 	rv = FALSE;
+#ifdef HELLFIRE
+	if (AllItemsList[i].itype == ITYPE_MISC || AllItemsList[i].itype == ITYPE_STAFF)
+		rv = TRUE;
+	if (AllItemsList[i].iMiscId == IMISC_MANA || AllItemsList[i].iMiscId == IMISC_FULLMANA)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_TOWN)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL || AllItemsList[i].iMiscId == IMISC_HEAL)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId > IMISC_OILFIRST && AllItemsList[i].iMiscId < IMISC_OILLAST)
+		rv = FALSE;
+	if ((AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1) || (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1))
+		rv = FALSE;
+#else
 	if (AllItemsList[i].itype == ITYPE_MISC)
 		rv = TRUE;
 	if (AllItemsList[i].itype == ITYPE_STAFF)
@@ -3719,6 +3733,7 @@ BOOL WitchItemOk(int i)
 		rv = FALSE;
 	if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
 		rv = FALSE;
+#endif
 
 	return rv;
 }
