@@ -21,6 +21,8 @@ void InitDrunk();
 void InitCows();
 #ifdef HELLFIRE
 void InitFarmer();
+void InitCowFarmer();
+void InitGirl();
 #endif
 void InitTowners();
 void FreeTownerGFX();
@@ -35,6 +37,11 @@ void TownBoy();
 void TownWitch();
 void TownBarMaid();
 void TownCow();
+#ifdef HELLFIRE
+void TownFarmer();
+void TownCowFarmer();
+void TownGirl();
+#endif
 void ProcessTowners();
 ItemStruct *PlrHasItem(int pnum, int item, int *i);
 void TownerTalk(int first, int t);

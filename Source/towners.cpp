@@ -388,6 +388,46 @@ void InitFarmer()
 	strcpy(towner[numtowners]._tName, "Lester the farmer");
 	numtowners++;
 }
+
+void InitCowFarmer()
+{
+	int i;
+
+	InitTownerInfo(numtowners, 96, 1, TOWN_COWFARM, 61, 22, -1, 10);
+	InitQstSnds(numtowners);
+	if (quests[QTYPE_JERSEY]._qactive != 3) {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\cfrmrn2.CEL", NULL);
+	} else {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\mfrmrn2.CEL", NULL);
+	}
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 15;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[DIR_SW], towner[numtowners]._tNFrames, 3);
+	strcpy(towner[numtowners]._tName, "Complete Nut");
+	numtowners++;
+}
+
+void InitGirl()
+{
+	int i;
+
+	InitTownerInfo(numtowners, 96, 1, TOWN_GIRL, 77, 43, -1, 10);
+	InitQstSnds(numtowners);
+	if (quests[QTYPE_GIRL]._qactive != 3) {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Girl\\Girlw1.CEL", NULL);
+	} else {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Girl\\Girls1.CEL", NULL);
+	}
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 20;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[DIR_S], towner[numtowners]._tNFrames, 6);
+	strcpy(towner[numtowners]._tName, "Celia");
+	numtowners++;
+}
 #endif
 
 void InitTowners()
@@ -539,6 +579,32 @@ void TownCow()
 	TownCtrlMsg(i);
 }
 
+#ifdef HELLFIRE
+void TownFarmer()
+{
+	int i;
+
+	i = GetActiveTowner(TOWN_FARMER);
+	TownCtrlMsg(i);
+}
+
+void TownCowFarmer()
+{
+	int i;
+
+	i = GetActiveTowner(TOWN_COWFARM);
+	TownCtrlMsg(i);
+}
+
+void TownGirl()
+{
+	int i;
+
+	i = GetActiveTowner(TOWN_GIRL);
+	TownCtrlMsg(i);
+}
+#endif
+
 void ProcessTowners()
 {
 	int i, ao;
@@ -575,6 +641,17 @@ void ProcessTowners()
 		case TOWN_COW:
 			TownCow();
 			break;
+#ifdef HELLFIRE
+		case TOWN_FARMER:
+			TownFarmer();
+			break;
+		case TOWN_GIRL:
+			TownGirl();
+			break;
+		case TOWN_COWFARM:
+			TownCowFarmer();
+			break;
+#endif
 		}
 
 		towner[i]._tAnimCnt++;
