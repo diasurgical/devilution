@@ -393,7 +393,6 @@ void InitThemes()
 
 	zharlib = -1;
 	numthemes = 0;
-	bCrossFlag = FALSE;
 	armorFlag = TRUE;
 	bFountainFlag = TRUE;
 	cauldronFlag = TRUE;
@@ -401,6 +400,7 @@ void InitThemes()
 	pFountainFlag = TRUE;
 	tFountainFlag = TRUE;
 	treasureFlag = TRUE;
+	bCrossFlag = FALSE;
 	weaponFlag = TRUE;
 
 	if (currlevel == 16)
