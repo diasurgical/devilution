@@ -2295,6 +2295,9 @@ void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, BOOL delta)
 {
 	int idx, ii;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	if (onlygood)
 		idx = RndUItem(-1);
 	else
@@ -2305,7 +2308,11 @@ void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, BOOL delta)
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
+#ifdef HELLFIRE
+		SetupAllItems(ii, idx, GetRndSeed(), 2 * curlv, 1, onlygood, FALSE, delta);
+#else
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, FALSE, delta);
+#endif
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
 		if (delta)
