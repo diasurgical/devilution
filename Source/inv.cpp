@@ -2248,6 +2248,7 @@ int InvPutItem(int pnum, int x, int y)
 	int d, ii;
 	int i, j, l;
 	int xx, yy;
+	int xp, yp;
 
 	if (numitems >= 127)
 		return -1;
@@ -2276,13 +2277,13 @@ int InvPutItem(int pnum, int x, int y)
 				done = FALSE;
 				for (l = 1; l < 50 && !done; l++) {
 					for (j = -l; j <= l && !done; j++) {
-						yy = j + plr[pnum].WorldY;
+						yp = j + plr[pnum].WorldY;
 						for (i = -l; i <= l && !done; i++) {
-							xx = i + plr[pnum].WorldX;
-							if (CanPut(xx, yy)) {
+							xp = i + plr[pnum].WorldX;
+							if (CanPut(xp, yp)) {
 								done = TRUE;
-								x = xx;
-								y = yy;
+								x = xp;
+								y = yp;
 							}
 						}
 					}
@@ -2293,6 +2294,29 @@ int InvPutItem(int pnum, int x, int y)
 		}
 	}
 
+#ifdef HELLFIRE
+	if (currlevel == 0) {
+		yp = cursmy;
+		xp = cursmx;
+		if (plr[pnum].HoldItem._iCurs == ICURS_RUNE_BOMB && xp >= 79 && xp <= 82 && yp >= 61 && yp <= 64) {
+			NetSendCmdLocParam2(0, 101, plr[pnum].WorldX, plr[pnum].WorldY, xx, yy);
+			quests[QTYPE_FARMER]._qactive = 3;
+			if (gbMaxPlayers != 1) {
+				NetSendCmdQuest(TRUE, QTYPE_FARMER);
+				return -1;
+			}
+			return -1;
+		}
+		if (plr[pnum].HoldItem.IDidx == IDI_MAPOFDOOM && xp >= 35 && xp <= 38 && yp >= 20 && yp <= 24) {
+			NetSendCmd(0, 102);
+			quests[QTYPE_GRAVE]._qactive = 3;
+			if (gbMaxPlayers != 1) {
+				NetSendCmdQuest(TRUE, QTYPE_GRAVE);
+			}
+			return -1;
+		}
+	}
+#endif
 	CanPut(x, y); //if (!CanPut(x, y)) {
 	//	assertion_failed(1524, "C:\\Diablo\\Direct\\inv.cpp", "CanPut(x,y)");
 	//}
@@ -2306,6 +2330,14 @@ int InvPutItem(int pnum, int x, int y)
 	item[ii]._iy = y;
 	RespawnItem(ii, 1);
 	numitems++;
+#ifdef HELLFIRE
+	if (currlevel == 21 && x == RowOfCornerStone && y == ColOfCornerStone) {
+		CornerItemMaybe = item[ii];
+		InitQTextMsg(296);
+		quests[QTYPE_CORNSTN]._qlog = 0;
+		quests[QTYPE_CORNSTN]._qactive = 3;
+	}
+#endif
 	SetCursor_(CURSOR_HAND);
 	return ii;
 }
