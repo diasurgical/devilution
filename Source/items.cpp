@@ -2452,8 +2452,8 @@ void ProcessItems()
 					PlaySfxLoc(ItemDropSnds[ItemCAnimTbl[item[ii]._iCurs]], item[ii]._ix, item[ii]._iy);
 
 				if (item[ii]._iAnimFrame >= item[ii]._iAnimLen) {
-					item[ii]._iAnimFlag = FALSE;
 					item[ii]._iAnimFrame = item[ii]._iAnimLen;
+					item[ii]._iAnimFlag = FALSE;
 					item[ii]._iSelFlag = 1;
 				}
 			}
