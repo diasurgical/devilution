@@ -37,7 +37,11 @@ BOOL CanPut(int x, int y);
 BOOL TryInvPut();
 void DrawInvMsg(char *msg);
 int InvPutItem(int pnum, int x, int y);
-int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, DWORD ibuff);
+int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, DWORD ibuff
+#ifdef HELLFIRE
+	, int to_hit, int max_dam, int min_str, int min_mag, int min_dex, int ac
+#endif
+);
 char CheckInvHLight();
 void RemoveScroll(int pnum);
 BOOL UseScroll();

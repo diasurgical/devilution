@@ -1448,7 +1448,11 @@ DWORD On_GETITEM(TCmd *pCmd, int pnum)
 			if ((currlevel == p->bLevel || p->bPnum == myplr) && p->bMaster != myplr) {
 				if (p->bPnum == myplr) {
 					if (currlevel != p->bLevel) {
-						ii = SyncPutItem(myplr, plr[myplr].WorldX, plr[myplr].WorldY, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff);
+						ii = SyncPutItem(myplr, plr[myplr].WorldX, plr[myplr].WorldY, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
+#ifdef HELLFIRE
+							, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+#endif
+						);
 						if (ii != -1)
 							InvGetItem(myplr, ii);
 					} else
@@ -1570,7 +1574,11 @@ DWORD On_AGETITEM(TCmd *pCmd, int pnum)
 			if ((currlevel == p->bLevel || p->bPnum == myplr) && p->bMaster != myplr) {
 				if (p->bPnum == myplr) {
 					if (currlevel != p->bLevel) {
-						int ii = SyncPutItem(myplr, plr[myplr].WorldX, plr[myplr].WorldY, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff);
+						int ii = SyncPutItem(myplr, plr[myplr].WorldX, plr[myplr].WorldY, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
+#ifdef HELLFIRE
+							, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+#endif
+						);
 						if (ii != -1)
 							AutoGetItem(myplr, ii);
 					} else
@@ -1611,7 +1619,11 @@ DWORD On_PUTITEM(TCmd *pCmd, int pnum)
 		if (pnum == myplr)
 			ii = InvPutItem(pnum, p->x, p->y);
 		else
-			ii = SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff);
+			ii = SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
+#ifdef HELLFIRE
+				, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+#endif
+			);
 		if (ii != -1) {
 			PutItemRecord(p->dwSeed, p->wCI, p->wIndx);
 			delta_put_item(p, item[ii]._ix, item[ii]._iy, plr[pnum].plrlevel);
@@ -1674,7 +1686,11 @@ DWORD On_SYNCPUTITEM(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, p, sizeof(*p));
 	else if (currlevel == plr[pnum].plrlevel) {
-		int ii = SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff);
+		int ii = SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
+#ifdef HELLFIRE
+			, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+#endif
+		);
 		if (ii != -1) {
 			PutItemRecord(p->dwSeed, p->wCI, p->wIndx);
 			delta_put_item(p, item[ii]._ix, item[ii]._iy, plr[pnum].plrlevel);
@@ -1697,8 +1713,13 @@ DWORD On_RESPAWNITEM(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, p, sizeof(*p));
 	else {
-		if (currlevel == plr[pnum].plrlevel && pnum != myplr)
-			SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff);
+		if (currlevel == plr[pnum].plrlevel && pnum != myplr) {
+			SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
+#ifdef HELLFIRE
+				, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+#endif
+			);
+		}
 		PutItemRecord(p->dwSeed, p->wCI, p->wIndx);
 		delta_put_item(p, p->x, p->y, plr[pnum].plrlevel);
 	}
