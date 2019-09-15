@@ -1508,6 +1508,16 @@ void CreateTown(int entry)
 			ViewX = 41;
 			ViewY = 81;
 		}
+#ifdef HELLFIRE
+		if (TWarpFrom == 21) {
+			ViewX = 36;
+			ViewY = 25;
+		}
+		if (TWarpFrom == 17) {
+			ViewX = 79;
+			ViewY = 62;
+		}
+#endif
 	}
 
 	T_Pass3();
