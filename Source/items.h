@@ -78,6 +78,12 @@ void items_427ABA(int x, int y);
 #endif
 void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag);
 void SpawnRock();
+#ifdef HELLFIRE
+void items_427DC6(int itemid, int xx, int yy);
+void items_427E61(int xx, int yy);
+void items_427E6F(int xx, int yy);
+void items_427E7D(int xx, int yy);
+#endif
 void RespawnItem(int i, BOOL FlipFlag);
 void DeleteItem(int ii, int i);
 void ItemDoppel();

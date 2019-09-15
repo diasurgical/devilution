@@ -2628,6 +2628,44 @@ void SpawnRock()
 	}
 }
 
+#ifdef HELLFIRE
+void items_427DC6(int itemid, int xx, int yy)
+{
+	int i;
+
+	i = itemavail[0];
+	int curlv = items_get_currlevel();
+	itemavail[0] = itemavail[127 - numitems - 1];
+	itemactive[numitems] = i;
+	item[i]._ix = xx;
+	item[i]._iy = yy;
+	dItem[xx][yy] = i + 1;
+	GetItemAttrs(i, itemid, curlv);
+	SetupItem(i);
+	item[i]._iSelFlag = 2;
+	item[i]._iPostDraw = TRUE;
+	item[i]._iAnimFrame = 1;
+	item[i]._iAnimFlag = TRUE;
+	item[i]._iIdentified = TRUE;
+	numitems++;
+}
+
+void items_427E61(int xx, int yy)
+{
+	items_427DC6(IDI_MAPOFDOOM, xx, yy);
+}
+
+void items_427E6F(int xx, int yy)
+{
+	items_427DC6(IDI_RUNEBOMB, xx, yy);
+}
+
+void items_427E7D(int xx, int yy)
+{
+	items_427DC6(IDI_THEODORE, xx, yy);
+}
+#endif
+
 void RespawnItem(int i, BOOL FlipFlag)
 {
 	int it;
