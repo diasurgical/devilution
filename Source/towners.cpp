@@ -413,12 +413,20 @@ void TownCtrlMsg(int i)
 		p = towner[i]._tVar1;
 		dx = abs(towner[i]._tx - plr[p].WorldX);
 		dy = abs(towner[i]._ty - plr[p].WorldY);
+#ifdef HELLFIRE
+		if (dx >= 2 || dy >= 2) {
+			towner[i]._tbtcnt = 0;
+			qtextflag = FALSE;
+			sfx_stop();
+		}
+#else
 		if (dx >= 2 || dy >= 2)
 			towner[i]._tbtcnt = 0;
 		if (!towner[i]._tbtcnt) {
 			qtextflag = FALSE;
 			sfx_stop();
 		}
+#endif
 	}
 }
 
