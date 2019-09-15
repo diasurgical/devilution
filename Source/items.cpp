@@ -3498,12 +3498,17 @@ BOOL StoreStatOk(ItemStruct *h)
 	BOOL sf;
 
 	sf = TRUE;
+#ifdef HELLFIRE
+	if (plr[myplr]._pStrength < h->_iMinStr || plr[myplr]._pMagic < h->_iMinMag || plr[myplr]._pDexterity < h->_iMinDex)
+		sf = FALSE;
+#else
 	if (plr[myplr]._pStrength < h->_iMinStr)
 		sf = FALSE;
 	if (plr[myplr]._pMagic < h->_iMinMag)
 		sf = FALSE;
 	if (plr[myplr]._pDexterity < h->_iMinDex)
 		sf = FALSE;
+#endif
 
 	return sf;
 }
