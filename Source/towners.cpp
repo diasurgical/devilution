@@ -153,10 +153,10 @@ void SetTownerGPtrs(BYTE *pData, BYTE **pAnim)
 
 void NewTownerAnim(int tnum, BYTE *pAnim, int numFrames, int Delay)
 {
-	towner[tnum]._tAnimCnt = 0;
-	towner[tnum]._tAnimLen = numFrames;
 	towner[tnum]._tAnimData = pAnim;
+	towner[tnum]._tAnimLen = numFrames;
 	towner[tnum]._tAnimFrame = 1;
+	towner[tnum]._tAnimCnt = 0;
 	towner[tnum]._tAnimDelay = Delay;
 }
 
