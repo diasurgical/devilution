@@ -3519,7 +3519,11 @@ BOOL SmithItemOk(int i)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_0E)
 		rv = FALSE;
+#ifdef HELLFIRE
+	if (AllItemsList[i].itype == ITYPE_STAFF && AllItemsList[i].iSpell)
+#else
 	if (AllItemsList[i].itype == ITYPE_STAFF)
+#endif
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_RING)
 		rv = FALSE;
