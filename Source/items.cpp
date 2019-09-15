@@ -2039,9 +2039,16 @@ int RndAllItems()
 	if (random(26, 100) > 25)
 		return 0;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+#ifdef HELLFIRE
+		if (AllItemsList[i].iRnd && 2 * curlv >= AllItemsList[i].iMinMLvl && ri < 512) {
+#else
 		if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl) {
+#endif
 			ril[ri] = i;
 			ri++;
 		}
