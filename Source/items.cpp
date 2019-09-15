@@ -836,7 +836,11 @@ void SetPlrHandItem(ItemStruct *h, int idata)
 	h->_iSpell = pAllItem->iSpell;
 
 	if (pAllItem->iMiscId == IMISC_STAFF) {
+#ifdef HELLFIRE
+		h->_iCharges = 18;
+#else
 		h->_iCharges = 40;
+#endif
 	}
 
 	h->_iMaxCharges = h->_iCharges;
