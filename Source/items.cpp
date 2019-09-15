@@ -264,6 +264,9 @@ void AddInitItems()
 {
 	int x, y, i, j, rnd;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	rnd = random(11, 3) + 3;
 	for (j = 0; j < rnd; j++) {
 		i = itemavail[0];
@@ -280,11 +283,19 @@ void AddInitItems()
 		dItem[x][y] = i + 1;
 		item[i]._iSeed = GetRndSeed();
 		SetRndSeed(item[i]._iSeed);
+#ifdef HELLFIRE
+		if (random(12, 2))
+			GetItemAttrs(i, IDI_HEAL, curlv);
+		else
+			GetItemAttrs(i, IDI_MANA, curlv);
+		item[i]._iCreateInfo = curlv - 0x8000;
+#else
 		if (random(12, 2))
 			GetItemAttrs(i, IDI_HEAL, currlevel);
 		else
 			GetItemAttrs(i, IDI_MANA, currlevel);
 		item[i]._iCreateInfo = currlevel - 0x8000;
+#endif
 		SetupItem(i);
 		item[i]._iAnimFrame = item[i]._iAnimLen;
 		item[i]._iAnimFlag = FALSE;
