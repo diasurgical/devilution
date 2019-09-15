@@ -2299,8 +2299,8 @@ void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, 
 	tempstr[16] = '\0';
 	sprintf(item[ii]._iName, "Ear of %s", tempstr);
 	item[ii]._iCurs = ((ivalue >> 6) & 3) + 19;
-	item[ii]._iCreateInfo = ic;
 	item[ii]._ivalue = ivalue & 0x3F;
+	item[ii]._iCreateInfo = ic;
 	item[ii]._iSeed = iseed;
 }
 
