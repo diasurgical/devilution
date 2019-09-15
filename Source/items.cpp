@@ -2303,6 +2303,9 @@ void CreateItem(int uid, int x, int y)
 {
 	int ii, idx;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
@@ -2314,7 +2317,11 @@ void CreateItem(int uid, int x, int y)
 			idx++;
 		}
 
+#ifdef HELLFIRE
+		GetItemAttrs(ii, idx, curlv);
+#else
 		GetItemAttrs(ii, idx, currlevel);
+#endif
 		GetUniqueItem(ii, uid);
 		SetupItem(ii);
 		item[ii]._iMagical = ITEM_QUALITY_UNIQUE;
