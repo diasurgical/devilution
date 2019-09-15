@@ -1993,9 +1993,9 @@ void GetUniqueItem(int i, int uid)
 	if (item[i]._iMiscId == IMISC_UNIQUE)
 		item[i]._iSeed = uid;
 
-	item[i]._iCreateInfo |= 0x0200;
 	item[i]._iUid = uid;
 	item[i]._iMagical = ITEM_QUALITY_UNIQUE;
+	item[i]._iCreateInfo |= 0x0200;
 }
 
 void SpawnUnique(int uid, int x, int y)
