@@ -3560,12 +3560,10 @@ void SortWitch()
 	sorted = FALSE;
 	while (j > 3 && !sorted) {
 		sorted = TRUE;
-		if (j > 3) {
-			for (k = 3; k < j; k++) {
-				if (witchitem[k].IDidx > witchitem[k + 1].IDidx) {
-					BubbleSwapItem(&witchitem[k], &witchitem[k + 1]);
-					sorted = FALSE;
-				}
+		for (k = 3; k < j; k++) {
+			if (witchitem[k].IDidx > witchitem[k + 1].IDidx) {
+				BubbleSwapItem(&witchitem[k], &witchitem[k + 1]);
+				sorted = FALSE;
 			}
 		}
 		j--;
