@@ -1785,27 +1785,25 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
 
 void SetupItem(int i)
 {
-	int it, il;
+	int it;
 
 	it = ItemCAnimTbl[item[i]._iCurs];
+	item[i]._iAnimData = itemanims[it];
+	item[i]._iAnimLen = ItemAnimLs[it];
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
-	item[i]._iAnimData = itemanims[it];
-	il = ItemAnimLs[it];
-	item[i]._iAnimLen = il;
 	item[i]._iIdentified = FALSE;
 	item[i]._iPostDraw = FALSE;
 
 	if (!plr[myplr].pLvlLoad) {
-		item[i]._iSelFlag = 0;
-		il = 1;
+		item[i]._iAnimFrame = 1;
 		item[i]._iAnimFlag = TRUE;
+		item[i]._iSelFlag = 0;
 	} else {
+		item[i]._iAnimFrame = item[i]._iAnimLen;
 		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
-
-	item[i]._iAnimFrame = il;
 }
 
 int RndItem(int m)
