@@ -3379,12 +3379,10 @@ void SortSmith()
 	sorted = FALSE;
 	while (j > 0 && !sorted) {
 		sorted = TRUE;
-		if (j > 0) {
-			for (k = 0; k < j; k++) {
-				if (smithitem[k].IDidx > smithitem[k + 1].IDidx) {
-					BubbleSwapItem(&smithitem[k], &smithitem[k + 1]);
-					sorted = FALSE;
-				}
+		for (k = 0; k < j; k++) {
+			if (smithitem[k].IDidx > smithitem[k + 1].IDidx) {
+				BubbleSwapItem(&smithitem[k], &smithitem[k + 1]);
+				sorted = FALSE;
 			}
 		}
 		j--;
