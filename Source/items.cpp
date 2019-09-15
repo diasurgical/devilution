@@ -3611,6 +3611,15 @@ BOOL PremiumItemOk(int i)
 	BOOL rv;
 
 	rv = TRUE;
+#ifdef HELLFIRE
+	if (AllItemsList[i].itype == ITYPE_MISC || AllItemsList[i].itype == ITYPE_GOLD || AllItemsList[i].itype == ITYPE_0E)
+		rv = FALSE;
+
+	if (gbMaxPlayers != 1) {
+		if (AllItemsList[i].iMiscId == IMISC_OILOF || AllItemsList[i].itype == ITYPE_RING || AllItemsList[i].itype == ITYPE_AMULET)
+			rv = FALSE;
+	}
+#else
 	if (AllItemsList[i].itype == ITYPE_MISC)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_GOLD)
@@ -3626,6 +3635,7 @@ BOOL PremiumItemOk(int i)
 		if (AllItemsList[i].itype == ITYPE_AMULET)
 			rv = FALSE;
 	}
+#endif
 
 	return rv;
 }
