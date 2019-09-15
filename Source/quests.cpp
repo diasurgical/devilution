@@ -274,6 +274,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE82;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK82;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE82;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR82;
+		}
+#endif
 		if (sendmsg)
 			NetSendCmdQuest(TRUE, QTYPE_KING);
 
@@ -287,6 +296,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE80;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK80;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE80;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR80;
+		}
+#endif
 		if (sendmsg)
 			NetSendCmdQuest(TRUE, QTYPE_BUTCH);
 	} else if (monster[m].mName == UniqMonst[UMT_GARBUD].mName) { //"Gharbad the Weak"
@@ -299,6 +317,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE61;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK61;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE61;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR61;
+		}
+#endif
 	} else if (monster[m].mName == UniqMonst[UMT_ZHAR].mName) { //"Zhar the Mad"
 		quests[QTYPE_ZHAR]._qactive = 3;
 		sfxdelay = 30;
@@ -309,6 +336,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE62;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK62;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE62;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR62;
+		}
+#endif
 	} else if (monster[m].mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) { //"Arch-Bishop Lazarus"
 		quests[QTYPE_VB]._qactive = 3;
 		quests[QTYPE_VB]._qvar1 = 7;
@@ -332,6 +368,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE83;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK83;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE83;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR83;
+		}
+#endif
 		if (sendmsg) {
 			NetSendCmdQuest(TRUE, QTYPE_VB);
 			NetSendCmdQuest(TRUE, QTYPE_MOD);
@@ -351,6 +396,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE83;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK83;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE83;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR83;
+		}
+#endif
 	} else if (monster[m].mName == UniqMonst[UMT_WARLORD].mName) { //"Warlord of Blood"
 		quests[QTYPE_WARLRD]._qactive = 3;
 		sfxdelay = 30;
@@ -361,6 +415,15 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE94;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK94;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE94;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR94;
+		}
+#endif
 	}
 #endif
 }
