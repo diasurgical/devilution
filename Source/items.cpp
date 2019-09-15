@@ -2338,12 +2338,19 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 {
 	int ii;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = ii;
+#ifdef HELLFIRE
+		SetupAllUseful(ii, GetRndSeed(), curlv);
+#else
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
+#endif
 		if (sendmsg) {
 			NetSendCmdDItem(FALSE, ii);
 		}
@@ -2456,20 +2463,16 @@ void items_427ABA(int x, int y)
 	DWORD dwSize;
 	PkItemStruct PkSItem;
 
-	if ( dword_691CB0 || x == 0 || y == 0 )
-	{
+	if (dword_691CB0 || x == 0 || y == 0) {
 		return;
 	}
 
 	CornerItemMaybe.IDidx = 0;
 	dword_691CB0 = 1;
-	if ( dItem[x][y] )
-	{
+	if (dItem[x][y]) {
 		ii = dItem[x][y] - 1;
-		for ( i = 0; i < numitems; i++ )
-		{
-			if ( itemactive[i] == ii )
-			{
+		for (i = 0; i < numitems; i++) {
+			if (itemactive[i] == ii) {
 				DeleteItem(ii, i);
 				break;
 			}
@@ -2477,10 +2480,8 @@ void items_427ABA(int x, int y)
 		dItem[x][y] = 0;
 	}
 	dwSize = 0;
-	if ( SRegLoadData("Hellfire", off_4A5AC4, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize) )
-	{
-		if ( dwSize == sizeof(PkSItem) )
-		{
+	if (SRegLoadData("Hellfire", off_4A5AC4, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize)) {
+		if (dwSize == sizeof(PkSItem)) {
 			ii = itemavail[0];
 			dItem[x][y] = ii + 1;
 			itemavail[0] = itemavail[MAXITEMS - numitems - 1];
