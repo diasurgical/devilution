@@ -617,6 +617,24 @@ void ResyncMPQuests()
 	}
 	if (QuestStatus(QTYPE_VB))
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
+#ifdef HELLFIRE
+	if (quests[QTYPE_GRAVE]._qactive == 1 && currlevel == quests[QTYPE_GRAVE]._qlevel - 1) {
+		quests[QTYPE_GRAVE]._qactive = 2;
+		NetSendCmdQuest(TRUE, QTYPE_GRAVE);
+	}
+	if (quests[QTYPE_DEFILER]._qactive == 1 && currlevel == quests[QTYPE_DEFILER]._qlevel - 1) {
+		quests[QTYPE_DEFILER]._qactive = 2;
+		NetSendCmdQuest(TRUE, QTYPE_DEFILER);
+	}
+	if (quests[QTYPE_NAKRUL]._qactive == 1 && currlevel == quests[QTYPE_NAKRUL]._qlevel - 1) {
+		quests[QTYPE_NAKRUL]._qactive = 2;
+		NetSendCmdQuest(TRUE, QTYPE_NAKRUL);
+	}
+	if (quests[QTYPE_JERSEY]._qactive == 1 && currlevel == quests[QTYPE_JERSEY]._qlevel - 1) {
+		quests[QTYPE_JERSEY]._qactive = 2;
+		NetSendCmdQuest(TRUE, QTYPE_JERSEY);
+	}
+#endif
 #endif
 }
 
