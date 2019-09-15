@@ -1912,7 +1912,7 @@ void InvGetItem(int pnum, int ii)
 			CornerItemMaybe._iAnimFlag = FALSE;
 			CornerItemMaybe._iIdentified = FALSE;
 			CornerItemMaybe._iPostDraw = FALSE;
-	}
+		}
 #endif
 		i = 0;
 		while (i < numitems) {
@@ -2140,12 +2140,26 @@ void SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 
 	if (ii != -1) {
 		dItem[item[ii]._ix][item[ii]._iy] = 0;
+#ifdef HELLFIRE
+		if (currlevel == 21 && item[ii]._ix == RowOfCornerStone && item[ii]._iy == ColOfCornerStone) {
+			CornerItemMaybe.IDidx = -1;
+			CornerItemMaybe._itype = ITYPE_MISC;
+			CornerItemMaybe._iSelFlag = FALSE;
+			CornerItemMaybe._ix = 0;
+			CornerItemMaybe._iy = 0;
+			CornerItemMaybe._iAnimFlag = FALSE;
+			CornerItemMaybe._iIdentified = FALSE;
+			CornerItemMaybe._iPostDraw = FALSE;
+		}
+#endif
 		i = 0;
 		while (i < numitems) {
 			if (itemactive[i] == ii) {
 				DeleteItem(itemactive[i], i);
 				FindGetItem(idx, ci, iseed);
+#ifndef HELLFIRE
 				FindGetItem(idx, ci, iseed); /* check idx */
+#endif
 				i = 0;
 			} else {
 				i++;
