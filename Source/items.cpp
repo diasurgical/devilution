@@ -3730,12 +3730,15 @@ int RndWitchItem(int lvl)
 
 	ri = 0;
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+#ifdef HELLFIRE
+		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl && ri < 512) {
+#else
 		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+#endif
 			ril[ri] = i;
 			ri++;
 		}
 	}
-
 	return ril[random(51, ri)] + 1;
 }
 
