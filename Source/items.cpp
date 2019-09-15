@@ -790,7 +790,8 @@ void CalcPlrBookVals(int p)
 			WitchBookLevel(i);
 #ifndef HELLFIRE
 			witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
-#endif }
+#endif
+		}
 	}
 
 	for (i = 0; i < plr[p]._pNumInv; i++) {
