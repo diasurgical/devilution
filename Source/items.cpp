@@ -3739,6 +3739,7 @@ int RndWitchItem(int lvl)
 			ri++;
 		}
 	}
+
 	return ril[random(51, ri)] + 1;
 }
 
