@@ -4067,7 +4067,11 @@ void SyncOpObject(int pnum, int cmd, int i)
 void BreakCrux(int i)
 {
 	int j, oi;
+#ifdef HELLFIRE
+	BOOLEAN triggered;
+#else
 	BOOL triggered;
+#endif
 
 	object[i]._oAnimFlag = 1;
 	object[i]._oAnimFrame = 1;
