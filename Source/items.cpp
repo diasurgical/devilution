@@ -2550,6 +2550,9 @@ void SpawnRock()
 		ii = objectactive[i];
 		ostand = object[ii]._otype == OBJ_STAND;
 	}
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	if (ostand) {
 		i = itemavail[0];
 		itemavail[0] = itemavail[127 - numitems - 1];
@@ -2559,7 +2562,11 @@ void SpawnRock()
 		item[i]._ix = xx;
 		item[i]._iy = yy;
 		dItem[xx][item[i]._iy] = i + 1;
+#ifdef HELLFIRE
+		GetItemAttrs(i, IDI_ROCK, curlv);
+#else
 		GetItemAttrs(i, IDI_ROCK, currlevel);
+#endif
 		SetupItem(i);
 		item[i]._iSelFlag = 2;
 		item[i]._iPostDraw = TRUE;
