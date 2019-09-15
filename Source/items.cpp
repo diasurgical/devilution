@@ -695,8 +695,9 @@ void CalcPlrItemMin(int pnum)
 
 	p = &plr[pnum];
 	pi = p->InvList;
+	i = p->_pNumInv;
 
-	for (i = p->_pNumInv; i; i--) {
+	while (i--) {
 		pi->_iStatFlag = ItemMinStats(p, pi);
 		pi++;
 	}
