@@ -372,6 +372,24 @@ void InitCows()
 	}
 }
 
+#ifdef HELLFIRE
+void InitFarmer()
+{
+	int i;
+
+	InitTownerInfo(numtowners, 96, 1, TOWN_FARMER, 62, 16, -1, 10);
+	InitQstSnds(numtowners);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\Farmrn2.CEL", NULL);
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 15;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[DIR_S], towner[numtowners]._tNFrames, 3);
+	strcpy(towner[numtowners]._tName, "Lester the farmer");
+	numtowners++;
+}
+#endif
+
 void InitTowners()
 {
 	numtowners = 0;

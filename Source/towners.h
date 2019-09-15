@@ -19,6 +19,9 @@ void InitHealer();
 void InitTeller();
 void InitDrunk();
 void InitCows();
+#ifdef HELLFIRE
+void InitFarmer();
+#endif
 void InitTowners();
 void FreeTownerGFX();
 void TownCtrlMsg(int i);
