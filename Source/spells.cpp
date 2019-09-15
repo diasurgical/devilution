@@ -171,17 +171,21 @@ void DoResurrect(int pnum, int rid)
 		ClrPlrPath(rid);
 		plr[rid].destAction = ACTION_NONE;
 		plr[rid]._pInvincible = FALSE;
+#ifndef HELLFIRE
 		PlacePlayer(rid);
 
 		hp = 640;
 		if (plr[rid]._pMaxHPBase < 640) {
 			hp = plr[rid]._pMaxHPBase;
 		}
+#else
+		hp = 640;
+#endif
 		SetPlayerHitPoints(rid, hp);
 
-		plr[rid]._pMana = 0;
 		plr[rid]._pHPBase = plr[rid]._pHitPoints + (plr[rid]._pMaxHPBase - plr[rid]._pMaxHP);
-		plr[rid]._pManaBase = plr[rid]._pMaxManaBase - plr[rid]._pMaxMana;
+		plr[rid]._pMana = 0;
+		plr[rid]._pManaBase = plr[rid]._pMana + (plr[rid]._pMaxManaBase - plr[rid]._pMaxMana);
 
 		CalcPlrInv(rid, TRUE);
 
