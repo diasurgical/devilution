@@ -2509,6 +2509,9 @@ void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 	BOOL failed;
 	int i, j, tries;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	if (randarea) {
 		tries = 0;
 		while (1) {
@@ -2535,13 +2538,17 @@ void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 		item[i]._ix = x;
 		item[i]._iy = y;
 		dItem[x][y] = i + 1;
+#ifdef HELLFIRE
+		GetItemAttrs(i, itemid, curlv);
+#else
 		GetItemAttrs(i, itemid, currlevel);
+#endif
 		SetupItem(i);
 		item[i]._iPostDraw = TRUE;
 		if (selflag) {
-			item[i]._iAnimFlag = FALSE;
 			item[i]._iSelFlag = selflag;
 			item[i]._iAnimFrame = item[i]._iAnimLen;
+			item[i]._iAnimFlag = FALSE;
 		}
 		numitems++;
 	}
