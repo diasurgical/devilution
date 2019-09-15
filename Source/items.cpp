@@ -3225,10 +3225,28 @@ void PrintItemMisc(ItemStruct *x)
 		strcpy(tempstr, "Right click to use");
 		AddPanelString(tempstr, TRUE);
 	}
+#ifdef HELLFIRE
+	if (x->_iMiscId > IMISC_OILFIRST && x->_iMiscId < IMISC_OILLAST) {
+		PrintItemOil(x->_iMiscId);
+		strcpy(tempstr, "Right click to use");
+		AddPanelString(tempstr, TRUE);
+	}
+	if (x->_iMiscId > 46 && x->_iMiscId < 52) { //TODO: apply enums
+		PrintItemOil(x->_iMiscId);
+		strcpy(tempstr, "Right click to use");
+		AddPanelString(tempstr, TRUE);
+	}
+#endif
 	if (x->_iMiscId == IMISC_BOOK) {
 		strcpy(tempstr, "Right click to read");
 		AddPanelString(tempstr, TRUE);
 	}
+#ifdef HELLFIRE
+	if (x->_iMiscId == IMISC_NOTE) {
+		strcpy(tempstr, "Right click to read");
+		AddPanelString(tempstr, TRUE);
+	}
+#endif
 	if (x->_iMiscId == IMISC_MAPOFDOOM) {
 		strcpy(tempstr, "Right click to view");
 		AddPanelString(tempstr, TRUE);
@@ -3237,6 +3255,12 @@ void PrintItemMisc(ItemStruct *x)
 		sprintf(tempstr, "Level : %i", x->_ivalue);
 		AddPanelString(tempstr, TRUE);
 	}
+#ifdef HELLFIRE
+	if (x->_iMiscId == IMISC_AURIC) {
+		sprintf(tempstr, "Doubles gold capacity");
+		AddPanelString(tempstr, TRUE);
+	}
+#endif
 }
 
 void PrintItemDetails(ItemStruct *x)
