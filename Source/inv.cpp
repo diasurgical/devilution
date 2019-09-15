@@ -1942,11 +1942,15 @@ void AutoGetItem(int pnum, int ii)
 		dropGoldValue = 0;
 	}
 
-	if (ii != MAXITEMS && !dItem[item[ii]._ix][item[ii]._iy]) {
-		return;
+	if (ii != MAXITEMS) {
+		if (dItem[item[ii]._ix][item[ii]._iy] == 0)
+			return;
 	}
 
-	item[ii]._iCreateInfo &= 0x7FFF;
+#ifdef HELLFIRE
+	if (item[ii]._iUid != 0)
+#endif
+		item[ii]._iCreateInfo &= 0x7FFF;
 	plr[pnum].HoldItem = item[ii];
 	CheckQuestItem(pnum);
 	CheckBookLevel(pnum);
@@ -1954,9 +1958,18 @@ void AutoGetItem(int pnum, int ii)
 	SetICursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	if (plr[pnum].HoldItem._itype == ITYPE_GOLD) {
 		done = GoldAutoPlace(pnum);
+#ifdef HELLFIRE
+		if (!done)
+			item[ii]._ivalue = plr[pnum].HoldItem._ivalue;
+#endif
 	} else {
 		done = FALSE;
-		if (((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[pnum]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[pnum]._pmode <= PM_WALK3) {
+		if (((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[pnum]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD
+#ifdef HELLFIRE
+		        || plr[pnum]._pClass == PC_BARD && ((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_MACE || (plr[pnum]._pgfxnum & 0xF) == ANIM_ID_SWORD)
+#endif
+		            )
+		    && plr[pnum]._pmode <= PM_WALK3) {
 			if (plr[pnum].HoldItem._iStatFlag) {
 				if (plr[pnum].HoldItem._iClass == ICLASS_WEAPON) {
 					done = WeaponAutoPlace(pnum);
@@ -2035,6 +2048,18 @@ void AutoGetItem(int pnum, int ii)
 	}
 	if (done) {
 		dItem[item[ii]._ix][item[ii]._iy] = 0;
+#ifdef HELLFIRE
+		if (currlevel == 21 && item[ii]._ix == RowOfCornerStone && item[ii]._iy == ColOfCornerStone) {
+			CornerItemMaybe.IDidx = -1;
+			CornerItemMaybe._itype = ITYPE_MISC;
+			CornerItemMaybe._iSelFlag = FALSE;
+			CornerItemMaybe._ix = 0;
+			CornerItemMaybe._iy = 0;
+			CornerItemMaybe._iAnimFlag = FALSE;
+			CornerItemMaybe._iIdentified = FALSE;
+			CornerItemMaybe._iPostDraw = FALSE;
+		}
+#endif
 		i = 0;
 		while (i < numitems) {
 			if (itemactive[i] == ii) {
@@ -2054,12 +2079,23 @@ void AutoGetItem(int pnum, int ii)
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
 				PlaySFX(random(0, 3) + PS_MAGE14);
 #endif
+#ifdef HELLFIRE
+			} else if (plr[pnum]._pClass == PC_MONK)
+				PlaySFX(random(0, 3) + PS_MONK14);
+			else if (plr[pnum]._pClass == PC_BARD) {
+				PlaySFX(random(0, 3) + PS_ROGUE14);
+			} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+				PlaySFX(random(0, 3) + PS_WARR14);
+#endif
 			}
 		}
 		plr[pnum].HoldItem = item[ii];
 		RespawnItem(ii, 1);
 		NetSendCmdPItem(TRUE, CMD_RESPAWNITEM, item[ii]._ix, item[ii]._iy);
 		plr[pnum].HoldItem._itype = ITYPE_NONE;
+#ifdef HELLFIRE
+		NewCursor(CURSOR_HAND);
+#endif
 	}
 }
 
