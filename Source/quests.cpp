@@ -659,17 +659,17 @@ void ResyncQuests()
 		}
 	}
 	if (currlevel == quests[QTYPE_BLKM]._qlevel) {
-		if (quests[QTYPE_BLKM]._qactive == 1) {
-			if (!quests[QTYPE_BLKM]._qvar1) {
-				SpawnQuestItem(IDI_FUNGALTM, 0, 0, 5, 1);
-				quests[QTYPE_BLKM]._qvar1 = QS_TOMESPAWNED;
-			}
-		} else if (quests[QTYPE_BLKM]._qactive == 2) {
-			if (quests[QTYPE_BLKM]._qvar1 >= QS_MUSHGIVEN) {
-				Qtalklist[TOWN_WITCH]._qblkm = -1;
-				Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
-			} else if (quests[QTYPE_BLKM]._qvar1 >= QS_BRAINGIVEN) {
-				Qtalklist[TOWN_HEALER]._qblkm = -1;
+		if (quests[QTYPE_BLKM]._qactive == 1 && !quests[QTYPE_BLKM]._qvar1) {
+			SpawnQuestItem(IDI_FUNGALTM, 0, 0, 5, 1);
+			quests[QTYPE_BLKM]._qvar1 = QS_TOMESPAWNED;
+		} else {
+			if (quests[QTYPE_BLKM]._qactive == 2) {
+				if (quests[QTYPE_BLKM]._qvar1 >= QS_MUSHGIVEN) {
+					Qtalklist[TOWN_WITCH]._qblkm = -1;
+					Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
+				} else if (quests[QTYPE_BLKM]._qvar1 >= QS_BRAINGIVEN) {
+					Qtalklist[TOWN_HEALER]._qblkm = -1;
+				}
 			}
 		}
 	}
