@@ -2656,7 +2656,11 @@ void ProcessItems()
 
 void FreeItemGFX()
 {
+#ifdef HELLFIRE
+	DWORD i;
+#else
 	int i;
+#endif
 
 	for (i = 0; i < 35; i++) {
 		MemFreeDbg(itemanims[i]);
