@@ -377,7 +377,7 @@ void InitFarmer()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, 10, 62, 16, -1, 10); // TODO: currently 10 is TOWN_PRIEST, which doesn't seem correct, create hellfire enums and apply them
+	InitTownerInfo(numtowners, 96, 1, TOWN_FARMER, 62, 16, -1, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\Farmrn2.CEL", NULL);
 	for (i = 0; i < 8; i++) {
