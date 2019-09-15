@@ -2198,7 +2198,9 @@ BOOL CanPut(int x, int y)
 			return FALSE;
 	}
 
-	if (!currlevel && (dMonster[x][y] || dMonster[x + 1][y + 1]))
+	if (currlevel == 0 && dMonster[x][y] != 0)
+		return FALSE;
+	if (currlevel == 0 && dMonster[x + 1][y + 1] != 0)
 		return FALSE;
 
 	return TRUE;
