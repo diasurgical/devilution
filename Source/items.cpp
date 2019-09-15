@@ -2148,6 +2148,9 @@ void SpawnUnique(int uid, int x, int y)
 {
 	int ii, itype;
 
+#ifdef HELLFIRE
+	int curlv = items_get_currlevel();
+#endif
 	if (numitems >= MAXITEMS)
 		return;
 
@@ -2161,7 +2164,11 @@ void SpawnUnique(int uid, int x, int y)
 		itype++;
 	}
 
+#ifdef HELLFIRE
+	GetItemAttrs(ii, itype, curlv);
+#else
 	GetItemAttrs(ii, itype, currlevel);
+#endif
 	GetUniqueItem(ii, uid);
 	SetupItem(ii);
 	numitems++;
