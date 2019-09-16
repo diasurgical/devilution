@@ -18,7 +18,7 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 	if (size <= 8)
 		return 0;
 	size = size - 8;
-	if (size & 0x3F)
+	if (size % 64 != 0)
 		return 0;
 	for (i = size; i != 0; pbSrcDst += 64, i -= 64) {
 		memcpy(buf, pbSrcDst, 64);
