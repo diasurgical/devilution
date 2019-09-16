@@ -2012,11 +2012,10 @@ int RndUItem(int m)
 		} else {
 #ifdef HELLFIRE
 			if (2 * curlv < AllItemsList[i].iMinMLvl)
-				okflag = FALSE;
 #else
 			if (2 * currlevel < AllItemsList[i].iMinMLvl)
-				okflag = FALSE;
 #endif
+			okflag = FALSE;
 		}
 		if (AllItemsList[i].itype == ITYPE_MISC)
 			okflag = FALSE;
