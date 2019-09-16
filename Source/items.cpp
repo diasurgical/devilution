@@ -3757,6 +3757,7 @@ void SortSmith()
 void SpawnSmith(int lvl)
 {
 	int i, iCnt, idata;
+
 #ifdef HELLFIRE
 	ItemStruct holditem;
 	holditem = item[0];
