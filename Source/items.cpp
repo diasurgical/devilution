@@ -4308,7 +4308,7 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL de
 #ifdef HELLFIRE
 	int imid;
 	if (imisc == 10)
-		imid = 23;
+		imid = IMISC_STAFF;
 	else
 		imid = 0;
 	int curlv = items_get_currlevel();
