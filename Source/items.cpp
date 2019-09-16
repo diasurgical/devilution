@@ -4327,7 +4327,7 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL de
 #ifdef HELLFIRE
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * curlv, 1, TRUE, FALSE, delta);
 #else
-			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, TRUE, FALSE, delta);
 #endif
 			if (item[ii]._iCurs == icurs)
 				done = TRUE;
