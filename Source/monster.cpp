@@ -1351,7 +1351,11 @@ void M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int y
 	monster[i]._mfutx = fx;
 	monster[i]._mfuty = fy;
 	dMonster[fx][fy] = i + 1;
+#ifdef HELLFIRE
+	if (!(monster[i]._mFlags & MFLAG_HIDDEN) && monster[i].mlid != 0)
+#else
 	if (monster[i]._uniqtype != 0)
+#endif
 		ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
 	monster[i]._mxoff = xoff;
 	monster[i]._myoff = yoff;
