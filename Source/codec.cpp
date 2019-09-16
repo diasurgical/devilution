@@ -18,7 +18,7 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 	if (size <= 8)
 		return 0;
 	size = size - 8;
-	if (size % 64 != 0)
+	if (size & 0x3F)
 		return 0;
 	for (i = size; i != 0; pbSrcDst += 64, i -= 64) {
 		memcpy(buf, pbSrcDst, 64);
@@ -34,19 +34,19 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 	memset(buf, 0, sizeof(buf));
 	sig = (CodecSignature *)pbSrcDst;
 	if (sig->error > 0) {
-		size = 0;
+	error:
 		SHA1Clear();
-	} else {
-		SHA1Result(0, dst);
-		if (sig->checksum != *(DWORD *)dst) {
-			memset(dst, 0, sizeof(dst));
-			size = 0;
-			SHA1Clear();
-		} else {
-			size += sig->last_chunk_size - 64;
-			SHA1Clear();
-		}
+		return 0;
 	}
+
+	SHA1Result(0, dst);
+	if (sig->checksum != *(DWORD *)dst) {
+		memset(dst, 0, sizeof(dst));
+		goto error;
+	}
+
+	size += sig->last_chunk_size - 64;
+	SHA1Clear();
 	return size;
 }
 
