@@ -35,7 +35,11 @@
 #endif
 #define MAXTHEMES				50
 #define MAXTILES				2048
+#ifdef HELLFIRE
+#define MAXTRIGGERS				6
+#else
 #define MAXTRIGGERS				5
+#endif
 #define MAXVISION				32
 #define MDMAXX					40
 #define MDMAXY					40
