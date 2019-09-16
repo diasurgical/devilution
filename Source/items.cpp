@@ -3757,24 +3757,40 @@ void SortSmith()
 void SpawnSmith(int lvl)
 {
 	int i, iCnt, idata;
-
+#ifdef HELLFIRE
+	ItemStruct holditem;
+	holditem = item[0];
+	iCnt = random(50, 15) + 10;
+#else
 	iCnt = random(50, 10) + 10;
+#endif
 	for (i = 0; i < iCnt; i++) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
 			idata = RndSmithItem(lvl) - 1;
 			GetItemAttrs(0, idata, lvl);
+#ifdef HELLFIRE
+		} while (item[0]._iIvalue > 200000);
+#else
 		} while (item[0]._iIvalue > 140000);
+#endif
 		smithitem[i] = item[0];
 		smithitem[i]._iCreateInfo = lvl | 0x400;
 		smithitem[i]._iIdentified = TRUE;
 		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
+#ifdef HELLFIRE
+	for (i = iCnt; i < 25; i++)
+#else
 	for (i = iCnt; i < 20; i++)
+#endif
 		smithitem[i]._itype = ITYPE_NONE;
 
 	SortSmith();
+#ifdef HELLFIRE
+	item[0] = holditem;
+#endif
 }
 
 BOOL PremiumItemOk(int i)
