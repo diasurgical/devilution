@@ -4310,7 +4310,7 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL de
 	if (imisc == 10)
 		imid = IMISC_STAFF;
 	else
-		imid = 0;
+		imid = IMISC_NONE;
 	int curlv = items_get_currlevel();
 #endif
 	if (numitems < MAXITEMS) {
