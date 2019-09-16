@@ -4307,7 +4307,7 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL de
 	done = FALSE;
 #ifdef HELLFIRE
 	int imid;
-	if (imisc == 10)
+	if (imisc == ITYPE_STAFF)
 		imid = IMISC_STAFF;
 	else
 		imid = IMISC_NONE;
