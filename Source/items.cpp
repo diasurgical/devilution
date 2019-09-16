@@ -4242,7 +4242,7 @@ void CreateSpellBook(int x, int y, int ispell, BOOL sendmsg, BOOL delta)
 		itemactive[numitems] = ii;
 		while (!done) {
 #ifdef HELLFIRE
-			SetupAllItems(ii, idx, GetRndSeed(), 2 * lvl, 1, 1, FALSE, delta);
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * lvl, 1, TRUE, FALSE, delta);
 #else
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, FALSE, delta);
 #endif
