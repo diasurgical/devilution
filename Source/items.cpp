@@ -2015,7 +2015,7 @@ int RndUItem(int m)
 #else
 			if (2 * currlevel < AllItemsList[i].iMinMLvl)
 #endif
-			okflag = FALSE;
+				okflag = FALSE;
 		}
 		if (AllItemsList[i].itype == ITYPE_MISC)
 			okflag = FALSE;
