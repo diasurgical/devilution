@@ -5,6 +5,9 @@ BOOLEAN mouseNavigation;
 BYTE *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 BYTE *BigTGold_cel;
+#ifdef HELLFIRE
+BYTE byte_68446C;
+#endif
 int PentSpin_tick;
 BYTE PentSpin_frame;
 void (*dword_63447C)(TMenuItem *);
@@ -72,12 +75,19 @@ void FreeGMenu()
 void gmenu_init_menu()
 {
 	PentSpin_frame = 1;
+#ifdef HELLFIRE
+	byte_68446C = 1;
+#endif
 	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
 	dword_63447C = 0;
 	sgCurrentMenuIdx = 0;
 	mouseNavigation = FALSE;
+#ifdef HELLFIRE
+	sgpLogo = LoadFileInMem("Data\\hf_logo3.CEL", NULL);
+#else
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", NULL);
+#endif
 	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", NULL);
 	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", NULL);
 	option_cel = LoadFileInMem("Data\\option.CEL", NULL);
