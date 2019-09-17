@@ -164,9 +164,9 @@ void CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
  */
 void CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
+	int nDataStart, nDataSize, nDataCap;
 
 	/// ASSERT: assert(gpBuffer);
 	if (!gpBuffer)
@@ -205,9 +205,9 @@ void CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Ce
  */
 void CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
+	int nDataStart, nDataSize, nDataCap;
 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (!pCelBuff)
@@ -924,9 +924,9 @@ void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
  */
 void Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
+	int nDataStart, nDataSize, nDataCap;
 
 	/// ASSERT: assert(gpBuffer);
 	if (!gpBuffer)
@@ -965,9 +965,9 @@ void Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
  */
 void Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
+	int nDataStart, nDataSize, nDataCap;
 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (!pCelBuff)
@@ -2480,9 +2480,9 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
  */
 void Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
+	int nDataStart, nDataSize;
 
 	/// ASSERT: assert(gpBuffer != NULL);
 	if (!gpBuffer)
@@ -3112,9 +3112,9 @@ void Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int
  */
 void Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
+	int nDataStart, nDataSize;
 
 	/// ASSERT: assert(gpBuffer != NULL);
 	if (!gpBuffer)
