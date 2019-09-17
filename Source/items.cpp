@@ -3412,7 +3412,7 @@ void PrintItemDetails(ItemStruct *x)
 				sprintf(tempstr, "damage: %i  Dur: %i/%i", x->_iMinDam, x->_iDurability, x->_iMaxDur);
 		} else
 #endif
-		    if (x->_iMaxDur == 255)
+		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
