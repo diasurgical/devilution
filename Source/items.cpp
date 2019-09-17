@@ -3400,8 +3400,19 @@ void PrintItemMisc(ItemStruct *x)
 
 void PrintItemDetails(ItemStruct *x)
 {
+	char str, dex;
+	BYTE mag;
+
 	if (x->_iClass == ICLASS_WEAPON) {
-		if (x->_iMaxDur == 255)
+#ifdef HELLFIRE
+		if (x->_iMinDam == x->_iMaxDam) {
+			if (x->_iMaxDur == 255)
+				sprintf(tempstr, "damage: %i  Indestructible", x->_iMinDam);
+			else
+				sprintf(tempstr, "damage: %i  Dur: %i/%i", x->_iMinDam, x->_iDurability, x->_iMaxDur);
+		} else
+#endif
+		    if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
@@ -3415,6 +3426,11 @@ void PrintItemDetails(ItemStruct *x)
 		AddPanelString(tempstr, TRUE);
 	}
 	if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
+#ifdef HELLFIRE
+		if (x->_iMinDam == x->_iMaxDam)
+			sprintf(tempstr, "dam: %i  Dur: %i/%i", x->_iMinDam, x->_iDurability, x->_iMaxDur);
+		else
+#endif
 		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
 		AddPanelString(tempstr, TRUE);
@@ -3433,7 +3449,10 @@ void PrintItemDetails(ItemStruct *x)
 		curruitem = *x;
 	}
 	PrintItemMisc(x);
-	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
+	mag = x->_iMinMag;
+	dex = x->_iMinDex;
+	str = x->_iMinStr;
+	if (mag + dex + str) {
 		strcpy(tempstr, "Required:");
 		if (x->_iMinStr)
 			sprintf(tempstr, "%s %i Str", tempstr, x->_iMinStr);
@@ -3460,7 +3479,7 @@ void PrintItemDur(ItemStruct *x)
 				sprintf(tempstr, "damage: %i  Dur: %i/%i", x->_iMinDam, x->_iDurability, x->_iMaxDur);
 		} else
 #endif
-		if (x->_iMaxDur == 255)
+		    if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
