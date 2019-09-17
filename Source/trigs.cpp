@@ -830,7 +830,7 @@ BOOL ForceL4Trig()
 
 void Freeupstairs()
 {
-	int i, yy, xx, tx, ty;
+	int i, tx, ty, yy, xx;
 
 	for (i = 0; i < numtrigs; i++) {
 		tx = trigs[i]._tx;

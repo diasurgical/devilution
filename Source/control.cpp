@@ -504,9 +504,9 @@ void SetSpell()
 	spselflag = 0;
 	if (pSpell != -1) {
 		ClearPanel();
-		drawpanflag = 255;
 		plr[myplr]._pRSpell = pSpell;
 		plr[myplr]._pRSplType = pSplType;
+		drawpanflag = 255;
 	}
 }
 
@@ -2465,11 +2465,11 @@ void DrawTalkPan()
 	int i, off, talk_btn, color, nCel, x;
 	char *msg;
 
-	off = 0;
 	if (!talkflag)
 		return;
 
 	DrawPanelBox(175, sgbPlrTalkTbl + 20, 294, 5, 239, 516);
+	off = 0;
 	for (i = 293; i > 283; off++, i--) {
 		DrawPanelBox((off >> 1) + 175, sgbPlrTalkTbl + off + 25, i, 1, (off >> 1) + 239, off + 521);
 	}
@@ -2488,8 +2488,8 @@ void DrawTalkPan()
 	if (msg)
 		*msg = '\0';
 	CelDecDatOnly(gpBuffer + x, pSPentSpn2Cels, frame, 12);
-	talk_btn = 0;
 	frame = (frame & 7) + 1;
+	talk_btn = 0;
 	for (i = 0; i < 4; i++) {
 		if (i == myplr)
 			continue;
@@ -2728,15 +2728,11 @@ void control_up_down(int v)
 {
 	int i;
 
-	i = 0;
-	while (1) {
+	for (i = 0; i < 8; i++) {
 		sgbTalkSavePos = (v + sgbTalkSavePos) & 7;
-		if (sgszTalkSave[sgbTalkSavePos][0])
-			break;
-		i++;
-		if (i >= 8) {
+		if (sgszTalkSave[sgbTalkSavePos][0]) {
+			strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 			return;
 		}
 	}
-	strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 }

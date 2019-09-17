@@ -1537,8 +1537,11 @@ void M_GetKnockback(int i)
 		monster[i]._myoff = 0;
 		monster[i]._mx = monster[i]._moldx;
 		monster[i]._my = monster[i]._moldy;
-		monster[i]._mfutx = monster[i]._moldx;
-		monster[i]._mfuty = monster[i]._moldy;
+		monster[i]._mfutx = monster[i]._mx;
+		monster[i]._mfuty = monster[i]._my;
+		// BUGFIX useless assignment
+		monster[i]._moldx = monster[i]._mx;
+		monster[i]._moldy = monster[i]._my;
 		M_CheckEFlag(i);
 		M_ClearSquares(i);
 		dMonster[monster[i]._mx][monster[i]._my] = i + 1;
