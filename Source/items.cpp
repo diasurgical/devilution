@@ -3448,8 +3448,19 @@ void PrintItemDetails(ItemStruct *x)
 
 void PrintItemDur(ItemStruct *x)
 {
+	char str, dex;
+	BYTE mag;
+
 	if (x->_iClass == ICLASS_WEAPON) {
-		if (x->_iMaxDur == 255)
+#ifdef HELLFIRE
+		if (x->_iMinDam == x->_iMaxDam) {
+			if (x->_iMaxDur == 255)
+				sprintf(tempstr, "damage: %i  Indestructible", x->_iMinDam);
+			else
+				sprintf(tempstr, "damage: %i  Dur: %i/%i", x->_iMinDam, x->_iDurability, x->_iMaxDur);
+		} else
+#endif
+		    if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
@@ -3477,7 +3488,10 @@ void PrintItemDur(ItemStruct *x)
 	if (x->_itype == ITYPE_RING || x->_itype == ITYPE_AMULET)
 		AddPanelString("Not Identified", TRUE);
 	PrintItemMisc(x);
-	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
+	str = x->_iMinStr;
+	mag = x->_iMinMag;
+	dex = x->_iMinDex;
+	if (str + mag + dex) {
 		strcpy(tempstr, "Required:");
 		if (x->_iMinStr)
 			sprintf(tempstr, "%s %i Str", tempstr, x->_iMinStr);
