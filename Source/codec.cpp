@@ -34,9 +34,7 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 	memset(buf, 0, sizeof(buf));
 	sig = (CodecSignature *)pbSrcDst;
 	if (sig->error > 0) {
-	error:
-		SHA1Clear();
-		return 0;
+		goto error;
 	}
 
 	SHA1Result(0, dst);
@@ -48,6 +46,9 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 	size += sig->last_chunk_size - 64;
 	SHA1Clear();
 	return size;
+error:
+	SHA1Clear();
+	return 0;
 }
 
 void codec_init_key(int unused, char *pszPassword)
