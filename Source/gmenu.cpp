@@ -170,7 +170,7 @@ void gmenu_draw()
 				LogoAnim_frame = 1;
 			LogoAnim_tick = ticks;
 		}
-		CelDecodeOnly(169, 102 + SCREEN_Y, sgpLogo, LogoAnim_frame, 430); //TODO: figure out what 169 means and apply defs?
+		CelDecodeOnly((SCREEN_WIDTH - 430) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, LogoAnim_frame, 430);
 #else
 		CelDecodeOnly((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
 #endif
