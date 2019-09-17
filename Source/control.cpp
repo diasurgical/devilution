@@ -504,9 +504,9 @@ void SetSpell()
 	spselflag = 0;
 	if (pSpell != -1) {
 		ClearPanel();
-		drawpanflag = 255;
 		plr[myplr]._pRSpell = pSpell;
 		plr[myplr]._pRSplType = pSplType;
+		drawpanflag = 255;
 	}
 }
 
