@@ -451,6 +451,20 @@ void InitTowners()
 	InitBarmaid();
 	InitBoy();
 	InitCows();
+#ifdef HELLFIRE
+	if ( UseCowFarmer )
+	{
+		InitCowFarmer();
+	}
+	else if ( quests[QTYPE_FARMER]._qactive != 10 )
+	{
+		InitFarmer();
+	}
+	if ( UseTheoQuest && plr->_pLvlVisited[17] )
+	{
+		InitGirl();
+	}
+#endif
 }
 
 void FreeTownerGFX()

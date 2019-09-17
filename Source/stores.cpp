@@ -5,7 +5,11 @@ int storenumh;
 int stextlhold;
 ItemStruct boyitem;
 int stextshold;
+#ifdef HELLFIRE
+ItemStruct premiumitem[15];
+#else
 ItemStruct premiumitem[6];
+#endif
 BYTE *pSTextBoxCels;
 int premiumlevel;
 int talker;
@@ -15,7 +19,11 @@ int stextsmax;
 int InStoreFlag;
 ItemStruct storehold[48];
 int gossipstart;
+#ifdef HELLFIRE
+ItemStruct witchitem[25];
+#else
 ItemStruct witchitem[20];
+#endif
 BOOL stextscrl;
 int numpremium;
 ItemStruct healitem[20];
@@ -29,7 +37,11 @@ int gossipend;
 BYTE *pSPentSpn2Cels;
 int stextsval;
 int boylevel;
+#ifdef HELLFIRE
+ItemStruct smithitem[25];
+#else
 ItemStruct smithitem[20];
+#endif
 int stextdown;
 char stextscrlubtn;
 char stextflag;
