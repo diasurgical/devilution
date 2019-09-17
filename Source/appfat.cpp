@@ -54,7 +54,11 @@ char *GetErrorStr(DWORD error_code)
 	int size;
 	char *chr;
 
+#ifdef HELLFIRE
+	upper_code = (error_code)&0x1FFF;
+#else
 	upper_code = (error_code >> 16) & 0x1FFF;
+#endif
 	if (upper_code == 0x0878) {
 		TraceErrorDS(error_code, sz_error_buf, 256);
 	} else if (upper_code == 0x0876) {
@@ -67,8 +71,7 @@ char *GetErrorStr(DWORD error_code)
 	size = strlen(sz_error_buf);
 
 	chr = &sz_error_buf[size - 1];
-	while (size > 0) {
-		size--;
+	while (size-- > 0) {
 		chr--;
 
 		if (*chr != '\r' && *chr != '\n')
