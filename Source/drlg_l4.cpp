@@ -1756,8 +1756,8 @@ BOOL DRLG_L4PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy
 	}
 
 	if (currlevel == 15) {
-		quests[15]._qtx = sx + 1;
-		quests[15]._qty = sy + 1;
+		quests[QTYPE_VB]._qtx = sx + 1;
+		quests[QTYPE_VB]._qty = sy + 1;
 	}
 	if (setview == TRUE) {
 		ViewX = 2 * sx + 21;

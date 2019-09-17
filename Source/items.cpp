@@ -697,8 +697,9 @@ void CalcPlrItemMin(int pnum)
 
 	p = &plr[pnum];
 	pi = p->InvList;
+	i = p->_pNumInv;
 
-	for (i = p->_pNumInv; i; i--) {
+	while (i--) {
 		pi->_iStatFlag = ItemMinStats(p, pi);
 		pi++;
 	}
@@ -1786,27 +1787,25 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
 
 void SetupItem(int i)
 {
-	int it, il;
+	int it;
 
 	it = ItemCAnimTbl[item[i]._iCurs];
+	item[i]._iAnimData = itemanims[it];
+	item[i]._iAnimLen = ItemAnimLs[it];
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
-	item[i]._iAnimData = itemanims[it];
-	il = ItemAnimLs[it];
-	item[i]._iAnimLen = il;
 	item[i]._iIdentified = FALSE;
 	item[i]._iPostDraw = FALSE;
 
 	if (!plr[myplr].pLvlLoad) {
-		item[i]._iSelFlag = 0;
-		il = 1;
+		item[i]._iAnimFrame = 1;
 		item[i]._iAnimFlag = TRUE;
+		item[i]._iSelFlag = 0;
 	} else {
+		item[i]._iAnimFrame = item[i]._iAnimLen;
 		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
-
-	item[i]._iAnimFrame = il;
 }
 
 int RndItem(int m)
@@ -1995,9 +1994,9 @@ void GetUniqueItem(int i, int uid)
 	if (item[i]._iMiscId == IMISC_UNIQUE)
 		item[i]._iSeed = uid;
 
-	item[i]._iCreateInfo |= 0x0200;
 	item[i]._iUid = uid;
 	item[i]._iMagical = ITEM_QUALITY_UNIQUE;
+	item[i]._iCreateInfo |= 0x0200;
 }
 
 void SpawnUnique(int uid, int x, int y)
@@ -2300,8 +2299,8 @@ void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, 
 	tempstr[16] = '\0';
 	sprintf(item[ii]._iName, "Ear of %s", tempstr);
 	item[ii]._iCurs = ((ivalue >> 6) & 3) + 19;
-	item[ii]._iCreateInfo = ic;
 	item[ii]._ivalue = ivalue & 0x3F;
+	item[ii]._iCreateInfo = ic;
 	item[ii]._iSeed = iseed;
 }
 
@@ -2453,8 +2452,8 @@ void ProcessItems()
 					PlaySfxLoc(ItemDropSnds[ItemCAnimTbl[item[ii]._iCurs]], item[ii]._ix, item[ii]._iy);
 
 				if (item[ii]._iAnimFrame >= item[ii]._iAnimLen) {
-					item[ii]._iAnimFlag = FALSE;
 					item[ii]._iAnimFrame = item[ii]._iAnimLen;
+					item[ii]._iAnimFlag = FALSE;
 					item[ii]._iSelFlag = 1;
 				}
 			}
@@ -3357,12 +3356,10 @@ void SortSmith()
 	sorted = FALSE;
 	while (j > 0 && !sorted) {
 		sorted = TRUE;
-		if (j > 0) {
-			for (k = 0; k < j; k++) {
-				if (smithitem[k].IDidx > smithitem[k + 1].IDidx) {
-					BubbleSwapItem(&smithitem[k], &smithitem[k + 1]);
-					sorted = FALSE;
-				}
+		for (k = 0; k < j; k++) {
+			if (smithitem[k].IDidx > smithitem[k + 1].IDidx) {
+				BubbleSwapItem(&smithitem[k], &smithitem[k + 1]);
+				sorted = FALSE;
 			}
 		}
 		j--;
@@ -3538,12 +3535,10 @@ void SortWitch()
 	sorted = FALSE;
 	while (j > 3 && !sorted) {
 		sorted = TRUE;
-		if (j > 3) {
-			for (k = 3; k < j; k++) {
-				if (witchitem[k].IDidx > witchitem[k + 1].IDidx) {
-					BubbleSwapItem(&witchitem[k], &witchitem[k + 1]);
-					sorted = FALSE;
-				}
+		for (k = 3; k < j; k++) {
+			if (witchitem[k].IDidx > witchitem[k + 1].IDidx) {
+				BubbleSwapItem(&witchitem[k], &witchitem[k + 1]);
+				sorted = FALSE;
 			}
 		}
 		j--;
@@ -3724,12 +3719,10 @@ void SortHealer()
 	sorted = FALSE;
 	while (j > 2 && !sorted) {
 		sorted = TRUE;
-		if (j > 2) {
-			for (k = 2; k < j; k++) {
-				if (healitem[k].IDidx > healitem[k + 1].IDidx) {
-					BubbleSwapItem(&healitem[k], &healitem[k + 1]);
-					sorted = FALSE;
-				}
+		for (k = 2; k < j; k++) {
+			if (healitem[k].IDidx > healitem[k + 1].IDidx) {
+				BubbleSwapItem(&healitem[k], &healitem[k + 1]);
+				sorted = FALSE;
 			}
 		}
 		j--;
