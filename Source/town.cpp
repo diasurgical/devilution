@@ -1580,18 +1580,45 @@ void T_Pass3()
 
 #ifndef SPAWN
 	if (gbMaxPlayers == 1) {
+#ifdef HELLFIRE
+		if(quests[QTYPE_FARMER]._qactive == 3 || quests[QTYPE_FARMER]._qactive == 10
+		|| quests[QTYPE_JERSEY]._qactive == 3 || quests[QTYPE_JERSEY]._qactive == 10)
+		{
+			town_4751C6();
+		}
+		else
+		{
+			town_475379();
+		}
+		if ( quests[QTYPE_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21] )
+			town_475595();
+		else
+			town_47552C();
+#endif
+#ifdef HELLFIRE
+		if (!(plr[myplr].pTownWarps & 1) && plr[myplr]._pLevel < 10) {
+#else
 		if (!(plr[myplr].pTownWarps & 1)) {
+#endif
 #endif
 			T_FillTile(P3Tiles, 48, 20, 320);
 #ifndef SPAWN
 		}
+#ifdef HELLFIRE
+		if (!(plr[myplr].pTownWarps & 2) && plr[myplr]._pLevel < 15) {
+#else
 		if (!(plr[myplr].pTownWarps & 2)) {
+#endif
 #endif
 			T_FillTile(P3Tiles, 16, 68, 332);
 			T_FillTile(P3Tiles, 16, 70, 331);
 #ifndef SPAWN
 		}
+#ifdef HELLFIRE
+		if (!(plr[myplr].pTownWarps & 4) && plr[myplr]._pLevel < 20) {
+#else
 		if (!(plr[myplr].pTownWarps & 4)) {
+#endif
 #endif
 			for (x = 36; x < 46; x++) {
 				T_FillTile(P3Tiles, x, 78, random(0, 4) + 1);
@@ -1600,8 +1627,26 @@ void T_Pass3()
 		}
 	}
 #endif
+#ifdef HELLFIRE
+	else
+	{
+		if(quests[QTYPE_FARMER]._qactive == 3 || quests[QTYPE_FARMER]._qactive == 10
+		|| quests[QTYPE_JERSEY]._qactive == 3 || quests[QTYPE_JERSEY]._qactive == 10)
+		{
+			town_4751C6();
+		}
+		else
+		{
+			town_475379();
+		}
+		if ( quests[QTYPE_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21] )
+			town_475595();
+		else
+			town_47552C();
+	}
+#endif
 
-	if (quests[13]._qactive != 3 && quests[13]._qactive) {
+	if (quests[QTYPE_PW]._qactive != 3 && quests[QTYPE_PW]._qactive) {
 		T_FillTile(P3Tiles, 60, 70, 342);
 	} else {
 		T_FillTile(P3Tiles, 60, 70, 71);

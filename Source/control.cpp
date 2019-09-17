@@ -2224,7 +2224,12 @@ void DrawSpellBook()
 	unsigned __int64 spl;
 
 	CelDecodeOnly(384, 511, pSpellBkCel, 1, 320);
+#ifdef HELLFIRE
+	if ( sbooktab < 5 )
+		CelDecodeOnly(61 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 61);
+#else
 	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
+#endif
 
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 
@@ -2237,7 +2242,11 @@ void DrawSpellBook()
 			DrawSpellCel(395, yp, pSBkIconCels, SpellITbl[sn], 37);
 			if (sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
+#ifdef HELLFIRE
+				DrawSpellCel(395, yp, pSBkIconCels, 52, 37);
+#else
 				DrawSpellCel(395, yp, pSBkIconCels, 43, 37);
+#endif
 			}
 			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
 			switch (GetSBookTrans(sn, FALSE)) {
@@ -2329,9 +2338,15 @@ void CheckSBook()
 			drawpanflag = 255;
 		}
 	}
+#ifdef HELLFIRE
+	if (MouseX >= 327 && MouseX < 632 && MouseY >= 320 && MouseY < 349) {
+		sbooktab = (MouseX - 327) / 61;
+	}
+#else
 	if (MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (MouseX - 327) / 76;
 	}
+#endif
 }
 
 char *get_pieces_str(int nGold)

@@ -111,11 +111,16 @@ extern BOOL trigdebug; /* unused */
 extern int setseed;
 extern int debugmonsttypes;
 extern int PauseMode;
+#ifdef HELLFIRE
+extern BOOLEAN UseTheoQuest;
+extern BOOLEAN UseCowFarmer;
+extern BOOLEAN UseNestArt;
+extern BOOLEAN UseBardTest;
+extern BOOLEAN UseBarbarianTest;
+extern BOOLEAN UseMultiTest;
+#endif
 extern char sgbMouseDown;
 extern int color_cycle_timer;
-#ifdef HELLFIRE
-extern BOOLEAN UseNestArt;
-#endif
 
 void FreeGameMem();
 BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer);
