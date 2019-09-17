@@ -6,7 +6,8 @@ BYTE *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 BYTE *BigTGold_cel;
 #ifdef HELLFIRE
-BYTE byte_68446C;
+int LogoAnim_tick;
+BYTE LogoAnim_frame;
 #endif
 int PentSpin_tick;
 BYTE PentSpin_frame;
@@ -76,7 +77,7 @@ void gmenu_init_menu()
 {
 	PentSpin_frame = 1;
 #ifdef HELLFIRE
-	byte_68446C = 1;
+	LogoAnim_frame = 1;
 #endif
 	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
@@ -160,7 +161,19 @@ void gmenu_draw()
 	if (sgpCurrentMenu) {
 		if (dword_63447C)
 			dword_63447C(sgpCurrentMenu);
+
+#ifdef HELLFIRE
+		ticks = GetTickCount();
+		if ((int)(ticks - LogoAnim_tick) > 25) {
+		    LogoAnim_frame++;
+			if (LogoAnim_frame > 16)
+				LogoAnim_frame = 1;
+			LogoAnim_tick = ticks;
+		}
+		CelDecodeOnly(169, 102 + SCREEN_Y, sgpLogo, LogoAnim_frame, 430); //TODO: figure out what 169 means and apply defs?
+#else
 		CelDecodeOnly((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
+#endif
 		y = 160 + SCREEN_Y;
 		i = sgpCurrentMenu;
 		if (sgpCurrentMenu->fnMenu) {
@@ -170,8 +183,9 @@ void gmenu_draw()
 				y += 45;
 			}
 		}
-
+#ifndef HELLFIRE
 		ticks = GetTickCount();
+#endif
 		if ((int)(ticks - PentSpin_tick) > 25) {
 			PentSpin_frame++;
 			if (PentSpin_frame == 9)
