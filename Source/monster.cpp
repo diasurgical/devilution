@@ -3121,8 +3121,13 @@ void MAI_Snake(int i)
 	int pnum;
 	int tmp;
 
-	if ((DWORD)i >= MAXMONSTERS)
+	if ((DWORD)i >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Snake: Invalid monster %d", i);
+#endif
+	}
 	char pattern[6] = { 1, 1, 0, -1, -1, 0 };
 	Monst = monster + i;
 	pnum = Monst->_menemy;
@@ -3138,8 +3143,8 @@ void MAI_Snake(int i)
 		if (abs(mx) < 3 && abs(my) < 3 && LineClearF1(PosOkMonst, i, Monst->_mx, Monst->_my, fx, fy) && Monst->_mVar1 != MM_CHARGE) {
 			if (AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_RHINO, pnum, i, 0, 0) != -1) {
 				PlayEffect(i, 0);
+				dMonster[Monst->_mx][Monst->_my] = -(i + 1);
 				Monst->_mmode = MM_CHARGE;
-				dMonster[Monst->_mx][Monst->_my] = -1 - i;
 			}
 		} else if (Monst->_mVar1 == MM_DELAY || random(106, 100) >= 35 - 2 * Monst->_mint) {
 			if (md + pattern[Monst->_mgoalvar1] < 0) {
