@@ -648,7 +648,7 @@ void DoUnLight(int nXPos, int nYPos, int nRadius)
 
 	for (y = min_y; y < max_y; y++) {
 		for (x = min_x; x < max_x; x++) {
-#ifdef HELLFIRE
+#ifndef HELLFIRE
 			if (x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY)
 #endif
 				dLight[x][y] = dPreLight[x][y];
