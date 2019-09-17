@@ -183,6 +183,7 @@ void gmenu_draw()
 				y += 45;
 			}
 		}
+
 #ifndef HELLFIRE
 		ticks = GetTickCount();
 #endif
