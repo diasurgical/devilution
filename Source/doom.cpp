@@ -39,37 +39,6 @@ int doom_get_frame_from_time()
 	return DoomQuestState / 1200;
 }
 
-void doom_cleanup()
-{
-#ifdef HELLFIRE
-	if (pDoomCel) {
-		MemFreeDbg(pDoomCel);
-		pDoomCel = NULL;
-	}
-#else
-	MemFreeDbg(pDoomCel);
-#endif
-}
-
-void doom_init()
-{
-#ifdef HELLFIRE
-	if (doom_alloc_cel()) {
-		doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
-		if (doom_load_graphics()) {
-			doomflag = TRUE;
-		} else {
-			doom_close();
-		}
-	}
-#else
-	doomflag = TRUE;
-	doom_alloc_cel();
-	doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
-	doom_load_graphics();
-#endif
-}
-
 #ifdef HELLFIRE
 BOOLEAN doom_alloc_cel()
 #else
@@ -82,6 +51,18 @@ void doom_alloc_cel()
 	return pDoomCel ? TRUE : FALSE;
 #else
 	pDoomCel = DiabloAllocPtr(0x38000);
+#endif
+}
+
+void doom_cleanup()
+{
+#ifdef HELLFIRE
+	if (pDoomCel) {
+		MemFreeDbg(pDoomCel);
+		pDoomCel = NULL;
+	}
+#else
+	MemFreeDbg(pDoomCel);
 #endif
 }
 
@@ -108,6 +89,25 @@ void doom_load_graphics()
 		sprintf(tempstr, "Items\\Map\\MapZ00%i.CEL", doom_quest_time);
 	}
 	LoadFileWithMem(tempstr, pDoomCel);
+#endif
+}
+
+void doom_init()
+{
+#ifdef HELLFIRE
+	if (doom_alloc_cel()) {
+		doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
+		if (doom_load_graphics()) {
+			doomflag = TRUE;
+		} else {
+			doom_close();
+		}
+	}
+#else
+	doomflag = TRUE;
+	doom_alloc_cel();
+	doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
+	doom_load_graphics();
 #endif
 }
 
