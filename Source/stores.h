@@ -7,7 +7,11 @@ extern int storenumh;
 extern int stextlhold;
 extern ItemStruct boyitem;
 extern int stextshold;
+#ifdef HELLFIRE
+extern ItemStruct premiumitem[15];
+#else
 extern ItemStruct premiumitem[6];
+#endif
 extern BYTE *pSTextBoxCels;
 extern int premiumlevel;
 extern int talker;
@@ -17,7 +21,11 @@ extern int stextsmax;
 extern int InStoreFlag;
 extern ItemStruct storehold[48];
 extern int gossipstart;
+#ifdef HELLFIRE
+extern ItemStruct witchitem[25];
+#else
 extern ItemStruct witchitem[20];
+#endif
 extern BOOL stextscrl;
 extern int numpremium;
 extern ItemStruct healitem[20];
@@ -31,7 +39,11 @@ extern int gossipend;
 extern BYTE *pSPentSpn2Cels;
 extern int stextsval;
 extern int boylevel;
+#ifdef HELLFIRE
+extern ItemStruct smithitem[25];
+#else
 extern ItemStruct smithitem[20];
+#endif
 extern int stextdown;
 extern char stextscrlubtn;
 extern char stextflag;

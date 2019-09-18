@@ -59,7 +59,11 @@ void SetupItem(int i);
 int RndItem(int m);
 int RndUItem(int m);
 int RndAllItems();
+#ifdef HELLFIRE
+int RndTypeItems(int itype, int imid, int lvl);
+#else
 int RndTypeItems(int itype, int imid);
+#endif
 int CheckUnique(int i, int lvl, int uper, BOOL recreate);
 void GetUniqueItem(int i, int uid);
 void SpawnUnique(int uid, int x, int y);
@@ -78,6 +82,12 @@ void items_427ABA(int x, int y);
 #endif
 void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag);
 void SpawnRock();
+#ifdef HELLFIRE
+void items_427DC6(int itemid, int xx, int yy);
+void items_427E61(int xx, int yy);
+void items_427E6F(int xx, int yy);
+void items_427E7D(int xx, int yy);
+#endif
 void RespawnItem(int i, BOOL FlipFlag);
 void DeleteItem(int ii, int i);
 void ItemDoppel();

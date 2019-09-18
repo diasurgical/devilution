@@ -30,12 +30,17 @@ BOOL trigdebug; /* unused */
 int setseed;
 int debugmonsttypes;
 int PauseMode;
+#ifdef HELLFIRE
+BOOLEAN UseTheoQuest;
+BOOLEAN UseCowFarmer;
+BOOLEAN UseNestArt;
+BOOLEAN UseBardTest;
+BOOLEAN UseBarbarianTest;
+BOOLEAN UseMultiTest;
+#endif
 int sgnTimeoutCurs;
 char sgbMouseDown;
 int color_cycle_timer;
-#ifdef HELLFIRE
-BOOLEAN UseNestArt;
-#endif
 
 /* rdata */
 

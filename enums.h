@@ -74,6 +74,9 @@ typedef enum unique_base_item {
 	UITYPE_GRISWOLD    = 0x42,
 	UITYPE_LGTFORGE    = 0x43,
 	UITYPE_LAZSTAFF    = 0x44,
+#ifdef HELLFIRE
+	UITYPE_BOVINE      = 0x45,
+#endif
 	UITYPE_INVALID     = -1,
 } unique_base_item;
 
@@ -179,6 +182,9 @@ typedef enum item_cursor_graphic {
 	ICURS_EAR_WARRIOR                 = 20,
 	ICURS_EAR_ROGUE                   = 21,
 	ICURS_BLOOD_STONE                 = 25,
+#ifdef HELLFIRE
+	ICURS_OIL                         = 30,
+#endif
 	ICURS_ELIXIR_OF_VITALITY          = 31,
 	ICURS_POTION_OF_HEALING           = 32,
 	ICURS_POTION_OF_FULL_REJUVENATION = 33,
@@ -270,6 +276,23 @@ typedef enum item_cursor_graphic {
 	ICURS_COMPOSITE_STAFF             = 166,
 	ICURS_SHORT_BATTLE_BOW            = 167,
 	ICURS_GOLD                        = 168,
+#ifdef HELLFIRE
+	ICURS_AURIC_AMULET                = 180,
+	ICURS_RUNE_BOMB                   = 187,
+	ICURS_THEODORE                    = 188,
+	ICURS_TORN_NOTE_1                 = 189,
+	ICURS_TORN_NOTE_2                 = 190,
+	ICURS_TORN_NOTE_3                 = 191,
+	ICURS_RECONSTRUCTED_NOTE          = 192,
+	ICURS_RUNE_OF_FIRE                = 193,
+	ICURS_GREATER_RUNE_OF_FIRE        = 194,
+	ICURS_RUNE_OF_LIGHTNING           = 195,
+	ICURS_GREATER_RUNE_OF_LIGHTNING   = 196,
+	ICURS_RUNE_OF_STONE               = 197,
+	ICURS_GREY_SUIT                   = 198,
+	ICURS_BROWN_SUIT                  = 199,
+	ICURS_BOVINE                      = 226,
+#endif
 } item_cursor_graphic;
 
 typedef enum _sfx_id {
@@ -2341,6 +2364,9 @@ typedef enum spell_id {
 	SPL_HEALOTHER   = 0x22,
 	SPL_FLARE       = 0x23,
 	SPL_BONESPIRIT  = 0x24,
+#ifdef HELLFIRE
+	SPL_MANA        = 0x25,
+#endif
 	SPL_INVALID     = 0xFFFFFFFF,
 } spell_id;
 
@@ -2465,7 +2491,13 @@ typedef enum _talker_id {
 	TOWN_BMAID   = 0x7,
 	TOWN_PEGBOY  = 0x8,
 	TOWN_COW     = 0x9,
+#ifdef HELLFIRE
+	TOWN_FARMER  = 0xA,
+	TOWN_GIRL    = 0xB,
+	TOWN_COWFARM = 0xC,
+#else
 	TOWN_PRIEST  = 0xA,
+#endif
 } _talker_id;
 
 typedef enum _music_id {
@@ -2666,6 +2698,15 @@ typedef enum item_misc_id {
 	IMISC_MAPOFDOOM = 0x2A,
 	IMISC_EAR       = 0x2B,
 	IMISC_SPECELIX  = 0x2C,
+#ifdef HELLFIRE
+	IMISC_RUNEF     = 0x2F,
+	IMISC_RUNEL     = 0x30,
+	IMISC_GR_RUNEL  = 0x31,
+	IMISC_GR_RUNEF  = 0x32,
+	IMISC_RUNES     = 0x33,
+	IMISC_AURIC     = 0x35,
+	IMISC_NOTE      = 0x36,
+#endif
 	IMISC_INVALID   = 0xFFFFFFFF,
 } item_misc_id;
 
@@ -2689,43 +2730,58 @@ typedef enum item_type {
 } item_type;
 
 typedef enum _item_indexes {
-	IDI_GOLD       = 0x0,
-	IDI_WARRIOR    = 0x1,
-	IDI_WARRSHLD   = 0x2,
-	IDI_WARRCLUB   = 0x3,
-	IDI_ROGUE      = 0x4,
-	IDI_SORCEROR   = 0x5,
-	IDI_CLEAVER    = 0x6,
-	IDI_FIRSTQUEST = 0x6,
-	IDI_SKCROWN    = 0x7,
-	IDI_INFRARING  = 0x8,
-	IDI_ROCK       = 0x9,
-	IDI_OPTAMULET  = 0xA,
-	IDI_TRING      = 0xB,
-	IDI_BANNER     = 0xC,
-	IDI_HARCREST   = 0xD,
-	IDI_STEELVEIL  = 0xE,
-	IDI_GLDNELIX   = 0xF,
-	IDI_ANVIL      = 0x10,
-	IDI_MUSHROOM   = 0x11,
-	IDI_BRAIN      = 0x12,
-	IDI_FUNGALTM   = 0x13,
-	IDI_SPECELIX   = 0x14,
-	IDI_BLDSTONE   = 0x15,
-	IDI_LASTQUEST  = 0x16,
-	IDI_MAPOFDOOM  = 0x16,
-	IDI_EAR        = 0x17,
-	IDI_HEAL       = 0x18,
-	IDI_MANA       = 0x19,
-	IDI_IDENTIFY   = 0x1A,
-	IDI_PORTAL     = 0x1B,
-	IDI_ARMOFVAL   = 0x1C,
-	IDI_FULLHEAL   = 0x1D,
-	IDI_FULLMANA   = 0x1E,
-	IDI_GRISWOLD   = 0x1F,
-	IDI_LGTFORGE   = 0x20,
-	IDI_LAZSTAFF   = 0x21,
-	IDI_RESURRECT  = 0x22,
+	IDI_GOLD,
+	IDI_WARRIOR,
+	IDI_WARRSHLD,
+	IDI_WARRCLUB,
+	IDI_ROGUE,
+	IDI_SORCEROR,
+	IDI_CLEAVER,
+	IDI_FIRSTQUEST = IDI_CLEAVER,
+	IDI_SKCROWN,
+	IDI_INFRARING ,
+	IDI_ROCK,
+	IDI_OPTAMULET,
+	IDI_TRING,
+	IDI_BANNER,
+	IDI_HARCREST,
+	IDI_STEELVEIL,
+	IDI_GLDNELIX,
+	IDI_ANVIL,
+	IDI_MUSHROOM,
+	IDI_BRAIN,
+	IDI_FUNGALTM,
+	IDI_SPECELIX,
+	IDI_BLDSTONE,
+	IDI_MAPOFDOOM,
+	IDI_LASTQUEST = IDI_MAPOFDOOM,
+	IDI_EAR,
+	IDI_HEAL,
+	IDI_MANA,
+	IDI_IDENTIFY,
+	IDI_PORTAL,
+	IDI_ARMOFVAL,
+	IDI_FULLHEAL,
+	IDI_FULLMANA,
+	IDI_GRISWOLD,
+	IDI_LGTFORGE,
+	IDI_LAZSTAFF,
+	IDI_RESURRECT,
+#ifdef HELLFIRE
+	IDI_OIL,
+	IDI_SHORTSTAFF,
+	IDI_SWORD,
+	IDI_DAGGER,
+	IDI_RUNEBOMB,
+	IDI_THEODORE,
+	IDI_AURIC,
+	IDI_NOTE1,
+	IDI_NOTE2,
+	IDI_NOTE3,
+	IDI_FULLNOTE,
+	IDI_BROWNSUIT,
+	IDI_GREYSUIT,
+#endif
 } _item_indexes;
 
 typedef enum _setlevels {

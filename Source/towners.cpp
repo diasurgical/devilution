@@ -10,10 +10,16 @@ BYTE *pCowCels;
 TownerStruct towner[16];
 
 #ifndef SPAWN
-const int snSFX[3][3] = {
+const int snSFX[3][NUM_CLASSES] = {
+#ifdef HELLFIRE
+	{ PS_WARR52, PS_ROGUE52, PS_MAGE52, PS_MONK52, 0 }, // BUGFIX: add warrior sounds for barbarian instead of 0 - walk sound
+	{ PS_WARR49, PS_ROGUE49, PS_MAGE49, PS_MONK49, 0 },
+	{ PS_WARR50, PS_ROGUE50, PS_MAGE50, PS_MONK50, 0 }
+#else
 	{ PS_WARR52, PS_ROGUE52, PS_MAGE52 },
 	{ PS_WARR49, PS_ROGUE49, PS_MAGE49 },
 	{ PS_WARR50, PS_ROGUE50, PS_MAGE50 }
+#endif
 };
 #endif
 
@@ -153,10 +159,10 @@ void SetTownerGPtrs(BYTE *pData, BYTE **pAnim)
 
 void NewTownerAnim(int tnum, BYTE *pAnim, int numFrames, int Delay)
 {
-	towner[tnum]._tAnimCnt = 0;
-	towner[tnum]._tAnimLen = numFrames;
 	towner[tnum]._tAnimData = pAnim;
+	towner[tnum]._tAnimLen = numFrames;
 	towner[tnum]._tAnimFrame = 1;
+	towner[tnum]._tAnimCnt = 0;
 	towner[tnum]._tAnimDelay = Delay;
 }
 
@@ -372,6 +378,64 @@ void InitCows()
 	}
 }
 
+#ifdef HELLFIRE
+void InitFarmer()
+{
+	int i;
+
+	InitTownerInfo(numtowners, 96, 1, TOWN_FARMER, 62, 16, -1, 10);
+	InitQstSnds(numtowners);
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\Farmrn2.CEL", NULL);
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 15;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[DIR_S], towner[numtowners]._tNFrames, 3);
+	strcpy(towner[numtowners]._tName, "Lester the farmer");
+	numtowners++;
+}
+
+void InitCowFarmer()
+{
+	int i;
+
+	InitTownerInfo(numtowners, 96, 1, TOWN_COWFARM, 61, 22, -1, 10);
+	InitQstSnds(numtowners);
+	if (quests[QTYPE_JERSEY]._qactive != 3) {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\cfrmrn2.CEL", NULL);
+	} else {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Farmer\\mfrmrn2.CEL", NULL);
+	}
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 15;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[DIR_SW], towner[numtowners]._tNFrames, 3);
+	strcpy(towner[numtowners]._tName, "Complete Nut");
+	numtowners++;
+}
+
+void InitGirl()
+{
+	int i;
+
+	InitTownerInfo(numtowners, 96, 1, TOWN_GIRL, 77, 43, -1, 10);
+	InitQstSnds(numtowners);
+	if (quests[QTYPE_GIRL]._qactive != 3) {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Girl\\Girlw1.CEL", NULL);
+	} else {
+		towner[numtowners]._tNData = LoadFileInMem("Towners\\Girl\\Girls1.CEL", NULL);
+	}
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 20;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[DIR_S], towner[numtowners]._tNFrames, 6);
+	strcpy(towner[numtowners]._tName, "Celia");
+	numtowners++;
+}
+#endif
+
 void InitTowners()
 {
 	numtowners = 0;
@@ -387,6 +451,20 @@ void InitTowners()
 	InitBarmaid();
 	InitBoy();
 	InitCows();
+#ifdef HELLFIRE
+	if ( UseCowFarmer )
+	{
+		InitCowFarmer();
+	}
+	else if ( quests[QTYPE_FARMER]._qactive != 10 )
+	{
+		InitFarmer();
+	}
+	if ( UseTheoQuest && plr->_pLvlVisited[17] )
+	{
+		InitGirl();
+	}
+#endif
 }
 
 void FreeTownerGFX()
@@ -413,12 +491,20 @@ void TownCtrlMsg(int i)
 		p = towner[i]._tVar1;
 		dx = abs(towner[i]._tx - plr[p].WorldX);
 		dy = abs(towner[i]._ty - plr[p].WorldY);
+#ifdef HELLFIRE
+		if (dx >= 2 || dy >= 2) {
+			towner[i]._tbtcnt = 0;
+			qtextflag = FALSE;
+			sfx_stop();
+		}
+#else
 		if (dx >= 2 || dy >= 2)
 			towner[i]._tbtcnt = 0;
 		if (!towner[i]._tbtcnt) {
 			qtextflag = FALSE;
 			sfx_stop();
 		}
+#endif
 	}
 }
 
@@ -445,7 +531,7 @@ void TownDead()
 	tidx = GetActiveTowner(TOWN_DEADGUY);
 	TownCtrlMsg(tidx);
 	if (!qtextflag) {
-		if ((quests[6]._qactive != 2 || quests[6]._qlog) && quests[6]._qactive != 1) {
+		if ((quests[QTYPE_BUTCH]._qactive != 2 || quests[QTYPE_BUTCH]._qlog) && quests[QTYPE_BUTCH]._qactive != 1) {
 			towner[tidx]._tAnimDelay = 1000;
 			towner[tidx]._tAnimFrame = 1;
 			strcpy(towner[tidx]._tName, "Slain Townsman");
@@ -513,6 +599,32 @@ void TownCow()
 	TownCtrlMsg(i);
 }
 
+#ifdef HELLFIRE
+void TownFarmer()
+{
+	int i;
+
+	i = GetActiveTowner(TOWN_FARMER);
+	TownCtrlMsg(i);
+}
+
+void TownCowFarmer()
+{
+	int i;
+
+	i = GetActiveTowner(TOWN_COWFARM);
+	TownCtrlMsg(i);
+}
+
+void TownGirl()
+{
+	int i;
+
+	i = GetActiveTowner(TOWN_GIRL);
+	TownCtrlMsg(i);
+}
+#endif
+
 void ProcessTowners()
 {
 	int i, ao;
@@ -549,6 +661,17 @@ void ProcessTowners()
 		case TOWN_COW:
 			TownCow();
 			break;
+#ifdef HELLFIRE
+		case TOWN_FARMER:
+			TownFarmer();
+			break;
+		case TOWN_GIRL:
+			TownGirl();
+			break;
+		case TOWN_COWFARM:
+			TownCowFarmer();
+			break;
+#endif
 		}
 
 		towner[i]._tAnimCnt++;

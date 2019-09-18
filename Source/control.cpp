@@ -504,9 +504,9 @@ void SetSpell()
 	spselflag = 0;
 	if (pSpell != -1) {
 		ClearPanel();
-		drawpanflag = 255;
 		plr[myplr]._pRSpell = pSpell;
 		plr[myplr]._pRSplType = pSplType;
+		drawpanflag = 255;
 	}
 }
 
@@ -1016,11 +1016,25 @@ void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int
 
 void DrawLifeFlask()
 {
-	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
-	plr[myplr]._pHPPer = filled;
+	double p;
+	int filled;
 
+#ifdef HELLFIRE
+	if (plr[myplr]._pMaxHP <= 0) {
+		p = 0.0;
+	} else {
+		p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	}
+#else
+	p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+#endif
+	plr[myplr]._pHPPer = p;
+	filled = plr[myplr]._pHPPer;
+
+#ifndef HELLFIRE
 	if (filled > 80)
 		filled = 80;
+#endif
 	filled = 80 - filled;
 	if (filled > 11)
 		filled = 11;
@@ -1063,8 +1077,10 @@ void UpdateLifeFlask()
 void DrawManaFlask()
 {
 	int filled = plr[myplr]._pManaPer;
+#ifndef HELLFIRE
 	if (filled > 80)
 		filled = 80;
+#endif
 	filled = 80 - filled;
 	if (filled > 11)
 		filled = 11;
@@ -1192,6 +1208,14 @@ void InitControlPan()
 		SpellPages[0][0] = SPL_DISARM;
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		SpellPages[0][0] = SPL_RECHARGE;
+#endif
+#ifdef HELLFIRE
+	} else if (plr[myplr]._pClass == PC_MONK) {
+		SpellPages[0][0] = 46; // TODO: replace with hellfire enum when it gets added
+	} else if (plr[myplr]._pClass == PC_BARD) {
+		SpellPages[0][0] = SPL_IDENTIFY;
+	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+		SpellPages[0][0] = 22; // TODO: replace with hellfire enum when it gets added
 #endif
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", NULL);
@@ -1595,7 +1619,11 @@ void DrawInfoBox()
 			infoclr = COL_GOLD;
 			strcpy(infostr, plr[pcursplr]._pName);
 			ClearPanel();
+#ifdef HELLFIRE
+			sprintf(tempstr, "%s, Level : %i", ClassStrTbl[plr[pcursplr]._pClass], plr[pcursplr]._pLevel);
+#else
 			sprintf(tempstr, "Level : %i", plr[pcursplr]._pLevel);
+#endif
 			AddPanelString(tempstr, TRUE);
 			sprintf(tempstr, "Hit Points %i of %i", plr[pcursplr]._pHitPoints >> 6, plr[pcursplr]._pMaxHP >> 6);
 			AddPanelString(tempstr, TRUE);
@@ -2196,7 +2224,12 @@ void DrawSpellBook()
 	unsigned __int64 spl;
 
 	CelDecodeOnly(384, 511, pSpellBkCel, 1, 320);
+#ifdef HELLFIRE
+	if ( sbooktab < 5 )
+		CelDecodeOnly(61 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 61);
+#else
 	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
+#endif
 
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 
@@ -2209,7 +2242,11 @@ void DrawSpellBook()
 			DrawSpellCel(395, yp, pSBkIconCels, SpellITbl[sn], 37);
 			if (sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
+#ifdef HELLFIRE
+				DrawSpellCel(395, yp, pSBkIconCels, 52, 37);
+#else
 				DrawSpellCel(395, yp, pSBkIconCels, 43, 37);
+#endif
 			}
 			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
 			switch (GetSBookTrans(sn, FALSE)) {
@@ -2301,9 +2338,15 @@ void CheckSBook()
 			drawpanflag = 255;
 		}
 	}
+#ifdef HELLFIRE
+	if (MouseX >= 327 && MouseX < 632 && MouseY >= 320 && MouseY < 349) {
+		sbooktab = (MouseX - 327) / 61;
+	}
+#else
 	if (MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (MouseX - 327) / 76;
 	}
+#endif
 }
 
 char *get_pieces_str(int nGold)
@@ -2422,11 +2465,11 @@ void DrawTalkPan()
 	int i, off, talk_btn, color, nCel, x;
 	char *msg;
 
-	off = 0;
 	if (!talkflag)
 		return;
 
 	DrawPanelBox(175, sgbPlrTalkTbl + 20, 294, 5, 239, 516);
+	off = 0;
 	for (i = 293; i > 283; off++, i--) {
 		DrawPanelBox((off >> 1) + 175, sgbPlrTalkTbl + off + 25, i, 1, (off >> 1) + 239, off + 521);
 	}
@@ -2445,8 +2488,8 @@ void DrawTalkPan()
 	if (msg)
 		*msg = '\0';
 	CelDecDatOnly(gpBuffer + x, pSPentSpn2Cels, frame, 12);
-	talk_btn = 0;
 	frame = (frame & 7) + 1;
+	talk_btn = 0;
 	for (i = 0; i < 4; i++) {
 		if (i == myplr)
 			continue;
@@ -2647,7 +2690,18 @@ void control_press_enter()
 	BYTE talk_save;
 
 	if (sgszTalkMsg[0]) {
+#ifdef HELLFIRE
+		int pmask;
+		pmask = 0;
+
+		for (i = 0; i < MAX_PLRS; i++) {
+			if (whisper[i])
+				pmask |= 1 << i;
+		}
+		NetSendCmdString(pmask, sgszTalkMsg);
+#else
 		control_reset_talk_msg(sgszTalkMsg);
+#endif
 		for (i = 0; i < 8; i++) {
 			if (!strcmp(sgszTalkSave[i], sgszTalkMsg))
 				break;
@@ -2674,15 +2728,11 @@ void control_up_down(int v)
 {
 	int i;
 
-	i = 0;
-	while (1) {
+	for (i = 0; i < 8; i++) {
 		sgbTalkSavePos = (v + sgbTalkSavePos) & 7;
-		if (sgszTalkSave[sgbTalkSavePos][0])
-			break;
-		i++;
-		if (i >= 8) {
+		if (sgszTalkSave[sgbTalkSavePos][0]) {
+			strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 			return;
 		}
 	}
-	strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 }

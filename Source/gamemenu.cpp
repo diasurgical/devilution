@@ -100,6 +100,9 @@ void gamemenu_new_game(BOOL bActivate)
 	deathflag = FALSE;
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(TRUE);
+#ifdef HELLFIRE
+	dword_691CB0 = 0;
+#endif
 	gbRunGame = FALSE;
 	gamemenu_off();
 }

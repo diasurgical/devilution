@@ -2077,7 +2077,11 @@ void SyncPlrKill(int pnum, int earflag)
 {
 	int ma, i;
 
+#ifdef HELLFIRE
+	if (plr[pnum]._pHitPoints <= 0 && currlevel == 0) {
+#else
 	if (plr[pnum]._pHitPoints == 0 && currlevel == 0) {
+#endif
 		SetPlayerHitPoints(pnum, 64);
 		return;
 	}
@@ -3025,6 +3029,22 @@ BOOL PM_DoGotHit(int pnum)
 		app_fatal("PM_DoGotHit: illegal player %d", pnum);
 	}
 
+#ifdef HELLFIRE
+	if (plr[pnum]._pIFlags & (ISPL_FASTRECOVER | ISPL_FASTERRECOVER | ISPL_FASTESTRECOVER)) {
+		frame = 3;
+		if (plr[pnum]._pIFlags & ISPL_FASTERRECOVER)
+			frame = 4;
+		if (plr[pnum]._pIFlags & ISPL_FASTESTRECOVER)
+			frame = 5;
+		if (plr[pnum]._pVar8 > 1 && plr[pnum]._pVar8 < frame) {
+			plr[pnum]._pVar8 = frame;
+		}
+		if (plr[pnum]._pVar8 > plr[pnum]._pHFrames)
+			plr[pnum]._pVar8 = plr[pnum]._pHFrames;
+	}
+
+	if (plr[pnum]._pVar8 == plr[pnum]._pHFrames) {
+#else
 	frame = plr[pnum]._pAnimFrame;
 	if (plr[pnum]._pIFlags & ISPL_FASTRECOVER && frame == 3) {
 		plr[pnum]._pAnimFrame++;
@@ -3037,6 +3057,7 @@ BOOL PM_DoGotHit(int pnum)
 	}
 
 	if (plr[pnum]._pAnimFrame >= plr[pnum]._pHFrames) {
+#endif
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 		if (random(3, 4)) {
@@ -3046,6 +3067,9 @@ BOOL PM_DoGotHit(int pnum)
 		return TRUE;
 	}
 
+#ifdef HELLFIRE
+	plr[pnum]._pVar8++;
+#endif
 	return FALSE;
 }
 

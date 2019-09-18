@@ -5,6 +5,10 @@ BOOLEAN mouseNavigation;
 BYTE *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 BYTE *BigTGold_cel;
+#ifdef HELLFIRE
+int LogoAnim_tick;
+BYTE LogoAnim_frame;
+#endif
 int PentSpin_tick;
 BYTE PentSpin_frame;
 void (*dword_63447C)(TMenuItem *);
@@ -72,12 +76,19 @@ void FreeGMenu()
 void gmenu_init_menu()
 {
 	PentSpin_frame = 1;
+#ifdef HELLFIRE
+	LogoAnim_frame = 1;
+#endif
 	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
 	dword_63447C = 0;
 	sgCurrentMenuIdx = 0;
 	mouseNavigation = FALSE;
+#ifdef HELLFIRE
+	sgpLogo = LoadFileInMem("Data\\hf_logo3.CEL", NULL);
+#else
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", NULL);
+#endif
 	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", NULL);
 	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", NULL);
 	option_cel = LoadFileInMem("Data\\option.CEL", NULL);
@@ -150,7 +161,19 @@ void gmenu_draw()
 	if (sgpCurrentMenu) {
 		if (dword_63447C)
 			dword_63447C(sgpCurrentMenu);
+
+#ifdef HELLFIRE
+		ticks = GetTickCount();
+		if ((int)(ticks - LogoAnim_tick) > 25) {
+		    LogoAnim_frame++;
+			if (LogoAnim_frame > 16)
+				LogoAnim_frame = 1;
+			LogoAnim_tick = ticks;
+		}
+		CelDecodeOnly((SCREEN_WIDTH - 430) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, LogoAnim_frame, 430);
+#else
 		CelDecodeOnly((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
+#endif
 		y = 160 + SCREEN_Y;
 		i = sgpCurrentMenu;
 		if (sgpCurrentMenu->fnMenu) {
@@ -161,7 +184,9 @@ void gmenu_draw()
 			}
 		}
 
+#ifndef HELLFIRE
 		ticks = GetTickCount();
+#endif
 		if ((int)(ticks - PentSpin_tick) > 25) {
 			PentSpin_frame++;
 			if (PentSpin_frame == 9)
@@ -173,18 +198,28 @@ void gmenu_draw()
 
 void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 {
-	DWORD x, w, nSteps, step, pos, t;
+	DWORD w, x, nSteps, step, pos, t;
+#ifndef HELLFIRE
 	t = y - 2;
+#endif
 	w = gmenu_get_lfont(pItem);
 	if (pItem->dwFlags & GMENU_SLIDER) {
 		x = 16 + w / 2 + SCREEN_X;
+#ifdef HELLFIRE
+		CelDecodeOnly(x, y - 10, optbar_cel, 1, 287);
+#else
 		CelDecodeOnly(x, t - 8, optbar_cel, 1, 287);
+#endif
 		step = pItem->dwFlags & 0xFFF;
 		nSteps = (pItem->dwFlags & 0xFFF000) >> 12;
 		if (nSteps < 2)
 			nSteps = 2;
 		pos = step * 256 / nSteps;
+#ifdef HELLFIRE
+		gmenu_clear_buffer(x + 2, y - 12, pos + 13, 28);
+#else
 		gmenu_clear_buffer(x + 2, t - 10, pos + 13, 28);
+#endif
 		CelDecodeOnly(x + 2 + pos, y - 12, option_cel, 1, 27);
 	}
 	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
@@ -200,7 +235,8 @@ void gmenu_clear_buffer(int x, int y, int width, int height)
 {
 	BYTE *i;
 
-	for (i = gpBuffer + PitchTbl[y] + x; height; height--) {
+	i = gpBuffer + PitchTbl[y] + x;
+	while (height--) {
 		memset(i, 205, width);
 		i -= BUFFER_WIDTH;
 	}

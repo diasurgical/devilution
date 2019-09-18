@@ -332,7 +332,11 @@ void InitRndBarrels()
 	int numobjs; // number of groups of barrels to generate
 	int xp, yp;
 	_object_id o;
+#ifdef HELLFIRE
+	BOOLEAN found;
+#else
 	BOOL found;
+#endif
 	int p; // regulates chance to stop placing barrels in current group
 	int dir;
 	int t; // number of tries of placing next barrel in current group
@@ -4067,7 +4071,11 @@ void SyncOpObject(int pnum, int cmd, int i)
 void BreakCrux(int i)
 {
 	int j, oi;
+#ifdef HELLFIRE
+	BOOLEAN triggered;
+#else
 	BOOL triggered;
+#endif
 
 	object[i]._oAnimFlag = 1;
 	object[i]._oAnimFrame = 1;
