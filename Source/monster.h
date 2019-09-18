@@ -8,13 +8,12 @@ extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
 extern MonsterStruct monster[MAXMONSTERS];
 extern int totalmonsters;
+extern CMonster Monsters[MAX_LVLMTYPES];
 #ifdef HELLFIRE
-extern CMonster Monsters[24];
-extern int unused_6AAE30[600];
+extern int GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 #else
-extern CMonster Monsters[16];
+extern BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 #endif
-// int END_Monsters_17;
 extern int monstimgtot;
 extern int uniquetrans;
 extern int nummtypes;

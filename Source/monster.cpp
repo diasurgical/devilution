@@ -11,13 +11,12 @@ int nummonsters;
 BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
 int totalmonsters;
+CMonster Monsters[MAX_LVLMTYPES];
 #ifdef HELLFIRE
-CMonster Monsters[24];
-int unused_6AAE30[600];
+int GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 #else
-CMonster Monsters[16];
+BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 #endif
-// int END_Monsters_17;
 int monstimgtot;
 int uniquetrans;
 int nummtypes;
