@@ -2598,7 +2598,11 @@ BOOL UseScroll()
 void UseStaffCharge(int pnum)
 {
 	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
-	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+	    && (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+#ifdef HELLFIRE
+	           || plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_UNIQUE // BUGFIX: myplr->pnum
+#endif
+	           )
 	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[pnum]._pRSpell
 	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
 		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges--;
