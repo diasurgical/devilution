@@ -1697,7 +1697,11 @@ typedef enum _monster_id {
 	MT_DEFILER  = 0x7C,
 	MT_NAKRUL   = 0x89,
 #endif
+#ifdef HELLFIRE
+	NUM_MTYPES = 138
+#else
 	NUM_MTYPES
+#endif
 } _monster_id;
 
 // this enum contains indexes from UniqMonst array for special unique monsters (usually quest related)
