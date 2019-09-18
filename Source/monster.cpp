@@ -4634,23 +4634,44 @@ void ProcessMonsters()
 			Monst->_mAISeed = GetRndSeed();
 		}
 		if (!(monster[mi]._mFlags & MFLAG_NOHEAL) && Monst->_mhitpoints < Monst->_mmaxhp && Monst->_mhitpoints >> 6 > 0) {
-			if (Monst->mLevel <= 1) {
-				Monst->_mhitpoints += Monst->mLevel;
-			} else {
+			if (Monst->mLevel > 1) {
 				Monst->_mhitpoints += Monst->mLevel >> 1;
+			} else {
+				Monst->_mhitpoints += Monst->mLevel;
 			}
 		}
 		mx = Monst->_mx;
 		my = Monst->_my;
 #ifndef SPAWN
-		if (dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0 && Monst->MType->mtype == MT_CLEAVER) {
-			PlaySFX(USFX_CLEAVER);
+		if (dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0) {
+			if (Monst->MType->mtype == MT_CLEAVER) {
+				PlaySFX(USFX_CLEAVER);
+			}
+#ifdef HELLFIRE
+			if (Monst->MType->mtype == MT_NAKRUL) {
+				if (UseCowFarmer) {
+					PlaySFX(USFX_NAKRUL6);
+				} else {
+					if (IsUberRoomOpened)
+						PlaySFX(USFX_NAKRUL4);
+					else
+						PlaySFX(USFX_NAKRUL5);
+				}
+			}
+			if (Monst->MType->mtype == MT_DEFILER)
+				PlaySFX(USFX_DEFILER8);
+			M_Enemy(mi);
+#endif
 		}
 #endif
 		if (Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
 			_menemy = Monst->_menemy;
 			if ((DWORD)_menemy >= MAXMONSTERS) {
+#ifdef HELLFIRE
+				return;
+#else
 				app_fatal("Illegal enemy monster %d for monster \"%s\"", _menemy, Monst->mName);
+#endif
 			}
 			Monst->_lastx = monster[Monst->_menemy]._mfutx;
 			Monst->_menemyx = Monst->_lastx;
@@ -4659,7 +4680,11 @@ void ProcessMonsters()
 		} else {
 			_menemy = Monst->_menemy;
 			if ((DWORD)_menemy >= MAX_PLRS) {
+#ifdef HELLFIRE
+				return;
+#else
 				app_fatal("Illegal enemy player %d for monster \"%s\"", _menemy, Monst->mName);
+#endif
 			}
 			Monst->_menemyx = plr[Monst->_menemy]._px;
 			Monst->_menemyy = plr[Monst->_menemy]._py;

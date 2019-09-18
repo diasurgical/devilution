@@ -1682,6 +1682,8 @@ typedef enum _monster_id {
 	MT_GOLEM    = 0x6D,
 	MT_DIABLO   = 0x6E,
 	MT_DARKMAGE = 0x6F,
+	MT_DEFILER  = 0x7C,
+	MT_NAKRUL   = 0x89,
 	NUM_MTYPES
 } _monster_id;
 
