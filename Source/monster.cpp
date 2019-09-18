@@ -4643,15 +4643,11 @@ void ProcessMonsters()
 		mx = Monst->_mx;
 		my = Monst->_my;
 #ifndef SPAWN
-#ifndef HELLFIRE
-		if (dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0 && Monst->MType->mtype == MT_CLEAVER) {
-			PlaySFX(USFX_CLEAVER);
-		}
-#else
 		if (dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0) {
 			if (Monst->MType->mtype == MT_CLEAVER) {
 				PlaySFX(USFX_CLEAVER);
 			}
+#ifdef HELLFIRE
 			if (Monst->MType->mtype == 137) { //TODO: apply enums
 				if (UseCowFarmer) {
 					PlaySFX(997);
@@ -4665,8 +4661,8 @@ void ProcessMonsters()
 			if (Monst->MType->mtype == 124)
 				PlaySFX(989);
 			M_Enemy(mi);
-		}
 #endif
+		}
 #endif
 		if (Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
 			_menemy = Monst->_menemy;
