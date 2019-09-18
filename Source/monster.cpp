@@ -4648,18 +4648,18 @@ void ProcessMonsters()
 				PlaySFX(USFX_CLEAVER);
 			}
 #ifdef HELLFIRE
-			if (Monst->MType->mtype == 137) { //TODO: apply enums
+			if (Monst->MType->mtype == MT_NAKRUL) {
 				if (UseCowFarmer) {
-					PlaySFX(997);
+					PlaySFX(USFX_NAKRUL6);
 				} else {
-					int sound = 995;
-					if (!IsUberRoomOpened)
-						sound = 996;
-					PlaySFX(sound);
+					if (IsUberRoomOpened)
+						PlaySFX(USFX_NAKRUL4);
+					else
+						PlaySFX(USFX_NAKRUL5);
 				}
 			}
-			if (Monst->MType->mtype == 124)
-				PlaySFX(989);
+			if (Monst->MType->mtype == MT_DEFILER)
+				PlaySFX(USFX_DEFILER8);
 			M_Enemy(mi);
 #endif
 		}
