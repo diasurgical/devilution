@@ -1693,6 +1693,7 @@ typedef enum _monster_id {
 	MT_DIABLO   = 0x6E,
 	MT_DARKMAGE = 0x6F,
 #ifdef HELLFIRE
+	MT_HORK     = 0x7B,
 	MT_DEFILER  = 0x7C,
 	MT_NAKRUL   = 0x89,
 #endif

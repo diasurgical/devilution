@@ -220,7 +220,7 @@ BYTE MonstAvailTbl[112] = {
 	0, 0
 };
 
-UniqMonstStruct UniqMonst[98] = {
+UniqMonstStruct UniqMonst[] = {
 	// clang-format off
 	// mtype,       mName,                   mTrnName, mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
 	{  MT_NGOATMC,  "Gharbad the Weak",         "BSDB",     4,    120, AI_GARBUD,   3,          8,         16,                              IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, QUEST_GARBUD1  },
@@ -233,6 +233,11 @@ UniqMonstStruct UniqMonst[98] = {
 	{  MT_RBLACK,   "Lachdanan",                "BHKA",    14,    500, AI_LACHDAN,  3,          0,          0, 0                                                            ,        0,        0,        0, QUEST_VEIL9    },
 	{  MT_BTBLACK,  "Warlord of Blood",         "GENERAL", 13,    850, AI_WARLORD,  3,         35,         50, IMUNE_MAGIC  | IMUNE_FIRE  | IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, QUEST_WARLRD9  },
 	{  MT_CLEAVER,  "The Butcher",              "GENRL",    0,    220, AI_CLEAVER,  3,          6,         12,                RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,        0,        0,        0, 0              },
+#ifdef HELLFIRE
+	{  MT_HORK,     "Hork Demon",               "GENRL",   13,    300, AI_ZHAR,     3,         20,         35,                              RESIST_LIGHTNING                ,        0,        0,        0, 0              },
+	{  MT_DEFILER,  "The Defiler",              "GENRL",   14,    480, AI_SKELSD,   3,         30,         40, RESIST_MAGIC | RESIST_FIRE | IMUNE_LIGHTNING                 ,        0,        0,        0, 0              },
+	{  MT_NAKRUL,   "Na-Krul",                  "GENRL",    0,   1332, AI_SKELSD,   3,         40,         50, IMUNE_MAGIC  | IMUNE_FIRE  | IMUNE_LIGHTNING  | IMUNE_NULL_40,        3,        0,        0, 0              },
+#endif
 	{  MT_TSKELAX,  "Bonehead Keenaxe",         "BHKA",     2,     91, AI_SKELSD,   2,          4,         10, IMUNE_MAGIC  |                                  IMUNE_NULL_40,        7,      100,        0, 0              },
 	{  MT_RFALLSD,  "Bladeskin the Slasher",    "BSTS",     2,     51, AI_FALLEN,   0,          6,         18,                RESIST_FIRE                                   ,       11,       45,        0, 0              },
 	{  MT_NZOMBIE,  "Soulpus",                  "GENERAL",  2,    133, AI_ZOMBIE,   0,          4,          8,                RESIST_FIRE | RESIST_LIGHTNING                ,        0,        0,        0, 0              },
