@@ -12,7 +12,11 @@
 #define MAX_PLRS				4
 
 #define MAX_CHARACTERS			10
+#ifdef HELLFIRE
+#define MAX_LVLMTYPES			24
+#else
 #define MAX_LVLMTYPES			16
+#endif
 // #define MAX_PATH				260
 #define MAX_SEND_STR_LEN		80
 #define MAX_SPELLS				37
