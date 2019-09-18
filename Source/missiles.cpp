@@ -2605,7 +2605,9 @@ void MI_Dummy(int i)
 
 void MI_Golem(int i)
 {
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 	int tx, ty, dp, l, m, src, k, tid;
 	char *ct;
 
@@ -2614,7 +2616,11 @@ void MI_Golem(int i)
 		for (l = 0; l < 6; l++) {
 			k = CrawlNum[l];
 			tid = k + 2;
+#ifdef HELLFIRE
+			for (m = CrawlTable[k]; m > 0; m--) {
+#else
 			for (m = (BYTE)CrawlTable[k]; m > 0; m--) {
+#endif
 				ct = &CrawlTable[tid];
 				tx = missile[i]._miVar4 + *(ct - 1);
 				ty = missile[i]._miVar5 + *ct;
