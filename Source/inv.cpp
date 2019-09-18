@@ -2654,8 +2654,8 @@ BOOL UseInvItem(int pnum, int cii)
 
 	if (cii <= 46) {
 		c = cii - 7;
-		speedlist = FALSE;
 		Item = &plr[pnum].InvList[c];
+		speedlist = FALSE;
 	} else {
 		if (talkflag)
 			return TRUE;
@@ -2676,6 +2676,15 @@ BOOL UseInvItem(int pnum, int cii)
 			sfxdnum = PS_MAGE95;
 		}
 #endif
+#ifdef HELLFIRE
+		else if (plr[pnum]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK95;
+		} else if (plr[pnum]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE95;
+		} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR95;
+		}
+#endif
 		return TRUE;
 	case 19:
 		PlaySFX(IS_IBOOK);
@@ -2687,6 +2696,14 @@ BOOL UseInvItem(int pnum, int cii)
 			sfxdnum = PS_ROGUE29;
 		} else if (plr[pnum]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE29;
+#endif
+#ifdef HELLFIRE
+		} else if (plr[pnum]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK29;
+		} else if (plr[pnum]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE29;
+		} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR29;
 #endif
 		}
 		return TRUE;
@@ -2703,6 +2720,14 @@ BOOL UseInvItem(int pnum, int cii)
 			PlaySFX(PS_ROGUE13);
 		} else if (plr[pnum]._pClass == PC_SORCERER) {
 			PlaySFX(PS_MAGE13);
+#endif
+#ifdef HELLFIRE
+		} else if (plr[pnum]._pClass == PC_MONK) {
+			PlaySFX(PS_MONK13);
+		} else if (plr[pnum]._pClass == PC_BARD) {
+			PlaySFX(PS_ROGUE13);
+		} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+			PlaySFX(PS_WARR13);
 #endif
 		}
 		return TRUE;
@@ -2725,6 +2750,13 @@ BOOL UseInvItem(int pnum, int cii)
 	if (Item->_iMiscId == IMISC_SCROLLT && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell) {
 		return TRUE;
 	}
+
+#ifdef HELLFIRE
+	if (Item->_iMiscId > IMISC_RUNEFIRST && Item->_iMiscId < IMISC_RUNELAST && currlevel == 0) {
+		return TRUE;
+	}
+#endif
+
 	idata = ItemCAnimTbl[Item->_iCurs];
 	if (Item->_iMiscId == IMISC_BOOK)
 		PlaySFX(IS_RBOOK);
@@ -2734,11 +2766,27 @@ BOOL UseInvItem(int pnum, int cii)
 	UseItem(pnum, Item->_iMiscId, Item->_iSpell);
 
 	if (speedlist) {
+#ifdef HELLFIRE
+		if (plr[pnum].SpdList[c]._iMiscId == IMISC_NOTE) {
+			InitQTextMsg(322);
+			invflag = FALSE;
+			return TRUE;
+		}
+#endif
 		RemoveSpdBarItem(pnum, c);
-	} else if (plr[pnum].InvList[c]._iMiscId != IMISC_MAPOFDOOM) {
+		return TRUE;
+	} else {
+		if (plr[pnum].InvList[c]._iMiscId == IMISC_MAPOFDOOM)
+			return TRUE;
+#ifdef HELLFIRE
+		if (plr[pnum].InvList[c]._iMiscId == IMISC_NOTE) {
+			InitQTextMsg(322);
+			invflag = FALSE;
+			return TRUE;
+		}
+#endif
 		RemoveInvItem(pnum, c);
 	}
-
 	return TRUE;
 }
 
