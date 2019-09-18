@@ -2482,7 +2482,12 @@ char CheckInvHLight()
 		pi = &p->InvBody[rv];
 	} else if (r >= 13 && r <= 18) {
 		pi = &p->InvBody[INVLOC_HAND_LEFT];
+#ifdef HELLFIRE
+		if (pi->_itype == ITYPE_NONE || pi->_iLoc != ILOC_TWOHAND
+		    || (p->_pClass == PC_BARBARIAN && (p->InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SWORD || p->InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_MACE))) {
+#else
 		if (pi->_itype == ITYPE_NONE || pi->_iLoc != ILOC_TWOHAND) {
+#endif
 			rv = INVLOC_HAND_RIGHT;
 			pi = &p->InvBody[rv];
 		} else {
