@@ -4,7 +4,11 @@
 
 extern MonsterData monsterdata[];
 extern char MonstConvTbl[128];
+#ifdef HELLFIRE
+extern int MonstAvailTbl[138];
+#else
 extern BYTE MonstAvailTbl[112];
+#endif
 extern UniqMonstStruct UniqMonst[];
 
 #endif /* __MONSTDAT_H__ */

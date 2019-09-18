@@ -202,6 +202,23 @@ void GetLevelMTypes()
 		return;
 	}
 
+#ifdef HELLFIRE
+	if ( currlevel == 18 )
+		AddMonsterType(117, 1);
+	if ( currlevel == 19 )
+	{
+		AddMonsterType(117, 1);
+		AddMonsterType(123, 4);
+	}
+	if ( currlevel == 20 )
+		AddMonsterType(124, 4);
+	if ( currlevel == 24 )
+	{
+		AddMonsterType(133, 1);
+		AddMonsterType(137, 2);
+	}
+#endif
+
 	if (!setlevel) {
 		if (QuestStatus(QTYPE_BUTCH))
 			AddMonsterType(MT_CLEAVER, 2);
@@ -237,7 +254,7 @@ void GetLevelMTypes()
 		}
 
 		nt = 0;
-		for (i = 0; i < 111; i++) {
+		for (i = 0; i < NUM_MTYPES; i++) {
 			minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
 			maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
 
