@@ -2701,11 +2701,13 @@ typedef enum item_misc_id {
 	IMISC_EAR       = 0x2B,
 	IMISC_SPECELIX  = 0x2C,
 #ifdef HELLFIRE
+	IMISC_RUNEFIRST = 0x2E,
 	IMISC_RUNEF     = 0x2F,
 	IMISC_RUNEL     = 0x30,
 	IMISC_GR_RUNEL  = 0x31,
 	IMISC_GR_RUNEF  = 0x32,
 	IMISC_RUNES     = 0x33,
+	IMISC_RUNELAST  = 0x34,
 	IMISC_AURIC     = 0x35,
 	IMISC_NOTE      = 0x36,
 #endif
