@@ -956,7 +956,7 @@ void InitMonsters()
 	int numplacemonsters;
 	int mtype;
 	int numscattypes;
-	int scattertypes[111];
+	int scattertypes[NUM_MTYPES];
 
 	numscattypes = 0;
 	if (gbMaxPlayers != 1)
@@ -966,11 +966,11 @@ void InitMonsters()
 		AddMonster(1, 0, 0, 0, FALSE);
 		AddMonster(1, 0, 0, 0, FALSE);
 		AddMonster(1, 0, 0, 0, FALSE);
-#ifndef SPAWN
-		if (!setlevel && currlevel == 16)
-			LoadDiabMonsts();
-#endif
 	}
+#ifndef SPAWN
+	if (!setlevel && currlevel == 16)
+		LoadDiabMonsts();
+#endif
 	nt = numtrigs;
 	if (currlevel == 15)
 		nt = 1;
@@ -1008,7 +1008,11 @@ void InitMonsters()
 			mtype = scattertypes[random(95, numscattypes)];
 			if (currlevel == 1 || random(95, 2) == 0)
 				na = 1;
+#ifdef HELLFIRE
+			else if (currlevel == 2 || currlevel >= 21 && currlevel <= 24)
+#else
 			else if (currlevel == 2)
+#endif
 				na = random(95, 2) + 2;
 			else
 				na = random(95, 3) + 3;
