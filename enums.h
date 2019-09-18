@@ -1545,6 +1545,16 @@ typedef enum _mai_id {
 	AI_LAZHELP  = 29,
 	AI_LACHDAN  = 30,
 	AI_WARLORD  = 31,
+#ifdef HELLFIRE
+	AI_FIREBAT   = 32,
+	AI_TORCHANT  = 33,
+	AI_UNUSED    = 34, // Probably AI_HELLBAT and a BUGFIX in monsterdata
+	AI_LICH      = 35,
+	AI_ARCHLICH  = 36,
+	AI_PSYCHORB  = 37,
+	AI_NECROMORB = 38,
+	AI_BONEDEMON = 39,
+#endif
 } _mai_id;
 
 typedef enum _mc_id {
@@ -1682,8 +1692,10 @@ typedef enum _monster_id {
 	MT_GOLEM    = 0x6D,
 	MT_DIABLO   = 0x6E,
 	MT_DARKMAGE = 0x6F,
+#ifdef HELLFIRE
 	MT_DEFILER  = 0x7C,
 	MT_NAKRUL   = 0x89,
+#endif
 	NUM_MTYPES
 } _monster_id;
 
