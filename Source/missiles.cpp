@@ -1649,7 +1649,11 @@ void missiles_search(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 void missiles_cbolt_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (!mienemy) {
-		missile[mi]._mirnd = random(63, 15) + 1;
+		if (id == myplr) {
+			missile[mi]._mirnd = random(63, 15) + 1;
+		} else {
+			missile[mi]._mirnd = random(63, 15) + 1;
+		}
 	} else {
 		missile[mi]._mirnd = random(63, 15) + 1;
 		missile[mi]._midam = 15;
