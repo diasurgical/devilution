@@ -205,163 +205,159 @@ char MonstConvTbl[128] = {
  * 2 = avalible in retail only
  */
 #ifdef HELLFIRE
-int MonstAvailTbl[138] =
-{
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  1,
-  0,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  1,
-  1,
-  1,
-  1,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  0,
-  0,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  0,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  0,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  2,
-  0
-};
+int MonstAvailTbl[] = {
 #else
-BYTE MonstAvailTbl[112] = {
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 0, 2,
-	2, 2, 2, 0, 2, 2, 2, 2, 1, 1,
-	1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
-	0, 0, 2, 2, 2, 2, 0, 0, 0, 0,
-	2, 2, 2, 2, 2, 2, 2, 2, 0, 0,
-	0, 0, 0, 0, 0, 0, 2, 2, 2, 2,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-	2, 2, 2, 2, 2, 2, 2, 0, 0, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 0
-};
+BYTE MonstAvailTbl[] = {
 #endif
+	1, // Zombie
+	1, // Ghoul
+	1, // Rotting Carcass
+	1, // Black Death
+	1, // Fallen One
+	1, // Carver
+	1, // Devil Kin
+	1, // Dark One
+	1, // Skeleton
+	1, // Corpse Axe
+	1, // Burning Dead
+	1, // Horror
+	1, // Fallen One
+	1, // Carver
+	1, // Devil Kin
+	1, // Dark One
+	1, // Scavenger
+	1, // Plague Eater
+	1, // Shadow Beast
+	1, // Bone Gasher
+	1, // Skeleton
+	1, // Corpse Bow
+	1, // Burning Dead
+	1, // Horror
+	1, // Skeleton Captain
+	1, // Corpse Captain
+	1, // Burning Dead Captain
+	1, // Horror Captain
+	0, // Invisible Lord
+	2, // Hidden
+	2, // Stalker
+	2, // Unseen
+	2, // Illusion Weaver
+#ifdef HELLFIRE
+	2, // Satyr Lord
+#else
+	0, // Lord Sayter
+#endif
+	2, // Flesh Clan
+	2, // Stone Clan
+	2, // Fire Clan
+	2, // Night Clan
+	1, // Fiend
+	1, // Blink
+	1, // Gloom
+	1, // Familiar
+	2, // Flesh Clan
+	2, // Stone Clan
+	2, // Fire Clan
+	2, // Night Clan
+	2, // Acid Beast
+	2, // Poison Spitter
+	2, // Pit Beast
+	2, // Lava Maw
+	0, // Skeleton King
+	0, // The Butcher
+	2, // Overlord
+	2, // Mud Man
+	2, // Toad Demon
+	2, // Flayed One
+	0, // Wyrm
+	0, // Cave Slug
+	0, // Devil Wyrm
+	0, // Devourer
+	2, // Magma Demon
+	2, // Blood Stone
+	2, // Hell Stone
+	2, // Lava Lord
+	2, // Horned Demon
+	2, // Mud Runner
+	2, // Frost Charger
+	2, // Obsidian Lord
+	0, // Bone Demon (oldboned in Hellfire)
+	0, // Red Death
+	0, // Litch Demon
+	0, // Undead Balrog
+	0, // Incinerator
+	0, // Flame Lord
+	0, // Doom Fire
+	0, // Hell Burner
+	2, // Red Storm
+	2, // Storm Rider
+	2, // Storm Lord
+	2, // Maelstorm
+	2, // Devil Kin Brute
+	2, // Winged-Demon
+	2, // Gargoyle
+	2, // Blood Claw
+	2, // Death Wing
+	2, // Slayer
+	2, // Guardian
+	2, // Vortex Lord
+	2, // Balrog
+	2, // Cave Viper
+	2, // Fire Drake
+	2, // Gold Viper
+	2, // Azure Drake
+	2, // Black Knight
+	2, // Doom Guard
+	2, // Steel Lord
+	2, // Blood Knight
+#ifdef HELLFIRE
+	2, // The Shredded
+#else
+	0, // Unraveler
+#endif
+	0, // Hollow One
+	0, // Pain Master
+	0, // Reality Weaver
+	2, // Succubus
+	2, // Snow Witch
+	2, // Hell Spawn
+	2, // Soul Burner
+	2, // Counselor
+	2, // Magistrate
+	2, // Cabalist
+	2, // Advocate
+	0, // Golem
+	0, // The Dark Lord
+	0, // The Arch-Litch Malignus
+#ifdef HELLFIRE
+	2, // Hellboar
+	2, // Stinger
+	2, // Psychorb
+	2, // Arachnon
+	2, // Felltwin
+	2, // Hork Spawn
+	2, // Venomtail
+	2, // Necromorb
+	2, // Spider Lord
+	2, // Lashworm
+	2, // Torchant
+	0, // Hork Demon
+	0, // Hell Bug
+	2, // Gravedigger
+	2, // Tomb Rat
+	2, // Firebat
+	2, // Skullwing
+	2, // Lich
+	2, // Crypt Demon
+	2, // Hellbat
+	2, // Bone Demon
+	2, // Arch Lich
+	2, // Biclops
+	2, // Flesh Thing
+	2, // Reaper
+	0, // Na-Krul
+#endif
+};
 
 UniqMonstStruct UniqMonst[] = {
 	// clang-format off
