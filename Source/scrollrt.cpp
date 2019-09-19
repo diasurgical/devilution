@@ -1,5 +1,4 @@
 #include "diablo.h"
-#include "../3rdParty/Storm/Source/storm.h"
 
 int light_table_index;
 int PitchTbl[1024];

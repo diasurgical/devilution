@@ -1,5 +1,4 @@
 #include "diablo.h"
-#include "../3rdParty/Storm/Source/storm.h"
 
 int plr_lframe_size;
 int plr_wframe_size;
