@@ -1051,7 +1051,7 @@ void UpdateLifeFlask()
 	int filled;
 
 #ifdef HELLFIRE
-	if (plr[myplr]._pMaxHP > 0) {
+	if (plr[myplr]._pMaxHP <= 0) {
 		p = 0.0;
 	} else {
 		p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;

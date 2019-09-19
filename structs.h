@@ -638,7 +638,11 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 } MonsterStruct;
 
 typedef struct UniqMonstStruct {
+#ifdef HELLFIRE
+	int mtype;
+#else
 	char mtype;
+#endif
 	char *mName;
 	char *mTrnName;
 	unsigned char mlevel;

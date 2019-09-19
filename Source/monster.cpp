@@ -11,13 +11,12 @@ int nummonsters;
 BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
 int totalmonsters;
+CMonster Monsters[MAX_LVLMTYPES];
 #ifdef HELLFIRE
-CMonster Monsters[24];
-int unused_6AAE30[600];
+int GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 #else
-CMonster Monsters[16];
+BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 #endif
-// int END_Monsters_17;
 int monstimgtot;
 int uniquetrans;
 int nummtypes;
@@ -203,6 +202,23 @@ void GetLevelMTypes()
 		return;
 	}
 
+#ifdef HELLFIRE
+	if ( currlevel == 18 )
+		AddMonsterType(117, 1);
+	if ( currlevel == 19 )
+	{
+		AddMonsterType(117, 1);
+		AddMonsterType(123, 4);
+	}
+	if ( currlevel == 20 )
+		AddMonsterType(124, 4);
+	if ( currlevel == 24 )
+	{
+		AddMonsterType(133, 1);
+		AddMonsterType(137, 2);
+	}
+#endif
+
 	if (!setlevel) {
 		if (QuestStatus(QTYPE_BUTCH))
 			AddMonsterType(MT_CLEAVER, 2);
@@ -238,7 +254,7 @@ void GetLevelMTypes()
 		}
 
 		nt = 0;
-		for (i = 0; i < 111; i++) {
+		for (i = 0; i < NUM_MTYPES; i++) {
 			minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
 			maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
 
@@ -957,7 +973,7 @@ void InitMonsters()
 	int numplacemonsters;
 	int mtype;
 	int numscattypes;
-	int scattertypes[111];
+	int scattertypes[NUM_MTYPES];
 
 	numscattypes = 0;
 	if (gbMaxPlayers != 1)
@@ -967,11 +983,11 @@ void InitMonsters()
 		AddMonster(1, 0, 0, 0, FALSE);
 		AddMonster(1, 0, 0, 0, FALSE);
 		AddMonster(1, 0, 0, 0, FALSE);
-#ifndef SPAWN
-		if (!setlevel && currlevel == 16)
-			LoadDiabMonsts();
-#endif
 	}
+#ifndef SPAWN
+	if (!setlevel && currlevel == 16)
+		LoadDiabMonsts();
+#endif
 	nt = numtrigs;
 	if (currlevel == 15)
 		nt = 1;
@@ -1009,7 +1025,11 @@ void InitMonsters()
 			mtype = scattertypes[random(95, numscattypes)];
 			if (currlevel == 1 || random(95, 2) == 0)
 				na = 1;
+#ifdef HELLFIRE
+			else if (currlevel == 2 || currlevel >= 21 && currlevel <= 24)
+#else
 			else if (currlevel == 2)
+#endif
 				na = random(95, 2) + 2;
 			else
 				na = random(95, 3) + 3;
@@ -4634,23 +4654,44 @@ void ProcessMonsters()
 			Monst->_mAISeed = GetRndSeed();
 		}
 		if (!(monster[mi]._mFlags & MFLAG_NOHEAL) && Monst->_mhitpoints < Monst->_mmaxhp && Monst->_mhitpoints >> 6 > 0) {
-			if (Monst->mLevel <= 1) {
-				Monst->_mhitpoints += Monst->mLevel;
-			} else {
+			if (Monst->mLevel > 1) {
 				Monst->_mhitpoints += Monst->mLevel >> 1;
+			} else {
+				Monst->_mhitpoints += Monst->mLevel;
 			}
 		}
 		mx = Monst->_mx;
 		my = Monst->_my;
 #ifndef SPAWN
-		if (dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0 && Monst->MType->mtype == MT_CLEAVER) {
-			PlaySFX(USFX_CLEAVER);
+		if (dFlags[mx][my] & BFLAG_VISIBLE && Monst->_msquelch == 0) {
+			if (Monst->MType->mtype == MT_CLEAVER) {
+				PlaySFX(USFX_CLEAVER);
+			}
+#ifdef HELLFIRE
+			if (Monst->MType->mtype == MT_NAKRUL) {
+				if (UseCowFarmer) {
+					PlaySFX(USFX_NAKRUL6);
+				} else {
+					if (IsUberRoomOpened)
+						PlaySFX(USFX_NAKRUL4);
+					else
+						PlaySFX(USFX_NAKRUL5);
+				}
+			}
+			if (Monst->MType->mtype == MT_DEFILER)
+				PlaySFX(USFX_DEFILER8);
+			M_Enemy(mi);
+#endif
 		}
 #endif
 		if (Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
 			_menemy = Monst->_menemy;
 			if ((DWORD)_menemy >= MAXMONSTERS) {
+#ifdef HELLFIRE
+				return;
+#else
 				app_fatal("Illegal enemy monster %d for monster \"%s\"", _menemy, Monst->mName);
+#endif
 			}
 			Monst->_lastx = monster[Monst->_menemy]._mfutx;
 			Monst->_menemyx = Monst->_lastx;
@@ -4659,7 +4700,11 @@ void ProcessMonsters()
 		} else {
 			_menemy = Monst->_menemy;
 			if ((DWORD)_menemy >= MAX_PLRS) {
+#ifdef HELLFIRE
+				return;
+#else
 				app_fatal("Illegal enemy player %d for monster \"%s\"", _menemy, Monst->mName);
+#endif
 			}
 			Monst->_menemyx = plr[Monst->_menemy]._px;
 			Monst->_menemyy = plr[Monst->_menemy]._py;

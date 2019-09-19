@@ -1545,6 +1545,16 @@ typedef enum _mai_id {
 	AI_LAZHELP  = 29,
 	AI_LACHDAN  = 30,
 	AI_WARLORD  = 31,
+#ifdef HELLFIRE
+	AI_FIREBAT   = 32,
+	AI_TORCHANT  = 33,
+	AI_UNUSED    = 34, // Probably AI_HELLBAT and a BUGFIX in monsterdata
+	AI_LICH      = 35,
+	AI_ARCHLICH  = 36,
+	AI_PSYCHORB  = 37,
+	AI_NECROMORB = 38,
+	AI_BONEDEMON = 39,
+#endif
 } _mai_id;
 
 typedef enum _mc_id {
@@ -1682,7 +1692,16 @@ typedef enum _monster_id {
 	MT_GOLEM    = 0x6D,
 	MT_DIABLO   = 0x6E,
 	MT_DARKMAGE = 0x6F,
+#ifdef HELLFIRE
+	MT_HORK     = 0x7B,
+	MT_DEFILER  = 0x7C,
+	MT_NAKRUL   = 0x89,
+#endif
+#ifdef HELLFIRE
+	NUM_MTYPES = 138
+#else
 	NUM_MTYPES
+#endif
 } _monster_id;
 
 // this enum contains indexes from UniqMonst array for special unique monsters (usually quest related)
@@ -2699,11 +2718,13 @@ typedef enum item_misc_id {
 	IMISC_EAR       = 0x2B,
 	IMISC_SPECELIX  = 0x2C,
 #ifdef HELLFIRE
+	IMISC_RUNEFIRST = 0x2E,
 	IMISC_RUNEF     = 0x2F,
 	IMISC_RUNEL     = 0x30,
 	IMISC_GR_RUNEL  = 0x31,
 	IMISC_GR_RUNEF  = 0x32,
 	IMISC_RUNES     = 0x33,
+	IMISC_RUNELAST  = 0x34,
 	IMISC_AURIC     = 0x35,
 	IMISC_NOTE      = 0x36,
 #endif
