@@ -1235,9 +1235,38 @@ void missiles_fire_rune(int mi, int sx, int sy, int dx, int dy, int midir, char 
 	}
 }
 
-char missiles_found_target(int a1, int *a2, int *a3, signed int a4)
+BOOLEAN missiles_found_target(int mi, int *x, int *y, int rad)
 {
-	return 0;
+	BOOLEAN found;
+	int i, j, k, tx, ty, dp;
+
+	found = FALSE;
+
+	if (rad > 19)
+		rad = 19;
+
+	for (j = 0; j < rad; j++) {
+		if (found) {
+			break;
+		}
+		k = CrawlNum[j] + 2;
+		for (i = CrawlTable[CrawlNum[j]]; i > 0; i--, k += 2) {
+			tx = *x + CrawlTable[k - 1];
+			ty = *y + CrawlTable[k];
+			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+				dp = dPiece[tx][ty];
+				if (!nSolidTable[dp] && !dObject[tx][ty] && !dMissile[tx][ty]) {
+					missile[mi]._mix = tx;
+					missile[mi]._miy = ty;
+					*x = tx;
+					*y = ty;
+					found = TRUE;
+					break;
+				}
+			}
+		}
+	}
+	return found;
 }
 
 void missiles_light_rune(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)

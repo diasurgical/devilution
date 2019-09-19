@@ -38,7 +38,7 @@ void InitMissiles();
 #ifdef HELLFIRE
 void missiles_hive_explosion(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_fire_rune(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
-char missiles_found_target(int a1, int *a2, int *a3, signed int a4);
+BOOLEAN missiles_found_target(int mi, int *x, int *y, int rad);
 void missiles_light_rune(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_great_light_rune(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_immolation_rune(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
