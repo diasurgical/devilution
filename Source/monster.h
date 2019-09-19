@@ -113,12 +113,25 @@ void MAI_GoatMc(int i);
 void MAI_Ranged(int i, int missile_type, BOOL special);
 void MAI_GoatBow(int i);
 void MAI_Succ(int i);
+#ifdef HELLFIRE
+void mai_ranged_441649(int i);
+void mai_ranged_441654(int i);
+void mai_ranged_44165F(int i);
+void mai_ranged_44166A(int i);
+#endif
 void MAI_AcidUniq(int i);
+#ifdef HELLFIRE
+void mai_ranged_441680(int i);
+void mai_ranged_44168B(int i);
+#endif
 void MAI_Scav(int i);
 void MAI_Garg(int i);
 void MAI_RoundRanged(int i, int missile_type, BOOL checkdoors, int dam, int lessmissiles);
 void MAI_Magma(int i);
 void MAI_Storm(int i);
+#ifdef HELLFIRE
+void mai_roundranged_441EA0(int i);
+#endif
 void MAI_Acid(int i);
 void MAI_Diablo(int i);
 void MAI_RR2(int i, int mistype, int dam);
@@ -126,6 +139,9 @@ void MAI_Mega(int i);
 void MAI_Golum(int i);
 void MAI_SkelKing(int i);
 void MAI_Rhino(int i);
+#ifdef HELLFIRE
+void mai_horkdemon(int i);
+#endif
 void MAI_Counselor(int i);
 void MAI_Garbud(int i);
 void MAI_Zhar(int i);

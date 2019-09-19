@@ -21,6 +21,10 @@ int monstimgtot;
 int uniquetrans;
 int nummtypes;
 
+#ifdef HELLFIRE
+int HorkXAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
+int HorkYAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+#endif
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
 const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
 
@@ -97,7 +101,17 @@ void (*AiProc[])(int i) = {
 	&MAI_Lazurus,
 	&MAI_Lazhelp,
 	&MAI_Lachdanan,
-	&MAI_Warlord
+	&MAI_Warlord,
+#ifdef HELLFIRE
+	&mai_ranged_441680,
+	&mai_ranged_44168B,
+	&mai_horkdemon,
+	&mai_ranged_441649,
+	&mai_ranged_441654,
+	&mai_ranged_44165F,
+	&mai_ranged_44166A,
+	&mai_roundranged_441EA0
+#endif
 };
 
 void InitMonsterTRN(int monst, BOOL special)
@@ -3716,10 +3730,44 @@ void MAI_Succ(int i)
 	MAI_Ranged(i, MIS_FLARE, FALSE);
 }
 
+#ifdef HELLFIRE
+void mai_ranged_441649(int i)
+{
+	MAI_Ranged(i, 98, FALSE);
+}
+
+void mai_ranged_441654(int i)
+{
+	MAI_Ranged(i, 101, FALSE);
+}
+
+void mai_ranged_44165F(int i)
+{
+	MAI_Ranged(i, 99, FALSE);
+}
+
+void mai_ranged_44166A(int i)
+{
+	MAI_Ranged(i, 100, FALSE);
+}
+#endif
+
 void MAI_AcidUniq(int i)
 {
 	MAI_Ranged(i, MIS_ACID, TRUE);
 }
+
+#ifdef HELLFIRE
+void mai_ranged_441680(int i)
+{
+	MAI_Ranged(i, 1, FALSE);
+}
+
+void mai_ranged_44168B(int i)
+{
+	MAI_Ranged(i, 6, FALSE);
+}
+#endif
 
 void MAI_Scav(int i)
 {
@@ -3922,6 +3970,13 @@ void MAI_Storm(int i)
 {
 	MAI_RoundRanged(i, MIS_LIGHTCTRL2, TRUE, 4, 0);
 }
+
+#ifdef HELLFIRE
+void mai_roundranged_441EA0(int i)
+{
+	MAI_RoundRanged(i, 102, TRUE, 4, 0);
+}
+#endif
 
 void MAI_Acid(int i)
 {
@@ -4229,6 +4284,104 @@ void MAI_Rhino(int i)
 			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 	}
 }
+
+#ifdef HELLFIRE
+void mai_horkdemon(int i)
+{
+	MonsterStruct *Monst;
+	int fx, fy, mx, my, md, v, dist;
+
+	if ( (DWORD)i >= MAXMONSTERS )
+	{
+		return;
+	}
+
+	Monst = &monster[i];
+	if ( Monst->_mmode != MM_STAND || Monst->_msquelch == 0 )
+	{
+		return;
+	}
+
+	fx = Monst->_menemyx;
+	fy = Monst->_menemyy;
+	mx = Monst->_mx - fx;
+	my = Monst->_my - fy;
+	md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+
+	if ( Monst->_msquelch < 255 )
+	{
+		MonstCheckDoors(i);
+	}
+
+	v = random(131, 100);
+
+	if ( abs(mx) < 2 && abs(my) < 2 )
+	{
+		Monst->_mgoal = 1;
+	}
+	else if ( Monst->_mgoal == 4 || (abs(mx) >= 5 || abs(my) >= 5) && random(132, 4) != 0 )
+	{
+		if ( Monst->_mgoal != 4 )
+		{
+			Monst->_mgoalvar1 = 0;
+			Monst->_mgoalvar2 = random(133, 2);
+		}
+		Monst->_mgoal = 4;
+		if ( abs(mx) > abs(my) )
+		{
+			dist = abs(mx);
+		}
+		else
+		{
+			dist = abs(my);
+		}
+		if ( Monst->_mgoalvar1++ >= 2 * dist || dTransVal[Monst->_mx][Monst->_my] != dTransVal[fx][fy] )
+		{
+			Monst->_mgoal = 1;
+		}
+		else if ( !M_RoundWalk(i, md, &Monst->_mgoalvar2) )
+		{
+			M_StartDelay(i, random(125, 10) + 10);
+		}
+	}
+
+	if ( Monst->_mgoal == 1 )
+	{
+		if ( (abs(mx) >= 3 || abs(my) >= 3) && v < 2 * Monst->_mint + 43 )
+		{
+			if ( PosOkMonst(i, Monst->_mx + HorkXAdd[Monst->_mdir], Monst->_my + HorkYAdd[Monst->_mdir]) && nummonsters < MAXMONSTERS )
+			{
+				M_StartRSpAttack(i, 95, 0);
+			}
+		}
+		else if ( abs(mx) < 2 && abs(my) < 2 )
+		{
+			if ( v < 2 * Monst->_mint + 28 )
+			{
+				Monst->_mdir = md;
+				M_StartAttack(i);
+			}
+		}
+		else
+		{
+			v = random(134, 100);
+			if ( v < 2 * Monst->_mint + 33
+			|| (Monst->_mVar1 == 1 || Monst->_mVar1 == 2 || Monst->_mVar1 == 3) && Monst->_mVar2 == 0 && v < 2 * Monst->_mint + 83 )
+			{
+				M_CallWalk(i, md);
+			}
+			else
+			{
+				M_StartDelay(i, random(135, 10) + 10);
+			}
+		}
+	}
+	if ( Monst->_mmode == MM_STAND )
+	{
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
+	}
+}
+#endif
 
 void MAI_Counselor(int i)
 {
