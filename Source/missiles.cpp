@@ -3695,7 +3695,7 @@ void mi_null_32(int i)
 
 void MI_FirewallC(int i)
 {
-	int src, lvl, dmg, tx, ty, dp;
+	int src, tx, ty, dp;
 
 	missile[i]._mirange--;
 	src = missile[i]._misource;
