@@ -5,9 +5,9 @@
 extern MonsterData monsterdata[];
 extern char MonstConvTbl[128];
 #ifdef HELLFIRE
-extern int MonstAvailTbl[138];
+extern int MonstAvailTbl[];
 #else
-extern BYTE MonstAvailTbl[112];
+extern BYTE MonstAvailTbl[];
 #endif
 extern UniqMonstStruct UniqMonst[];
 
