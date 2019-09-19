@@ -1317,7 +1317,7 @@ void missiles_reflection(int mi, int sx, int sy, int dx, int dy, int midir, char
 			lvl = missile[mi]._mispllvl;
 		else
 			lvl = 2;
-		plr[id].wReserved[0] += lvl * plr[id]._pLevel;
+		plr[id].wReflection += lvl * plr[id]._pLevel;
 		UseMana(id, 43); // TODO: apply enums
 	}
 	missile[mi]._mirange = 0;
