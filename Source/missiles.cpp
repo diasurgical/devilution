@@ -975,13 +975,13 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				if (dMonster[mx][my] < 0
 				    && monster[-(dMonster[mx][my] + 1)]._mmode == 15
 				    && MonsterMHit(
-				           missile[i]._misource,
-				           -(dMonster[mx][my] + 1),
-				           mindam,
-				           maxdam,
-				           missile[i]._midist,
-				           missile[i]._mitype,
-				           shift)) {
+				        missile[i]._misource,
+				        -(dMonster[mx][my] + 1),
+				        mindam,
+				        maxdam,
+				        missile[i]._midist,
+				        missile[i]._mitype,
+				        shift)) {
 					if (!nodel)
 						missile[i]._mirange = 0;
 					missile[i]._miHitFlag = 1;
@@ -990,13 +990,13 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			if (dPlayer[mx][my] > 0
 			    && dPlayer[mx][my] - 1 != missile[i]._misource
 			    && Plr2PlrMHit(
-			           missile[i]._misource,
-			           dPlayer[mx][my] - 1,
-			           mindam,
-			           maxdam,
-			           missile[i]._midist,
-			           missile[i]._mitype,
-			           shift)) {
+			        missile[i]._misource,
+			        dPlayer[mx][my] - 1,
+			        mindam,
+			        maxdam,
+			        missile[i]._midist,
+			        missile[i]._mitype,
+			        shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
 				missile[i]._miHitFlag = 1;
@@ -1012,14 +1012,14 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			}
 			if (dPlayer[mx][my] > 0
 			    && PlayerMHit(
-			           dPlayer[mx][my] - 1,
-			           missile[i]._misource,
-			           missile[i]._midist,
-			           mindam,
-			           maxdam,
-			           missile[i]._mitype,
-			           shift,
-			           0)) {
+			        dPlayer[mx][my] - 1,
+			        missile[i]._misource,
+			        missile[i]._midist,
+			        mindam,
+			        maxdam,
+			        missile[i]._mitype,
+			        shift,
+			        0)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
 				missile[i]._miHitFlag = 1;
