@@ -1415,7 +1415,34 @@ void missiles_steal_pots(int mi, int sx, int sy, int dx, int dy, int midir, char
 }
 void missiles_mana_trap(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
+	int i, pn, k, j, tx, ty, pid;
 
+	missile[mi]._misource = id;
+	for (i = 0; i < 3; i++) {
+		k = CrawlNum[i];
+		pn = k + 2;
+		for (j = CrawlTable[k]; j > 0; j--) {
+			tx = sx + CrawlTable[pn - 1];
+			ty = sy + CrawlTable[pn];
+			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
+				pid = dPlayer[tx][ty];
+				if (pid != 0) {
+					if (pid > 0)
+						pid = pid - 1;
+					else
+						pid = -(pid + 1);
+					plr[pid]._pMana = 0;
+					plr[pid]._pManaBase = plr[pid]._pMana + plr[pid]._pMaxManaBase - plr[pid]._pMaxMana;
+					CalcPlrInv(pid, FALSE);
+					drawmanaflag = TRUE;
+					PlaySfxLoc(246, tx, ty); //TODO: apply enum
+				}
+			}
+			pn += 2;
+		}
+	}
+	missile[mi]._mirange = 0;
+	missile[mi]._miDelFlag = TRUE;
 }
 
 void missiles_spec_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
