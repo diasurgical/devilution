@@ -3335,7 +3335,7 @@ void mi_reflect(int i)
 	}
 	if (src != myplr && currlevel != plr[src].plrlevel)
 		missile[i]._miDelFlag = TRUE;
-	if ((DWORD)plr[src].wReserved[0] <= 0) { // min diff? check address
+	if ((WORD)plr[src].wReflection <= 0) {
 		missile[i]._miDelFlag = TRUE;
 		NetSendCmd(TRUE, 0x63u); //TODO: apply enums
 	}
