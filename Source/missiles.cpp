@@ -3337,7 +3337,7 @@ void mi_reflect(int i)
 		missile[i]._miDelFlag = TRUE;
 	if ((WORD)plr[src].wReflection <= 0) {
 		missile[i]._miDelFlag = TRUE;
-		NetSendCmd(TRUE, CMD_AWAKEGOLEM);
+		NetSendCmd(TRUE, CMD_NOVA);
 	}
 	PutMissile(i);
 }
