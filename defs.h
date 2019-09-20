@@ -44,7 +44,7 @@
 #define MAXTHEMES				50
 #define MAXTILES				2048
 #ifdef HELLFIRE
-#define MAXTRIGGERS				6
+#define MAXTRIGGERS				7
 #else
 #define MAXTRIGGERS				5
 #endif
