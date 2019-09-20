@@ -99,13 +99,6 @@ void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 		return;
 	}
 
-	if (snd_playing(pSnd)) {
-		DSB = sound_dup_channel(pSnd->DSB);
-		if (DSB == NULL) {
-			return;
-		}
-	}
-
 	lVolume += sglSoundVolume;
 	if (lVolume < VOLUME_MIN) {
 		lVolume = VOLUME_MIN;
