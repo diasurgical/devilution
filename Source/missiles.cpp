@@ -1541,7 +1541,7 @@ void missiles_warp(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	int tx, ty, fx, fy, i, dist;
 	TriggerStruct *trg;
 
-	dist = 0x7FFFFFFF;
+	dist = INT_MAX;
 	if (id >= 0) {
 		sx = plr[id].WorldX;
 		sy = plr[id].WorldY;
