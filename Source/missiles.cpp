@@ -1400,11 +1400,11 @@ void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 									if ((!(monster[dm].mMagicRes & RESIST_MAGIC) || (monster[dm].mMagicRes & RESIST_MAGIC) == 1 && !random(99, 2)) && monster[dm]._mmode != MM_CHARGE) {
 										j = 6;
 										double slvl = (double)GetSpellLevel(id, SPL_BERSERK);
-										monster[dm]._mFlags |= MFLAG_UNUSED | MFLAG_GOLEM; //is this ok?
-										monster[dm].mMinDamage = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMinDamage + slvl);
-										monster[dm].mMaxDamage = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMaxDamage + slvl);
-										monster[dm].mMinDamage2 = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMinDamage2 + slvl);
-										monster[dm].mMaxDamage2 = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMaxDamage2 + slvl);
+										monster[dm]._mFlags |= MFLAG_UNUSED | MFLAG_GOLEM;
+										monster[dm].mMinDamage = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMinDamage + slvl;
+										monster[dm].mMaxDamage = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMaxDamage + slvl;
+										monster[dm].mMinDamage2 = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMinDamage2 + slvl;
+										monster[dm].mMaxDamage2 = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMaxDamage2 + slvl;
 										if (currlevel < 17 || currlevel > 20)
 											r = 3;
 										else
@@ -3396,6 +3396,23 @@ void MI_Firebolt(int i)
 				missile[i]._miDelFlag = FALSE;
 				PutMissile(i);
 				return;
+#ifdef HELLFIRE
+			case MIS_LICH:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXORA1, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_PSYCHORB:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXBL2, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_NECROMORB:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXRED3, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_ARCHLICH:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXYEL2, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_BONEDEMON:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXBL3, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+#endif
 			}
 			if (missile[i]._mlid >= 0)
 				AddUnLight(missile[i]._mlid);
@@ -3593,45 +3610,30 @@ void missiles_4359A0(int i)
 
 void MI_Rune(int i)
 {
-	int dir;
-	int mid;
-	int pid;
+	int mid, pid, dir, mx, my;
 
-	mid = dMonster[missile[i]._mix][missile[i]._miy];
-	pid = dPlayer[missile[i]._mix][missile[i]._miy];
-
-	if (mid == 0) {
-		if (pid == 0) {
-			PutMissile(i);
-			return;
-		} else {
-			if (pid <= 0)
-				pid = -1 - pid;
+	mx = missile[i]._mix;
+	my = missile[i]._miy;
+	mid = dMonster[mx][my];
+	pid = dPlayer[mx][my];
+	if (mid != 0 || pid != 0) {
+		if (mid != 0) {
+			if (mid > 0)
+				mid = mid - 1;
 			else
+				mid = -(mid + 1);
+			dir = GetDirection(missile[i]._mix, missile[i]._miy, monster[mid]._mx, monster[mid]._my);
+		} else {
+			if (pid > 0)
 				pid = pid - 1;
+			else
+				pid = -(pid + 1);
 			dir = GetDirection(missile[i]._mix, missile[i]._miy, plr[pid].WorldX, plr[pid].WorldY);
 		}
-	} else {
-		if (mid <= 0)
-			mid = -1 - mid;
-		else
-			mid = mid - 1;
-		dir = GetDirection(missile[i]._mix, missile[i]._miy, monster[mid]._mx, monster[mid]._my);
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
+		AddMissile(mx, my, mx, my, dir, missile[i]._miVar1, 2, missile[i]._misource, missile[i]._midam, missile[i]._mispllvl);
 	}
-
-	missile[i]._miDelFlag = TRUE;
-	AddUnLight(missile[i]._mlid);
-	AddMissile(
-	    missile[i]._mix,
-	    missile[i]._miy,
-	    missile[i]._mix,
-	    missile[i]._miy,
-	    dir,
-	    missile[i]._miVar1,
-	    2,
-	    missile[i]._misource,
-	    missile[i]._midam,
-	    missile[i]._mispllvl);
 	PutMissile(i);
 }
 
