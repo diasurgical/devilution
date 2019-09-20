@@ -19,7 +19,11 @@
 #endif
 // #define MAX_PATH				260
 #define MAX_SEND_STR_LEN		80
+#ifdef HELLFIRE
+#define MAX_SPELLS				52
+#else
 #define MAX_SPELLS				37
+#endif
 
 #define MAXDEAD					31
 #define MAXDUNX					112

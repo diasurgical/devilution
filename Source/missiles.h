@@ -56,7 +56,7 @@ void missiles_rune_explosion(int mi, int sx, int sy, int dx, int dy, int midir, 
 void missiles_immo_1(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_immo_2(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_larrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
-void missiles_43303D();
+void missiles_43303D(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_433040(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_rech_mana(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void missiles_magi(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
@@ -139,6 +139,7 @@ void MI_Acidpud(int i);
 void MI_Firewall(int i);
 void MI_Fireball(int i);
 #ifdef HELLFIRE
+void missiles_4359A0(int i);
 void MI_Rune(int i);
 void mi_light_wall(int i);
 void mi_hive_explode(int i);
