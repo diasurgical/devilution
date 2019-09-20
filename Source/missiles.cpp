@@ -1326,7 +1326,7 @@ void missiles_stone_rune(int mi, int sx, int sy, int dx, int dy, int midir, char
 		if (id >= 0)
 			UseMana(id, 51); // TODO: apply enums
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
-			missile[mi]._miVar1 = 30;
+			missile[mi]._miVar1 = MIS_STONE;
 			missile[mi]._miDelFlag = FALSE;
 			missile[mi]._mlid = AddLight(dx, dy, 8);
 		} else {
