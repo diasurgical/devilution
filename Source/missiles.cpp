@@ -1356,6 +1356,7 @@ void missiles_reflection(int mi, int sx, int sy, int dx, int dy, int midir, char
 void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, tx, ty, dm, r;
+
 	if (id >= 0) {
 		missile[mi]._misource = id;
 		for (j = 0; j < 6; j++) {
