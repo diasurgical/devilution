@@ -2799,8 +2799,8 @@ void MI_Firewall(int i)
 	}
 	if (missile[i]._mirange == missile[i]._miAnimLen - 1) {
 		SetMissDir(i, 0);
-		missile[i]._miAnimAdd = -1;
 		missile[i]._miAnimFrame = 13;
+		missile[i]._miAnimAdd = -1;
 	}
 	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 1);
 	if (!missile[i]._mirange) {
