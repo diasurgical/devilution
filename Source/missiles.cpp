@@ -4280,10 +4280,22 @@ void MI_Manashield(int i)
 			missile[i]._mirange = 0;
 		if (plr[id]._pHitPoints < missile[i]._miVar1) {
 			diff = missile[i]._miVar1 - plr[id]._pHitPoints;
+#ifdef HELLFIRE
+			int div = 0;
+			for (int m = 0; m < missile[i]._mispllvl; m++) {
+				if (m < 7) {
+					div += 3;
+				} else {
+					break;
+				}
+			}
+			if (div > 0)
+				diff -= diff / div;
+#else
 			if (missile[i]._mispllvl > 0) {
 				diff += diff / -3;
 			}
-
+#endif
 			if (diff < 0)
 				diff = 0;
 			drawmanaflag = TRUE;
@@ -4295,12 +4307,18 @@ void MI_Manashield(int i)
 				plr[id]._pMana -= diff;
 				plr[id]._pManaBase -= diff;
 			} else {
-				missile[i]._miDelFlag = TRUE;
+
+#ifdef HELLFIRE
+				plr[id]._pHitPoints += plr[id]._pMana - diff;
+				plr[id]._pHPBase += plr[id]._pMana - diff;
+#else
 				plr[id]._pHitPoints = plr[id]._pMana + missile[i]._miVar1 - diff;
 				plr[id]._pHPBase = plr[id]._pMana + missile[i]._miVar2 - diff;
+#endif
 				plr[id]._pMana = 0;
 				plr[id]._pManaBase = plr[id]._pMaxManaBase - plr[id]._pMaxMana;
 				missile[i]._mirange = 0;
+				missile[i]._miDelFlag = TRUE;
 				if (plr[id]._pHitPoints < 0)
 					SetPlayerHitPoints(id, 0);
 				if (!(plr[id]._pHitPoints >> 6) && id == myplr) {
@@ -4308,17 +4326,22 @@ void MI_Manashield(int i)
 				}
 			}
 		}
-
+#ifndef HELLFIRE
 		if (id == myplr && !plr[id]._pHitPoints && !missile[i]._miVar1 && plr[id]._pmode != PM_DEATH) {
 			missile[i]._mirange = 0;
 			missile[i]._miDelFlag = TRUE;
 			SyncPlrKill(id, -1);
 		}
+#endif
 		missile[i]._miVar1 = plr[id]._pHitPoints;
 		missile[i]._miVar2 = plr[id]._pHPBase;
 		if (missile[i]._mirange == 0) {
 			missile[i]._miDelFlag = TRUE;
+#ifdef HELLFIRE
+			NetSendCmd(1u, 0x61u); //TODO: apply enum
+#else
 			NetSendCmd(TRUE, CMD_ENDSHIELD);
+#endif
 		}
 	}
 	PutMissile(i);
