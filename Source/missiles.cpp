@@ -3593,45 +3593,30 @@ void missiles_4359A0(int i)
 
 void MI_Rune(int i)
 {
-	int dir;
-	int mid;
-	int pid;
+	int mid, pid, dir, mx, my;
 
-	mid = dMonster[missile[i]._mix][missile[i]._miy];
-	pid = dPlayer[missile[i]._mix][missile[i]._miy];
-
-	if (mid == 0) {
-		if (pid == 0) {
-			PutMissile(i);
-			return;
-		} else {
-			if (pid <= 0)
-				pid = -1 - pid;
+	mx = missile[i]._mix;
+	my = missile[i]._miy;
+	mid = dMonster[mx][my];
+	pid = dPlayer[mx][my];
+	if (mid != 0 || pid != 0) {
+		if (mid != 0) {
+			if (mid > 0)
+				mid = mid - 1;
 			else
+				mid = -(mid + 1);
+			dir = GetDirection(missile[i]._mix, missile[i]._miy, monster[mid]._mx, monster[mid]._my);
+		} else {
+			if (pid > 0)
 				pid = pid - 1;
+			else
+				pid = -(pid + 1);
 			dir = GetDirection(missile[i]._mix, missile[i]._miy, plr[pid].WorldX, plr[pid].WorldY);
 		}
-	} else {
-		if (mid <= 0)
-			mid = -1 - mid;
-		else
-			mid = mid - 1;
-		dir = GetDirection(missile[i]._mix, missile[i]._miy, monster[mid]._mx, monster[mid]._my);
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
+		AddMissile(mx, my, mx, my, dir, missile[i]._miVar1, 2, missile[i]._misource, missile[i]._midam, missile[i]._mispllvl);
 	}
-
-	missile[i]._miDelFlag = TRUE;
-	AddUnLight(missile[i]._mlid);
-	AddMissile(
-	    missile[i]._mix,
-	    missile[i]._miy,
-	    missile[i]._mix,
-	    missile[i]._miy,
-	    dir,
-	    missile[i]._miVar1,
-	    2,
-	    missile[i]._misource,
-	    missile[i]._midam,
-	    missile[i]._mispllvl);
 	PutMissile(i);
 }
 
