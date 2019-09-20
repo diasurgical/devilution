@@ -1555,7 +1555,7 @@ void missiles_warp(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 		//TWarpFrom is pretty close and I have no idea what was the purpose of that as it'd be handled by i < numtrigs anyway
 		if ((int)&trg->_tmsg >= (int)&TWarpFrom) {
 			break;
-			}
+		}
 		if (trg->_tmsg == 1032 || trg->_tmsg == 1027 || trg->_tmsg == 1026 || trg->_tmsg == 1028) {
 			if ((leveltype == 1 || leveltype == 2) && (trg->_tmsg == 1026 || trg->_tmsg == 1027 || trg->_tmsg == 1028)) {
 				fx = trg->_tx;
