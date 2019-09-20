@@ -1381,7 +1381,48 @@ void missiles_reflection(int mi, int sx, int sy, int dx, int dy, int midir, char
 
 void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
+	int i, j, k, tx, ty, dm, r;
 
+	if (id >= 0) {
+		missile[mi]._misource = id;
+		for (j = 0; j < 6; j++) {
+			k = CrawlNum[j] + 2;
+			for (i = CrawlTable[CrawlNum[j]]; i > 0; i--, k += 2) {
+				tx = dx + CrawlTable[k - 1];
+				ty = dy + CrawlTable[k];
+				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+					dm = dMonster[tx][ty];
+					dm = dm > 0 ? dm - 1 : -(dm + 1);
+					if (dm > 3) {
+						if (!monster[dm]._uniqtype && monster[dm]._mAi != AI_DIABLO) {
+							if (monster[dm]._mmode != MM_FADEIN && monster[dm]._mmode != MM_FADEOUT) {
+								if (!(monster[dm].mMagicRes & IMUNE_MAGIC)) {
+									if ((!(monster[dm].mMagicRes & RESIST_MAGIC) || (monster[dm].mMagicRes & RESIST_MAGIC) == 1 && !random(99, 2)) && monster[dm]._mmode != MM_CHARGE) {
+										j = 6;
+										double slvl = (double)GetSpellLevel(id, SPL_BERSERK);
+										monster[dm]._mFlags |= MFLAG_UNUSED | MFLAG_GOLEM; //is this ok?
+										monster[dm].mMinDamage = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMinDamage + slvl);
+										monster[dm].mMaxDamage = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMaxDamage + slvl);
+										monster[dm].mMinDamage2 = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMinDamage2 + slvl);
+										monster[dm].mMaxDamage2 = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMaxDamage2 + slvl);
+										if (currlevel < 17 || currlevel > 20)
+											r = 3;
+										else
+											r = 9;
+										monster[dm].mlid = AddLight(monster[dm]._mx, monster[dm]._my, r);
+										UseMana(id, SPL_BERSERK);
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	missile[mi]._mirange = 0;
+	missile[mi]._miDelFlag = TRUE;
 }
 
 void missiles_430624(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
