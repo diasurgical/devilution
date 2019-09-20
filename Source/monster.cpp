@@ -3765,7 +3765,7 @@ void mai_ranged_441680(int i)
 
 void mai_ranged_44168B(int i)
 {
-	MAI_Ranged(i, 6, FALSE);
+	MAI_Ranged(i, MIS_FIREBALL, FALSE);
 }
 #endif
 
