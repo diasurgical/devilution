@@ -127,6 +127,7 @@ typedef enum item_effect_type {
 	IPL_THORNS           = 0x2D,
 	IPL_NOMANA           = 0x2E,
 	IPL_NOHEALPLR        = 0x2F,
+	IPL_FIREBALL         = 0x32, /* only used in hellfire */
 	IPL_ABSHALFTRAP      = 0x34,
 	IPL_KNOCKBACK        = 0x35,
 	IPL_NOHEALMON        = 0x36,
@@ -154,6 +155,21 @@ typedef enum item_effect_type {
 	IPL_ADDMANAAC        = 0x4D,
 	IPL_FIRERESCLVL      = 0x4E,
 	IPL_AC_CURSE         = 0x4F,
+#ifdef HELLFIRE
+	IPL_FIRERES_CURSE    = 0x50,
+	IPL_LIGHTRES_CURSE   = 0x51,
+	IPL_MAGICRES_CURSE   = 0x52,
+	IPL_DEVASTATION      = 0x54,
+	IPL_DECAY            = 0x55,
+	IPL_PERIL            = 0x56,
+	IPL_JESTERS          = 0x57,
+	IPL_CRYSTALLINE      = 0x58,
+	IPL_DOPPELGANGER     = 0x59,
+	IPL_ACDEMON          = 0x5A,
+	IPL_ACUNDEAD         = 0x5B,
+	IPL_MANATOLIFE       = 0x5C,
+	IPL_LIFETOMANA       = 0x5D,
+#endif
 	IPL_INVALID          = -1,
 } item_effect_type;
 
