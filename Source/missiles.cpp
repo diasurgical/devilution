@@ -1637,7 +1637,7 @@ void missiles_rech_mana(int mi, int sx, int sy, int dx, int dy, int midir, char 
 	plr[id]._pManaBase += ManaAmount;
 	if (plr[id]._pManaBase > plr[id]._pMaxManaBase)
 		plr[id]._pManaBase = plr[id]._pMaxManaBase;
-	UseMana(id, 37); // TODO: apply enums
+	UseMana(id, SPL_MANA);
 	missile[mi]._miDelFlag = TRUE;
 	drawmanaflag = TRUE;
 }
