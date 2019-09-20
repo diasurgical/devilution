@@ -1777,8 +1777,8 @@ void AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		anim = &monster[id].MType->Anims[MA_SPECIAL];
 	}
 	GetMissileVel(mi, sx, sy, dx, dy, 18);
-	missile[mi]._miAnimFlags = 0;
 	missile[mi]._mimfnum = midir;
+	missile[mi]._miAnimFlags = 0;
 	missile[mi]._miAnimData = anim->Data[midir];
 	missile[mi]._miAnimDelay = anim->Rate;
 	missile[mi]._miAnimLen = anim->Frames;
