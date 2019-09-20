@@ -1595,7 +1595,7 @@ void missiles_larrow(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 	missile[mi]._midam <<= 6;
 }
 
-void missiles_43303D()
+void missiles_43303D(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 
 }
