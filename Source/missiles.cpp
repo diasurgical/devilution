@@ -4296,6 +4296,7 @@ void MI_Manashield(int i)
 				diff += diff / -3;
 			}
 #endif
+
 			if (diff < 0)
 				diff = 0;
 			drawmanaflag = TRUE;
@@ -4326,6 +4327,7 @@ void MI_Manashield(int i)
 				}
 			}
 		}
+
 #ifndef HELLFIRE
 		if (id == myplr && !plr[id]._pHitPoints && !missile[i]._miVar1 && plr[id]._pmode != PM_DEATH) {
 			missile[i]._mirange = 0;
