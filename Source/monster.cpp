@@ -3760,7 +3760,7 @@ void MAI_AcidUniq(int i)
 #ifdef HELLFIRE
 void mai_ranged_441680(int i)
 {
-	MAI_Ranged(i, 1, FALSE);
+	MAI_Ranged(i, MIS_FIREBOLT, FALSE);
 }
 
 void mai_ranged_44168B(int i)
