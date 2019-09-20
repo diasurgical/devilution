@@ -1292,7 +1292,7 @@ void missiles_great_light_rune(int mi, int sx, int sy, int dx, int dy, int midir
 		if (id >= 0)
 			UseMana(id, 49); // TODO: apply enums
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
-			missile[mi]._miVar1 = 42;
+			missile[mi]._miVar1 = MIS_NOVA;
 			missile[mi]._miDelFlag = FALSE;
 			missile[mi]._mlid = AddLight(dx, dy, 8);
 		} else {
