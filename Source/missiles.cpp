@@ -3270,7 +3270,7 @@ void mi_light_arrow(int i)
 		}
 	}
 
-	if (missile[i]._mirange == 0 || mx <= 0 || my <= 0 || mx >= MAXDUNX || my > MAXDUNY) {
+	if (missile[i]._mirange == 0 || mx <= 0 || my <= 0 || mx >= MAXDUNX || my > MAXDUNY) { // BUGFIX my >= MAXDUNY
 		missile[i]._miDelFlag = TRUE;
 	}
 }
