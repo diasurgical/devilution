@@ -2007,12 +2007,12 @@ void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			tx = dx + CrawlTable[pn - 1];
 			ty = dy + CrawlTable[pn];
 			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
-				if (!(dMonster[tx][ty] | dObject[tx][ty] | dPlayer[tx][ty] | nSolidTable[dPiece[tx][ty]])) {
-					missile[mi]._miDelFlag = FALSE;
+				if (!(nSolidTable[dPiece[tx][ty]] | dMonster[tx][ty] | dObject[tx][ty] | dPlayer[tx][ty])) {
 					missile[mi]._mix = tx;
 					missile[mi]._miy = ty;
 					missile[mi]._misx = tx;
 					missile[mi]._misy = ty;
+					missile[mi]._miDelFlag = FALSE;
 					i = 6;
 					break;
 				}
@@ -2426,8 +2426,8 @@ void AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		anim = &monster[id].MType->Anims[MA_SPECIAL];
 	}
 	GetMissileVel(mi, sx, sy, dx, dy, 18);
-	missile[mi]._miAnimFlags = 0;
 	missile[mi]._mimfnum = midir;
+	missile[mi]._miAnimFlags = 0;
 	missile[mi]._miAnimData = anim->Data[midir];
 	missile[mi]._miAnimDelay = anim->Rate;
 	missile[mi]._miAnimLen = anim->Frames;
@@ -2585,10 +2585,9 @@ void AddStone(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	} else {
 		missile[mi]._mix = tx;
 		missile[mi]._miy = ty;
-		missile[mi]._misx = tx;
-		missile[mi]._misy = ty;
-		missile[mi]._mirange = 6;
-		missile[mi]._mirange += missile[mi]._mispllvl;
+		missile[mi]._misx = missile[mi]._mix;
+		missile[mi]._misy = missile[mi]._miy;
+		missile[mi]._mirange = missile[mi]._mispllvl + 6;
 		missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
 
 		if (missile[mi]._mirange > 15)
@@ -3017,8 +3016,8 @@ void AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 {
 	missile[mi]._mix = dx;
 	missile[mi]._miy = dy;
-	missile[mi]._misx = dx;
-	missile[mi]._misy = dy;
+	missile[mi]._misx = missile[mi]._mix;
+	missile[mi]._misy = missile[mi]._miy;
 	missile[mi]._mixvel = 0;
 	missile[mi]._miyvel = 0;
 	missile[mi]._mirange = misfiledata[36].mAnimLen[0];
@@ -3508,8 +3507,8 @@ void MI_Firewall(int i)
 	}
 	if (missile[i]._mirange == missile[i]._miAnimLen - 1) {
 		SetMissDir(i, 0);
-		missile[i]._miAnimAdd = -1;
 		missile[i]._miAnimFrame = 13;
+		missile[i]._miAnimAdd = -1;
 	}
 	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 1);
 	if (!missile[i]._mirange) {
