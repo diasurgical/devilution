@@ -3331,7 +3331,7 @@ void mi_reflect(int i)
 		if (plr[src]._pdir == DIR_W)
 			missile[i]._mix++;
 		else
-			++missile[i]._miy;
+			missile[i]._miy++;
 	}
 	if (src != myplr && currlevel != plr[src].plrlevel)
 		missile[i]._miDelFlag = TRUE;
