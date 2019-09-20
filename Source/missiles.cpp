@@ -4284,12 +4284,8 @@ void MI_Manashield(int i)
 			diff = missile[i]._miVar1 - plr[id]._pHitPoints;
 #ifdef HELLFIRE
 			int div = 0;
-			for (int m = 0; m < missile[i]._mispllvl; m++) {
-				if (m < 7) {
-					div += 3;
-				} else {
-					break;
-				}
+			for (int m = 0; m < missile[i]._mispllvl && m < 7; m++) {
+				div += 3;
 			}
 			if (div > 0)
 				diff -= diff / div;
@@ -4341,11 +4337,7 @@ void MI_Manashield(int i)
 		missile[i]._miVar2 = plr[id]._pHPBase;
 		if (missile[i]._mirange == 0) {
 			missile[i]._miDelFlag = TRUE;
-#ifdef HELLFIRE
-			NetSendCmd(1u, 0x61u); //TODO: apply enum
-#else
 			NetSendCmd(TRUE, CMD_ENDSHIELD);
-#endif
 		}
 	}
 	PutMissile(i);
