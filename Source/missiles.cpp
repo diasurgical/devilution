@@ -1372,12 +1372,12 @@ void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			tx = dx + CrawlTable[pn - 1];
 			ty = dy + CrawlTable[pn];
 			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
-				if (!(dMonster[tx][ty] | dObject[tx][ty] | dPlayer[tx][ty] | nSolidTable[dPiece[tx][ty]])) {
-					missile[mi]._miDelFlag = FALSE;
+				if (!(nSolidTable[dPiece[tx][ty]] | dMonster[tx][ty] | dObject[tx][ty] | dPlayer[tx][ty])) {
 					missile[mi]._mix = tx;
 					missile[mi]._miy = ty;
 					missile[mi]._misx = tx;
 					missile[mi]._misy = ty;
+					missile[mi]._miDelFlag = FALSE;
 					i = 6;
 					break;
 				}
