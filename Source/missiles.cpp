@@ -1373,7 +1373,7 @@ void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 								if (!(monster[dm].mMagicRes & IMUNE_MAGIC)) {
 									if ((!(monster[dm].mMagicRes & RESIST_MAGIC) || (monster[dm].mMagicRes & RESIST_MAGIC) == 1 && !random(99, 2)) && monster[dm]._mmode != MM_CHARGE) {
 										j = 6;
-										double slvl = (double)GetSpellLevel(id, 44);       //TODO: apply enums
+										double slvl = (double)GetSpellLevel(id, SPL_BERSERK);
 										monster[dm]._mFlags |= MFLAG_UNUSED | MFLAG_GOLEM; //is this ok?
 										monster[dm].mMinDamage = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMinDamage + slvl);
 										monster[dm].mMaxDamage = (__int64)(((double)(random(145, 10) + 20) * 0.01 - -1.0) * (double)monster[dm].mMaxDamage + slvl);
