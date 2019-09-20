@@ -1123,9 +1123,9 @@ DWORD ParseCmd(int pnum, TCmd *pCmd)
 		return On_CHEAT_EXPERIENCE(pCmd, pnum);
 	case CMD_CHEAT_SPELL_LEVEL:
 		return On_CHEAT_SPELL_LEVEL(pCmd, pnum);
+#ifndef HELLFIRE
 	case CMD_NOVA:
 		return On_NOVA(pCmd, pnum);
-#ifndef HELLFIRE
 	case CMD_SETSHIELD:
 		return On_SETSHIELD(pCmd, pnum);
 	case CMD_REMSHIELD:

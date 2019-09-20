@@ -3605,8 +3605,10 @@ void UseItem(int p, int Mid, int spl)
 			plr[p].destAction = ACTION_SPELL;
 			plr[p].destParam1 = cursmx;
 			plr[p].destParam2 = cursmy;
+#ifndef HELLFIRE
 			if (p == myplr && spl == SPL_NOVA)
 				NetSendCmdLoc(TRUE, CMD_NOVA, cursmx, cursmy);
+#endif
 		}
 		break;
 	case IMISC_SCROLLT:
