@@ -1178,6 +1178,9 @@ void InitMissiles()
 {
 	int mi, src, i, j;
 
+#ifdef HELLFIRE
+	AutoMapShowItems = FALSE;
+#endif
 	plr[myplr]._pSpellFlags &= ~0x1;
 	if (plr[myplr]._pInfraFlag == TRUE) {
 		for (i = 0; i < nummissiles; ++i) {
@@ -1189,6 +1192,27 @@ void InitMissiles()
 			}
 		}
 	}
+
+#ifdef HELLFIRE
+	if ((plr[myplr]._pSpellFlags & 2) == 2 || (plr[myplr]._pSpellFlags & 4) == 4) {
+		plr[myplr]._pSpellFlags &= ~0x2;
+		plr[myplr]._pSpellFlags &= ~0x4;
+		for (i = 0; i < nummissiles; ++i) {
+			mi = missileactive[i];
+			if (missile[mi]._mitype == MIS_BLODBOIL) {
+				if (missile[mi]._misource == myplr) {
+					int missingHP = plr[myplr]._pMaxHP - plr[myplr]._pHitPoints;
+					CalcPlrItemVals(myplr, 1);
+					plr[myplr]._pHitPoints -= missingHP + missile[mi]._miVar2;
+					if (plr[myplr]._pHitPoints < 64) {
+						plr[myplr]._pHitPoints = 64;
+					}
+				}
+			}
+		}
+	}
+#endif
+
 	nummissiles = 0;
 	for (i = 0; i < MAXMISSILES; i++) {
 		missileavail[i] = i;
@@ -1205,6 +1229,9 @@ void InitMissiles()
 			dFlags[i][j] &= ~BFLAG_MISSILE;
 		}
 	}
+#ifdef HELLFIRE
+	plr[myplr].wReflection = FALSE;
+#endif
 }
 
 #ifdef HELLFIRE
