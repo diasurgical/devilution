@@ -1538,7 +1538,7 @@ void missiles_spec_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char
 
 void missiles_warp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	int tx, ty, fx, fy, tmsg, i, dist;
+	int tx, ty, fx, fy, i, dist;
 	TriggerStruct *trg;
 
 	dist = 0x7FFFFFFF;
@@ -1551,6 +1551,8 @@ void missiles_warp(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 
 	for (i = 0; i < numtrigs; i++) {
 		trg = &trigs[i];
+		//BUGFIX: ? - the dumps show that this function had a variable unused anywhere else except here, it was close to trigs
+		//TWarpFrom is pretty close and I have no idea what was the purpose of that as it'd be handled by i < numtrigs anyway
 		if ((int)&trg->_tmsg >= (int)&TWarpFrom) {
 			break;
 			}
