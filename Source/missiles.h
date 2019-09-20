@@ -108,6 +108,22 @@ void mi_null_33(int i);
 void MI_Acidpud(int i);
 void MI_Firewall(int i);
 void MI_Fireball(int i);
+#ifdef HELLFIRE
+void MI_Rune(int i);
+void mi_light_wall(int i);
+void mi_hive_explode(int i);
+void mi_immolation(int i);
+void mi_light_arrow(int i);
+void mi_flashfr(int i);
+void mi_flashbk(int i);
+void mi_reflect(int i);
+void mi_fire_ring(int i);
+void mi_light_ring(int i);
+void mi_search(int i);
+void mi_lightning_wall(int i);
+void mi_fire_nova(int i);
+void mi_spec_arrow(int i);
+#endif
 void MI_Lightctrl(int i);
 void MI_Lightning(int i);
 void MI_Town(int i);
