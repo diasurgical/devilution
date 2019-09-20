@@ -3355,7 +3355,7 @@ void mi_search(int i)
 	missile[i]._mirange--;
 	if (!missile[i]._mirange) {
 		missile[i]._miDelFlag = TRUE;
-		PlaySfxLoc(87, plr[missile[i]._miVar1].WorldX, plr[missile[i]._miVar1].WorldY);
+		PlaySfxLoc(IS_CAST6, plr[missile[i]._miVar1].WorldX, plr[missile[i]._miVar1].WorldY);
 		//byte_6EE738 = 0;
 	}
 }
