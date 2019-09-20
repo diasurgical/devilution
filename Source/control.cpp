@@ -126,10 +126,68 @@ const BYTE gbFontTransTbl[256] = {
 /* data */
 
 char SpellITbl[MAX_SPELLS] = {
-	1, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-	28, 13, 12, 18, 16, 14, 18, 19, 11, 20,
-	15, 21, 23, 24, 25, 22, 26, 29, 37, 38,
-	39, 42, 41, 40, 10, 36, 30
+#ifdef HELLFIRE
+	27,
+#else
+	1,
+#endif
+	1,
+	2,
+	3,
+	4,
+	5,
+	6,
+	7,
+	8,
+	9,
+	28,
+	13,
+	12,
+	18,
+	16,
+	14,
+	18,
+	19,
+	11,
+	20,
+	15,
+	21,
+	23,
+	24,
+	25,
+#ifdef HELLFIRE
+	2,
+#else
+	22,
+#endif
+	26,
+	29,
+	37,
+	38,
+	39,
+	42,
+	41,
+	40,
+	10,
+	36,
+	30,
+#ifdef HELLFIRE
+	51,
+	51,
+	50,
+	46,
+	47,
+	43,
+	45,
+	48,
+	49,
+	44,
+	35,
+	35,
+	35,
+	35,
+	35,
+#endif
 };
 int PanBtnPos[8][5] = {
 	{ 9, 361, 71, 19, 1 },
@@ -2225,7 +2283,7 @@ void DrawSpellBook()
 
 	CelDecodeOnly(384, 511, pSpellBkCel, 1, 320);
 #ifdef HELLFIRE
-	if ( sbooktab < 5 )
+	if (sbooktab < 5)
 		CelDecodeOnly(61 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 61);
 #else
 	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
