@@ -3337,7 +3337,7 @@ void mi_reflect(int i)
 		missile[i]._miDelFlag = TRUE;
 	if ((WORD)plr[src].wReflection <= 0) {
 		missile[i]._miDelFlag = TRUE;
-		NetSendCmd(TRUE, 0x63u); //TODO: apply enums
+		NetSendCmd(TRUE, CMD_AWAKEGOLEM);
 	}
 	PutMissile(i);
 }
