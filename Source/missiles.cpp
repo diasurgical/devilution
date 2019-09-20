@@ -1384,7 +1384,7 @@ void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 										else
 											r = 9;
 										monster[dm].mlid = AddLight(monster[dm]._mx, monster[dm]._my, r);
-										UseMana(id, 44); //TODO: apply enums
+										UseMana(id, SPL_BERSERK);
 										break;
 									}
 								}
