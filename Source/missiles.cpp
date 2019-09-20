@@ -1237,11 +1237,10 @@ void InitMissiles()
 #ifdef HELLFIRE
 void missiles_hive_explosion(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	// TODO: apply enums
-	AddMissile(80, 62, 80, 62, midir, 94, mienemy, id, dam, 0);
-	AddMissile(80, 63, 80, 62, midir, 94, mienemy, id, dam, 0);
-	AddMissile(81, 62, 80, 62, midir, 94, mienemy, id, dam, 0);
-	AddMissile(81, 63, 80, 62, midir, 94, mienemy, id, dam, 0);
+	AddMissile(80, 62, 80, 62, midir, MIS_HIVEEXP, mienemy, id, dam, 0);
+	AddMissile(80, 63, 80, 62, midir, MIS_HIVEEXP, mienemy, id, dam, 0);
+	AddMissile(81, 62, 80, 62, midir, MIS_HIVEEXP, mienemy, id, dam, 0);
+	AddMissile(81, 63, 80, 62, midir, MIS_HIVEEXP, mienemy, id, dam, 0);
 	missile[mi]._miDelFlag = TRUE;
 }
 
@@ -1249,9 +1248,9 @@ void missiles_fire_rune(int mi, int sx, int sy, int dx, int dy, int midir, char 
 {
 	if (LineClear(sx, sy, dx, dy)) {
 		if (id >= 0)
-			UseMana(id, 47); // TODO: apply enums
+			UseMana(id, SPL_RUNEFIRE);
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
-			missile[mi]._miVar1 = 94;
+			missile[mi]._miVar1 = MIS_HIVEEXP;
 			missile[mi]._miDelFlag = FALSE;
 			missile[mi]._mlid = AddLight(dx, dy, 8);
 		} else {
@@ -1300,7 +1299,7 @@ void missiles_light_rune(int mi, int sx, int sy, int dx, int dy, int midir, char
 {
 	if (LineClear(sx, sy, dx, dy)) {
 		if (id >= 0)
-			UseMana(id, 48); // TODO: apply enums
+			UseMana(id, SPL_RUNELIGHT);
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
 			missile[mi]._miVar1 = MIS_LIGHTBALL;
 			missile[mi]._miDelFlag = FALSE;
@@ -1317,7 +1316,7 @@ void missiles_great_light_rune(int mi, int sx, int sy, int dx, int dy, int midir
 {
 	if (LineClear(sx, sy, dx, dy)) {
 		if (id >= 0)
-			UseMana(id, 49); // TODO: apply enums
+			UseMana(id, SPL_RUNENOVA);
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
 			missile[mi]._miVar1 = MIS_NOVA;
 			missile[mi]._miDelFlag = FALSE;
@@ -1334,9 +1333,9 @@ void missiles_immolation_rune(int mi, int sx, int sy, int dx, int dy, int midir,
 {
 	if (LineClear(sx, sy, dx, dy)) {
 		if (id >= 0)
-			UseMana(id, 50); // TODO: apply enums
+			UseMana(id, SPL_RUNEIMMOLAT);
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
-			missile[mi]._miVar1 = 72;
+			missile[mi]._miVar1 = MIS_IMMOLATION;
 			missile[mi]._miDelFlag = FALSE;
 			missile[mi]._mlid = AddLight(dx, dy, 8);
 		} else {
@@ -1351,7 +1350,7 @@ void missiles_stone_rune(int mi, int sx, int sy, int dx, int dy, int midir, char
 {
 	if (LineClear(sx, sy, dx, dy)) {
 		if (id >= 0)
-			UseMana(id, 51); // TODO: apply enums
+			UseMana(id, SPL_RUNESTONE);
 		if (missiles_found_target(mi, &dx, &dy, 10)) {
 			missile[mi]._miVar1 = MIS_STONE;
 			missile[mi]._miDelFlag = FALSE;
@@ -1374,7 +1373,7 @@ void missiles_reflection(int mi, int sx, int sy, int dx, int dy, int midir, char
 		else
 			lvl = 2;
 		plr[id].wReflection += lvl * plr[id]._pLevel;
-		UseMana(id, 43); // TODO: apply enums
+		UseMana(id, SPL_REFLECT);
 	}
 	missile[mi]._mirange = 0;
 	missile[mi]._miDelFlag = 0;
@@ -1460,7 +1459,7 @@ void missiles_mana_trap(int mi, int sx, int sy, int dx, int dy, int midir, char 
 					plr[pid]._pManaBase = plr[pid]._pMana + plr[pid]._pMaxManaBase - plr[pid]._pMaxMana;
 					CalcPlrInv(pid, FALSE);
 					drawmanaflag = TRUE;
-					PlaySfxLoc(246, tx, ty); //TODO: apply enum
+					PlaySfxLoc(TSFX_COW7, tx, ty);
 				}
 			}
 			pn += 2;
@@ -1622,9 +1621,8 @@ void missiles_larrow(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 	missile[mi]._midam <<= 6;
 }
 
-void missiles_43303D()
+void missiles_43303D(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-
 }
 
 void missiles_433040(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -1671,7 +1669,7 @@ void missiles_magi(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 {
 	plr[id]._pMana = plr[id]._pMaxMana;
 	plr[id]._pManaBase = plr[id]._pMaxManaBase;
-	UseMana(id, 38); // TODO: apply enums
+	UseMana(id, SPL_MAGI);
 	missile[mi]._miDelFlag = TRUE;
 	drawmanaflag = TRUE;
 }
@@ -1680,7 +1678,7 @@ void missiles_ring(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 {
 	missile[mi]._miDelFlag = TRUE;
 	if (!mienemy)
-		UseMana(id, 45); // TODO: apply enums
+		UseMana(id, SPL_FIRERING);
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
 	missile[mi]._miDelFlag = FALSE;
@@ -3548,6 +3546,10 @@ void MI_Fireball(int i)
 }
 
 #ifdef HELLFIRE
+void missiles_4359A0(int i)
+{
+}
+
 void MI_Rune(int i)
 {
 	int dir;
@@ -3967,11 +3969,10 @@ void mi_fire_nova(int i)
 	}
 	for (k = 0; k < 23; k++) {
 		if (sx1 != vCrawlTable[k][6] || sy1 != vCrawlTable[k][7]) {
-			//TODO: apply enums
-			AddMissile(sx, sy, sx + vCrawlTable[k][6], sy + vCrawlTable[k][7], dir, 74, en, id, dam, missile[i]._mispllvl);
-			AddMissile(sx, sy, sx - vCrawlTable[k][6], sy - vCrawlTable[k][7], dir, 74, en, id, dam, missile[i]._mispllvl);
-			AddMissile(sx, sy, sx - vCrawlTable[k][6], sy + vCrawlTable[k][7], dir, 74, en, id, dam, missile[i]._mispllvl);
-			AddMissile(sx, sy, sx + vCrawlTable[k][6], sy - vCrawlTable[k][7], dir, 74, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx + vCrawlTable[k][6], sy + vCrawlTable[k][7], dir, MIS_FIRENOVA, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx - vCrawlTable[k][6], sy - vCrawlTable[k][7], dir, MIS_FIRENOVA, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx - vCrawlTable[k][6], sy + vCrawlTable[k][7], dir, MIS_FIRENOVA, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx + vCrawlTable[k][6], sy - vCrawlTable[k][7], dir, MIS_FIRENOVA, en, id, dam, missile[i]._mispllvl);
 			sx1 = vCrawlTable[k][6];
 			sy1 = vCrawlTable[k][7];
 		}
@@ -3998,25 +3999,25 @@ void mi_spec_arrow(int i)
 		dir = plr[src]._pdir;
 		micaster = 0;
 
-		switch (plr[src]._pILMinDam) { //TODO: apply enums
+		switch (plr[src]._pILMinDam) {
 		case 0:
-			mitype = 74;
+			mitype = MIS_FIRENOVA;
 			break;
 		case 1:
-			mitype = 75;
+			mitype = MIS_LIGHTARROW;
 			break;
 		case 2:
-			mitype = 76;
+			mitype = MIS_CBOLTARROW;
 			break;
 		case 3:
-			mitype = 77;
+			mitype = MIS_HBOLTARROW;
 			break;
 		}
 	} else {
 		micaster = 1;
 	}
 	AddMissile(sx, sy, dx, dy, dir, mitype, micaster, src, dam, spllvl);
-	if (mitype == 76) { //TODO: apply enums
+	if (mitype == MIS_CBOLTARROW) {
 		AddMissile(sx, sy, dx, dy, dir, mitype, micaster, src, dam, spllvl);
 		AddMissile(sx, sy, dx, dy, dir, mitype, micaster, src, dam, spllvl);
 	}

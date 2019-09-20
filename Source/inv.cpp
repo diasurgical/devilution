@@ -2396,7 +2396,7 @@ int InvPutItem(int pnum, int x, int y)
 		yp = cursmy;
 		xp = cursmx;
 		if (plr[pnum].HoldItem._iCurs == ICURS_RUNE_BOMB && xp >= 79 && xp <= 82 && yp >= 61 && yp <= 64) {
-			NetSendCmdLocParam2(0, 101, plr[pnum].WorldX, plr[pnum].WorldY, xx, yy);
+			NetSendCmdLocParam2(0, CMD_OPENHIVE, plr[pnum].WorldX, plr[pnum].WorldY, xx, yy);
 			quests[QTYPE_FARMER]._qactive = 3;
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, QTYPE_FARMER);
@@ -2405,7 +2405,7 @@ int InvPutItem(int pnum, int x, int y)
 			return -1;
 		}
 		if (plr[pnum].HoldItem.IDidx == IDI_MAPOFDOOM && xp >= 35 && xp <= 38 && yp >= 20 && yp <= 24) {
-			NetSendCmd(0, 102);
+			NetSendCmd(FALSE, CMD_SETHIVE);
 			quests[QTYPE_GRAVE]._qactive = 3;
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, QTYPE_GRAVE);
