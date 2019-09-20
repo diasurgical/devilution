@@ -3270,7 +3270,7 @@ void mi_light_arrow(int i)
 		}
 	}
 
-	if (missile[i]._mirange == 0 || mx <= 0 || my <= 0 || mx >= MAXDUNX || my > MAXDUNY) {
+	if (missile[i]._mirange == 0 || mx <= 0 || my <= 0 || mx >= MAXDUNX || my > MAXDUNY) { // BUGFIX my >= MAXDUNY
 		missile[i]._miDelFlag = TRUE;
 	}
 }
@@ -3329,15 +3329,15 @@ void mi_reflect(int i)
 	GetMissilePos(i);
 	if (plr[src]._pmode == PM_WALK3) {
 		if (plr[src]._pdir == DIR_W)
-			++missile[i]._mix;
+			missile[i]._mix++;
 		else
-			++missile[i]._miy;
+			missile[i]._miy++;
 	}
 	if (src != myplr && currlevel != plr[src].plrlevel)
 		missile[i]._miDelFlag = TRUE;
 	if ((WORD)plr[src].wReflection <= 0) {
 		missile[i]._miDelFlag = TRUE;
-		NetSendCmd(TRUE, 0x63u); //TODO: apply enums
+		NetSendCmd(TRUE, CMD_AWAKEGOLEM);
 	}
 	PutMissile(i);
 }
@@ -3355,7 +3355,7 @@ void mi_search(int i)
 	missile[i]._mirange--;
 	if (!missile[i]._mirange) {
 		missile[i]._miDelFlag = TRUE;
-		PlaySfxLoc(87, plr[missile[i]._miVar1].WorldX, plr[missile[i]._miVar1].WorldY);
+		PlaySfxLoc(IS_CAST6, plr[missile[i]._miVar1].WorldX, plr[missile[i]._miVar1].WorldY);
 		AutoMapShowItems = FALSE;
 	}
 }
