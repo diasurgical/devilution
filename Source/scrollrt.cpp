@@ -11,6 +11,9 @@ DWORD sgdwCursHgt;
 DWORD level_cel_block;
 DWORD sgdwCursXOld;
 DWORD sgdwCursYOld;
+#ifdef HELLFIRE
+BOOLEAN AutoMapShowItems;
+#endif
 char arch_draw_type;
 DDSURFACEDESC DDS_desc;
 int cel_transparency_active;
