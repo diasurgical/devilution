@@ -217,17 +217,15 @@ void GetLevelMTypes()
 	}
 
 #ifdef HELLFIRE
-	if ( currlevel == 18 )
+	if (currlevel == 18)
 		AddMonsterType(117, 1);
-	if ( currlevel == 19 )
-	{
+	if (currlevel == 19) {
 		AddMonsterType(117, 1);
 		AddMonsterType(123, 4);
 	}
-	if ( currlevel == 20 )
+	if (currlevel == 20)
 		AddMonsterType(124, 4);
-	if ( currlevel == 24 )
-	{
+	if (currlevel == 24) {
 		AddMonsterType(133, 1);
 		AddMonsterType(137, 2);
 	}
@@ -522,7 +520,7 @@ void InitMonster(int i, int rd, int mtype, int x, int y)
 #ifdef HELLFIRE
 	else
 #endif
-	if (gnDifficulty == DIFF_HELL) {
+	    if (gnDifficulty == DIFF_HELL) {
 #ifdef HELLFIRE
 		monster[i]._mmaxhp = 4 * monster[i]._mmaxhp + ((gbMaxPlayers != 1 ? 200 : 100) << 6);
 #else
@@ -4291,14 +4289,12 @@ void mai_horkdemon(int i)
 	MonsterStruct *Monst;
 	int fx, fy, mx, my, md, v, dist;
 
-	if ( (DWORD)i >= MAXMONSTERS )
-	{
+	if ((DWORD)i >= MAXMONSTERS) {
 		return;
 	}
 
 	Monst = &monster[i];
-	if ( Monst->_mmode != MM_STAND || Monst->_msquelch == 0 )
-	{
+	if (Monst->_mmode != MM_STAND || Monst->_msquelch == 0) {
 		return;
 	}
 
@@ -4308,76 +4304,53 @@ void mai_horkdemon(int i)
 	my = Monst->_my - fy;
 	md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
 
-	if ( Monst->_msquelch < 255 )
-	{
+	if (Monst->_msquelch < 255) {
 		MonstCheckDoors(i);
 	}
 
 	v = random(131, 100);
 
-	if ( abs(mx) < 2 && abs(my) < 2 )
-	{
+	if (abs(mx) < 2 && abs(my) < 2) {
 		Monst->_mgoal = 1;
-	}
-	else if ( Monst->_mgoal == 4 || (abs(mx) >= 5 || abs(my) >= 5) && random(132, 4) != 0 )
-	{
-		if ( Monst->_mgoal != 4 )
-		{
+	} else if (Monst->_mgoal == 4 || (abs(mx) >= 5 || abs(my) >= 5) && random(132, 4) != 0) {
+		if (Monst->_mgoal != 4) {
 			Monst->_mgoalvar1 = 0;
 			Monst->_mgoalvar2 = random(133, 2);
 		}
 		Monst->_mgoal = 4;
-		if ( abs(mx) > abs(my) )
-		{
+		if (abs(mx) > abs(my)) {
 			dist = abs(mx);
-		}
-		else
-		{
+		} else {
 			dist = abs(my);
 		}
-		if ( Monst->_mgoalvar1++ >= 2 * dist || dTransVal[Monst->_mx][Monst->_my] != dTransVal[fx][fy] )
-		{
+		if (Monst->_mgoalvar1++ >= 2 * dist || dTransVal[Monst->_mx][Monst->_my] != dTransVal[fx][fy]) {
 			Monst->_mgoal = 1;
-		}
-		else if ( !M_RoundWalk(i, md, &Monst->_mgoalvar2) )
-		{
+		} else if (!M_RoundWalk(i, md, &Monst->_mgoalvar2)) {
 			M_StartDelay(i, random(125, 10) + 10);
 		}
 	}
 
-	if ( Monst->_mgoal == 1 )
-	{
-		if ( (abs(mx) >= 3 || abs(my) >= 3) && v < 2 * Monst->_mint + 43 )
-		{
-			if ( PosOkMonst(i, Monst->_mx + HorkXAdd[Monst->_mdir], Monst->_my + HorkYAdd[Monst->_mdir]) && nummonsters < MAXMONSTERS )
-			{
+	if (Monst->_mgoal == 1) {
+		if ((abs(mx) >= 3 || abs(my) >= 3) && v < 2 * Monst->_mint + 43) {
+			if (PosOkMonst(i, Monst->_mx + HorkXAdd[Monst->_mdir], Monst->_my + HorkYAdd[Monst->_mdir]) && nummonsters < MAXMONSTERS) {
 				M_StartRSpAttack(i, MIS_HF_5F, 0);
 			}
-		}
-		else if ( abs(mx) < 2 && abs(my) < 2 )
-		{
-			if ( v < 2 * Monst->_mint + 28 )
-			{
+		} else if (abs(mx) < 2 && abs(my) < 2) {
+			if (v < 2 * Monst->_mint + 28) {
 				Monst->_mdir = md;
 				M_StartAttack(i);
 			}
-		}
-		else
-		{
+		} else {
 			v = random(134, 100);
-			if ( v < 2 * Monst->_mint + 33
-			|| (Monst->_mVar1 == 1 || Monst->_mVar1 == 2 || Monst->_mVar1 == 3) && Monst->_mVar2 == 0 && v < 2 * Monst->_mint + 83 )
-			{
+			if (v < 2 * Monst->_mint + 33
+			    || (Monst->_mVar1 == 1 || Monst->_mVar1 == 2 || Monst->_mVar1 == 3) && Monst->_mVar2 == 0 && v < 2 * Monst->_mint + 83) {
 				M_CallWalk(i, md);
-			}
-			else
-			{
+			} else {
 				M_StartDelay(i, random(135, 10) + 10);
 			}
 		}
 	}
-	if ( Monst->_mmode == MM_STAND )
-	{
+	if (Monst->_mmode == MM_STAND) {
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 	}
 }
