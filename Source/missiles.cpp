@@ -2553,19 +2553,29 @@ void AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy,
 void AddStone(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, l, tx, ty, mid;
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	missile[mi]._misource = id;
 	for (i = 0; i < 6; i++) {
 		k = CrawlNum[i];
 		l = k + 2;
+#ifdef HELLFIRE
+		for (j = CrawlTable[k]; j > 0; j--) {
+#else
 		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
+#endif
 			tx = dx + CrawlTable[l - 1];
 			ty = dy + CrawlTable[l];
 			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
 				mid = dMonster[tx][ty];
 				mid = mid > 0 ? mid - 1 : -1 - mid;
+#ifdef HELLFIRE
+				if (mid > 3 && monster[mid]._mAi != AI_DIABLO && monster[mid].MType->mtype != 137) { //TODO:apply enums
+#else
 				if (mid > 3 && monster[mid]._mAi != AI_DIABLO) {
+#endif
 					if (monster[mid]._mmode != MM_FADEIN && monster[mid]._mmode != MM_FADEOUT && monster[mid]._mmode != MM_CHARGE) {
 						j = -99;
 						i = 6;
