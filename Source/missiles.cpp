@@ -1538,7 +1538,43 @@ void missiles_spec_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char
 
 void missiles_warp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
+	int tx, ty, fx, fy, i, dist;
+	TriggerStruct *trg;
 
+	dist = INT_MAX;
+	if (id >= 0) {
+		sx = plr[id].WorldX;
+		sy = plr[id].WorldY;
+	}
+	tx = sx;
+	ty = sy;
+
+	for (i = 0; i < numtrigs && i < MAXTRIGGERS; i++) {
+		trg = &trigs[i];
+		if (trg->_tmsg == 1032 || trg->_tmsg == 1027 || trg->_tmsg == 1026 || trg->_tmsg == 1028) {
+			if ((leveltype == 1 || leveltype == 2) && (trg->_tmsg == 1026 || trg->_tmsg == 1027 || trg->_tmsg == 1028)) {
+				fx = trg->_tx;
+				fy = trg->_ty + 1;
+			} else {
+				fx = trg->_tx + 1;
+				fy = trg->_ty;
+			}
+			int dify = (sy - fy);
+			int difx = (sx - fx);
+			int dif = dify * dify + difx * difx;
+			if (dif < dist) {
+				dist = dif;
+				tx = fx;
+				ty = fy;
+			}
+		}
+	}
+	missile[mi]._mirange = 2;
+	missile[mi]._miVar1 = 0;
+	missile[mi]._mix = tx;
+	missile[mi]._miy = ty;
+	if (!mienemy)
+		UseMana(id, SPL_WARP);
 }
 
 void missiles_light_wall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
