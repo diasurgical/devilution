@@ -1401,7 +1401,6 @@ void missiles_jester(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 	case 9:
 		spell = MIS_STONE;
 		break;
-		break;
 	}
 	AddMissile(sx, sy, dx, dy, midir, spell, missile[mi]._micaster, missile[mi]._misource, 0, missile[mi]._mispllvl);
 	missile[mi]._miDelFlag = TRUE;
