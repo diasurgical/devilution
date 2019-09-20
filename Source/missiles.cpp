@@ -3396,6 +3396,23 @@ void MI_Firebolt(int i)
 				missile[i]._miDelFlag = FALSE;
 				PutMissile(i);
 				return;
+#ifdef HELLFIRE
+			case MIS_LICH:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXORA1, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_PSYCHORB:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXBL2, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_NECROMORB:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXRED3, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_ARCHLICH:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXYEL2, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+			case MIS_BONEDEMON:
+				AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_EXBL3, missile[i]._micaster, missile[i]._misource, 0, 0);
+				break;
+#endif
 			}
 			if (missile[i]._mlid >= 0)
 				AddUnLight(missile[i]._mlid);
