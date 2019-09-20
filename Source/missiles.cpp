@@ -1924,10 +1924,9 @@ void AddStone(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	} else {
 		missile[mi]._mix = tx;
 		missile[mi]._miy = ty;
-		missile[mi]._misx = tx;
-		missile[mi]._misy = ty;
-		missile[mi]._mirange = 6;
-		missile[mi]._mirange += missile[mi]._mispllvl;
+		missile[mi]._misx = missile[mi]._mix;
+		missile[mi]._misy = missile[mi]._miy;
+		missile[mi]._mirange = missile[mi]._mispllvl + 6;
 		missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
 
 		if (missile[mi]._mirange > 15)
