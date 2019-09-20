@@ -3733,22 +3733,22 @@ void MAI_Succ(int i)
 #ifdef HELLFIRE
 void mai_ranged_441649(int i)
 {
-	MAI_Ranged(i, 98, FALSE);
+	MAI_Ranged(i, MIS_LICH, FALSE);
 }
 
 void mai_ranged_441654(int i)
 {
-	MAI_Ranged(i, 101, FALSE);
+	MAI_Ranged(i, MIS_ARCHLICH, FALSE);
 }
 
 void mai_ranged_44165F(int i)
 {
-	MAI_Ranged(i, 99, FALSE);
+	MAI_Ranged(i, MIS_PSYCHORB, FALSE);
 }
 
 void mai_ranged_44166A(int i)
 {
-	MAI_Ranged(i, 100, FALSE);
+	MAI_Ranged(i, MIS_NECROMORB, FALSE);
 }
 #endif
 
@@ -3974,7 +3974,7 @@ void MAI_Storm(int i)
 #ifdef HELLFIRE
 void mai_roundranged_441EA0(int i)
 {
-	MAI_RoundRanged(i, 102, TRUE, 4, 0);
+	MAI_RoundRanged(i, MIS_BONEDEMON, TRUE, 4, 0);
 }
 #endif
 
@@ -4351,7 +4351,7 @@ void mai_horkdemon(int i)
 		{
 			if ( PosOkMonst(i, Monst->_mx + HorkXAdd[Monst->_mdir], Monst->_my + HorkYAdd[Monst->_mdir]) && nummonsters < MAXMONSTERS )
 			{
-				M_StartRSpAttack(i, 95, 0);
+				M_StartRSpAttack(i, MIS_HF_5F, 0);
 			}
 		}
 		else if ( abs(mx) < 2 && abs(my) < 2 )
