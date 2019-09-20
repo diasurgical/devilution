@@ -1483,7 +1483,7 @@ typedef enum missile_id {
 	MIS_RUNEIMMOLAT   = 0x5C,
 	MIS_RUNESTONE     = 0x5D,
 	MIS_HIVEEXP       = 0x5E,
-	MIS_HF_5F         = 0x5F,
+	MIS_HORKDMN       = 0x5F,
 	MIS_JESTER        = 0x60,
 	MIS_HIVEEXP2      = 0x61,
 	MIS_LICH          = 0x62,
@@ -1602,7 +1602,7 @@ typedef enum _mai_id {
 #ifdef HELLFIRE
 	AI_FIREBAT   = 32,
 	AI_TORCHANT  = 33,
-	AI_UNUSED    = 34, // Probably AI_HELLBAT and a BUGFIX in monsterdata
+	AI_HORKDMN   = 34,
 	AI_LICH      = 35,
 	AI_ARCHLICH  = 36,
 	AI_PSYCHORB  = 37,
@@ -1747,11 +1747,11 @@ typedef enum _monster_id {
 	MT_DIABLO   = 0x6E,
 	MT_DARKMAGE = 0x6F,
 #ifdef HELLFIRE
-	MT_HORK     = 0x7B,
+	MT_HORKDMN  = 0x7B,
 	MT_DEFILER  = 0x7C,
 	MT_NAKRUL   = 0x89,
 #endif
-	NUM_MTYPES
+	NUM_MTYPES,
 } _monster_id;
 
 // this enum contains indexes from UniqMonst array for special unique monsters (usually quest related)
