@@ -1401,10 +1401,10 @@ void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 										j = 6;
 										double slvl = (double)GetSpellLevel(id, SPL_BERSERK);
 										monster[dm]._mFlags |= MFLAG_UNUSED | MFLAG_GOLEM;
-										monster[dm].mMinDamage = ((double)(random(145, 10) + 20) / 100 + 1) * (double)monster[dm].mMinDamage + slvl;
-										monster[dm].mMaxDamage = ((double)(random(145, 10) + 20) / 100 + 1) * (double)monster[dm].mMaxDamage + slvl;
-										monster[dm].mMinDamage2 = ((double)(random(145, 10) + 20) / 100 + 1) * (double)monster[dm].mMinDamage2 + slvl;
-										monster[dm].mMaxDamage2 = ((double)(random(145, 10) + 20) / 100 + 1) * (double)monster[dm].mMaxDamage2 + slvl;
+										monster[dm].mMinDamage = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMinDamage + slvl;
+										monster[dm].mMaxDamage = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMaxDamage + slvl;
+										monster[dm].mMinDamage2 = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMinDamage2 + slvl;
+										monster[dm].mMaxDamage2 = ((double)(random(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMaxDamage2 + slvl;
 										if (currlevel < 17 || currlevel > 20)
 											r = 3;
 										else
