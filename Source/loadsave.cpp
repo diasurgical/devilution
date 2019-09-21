@@ -547,8 +547,10 @@ void LoadMonster(int i)
 	CopyChar(tbuff, &pMonster->leaderflag);
 	CopyChar(tbuff, &pMonster->packsize);
 	CopyChar(tbuff, &pMonster->mlid);
+	// Omit pointer mName;
+	// Omit pointer MType;
+	// Omit pointer MData;
 
-	tbuff += sizeof(DWORD) * 3; // Skip 3 pointers
 	SyncMonsterAnim(i);
 }
 
@@ -1244,8 +1246,10 @@ void SaveMonster(int i)
 	CopyChar(&pMonster->leaderflag, tbuff);
 	CopyChar(&pMonster->packsize, tbuff);
 	CopyChar(&pMonster->mlid, tbuff);
-	
-	tbuff += sizeof(DWORD) * 3; // Skip 3 pointers
+
+	// Omit pointer mName;
+	// Omit pointer MType;
+	// Omit pointer MData;
 }
 
 void SaveMissile(int i)
