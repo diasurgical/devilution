@@ -62,7 +62,7 @@ typedef struct _WSIZE
 } WSIZE, *PWSIZE;
 
 #ifdef __cplusplus
-static float infinity = std::numeric_limits<float>::infinity();
+//static float infinity = std::numeric_limits<float>::infinity();
 
 struct CCritSect {
 	CRITICAL_SECTION m_critsect;

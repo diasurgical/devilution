@@ -471,8 +471,8 @@ BOOL UiValidPlayerName(char *name)
 	if (strpbrk(name, ",<>%&\\\"?*#/:") || strpbrk(name, " "))
 		return false;
 
-	for (char *letter = name; *letter; letter++)
-		if (*letter < 0x20 || *letter > 0x7E && *letter < 0xC0)
+	for (BYTE *letter = (BYTE *)name; *letter; letter++)
+		if (*letter < 0x20 || (*letter > 0x7E && *letter < 0xC0))
 			return false;
 
 	return true;
@@ -553,14 +553,14 @@ BOOL UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 	return true;
 }
 
-void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)
+void DrawArt(int screenX, int screenY, Art *art, int nFrame, DWORD drawW)
 {
 	BYTE *src = (BYTE *)art->data + (art->width * art->height * nFrame);
 	BYTE *dst = &gpBuffer[screenX + 64 + (screenY + SCREEN_Y) * BUFFER_WIDTH];
 	drawW = drawW ? drawW : art->width;
 
-	for (int i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += BUFFER_WIDTH) {
-		for (int j = 0; j < art->width && j + screenX < SCREEN_WIDTH; j++) {
+	for (DWORD i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += BUFFER_WIDTH) {
+		for (DWORD j = 0; j < art->width && j + screenX < SCREEN_WIDTH; j++) {
 			if (j < drawW && (!art->masked || src[j] != art->mask))
 				dst[j] = src[j];
 		}
@@ -785,6 +785,8 @@ void UiRenderItems(UI_Item *items, int size)
 				continue;
 			if (SelectedItem == items[i].value)
 				DrawSelector(&items[i]);
+			DrawArtStr(&items[i]);
+			break;
 		case UI_BUTTON:
 		case UI_TEXT:
 			DrawArtStr(&items[i]);

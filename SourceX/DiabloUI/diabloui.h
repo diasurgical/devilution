@@ -101,7 +101,7 @@ bool UiFocusNavigation(SDL_Event *event);
 bool UiItemMouseEvents(SDL_Event *event, UI_Item *items, int size);
 int GetAnimationFrame(int frames, int fps = 60);
 int GetCenterOffset(int w, int bw = 0);
-void DrawArt(int screenX, int screenY, Art *art, int nFrame = 0, int drawW = 0);
+void DrawArt(int screenX, int screenY, Art *art, int nFrame = 0, DWORD drawW = 0);
 void DrawLogo(int t = 0, int size = LOGO_MED);
 void DrawMouse();
 void LoadArt(char *pszFile, Art *art, int frames = 1, PALETTEENTRY *pPalette = NULL);
