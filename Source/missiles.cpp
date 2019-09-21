@@ -1770,7 +1770,41 @@ void missiles_ring(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 
 void missiles_search(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
+	int lvl, i, mx, r1, r2;
+	MissileStruct *mis;
 
+	missile[mi]._miDelFlag = FALSE;
+	missile[mi]._miVar1 = id;
+	missile[mi]._miVar2 = 0;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar4 = 0;
+	missile[mi]._miVar5 = 0;
+	missile[mi]._miVar6 = 0;
+	missile[mi]._miVar7 = 0;
+	missile[mi]._miVar8 = 0;
+	AutoMapShowItems = TRUE;
+	if (2 * (id > 0))
+		lvl = plr[id]._pLevel;
+	else
+		lvl = 1;
+	missile[mi]._mirange = lvl + 10 * missile[mi]._mispllvl + 245;
+	if (!mienemy)
+		UseMana(id, SPL_SEARCH);
+
+	for (i = 0; i < nummissiles; i++) {
+		mx = missileactive[i];
+		if (mx != mi) {
+			mis = &missile[mx];
+			if (mis->_miVar1 == id && mis->_mitype == 85) {
+				r1 = missile[mi]._mirange;
+				r2 = mis->_mirange;
+				if (r2 < INT_MAX - r1)
+					mis->_mirange = r1 + r2;
+				missile[mi]._miDelFlag = TRUE;
+				break;
+			}
+		}
+	}
 }
 
 void missiles_cbolt_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
