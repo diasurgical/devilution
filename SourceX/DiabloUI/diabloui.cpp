@@ -135,7 +135,8 @@ void UiDestroy()
 	mem_free_dbg(ArtHero.data);
 	ArtHero.data = NULL;
 
-	TTF_CloseFont(font);
+	if (font)
+		TTF_CloseFont(font);
 	font = NULL;
 }
 
