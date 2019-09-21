@@ -2572,7 +2572,7 @@ void AddStone(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 				mid = dMonster[tx][ty];
 				mid = mid > 0 ? mid - 1 : -1 - mid;
 #ifdef HELLFIRE
-				if (mid > 3 && monster[mid]._mAi != AI_DIABLO && monster[mid].MType->mtype != 137) { //TODO:apply enums
+				if (mid > 3 && monster[mid]._mAi != AI_DIABLO && monster[mid].MType->mtype != MT_NAKRUL) {
 #else
 				if (mid > 3 && monster[mid]._mAi != AI_DIABLO) {
 #endif
