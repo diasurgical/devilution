@@ -1721,7 +1721,7 @@ void missiles_search(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 			if (mis->_miVar1 == id && mis->_mitype == 85) {
 				r1 = missile[mi]._mirange;
 				r2 = mis->_mirange;
-				if (r2 < 0x7FFFFFFF - r1)
+				if (r2 < INT_MAX - r1)
 					mis->_mirange = r1 + r2;
 				missile[mi]._miDelFlag = TRUE;
 				break;
