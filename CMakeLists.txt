@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.7)
 
 include(CMake/out_of_tree.cmake)
 
+set(PROJECT_VERSION 0.5.0)
+
 project(devilutionX
-  VERSION 0.0.1
+  VERSION ${PROJECT_VERSION}
   LANGUAGES C CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${devilutionX_SOURCE_DIR}/CMake")
@@ -207,7 +209,8 @@ add_executable(devilutionx MACOSX_BUNDLE
   SourceX/DiabloUI/selhero.cpp
   SourceX/DiabloUI/selyesno.cpp
   SourceX/DiabloUI/title.cpp
-  SourceX/main.cpp)
+  SourceX/main.cpp
+  ./Packaging/macOS/AppIcon.icns)
 
 target_include_directories(devilution PUBLIC Source SourceS)
 target_include_directories(devilutionx PRIVATE
@@ -304,5 +307,23 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 if(APPLE)
+  set_source_files_properties("./Packaging/macOS/AppIcon.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  set(MACOSX_BUNDLE_GUI_IDENTIFIER com.diasurgical.devilutionx)
+  set(MACOSX_BUNDLE_COPYRIGHT Unlicense)
+  set(MACOSX_BUNDLE_BUNDLE_NAME devilutionx)
+  set(MACOSX_BUNDLE_INFO_STRING ${PROJECT_VERSION})
+  set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
+  set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION})
+  set(MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${PROJECT_VERSION}")
+  set_target_properties(devilutionx PROPERTIES MACOSX_BUNDLE_ICON_FILE "AppIcon")
   set_target_properties(devilutionx PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Packaging/macOS/Info.plist")
+
+  install (TARGETS devilutionx DESTINATION ./)
+
+  set(MACOSX_BUNDLE_LONG_VERSION_STRING "Version ${PROJECT_VERSION}")
+  set(CPACK_PACKAGE_FILE_NAME "devilutionx")
+  set(CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK "ON")
+  set(CPACK_GENERATOR "DragNDrop")
+
+  include(CPack)
 endif()
