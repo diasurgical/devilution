@@ -210,7 +210,8 @@ add_executable(devilutionx MACOSX_BUNDLE
   SourceX/DiabloUI/selyesno.cpp
   SourceX/DiabloUI/title.cpp
   SourceX/main.cpp
-  ./Packaging/macOS/AppIcon.icns)
+  ./Packaging/macOS/AppIcon.icns
+  ./Packaging/resources/CharisSILB.ttf)
 
 target_include_directories(devilution PUBLIC Source SourceS)
 target_include_directories(devilutionx PRIVATE
@@ -308,6 +309,7 @@ endif()
 
 if(APPLE)
   set_source_files_properties("./Packaging/macOS/AppIcon.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  set_source_files_properties("./Packaging/resources/CharisSILB.ttf" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   set(MACOSX_BUNDLE_GUI_IDENTIFIER com.diasurgical.devilutionx)
   set(MACOSX_BUNDLE_COPYRIGHT Unlicense)
   set(MACOSX_BUNDLE_BUNDLE_NAME devilutionx)
