@@ -154,7 +154,7 @@ You can also generate 32bit builds on 64bit platforms by setting `-DCMAKE_TOOLCH
 Use `-DCROSS_PREFIX=/path/to/prefix` if the `i686-w64-mingw32` directory is not in `/usr`.
 ### Use SDL v1 instead of SDL v2.
 Pass `-DUSE_SDL1=ON` to build with SDL v1 instead of v2.
-Note that some features are not yet supported in SDL v1, notably sound, upscaling, and fullscreen.
+Note that some features are not yet supported in SDL v1, notably upscaling, and fullscreen.
 
 # Multiplayer
  - TCP/IP only requires the host to expose port 6112
