@@ -255,7 +255,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 	if (dwHeight)
 		*dwHeight = height;
 	if (pdwBpp)
-		*pdwBpp = SDL_SwapLE16(pcxhdr.BitsPerPixel);
+		*pdwBpp = pcxhdr.BitsPerPixel;
 
 	if (!pBuffer) {
 		SFileSetFilePointer(hFile, 0, 0, 2);
