@@ -195,16 +195,17 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 
 void DrawSLine(int y)
 {
-	int xy, yy, width, line;
+	int xy, yy, width, line, sy;
 
+	sy = SStringY[y];
 	if (stextsize == 1) {
 		xy = SCREENXY(26, 25);
-		yy = PitchTbl[SStringY[y] + 198] + 26 + 64;
+		yy = PitchTbl[sy + 198] + 26 + 64;
 		width = 586 / 4;
 		line = BUFFER_WIDTH - 586;
 	} else {
 		xy = SCREENXY(346, 25);
-		yy = PitchTbl[SStringY[y] + 198] + 346 + 64;
+		yy = PitchTbl[sy + 198] + 346 + 64;
 		width = 266 / 4;
 		line = BUFFER_WIDTH - 266;
 	}
