@@ -16,7 +16,11 @@ void LoadGame(BOOL firstflag)
 	LoadBuff = pfile_read(szName, &dwLen);
 	tbuff = LoadBuff;
 
+#ifdef HELLFIRE
+	if (ILoad() != 'HELF')
+#else
 	if (ILoad() != 'RETL')
+#endif
 		app_fatal("Invalid save file");
 
 	setlevel = OLoad();
@@ -39,6 +43,11 @@ void LoadGame(BOOL firstflag)
 
 	LoadPlayer(myplr);
 
+#ifdef HELLFIRE
+	gnDifficulty = plr[myplr].pDifficulty;
+	if (gnDifficulty < DIFF_NORMAL || gnDifficulty > DIFF_HELL)
+		gnDifficulty = DIFF_NORMAL;
+#endif
 	for (i = 0; i < MAXQUESTS; i++)
 		LoadQuest(i);
 	for (i = 0; i < MAXPORTAL; i++)
