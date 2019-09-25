@@ -3760,21 +3760,15 @@ void SpawnSmith(int lvl)
 #ifdef HELLFIRE
 	ItemStruct holditem;
 	holditem = item[0];
-	iCnt = random(50, 15) + 10;
-#else
-	iCnt = random(50, 10) + 10;
 #endif
+	iCnt = random(50, SMITH_ITEMS - 10) + 10;
 	for (i = 0; i < iCnt; i++) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
 			idata = RndSmithItem(lvl) - 1;
 			GetItemAttrs(0, idata, lvl);
-#ifdef HELLFIRE
-		} while (item[0]._iIvalue > 200000);
-#else
-		} while (item[0]._iIvalue > 140000);
-#endif
+		} while (item[0]._iIvalue > SMITH_MAX_VALUE);
 		smithitem[i] = item[0];
 		smithitem[i]._iCreateInfo = lvl | 0x400;
 		smithitem[i]._iIdentified = TRUE;
@@ -3863,7 +3857,7 @@ void SpawnOnePremium(int i, int plvl)
 		itype = RndPremiumItem(plvl >> 2, plvl) - 1;
 		GetItemAttrs(0, itype, plvl);
 		GetItemBonus(0, itype, plvl >> 1, plvl, 1);
-	} while (item[0]._iIvalue > 140000);
+	} while (item[0]._iIvalue > SMITH_MAX_PREMIUM_VALUE);
 	premiumitem[i] = item[0];
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
 	premiumitem[i]._iIdentified = TRUE;
@@ -4307,7 +4301,7 @@ void RecalcStoreStats()
 {
 	int i;
 
-	for (i = 0; i < 20; i++) {
+	for (i = 0; i < SMITH_ITEMS; i++) {
 		if (smithitem[i]._itype != ITYPE_NONE) {
 			smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 		}
