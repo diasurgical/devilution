@@ -560,7 +560,18 @@ void DrawAutomapGame()
 	if (setlevel)
 		PrintGameStr(8, nextline, quest_level_names[(BYTE)setlvlnum], COL_GOLD);
 	else if (currlevel) {
+#ifdef HELLFIRE
+		if (currlevel < 17 || currlevel > 20) {
+			if (currlevel < 21 || currlevel > 24)
+				sprintf(desc, "Level: %i", currlevel);
+			else
+				sprintf(desc, "Level: Crypt %i", currlevel - 20);
+		} else {
+			sprintf(desc, "Level: Nest %i", currlevel - 16);
+		}
+#else
 		sprintf(desc, "Level: %i", currlevel);
+#endif
 		PrintGameStr(8, nextline, desc, COL_GOLD);
 	}
 }
