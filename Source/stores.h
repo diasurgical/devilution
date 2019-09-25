@@ -35,11 +35,7 @@ extern int gossipend;
 extern BYTE *pSPentSpn2Cels;
 extern int stextsval;
 extern int boylevel;
-#ifdef HELLFIRE
-extern ItemStruct smithitem[25];
-#else
-extern ItemStruct smithitem[20];
-#endif
+extern ItemStruct smithitem[SMITH_ITEMS];
 extern int stextdown;
 extern char stextscrlubtn;
 extern char stextflag;
