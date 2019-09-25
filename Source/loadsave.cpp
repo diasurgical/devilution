@@ -152,7 +152,7 @@ void LoadGame(BOOL firstflag)
 	numpremium = WLoad();
 	premiumlevel = WLoad();
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < SMITH_PREMIUM_ITEMS; i++)
 		LoadPremium(i);
 
 	automapflag = OLoad();
@@ -281,7 +281,11 @@ void SaveGame()
 	BYTE *SaveBuff = DiabloAllocPtr(dwLen);
 	tbuff = SaveBuff;
 
+#ifdef HELLFIRE
+	ISave('HELF');
+#else
 	ISave('RETL');
+#endif
 	OSave(setlevel);
 	WSave(setlvlnum);
 	WSave(currlevel);
@@ -300,6 +304,9 @@ void SaveGame()
 		WSave(gnLevelTypeTbl[i]);
 	}
 
+#ifdef HELLFIRE
+	plr[myplr].pDifficulty = gnDifficulty;
+#endif
 	SavePlayer(myplr);
 
 	for (i = 0; i < MAXQUESTS; i++)
@@ -401,7 +408,7 @@ void SaveGame()
 	WSave(numpremium);
 	WSave(premiumlevel);
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < SMITH_PREMIUM_ITEMS; i++)
 		SavePremium(i);
 
 	OSave(automapflag);

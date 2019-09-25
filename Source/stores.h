@@ -7,11 +7,7 @@ extern int storenumh;
 extern int stextlhold;
 extern ItemStruct boyitem;
 extern int stextshold;
-#ifdef HELLFIRE
-extern ItemStruct premiumitem[15];
-#else
-extern ItemStruct premiumitem[6];
-#endif
+extern ItemStruct premiumitem[SMITH_PREMIUM_ITEMS];
 extern BYTE *pSTextBoxCels;
 extern int premiumlevel;
 extern int talker;

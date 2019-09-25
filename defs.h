@@ -67,8 +67,10 @@
 // todo: enums
 #ifdef HELLFIRE
 #define NUMLEVELS				25
+#define SMITH_PREMIUM_ITEMS		15
 #else
 #define NUMLEVELS				17
+#define SMITH_PREMIUM_ITEMS		6
 #endif
 
 // from diablo 2 beta

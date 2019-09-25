@@ -3879,12 +3879,12 @@ void SpawnPremium(int lvl)
 {
 	int i;
 
-	if (numpremium < 6) {
-		for (i = 0; i < 6; i++) {
+	if (numpremium < SMITH_PREMIUM_ITEMS) {
+		for (i = 0; i < SMITH_PREMIUM_ITEMS; i++) {
 			if (premiumitem[i]._itype == ITYPE_NONE)
 				SpawnOnePremium(i, premiumlevel + premiumlvladd[i]);
 		}
-		numpremium = 6;
+		numpremium = SMITH_PREMIUM_ITEMS;
 	}
 	while (premiumlevel < lvl) {
 		premiumlevel++;
@@ -4316,7 +4316,7 @@ void RecalcStoreStats()
 			smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 		}
 	}
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < SMITH_PREMIUM_ITEMS; i++) {
 		if (premiumitem[i]._itype != ITYPE_NONE) {
 			premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
 		}

@@ -5,11 +5,7 @@ int storenumh;
 int stextlhold;
 ItemStruct boyitem;
 int stextshold;
-#ifdef HELLFIRE
-ItemStruct premiumitem[15];
-#else
-ItemStruct premiumitem[6];
-#endif
+ItemStruct premiumitem[SMITH_PREMIUM_ITEMS];
 BYTE *pSTextBoxCels;
 int premiumlevel;
 int talker;
