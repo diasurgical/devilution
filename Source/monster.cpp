@@ -1866,7 +1866,7 @@ void M_ChangeLightOffset(int monst)
 	ChangeLightOff(monster[monst].mlid, _mxoff, _myoff * (ly >> 3));
 }
 
-int M_DoStand(int i)
+BOOL M_DoStand(int i)
 {
 	MonsterStruct *Monst;
 
