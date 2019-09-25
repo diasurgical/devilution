@@ -581,7 +581,7 @@ BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 		SDL_AudioSpec audioFormat;
 		SDL_zero(audioFormat);
 		audioFormat.freq = rate[0];
-		audioFormat.format = depth[0] == 16 ? AUDIO_S16 : AUDIO_U8;
+		audioFormat.format = depth[0] == 16 ? AUDIO_S16SYS : AUDIO_U8;
 		audioFormat.channels = channels[0];
 
 		Mix_CloseAudio();
