@@ -3685,6 +3685,35 @@ void MI_Fireball(int i)
 #ifdef HELLFIRE
 void missiles_4359A0(int i)
 {
+	int t, j, k, tx, ty, dp;
+
+	missile[i]._mirange--;
+	CheckMissileCol(i, 0, 0, 0, missile[i]._mix, missile[i]._miy, 0);
+	if (missile[i]._mirange <= 0) {
+		missile[i]._miDelFlag = TRUE;
+		for (j = 0; j < 2; j++) {
+			k = CrawlNum[j] + 2;
+			for (t = CrawlTable[CrawlNum[j]]; t > 0; t--, k += 2) {
+				tx = missile[i]._mix + CrawlTable[k - 1];
+				ty = missile[i]._miy + CrawlTable[k];
+				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+					dp = dPiece[tx][ty];
+					if (!nSolidTable[dp] && !dMonster[tx][ty] && !dPlayer[tx][ty] && !dObject[tx][ty]) {
+						j = 6;
+						int mon = AddMonster(tx, ty, missile[i]._miVar1, 1, TRUE); // TODO: apply enum - haven't managed to figure out this 1
+						M_StartStand(mon, missile[i]._miVar1);
+						break;
+					}
+				}
+			}
+		}
+	} else {
+		missile[i]._midist++;
+		missile[i]._mitxoff += missile[i]._mixvel;
+		missile[i]._mityoff += missile[i]._miyvel;
+		GetMissilePos(i);
+	}
+	PutMissile(i);
 }
 
 void MI_Rune(int i)
