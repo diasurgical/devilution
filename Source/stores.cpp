@@ -449,6 +449,8 @@ void S_ScrollSBuy(int idx)
 void PrintStoreItem(ItemStruct *x, int l, char iclr)
 {
 	char sstr[128];
+	char str, dex;
+	BYTE mag;
 
 	sstr[0] = '\0';
 	if (x->_iIdentified) {
@@ -488,7 +490,10 @@ void PrintStoreItem(ItemStruct *x, int l, char iclr)
 	}
 	if (!x->_itype)
 		sstr[0] = '\0';
-	if (!(x->_iMinStr + x->_iMinMag + x->_iMinDex)) {
+	str = x->_iMinStr;
+	dex = x->_iMinDex;
+	mag = x->_iMinMag;
+	if (!(str + mag + dex)) {
 		strcat(sstr, "No required attributes");
 	} else {
 		strcpy(tempstr, "Required:");
@@ -500,10 +505,10 @@ void PrintStoreItem(ItemStruct *x, int l, char iclr)
 			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
 		strcat(sstr, tempstr);
 	}
-	AddSText(40, l, 0, sstr, iclr, 0);
+	AddSText(40, l++, 0, sstr, iclr, 0);
 	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
 		if (x->_iIdentified)
-			AddSText(40, l + 1, 0, "Unique Item", iclr, 0);
+			AddSText(40, l, 0, "Unique Item", iclr, 0);
 	}
 }
 
