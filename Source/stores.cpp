@@ -327,9 +327,9 @@ void StoreAutoPlace()
 	int i, w, h, idx;
 
 	SetICursor(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
-	done = FALSE;
 	w = icursW28;
 	h = icursH28;
+	done = FALSE;
 	if (w == 1 && h == 1) {
 		idx = plr[myplr].HoldItem.IDidx;
 		if (plr[myplr].HoldItem._iStatFlag && AllItemsList[idx].iUsable) {
