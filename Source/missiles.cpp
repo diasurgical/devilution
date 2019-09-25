@@ -2066,18 +2066,26 @@ void miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 
 void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	int i, pn, k, j, tx, ty;
+	int i, tx, ty, dp, k, j, pn, magic;
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	missile[mi]._miDelFlag = TRUE;
 	for (i = 0; i < 6; i++) {
 		k = CrawlNum[i];
 		pn = k + 2;
-		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
+#ifdef HELLFIRE
+		for (j = CrawlTable[k]; j > 0; pn += 2, j--) {
+#else
+		for (j = (BYTE)CrawlTable[k]; j > 0; pn += 2, j--) {
+#endif
 			tx = dx + CrawlTable[pn - 1];
 			ty = dy + CrawlTable[pn];
 			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
-				if (!(nSolidTable[dPiece[tx][ty]] | dMonster[tx][ty] | dObject[tx][ty] | dPlayer[tx][ty])) {
+				magic = ty;
+				dp = dPiece[tx][magic];
+				if (!(nSolidTable[dp] | dMonster[tx][magic] | dObject[tx][magic] | dPlayer[tx][magic])) {
 					missile[mi]._mix = tx;
 					missile[mi]._miy = ty;
 					missile[mi]._misx = tx;
@@ -2087,7 +2095,6 @@ void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 					break;
 				}
 			}
-			pn += 2;
 		}
 	}
 
