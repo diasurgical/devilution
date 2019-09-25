@@ -1748,7 +1748,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		CalcItemValue(i);
 }
 
-void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
+void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood)
 {
 	if (item[i]._iClass != ICLASS_GOLD) {
 		if (minlvl > 25)

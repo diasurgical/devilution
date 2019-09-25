@@ -456,7 +456,7 @@ void diablo_parse_flags(char *args)
 				debug_mode_key_w = 1;
 				break;
 			case 'x':
-				fullscreen = 0;
+				fullscreen = FALSE;
 				break;
 			}
 #endif
