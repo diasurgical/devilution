@@ -1675,7 +1675,11 @@ void STextUp()
 		stextsel--;
 		while (!stext[stextsel]._ssel) {
 			if (!stextsel)
+#ifdef HELLFIRE
+				stextsel = 103;
+#else
 				stextsel = 23;
+#endif
 			else
 				stextsel--;
 		}
@@ -1683,13 +1687,21 @@ void STextUp()
 	}
 
 	if (!stextsel)
+#ifdef HELLFIRE
+		stextsel = 103;
+#else
 		stextsel = 23;
+#endif
 	else
 		stextsel--;
 
 	while (!stext[stextsel]._ssel) {
 		if (!stextsel)
+#ifdef HELLFIRE
+			stextsel = 103;
+#else
 			stextsel = 23;
+#endif
 		else
 			stextsel--;
 	}
@@ -1711,7 +1723,11 @@ void STextDown()
 
 		stextsel++;
 		while (!stext[stextsel]._ssel) {
+#ifdef HELLFIRE
+			if (stextsel == 103)
+#else
 			if (stextsel == 23)
+#endif
 				stextsel = 0;
 			else
 				stextsel++;
@@ -1719,13 +1735,21 @@ void STextDown()
 		return;
 	}
 
+#ifdef HELLFIRE
+	if (stextsel == 103)
+#else
 	if (stextsel == 23)
+#endif
 		stextsel = 0;
 	else
 		stextsel++;
 
 	while (!stext[stextsel]._ssel) {
+#ifdef HELLFIRE
+		if (stextsel == 103)
+#else
 		if (stextsel == 23)
+#endif
 			stextsel = 0;
 		else
 			stextsel++;
