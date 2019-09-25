@@ -3780,11 +3780,7 @@ void SpawnSmith(int lvl)
 		smithitem[i]._iIdentified = TRUE;
 		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
-#ifdef HELLFIRE
-	for (i = iCnt; i < 25; i++)
-#else
-	for (i = iCnt; i < 20; i++)
-#endif
+	for (i = iCnt; i < SMITH_ITEMS; i++)
 		smithitem[i]._itype = ITYPE_NONE;
 
 	SortSmith();

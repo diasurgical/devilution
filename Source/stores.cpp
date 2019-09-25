@@ -33,11 +33,7 @@ int gossipend;
 BYTE *pSPentSpn2Cels;
 int stextsval;
 int boylevel;
-#ifdef HELLFIRE
-ItemStruct smithitem[25];
-#else
-ItemStruct smithitem[20];
-#endif
+ItemStruct smithitem[SMITH_ITEMS];
 int stextdown;
 char stextscrlubtn;
 char stextflag;
@@ -1891,8 +1887,8 @@ void SmithBuyItem()
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	if (idx == 19) {
-		smithitem[19]._itype = ITYPE_NONE;
+	if (idx == SMITH_ITEMS-1) {
+		smithitem[SMITH_ITEMS-1]._itype = ITYPE_NONE;
 	} else {
 		for (; smithitem[idx + 1]._itype != ITYPE_NONE; idx++) {
 			smithitem[idx] = smithitem[idx + 1];
