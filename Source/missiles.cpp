@@ -2076,9 +2076,9 @@ void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		k = CrawlNum[i];
 		pn = k + 2;
 #ifdef HELLFIRE
-		for (j = CrawlTable[k]; j > 0; pn += 2, j--) {
+		for (j = CrawlTable[k]; j > 0; j--) {
 #else
-		for (j = (BYTE)CrawlTable[k]; j > 0; pn += 2, j--) {
+		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
 #endif
 			tx = dx + CrawlTable[pn - 1];
 			ty = dy + CrawlTable[pn];
@@ -2095,6 +2095,7 @@ void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 					break;
 				}
 			}
+			pn += 2;
 		}
 	}
 
