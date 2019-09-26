@@ -3700,7 +3700,7 @@ void missiles_4359A0(int i)
 					dp = dPiece[tx][ty];
 					if (!nSolidTable[dp] && !dMonster[tx][ty] && !dPlayer[tx][ty] && !dObject[tx][ty]) {
 						j = 6;
-						int mon = AddMonster(tx, ty, missile[i]._miVar1, 1, TRUE); // TODO: apply enum - haven't managed to figure out this 1
+						int mon = AddMonster(tx, ty, missile[i]._miVar1, 1, TRUE);
 						M_StartStand(mon, missile[i]._miVar1);
 						break;
 					}
