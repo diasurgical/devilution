@@ -19,6 +19,18 @@ BOOL gbNotInView; // valid - if x/y are in bounds
 const int RndInc = 1;
 const int RndMult = 0x015A4E35;
 
+__FINLINE BYTE *CelGetFrame(BYTE *pCelBuff, int nCel, int *nDataSize)
+{
+	DWORD *pFrameTable;
+	DWORD nCellStart;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	nCellStart = SwapLE32(pFrameTable[nCel]);
+	*nDataSize = SwapLE32(pFrameTable[nCel + 1]) - nCellStart;
+
+	return pCelBuff + nCellStart;
+}
+
 void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
@@ -120,7 +132,8 @@ void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 
 void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
-	DWORD *pFrameTable;
+	int nDataSize;
+	BYTE *pRLEBytes;
 
 	/// ASSERT: assert(gpBuffer);
 	if (!gpBuffer)
@@ -129,18 +142,14 @@ void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)pCelBuff;
-
-	CelDrawDatOnly(
-	    &gpBuffer[sx + PitchTbl[sy]],
-	    &pCelBuff[pFrameTable[nCel]],
-	    pFrameTable[nCel + 1] - pFrameTable[nCel],
-	    nWidth);
+	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
+	CelDrawDatOnly(&gpBuffer[sx + PitchTbl[sy]], pRLEBytes, nDataSize, nWidth);
 }
 
 void CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
 {
-	DWORD *pFrameTable;
+	int nDataSize;
+	BYTE *pRLEBytes;
 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (!pCelBuff)
@@ -149,13 +158,8 @@ void CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
 	if (!pBuff)
 		return;
 
-	pFrameTable = (DWORD *)pCelBuff;
-
-	CelDrawDatOnly(
-	    pBuff,
-	    &pCelBuff[pFrameTable[nCel]],
-	    pFrameTable[nCel + 1] - pFrameTable[nCel],
-	    nWidth);
+	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
+	CelDrawDatOnly(pBuff, pRLEBytes, nDataSize, nWidth);
 }
 
 /**
@@ -580,7 +584,6 @@ void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
 	int nDataSize;
 	BYTE *pDecodeTo, *pRLEBytes;
-	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
 	if (!gpBuffer)
@@ -589,10 +592,7 @@ void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)pCelBuff;
-
-	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
 	pDecodeTo = &gpBuffer[sx + PitchTbl[sy]];
 
 	if (light_table_index)
@@ -1643,13 +1643,11 @@ void CelDecodeRect(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, i
 		jnz		label1
 	}
 #else
-	int i;
+	int i, nDataSize;
 	BYTE width;
-	DWORD *pFrameTable;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	end = &pRLEBytes[pFrameTable[1] - pFrameTable[0]];
+	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
+	end = &pRLEBytes[nDataSize];
 	dst = &pBuff[hgt * wdt + CelSkip];
 
 	for (; pRLEBytes != end; dst -= wdt + nWidth) {
