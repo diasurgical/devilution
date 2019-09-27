@@ -4,7 +4,9 @@
 #include <memory>
 #include <array>
 #include <cstring>
+#ifndef NONET
 #include <sodium.h>
+#endif
 
 #include "dvlnet/abstract_net.h"
 #include "stubs.h"
@@ -25,7 +27,9 @@ typedef uint8_t plr_t;
 typedef uint32_t cookie_t;
 typedef int turn_t;      // change int to something else in devilution code later
 typedef int leaveinfo_t; // also change later
+#ifndef NONET
 typedef std::array<unsigned char, crypto_secretbox_KEYBYTES> key_t;
+#endif
 
 static constexpr plr_t PLR_MASTER = 0xFE;
 static constexpr plr_t PLR_BROADCAST = 0xFF;

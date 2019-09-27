@@ -19,6 +19,7 @@ option(FASTER "Enable FASTER in engine" ON)
 option(BINARY_RELEASE "Enable options for binary release" OFF)
 option(NIGHTLY_BUILD "Enable options for nightly build" OFF)
 option(USE_SDL1 "Use SDL1.2 instead of SDL2" OFF)
+option(NONET "Disable network" OFF)
 
 if(BINARY_RELEASE)
   set(CMAKE_BUILD_TYPE "Release")
@@ -62,7 +63,9 @@ set(CMAKE_THREAD_PREFER_PTHREAD ON)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 find_package(Threads REQUIRED)
-find_package(sodium REQUIRED)
+if(NOT NONET)
+  find_package(sodium REQUIRED)
+endif()
 
 if(USE_SDL1)
 	find_package(SDL REQUIRED)
@@ -176,7 +179,7 @@ add_library(devilution STATIC
   Source/trigs.cpp
   Source/wave.cpp)
 
-add_executable(devilutionx MACOSX_BUNDLE
+set(devilutionx_SRCS
   SourceX/dx.cpp
   SourceX/miniwin/misc.cpp
   SourceX/miniwin/misc_io.cpp
@@ -194,9 +197,6 @@ add_executable(devilutionx MACOSX_BUNDLE
   SourceX/dvlnet/packet.cpp
   SourceX/dvlnet/base.cpp
   SourceX/dvlnet/frame_queue.cpp
-  SourceX/dvlnet/tcp_client.cpp
-  SourceX/dvlnet/tcp_server.cpp
-  SourceX/dvlnet/udp_p2p.cpp
   SourceX/DiabloUI/art.cpp
   SourceX/DiabloUI/credits.cpp
   SourceX/DiabloUI/diabloui.cpp
@@ -212,6 +212,15 @@ add_executable(devilutionx MACOSX_BUNDLE
   ./Packaging/macOS/AppIcon.icns
   ./Packaging/resources/CharisSILB.ttf)
 
+if(NOT NONET)
+  list(APPEND devilutionx_SRCS
+    SourceX/dvlnet/tcp_client.cpp
+    SourceX/dvlnet/tcp_server.cpp
+    SourceX/dvlnet/udp_p2p.cpp)
+endif()
+
+add_executable(devilutionx MACOSX_BUNDLE ${devilutionx_SRCS})
+
 configure_file(SourceS/config.h.in config.h @ONLY)
 target_include_directories(devilution PUBLIC Source SourceS ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(devilutionx PRIVATE
@@ -226,8 +235,11 @@ target_link_libraries(devilutionx PRIVATE
   PKWare
   StormLib
   smacker
-  Radon
-  sodium)
+  Radon)
+
+if(NOT NONET)
+  target_link_libraries(devilutionx PRIVATE sodium)
+endif()
 
 target_compile_definitions(devilution PRIVATE DEVILUTION_ENGINE)
 target_compile_definitions(devilution PUBLIC
@@ -247,6 +259,10 @@ foreach(target devilution devilutionx)
       SDL2::SDL2main
       SDL2::SDL2_ttf
       SDL2::SDL2_mixer)
+  endif()
+
+  if(NONET)
+    target_compile_definitions(${target} PRIVATE NONET)
   endif()
 
   if(ASAN)

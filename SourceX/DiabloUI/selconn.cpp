@@ -19,9 +19,13 @@ DWORD provider;
 
 UiText SELCONNECT_DIALOG_DESCRIPTION(selconn_Description, { 35, 275, 205, 66 });
 UiListItem SELCONN_DIALOG_ITEMS[] = {
+#ifndef NONET
 	{ "Client-Server (TCP)", 0 },
 	{ "Peer-to-Peer (UDP)", 1 },
 	{ "Loopback", 2 },
+#else
+	{ "Loopback", 0 },
+#endif
 };
 UiItem SELCONNECT_DIALOG[] = {
 	UiImage(&ArtBackground, { 0, 0, 640, 480 }),
