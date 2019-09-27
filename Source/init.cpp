@@ -268,7 +268,7 @@ void init_archives()
 #endif
 }
 
-HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
+HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int dwPriority, int fs)
 {
 	char *last_slash_pos;
 	char Filename[MAX_PATH];
@@ -289,12 +289,12 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags
 	init_strip_trailing_slash(Filename);
 	strcpy(mpq_path, Buffer);
 	strcat(mpq_path, mpq_name);
-	if (SFileOpenArchive(mpq_path, flags, fs, &archive))
+	if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
 		return archive;
 	if (strcmp(Filename, Buffer)) {
 		strcpy(mpq_path, Filename);
 		strcat(mpq_path, mpq_name);
-		if (SFileOpenArchive(mpq_path, flags, fs, &archive))
+		if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
 			return archive;
 	}
 	archive_path[0] = '\0';
@@ -303,11 +303,11 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags
 			init_strip_trailing_slash(archive_path);
 			strcpy(mpq_path, archive_path);
 			strcat(mpq_path, mpq_name);
-			if (SFileOpenArchive(mpq_path, flags, fs, &archive))
+			if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
 				return archive;
 		}
 	}
-	if (fs != FS_PC && init_read_test_file(archive_path, mpq_name, flags, &archive)) {
+	if (fs != FS_PC && init_read_test_file(archive_path, mpq_name, dwPriority, &archive)) {
 		strcpy(mpq_path, archive_path);
 		return archive;
 	}
@@ -326,7 +326,7 @@ char *init_strip_trailing_slash(char *path)
 	return result;
 }
 
-BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phArchive)
+BOOL init_read_test_file(char *pszPath, char *pszArchive, int dwPriority, HANDLE *phArchive)
 {
 	DWORD dwSize;
 	char *pszDrive, *pszRoot;
@@ -352,7 +352,7 @@ BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phA
 		if (GetDriveType(pszRoot) == DRIVE_CDROM) {
 			strcpy(pszPath, pszRoot);
 			strcat(pszPath, pszArchive);
-			if (SFileOpenArchive(pszPath, flags, FS_CD, phArchive)) {
+			if (SFileOpenArchive(pszPath, dwPriority, FS_CD, phArchive)) {
 				break;
 			}
 		}
