@@ -3,6 +3,8 @@
 
 #ifdef USE_ASM
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
+#else
+#include "engine.inc"
 #endif
 
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
@@ -18,27 +20,6 @@ BOOL gbNotInView; // valid - if x/y are in bounds
 
 const int RndInc = 1;
 const int RndMult = 0x015A4E35;
-
-__FINLINE BYTE *CelGetFrame(BYTE *pCelBuff, int nCel, int *nDataSize)
-{
-	DWORD *pFrameTable;
-	DWORD nCellStart;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	nCellStart = SwapLE32(pFrameTable[nCel]);
-	*nDataSize = SwapLE32(pFrameTable[nCel + 1]) - nCellStart;
-
-	return pCelBuff + nCellStart;
-}
-
-__FINLINE int CelGetFrameSize(BYTE *pCelBuff, int nCel)
-{
-	DWORD *pFrameTable;
-
-	pFrameTable = (DWORD *)pCelBuff;
-
-	return SwapLE32(pFrameTable[nCel + 1]) - SwapLE32(pFrameTable[nCel]);
-}
 
 void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
@@ -2448,14 +2429,12 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 	int i, nDataSize;
 	char width;
 	BYTE *dst;
-	DWORD *pFrameTable;
 
 	/// ASSERT: assert(p != NULL);
 	/// ASSERT: assert(ttbl != NULL);
 
 	for (i = 1; i <= nCel; i++) {
-		pFrameTable = (DWORD *)&p[4 * i];
-		dst = &p[pFrameTable[0] + 10];
+		dst = CelGetFrameStart(p, i) + 10;
 		nDataSize = CelGetFrameSize(p, i) - 10;
 		while (nDataSize) {
 			width = *dst++;

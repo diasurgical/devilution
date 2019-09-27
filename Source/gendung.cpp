@@ -159,7 +159,7 @@ void MakeSpeedCels()
 	}
 
 	pFrameTable = (DWORD *)pDungeonCels;
-	nDataSize = pFrameTable[0];
+	nDataSize = SwapLE32(pFrameTable[0]);
 	nlevel_frames = nDataSize & 0xFFFF;
 
 	for (i = 1; i < nlevel_frames; i++) {
@@ -175,7 +175,7 @@ void MakeSpeedCels()
 			mov		nDataSize, eax
 		}
 #else
-		nDataSize = pFrameTable[i + 1] - pFrameTable[i];
+		nDataSize = CelGetFrameSize(pDungeonCels, i);
 #endif
 		level_frame_sizes[i] = nDataSize & 0xFFFF;
 	}
@@ -215,7 +215,7 @@ void MakeSpeedCels()
 						nop
 					}
 #else
-					src = &pDungeonCels[pFrameTable[i]];
+					src = CelGetFrameStart(pDungeonCels, i);
 					for (j = level_frame_sizes[i]; j; j--) {
 						pix = *src++;
 						if (pix && pix < 32)
@@ -264,7 +264,7 @@ void MakeSpeedCels()
 						loop	l2_label1
 					}
 #else
-					src = &pDungeonCels[pFrameTable[i]];
+					src = CelGetFrameStart(pDungeonCels, i);
 					for (k = 32; k; k--) {
 						for (l = 32; l;) {
 							width = *src++;
@@ -348,7 +348,7 @@ void MakeSpeedCels()
 					nop
 				}
 #else
-				src = &pDungeonCels[pFrameTable[z]];
+				src = CelGetFrameStart(pDungeonCels, z);
 				dst = &pSpeedCels[frameidx];
 				tbl = &pLightTbl[256 * j];
 				for (k = t; k; k--) {
@@ -402,7 +402,7 @@ void MakeSpeedCels()
 					loop	l4_label1
 				}
 #else
-				src = &pDungeonCels[pFrameTable[z]];
+				src = CelGetFrameStart(pDungeonCels, z);
 				dst = &pSpeedCels[frameidx];
 				tbl = &pLightTbl[256 * j];
 				for (k = 32; k; k--) {
