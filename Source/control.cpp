@@ -726,14 +726,12 @@ void CPrintString(int nOffset, int nCel, char col)
 	labret:
 	}
 #else
-	int i;
+	int i, nDataSize;
 	BYTE width, pix;
 	BYTE *src, *dst, *end;
-	DWORD *pFrameTable;
 
-	pFrameTable = (DWORD *)&pPanelText[4 * nCel];
-	src = &pPanelText[pFrameTable[0]];
-	end = &src[pFrameTable[1] - pFrameTable[0]];
+	src = CelGetFrame(pPanelText, nCel, &nDataSize);
+	end = &src[nDataSize];
 	dst = &gpBuffer[nOffset];
 
 	switch (col) {
