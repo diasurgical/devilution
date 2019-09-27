@@ -122,7 +122,11 @@ void CastSpell(int id, int spl, int sx, int sy, int dx, int dy, int caster, int 
 		caster = 0;
 		dir = plr[id]._pdir;
 
+#ifdef HELLFIRE
+		if (spl == SPL_FIREWALL || spl == SPL_LIGHTWALL) {
+#else
 		if (spl == SPL_FIREWALL) {
+#endif
 			dir = plr[id]._pVar3;
 		}
 		break;
