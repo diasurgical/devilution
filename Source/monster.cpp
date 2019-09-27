@@ -363,9 +363,23 @@ void InitMonsterGFX(int monst)
 	}
 	if (mtype == MT_SUCCUBUS && !(MissileFileFlag & 4)) {
 		MissileFileFlag |= 4;
+#ifndef HELLFIRE
 		LoadMissileGFX(MFILE_FLARE);
 		LoadMissileGFX(MFILE_FLAREEXP);
+#endif
 	}
+#ifdef HELLFIRE
+	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
+		MissileFileFlag |= 8;
+		LoadMissileGFX(MFILE_KRULL);
+	}
+	if ((mtype >= MT_NACID && mtype <= MT_XACID || mtype == MT_SPIDLORD) && !(MissileFileFlag & 0x10)) {
+		MissileFileFlag |= 0x10;
+		LoadMissileGFX(MFILE_ACIDBF);
+		LoadMissileGFX(MFILE_ACIDSPLA);
+		LoadMissileGFX(MFILE_ACIDPUD);
+	}
+#endif
 	if (mtype == MT_SNOWWICH && !(MissileFileFlag & 0x20)) {
 		MissileFileFlag |= 0x20;
 		LoadMissileGFX(MFILE_SCUBMISB);
@@ -381,6 +395,7 @@ void InitMonsterGFX(int monst)
 		LoadMissileGFX(MFILE_SCUBMISC);
 		LoadMissileGFX(MFILE_SCBSEXPC);
 	}
+#ifndef HELLFIRE
 	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
 		MissileFileFlag |= 8;
 		LoadMissileGFX(MFILE_KRULL);
@@ -391,6 +406,35 @@ void InitMonsterGFX(int monst)
 		LoadMissileGFX(MFILE_ACIDSPLA);
 		LoadMissileGFX(MFILE_ACIDPUD);
 	}
+#else
+	if (mtype == MT_LICH && !(MissileFileFlag & 0x100)) {
+		MissileFileFlag |= 0x100u;
+		LoadMissileGFX(MFILE_LICH);
+		LoadMissileGFX(MFILE_EXORA1);
+	}
+	if (mtype == MT_ARCHLICH && !(MissileFileFlag & 0x200)) {
+		MissileFileFlag |= 0x200u;
+		LoadMissileGFX(MFILE_ARCHLICH);
+		LoadMissileGFX(MFILE_EXYEL2);
+	}
+	if ((mtype == MT_PSYCHORB || mtype == MT_BONEDEMN) && !(MissileFileFlag & 0x400)) {
+		MissileFileFlag |= 0x400u;
+		LoadMissileGFX(MFILE_BONEDEMON);
+	}
+	if (mtype == MT_NECRMORB && !(MissileFileFlag & 0x800)) {
+		MissileFileFlag |= 0x800u;
+		LoadMissileGFX(MFILE_NECROMORB);
+		LoadMissileGFX(MFILE_EXRED3);
+	}
+	if (mtype == MT_PSYCHORB && !(MissileFileFlag & 0x1000)) {
+		MissileFileFlag |= 0x1000u;
+		LoadMissileGFX(MFILE_EXBL2);
+	}
+	if (mtype == MT_BONEDEMN && !(MissileFileFlag & 0x2000)) {
+		MissileFileFlag |= 0x2000u;
+		LoadMissileGFX(MFILE_EXBL3);
+	}
+#endif
 	if (mtype == MT_DIABLO) {
 		LoadMissileGFX(MFILE_FIREPLAR);
 	}
