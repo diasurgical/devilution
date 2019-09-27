@@ -2,7 +2,6 @@
 
 int GetManaAmount(int id, int sn)
 {
-	int i;  // "raw" mana cost
 	int ma; // mana amount
 
 	// mana adjust
@@ -26,12 +25,10 @@ int GetManaAmount(int id, int sn)
 	}
 
 	if (spelldata[sn].sManaCost == 255) {
-		i = (BYTE)plr[id]._pMaxManaBase;
+		ma = ((BYTE)plr[id]._pMaxManaBase - adj) << 6;
 	} else {
-		i = spelldata[sn].sManaCost;
+		ma = (spelldata[sn].sManaCost - adj) << 6;
 	}
-
-	ma = (i - adj) << 6;
 
 	if (sn == SPL_HEAL) {
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
