@@ -31,6 +31,15 @@ __FINLINE BYTE *CelGetFrame(BYTE *pCelBuff, int nCel, int *nDataSize)
 	return pCelBuff + nCellStart;
 }
 
+__FINLINE int CelGetFrameSize(BYTE *pCelBuff, int nCel)
+{
+	DWORD *pFrameTable;
+
+	pFrameTable = (DWORD *)pCelBuff;
+
+	return SwapLE32(pFrameTable[nCel + 1]) - SwapLE32(pFrameTable[nCel]);
+}
+
 void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
@@ -2447,7 +2456,7 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 	for (i = 1; i <= nCel; i++) {
 		pFrameTable = (DWORD *)&p[4 * i];
 		dst = &p[pFrameTable[0] + 10];
-		nDataSize = pFrameTable[1] - pFrameTable[0] - 10;
+		nDataSize = CelGetFrameSize(p, i) - 10;
 		while (nDataSize) {
 			width = *dst++;
 			nDataSize--;
