@@ -78,9 +78,6 @@ void init_create_window(int nCmdShow)
 void init_archives()
 {
 	HANDLE fh;
-#ifdef COPYPROT
-	int result;
-#endif
 	memset(&fileinfo, 0, sizeof(fileinfo));
 	fileinfo.size = sizeof(fileinfo);
 	fileinfo.versionstring = gszVersionNumber;
