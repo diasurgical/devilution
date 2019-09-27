@@ -2301,12 +2301,13 @@ int GetDirection(int x1, int y1, int x2, int y2)
 		if (2 * my < mx)
 			return DIR_SE;
 	} else {
-		ny = -mx;
 		if (my >= 0) {
+			ny = -mx;
 			md = DIR_W;
 			if (2 * ny < my)
 				md = DIR_SW;
 		} else {
+			ny = -mx;
 			my = -my;
 			md = DIR_N;
 			if (2 * ny < my)

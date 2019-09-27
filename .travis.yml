@@ -3,6 +3,8 @@ language: cpp
 os:
   - linux
   - osx
+  
+osx_image: xcode10.3
 
 notifications:
   email:
@@ -15,7 +17,6 @@ addons:
   homebrew:
     packages:
       - mingw-w64
-    update: true
 
 env:
   - MAKE_BUILD=make
