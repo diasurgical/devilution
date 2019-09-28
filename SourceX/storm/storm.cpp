@@ -35,6 +35,12 @@ static Mix_Chunk *SFileChunk;
 void GetBasePath(char *buffer, size_t size)
 {
 	char *path = SDL_GetBasePath();
+	if (path == NULL) {
+		SDL_Log(SDL_GetError());
+		buffer[0] = '\0';
+		return;
+	}
+
 	snprintf(buffer, size, "%s", path);
 	SDL_free(path);
 }
@@ -42,6 +48,11 @@ void GetBasePath(char *buffer, size_t size)
 void GetPrefPath(char *buffer, size_t size)
 {
 	char *path = SDL_GetPrefPath("diasurgical", "devilution");
+	if (path == NULL) {
+		buffer[0] = '\0';
+		return;
+	}
+
 	snprintf(buffer, size, "%s", path);
 	SDL_free(path);
 }
