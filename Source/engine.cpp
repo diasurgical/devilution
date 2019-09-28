@@ -1600,7 +1600,7 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
  */
 void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
-	int nDataSize, idx, nSize;
+	int nDataSize, idx, nDataSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 
 	/// ASSERT: assert(gpBuffer != NULL);
@@ -1628,7 +1628,7 @@ void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	Cl2DecDatLightTbl1(
 	    pDecodeTo,
 	    pRLEBytes,
-	    nSize,
+	    nDataSize,
 	    nWidth,
 	    &pLightTbl[idx]);
 }
