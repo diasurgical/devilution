@@ -182,3 +182,15 @@ typedef void (*_PVFV)(void);
 #else
 #define ALIGN_BY_1
 #endif
+
+#if (_MSC_VER == 1200)
+#define __FINLINE __forceinline
+#else
+#define __FINLINE
+#endif
+
+#ifndef _BIG_ENDIAN_
+#define SwapLE32
+#else
+#define SwapLE32(value) (value << 24 | (value & 0xFF00) << 8 | (value & 0xFF0000) >> 8 | value >> 24);
+#endif

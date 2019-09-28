@@ -11,6 +11,8 @@ extern int orgseed;
 extern int SeedCount;
 extern BOOL gbNotInView; // valid - if x/y are in bounds
 
+__FINLINE BYTE *CelGetFrame(BYTE *pCelBuff, int nCel, int *nDataSize);
+
 void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth);
 void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth);
 void CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth);
