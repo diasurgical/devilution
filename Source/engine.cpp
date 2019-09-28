@@ -1600,7 +1600,7 @@ void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, 
  */
 void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
-	int nDataSize, idx, nDataSize;
+	int nDataSize, idx;
 	BYTE *pRLEBytes, *pDecodeTo;
 
 	/// ASSERT: assert(gpBuffer != NULL);
