@@ -1857,6 +1857,31 @@ void missiles_hbolt_arrow(int mi, int sx, int sy, int dx, int dy, int midir, cha
 	missile[mi]._miVar2 = sy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
+
+void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
+{
+	int lvl;
+
+	if (id == -1 || plr[id]._pSpellFlags & 6 || plr[id]._pHitPoints <= plr[id]._pLevel << 6) {
+		missile[mi]._miDelFlag = TRUE;
+	} else {
+		int blodboilSFX[NUM_CLASSES] = { PS_WARR70, PS_ROGUE70, PS_MAGE70, PS_MAGE70, PS_ROGUE70, PS_WARR70 }; // BUGFIX: change second PS_MAGE70 to PS_MONK70?
+		UseMana(id, 22);
+		missile[mi]._miVar1 = id;
+		int tmp = 3 * plr[id]._pLevel;
+		tmp <<= 7;
+		plr[id]._pSpellFlags |= 2u;
+		missile[mi]._miVar2 = tmp;
+		if (2 * (id > 0))
+			lvl = plr[id]._pLevel;
+		else
+			lvl = 1;
+		missile[mi]._mirange = lvl + 10 * missile[mi]._mispllvl + 245;
+		CalcPlrItemVals(id, TRUE);
+		drawpanflag = 255;
+		PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id].WorldX, plr[id].WorldY);
+	}
+}
 #endif
 
 void AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
