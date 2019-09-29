@@ -21,19 +21,19 @@ char *TraceLastError();
 void __cdecl app_fatal(const char *pszFmt, ...);
 void MsgBox(const char *pszFmt, va_list va);
 void FreeDlg();
-void __cdecl DrawDlg(char *pszFmt, ...);
+void __cdecl DrawDlg(const char *pszFmt, ...);
 #ifdef _DEBUG
 void assert_fail(int nLineNo, const char *pszFile, const char *pszFail);
 #endif
-void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path);
-void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path);
+void DDErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path);
+void DSErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path);
 void center_window(HWND hDlg);
-void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr);
-void TextDlg(HWND hDlg, char *text);
-void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr);
+void ErrDlg(int template_id, DWORD error_code, const char *log_file_path, int log_line_nr);
+void TextDlg(HWND hDlg, const char *text);
+void ErrOkDlg(int template_id, DWORD error_code, const char *log_file_path, int log_line_nr);
 void FileErrDlg(const char *error);
-void DiskFreeDlg(char *error);
+void DiskFreeDlg(const char *error);
 BOOL InsertCDDlg();
-void DirErrorDlg(char *error);
+void DirErrorDlg(const char *error);
 
 #endif /* __APPFAT_H__ */

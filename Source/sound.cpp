@@ -28,7 +28,7 @@ BOOLEAN gbDupSounds = TRUE;
 /** Specifies the active background music track id. */
 int sgnMusicTrack = NUM_MUSIC;
 /** Maps from track ID to track name. */
-char *sgszMusicTracks[NUM_MUSIC] = {
+const char *const sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
 	"Music\\sTowne.wav",
 	"Music\\sLvlA.wav",
@@ -197,7 +197,7 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	return rv;
 }
 
-TSnd *sound_file_load(char *path)
+TSnd *sound_file_load(const char *path)
 {
 	HANDLE file;
 	BYTE *wave_file;
@@ -287,7 +287,7 @@ void snd_init(HWND hWnd)
 	gbSndInited = sglpDS != NULL;
 }
 
-void snd_get_volume(char *value_name, int *value)
+void snd_get_volume(const char *value_name, int *value)
 {
 	int v = *value;
 	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
@@ -380,7 +380,7 @@ void sound_cleanup()
 	}
 }
 
-void snd_set_volume(char *key, int value)
+void snd_set_volume(const char *key, int value)
 {
 	SRegSaveValue(APP_NAME, key, 0, value);
 }

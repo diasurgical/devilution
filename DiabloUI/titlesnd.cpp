@@ -1,5 +1,5 @@
 // ref: 0x10010306
-void __fastcall TitleSnd_SetSoundFunction(void(__stdcall *func)(char *file))
+void __fastcall TitleSnd_SetSoundFunction(void(__stdcall *func)(const char *file))
 {
 	gfnSoundFunction = func;
 }

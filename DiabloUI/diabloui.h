@@ -13,7 +13,7 @@ struct FontStruct {
 };
 
 struct ProfileStruct {
-	char *name;
+	const char *name;
 	char field_4;
 	int msg;
 	int field_C;
@@ -21,7 +21,7 @@ struct ProfileStruct {
 
 struct ProfFntStruct {
 	int size;
-	char *fontname;
+	const char *fontname;
 	int field_8;
 };
 
@@ -31,12 +31,12 @@ void __stdcall UiSetSpawned(BOOL bSpawned);
 void __stdcall UiInitialize();
 BOOL __stdcall UiCopyProtError(int *pdwResult);
 void __stdcall UiAppActivate(BOOL bActive);
-BOOL __fastcall UiValidPlayerName(char *name); /* check __stdcall */
+BOOL __fastcall UiValidPlayerName(const char *name); /* check __stdcall */
 BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, BOOL *hero_is_created, char *name);
 BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty);
 BOOL __stdcall UiCreditsDialog(int a1);
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int attractTimeOut);
-BOOL __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)(), int rate);
+BOOL __stdcall UiMainMenuDialog(const char *name, int *pdwResult, void(__stdcall *fnSound)(const char *file), int attractTimeOut);
+BOOL __stdcall UiProgressDialog(HWND window, const char *msg, int enable, int(*fnfunc)(), int rate);
 const char **__stdcall UiProfileGetString();
 void __cdecl UiProfileCallback();
 void __cdecl UiProfileDraw();

@@ -7,7 +7,7 @@
 #define __MINITEXT_H__
 
 extern int qtexty;
-extern char *qtextptr;
+extern const char *qtextptr;
 extern BOOLEAN qtextflag;
 extern BYTE *pMedTextCels;
 extern BYTE *pTextBoxCels;

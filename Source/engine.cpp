@@ -2629,7 +2629,7 @@ void mem_free_dbg(void *p)
  * @param pdwFileLen Will be set to file size if non-NULL
  * @return Buffer with content of file
  */
-BYTE *LoadFileInMem(char *pszName, DWORD *pdwFileLen)
+BYTE *LoadFileInMem(const char *pszName, DWORD *pdwFileLen)
 {
 	HANDLE file;
 	BYTE *buf;
@@ -4132,7 +4132,7 @@ void Cl2DrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int 
  * @brief Fade to black and play a video
  * @param pszMovie file path of movie
  */
-void PlayInGameMovie(char *pszMovie)
+void PlayInGameMovie(const char *pszMovie)
 {
 	PaletteFadeOut(8);
 	play_movie(pszMovie, FALSE);

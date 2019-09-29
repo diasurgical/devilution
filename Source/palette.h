@@ -13,7 +13,7 @@ extern int gdwPalEntries;
 
 void SaveGamma();
 void palette_init();
-void LoadPalette(char *pszFileName);
+void LoadPalette(const char *pszFileName);
 void LoadRndLvlPal(int l);
 void ResetPal();
 void IncreaseGamma();

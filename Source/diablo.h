@@ -120,7 +120,7 @@ extern int framerate;
 extern int framestart;
 #endif
 extern BOOL FriendlyMode;
-extern char *spszMsgTbl[4];
-extern char *spszMsgHotKeyTbl[4];
+extern const char *const spszMsgTbl[4];
+extern const char *const spszMsgHotKeyTbl[4];
 
 #endif /* __DIABLO_H__ */

@@ -135,7 +135,7 @@ void palette_init()
 #endif
 }
 
-void LoadPalette(char *pszFileName)
+void LoadPalette(const char *pszFileName)
 {
 	int i;
 	void *pBuf;

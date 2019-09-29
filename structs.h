@@ -35,7 +35,7 @@ typedef struct PLStruct {
 } PLStruct;
 
 typedef struct UItemStruct {
-	char *UIName;
+	const char *UIName;
 	char UIItemId;
 	char UIMinLvl;
 	char UINumPL;
@@ -67,8 +67,8 @@ typedef struct ItemDataStruct {
 	int iCurs;
 	char itype;
 	char iItemId;
-	char *iName;
-	char *iSName;
+	const char *iName;
+	const char *iSName;
 	char iMinMLvl;
 	int iDurability;
 	int iMinDam;
@@ -371,7 +371,7 @@ typedef struct PlayerStruct {
 //////////////////////////////////////////////////
 
 typedef struct TextDataStruct {
-	char *txtstr;
+	const char *txtstr;
 	int scrlltxt;
 	int txtspd;
 	int sfxnr;
@@ -399,7 +399,7 @@ typedef struct MissileData {
 typedef struct MisFileData {
 	unsigned char mAnimName;
 	unsigned char mAnimFAmt;
-	char *mName;
+	const char *mName;
 	int mFlags;
 	unsigned char *mAnimData[16];
 	unsigned char mAnimDelay[16];
@@ -473,7 +473,7 @@ typedef struct CKINFO {
 typedef struct TSnd {
 	WAVEFORMATEX fmt;
 	CKINFO chunk;
-	char *sound_path;
+	const char *sound_path;
 	LPDIRECTSOUNDBUFFER DSB;
 	int start_tc;
 } TSnd;
@@ -481,7 +481,7 @@ typedef struct TSnd {
 #pragma pack(push, 1)
 typedef struct TSFX {
 	unsigned char bFlags;
-	char *pszName;
+	const char *pszName;
 	TSnd *pSnd;
 } TSFX;
 #pragma pack(pop)
@@ -500,15 +500,15 @@ typedef struct AnimStruct {
 typedef struct MonsterData {
 	int width;
 	int mImage;
-	char *GraphicType;
+	const char *GraphicType;
 	BOOL has_special;
-	char *sndfile;
+	const char *sndfile;
 	BOOL snd_special;
 	BOOL has_trans;
-	char *TransFile;
+	const char *TransFile;
 	int Frames[6];
 	int Rate[6];
-	char *mName;
+	const char *mName;
 	char mMinDLvl;
 	char mMaxDLvl;
 	char mLevel;
@@ -634,7 +634,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	unsigned char leaderflag;
 	unsigned char packsize;
 	unsigned char mlid;
-	char *mName;
+	const char *mName;
 	CMonster *MType;
 	MonsterData *MData;
 } MonsterStruct;
@@ -645,8 +645,8 @@ typedef struct UniqMonstStruct {
 #else
 	char mtype;
 #endif
-	char *mName;
-	char *mTrnName;
+	const char *mName;
+	const char *mTrnName;
 	unsigned char mlevel;
 	unsigned short mmaxhp;
 	unsigned char mAi;
@@ -1055,7 +1055,7 @@ typedef struct QuestData {
 	unsigned char _qslvl;
 	int _qflags; /* unsigned char */
 	int _qdmsg;
-	char *_qlstr;
+	const char *_qlstr;
 } QuestData;
 
 #ifdef HELLFIRE
@@ -1075,7 +1075,7 @@ typedef struct CornerStoneStruct {
 
 typedef struct TMenuItem {
 	DWORD dwFlags;
-	char *pszStr;
+	const char *pszStr;
 	void (*fnMenu)(BOOL); /* fix, should have one arg */
 } TMenuItem;
 
@@ -1089,8 +1089,8 @@ typedef struct SpellData {
 	unsigned char sName;
 	unsigned char sManaCost;
 	unsigned char sType;
-	char *sNameText;
-	char *sSkillText;
+	const char *sNameText;
+	const char *sSkillText;
 	int sBookLvl;
 	int sStaffLvl;
 	BOOL sTargeted;
@@ -1378,8 +1378,8 @@ typedef struct _SNETPLAYERDATA {
 
 typedef struct _SNETPROGRAMDATA {
 	int size;
-	char *programname;
-	char *programdescription;
+	const char *programname;
+	const char *programdescription;
 	int programid;
 	int versionid;
 	int reserved1;

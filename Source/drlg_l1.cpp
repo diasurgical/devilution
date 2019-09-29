@@ -1252,7 +1252,7 @@ static void DRLG_InitL1Vals()
 }
 
 #ifndef SPAWN
-void LoadL1Dungeon(char *sFileName, int vx, int vy)
+void LoadL1Dungeon(const char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
 	BYTE *pLevelMap, *lm;
@@ -1304,7 +1304,7 @@ void LoadL1Dungeon(char *sFileName, int vx, int vy)
 	mem_free_dbg(pLevelMap);
 }
 
-void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
+void LoadPreL1Dungeon(const char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
 	BYTE *pLevelMap, *lm;

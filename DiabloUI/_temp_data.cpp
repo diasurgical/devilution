@@ -369,4 +369,4 @@ HANDLE titlePHTrans[30];
 int Title_cpp_float;    // weak
 int titleTransIdx;      // weak
 int titlesnd_cpp_float; // weak
-void(__stdcall *gfnSoundFunction)(char *file);
+void(__stdcall *gfnSoundFunction)(const char *file);

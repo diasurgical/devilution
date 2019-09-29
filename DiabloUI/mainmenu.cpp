@@ -7,7 +7,7 @@ void __cdecl MainMenu_cpp_init()
 // 1002A0D4: using guessed type int mainmenu_cpp_float;
 
 // ref: 0x1000816F
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int attractTimeOut)
+BOOL __stdcall UiMainMenuDialog(const char *name, int *pdwResult, void(__stdcall *fnSound)(const char *file), int attractTimeOut)
 {
 	int v4; // eax
 	int v5; // esi

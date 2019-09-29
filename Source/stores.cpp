@@ -71,7 +71,7 @@ int SStringY[24] = {
 	276
 };
 /** Maps from towner IDs to NPC names. */
-char *talkname[9] = {
+const char *const talkname[9] = {
 	"Griswold",
 	"Pepin",
 	"",
@@ -154,7 +154,7 @@ void DrawSTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
+void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int val)
 {
 	int xx, yy;
 	int len, width, off, i, k, s;
@@ -325,7 +325,7 @@ void OffsetSTextY(int y, int yo)
 	stext[y]._syoff = yo;
 }
 
-void AddSText(int x, int y, BOOL j, char *str, char clr, BOOL sel)
+void AddSText(int x, int y, BOOL j, const char *str, char clr, BOOL sel)
 {
 	stext[y]._sx = x;
 	stext[y]._syoff = 0;

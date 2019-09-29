@@ -6,7 +6,7 @@
 #include "all.h"
 
 int qtexty;
-char *qtextptr;
+const char *qtextptr;
 int sgLastScroll;
 BOOLEAN qtextflag;
 int qtextDelay;
@@ -211,7 +211,7 @@ void DrawQText()
 {
 	int i, l, w, tx, ty;
 	BYTE c;
-	char *p, *pnl, *s;
+	const char *p, *pnl, *s;
 	char tempstr[128];
 	BOOL doneflag;
 	DWORD currTime;

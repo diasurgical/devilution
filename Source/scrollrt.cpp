@@ -60,7 +60,7 @@ DWORD sgdwCursHgtOld;
 /* data */
 
 /* used in 1.00 debug */
-char *szMonModeAssert[18] = {
+const char *const szMonModeAssert[18] = {
 	"standing",
 	"walking (1)",
 	"walking (2)",
@@ -81,7 +81,7 @@ char *szMonModeAssert[18] = {
 	"talking"
 };
 
-char *szPlrModeAssert[12] = {
+const char *const szPlrModeAssert[12] = {
 	"standing",
 	"walking (1)",
 	"walking (2)",

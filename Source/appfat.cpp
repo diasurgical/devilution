@@ -542,7 +542,7 @@ void FreeDlg()
  * @param pszFmt Error message format
  * @param ... Additional parameters for message format
  */
-void __cdecl DrawDlg(char *pszFmt, ...)
+void __cdecl DrawDlg(const char *pszFmt, ...)
 {
 	char text[256];
 	va_list arglist;
@@ -569,7 +569,7 @@ void assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
 /**
  * @brief Terminates the game with a DirectDraw assertion message box.
  */
-void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
+void DDErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
 {
 	char *msg;
 
@@ -582,7 +582,7 @@ void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 /**
  * @brief Terminates the game with a DirectSound assertion message box.
  */
-void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
+void DSErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
 {
 	char *msg;
 
@@ -641,9 +641,9 @@ static BOOL CALLBACK FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 /**
  * @brief Terminates the game and displays an error dialog box based on the given dialog_id.
  */
-void ErrDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line_nr)
+void ErrDlg(int dialog_id, DWORD error_code, const char *log_file_path, int log_line_nr)
 {
-	char *size;
+	const char *size;
 	LPARAM dwInitParam[128];
 
 	FreeDlg();
@@ -662,7 +662,7 @@ void ErrDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line_n
 /**
  * @brief Sets the text of the given dialog.
  */
-static void TextDlg(HWND hDlg, char *text)
+static void TextDlg(HWND hDlg, const char *text)
 {
 	center_window(hDlg);
 
@@ -673,9 +673,9 @@ static void TextDlg(HWND hDlg, char *text)
 /**
  * @brief Displays a warning dialog box based on the given dialog_id and error code.
  */
-void ErrOkDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line_nr)
+void ErrOkDlg(int dialog_id, DWORD error_code, const char *log_file_path, int log_line_nr)
 {
-	char *size;
+	const char *size;
 	LPARAM dwInitParam[128];
 
 	size = strrchr(log_file_path, '\\');
@@ -705,7 +705,7 @@ void FileErrDlg(const char *error)
 /**
  * @brief Terminates the game with an out of disk space error dialog.
  */
-void DiskFreeDlg(char *error)
+void DiskFreeDlg(const char *error)
 {
 	FreeDlg();
 
@@ -736,7 +736,7 @@ BOOL InsertCDDlg()
 /**
  * @brief Terminates the game with a read-only directory error dialog.
  */
-void DirErrorDlg(char *error)
+void DirErrorDlg(const char *error)
 {
 	FreeDlg();
 

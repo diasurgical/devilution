@@ -63,7 +63,7 @@ char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };
  * which the hover text of the cursor will be visible.
  */
 char questyoff[7] = { 0, 0, -1, -1, -1, -2, -2 };
-char *questtrigstr[5] = {
+const char *const questtrigstr[5] = {
 	"King Leoric's Tomb",
 	"The Chamber of Bone",
 	"Maze",
@@ -823,7 +823,7 @@ void ResyncQuests()
 #endif
 }
 
-void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
+void PrintQLString(int x, int y, BOOL cjustflag, const char *str, int col)
 {
 	int len, width, off, i, k, s;
 	BYTE c;

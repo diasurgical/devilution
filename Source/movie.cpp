@@ -16,7 +16,7 @@ BOOL loop_movie;
  * @param pszMovie The file name of the video
  * @param user_can_close Set to false to make the video unskippable.
  */
-void play_movie(char *pszMovie, BOOL user_can_close)
+void play_movie(const char *pszMovie, BOOL user_can_close)
 {
 	WNDPROC saveProc;
 	HANDLE video_stream;

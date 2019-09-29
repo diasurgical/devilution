@@ -233,9 +233,9 @@ int PanBtnPos[8][5] = {
 	// clang-format on
 };
 /** Maps from panel_button_id to hotkey name. */
-char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
+const char *const PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
 /** Maps from panel_button_id to panel button description. */
-char *PanBtnStr[8] = {
+const char *const PanBtnStr[8] = {
 	"Character Information",
 	"Quests log",
 	"Automap",
@@ -978,7 +978,7 @@ void PrintChar(int nOffset, int nCel, char col)
 #endif
 }
 
-void AddPanelString(char *str, BOOL just)
+void AddPanelString(const char *str, BOOL just)
 {
 	strcpy(panelstr[pnumlines], str);
 	pstrjust[pnumlines] = just;
@@ -1851,10 +1851,10 @@ void PrintInfo()
 	}
 }
 
-void CPrintString(int y, char *str, BOOL center, int lines)
+void CPrintString(int y, const char *str, BOOL center, int lines)
 {
 	BYTE c;
-	char *tmp;
+	const char *tmp;
 	int strWidth, lineOffset, lineStart;
 
 	lineOffset = 0;
@@ -1883,7 +1883,7 @@ void CPrintString(int y, char *str, BOOL center, int lines)
 	}
 }
 
-void PrintGameStr(int x, int y, char *str, int color)
+void PrintGameStr(int x, int y, const char *str, int color)
 {
 	BYTE c;
 	int off;
@@ -2124,10 +2124,10 @@ void DrawChr()
 /**
  * @brief Identical to MY_PlrStringXY(x, y, width, pszStr, col, 1)
  */
-void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
+void ADD_PlrStringXY(int x, int y, int width, const char *pszStr, char col)
 {
 	BYTE c;
-	char *tmp;
+	const char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
 	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
@@ -2163,10 +2163,10 @@ void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
  * @param col text_color color value
  * @param base Letter spacing
  */
-void MY_PlrStringXY(int x, int y, int endX, char *pszStr, char col, int base)
+void MY_PlrStringXY(int x, int y, int endX, const char *pszStr, char col, int base)
 {
 	BYTE c;
-	char *tmp;
+	const char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
 	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
@@ -2520,10 +2520,10 @@ void DrawSpellBook()
 	}
 }
 
-void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
+void PrintSBookStr(int x, int y, BOOL cjustflag, const char *pszStr, char col)
 {
 	BYTE c;
-	char *tmp;
+	const char *tmp;
 	int screen_x, line, width;
 
 	width = PitchTbl[y] + x + RIGHT_PANEL_X + SPLICONLENGTH;
@@ -2584,9 +2584,9 @@ void CheckSBook()
 #endif
 }
 
-char *get_pieces_str(int nGold)
+const char *get_pieces_str(int nGold)
 {
-	char *result;
+	const char *result;
 
 	result = "piece";
 	if (nGold != 1)

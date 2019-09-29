@@ -97,7 +97,7 @@ struct CCritSect {
 extern "C" {
 #endif
 
-BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);
+BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, const char *creatorName, const char *a11, int *playerID);
 BOOL STORMAPI SNetDestroy();
 
 /*  SNetDropPlayer @ 106
@@ -828,7 +828,7 @@ void *
     STORMAPI
     SMemAlloc(
         unsigned int amount,
-        char *logfilename,
+        const char *logfilename,
         int logline,
         int defaultValue);
 
@@ -851,7 +851,7 @@ BOOL
 STORMAPI
 SMemFree(
     void *location,
-    char *logfilename,
+    const char *logfilename,
     int  logline,
     char defaultValue);
 
@@ -878,7 +878,7 @@ STORMAPI
 SMemReAlloc(
     void    *location,
     unsigned int  amount,
-    char    *logfilename,
+    const char *logfilename,
     int     logline,
     char    defaultValue);
 
@@ -932,7 +932,7 @@ BOOL STORMAPI STransCreateI(void *pBuffer, int width, int height, int bpp, int a
 BOOL STORMAPI SVidDestroy();
 BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero);
 BOOL STORMAPI SVidInitialize(HANDLE video);
-BOOL STORMAPI SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video);
+BOOL STORMAPI SVidPlayBegin(const char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video);
 
 BOOL STORMAPI SVidPlayContinueSingle(HANDLE video, int a2, int a3);
 BOOL STORMAPI SVidPlayEnd(HANDLE video);
@@ -1320,7 +1320,7 @@ int STORMAPI SBigPowMod(void *buffer1, void *buffer2, int a3, int a4);
 
 int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4);
 
-void __stdcall SDrawMessageBox(char *,char *,int);
+void __stdcall SDrawMessageBox(const char *,const char *,int);
 void __cdecl SDrawDestroy(void);
 BOOLEAN __cdecl StormDestroy(void);
 BOOL __stdcall SFileSetBasePath(char *);

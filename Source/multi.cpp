@@ -279,7 +279,7 @@ void multi_clear_left_tbl()
 
 void multi_player_left_msg(int pnum, int left)
 {
-	char *pszFmt;
+	const char *pszFmt;
 
 	if (plr[pnum].plractive) {
 		RemovePlrFromMap(pnum);
@@ -945,7 +945,7 @@ BOOL multi_upgrade(BOOL *pfExitProgram)
 
 void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 {
-	char *szEvent;
+	const char *szEvent;
 
 	if (myplr == pnum) {
 		return;

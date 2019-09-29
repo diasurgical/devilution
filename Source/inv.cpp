@@ -2375,7 +2375,7 @@ BOOL TryInvPut()
 	return CanPut(plr[myplr]._px, plr[myplr]._py);
 }
 
-void DrawInvMsg(char *msg)
+void DrawInvMsg(const char *msg)
 {
 	DWORD dwTicks;
 

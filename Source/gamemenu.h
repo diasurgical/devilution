@@ -24,7 +24,7 @@ void gamemenu_save_game(BOOL bActivate);
 void gamemenu_restart_town(BOOL bActivate);
 void gamemenu_options(BOOL bActivate);
 void gamemenu_get_music();
-void gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int gamma);
+void gamemenu_sound_music_toggle(const char *const *names, TMenuItem *menu_item, int gamma);
 void gamemenu_get_sound();
 #ifdef HELLFIRE
 void gamemenu_jogging();
@@ -46,10 +46,10 @@ void gamemenu_color_cycling(BOOL bActivate);
 #endif
 
 /* rdata */
-extern char *music_toggle_names[];
-extern char *sound_toggle_names[];
+extern const char *const music_toggle_names[];
+extern const char *const sound_toggle_names[];
 #ifndef HELLFIRE
-extern char *color_cycling_toggle_names[];
+extern const char *const color_cycling_toggle_names[];
 #endif
 
 #endif /* __GAMEMENU_H__ */
