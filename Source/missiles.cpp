@@ -518,7 +518,8 @@ BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, BOOLEAN shif
 	hper = 90 - (char)monster[m].mArmorClass - dist;
 #else
 	hper = 90 - (BYTE)monster[m].mArmorClass - dist;
-#endif if (hper < 5)
+#endif
+	if (hper < 5)
 		hper = 5;
 	if (hper > 95)
 		hper = 95;
