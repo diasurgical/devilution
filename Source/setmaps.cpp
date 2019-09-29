@@ -54,7 +54,7 @@ BYTE SkelChamTrans3[36] = {
 	50, 43, 59, 51
 };
 
-char *quest_level_names[] = {
+const char *const quest_level_names[] = {
 	"",
 	"Skeleton King's Lair",
 	"Bone Chamber",
@@ -101,7 +101,7 @@ void AddVileObjs()
 	SetObjMapRange(ObjIndex(35, 36), 7, 11, 13, 18, 3);
 }
 
-void DRLG_SetMapTrans(char *sFileName)
+void DRLG_SetMapTrans(const char *sFileName)
 {
 	int x, y;
 	int i, j;

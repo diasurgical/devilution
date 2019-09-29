@@ -16,7 +16,7 @@ BOOLEAN gbMusicOn = TRUE;
 BOOLEAN gbSoundOn = TRUE;
 BOOLEAN gbDupSounds = TRUE;
 int sgnMusicTrack = 6;
-char *sgszMusicTracks[NUM_MUSIC] = {
+const char *const sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
 	"Music\\sTowne.wav",
 	"Music\\sLvlA.wav",
@@ -217,7 +217,7 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	return rv;
 }
 
-TSnd *sound_file_load(char *path)
+TSnd *sound_file_load(const char *path)
 {
 	HANDLE file;
 	BYTE *wave_file;
@@ -327,7 +327,7 @@ void snd_init(HWND hWnd)
 	gbSndInited = sglpDS != NULL;
 }
 
-void sound_load_volume(char *value_name, int *value)
+void sound_load_volume(const char *value_name, int *value)
 {
 	int v = *value;
 	if (!SRegLoadValue("Diablo", value_name, 0, &v)) {
@@ -436,7 +436,7 @@ void sound_cleanup()
 	}
 }
 
-void sound_store_volume(char *key, int value)
+void sound_store_volume(const char *key, int value)
 {
 	SRegSaveValue("Diablo", key, 0, value);
 }

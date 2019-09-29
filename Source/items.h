@@ -81,7 +81,7 @@ void RechargeItem(ItemStruct *i, int r);
 void PrintItemOil(char IDidx);
 void PrintItemPower(char plidx, ItemStruct *x);
 void DrawUTextBack();
-void PrintUString(int x, int y, BOOL cjustflag, char *str, int col);
+void PrintUString(int x, int y, BOOL cjustflag, const char *str, int col);
 void DrawULine(int y);
 void DrawUniqueInfo();
 void PrintItemMisc(ItemStruct *x);
@@ -129,7 +129,7 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex);
 /* data */
 
 extern BYTE ItemCAnimTbl[169];
-extern char *ItemDropNames[35];
+extern const char *const ItemDropNames[35];
 extern BYTE ItemAnimLs[35];
 extern int ItemDropSnds[35];
 extern int ItemInvSnds[35];

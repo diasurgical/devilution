@@ -90,7 +90,7 @@ void LoadSysPal()
 	}
 }
 
-void LoadPalette(char *pszFileName)
+void LoadPalette(const char *pszFileName)
 {
 	int i;
 	void *pBuf;

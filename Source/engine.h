@@ -45,7 +45,7 @@ int random(BYTE idx, int v);
 void engine_debug_trap(BOOL show_cursor);
 BYTE *DiabloAllocPtr(DWORD dwBytes);
 void mem_free_dbg(void *p);
-BYTE *LoadFileInMem(char *pszName, DWORD *pdwFileLen);
+BYTE *LoadFileInMem(const char *pszName, DWORD *pdwFileLen);
 DWORD LoadFileWithMem(const char *pszName, void *p);
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel);
 void Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap);
@@ -62,7 +62,7 @@ void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light);
 void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable);
 void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap);
-void PlayInGameMovie(char *pszMovie);
+void PlayInGameMovie(const char *pszMovie);
 
 /* rdata */
 

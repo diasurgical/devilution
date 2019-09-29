@@ -14,7 +14,7 @@ endif
 #     static_cast<NEW_TYPE>(reinterpret_cast<uintptr_t>(ptr))
 # instead of
 #     (NEW_TYPE)(ptr)
-CXXFLAGS=-fpermissive -Wno-write-strings
+CXXFLAGS=-fpermissive
 CPPFLAGS=-MMD -MF $*.d
 LDLIBS=-lgdi32 -lversion -ldiabloui -lstorm
 LDFLAGS=-L./ -static-libgcc -mwindows

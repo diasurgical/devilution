@@ -151,7 +151,7 @@ void __fastcall SelHero_SetStringWithMsg(HWND hWnd, const char *str)
 }
 
 // ref: 0x1000BAB4
-BOOL __fastcall SelHero_IsNameReserved(char *name)
+BOOL __fastcall SelHero_IsNameReserved(const char *name)
 {
 	UINT v1;          // esi
 	BOOL result;      // eax
@@ -182,7 +182,7 @@ void __fastcall SelHero_SetLastNamePos(char *name)
 }
 
 // ref: 0x1000BB34
-BOOL __fastcall SelHero_NameHasChar(char *name, char *illegalchrs)
+BOOL __fastcall SelHero_NameHasChar(const char *name, char *illegalchrs)
 {
 	char v5; // al
 
@@ -200,7 +200,7 @@ BOOL __fastcall SelHero_NameHasChar(char *name, char *illegalchrs)
 }
 
 // ref: 0x1000BB75
-BOOL __fastcall UiValidPlayerName(char *name)
+BOOL __fastcall UiValidPlayerName(const char *name)
 {
 	BOOL v2; // edi
 

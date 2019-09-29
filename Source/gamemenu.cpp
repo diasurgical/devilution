@@ -32,9 +32,9 @@ TMenuItem sgOptionsMenu[6] = {
 	{ GMENU_ENABLED               , NULL,            NULL                    }
 	// clang-format on
 };
-char *music_toggle_names[] = { "Music", "Music Disabled" };
-char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
-char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
+const char *const music_toggle_names[] = { "Music", "Music Disabled" };
+const char *const sound_toggle_names[] = { "Sound", "Sound Disabled" };
+const char *const color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 
 void gamemenu_previous()
 {
@@ -174,7 +174,7 @@ void gamemenu_get_music()
 	gamemenu_sound_music_toggle(music_toggle_names, sgOptionsMenu, sound_get_or_set_music_volume(1));
 }
 
-void gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int volume)
+void gamemenu_sound_music_toggle(const char *const *names, TMenuItem *menu_item, int volume)
 {
 	if (gbSndInited) {
 		menu_item->dwFlags |= GMENU_ENABLED | GMENU_SLIDER;

@@ -5,7 +5,7 @@
 #define rVoid { return; }
 #define rInt { return 0; }
 
-BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID) rBool;
+BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, const char *creatorName, const char *a11, int *playerID) rBool;
 BOOL STORMAPI SNetDestroy() rBool;
 
 BOOL STORMAPI SNetDropPlayer(int playerid, DWORD flags) rBool;
@@ -134,11 +134,11 @@ BOOL STORMAPI SGdiSetPitch(int pitch) rBool;
 
 BOOL STORMAPI Ordinal393(char *string, int, int) rBool;
 
-void *STORMAPI SMemAlloc(size_t amount, char *logfilename, int logline, int defaultValue) rPVoid;
+void *STORMAPI SMemAlloc(size_t amount, const char *logfilename, int logline, int defaultValue) rPVoid;
 
-BOOL STORMAPI SMemFree(void *location, char *logfilename, int logline, char defaultValue) rBool;
+BOOL STORMAPI SMemFree(void *location, const char *logfilename, int logline, char defaultValue) rBool;
 
-void* STORMAPI SMemReAlloc(void *location, size_t amount, char *logfilename, int logline, char defaultValue) rPVoid;
+void* STORMAPI SMemReAlloc(void *location, size_t amount, const char *logfilename, int logline, char defaultValue) rPVoid;
 
 BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData) rBool;
 BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, size_t buffersize) rBool;
@@ -169,7 +169,7 @@ BOOL STORMAPI STransCreateI(void *pBuffer, int width, int height, int bpp, int a
 BOOL STORMAPI SVidDestroy() rBool;
 BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero) rBool;
 BOOL STORMAPI SVidInitialize(HANDLE video) rBool;
-BOOL STORMAPI SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video) rBool;
+BOOL STORMAPI SVidPlayBegin(const char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video) rBool;
 
 BOOL STORMAPI SVidPlayContinueSingle(HANDLE video, int a2, int a3) rBool;
 BOOL STORMAPI SVidPlayEnd(HANDLE video) rBool;
@@ -224,7 +224,7 @@ int STORMAPI SBigPowMod(void *buffer1, void *buffer2, int a3, int a4) rInt;
 int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4) rInt;
 //
 
-void __stdcall SDrawMessageBox(char *,char *,int) rVoid;
+void __stdcall SDrawMessageBox(const char *,const char *,int) rVoid;
 void __cdecl SDrawDestroy(void) rVoid;
 BOOLEAN __cdecl StormDestroy(void) rBool;
 BOOL __stdcall SFileSetBasePath(char *) rBool;

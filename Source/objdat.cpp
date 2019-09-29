@@ -221,8 +221,7 @@ ObjDataStruct AllObjects[99] = {
 	// clang-format on
 };
 
-// might be const
-char *ObjMasterLoadList[56] = {
+const char *const ObjMasterLoadList[56] = {
 	"L1Braz",
 	"L1Doors",
 	"Lever",

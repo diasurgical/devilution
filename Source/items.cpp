@@ -33,7 +33,7 @@ BYTE ItemCAnimTbl[169] = {
 	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
 	8, 8, 6, 1, 3, 3, 11, 3, 4
 };
-char *ItemDropNames[ITEMTYPES] = {
+const char *const ItemDropNames[ITEMTYPES] = {
 	"Armor2",
 	"Axe",
 	"FBttle",
@@ -2915,7 +2915,7 @@ void DrawUTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
+void PrintUString(int x, int y, BOOL cjustflag, const char *str, int col)
 {
 	int len, width, off, i, k;
 	BYTE c;

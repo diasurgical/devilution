@@ -14,7 +14,7 @@ int numobjfiles;
 
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-char *shrinestrs[NUM_SHRINETYPE] = {
+const char *const shrinestrs[NUM_SHRINETYPE] = {
 	"Mysterious",
 	"Hidden",
 	"Gloomy",
@@ -58,7 +58,7 @@ BYTE shrineavail[NUM_SHRINETYPE] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
 	0, 0, 0, 0, 0, 2
 };
-char *StoryBookName[9] = {
+const char *const StoryBookName[9] = {
 	"The Great Conflict",
 	"The Wages of Sin are War",
 	"The Tale of the Horadrim",

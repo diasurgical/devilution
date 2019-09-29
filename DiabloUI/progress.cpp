@@ -10,7 +10,7 @@ signed int Progress_10009480() { return 0; }
 // 1002A2EC: using guessed type int dword_1002A2EC;
 
 // ref: 0x1000948B
-BOOL __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)(), int rate) { return 0; }
+BOOL __stdcall UiProgressDialog(HWND window, const char *msg, int enable, int(*fnfunc)(), int rate) { return 0; }
 /* {
 	HWND v5; // eax
 	BOOL result; // eax

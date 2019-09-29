@@ -4,6 +4,6 @@
 
 extern int ObjTypeConv[113];
 extern ObjDataStruct AllObjects[99];
-extern char *ObjMasterLoadList[56];
+extern const char *const ObjMasterLoadList[56];
 
 #endif /* __OBJDAT_H__ */

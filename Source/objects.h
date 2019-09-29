@@ -156,11 +156,11 @@ void GetObjectStr(int i);
 
 extern int bxadd[8];
 extern int byadd[8];
-extern char *shrinestrs[NUM_SHRINETYPE];
+extern const char *const shrinestrs[NUM_SHRINETYPE];
 extern char shrinemin[NUM_SHRINETYPE];
 extern char shrinemax[NUM_SHRINETYPE];
 extern BYTE shrineavail[NUM_SHRINETYPE];
-extern char *StoryBookName[9];
+extern const char *const StoryBookName[9];
 extern int StoryText[3][3];
 
 #endif /* __OBJECTS_H__ */

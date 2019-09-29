@@ -12,6 +12,6 @@ void ClrDiabloMsg();
 void DrawDiabloMsg();
 
 /* data */
-extern char *MsgStrings[44];
+extern const char *const MsgStrings[44];
 
 #endif /* __ERROR_H__ */

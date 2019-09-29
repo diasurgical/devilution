@@ -40,7 +40,7 @@ void InitStores();
 void SetupTownStores();
 void FreeStoreMem();
 void DrawSTextBack();
-void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val);
+void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int val);
 void DrawSLine(int y);
 void DrawSArrows(int y1, int y2);
 void DrawSTextHelp();
@@ -48,7 +48,7 @@ void ClearSText(int s, int e);
 void AddSLine(int y);
 void AddSTextVal(int y, int val);
 void OffsetSTextY(int y, int yo);
-void AddSText(int x, int y, int j, char *str, char clr, int sel);
+void AddSText(int x, int y, int j, const char *str, char clr, int sel);
 void StoreAutoPlace();
 void S_StartSmith();
 void S_ScrollSBuy(int idx);
@@ -135,6 +135,6 @@ void ReleaseStoreBtn();
 /* rdata */
 
 extern int SStringY[24];
-extern char *talkname[9];
+extern const char *const talkname[9];
 
 #endif /* __STORES_H__ */

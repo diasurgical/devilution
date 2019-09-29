@@ -3,7 +3,7 @@
 #define __MINITEXT_H__
 
 extern int qtexty;
-extern char *qtextptr;
+extern const char *qtextptr;
 extern int qtextSpd;
 extern BOOLEAN qtextflag;
 extern int scrolltexty;

@@ -1753,7 +1753,7 @@ BOOL TryInvPut()
 	return CanPut(plr[myplr].WorldX, plr[myplr].WorldY);
 }
 
-void DrawInvMsg(char *msg)
+void DrawInvMsg(const char *msg)
 {
 	DWORD dwTicks;
 

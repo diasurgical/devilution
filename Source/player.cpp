@@ -51,7 +51,7 @@ int MagicTbl[3] = { 10, 15, 35 };
 int DexterityTbl[3] = { 20, 30, 15 };
 int VitalityTbl[3] = { 25, 20, 20 };
 int ToBlkTbl[3] = { 30, 20, 10 };
-char *ClassStrTblOld[] = {
+const char *const ClassStrTblOld[] = {
 	"Warrior",
 	"Rogue",
 	"Sorceror",
@@ -114,7 +114,7 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 	1310707109,
 	1583495809
 };
-char *ClassStrTbl[] = {
+const char *const ClassStrTbl[] = {
 	"Warrior",
 	"Rogue",
 	"Sorceror",
@@ -134,9 +134,9 @@ void LoadPlrGFX(int pnum, player_graphic gfxflag)
 {
 	char prefix[16];
 	char pszName[256];
-	char *szCel;
+	const char *szCel;
 	PlayerStruct *p;
-	char *cs;
+	const char *cs;
 	BYTE *pData, *pAnim;
 	DWORD i;
 
@@ -327,7 +327,7 @@ void InitPlrGFXMem(int pnum)
 	plr[pnum]._pGFXLoad = 0;
 }
 
-DWORD GetPlrGFXSize(char *szCel)
+DWORD GetPlrGFXSize(const char *szCel)
 {
 	int c;
 	const char *a, *w;

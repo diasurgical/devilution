@@ -56,13 +56,13 @@ int framerate;
 int framestart;
 #endif
 BOOL FriendlyMode = TRUE;
-char *spszMsgTbl[4] = {
+const char *const spszMsgTbl[4] = {
 	"I need help! Come Here!",
 	"Follow me.",
 	"Here's something for you.",
 	"Now you DIE!"
 };
-char *spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
+const char *const spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
 void FreeGameMem()
 {

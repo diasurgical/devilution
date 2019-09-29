@@ -39,8 +39,8 @@ BOOL WoodVertD(int i, int y);
 BOOL WoodHorizL(int x, int j);
 BOOL WoodHorizR(int x, int j);
 void DRLG_L3Pass3();
-void LoadL3Dungeon(char *sFileName, int vx, int vy);
-void LoadPreL3Dungeon(char *sFileName, int vx, int vy);
+void LoadL3Dungeon(const char *sFileName, int vx, int vy);
+void LoadPreL3Dungeon(const char *sFileName, int vx, int vy);
 
 /* rdata */
 extern const BYTE L3ConvTbl[16];

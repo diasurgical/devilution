@@ -952,7 +952,7 @@ void InitMonsterSND(int monst)
 void FreeEffects()
 {
 	int mtype, i, j, k;
-	char *file;
+	const char *file;
 	TSnd *pSnd;
 
 	for (i = 0; i < nummtypes; i++) {
@@ -965,7 +965,9 @@ void FreeEffects()
 					file = pSnd->sound_path;
 					pSnd->sound_path = NULL;
 					sound_file_cleanup(pSnd);
-					mem_free_dbg(file);
+
+					// pSnd->sound_path is malloc'd (but only for monsters).
+					mem_free_dbg(const_cast<char *>(file));
 				}
 			}
 		}
@@ -1262,7 +1264,7 @@ void sound_init()
 	priv_sound_init(SFX_UI);
 }
 
-void __stdcall effects_play_sound(char *snd_file)
+void __stdcall effects_play_sound(const char *snd_file)
 {
 	DWORD i;
 

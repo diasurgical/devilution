@@ -2397,7 +2397,7 @@ void mem_free_dbg(void *p)
 	}
 }
 
-BYTE *LoadFileInMem(char *pszName, DWORD *pdwFileLen)
+BYTE *LoadFileInMem(const char *pszName, DWORD *pdwFileLen)
 {
 	HANDLE file;
 	BYTE *buf;
@@ -3785,7 +3785,7 @@ void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		Cl2DecDatFrm4(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
 
-void PlayInGameMovie(char *pszMovie)
+void PlayInGameMovie(const char *pszMovie)
 {
 	PaletteFadeOut(8);
 	play_movie(pszMovie, 0);

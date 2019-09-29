@@ -5,7 +5,7 @@ char msgdelay;
 char msgflag;
 char msgcnt;
 
-char *MsgStrings[44] = {
+const char *const MsgStrings[44] = {
 	"",
 	"No automap available in town",
 	"No multiplayer functions in demo",

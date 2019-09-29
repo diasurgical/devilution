@@ -268,7 +268,7 @@ void init_archives()
 #endif
 }
 
-HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
+HANDLE init_test_access(char *mpq_path, const char *mpq_name, const char *reg_loc, int flags, int fs)
 {
 	char *last_slash_pos;
 	char Filename[MAX_PATH];
@@ -326,7 +326,7 @@ char *init_strip_trailing_slash(char *path)
 	return result;
 }
 
-BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phArchive)
+BOOL init_read_test_file(char *pszPath, const char *pszArchive, int flags, HANDLE *phArchive)
 {
 	DWORD dwSize;
 	char *pszDrive, *pszRoot;

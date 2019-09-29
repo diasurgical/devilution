@@ -498,7 +498,7 @@ void FreeDlg()
 	ShowCursor(TRUE);
 }
 
-void __cdecl DrawDlg(char *pszFmt, ...)
+void __cdecl DrawDlg(const char *pszFmt, ...)
 {
 	char text[256];
 	va_list arglist;
@@ -516,7 +516,7 @@ void assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
 }
 #endif
 
-void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
+void DDErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
 {
 	char *msg;
 
@@ -526,7 +526,7 @@ void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
+void DSErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
 {
 	char *msg;
 
@@ -556,9 +556,9 @@ void center_window(HWND hDlg)
 	}
 }
 
-void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
+void ErrDlg(int template_id, DWORD error_code, const char *log_file_path, int log_line_nr)
 {
-	char *size;
+	const char *size;
 	LPARAM dwInitParam[128];
 
 	FreeDlg();
@@ -574,7 +574,7 @@ void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line
 	app_fatal(NULL);
 }
 
-BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
+BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, const char *text)
 {
 	switch (uMsg) {
 	case WM_INITDIALOG:
@@ -594,7 +594,7 @@ BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
 	return TRUE;
 }
 
-void TextDlg(HWND hDlg, char *text)
+void TextDlg(HWND hDlg, const char *text)
 {
 	center_window(hDlg);
 
@@ -602,9 +602,9 @@ void TextDlg(HWND hDlg, char *text)
 		SetDlgItemText(hDlg, 1000, text);
 }
 
-void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
+void ErrOkDlg(int template_id, DWORD error_code, const char *log_file_path, int log_line_nr)
 {
-	char *size;
+	const char *size;
 	LPARAM dwInitParam[128];
 
 	size = strrchr(log_file_path, '\\');
@@ -628,7 +628,7 @@ void FileErrDlg(const char *error)
 	app_fatal(NULL);
 }
 
-void DiskFreeDlg(char *error)
+void DiskFreeDlg(const char *error)
 {
 	FreeDlg();
 
@@ -653,7 +653,7 @@ BOOL InsertCDDlg()
 	return nResult == 1;
 }
 
-void DirErrorDlg(char *error)
+void DirErrorDlg(const char *error)
 {
 	FreeDlg();
 

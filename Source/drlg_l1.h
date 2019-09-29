@@ -14,11 +14,11 @@ extern int VR3;
 extern BYTE *pSetPiece;
 
 void DRLG_Init_Globals();
-void LoadL1Dungeon(char *sFileName, int vx, int vy);
+void LoadL1Dungeon(const char *sFileName, int vx, int vy);
 void DRLG_L1Floor();
 void DRLG_L1Pass3();
 void DRLG_InitL1Vals();
-void LoadPreL1Dungeon(char *sFileName, int vx, int vy);
+void LoadPreL1Dungeon(const char *sFileName, int vx, int vy);
 void CreateL5Dungeon(DWORD rseed, int entry);
 void DRLG_LoadL1SP();
 void DRLG_FreeL1SP();
