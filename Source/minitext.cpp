@@ -87,14 +87,12 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 	pStart = &gpBuffer[PitchTbl[209]];
 	pEnd = &gpBuffer[PitchTbl[469]];
 
-	int i;
+	int i, nDataSize;
 	BYTE width;
 	BYTE *src;
-	DWORD *pFrameTable;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	src = &pCelBuff[pFrameTable[0]];
-	end = &src[pFrameTable[1] - pFrameTable[0]];
+	src = CelGetFrame(pCelBuff,nCel, &nDataSize);
+	end = &src[nDataSize];
 
 	for (; src != end; dst -= BUFFER_WIDTH + 22) {
 		for (i = 22; i;) {
