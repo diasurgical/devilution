@@ -4231,8 +4231,8 @@ void MAI_Zhar(int i)
 		return;
 	}
 
-	my = Monst->_my;
 	mx = Monst->_mx;
+	my = Monst->_my;
 	md = M_GetDir(i);
 	if (Monst->mtalkmsg == QUEST_ZHAR1 && !(dFlags[mx][my] & BFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_ZHAR2;
