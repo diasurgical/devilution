@@ -4426,7 +4426,11 @@ void MAI_Garbud(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Garbud: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	if (Monst->_mmode != MM_STAND) {
