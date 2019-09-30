@@ -5398,9 +5398,6 @@ int PreSpawnSkeleton()
 
 	j = 0;
 
-	if (nummtypes <= 0)
-		return -1;
-
 	for (i = 0; i < nummtypes; i++) {
 		if (IsSkel(Monsters[i].mtype))
 			j++;
