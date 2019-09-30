@@ -3666,7 +3666,11 @@ void MAI_Ranged(int i, int missile_type, BOOL special)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Ranged: Invalid monster %d", i);
+#endif
 
 	if (monster[i]._mmode != MM_STAND) {
 		return;
