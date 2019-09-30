@@ -2714,9 +2714,17 @@ BOOL M_DoDeath(int i)
 	int x, y;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoDeath: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoDeath: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	monster[i]._mVar1++;
 	var1 = monster[i]._mVar1;
@@ -2744,8 +2752,8 @@ BOOL M_DoDeath(int i)
 		else
 			AddDead(monster[i]._mx, monster[i]._my, monster[i]._udeadval, (direction)monster[i]._mdir);
 
-		monster[i]._mDelFlag = TRUE;
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
+		monster[i]._mDelFlag = TRUE;
 
 		M_UpdateLeader(i);
 	}
