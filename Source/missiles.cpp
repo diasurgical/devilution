@@ -28,7 +28,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 	case SPL_HEAL: /// BUGFIX: healing calculation is unused
 		*mind = plr[myplr]._pLevel + sl + 1;
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*mind *= 2;
+			*mind <<= 1;
 		}
 		if (plr[myplr]._pClass == PC_ROGUE) {
 			*mind += *mind >> 1;
@@ -41,7 +41,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 			*maxd += 6;
 		}
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*maxd *= 2;
+			*maxd <<= 1;
 		}
 		if (plr[myplr]._pClass == PC_ROGUE) {
 			*maxd += *maxd >> 1;
@@ -168,7 +168,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 	case SPL_HEALOTHER: /// BUGFIX: healing calculation is unused
 		*mind = plr[myplr]._pLevel + sl + 1;
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*mind *= 2;
+			*mind <<= 1;
 		}
 		if (plr[myplr]._pClass == PC_ROGUE) {
 			*mind += *mind >> 1;
@@ -181,7 +181,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 			*maxd += 6;
 		}
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*maxd *= 2;
+			*maxd <<= 1;
 		}
 		if (plr[myplr]._pClass == PC_ROGUE) {
 			*maxd += *maxd >> 1;
