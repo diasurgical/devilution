@@ -2755,9 +2755,17 @@ BOOL M_DoDeath(int i)
 BOOL M_DoSpStand(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoSpStand: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoSpStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2)
 		PlayEffect(i, 3);
