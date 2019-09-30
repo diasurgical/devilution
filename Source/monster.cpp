@@ -5518,13 +5518,10 @@ BOOL CheckMonsterHit(int m, BOOL *ret)
 
 int encode_enemy(int m)
 {
-	int enemy;
-
-	enemy = monster[m]._menemy;
 	if (monster[m]._mFlags & MFLAG_TARGETS_MONSTER)
-		enemy += MAX_PLRS;
-
-	return enemy;
+		return monster[m]._menemy + MAX_PLRS;
+	else
+		return monster[m]._menemy;
 }
 
 void decode_enemy(int m, int enemy)
