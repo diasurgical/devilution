@@ -1260,8 +1260,8 @@ void AddStoryBook(int i)
 void AddWeaponRack(int i)
 {
 	if (!weaponFlag) {
-		object[i]._oSelFlag = 0;
 		object[i]._oAnimFlag = 2;
+		object[i]._oSelFlag = 0;
 	}
 	object[i]._oRndSeed = GetRndSeed();
 }
