@@ -1720,6 +1720,14 @@ void Obj_BCrossDamage(int i)
 			PlaySfxLoc(PS_ROGUE68, plr[myplr].WorldX, plr[myplr].WorldY);
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			PlaySfxLoc(PS_MAGE68, plr[myplr].WorldX, plr[myplr].WorldY);
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			PlaySfxLoc(PS_MONK68, plr[myplr].WorldX, plr[myplr].WorldY);
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			PlaySfxLoc(PS_ROGUE68, plr[myplr].WorldX, plr[myplr].WorldY);
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			PlaySfxLoc(PS_WARR68, plr[myplr].WorldX, plr[myplr].WorldY);
+#endif
 #endif
 		}
 	}
