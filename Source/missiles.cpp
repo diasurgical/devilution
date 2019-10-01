@@ -958,7 +958,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				        shift)) {
 					if (!nodel)
 						missile[i]._mirange = 0;
-					missile[i]._miHitFlag = 1;
+					missile[i]._miHitFlag = TRUE;
 				}
 			} else {
 				if (dMonster[mx][my] < 0
@@ -973,7 +973,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				        shift)) {
 					if (!nodel)
 						missile[i]._mirange = 0;
-					missile[i]._miHitFlag = 1;
+					missile[i]._miHitFlag = TRUE;
 				}
 			}
 			if (dPlayer[mx][my] > 0
@@ -988,7 +988,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			        shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
-				missile[i]._miHitFlag = 1;
+				missile[i]._miHitFlag = TRUE;
 			}
 		} else {
 			if (monster[missile[i]._misource]._mFlags & MFLAG_TARGETS_MONSTER
@@ -997,7 +997,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			    && MonsterTrapHit(dMonster[mx][my] - 1, mindam, maxdam, missile[i]._midist, missile[i]._mitype, shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
-				missile[i]._miHitFlag = 1;
+				missile[i]._miHitFlag = TRUE;
 			}
 			if (dPlayer[mx][my] > 0
 			    && PlayerMHit(
@@ -1011,7 +1011,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			        0)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
-				missile[i]._miHitFlag = 1;
+				missile[i]._miHitFlag = TRUE;
 			}
 		}
 	} else {
@@ -1027,19 +1027,19 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				        shift)) {
 					if (!nodel)
 						missile[i]._mirange = 0;
-					missile[i]._miHitFlag = 1;
+					missile[i]._miHitFlag = TRUE;
 				}
 			} else if (MonsterTrapHit(dMonster[mx][my] - 1, mindam, maxdam, missile[i]._midist, missile[i]._mitype, shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
-				missile[i]._miHitFlag = 1;
+				missile[i]._miHitFlag = TRUE;
 			}
 		}
 		if (dPlayer[mx][my] > 0
 		    && PlayerMHit(dPlayer[mx][my] - 1, -1, missile[i]._midist, mindam, maxdam, missile[i]._mitype, shift, missile[i]._miAnimType == MFILE_FIREWAL)) {
 			if (!nodel)
 				missile[i]._mirange = 0;
-			missile[i]._miHitFlag = 1;
+			missile[i]._miHitFlag = TRUE;
 		}
 	}
 	if (dObject[mx][my]) {
@@ -1049,13 +1049,13 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				BreakObject(-1, oi);
 			if (!nodel)
 				missile[i]._mirange = 0;
-			missile[i]._miHitFlag = 0;
+			missile[i]._miHitFlag = FALSE;
 		}
 	}
 	if (nMissileTable[dPiece[mx][my]]) {
 		if (!nodel)
 			missile[i]._mirange = 0;
-		missile[i]._miHitFlag = 0;
+		missile[i]._miHitFlag = FALSE;
 	}
 	if (!missile[i]._mirange && missiledata[missile[i]._mitype].miSFX != -1)
 		PlaySfxLoc(missiledata[missile[i]._mitype].miSFX, missile[i]._mix, missile[i]._miy);
