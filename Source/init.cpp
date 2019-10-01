@@ -201,11 +201,7 @@ void init_create_window(int nCmdShow)
 	wcex.hIcon = LoadIcon(ghInst, MAKEINTRESOURCE(IDI_ICON1));
 	wcex.hCursor = LoadCursor(0, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-#ifdef HELLFIRE
-	wcex.lpszMenuName = "HELLFIRE";
-#else
-	wcex.lpszMenuName = "DIABLO";
-#endif
+	wcex.lpszMenuName = GAME_NAME;
 	wcex.lpszClassName = "DIABLO";
 	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	if (!RegisterClassEx(&wcex))
@@ -218,11 +214,7 @@ void init_create_window(int nCmdShow)
 		nHeight = SCREEN_HEIGHT;
 	else
 		nHeight = GetSystemMetrics(SM_CYSCREEN);
-#ifdef HELLFIRE
-	hWnd = CreateWindowEx(0, "DIABLO", "HELLFIRE", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
-#else
-	hWnd = CreateWindowEx(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
-#endif
+	hWnd = CreateWindowEx(0, "DIABLO", GAME_NAME, WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
 	if (!hWnd)
 		app_fatal("Unable to create main window");
 	ShowWindow(hWnd, SW_SHOWNORMAL); // nCmdShow used only in beta: ShowWindow(hWnd, nCmdShow)

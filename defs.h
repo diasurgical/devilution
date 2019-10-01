@@ -1,10 +1,13 @@
 // some global definitions, found in debug release
 
 #ifdef HELLFIRE
-#define DIABOOL BOOLEAN
+#define DIABOOL					BOOLEAN
+#define GAME_NAME				"HELLFIRE"
 #else
-#define DIABOOL BOOL
+#define DIABOOL					BOOL
+#define GAME_NAME				"DIABLO"
 #endif
+
 
 #define DMAXX					40
 #define DMAXY					40
