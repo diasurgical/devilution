@@ -1801,6 +1801,7 @@ void AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 void miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	AnimStruct *anim;
+	MonsterStruct *mon;
 
 	anim = &monster[id].MType->Anims[MA_WALK];
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
@@ -1817,7 +1818,8 @@ void miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 	missile[mi]._miLightFlag = TRUE;
 	if (monster[id]._uniqtype != 0)
 		missile[mi]._miUniqTrans = monster[id]._uniqtrans + 1;
-	dMonster[monster[id]._mx][monster[id]._my] = 0;
+	mon = &monster[id];
+	dMonster[mon->_mx][mon->_my] = 0;
 	missile[mi]._mirange = 256;
 	PutMissile(mi);
 }
