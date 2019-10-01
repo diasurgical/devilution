@@ -3,11 +3,7 @@
 int doom_quest_time;
 int doom_stars_drawn;
 BYTE *pDoomCel;
-#ifdef HELLFIRE
-BOOLEAN doomflag;
-#else
-BOOL doomflag;
-#endif
+HF_BOOL doomflag;
 int DoomQuestState;
 
 /*
@@ -40,10 +36,11 @@ int doom_get_frame_from_time()
 }
 
 #ifdef HELLFIRE
-BOOLEAN doom_alloc_cel()
+BOOLEAN
 #else
-void doom_alloc_cel()
+void
 #endif
+    doom_alloc_cel()
 {
 #ifdef HELLFIRE
 	doom_cleanup();
@@ -67,10 +64,11 @@ void doom_cleanup()
 }
 
 #ifdef HELLFIRE
-BOOLEAN doom_load_graphics()
+BOOLEAN
 #else
-void doom_load_graphics()
+void
 #endif
+    doom_load_graphics()
 {
 #ifdef HELLFIRE
 	BOOLEAN ret;

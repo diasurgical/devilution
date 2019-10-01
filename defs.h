@@ -1,5 +1,11 @@
 // some global definitions, found in debug release
 
+#ifdef HELLFIRE
+#define HF_BOOL BOOLEAN
+#else
+#define HF_BOOL BOOL
+#endif
+
 #define DMAXX					40
 #define DMAXY					40
 
