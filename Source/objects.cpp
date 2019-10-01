@@ -544,8 +544,11 @@ void AddChestTraps()
 					if (leveltype == DTYPE_CATACOMBS) {
 						object[oi]._oVar4 = random(0, 2);
 					} else {
+#ifdef HELLFIRE
+						object[oi]._oVar4 = random(0, 6);
+#else
 						object[oi]._oVar4 = random(0, 3);
-					}
+#endif }
 				}
 			}
 		}
