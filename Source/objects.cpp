@@ -1169,8 +1169,8 @@ void AddPurifyingFountain(int i)
 void AddArmorStand(int i)
 {
 	if (!armorFlag) {
-		object[i]._oSelFlag = 0;
 		object[i]._oAnimFlag = 2;
+		object[i]._oSelFlag = 0;
 	}
 
 	object[i]._oRndSeed = GetRndSeed();
