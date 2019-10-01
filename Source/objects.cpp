@@ -2920,14 +2920,14 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		for (j = 0; j < 7; j++) {
+		for (j = 0; j < NUM_INVLOC; j++) {
 			if (plr[pnum].InvBody[j]._itype != ITYPE_NONE)
 				cnt++;
 		}
 		if (cnt > 0) {
-			for (j = 0; j < 7; j++) {
+			for (j = 0; j < NUM_INVLOC; j++) {
 				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
-				    && plr[pnum].InvBody[j]._iMaxDur != 255
+				    && plr[pnum].InvBody[j]._iMaxDur != DUR_INDESTRUCTIBLE
 				    && plr[pnum].InvBody[j]._iMaxDur != 0) {
 					plr[pnum].InvBody[j]._iDurability += 10;
 					plr[pnum].InvBody[j]._iMaxDur += 10;
@@ -2937,16 +2937,16 @@ void OperateShrine(int pnum, int i, int sType)
 			}
 			while (TRUE) {
 				cnt = 0;
-				for (j = 0; j < 7; j++) {
+				for (j = 0; j < NUM_INVLOC; j++) {
 					if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
-					    && plr[pnum].InvBody[j]._iMaxDur != 255
+					    && plr[pnum].InvBody[j]._iMaxDur != DUR_INDESTRUCTIBLE
 					    && plr[pnum].InvBody[j]._iMaxDur != 0)
 						cnt++;
 				}
 				if (cnt == 0)
 					break;
 				r = random(0, 7);
-				if (plr[pnum].InvBody[r]._itype == -1 || plr[pnum].InvBody[r]._iMaxDur == 255 || plr[pnum].InvBody[r]._iMaxDur == 0)
+				if (plr[pnum].InvBody[r]._itype == -1 || plr[pnum].InvBody[r]._iMaxDur == DUR_INDESTRUCTIBLE || plr[pnum].InvBody[r]._iMaxDur == 0)
 					continue;
 
 				plr[pnum].InvBody[r]._iDurability -= 20;
@@ -3404,7 +3404,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		for (j = 0; j < 7; j++) {
+		for (j = 0; j < NUM_INVLOC; j++) {
 			if (plr[pnum].InvBody[j]._iMagical && !plr[pnum].InvBody[j]._iIdentified)
 				plr[pnum].InvBody[j]._iIdentified = TRUE;
 		}
