@@ -216,6 +216,180 @@ int idoppely = 16;
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
 #ifdef HELLFIRE
+int items_4231CA(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_RING && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_RING && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_423230(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_BOW && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_BOW && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_423296(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_STAFF && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_STAFF && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_4232FC(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_SWORD && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_SWORD && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_423362(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_HELM && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_HELM && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_4233C8(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_SHIELD && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_SHIELD && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_42342E(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE &&
+			(plr[i].InvBody[j]._itype == ITYPE_LARMOR || plr[i].InvBody[j]._itype == ITYPE_MARMOR || plr[i].InvBody[j]._itype == ITYPE_HARMOR)
+			&& res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE &&
+			(plr[i].InvList[j]._itype == ITYPE_LARMOR || plr[i].InvList[j]._itype == ITYPE_MARMOR || plr[i].InvList[j]._itype == ITYPE_HARMOR)
+		    && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_4234B2(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_MACE && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_MACE && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_423518(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_AMULET && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_AMULET && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
+int items_42357E(int i)
+{
+	int j, res;
+
+	res = 0;
+	for (j = 0; j < NUM_INVLOC; j++) {
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && plr[i].InvBody[j]._itype == ITYPE_AXE && res < plr[i].InvBody[j]._iIvalue)
+			res = plr[i].InvBody[j]._iIvalue;
+	}
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && plr[i].InvList[j]._itype == ITYPE_AXE && res < plr[i].InvList[j]._iIvalue)
+			res = plr[i].InvList[j]._iIvalue;
+	}
+
+	return res;
+}
+
 int items_get_currlevel()
 {
 	int lvl;
