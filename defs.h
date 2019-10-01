@@ -1,9 +1,9 @@
 // some global definitions, found in debug release
 
 #ifdef HELLFIRE
-#define HF_BOOL BOOLEAN
+#define DIABOOL BOOLEAN
 #else
-#define HF_BOOL BOOL
+#define DIABOOL BOOL
 #endif
 
 #define DMAXX					40

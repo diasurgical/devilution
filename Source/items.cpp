@@ -2088,11 +2088,11 @@ int RndAllItems()
 	return ril[random(26, ri)];
 }
 
-int RndTypeItems(int itype, int imid
 #ifdef HELLFIRE
-, int lvl
+int RndTypeItems(int itype, int imid, int lvl)
+#else
+int RndTypeItems(int itype, int imid)
 #endif
-)
 {
 	int i, ri;
 	BOOL okflag;

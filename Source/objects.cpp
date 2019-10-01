@@ -122,7 +122,7 @@ void FreeObjectGFX()
 	numobjfiles = 0;
 }
 
-HF_BOOL RndLocOk(int xp, int yp)
+DIABOOL RndLocOk(int xp, int yp)
 {
 	if (dMonster[xp][yp])
 		return FALSE;
@@ -328,7 +328,7 @@ void InitRndBarrels()
 	int numobjs; // number of groups of barrels to generate
 	int xp, yp;
 	_object_id o;
-	HF_BOOL found;
+	DIABOOL found;
 	int p; // regulates chance to stop placing barrels in current group
 	int dir;
 	int t; // number of tries of placing next barrel in current group
@@ -4063,7 +4063,7 @@ void SyncOpObject(int pnum, int cmd, int i)
 void BreakCrux(int i)
 {
 	int j, oi;
-	HF_BOOL triggered;
+	DIABOOL triggered;
 
 	object[i]._oAnimFlag = 1;
 	object[i]._oAnimFrame = 1;
@@ -4220,7 +4220,7 @@ void SyncL1Doors(int i)
 
 void SyncCrux(int i)
 {
-	HF_BOOL found;
+	DIABOOL found;
 	int j, oi, type;
 
 	found = TRUE;
