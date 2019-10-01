@@ -539,7 +539,8 @@ void AddChestTraps()
 						object[oi]._oVar4 = random(0, 6);
 #else
 						object[oi]._oVar4 = random(0, 3);
-#endif }
+#endif
+					}
 				}
 			}
 		}
