@@ -229,6 +229,9 @@ void ClrAllObjects()
 {
 	int i;
 
+#ifdef HELLFIRE
+	memset(object, 0, sizeof(object));
+#else
 	for (i = 0; i < MAXOBJECTS; i++) {
 		object[i]._ox = 0;
 		object[i]._oy = 0;
@@ -243,11 +246,17 @@ void ClrAllObjects()
 		object[i]._oVar3 = 0;
 		object[i]._oVar4 = 0;
 	}
+#endif
 	nobjects = 0;
 	for (i = 0; i < MAXOBJECTS; i++) {
 		objectavail[i] = i;
+#ifndef HELLFIRE
 		objectactive[i] = 0;
+#endif
 	}
+#ifdef HELLFIRE
+	memset(objectactive, 0, sizeof(objectactive));
+#endif
 	trapdir = 0;
 	trapid = 1;
 	leverid = 1;
