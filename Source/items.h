@@ -21,6 +21,16 @@ extern int numitems;
 extern int gnNumGetRecords;
 
 #ifdef HELLFIRE
+int items_4231CA(int i);
+int items_423230(int i);
+int items_423296(int i);
+int items_4232FC(int i);
+int items_423362(int i);
+int items_4233C8(int i);
+int items_42342E(int i);
+int items_4234B2(int i);
+int items_423518(int i);
+int items_42357E(int i);
 int items_get_currlevel();
 #endif
 void InitItemGFX();
