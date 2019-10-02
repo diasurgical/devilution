@@ -28,7 +28,7 @@ void DrawAutomap();
 void DrawAutomapType(int screen_x, int screen_y, WORD automap_type);
 #ifdef HELLFIRE
 void SearchAutomapItem();
-void DrawAutomapItem(int x, int y, char color);
+void DrawAutomapItem(int x, int y, BYTE color);
 #endif
 void DrawAutomapPlr();
 WORD GetAutomapType(int x, int y, BOOL view);
