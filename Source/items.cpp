@@ -1943,7 +1943,7 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
 #ifdef HELLFIRE
 			if (allowspells)
 #endif
-				GetStaffSpell(i, maxlvl, onlygood);
+			GetStaffSpell(i, maxlvl, onlygood);
 #ifdef HELLFIRE
 			else
 				GetItemPower(i, minlvl, maxlvl, 0x100, onlygood);
@@ -4311,9 +4311,9 @@ void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 #endif
 }
 
-item[ii]._iSeed = iseed;
-item[ii]._iCreateInfo = lvl | 0x2000;
-item[ii]._iIdentified = TRUE;
+	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = lvl | 0x2000;
+	item[ii]._iIdentified = TRUE;
 }
 
 void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
