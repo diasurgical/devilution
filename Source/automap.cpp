@@ -254,6 +254,10 @@ void DrawAutomap()
 		sy += AutoMapXPos;
 	}
 	DrawAutomapPlr();
+#ifdef HELLFIRE
+	if (AutoMapShowItems)
+		SearchAutomapItem();
+#endif
 	DrawAutomapGame();
 }
 
@@ -441,6 +445,26 @@ void DrawAutomapType(int sx, int sy, WORD automap_type)
 			DrawLine(sx, sy + AutoMapYPos, sx + AutoMapXPos, sy, COLOR_DIM);
 	}
 }
+#ifdef HELLFIRE
+
+void SearchAutomapItem(){
+
+}
+
+void DrawAutomapItem(int x, int y, char color)
+{
+	int x1, y1, x2, y2;
+
+	x1 = x - AutoMapXPos / 2;
+	y1 = y - AutoMapYPos / 2;
+	x2 = AutoMapPosBits / 2 + x1;
+	y2 = y1 + AutoMapXPos / 2;
+	DrawLine(x, y1, x1, y, color);
+	DrawLine(x, y1, x2, y, color);
+	DrawLine(x, y2, x1, y, color);
+	DrawLine(x, y2, x2, y, color);
+}
+#endif
 
 void DrawAutomapPlr()
 {
