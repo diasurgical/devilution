@@ -1911,7 +1911,11 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		CalcItemValue(i);
 }
 
+#ifdef HELLFIRE
+void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood, BOOLEAN allowspells)
+#else
 void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
+#endif
 {
 	if (item[i]._iClass != ICLASS_GOLD) {
 		if (minlvl > 25)
@@ -1936,7 +1940,14 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
 			GetItemPower(i, minlvl, maxlvl, 0x100000, onlygood);
 			break;
 		case ITYPE_STAFF:
-			GetStaffSpell(i, maxlvl, onlygood);
+#ifdef HELLFIRE
+			if (allowspells)
+#endif
+				GetStaffSpell(i, maxlvl, onlygood);
+#ifdef HELLFIRE
+			else
+				GetItemPower(i, minlvl, maxlvl, 0x100, onlygood);
+#endif
 			break;
 		case ITYPE_RING:
 		case ITYPE_AMULET:
@@ -2247,14 +2258,17 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 
 	if (item[ii]._iMiscId != IMISC_UNIQUE) {
 		iblvl = -1;
-		if (random(32, 100) > 10 && random(33, 100) > lvl || (iblvl = lvl, lvl == -1)) {
-
-			if (item[ii]._iMiscId != IMISC_STAFF || (iblvl = lvl, lvl == -1)) {
-				if (item[ii]._iMiscId != IMISC_RING || (iblvl = lvl, lvl == -1)) {
-					if (item[ii]._iMiscId == IMISC_AMULET)
-						iblvl = lvl;
-				}
-			}
+		if (random(32, 100) <= 10 || random(33, 100) <= lvl) {
+			iblvl = lvl;
+		}
+		if (iblvl == -1 && item[ii]._iMiscId == IMISC_STAFF) {
+			iblvl = lvl;
+		}
+		if (iblvl == -1 && item[ii]._iMiscId == IMISC_RING) {
+			iblvl = lvl;
+		}
+		if (iblvl == -1 && item[ii]._iMiscId == IMISC_AMULET) {
+			iblvl = lvl;
 		}
 		if (onlygood)
 			iblvl = lvl;
@@ -2263,7 +2277,11 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 		if (iblvl != -1) {
 			uid = CheckUnique(ii, iblvl, uper, recreate);
 			if (uid == -1) {
+#ifdef HELLFIRE
+				GetItemBonus(ii, idx, iblvl >> 1, iblvl, onlygood, TRUE);
+#else
 				GetItemBonus(ii, idx, iblvl >> 1, iblvl, onlygood);
+#endif
 			} else {
 				GetUniqueItem(ii, uid);
 				item[ii]._iCreateInfo |= 0x0200;
@@ -3856,7 +3874,11 @@ void SpawnOnePremium(int i, int plvl)
 		SetRndSeed(item[0]._iSeed);
 		itype = RndPremiumItem(plvl >> 2, plvl) - 1;
 		GetItemAttrs(0, itype, plvl);
+#ifdef HELLFIRE
+		GetItemBonus(0, itype, plvl >> 1, plvl, 1, FALSE);
+#else
 		GetItemBonus(0, itype, plvl >> 1, plvl, 1);
+#endif
 	} while (item[0]._iIvalue > SMITH_MAX_PREMIUM_VALUE);
 	premiumitem[i] = item[0];
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
@@ -4006,7 +4028,11 @@ void SpawnWitch(int lvl)
 			if (maxlvl == -1 && item[0]._iMiscId == IMISC_STAFF)
 				maxlvl = 2 * lvl;
 			if (maxlvl != -1)
+#ifdef HELLFIRE
+				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1, TRUE);
+#else
 				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1);
+#endif
 		} while (item[0]._iIvalue > 140000);
 		witchitem[i] = item[0];
 		witchitem[i]._iCreateInfo = lvl | 0x2000;
@@ -4051,7 +4077,11 @@ void SpawnBoy(int lvl)
 			SetRndSeed(item[0]._iSeed);
 			itype = RndBoyItem(lvl) - 1;
 			GetItemAttrs(0, itype, lvl);
+#ifdef HELLFIRE
+			GetItemBonus(0, itype, lvl, 2 * lvl, 1, TRUE);
+#else
 			GetItemBonus(0, itype, lvl, 2 * lvl, 1);
+#endif
 		} while (item[0]._iIvalue > 90000);
 		boyitem = item[0];
 		boyitem._iCreateInfo = lvl | 0x1000;
@@ -4221,10 +4251,14 @@ void RecreatePremiumItem(int ii, int idx, int plvl, int iseed)
 	SetRndSeed(iseed);
 	itype = RndPremiumItem(plvl >> 2, plvl) - 1;
 	GetItemAttrs(ii, itype, plvl);
+#ifdef HELLFIRE
+	GetItemBonus(ii, itype, plvl >> 1, plvl, 1, FALSE);
+#else
 	GetItemBonus(ii, itype, plvl >> 1, plvl, 1);
+#endif
 
-	item[ii]._iCreateInfo = plvl | 0x800;
 	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = plvl | 0x800;
 	item[ii]._iIdentified = TRUE;
 }
 
@@ -4235,10 +4269,13 @@ void RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 	SetRndSeed(iseed);
 	itype = RndBoyItem(lvl) - 1;
 	GetItemAttrs(ii, itype, lvl);
+#ifdef HELLFIRE
+	GetItemBonus(ii, itype, lvl, 2 * lvl, 1, TRUE);
+#else
 	GetItemBonus(ii, itype, lvl, 2 * lvl, 1);
-
-	item[ii]._iCreateInfo = lvl | 0x1000;
+#endif
 	item[ii]._iSeed = iseed;
+	item[ii]._iCreateInfo = lvl | 0x1000;
 	item[ii]._iIdentified = TRUE;
 }
 
@@ -4249,21 +4286,34 @@ void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 	if (idx == IDI_MANA || idx == IDI_FULLMANA || idx == IDI_PORTAL) {
 		GetItemAttrs(ii, idx, lvl);
 	} else {
+#ifdef HELLFIRE
+		if (idx >= 114 && idx <= 117) {
+			SetRndSeed(iseed);
+			volatile int hi_predelnik = random(0, 1);
+			iblvl = lvl;
+			GetItemAttrs(ii, idx, iblvl);
+		} else{
+#endif
 		SetRndSeed(iseed);
-		iblvl = -1;
 		itype = RndWitchItem(lvl) - 1;
 		GetItemAttrs(ii, itype, lvl);
+		iblvl = -1;
 		if (random(51, 100) <= 5)
 			iblvl = 2 * lvl;
 		if (iblvl == -1 && item[ii]._iMiscId == IMISC_STAFF)
 			iblvl = 2 * lvl;
 		if (iblvl != -1)
-			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1);
+#ifdef HELLFIRE
+			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1, TRUE);
 	}
+#else
+			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1);
+#endif
+}
 
-	item[ii]._iCreateInfo = lvl | 0x2000;
-	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = TRUE;
+item[ii]._iSeed = iseed;
+item[ii]._iCreateInfo = lvl | 0x2000;
+item[ii]._iIdentified = TRUE;
 }
 
 void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
