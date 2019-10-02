@@ -1151,10 +1151,12 @@ void GetStaffPower(int i, int lvl, int bs, BOOL onlygood)
 	int l[256];
 	char istr[128];
 	int nl, j, preidx;
-	BYTE addok;
+	BOOL addok;
+	int tmp;
 
+	tmp = random(15, 10);
 	preidx = -1;
-	if (random(15, 10) == 0 || onlygood) {
+	if (tmp == 0 || onlygood) {
 		nl = 0;
 		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
 			if (PL_Prefix[j].PLIType & PLT_STAFF && PL_Prefix[j].PLMinLvl <= lvl) {
