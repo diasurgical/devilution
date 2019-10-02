@@ -451,8 +451,8 @@ void DrawAutomapType(int sx, int sy, WORD automap_type)
 }
 #ifdef HELLFIRE
 
-void SearchAutomapItem(){
-
+void SearchAutomapItem()
+{
 	int x, y;
 	int x1, y1, x2, y2;
 	int px, py;
