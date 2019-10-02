@@ -1487,9 +1487,12 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 	int l, rv, s, minc, maxc, v, bs;
 	char istr[64];
 
+#ifndef HELLFIRE
 	if (!random(17, 4)) {
 		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
-	} else {
+	} else 
+#endif
+	{
 		l = lvl >> 1;
 		if (l == 0)
 			l = 1;
