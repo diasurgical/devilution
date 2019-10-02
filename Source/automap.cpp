@@ -22,6 +22,10 @@ int AMPlayerY;
 #define COLOR_BRIGHT PAL8_YELLOW
 // color for dim map lines/dots
 #define COLOR_DIM (PAL16_YELLOW + 8)
+#ifdef HELLFIRE
+// color for items on automap
+#define COLOR_ITEM (PAL8_BLUE + 1)
+#endif
 
 #define MAPFLAG_TYPE 0x000F
 // these are in the second byte
@@ -449,9 +453,68 @@ void DrawAutomapType(int sx, int sy, WORD automap_type)
 
 void SearchAutomapItem(){
 
+	int x, y;
+	int x1, y1, x2, y2;
+	int px, py;
+	int i, j;
+
+	if (plr[myplr]._pmode == PM_WALK3) {
+		x = plr[myplr]._px;
+		y = plr[myplr]._py;
+		if (plr[myplr]._pdir == DIR_W)
+			x++;
+		else
+			y++;
+	} else {
+		x = plr[myplr].WorldX;
+		y = plr[myplr].WorldY;
+	}
+
+	x1 = x - 8;
+	if (x1 < 0)
+		x1 = 0;
+	else if (x1 > MAXDUNX)
+		x1 = MAXDUNX;
+
+	y1 = y - 8;
+	if (y1 < 0)
+		y1 = 0;
+	else if (y1 > MAXDUNY)
+		y1 = MAXDUNY;
+
+	x2 = x + 8;
+	if (x2 < 0)
+		x2 = 0;
+	else if (x2 > MAXDUNX)
+		x2 = MAXDUNX;
+
+	y2 = y + 8;
+	if (y2 < 0)
+		y2 = 0;
+	else if (y2 > MAXDUNY)
+		y2 = MAXDUNY;
+
+	for (i = x1; i < x2; i++) {
+		for (j = y1; j < y2; j++) {
+			if (dItem[i][j] != 0){
+				px = i - 2 * AutoMapXOfs - ViewX;
+				py = j - 2 * AutoMapYOfs - ViewY;
+
+				x = (ScrollInfo._sxoff * AutoMapScale / 100 >> 1) + (px - py) * AutoMapYPos + 384;
+				y = (ScrollInfo._syoff * AutoMapScale / 100 >> 1) + (px + py) * AMPlayerX + 336;
+
+				if (invflag || sbookflag)
+					x -= 160;
+				if (chrflag || questlog)
+					x += 160;
+				y -= AMPlayerX;
+				DrawAutomapItem(x, y, COLOR_ITEM);
+			}
+		}
+	}
 }
 
-void DrawAutomapItem(int x, int y, char color)
+void DrawAutomapItem(int x, int y, BYTE color)
 {
 	int x1, y1, x2, y2;
 
