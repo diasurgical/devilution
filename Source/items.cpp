@@ -944,7 +944,7 @@ void CreatePlrItems(int p)
 		plr[p].HoldItem._ivalue = GOLD_MAX_LIMIT;
 		plr[p].HoldItem._iCurs = ICURS_GOLD_LARGE;
 		plr[p]._pGold = plr[p].HoldItem._ivalue * 40;
-		for (i = 0; i < 40; i++) {
+		for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 			GetPlrHandSeed(&plr[p].HoldItem);
 			plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
 			plr[p].InvGrid[i] = plr[p]._pNumInv;

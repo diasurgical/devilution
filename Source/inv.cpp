@@ -169,7 +169,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 
 void DrawInv()
 {
-	BOOL invtest[40];
+	BOOL invtest[NUM_INV_GRID_ELEM];
 	int frame, frame_width, colour, screen_x, screen_y, i, j, ii;
 
 	CelDecodeOnly(384, 511, pInvCels, 1, 320);
