@@ -2618,6 +2618,35 @@ void SetupAllUseful(int ii, int iseed, int lvl)
 	item[ii]._iSeed = iseed;
 	SetRndSeed(iseed);
 
+#ifdef HELLFIRE
+	idx = random(34, 7);
+	switch (idx) {
+	case 0:
+		idx = IDI_PORTAL;
+		if ((lvl <= 1))
+			idx = IDI_HEAL;
+		break;
+	case 1:
+	case 2:
+		idx = IDI_HEAL;
+		break;
+	case 3:
+		idx = IDI_PORTAL;
+		if ((lvl <= 1))
+			idx = IDI_MANA;
+		break;
+	case 4:
+	case 5:
+		idx = IDI_MANA;
+		break;
+	case 6:
+		idx = IDI_OIL;
+		break;
+	default:
+		idx = IDI_OIL;
+		break;
+	}
+#else
 	if (random(34, 2))
 		idx = IDI_HEAL;
 	else
@@ -2625,6 +2654,7 @@ void SetupAllUseful(int ii, int iseed, int lvl)
 
 	if (lvl > 1 && !random(34, 3))
 		idx = IDI_PORTAL;
+#endif
 
 	GetItemAttrs(ii, idx, lvl);
 	item[ii]._iCreateInfo = lvl + 384;
