@@ -986,7 +986,11 @@ void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
 	}
 
 	/// ASSERT: assert((unsigned char)bv < MAXOBJECTS);
+#ifdef HELLFIRE
+	if (bv >= MAXOBJECTS)
+#else
 	if ((BYTE)bv >= MAXOBJECTS)
+#endif
 		return;
 
 	pCelBuff = object[bv]._oAnimData;
