@@ -590,8 +590,7 @@ void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 	}
 
 	j = chunks;
-	while (j != 0) {
-		j--;
+	while (j-- != 0) {
 		if (y < 0 || x >= MAXDUNX) {
 			break;
 		}
