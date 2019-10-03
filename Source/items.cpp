@@ -324,12 +324,14 @@ int items_42342E(int i)
 
 	res = 0;
 	for (j = 0; j < NUM_INVLOC; j++) {
-		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && (plr[i].InvBody[j]._itype == ITYPE_LARMOR || plr[i].InvBody[j]._itype == ITYPE_MARMOR || plr[i].InvBody[j]._itype == ITYPE_HARMOR)
-		    && res < plr[i].InvBody[j]._iIvalue)
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE &&
+			(plr[i].InvBody[j]._itype == ITYPE_LARMOR || plr[i].InvBody[j]._itype == ITYPE_MARMOR || plr[i].InvBody[j]._itype == ITYPE_HARMOR)
+			&& res < plr[i].InvBody[j]._iIvalue)
 			res = plr[i].InvBody[j]._iIvalue;
 	}
 	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
-		if (plr[i].InvList[j]._iClass != ITYPE_NONE && (plr[i].InvList[j]._itype == ITYPE_LARMOR || plr[i].InvList[j]._itype == ITYPE_MARMOR || plr[i].InvList[j]._itype == ITYPE_HARMOR)
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE &&
+			(plr[i].InvList[j]._itype == ITYPE_LARMOR || plr[i].InvList[j]._itype == ITYPE_MARMOR || plr[i].InvList[j]._itype == ITYPE_HARMOR)
 		    && res < plr[i].InvList[j]._iIvalue)
 			res = plr[i].InvList[j]._iIvalue;
 	}
@@ -542,7 +544,7 @@ void InitItems()
 		if (currlevel > 0 && currlevel < 16)
 			AddInitItems();
 #ifdef HELLFIRE
-		if (currlevel >= 21 && currlevel <= 24)
+		if (currlevel >= 21 && currlevel <= 23)
 			items_42390F();
 #endif
 	}
@@ -1523,7 +1525,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 #ifndef HELLFIRE
 	if (!random(17, 4)) {
 		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
-	} else
+	} else 
 #endif
 	{
 		l = lvl >> 1;
