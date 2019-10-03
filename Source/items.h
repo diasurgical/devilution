@@ -31,6 +31,7 @@ int items_42342E(int i);
 int items_4234B2(int i);
 int items_423518(int i);
 int items_42357E(int i);
+void items_42390F();
 int items_get_currlevel();
 #endif
 void InitItemGFX();

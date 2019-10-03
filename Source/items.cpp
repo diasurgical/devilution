@@ -324,14 +324,12 @@ int items_42342E(int i)
 
 	res = 0;
 	for (j = 0; j < NUM_INVLOC; j++) {
-		if (plr[i].InvBody[j]._iClass != ITYPE_NONE &&
-			(plr[i].InvBody[j]._itype == ITYPE_LARMOR || plr[i].InvBody[j]._itype == ITYPE_MARMOR || plr[i].InvBody[j]._itype == ITYPE_HARMOR)
-			&& res < plr[i].InvBody[j]._iIvalue)
+		if (plr[i].InvBody[j]._iClass != ITYPE_NONE && (plr[i].InvBody[j]._itype == ITYPE_LARMOR || plr[i].InvBody[j]._itype == ITYPE_MARMOR || plr[i].InvBody[j]._itype == ITYPE_HARMOR)
+		    && res < plr[i].InvBody[j]._iIvalue)
 			res = plr[i].InvBody[j]._iIvalue;
 	}
 	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
-		if (plr[i].InvList[j]._iClass != ITYPE_NONE &&
-			(plr[i].InvList[j]._itype == ITYPE_LARMOR || plr[i].InvList[j]._itype == ITYPE_MARMOR || plr[i].InvList[j]._itype == ITYPE_HARMOR)
+		if (plr[i].InvList[j]._iClass != ITYPE_NONE && (plr[i].InvList[j]._itype == ITYPE_LARMOR || plr[i].InvList[j]._itype == ITYPE_MARMOR || plr[i].InvList[j]._itype == ITYPE_HARMOR)
 		    && res < plr[i].InvList[j]._iIvalue)
 			res = plr[i].InvList[j]._iIvalue;
 	}
@@ -402,6 +400,31 @@ int items_get_currlevel()
 
 	return lvl;
 }
+
+void items_42390F()
+{
+	int x, y, id;
+
+	x = random(12, 80) + 16;
+	y = random(12, 80) + 16;
+	while (!ItemPlace(x, y)) {
+		x = random(12, 80) + 16;
+		y = random(12, 80) + 16;
+	}
+	switch (currlevel) {
+	case 22:
+		id = IDI_NOTE2;
+		break;
+	case 23:
+		id = IDI_NOTE3;
+		break;
+	default:
+		id = IDI_NOTE1;
+		break;
+	}
+	SpawnQuestItem(id, x, y, 0, 1);
+}
+
 #endif
 
 void InitItemGFX()
@@ -510,8 +533,18 @@ void InitItems()
 			SpawnRock();
 		if (QuestStatus(QTYPE_ANVIL))
 			SpawnQuestItem(IDI_ANVIL, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
+#ifdef HELLFIRE
+		if (UseCowFarmer && currlevel == 20)
+			SpawnQuestItem(IDI_BROWNSUIT, 25, 25, 3, 1);
+		if (UseCowFarmer && currlevel == 19)
+			SpawnQuestItem(IDI_GREYSUIT, 25, 25, 3, 1);
+#endif
 		if (currlevel > 0 && currlevel < 16)
 			AddInitItems();
+#ifdef HELLFIRE
+		if (currlevel >= 21 && currlevel <= 24)
+			items_42390F();
+#endif
 	}
 
 	uitemflag = FALSE;
@@ -1490,7 +1523,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 #ifndef HELLFIRE
 	if (!random(17, 4)) {
 		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
-	} else 
+	} else
 #endif
 	{
 		l = lvl >> 1;
