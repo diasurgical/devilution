@@ -1876,8 +1876,15 @@ void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 	}
 
 	/// ASSERT: assert((unsigned char)bv < MAXOBJECTS);
+#ifdef HELLFIRE
+	if (bv >= MAXOBJECTS)
+		return;
+	if (bv < 0)
+		return;
+#else
 	if ((BYTE)bv >= MAXOBJECTS)
 		return;
+#endif
 
 	pCelBuff = object[bv]._oAnimData;
 	if (!pCelBuff) {
