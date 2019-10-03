@@ -402,6 +402,31 @@ int items_get_currlevel()
 
 	return lvl;
 }
+
+void items_42390F()
+{
+	int x, y, id;
+
+	x = random(12, 80) + 16;
+	y = random(12, 80) + 16;
+	while (!ItemPlace(x, y)) {
+		x = random(12, 80) + 16;
+		y = random(12, 80) + 16;
+	}
+	switch (currlevel) {
+	case 22:
+		id = IDI_NOTE2;
+		break;
+	case 23:
+		id = IDI_NOTE3;
+		break;
+	default:
+		id = IDI_NOTE1;
+		break;
+	}
+	SpawnQuestItem(id, x, y, 0, 1);
+}
+
 #endif
 
 void InitItemGFX()
@@ -510,8 +535,18 @@ void InitItems()
 			SpawnRock();
 		if (QuestStatus(QTYPE_ANVIL))
 			SpawnQuestItem(IDI_ANVIL, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
+#ifdef HELLFIRE
+		if (UseCowFarmer && currlevel == 20)
+			SpawnQuestItem(IDI_BROWNSUIT, 25, 25, 3, 1);
+		if (UseCowFarmer && currlevel == 19)
+			SpawnQuestItem(IDI_GREYSUIT, 25, 25, 3, 1);
+#endif
 		if (currlevel > 0 && currlevel < 16)
 			AddInitItems();
+#ifdef HELLFIRE
+		if (currlevel >= 21 && currlevel <= 23)
+			items_42390F();
+#endif
 	}
 
 	uitemflag = FALSE;
