@@ -81,6 +81,10 @@ void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre
 			/// ASSERT: assert(missileactive[i] < MAXMISSILES);
 			if (missileactive[i] >= MAXMISSILES)
 				break;
+#ifdef HELLFIRE
+			if (missileactive[i] < 0)
+				break;
+#endif
 			m = &missile[missileactive[i]];
 			if (m->_mix == x && m->_miy == y && m->_miPreFlag == pre && m->_miDrawFlag) {
 				pCelBuff = m->_miAnimData;
@@ -106,7 +110,11 @@ void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre
 		}
 	} else {
 		m = &missile[dMissile[x][y] - 1];
+#ifdef HELLFIRE
+		if (m->_miPreFlag == pre) {
+#else
 		if (m->_miPreFlag == pre && m->_miDrawFlag) {
+#endif
 			pCelBuff = m->_miAnimData;
 			if (!pCelBuff) {
 				// app_fatal("Draw Missile 2 type %d: NULL Cel Buffer", m->_mitype);
