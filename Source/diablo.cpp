@@ -211,7 +211,7 @@ void start_game(unsigned int uMsg)
 
 void free_game()
 {
-	int i; // esi
+	int i;
 
 	FreeControlPan();
 	FreeInvGFX();
