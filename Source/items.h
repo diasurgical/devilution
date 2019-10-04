@@ -65,7 +65,11 @@ int RndPL(int param1, int param2);
 int PLVal(int pv, int p1, int p2, int minv, int maxv);
 void SaveItemPower(int i, int power, int param1, int param2, int minval, int maxval, int multval);
 void GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygood);
+#ifdef HELLFIRE
+void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood, BOOLEAN allowspells);
+#else
 void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood);
+#endif
 void SetupItem(int i);
 int RndItem(int m);
 int RndUItem(int m);
