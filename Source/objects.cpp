@@ -1105,10 +1105,10 @@ void AddBarrel(int i, int t)
 
 void AddShrine(int i)
 {
-	int val, j, slist[26];
+	int val, j, slist[NUM_SHRINETYPE];
 
 	object[i]._oPreFlag = TRUE;
-	for (j = 0; j < 26; j++) {
+	for (j = 0; j < NUM_SHRINETYPE; j++) {
 		if (currlevel < shrinemin[j] || currlevel > shrinemax[j]) {
 			slist[j] = 0;
 		} else {
@@ -1125,7 +1125,7 @@ void AddShrine(int i)
 		}
 	}
 	while (1) {
-		val = random(150, 26);
+		val = random(150, NUM_SHRINETYPE);
 		if (slist[val]) {
 			break;
 		}
