@@ -3,11 +3,7 @@
 int doom_quest_time;
 int doom_stars_drawn;
 BYTE *pDoomCel;
-#ifdef HELLFIRE
-BOOLEAN doomflag;
-#else
-BOOL doomflag;
-#endif
+DIABOOL doomflag;
 int DoomQuestState;
 
 /*

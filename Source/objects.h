@@ -16,11 +16,7 @@ extern int numobjfiles;
 
 void InitObjectGFX();
 void FreeObjectGFX();
-#ifdef HELLFIRE
-BOOLEAN RndLocOk(int xp, int yp);
-#else
-BOOL RndLocOk(int xp, int yp);
-#endif
+DIABOOL RndLocOk(int xp, int yp);
 void InitRndLocObj(int min, int max, int objtype);
 void InitRndLocBigObj(int min, int max, int objtype);
 void InitRndLocObj5x5(int min, int max, int objtype);

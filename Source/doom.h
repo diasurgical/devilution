@@ -5,11 +5,7 @@
 extern int doom_quest_time;
 extern int doom_stars_drawn;
 extern BYTE *pDoomCel;
-#ifdef HELLFIRE
-extern BOOLEAN doomflag;
-#else
-extern BOOL doomflag;
-#endif
+extern DIABOOL doomflag;
 extern int DoomQuestState;
 
 /*
