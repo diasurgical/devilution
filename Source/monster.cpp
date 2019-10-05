@@ -4730,7 +4730,7 @@ BOOL PosOkMissile(int x, int y)
 
 BOOL CheckNoSolid(int x, int y)
 {
-	return nSolidTable[dPiece[x][y]] == 0;
+	return nSolidTable[dPiece[x][y]] == FALSE;
 }
 
 BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2)
