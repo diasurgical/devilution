@@ -2794,6 +2794,19 @@ void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, 
 }
 
 #ifdef HELLFIRE
+void items_427A72()
+{
+	PkItemStruct id;
+	if (dword_691CB0) {
+		if (CornerItemMaybe.IDidx >= 0) {
+			PackItem(&id, &CornerItemMaybe);
+			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)&id, 19);
+		} else {
+			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)"", 1);
+		}
+	}
+}
+
 void items_427ABA(int x, int y)
 {
 	int i, ii;

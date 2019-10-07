@@ -123,6 +123,9 @@ void gamemenu_load_game(BOOL bActivate)
 	DrawAndBlit();
 	LoadGame(FALSE);
 	ClrDiabloMsg();
+#ifdef HELLFIRE
+	dword_691CB0 = 0;
+#endif
 	PaletteFadeOut(8);
 	deathflag = FALSE;
 	drawpanflag = 255;
@@ -154,6 +157,11 @@ void gamemenu_save_game(BOOL bActivate)
 	ClrDiabloMsg();
 	drawpanflag = 255;
 	SetCursor_(CURSOR_HAND);
+#ifdef HELLFIRE
+	if (dword_691CB0 != 0) {
+		items_427A72();
+	}
+#endif
 	interface_msg_pump();
 	SetWindowProc(saveProc);
 }
