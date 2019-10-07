@@ -1,7 +1,11 @@
 #include "diablo.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+#ifdef HELLFIRE
+void PackPlayer(PkPlayerStruct *pPack, int pnum)
+#else
 void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
+#endif
 {
 	PlayerStruct *pPlayer;
 	int i;
@@ -34,8 +38,16 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pPack->pMaxManaBase = pPlayer->_pMaxManaBase;
 	pPack->pMemSpells = pPlayer->_pMemSpells;
 
+#ifdef HELLFIRE
+	for (i = 0; i <= 36; i++)
+		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
+	for (i = 37; i < 47; i++)
+		//pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
+		*((BYTE *)&pPack->SpdList[6].wValue + i) = pPlayer->_pSplLvl[i];
+#else
 	for (i = 0; i < MAX_SPELLS; i++)
 		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
+#endif
 
 	pki = pPack->InvBody;
 	pi = pPlayer->InvBody;

@@ -782,8 +782,13 @@ void multi_send_pinfo(int pnum, char cmd)
 {
 	PkPlayerStruct pkplr;
 
+#ifdef HELLFIRE
+	PackPlayer(&pkplr, myplr);
+	dthread_send_delta(pnum, cmd, &pkplr, sizeof(pkplr) + 1);
+#else
 	PackPlayer(&pkplr, myplr, TRUE);
 	dthread_send_delta(pnum, cmd, &pkplr, sizeof(pkplr));
+#endif
 }
 
 int InitLevelType(int l)

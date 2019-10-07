@@ -65,7 +65,11 @@ void pfile_write_hero()
 
 	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
 	if (pfile_open_archive(TRUE, save_num)) {
+#ifdef HELLFIRE
+		PackPlayer(&pkplr, myplr);
+#else
 		PackPlayer(&pkplr, myplr, gbMaxPlayers == 1);
+#endif
 		pfile_encode_hero(&pkplr);
 		pfile_flush(gbMaxPlayers == 1, save_num);
 	}
@@ -459,12 +463,20 @@ BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 	PkPlayerStruct pkplr;
 
 	save_num = pfile_get_save_num_from_name(heroinfo->name);
+#ifdef HELLFIRE
+	if (save_num >= MAX_CHARACTERS) {
+#else
 	if (save_num == MAX_CHARACTERS) {
+#endif
 		for (save_num = 0; save_num < MAX_CHARACTERS; save_num++) {
 			if (!hero_names[save_num][0])
 				break;
 		}
+#ifdef HELLFIRE
+		if (save_num >= MAX_CHARACTERS)
+#else
 		if (save_num == MAX_CHARACTERS)
+#endif
 			return FALSE;
 	}
 	if (!pfile_open_archive(FALSE, save_num))
@@ -476,7 +488,11 @@ BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 	CreatePlayer(0, cl);
 	strncpy(plr[0]._pName, heroinfo->name, PLR_NAME_LEN);
 	plr[0]._pName[PLR_NAME_LEN - 1] = '\0';
+#ifdef HELLFIRE
+	PackPlayer(&pkplr, 0);
+#else
 	PackPlayer(&pkplr, 0, TRUE);
+#endif
 	pfile_encode_hero(&pkplr);
 	game_2_ui_player(&plr[0], heroinfo, FALSE);
 	pfile_flush(TRUE, save_num);

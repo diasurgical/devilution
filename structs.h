@@ -1460,7 +1460,7 @@ typedef struct PkPlayerStruct {
 	DWORD pDiabloKillLevel;
 	int pDifficulty;
 	int pDamAcFlags;
-	int dwReserved[5];
+	int dwReserved;
 #else
 	char pBattleNet;
 	BOOLEAN pManaShield;
