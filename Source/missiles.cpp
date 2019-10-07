@@ -5074,10 +5074,50 @@ void MI_Nova(int i)
 		missile[i]._miDelFlag = TRUE;
 }
 
+#ifdef HELLFIRE
+void MI_Blodboil(int i)
+{
+	int lvl, id, hpdif;
+
+	missile[i]._mirange--;
+	if (missile[i]._mirange == 0) {
+		id = missile[i]._miVar1;
+		if ((plr[id]._pSpellFlags & 2) == 2) {
+			int blodboilSFX[NUM_CLASSES] = { PS_WARR72, PS_ROGUE72, PS_MAGE72, PS_MAGE72, PS_ROGUE72, PS_WARR72 }; // BUGFIX: change second PS_MAGE72 to PS_MONK72?
+			plr[id]._pSpellFlags &= ~0x2;
+			plr[id]._pSpellFlags |= 4;
+			if (2 * (id > 0))
+				lvl = plr[id]._pLevel;
+			else
+				lvl = 1;
+			missile[i]._mirange = lvl + 10 * missile[i]._mispllvl + 245;
+			hpdif = plr[id]._pMaxHP - plr[id]._pHitPoints;
+			CalcPlrItemVals(id, TRUE);
+			plr[id]._pHitPoints -= hpdif;
+			if (plr[id]._pHitPoints < 64)
+				plr[id]._pHitPoints = 64;
+			drawpanflag = 255;
+			PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id].WorldX, plr[id].WorldY);
+		} else {
+			int blodboilSFX[NUM_CLASSES] = { PS_WARR72, PS_ROGUE72, PS_MAGE72, PS_MAGE72, PS_ROGUE72, PS_WARR72 }; // BUGFIX: change second PS_MAGE72 to PS_MONK72?
+			missile[i]._miDelFlag = TRUE;
+			plr[id]._pSpellFlags &= ~0x4;
+			hpdif = plr[id]._pMaxHP - plr[id]._pHitPoints;
+			CalcPlrItemVals(id, TRUE);
+			plr[id]._pHitPoints -= hpdif + missile[i]._miVar2;
+			if (plr[id]._pHitPoints < 64)
+				plr[id]._pHitPoints = 64;
+			drawpanflag = 255;
+			PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id].WorldX, plr[id].WorldY);
+		}
+	}
+}
+#else
 void MI_Blodboil(int i)
 {
 	missile[i]._miDelFlag = TRUE;
 }
+#endif
 
 void MI_Flame(int i)
 {
