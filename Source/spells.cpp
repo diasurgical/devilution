@@ -266,6 +266,15 @@ void DoHealOther(int pnum, int rid)
 			hp += (random(57, 6) + 1) << 6;
 		}
 
+#ifdef HELLFIRE
+		if (plr[pnum]._pClass == PC_WARRIOR || plr[pnum]._pClass == PC_BARBARIAN) {
+			hp <<= 1;
+		} else if (plr[pnum]._pClass == PC_ROGUE || plr[pnum]._pClass == PC_BARD) {
+			hp += hp >> 1;
+		} else if (plr[pnum]._pClass == PC_MONK) {
+			hp *= 3;
+		}
+#else
 		if (plr[pnum]._pClass == PC_WARRIOR) {
 			hp <<= 1;
 		}
@@ -273,6 +282,7 @@ void DoHealOther(int pnum, int rid)
 		if (plr[pnum]._pClass == PC_ROGUE) {
 			hp += hp >> 1;
 		}
+#endif
 
 		plr[rid]._pHitPoints += hp;
 
