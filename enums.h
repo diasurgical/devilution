@@ -3103,7 +3103,7 @@ typedef enum _ui_classes {
 	UI_ROGUE       = 0x1,
 	UI_SORCERER    = 0x2,
 #ifdef HELLFIRE
-	UI_MONK     = 0x3,
+	UI_MONK             = 0x3,
 	UI_BARD       = 0x4,
 	UI_BARBARIAN    = 0x5,
 #endif
