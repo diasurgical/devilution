@@ -2011,13 +2011,28 @@ void AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 		if (random(58, 2) == 1)
 			r2 = -r2;
 
-	} while (nSolidTable[dPiece[r1 + sx][sy + r2]] || dObject[r1 + sx][sy + r2] || dMonster[r1 + sx][sy + r2]);
+#ifdef HELLFIRE
+		r1 += sx;
+		r2 += sy;
+		if (r1 <= MAXDUNX && r1 >= 0 && r2 <= MAXDUNY && r2 >= 0) { ///BUGFIX: < MAXDUNX / < MAXDUNY
+			pn = dPiece[r1][r2];
+		}
+	} while (nSolidTable[pn] || dObject[r1][r2] || dMonster[r1][r2]);
+#else
+		pn = dPiece[r1 + sx][sy + r2];
+	} while (nSolidTable[pn] || dObject[r1 + sx][sy + r2] || dMonster[r1 + sx][sy + r2]);
+#endif
 
-	missile[mi]._miVar1 = 0;
 	missile[mi]._mirange = 2;
+	missile[mi]._miVar1 = 0;
 	if (!setlevel || setlvlnum != SL_VILEBETRAYER) {
+#ifdef HELLFIRE
+		missile[mi]._mix = r1;
+		missile[mi]._miy = r2;
+#else
 		missile[mi]._mix = sx + r1;
 		missile[mi]._miy = sy + r2;
+#endif
 		if (!mienemy)
 			UseMana(id, SPL_RNDTELEPORT);
 	} else {
