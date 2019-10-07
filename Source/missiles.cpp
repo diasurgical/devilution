@@ -30,10 +30,18 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		break;
 	case SPL_HEAL: /// BUGFIX: healing calculation is unused
 		*mind = plr[myplr]._pLevel + sl + 1;
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_MONK || plr[myplr]._pClass == PC_BARBARIAN) {
+#else
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*mind *= 2;
+#endif
+			*mind <<= 1;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_BARD) {
+#else
 		if (plr[myplr]._pClass == PC_ROGUE) {
+#endif
 			*mind += *mind >> 1;
 		}
 		*maxd = 10;
@@ -43,10 +51,18 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		for (k = 0; k < sl; k++) {
 			*maxd += 6;
 		}
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_MONK || plr[myplr]._pClass == PC_BARBARIAN) {
+#else
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*maxd *= 2;
+#endif
+			*maxd <<= 1;
 		}
+#ifdef HELLFIRE
+		else if (plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_BARD) {
+#else
 		if (plr[myplr]._pClass == PC_ROGUE) {
+#endif
 			*maxd += *maxd >> 1;
 		}
 		*mind = -1;
@@ -82,6 +98,13 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 	case SPL_RESURRECT:
 	case SPL_TELEKINESIS:
 	case SPL_BONESPIRIT:
+#ifdef HELLFIRE:
+	case SPL_WARP:
+	case SPL_REFLECT:
+	case SPL_BERSERK:
+	case SPL_SEARCH:
+	case SPL_RUNESTONE:
+#endif
 		*mind = -1;
 		*maxd = -1;
 		break;
@@ -170,10 +193,18 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		break;
 	case SPL_HEALOTHER: /// BUGFIX: healing calculation is unused
 		*mind = plr[myplr]._pLevel + sl + 1;
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_MONK || plr[myplr]._pClass == PC_BARBARIAN) {
+#else
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*mind *= 2;
+#endif
+			*mind <<= 1;
 		}
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_BARD) {
+#else
 		if (plr[myplr]._pClass == PC_ROGUE) {
+#endif
 			*mind += *mind >> 1;
 		}
 		*maxd = 10;
@@ -183,10 +214,18 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		for (k = 0; k < sl; k++) {
 			*maxd += 6;
 		}
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_MONK || plr[myplr]._pClass == PC_BARBARIAN) {
+#else
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			*maxd *= 2;
+#endif
+			*maxd <<= 1;
 		}
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_BARD) {
+#else
 		if (plr[myplr]._pClass == PC_ROGUE) {
+#endif
 			*maxd += *maxd >> 1;
 		}
 		*mind = -1;
