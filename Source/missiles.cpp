@@ -98,7 +98,7 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 	case SPL_RESURRECT:
 	case SPL_TELEKINESIS:
 	case SPL_BONESPIRIT:
-#ifdef HELLFIRE:
+#ifdef HELLFIRE
 	case SPL_WARP:
 	case SPL_REFLECT:
 	case SPL_BERSERK:
