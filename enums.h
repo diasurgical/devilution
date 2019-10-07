@@ -3105,7 +3105,7 @@ typedef enum _ui_classes {
 #ifdef HELLFIRE
 	UI_MONK             = 0x3,
 	UI_BARD              = 0x4,
-	UI_BARBARIAN    = 0x5,
+	UI_BARBARIAN   = 0x5,
 #endif
 	UI_NUM_CLASSES,
 } _ui_classes;
