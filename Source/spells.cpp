@@ -2,7 +2,6 @@
 
 int GetManaAmount(int id, int sn)
 {
-	int i;  // "raw" mana cost
 	int ma; // mana amount
 
 	// mana adjust
@@ -26,12 +25,12 @@ int GetManaAmount(int id, int sn)
 	}
 
 	if (spelldata[sn].sManaCost == 255) {
-		i = (BYTE)plr[id]._pMaxManaBase;
+		ma = ((BYTE)plr[id]._pMaxManaBase - adj);
 	} else {
-		i = spelldata[sn].sManaCost;
+		ma = (spelldata[sn].sManaCost - adj);
 	}
 
-	ma = (i - adj) << 6;
+	ma <<= 6;
 
 	if (sn == SPL_HEAL) {
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
@@ -40,9 +39,17 @@ int GetManaAmount(int id, int sn)
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
 	}
 
+#ifdef HELLFIRE
+	if (plr[id]._pClass == PC_SORCERER) {
+		ma >>= 1;
+	} else if (plr[id]._pClass == PC_ROGUE || plr[id]._pClass == PC_MONK || plr[id]._pClass == PC_BARD) {
+		ma -= ma >> 2;
+	}
+#else
 	if (plr[id]._pClass == PC_ROGUE) {
 		ma -= ma >> 2;
 	}
+#endif
 
 	if (spelldata[sn].sMinMana > ma >> 6) {
 		ma = spelldata[sn].sMinMana << 6;
