@@ -1464,12 +1464,12 @@ void GetBookSpell(int i, int lvl)
 #ifdef HELLFIRE
 	else
 #endif
-	    if (spelldata[bs].sType == STYPE_LIGHTNING)
+	if (spelldata[bs].sType == STYPE_LIGHTNING)
 		item[i]._iCurs = ICURS_BOOK_BLUE;
 #ifdef HELLFIRE
 	else
 #endif
-	    if (spelldata[bs].sType == STYPE_MAGIC)
+	if (spelldata[bs].sType == STYPE_MAGIC)
 		item[i]._iCurs = ICURS_BOOK_GREY;
 }
 
