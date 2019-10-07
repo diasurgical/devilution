@@ -3102,7 +3102,12 @@ typedef enum _ui_classes {
 	UI_WARRIOR     = 0x0,
 	UI_ROGUE       = 0x1,
 	UI_SORCERER    = 0x2,
-	UI_NUM_CLASSES = 0x3,
+#ifdef HELLFIRE
+	UI_MONK        = 0x3,
+	UI_BARD        = 0x4,
+	UI_BARBARIAN   = 0x5,
+#endif
+	UI_NUM_CLASSES,
 } _ui_classes;
 
 typedef enum _walk_path {
