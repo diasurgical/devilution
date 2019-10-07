@@ -1433,6 +1433,9 @@ void GetBookSpell(int i, int lvl)
 		lvl = 5;
 #endif
 	s = 1;
+#ifdef HELLFIRE
+	bs = 1;
+#endif
 	while (rv > 0) {
 		if (spelldata[s].sBookLvl != -1 && lvl >= spelldata[s].sBookLvl) {
 			rv--;
@@ -1442,6 +1445,8 @@ void GetBookSpell(int i, int lvl)
 		if (gbMaxPlayers == 1) {
 			if (s == SPL_RESURRECT)
 				s = SPL_TELEKINESIS;
+		}
+		if (gbMaxPlayers == 1) {
 			if (s == SPL_HEALOTHER)
 				s = SPL_FLARE;
 		}
@@ -1456,9 +1461,15 @@ void GetBookSpell(int i, int lvl)
 	item[i]._iIvalue += spelldata[bs].sBookCost;
 	if (spelldata[bs].sType == STYPE_FIRE)
 		item[i]._iCurs = ICURS_BOOK_RED;
-	if (spelldata[bs].sType == STYPE_LIGHTNING)
+#ifdef HELLFIRE
+	else
+#endif
+	    if (spelldata[bs].sType == STYPE_LIGHTNING)
 		item[i]._iCurs = ICURS_BOOK_BLUE;
-	if (spelldata[bs].sType == STYPE_MAGIC)
+#ifdef HELLFIRE
+	else
+#endif
+	    if (spelldata[bs].sType == STYPE_MAGIC)
 		item[i]._iCurs = ICURS_BOOK_GREY;
 }
 
