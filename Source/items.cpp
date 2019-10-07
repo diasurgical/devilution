@@ -2542,7 +2542,7 @@ void items_427A72()
 			PackItem(&id, &CornerItemMaybe);
 			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)&id, 19);
 		} else {
-			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)(0xDEAFB0B), 1); //TODO: some address should be here, figure out what
+			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)"", 1);
 		}
 	}
 }
