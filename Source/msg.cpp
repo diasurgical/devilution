@@ -109,7 +109,7 @@ void msg_free_packets()
 
 int msg_wait_for_turns()
 {
-	int received;
+	BOOL received;
 	DWORD turns;
 
 	if (!sgbDeltaChunks) {

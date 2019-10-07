@@ -13,7 +13,7 @@ DWORD glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
 int glMid3Seed[NUMLEVELS];
 BOOL gbRunGameResult;
-int zoomflag;
+BOOL zoomflag;
 BOOL gbProcessPlayers;
 int glEndSeed[NUMLEVELS];
 BOOL gbLoadGame;
@@ -204,7 +204,7 @@ void run_game_loop(unsigned int uMsg)
 
 void start_game(unsigned int uMsg)
 {
-	zoomflag = 1;
+	zoomflag = TRUE;
 	cineflag = FALSE;
 	InitCursor();
 	InitLightTable();
@@ -221,7 +221,7 @@ void start_game(unsigned int uMsg)
 
 void free_game()
 {
-	int i; // esi
+	int i;
 
 	FreeControlPan();
 	FreeInvGFX();
@@ -472,7 +472,7 @@ void diablo_parse_flags(char *args)
 				debug_mode_key_w = 1;
 				break;
 			case 'x':
-				fullscreen = 0;
+				fullscreen = FALSE;
 				break;
 			}
 #endif
@@ -1309,7 +1309,7 @@ void PressChar(int vkey)
 		return;
 	case 'Z':
 	case 'z':
-		zoomflag = zoomflag == 0;
+		zoomflag = !zoomflag;
 		return;
 	case 'S':
 	case 's':

@@ -159,6 +159,7 @@
 #define PANEL_HEIGHT    128
 #define PANEL_TOP		(SCREEN_HEIGHT - PANEL_HEIGHT)
 #define PANEL_Y			(PANEL_TOP + SCREEN_Y)
+#define PANEL_RIGHT		(SCREEN_X + SCREEN_WIDTH - 320)
 
 #if SCREEN_WIDTH == PANEL_WIDTH
 #define VIEWPORT_HEIGHT	(SCREEN_HEIGHT - PANEL_HEIGHT)
@@ -209,4 +210,16 @@ typedef void (*_PVFV)(void);
 #define ALIGN_BY_1 __declspec(align(1))
 #else
 #define ALIGN_BY_1
+#endif
+
+#if (_MSC_VER == 1200)
+#define __FINLINE __forceinline
+#else
+#define __FINLINE
+#endif
+
+#ifndef _BIG_ENDIAN_
+#define SwapLE32
+#else
+#define SwapLE32(value) (value << 24 | (value & 0xFF00) << 8 | (value & 0xFF0000) >> 8 | value >> 24);
 #endif
