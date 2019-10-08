@@ -132,9 +132,11 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 #endif
 	case WM_QUERYNEWPALETTE:
 		return 1;
+	case WM_QUERYENDSESSION:
+		exit(0);
 	}
 
-	return DefWindowProc(hWnd, Msg, wParam, lParam);
+	return 0;
 }
 
 WNDPROC SetWindowProc(WNDPROC NewProc)

@@ -97,8 +97,6 @@
 #define KEY_WRITE 0x20006
 #define REG_SZ 1
 
-#define DefWindowProc DefWindowProcA
-
 #define GetFileAttributes GetFileAttributesA
 #define SetFileAttributes SetFileAttributesA
 #define FindFirstFile FindFirstFileA

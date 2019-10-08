@@ -224,13 +224,4 @@ void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength)
 {
 	strncpy(lpString1, lpString2, iMaxLength);
 }
-
-LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
-{
-	DUMMY_ONCE();
-	if (Msg == DVL_WM_QUERYENDSESSION)
-		exit(0);
-
-	return 0;
-}
 } // namespace dvl
