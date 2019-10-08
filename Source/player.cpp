@@ -4328,6 +4328,14 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE97;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE97;
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK97;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE97;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR97;
+#endif
 #endif
 		}
 		plr[myplr].pDungMsgs = plr[myplr].pDungMsgs | DMSG_CATHEDRAL;
@@ -4340,6 +4348,14 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE96;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE96;
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK96;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE96;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR96B;
+#endif
 #endif
 		}
 		plr[myplr].pDungMsgs |= DMSG_CATACOMBS;
@@ -4352,6 +4368,14 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE98;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE98;
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK98;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE98;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR98;
+#endif
 #endif
 		}
 		plr[myplr].pDungMsgs |= DMSG_CAVES;
@@ -4364,17 +4388,58 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE99;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE99;
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK99;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE99;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR99;
+#endif
 #endif
 		}
 		plr[myplr].pDungMsgs |= DMSG_HELL;
 	} else if (currlevel == 16 && !plr[myplr]._pLvlVisited[15] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & DMSG_DIABLO)) { // BUGFIX: _pLvlVisited should check 16 or this message will never play
 		sfxdelay = 40;
 #ifndef SPAWN
+#ifdef HELLFIRE
+		if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_SORCERER || plr[myplr]._pClass == PC_MONK || plr[myplr]._pClass == PC_BARD || plr[myplr]._pClass == PC_BARBARIAN) {
+#else
 		if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_SORCERER) {
+#endif
 			sfxdnum = PS_DIABLVLINT;
 		}
 #endif
 		plr[myplr].pDungMsgs |= DMSG_DIABLO;
+#ifdef HELLFIRE
+	} else if (currlevel == 17 && !plr[myplr]._pLvlVisited[17] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs2 & 1)) {
+		sfxdelay = 10;
+		sfxdnum = USFX_DEFILER1;
+		quests[QTYPE_DEFILER]._qactive = 2;
+		quests[QTYPE_DEFILER]._qlog = 1;
+		quests[QTYPE_DEFILER]._qmsg = 286;
+		plr[myplr].pDungMsgs2 |= 1;
+	} else if (currlevel == 19 && !plr[myplr]._pLvlVisited[19] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs2 & 4)) {
+		sfxdelay = 10;
+		sfxdnum = USFX_DEFILER3;
+		plr[myplr].pDungMsgs2 |= 4;
+	} else if (currlevel == 21 && !plr[myplr]._pLvlVisited[21] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 32)) {
+		sfxdelay = 30;
+		if (plr[myplr]._pClass == PC_WARRIOR) {
+			sfxdnum = PS_WARR92;
+		} else if (plr[myplr]._pClass == PC_ROGUE) {
+			sfxdnum = PS_ROGUE92;
+		} else if (plr[myplr]._pClass == PC_SORCERER) {
+			sfxdnum = PS_MAGE92;
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			sfxdnum = PS_MONK92;
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			sfxdnum = PS_ROGUE92;
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			sfxdnum = PS_WARR92;
+		}
+		plr[myplr].pDungMsgs |= 32;
+#endif
 	} else {
 		sfxdelay = 0;
 	}
