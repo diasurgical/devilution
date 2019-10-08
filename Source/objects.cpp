@@ -2651,6 +2651,14 @@ void OperateMushPatch(int pnum, int i)
 				PlaySFX(PS_ROGUE13);
 			} else if (plr[myplr]._pClass == PC_SORCERER) {
 				PlaySFX(PS_MAGE13);
+#ifdef HELLFIRE
+			} else if (plr[myplr]._pClass == PC_MONK) {
+				PlaySFX(PS_MONK13);
+			} else if (plr[myplr]._pClass == PC_BARD) {
+				PlaySFX(PS_ROGUE13);
+			} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+				PlaySFX(PS_WARR13);
+#endif
 #endif
 			}
 		}
@@ -2658,8 +2666,8 @@ void OperateMushPatch(int pnum, int i)
 		if (object[i]._oSelFlag != 0) {
 			if (!deltaload)
 				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
-			object[i]._oAnimFrame++;
 			object[i]._oSelFlag = 0;
+			object[i]._oAnimFrame++;
 			if (!deltaload) {
 				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
 				SpawnQuestItem(IDI_MUSHROOM, x, y, 0, 0);
