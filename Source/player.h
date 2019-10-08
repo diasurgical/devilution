@@ -112,6 +112,11 @@ void SetPlrDex(int p, int v);
 void SetPlrVit(int p, int v);
 void InitDungMsgs(int pnum);
 void PlayDungMsgs();
+#ifdef HELLFIRE
+int player_45EFA1(int i);
+int player_45EFAB(int i);
+int player_45EFB5(int i);
+#endif
 
 /* rdata */
 

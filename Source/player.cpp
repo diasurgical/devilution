@@ -4379,3 +4379,20 @@ void PlayDungMsgs()
 		sfxdelay = 0;
 	}
 }
+
+#ifdef HELLFIRE
+int player_45EFA1(int i)
+{
+	return MaxStats[i][ATTRIB_STR];
+}
+
+int player_45EFAB(int i)
+{
+	return MaxStats[i][ATTRIB_MAG];
+}
+
+int player_45EFB5(int i)
+{
+	return MaxStats[i][ATTRIB_DEX];
+}
+#endif
