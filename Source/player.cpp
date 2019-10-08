@@ -4335,7 +4335,6 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE97;
 		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
 			sfxdnum = PS_WARR97;
-
 #endif
 #endif
 		}
@@ -4356,7 +4355,6 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE96;
 		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
 			sfxdnum = PS_WARR96B;
-
 #endif
 #endif
 		}
@@ -4377,7 +4375,6 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE98;
 		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
 			sfxdnum = PS_WARR98;
-
 #endif
 #endif
 		}
@@ -4398,7 +4395,6 @@ void PlayDungMsgs()
 			sfxdnum = PS_ROGUE99;
 		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
 			sfxdnum = PS_WARR99;
-
 #endif
 #endif
 		}
