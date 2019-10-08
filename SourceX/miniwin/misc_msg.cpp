@@ -365,8 +365,16 @@ WINBOOL TranslateMessage(const MSG *lpMsg)
 
 SHORT GetAsyncKeyState(int vKey)
 {
-	DUMMY_ONCE();
-	// TODO: Not handled yet.
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	if (vKey == DVL_VK_SHIFT) {
+		if (state[SDL_SCANCODE_LSHIFT] || state[SDL_SCANCODE_RSHIFT]) {
+			return 0x8000;
+		}
+	}
+	if (vKey == DVL_VK_MENU && state[SDL_SCANCODE_M]) {
+		return 0x8000;
+	}
+
 	return 0;
 }
 
