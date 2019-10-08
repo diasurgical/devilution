@@ -702,7 +702,6 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		plrdata.size = sizeof(plrdata);
 		memset(&UiData, 0, sizeof(UiData));
 		UiData.size = sizeof(UiData);
-		UiData.parentwindow = SDrawGetFrameWindow(NULL);
 		UiData.artcallback = (void (*)())UiArtCallback;
 		UiData.createcallback = (void (*)())UiCreateGameCallback;
 		UiData.drawdesccallback = (void (*)())UiDrawDescCallback;

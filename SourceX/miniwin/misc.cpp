@@ -129,18 +129,6 @@ WINBOOL DeleteFileA(LPCSTR lpFileName)
 	return true;
 }
 
-HWND SetCapture(HWND hWnd)
-{
-	DUMMY_ONCE();
-	return hWnd;
-}
-
-WINBOOL ReleaseCapture()
-{
-	DUMMY_ONCE();
-	return true;
-}
-
 void FakeWMDestroy()
 {
 	init_cleanup();
@@ -222,24 +210,6 @@ bool SpawnWindow(LPCSTR lpWindowName, int nWidth, int nHeight)
 	}
 
 	return window != NULL;
-}
-
-int GetDeviceCaps(HDC hdc, int index)
-{
-	SDL_DisplayMode current;
-
-	if (SDL_GetCurrentDisplayMode(0, &current) <= -1) {
-		SDL_Log(SDL_GetError());
-		return 0;
-	}
-
-	return 0;
-}
-
-UINT GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
-{
-	DUMMY();
-	return 0;
 }
 
 BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)

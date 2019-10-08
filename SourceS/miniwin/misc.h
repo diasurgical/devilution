@@ -191,8 +191,6 @@ BOOL WINAPI ResetEvent(HANDLE hEvent);
 int WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds);
 
 WINBOOL WINAPI SetCursorPos(int X, int Y);
-HWND WINAPI SetCapture(HWND hWnd);
-WINBOOL WINAPI ReleaseCapture();
 
 SHORT WINAPI GetAsyncKeyState(int vKey);
 
@@ -215,9 +213,6 @@ WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
 void WINAPI Sleep(DWORD dwMilliseconds);
 
 WINBOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c);
-
-int WINAPI GetDeviceCaps(HDC hdc, int index);
-UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries);
 
 int WINAPIV wsprintfA(LPSTR, LPCSTR, ...);
 int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist);

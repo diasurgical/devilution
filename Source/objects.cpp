@@ -1534,7 +1534,6 @@ void Obj_Circle(int i)
 			AddMissile(plr[myplr].WorldX, plr[myplr].WorldY, 35, 46, plr[myplr]._pdir, MIS_RNDTELEPORT, 0, myplr, 0, 0);
 			track_repeat_walk(0);
 			sgbMouseDown = 0;
-			ReleaseCapture();
 			ClrPlrPath(myplr);
 			StartStand(myplr, 0);
 		}
