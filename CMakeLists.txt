@@ -79,7 +79,7 @@ if(HAIKU)
   set(ASAN OFF)
 endif()
 
-if(DIST)
+if(DIST OR DINGUX)
   set(sodium_USE_STATIC_LIBS ON)
 endif()
 
@@ -308,9 +308,14 @@ foreach(target devilution devilutionx)
     target_compile_options(${target} PUBLIC -fsanitize=address -fsanitize-recover=address)
     target_link_libraries(${target} PUBLIC -fsanitize=address -fsanitize-recover=address)
   endif()
+
   if(UBSAN)
     target_compile_options(${target} PUBLIC -fsanitize=undefined)
     target_link_libraries(${target} PUBLIC -fsanitize=undefined)
+  endif()
+
+  if(DINGUX)
+    target_compile_definitions(${target} PRIVATE DINGUX)
   endif()
 endforeach(target devilution devilutionx)
 
@@ -398,4 +403,8 @@ if(APPLE)
   set(CPACK_GENERATOR "DragNDrop")
 
   include(CPack)
+endif()
+
+if(DINGUX)
+  set_target_properties(devilutionx PROPERTIES OUTPUT_NAME "devilutionx.dge")
 endif()
