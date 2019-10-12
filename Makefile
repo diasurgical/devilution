@@ -59,6 +59,6 @@ storm.dll:
 #	$(error Please copy storm.dll (version 1.09[b]) here)
 
 clean:
-	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS) $(PKWARE_OBJS:.o=d) diabres.o storm.lib diabloui.lib devilution.exe
+	@$(RM) -v $(OBJS) $(TESTGEN_OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS) $(PKWARE_OBJS:.o=d) diabres.o storm.lib diabloui.lib devilution.exe
 
 .PHONY: clean all
