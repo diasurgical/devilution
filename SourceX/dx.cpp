@@ -252,15 +252,4 @@ void PaletteGetEntries(DWORD dwNumEntries, LPPALETTEENTRY lpEntries)
 		lpEntries[i].peBlue = system_palette[i].peBlue;
 	}
 }
-
-void PaletteSetEntries(DWORD dwCount, LPPALETTEENTRY lpEntries)
-{
-	for (DWORD i = 0; i < dwCount; i++) {
-		system_palette[i].peFlags = 0;
-		system_palette[i].peRed = lpEntries[i].peRed;
-		system_palette[i].peGreen = lpEntries[i].peGreen;
-		system_palette[i].peBlue = lpEntries[i].peBlue;
-	}
-	palette_update();
-}
 } // namespace dvl

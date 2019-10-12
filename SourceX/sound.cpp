@@ -36,12 +36,6 @@ char *sgszMusicTracks[NUM_MUSIC] = {
 #endif
 };
 
-void snd_stop_snd(TSnd *pSnd)
-{
-	if (pSnd && pSnd->DSB)
-		pSnd->DSB->Stop();
-}
-
 BOOL snd_playing(TSnd *pSnd)
 {
 	DWORD dwStatus;

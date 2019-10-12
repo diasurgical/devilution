@@ -26,14 +26,6 @@ void SetLastError(DWORD dwErrCode)
 	last_error = dwErrCode;
 }
 
-char *_strlwr(char *str)
-{
-	for (char *p = str; *p; ++p) {
-		*p = tolower(*p);
-	}
-	return str;
-}
-
 int wsprintfA(LPSTR dest, LPCSTR format, ...)
 {
 	va_list args;
@@ -104,11 +96,6 @@ WINBOOL GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
 	strncpy(lpBuffer, "localhost", *nSize);
 	*nSize = strlen(lpBuffer);
 	return true;
-}
-
-UINT GetDriveTypeA(LPCSTR lpRootPathName)
-{
-	return DVL_DRIVE_CDROM;
 }
 
 WINBOOL DeleteFileA(LPCSTR lpFileName)
@@ -202,18 +189,5 @@ bool SpawnWindow(LPCSTR lpWindowName, int nWidth, int nHeight)
 	}
 
 	return window != NULL;
-}
-
-BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)
-{
-	lpVersionInformation->dwMajorVersion = 5;
-	lpVersionInformation->dwMinorVersion = 0;
-	lpVersionInformation->dwPlatformId = DVL_VER_PLATFORM_WIN32_NT;
-	return true;
-}
-
-void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength)
-{
-	strncpy(lpString1, lpString2, iMaxLength);
 }
 } // namespace dvl
