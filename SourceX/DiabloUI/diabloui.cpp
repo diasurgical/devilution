@@ -56,6 +56,7 @@ void UiDestroy()
 {
 	ArtHero.Unload();
 	UnloadTtfFont();
+	UnloadArtFonts();
 }
 
 void UiInitList(int min, int max, void (*fnFocus)(int value), void (*fnSelect)(int value), void (*fnEsc)(), UiItem *items, int itemCnt, bool itemsWraps, bool (*fnYesNo)())
