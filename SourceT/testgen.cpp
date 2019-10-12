@@ -57,9 +57,26 @@ void gen_drlg_l1_tests(void) {
 
 	CreateL5Dungeon(in_seed, in_entry);
 
-	char path[MAX_PATH];
-	sprintf(path, "testdata/tiles_%d.bin", in_seed);
-	write_file(path, dungeon, sizeof(dungeon));
+	// Dump pre-dungeon tiles.
+	char output_path[MAX_PATH];
+	//sprintf(output_path, "testdata/pre-tiles_%d.bin", in_seed);
+	//write_file(output_path, pdungeon, sizeof(pdungeon));
+
+	// Dump tiles.
+	sprintf(output_path, "testdata/tiles_%d.bin", in_seed);
+	write_file(output_path, dungeon, sizeof(dungeon));
+
+	// Dungeon dungeon pieces.
+	sprintf(output_path, "testdata/dpieces_%d.bin", in_seed);
+	write_file(output_path, dPiece, sizeof(dPiece));
+
+	// Dungeon arches.
+	sprintf(output_path, "testdata/arches_%d.bin", in_seed);
+	write_file(output_path, dArch, sizeof(dArch));
+
+	// Dungeon transparency.
+	sprintf(output_path, "testdata/transparency_%d.bin", in_seed);
+	write_file(output_path, dTransVal, sizeof(dTransVal));
 }
 
 void testgen()
