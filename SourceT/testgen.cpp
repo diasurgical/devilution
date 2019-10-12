@@ -75,7 +75,7 @@ void gen_drlg_l1_tests(void)
 	for (int i = 0; i < sizeof(golden) / sizeof(Golden); i++) {
 		Golden g = golden[i];
 
-		// Reset globals.
+		// Reset globals (not needed).
 		memset(pdungeon, 0, sizeof(pdungeon));
 		memset(dungeon, 0, sizeof(dungeon));
 		memset(dPiece, 0, sizeof(dPiece));

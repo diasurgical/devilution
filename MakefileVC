@@ -55,6 +55,9 @@ endif
 
 all: Diablo.exe
 
+testgen: CFLAGS += /D "TESTGEN"
+testgen: testgen.exe
+
 debug: CFLAGS += /D "_DEBUG"
 debug: Diablo.exe
 
@@ -63,10 +66,13 @@ DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp Source/render.
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
-TESTGEN_SRC=SourceT/testgen.cpp
+TESTGEN_SRC=$(sort $(wildcard SourceT/*.cpp))
 TESTGEN_OBJS=$(TESTGEN_SRC:.cpp=.obj)
 
-Diablo.exe: main_files $(TESTGEN_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
+Diablo.exe: main_files diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib 3rdParty/PKWare/pkware.lib
+
+testgen.exe: main_files $(TESTGEN_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
 	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(TESTGEN_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib 3rdParty/PKWare/pkware.lib
 
 DiabloUI/diabloui.lib:

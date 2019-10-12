@@ -21,6 +21,9 @@ LDFLAGS=-L./ -static-libgcc -mwindows
 
 all: devilution.exe
 
+testgen: CXXFLAGS += -DTESTGEN -Wno-narrowing
+testgen: testgen.exe
+
 debug: CXXFLAGS += -D_DEBUG
 debug: CPPFLAGS += -D_DEBUG
 debug: devilution.exe
@@ -34,7 +37,10 @@ TESTGEN_OBJS=$(TESTGEN_SRC:.cpp=.o)
 PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.o)
 
-devilution.exe: $(OBJS) $(TESTGEN_OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
+devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+testgen.exe: $(OBJS) $(TESTGEN_OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 diabres.o: Diablo.rc

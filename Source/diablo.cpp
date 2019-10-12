@@ -7,8 +7,6 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-#include "testgen.h"
-
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
@@ -254,15 +252,13 @@ BOOL diablo_get_not_running()
  * @param lpCmdLine The command line for the application
  * @param nCmdShow Initial window state
  */
+#ifndef TESTGEN
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HINSTANCE hInst;
 	int nData;
 	char szFileName[MAX_PATH];
 	BOOL bNoEvent;
-
-	testgen();
-	return 0;
 
 	hInst = hInstance;
 #ifndef DEBUGGER
@@ -334,6 +330,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	return FALSE;
 }
+#endif
 
 void diablo_parse_flags(char *args)
 {
