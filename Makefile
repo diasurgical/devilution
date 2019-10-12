@@ -14,14 +14,14 @@ endif
 #     static_cast<NEW_TYPE>(reinterpret_cast<uintptr_t>(ptr))
 # instead of
 #     (NEW_TYPE)(ptr)
-CXXFLAGS=-g -fpermissive -Wno-write-strings -I./Source -I./SourceT
+CXXFLAGS=-fpermissive -Wno-write-strings
 CPPFLAGS=-MMD -MF $*.d
 LDLIBS=-lgdi32 -lversion -ldiabloui -lstorm
 LDFLAGS=-L./ -static-libgcc -mwindows
 
 all: devilution.exe
 
-testgen: CXXFLAGS += -DTESTGEN -Wno-narrowing
+testgen: CXXFLAGS += -DTESTGEN -I./SourceT -Wno-narrowing
 testgen: testgen.exe
 
 debug: CXXFLAGS += -D_DEBUG

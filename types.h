@@ -51,8 +51,8 @@
 #endif
 
 // If defined, use copy protection [Default -> Defined]
-#if !defined(_DEBUG) && !defined(SPAWN)
-//#define COPYPROT
+#if !defined(_DEBUG) && !defined(SPAWN) && !defined(TESTGEN)
+#define COPYPROT
 #endif
 
 // If defined, don't reload for debuggers [Default -> Undefined]
