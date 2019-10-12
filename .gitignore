@@ -15,6 +15,9 @@
 devilution-comparer
 comparer-config.toml
 
+# MPQ archives
+*.mpq
+
 # ELF object file.
 *.o
 
