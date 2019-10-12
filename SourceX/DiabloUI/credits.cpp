@@ -79,17 +79,16 @@ CachedLine PrepareLine(std::size_t index)
 		// Blit the shadow first:
 		SDL_Rect shadow_rect = { SHADOW_OFFSET_X, SHADOW_OFFSET_Y, 0, 0 };
 		if (SDL_BlitSurface(text.get(), nullptr, surface.get(), &shadow_rect) <= -1)
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 
 		// Change the text surface color and blit again:
 		SDL_Color text_colors[2] = { mask_color, text_color };
-
 		if (SDLC_SetSurfaceColors(text.get(), text_colors, 0, 2) <= -1)
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		SDLC_SetColorKey(text.get(), 0);
 
 		if (SDL_BlitSurface(text.get(), nullptr, surface.get(), nullptr) <= -1)
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 	}
 
 	return CachedLine(index, std::move(surface));
@@ -236,7 +235,7 @@ void CreditsRenderer::Render()
 
 		SDL_Rect dest_rect = { dest_x, dest_y, 0, 0 };
 		if (SDL_BlitSurface(line.surface.get(), nullptr, pal_surface, &dest_rect) <= -1)
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 	}
 	SDL_SetClipRect(pal_surface, nullptr);
 }

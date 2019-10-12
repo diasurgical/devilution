@@ -44,15 +44,13 @@ void dx_create_back_buffer()
 {
 	pal_surface = SDL_CreateRGBSurfaceWithFormat(0, BUFFER_WIDTH, BUFFER_HEIGHT, 8, SDL_PIXELFORMAT_INDEX8);
 	if (pal_surface == NULL) {
-		SDL_Log(SDL_GetError());
-		UiErrorOkDialog("SDL Error", SDL_GetError());
+		ErrSdl();
 	}
 
 	gpBuffer = (BYTE *)pal_surface->pixels;
 
 	if (SDLC_SetSurfaceColors(pal_surface, palette) <= -1) {
-		SDL_Log(SDL_GetError());
-		UiErrorOkDialog("SDL Error", SDL_GetError());
+		ErrSdl();
 	}
 
 	pal_surface_palette_version = 1;
@@ -66,19 +64,18 @@ void dx_create_primary_surface()
 	if (renderer) {
 		int width, height;
 		if (SDL_GetRendererOutputSize(renderer, &width, &height) <= -1) {
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 		Uint32 format;
 		if (SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr) < 0)
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		surface = SDL_CreateRGBSurfaceWithFormat(0, width, height, SDL_BITSPERPIXEL(format), format);
 	} else {
 		surface = SDL_GetWindowSurface(window);
 	}
 #endif
 	if (surface == NULL) {
-		SDL_Log(SDL_GetError());
-		UiErrorOkDialog("SDL Error", SDL_GetError());
+		ErrSdl();
 	}
 }
 
@@ -178,8 +175,7 @@ void CreatePalette()
 {
 	palette = SDL_AllocPalette(256);
 	if (palette == NULL) {
-		SDL_Log(SDL_GetError());
-		UiErrorOkDialog("SDL Error", SDL_GetError());
+		ErrSdl();
 	}
 }
 
@@ -200,9 +196,7 @@ void BltFast(DWORD dwX, DWORD dwY, LPRECT lpSrcRect)
 
 	// Convert from 8-bit to 32-bit
 	if (SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect) <= -1) {
-		SDL_Log(SDL_GetError());
-		UiErrorOkDialog("SDL Error", SDL_GetError());
-		return;
+		ErrSdl();
 	}
 
 	bufferUpdated = true;
@@ -218,30 +212,30 @@ void RenderPresent()
 
 #ifdef USE_SDL1
 	if (SDL_Flip(surface) <= -1) {
-		SDL_Log(SDL_GetError());
+		ErrSdl();
 	}
 #else
 	if (renderer) {
 		if (SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch) <= -1) { //pitch is 2560
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 
 		// Clear buffer to avoid artifacts in case the window was resized
 		if (SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255) <= -1) { // TODO only do this if window was resized
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 
 		if (SDL_RenderClear(renderer) <= -1) {
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 
 		if (SDL_RenderCopy(renderer, texture, NULL, NULL) <= -1) {
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 		SDL_RenderPresent(renderer);
 	} else {
 		if (SDL_UpdateWindowSurface(window) <= -1) {
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 	}
 #endif

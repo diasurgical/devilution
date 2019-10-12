@@ -245,8 +245,9 @@ bool UiFocusNavigation(SDL_Event *event)
 					char *clipboard = SDL_GetClipboardText();
 					if (clipboard == NULL) {
 						SDL_Log(SDL_GetError());
+					} else {
+						selhero_CatToName(clipboard, UiTextInput, UiTextInputLen);
 					}
-					selhero_CatToName(clipboard, UiTextInput, UiTextInputLen);
 				}
 				return true;
 #endif
@@ -353,7 +354,7 @@ void UiInitialize()
 	LoadArtFonts();
 	if (ArtCursor.surface != nullptr) {
 		if (SDL_ShowCursor(SDL_DISABLE) <= -1) {
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		}
 	}
 }

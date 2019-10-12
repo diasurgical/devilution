@@ -29,12 +29,12 @@ void DrawArt(int screenX, int screenY, Art *art, int nFrame,
 
 	if (art->surface->format->BitsPerPixel == 8 && art->palette_version != pal_surface_palette_version) {
 		if (SDLC_SetSurfaceColors(art->surface, pal_surface->format->palette) <= -1)
-			SDL_Log(SDL_GetError());
+			ErrSdl();
 		art->palette_version = pal_surface_palette_version;
 	}
 
 	if (SDL_BlitSurface(art->surface, &src_rect, pal_surface, &dst_rect) <= -1) {
-		SDL_Log(SDL_GetError());
+		ErrSdl();
 	}
 }
 

@@ -186,8 +186,8 @@ WINBOOL WINAPI CloseHandle(HANDLE hObject);
 HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
     LPCSTR lpName);
 BOOL CloseEvent(HANDLE event);
-BOOL WINAPI SetEvent(HANDLE hEvent);
-BOOL WINAPI ResetEvent(HANDLE hEvent);
+void SetEvent(HANDLE hEvent);
+void ResetEvent(HANDLE hEvent);
 int WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds);
 
 WINBOOL WINAPI SetCursorPos(int X, int Y);
