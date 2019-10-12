@@ -3,7 +3,7 @@ language: cpp
 os:
   - linux
   - osx
-  
+
 osx_image: xcode10.3
 
 notifications:
@@ -52,8 +52,7 @@ jobs:
           set -e
           wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
           tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-          rm comparer-config.toml
-          wget https://raw.githubusercontent.com/diasurgical/devilution-comparer/master/comparer-config.toml
+          mv comparer-config/diablo.toml comparer-config.toml
           echo '#!/bin/sh' | sudo tee /bin/wine
           echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
           sudo chmod +x /bin/wine
@@ -73,8 +72,7 @@ jobs:
           set -e
           wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
           tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-          rm comparer-config.toml
-          wget https://raw.githubusercontent.com/diasurgical/devilution-comparer/master/shareware-comparer-config.toml -O comparer-config.toml
+          mv comparer-config/spawn.toml comparer-config.toml
           echo '#!/bin/sh' | sudo tee /bin/wine
           echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
           sudo chmod +x /bin/wine
@@ -94,8 +92,7 @@ jobs:
           set -e
           wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
           tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-          rm comparer-config.toml
-          wget https://raw.githubusercontent.com/diasurgical/devilution-comparer/master/hellfire-comparer-config.toml -O comparer-config.toml
+          mv comparer-config/hellfire.toml comparer-config.toml
           echo '#!/bin/sh' | sudo tee /bin/wine
           echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
           sudo chmod +x /bin/wine
