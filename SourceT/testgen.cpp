@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void gen_tests() {
+void testgen() {
 	printf("hello world\n");
 }

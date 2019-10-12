@@ -38,6 +38,7 @@ else
 endif
 
 CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi /FAs
+CFLAGS+=/I ./SourceT
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
 ifeq ($(SPAWN),1)
@@ -62,8 +63,11 @@ DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp Source/render.
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
-Diablo.exe: main_files diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
-	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib 3rdParty/PKWare/pkware.lib
+TESTGEN_SRC=SourceT/testgen.cpp
+TESTGEN_OBJS=$(TESTGEN_SRC:.cpp=.obj)
+
+Diablo.exe: main_files $(TESTGEN_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(TESTGEN_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib 3rdParty/PKWare/pkware.lib
 
 DiabloUI/diabloui.lib:
 	make -C DiabloUI
@@ -85,6 +89,6 @@ diablo.res: Diablo.rc
 	$(RC) /i $(VC6_INC_DIR) /l 0x409 /fo $@ $<
 
 clean:
-	@$(RM) -v $(OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch
+	@$(RM) -v $(OBJS) $(TESTGEN_OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch
 
 .PHONY: clean all

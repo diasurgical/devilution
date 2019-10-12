@@ -7,7 +7,7 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-#include "gen_tests.h"
+#include "testgen.h"
 
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
@@ -261,7 +261,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	char szFileName[MAX_PATH];
 	BOOL bNoEvent;
 
-	gen_tests();
+	testgen();
 	return 0;
 
 	hInst = hInstance;
