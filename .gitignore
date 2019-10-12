@@ -6,6 +6,9 @@
 # macOS
 .DS_Store
 
+# Error files.
+*.ERR
+
 # CodeLite
 .CodeLite
 *.project
@@ -17,6 +20,9 @@ comparer-config.toml
 
 # MPQ archives
 *.mpq
+
+# Generated test data.
+testdata
 
 # ELF object file.
 *.o

@@ -14,7 +14,7 @@ endif
 #     static_cast<NEW_TYPE>(reinterpret_cast<uintptr_t>(ptr))
 # instead of
 #     (NEW_TYPE)(ptr)
-CXXFLAGS=-fpermissive -Wno-write-strings
+CXXFLAGS=-g -fpermissive -Wno-write-strings -I./Source -I./SourceT
 CPPFLAGS=-MMD -MF $*.d
 LDLIBS=-lgdi32 -lversion -ldiabloui -lstorm
 LDFLAGS=-L./ -static-libgcc -mwindows
@@ -28,10 +28,13 @@ debug: devilution.exe
 DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp, $(wildcard Source/*.cpp)))
 OBJS=$(DIABLO_SRC:.cpp=.o)
 
+TESTGEN_SRC=SourceT/testgen.cpp
+TESTGEN_OBJS=$(TESTGEN_SRC:.cpp=.o)
+
 PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.o)
 
-devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
+devilution.exe: $(OBJS) $(TESTGEN_OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 diabres.o: Diablo.rc

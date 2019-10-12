@@ -37,7 +37,7 @@ else
 	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi /FAs
+CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /I Source/ /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi /FAs
 CFLAGS+=/I ./SourceT
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
