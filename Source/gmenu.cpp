@@ -109,6 +109,7 @@ void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 			sgCurrentMenuIdx++;
 		}
 	}
+	// BUGFIX: OOB access when sgCurrentMenuIdx is 0; should be set to NULL instead. (fixed)
 	sgpCurrItem = sgCurrentMenuIdx > 0 ? &sgpCurrentMenu[sgCurrentMenuIdx - 1] : nullptr;
 	gmenu_up_down(TRUE);
 }
