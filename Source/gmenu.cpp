@@ -55,7 +55,7 @@ void gmenu_print_text(int x, int y, char *pszStr)
 		c = gbFontTransTbl[(BYTE)*pszStr++];
 		c = lfontframe[c];
 		if (c)
-			CelDecodeLightOnly(x, y, BigTGold_cel, c, 46);
+			CelDrawLight(x, y, BigTGold_cel, c, 46);
 		x += lfontkern[c] + 2;
 	}
 }
@@ -150,7 +150,7 @@ void gmenu_draw()
 	if (sgpCurrentMenu) {
 		if (dword_63447C)
 			dword_63447C(sgpCurrentMenu);
-		CelDecodeOnly((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
+		CelDraw((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
 		y = 160 + SCREEN_Y;
 		i = sgpCurrentMenu;
 		if (sgpCurrentMenu->fnMenu) {
@@ -178,21 +178,21 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 	w = gmenu_get_lfont(pItem);
 	if (pItem->dwFlags & GMENU_SLIDER) {
 		x = 16 + w / 2 + SCREEN_X;
-		CelDecodeOnly(x, t - 8, optbar_cel, 1, 287);
+		CelDraw(x, t - 8, optbar_cel, 1, 287);
 		step = pItem->dwFlags & 0xFFF;
 		nSteps = (pItem->dwFlags & 0xFFF000) >> 12;
 		if (nSteps < 2)
 			nSteps = 2;
 		pos = step * 256 / nSteps;
 		gmenu_clear_buffer(x + 2, t - 10, pos + 13, 28);
-		CelDecodeOnly(x + 2 + pos, y - 12, option_cel, 1, 27);
+		CelDraw(x + 2 + pos, y - 12, option_cel, 1, 27);
 	}
 	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
 	light_table_index = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
 	gmenu_print_text(x, y, pItem->pszStr);
 	if (pItem == sgpCurrItem) {
-		CelDecodeOnly(x - 54, y + 1, PentSpin_cel, PentSpin_frame, 48);
-		CelDecodeOnly(x + 4 + w, y + 1, PentSpin_cel, PentSpin_frame, 48);
+		CelDraw(x - 54, y + 1, PentSpin_cel, PentSpin_frame, 48);
+		CelDraw(x + 4 + w, y + 1, PentSpin_cel, PentSpin_frame, 48);
 	}
 }
 
