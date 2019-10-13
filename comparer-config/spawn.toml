@@ -1233,112 +1233,112 @@ addr = 0x40DFFE
 size = 0x6E
 
 [[func]]
-name = "CelDrawDatOnly"
+name = "CelBlit"
 addr = 0x40E07C
 size = 0x68
 
 [[func]]
-name = "CelDecodeOnly"
+name = "CelDraw"
 addr = 0x40E0E4
 size = 0x44
 
 [[func]]
-name = "CelDecDatOnly"
+name = "CelBlitFrame"
 addr = 0x40E128
 size = 0x26
 
 [[func]]
-name = "CelDrawHdrOnly"
+name = "CelClippedDraw"
 addr = 0x40E14E
 size = 0x7B
 
 [[func]]
-name = "CelDecodeHdrOnly"
+name = "CelClippedBlit"
 addr = 0x40E1C9
 size = 0x53
 
 [[func]]
-name = "CelDecDatLightOnly"
+name = "CelBlitLight"
 addr = 0x40E21C
 size = 0xDC
 
 [[func]]
-name = "CelDecDatLightTrans"
+name = "CelBlitLightTrans"
 addr = 0x40E2F8
 size = 0xDD
 
 [[func]]
-name = "CelDecodeLightOnly"
+name = "CelDrawLight"
 addr = 0x40E3D5
 size = 0x58
 
 [[func]]
-name = "CelDecodeHdrLightOnly"
+name = "CelClippedDrawLight"
 addr = 0x40E42D
 size = 0x8E
 
 [[func]]
-name = "CelDecodeHdrLightTrans"
+name = "CelClippedBlitLightTrans"
 addr = 0x40E4BB
 size = 0x74
 
 [[func]]
-name = "CelDrawHdrLightRed"
+name = "CelDrawLightRed"
 addr = 0x40E52F
 size = 0x11C
 
 [[func]]
-name = "Cel2DecDatOnly"
+name = "CelBlitSafe"
 addr = 0x40E64B
 size = 0x7F
 
 [[func]]
-name = "Cel2DrawHdrOnly"
+name = "CelClippedDrawSafe"
 addr = 0x40E6CA
 size = 0x7B
 
 [[func]]
-name = "Cel2DecodeHdrOnly"
+name = "CelClippedBlitSafe"
 addr = 0x40E745
 size = 0x55
 
 [[func]]
-name = "Cel2DecDatLightOnly"
+name = "CelBlitLightSafe"
 addr = 0x40E79A
 size = 0xF7
 
 [[func]]
-name = "Cel2DecDatLightTrans"
+name = "CelBlitLightTransSafe"
 addr = 0x40E891
 size = 0xF8
 
 [[func]]
-name = "Cel2DecodeHdrLight"
+name = "CelDrawLightSafe"
 addr = 0x40E989
 size = 0x90
 
 [[func]]
-name = "Cel2DecodeLightTrans"
+name = "CelClippedBlitLightTransSafe"
 addr = 0x40EA19
 size = 0x72
 
 [[func]]
-name = "Cel2DrawHdrLightRed"
+name = "CelDrawLightRedSafe"
 addr = 0x40EA8B
 size = 0x121
 
 [[func]]
-name = "CelDecodeRect"
+name = "CelBlitWidth"
 addr = 0x40EBAC
 size = 0x8A
 
 [[func]]
-name = "CelDecodeClr"
+name = "CelBlitOutline"
 addr = 0x40EC36
 size = 0xFA
 
 [[func]]
-name = "CelDrawHdrClrHL"
+name = "CelBlitOutlineSafe"
 addr = 0x40ED30
 size = 0x12F
 
@@ -1403,72 +1403,72 @@ addr = 0x40F542
 size = 0x73
 
 [[func]]
-name = "Cl2DecodeFrm1"
+name = "Cl2Draw"
 addr = 0x40F5B5
 size = 0x7A
 
 [[func]]
-name = "Cl2DecDatFrm1"
+name = "Cl2Blit"
 addr = 0x40F62F
 size = 0x88
 
 [[func]]
-name = "Cl2DecodeFrm2"
+name = "Cl2DrawOutline"
 addr = 0x40F6B7
 size = 0x7E
 
 [[func]]
-name = "Cl2DecDatFrm2"
+name = "Cl2BlitOutline"
 addr = 0x40F735
 size = 0xBC
 
 [[func]]
-name = "Cl2DecodeFrm3"
+name = "Cl2DrawLightTbl"
 addr = 0x40F7F1
 size = 0xC3
 
 [[func]]
-name = "Cl2DecDatLightTbl1"
+name = "Cl2BlitLight"
 addr = 0x40F8B4
 size = 0xA5
 
 [[func]]
-name = "Cl2DecodeLightTbl"
+name = "Cl2DrawLight"
 addr = 0x40F959
 size = 0x9A
 
 [[func]]
-name = "Cl2DecodeFrm4"
+name = "Cl2DrawSafe"
 addr = 0x40F9F3
 size = 0x7A
 
 [[func]]
-name = "Cl2DecDatFrm4"
+name = "Cl2BlitSafe"
 addr = 0x40FA6D
 size = 0x9C
 
 [[func]]
-name = "Cl2DecodeClrHL"
+name = "Cl2DrawOutlineSafe"
 addr = 0x40FB09
 size = 0x8F
 
 [[func]]
-name = "Cl2DecDatClrHL"
+name = "Cl2BlitOutlineSafe"
 addr = 0x40FB98
 size = 0xD0
 
 [[func]]
-name = "Cl2DecodeFrm5"
+name = "Cl2DrawLightTblSafe"
 addr = 0x40FC68
 size = 0xC3
 
 [[func]]
-name = "Cl2DecDatLightTbl2"
+name = "Cl2BlitLightSafe"
 addr = 0x40FD2B
 size = 0xBD
 
 [[func]]
-name = "Cl2DecodeFrm6"
+name = "Cl2DrawLightSafe"
 addr = 0x40FDE8
 size = 0x9A
 

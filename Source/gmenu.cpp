@@ -59,7 +59,7 @@ void gmenu_print_text(int x, int y, char *pszStr)
 		c = gbFontTransTbl[(BYTE)*pszStr++];
 		c = lfontframe[c];
 		if (c)
-			CelDecodeLightOnly(x, y, BigTGold_cel, c, 46);
+			CelDrawLight(x, y, BigTGold_cel, c, 46);
 		x += lfontkern[c] + 2;
 	}
 }
@@ -118,6 +118,7 @@ void gmenu_call_proc(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 			sgCurrentMenuIdx++;
 		}
 	}
+	// BUGFIX: OOB access when sgCurrentMenuIdx is 0; should be set to NULL instead.
 	sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx - 1];
 	gmenu_up_down(TRUE);
 }
@@ -161,7 +162,6 @@ void gmenu_draw()
 	if (sgpCurrentMenu) {
 		if (dword_63447C)
 			dword_63447C(sgpCurrentMenu);
-
 #ifdef HELLFIRE
 		ticks = GetTickCount();
 		if ((int)(ticks - LogoAnim_tick) > 25) {
@@ -170,9 +170,9 @@ void gmenu_draw()
 				LogoAnim_frame = 1;
 			LogoAnim_tick = ticks;
 		}
-		CelDecodeOnly((SCREEN_WIDTH - 430) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, LogoAnim_frame, 430);
+		CelDraw((SCREEN_WIDTH - 430) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, LogoAnim_frame, 430);
 #else
-		CelDecodeOnly((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
+		CelDraw((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
 #endif
 		y = 160 + SCREEN_Y;
 		i = sgpCurrentMenu;
@@ -206,9 +206,9 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 	if (pItem->dwFlags & GMENU_SLIDER) {
 		x = 16 + w / 2 + SCREEN_X;
 #ifdef HELLFIRE
-		CelDecodeOnly(x, y - 10, optbar_cel, 1, 287);
+		CelDraw(x, y - 10, optbar_cel, 1, 287);
 #else
-		CelDecodeOnly(x, t - 8, optbar_cel, 1, 287);
+		CelDraw(x, t - 8, optbar_cel, 1, 287);
 #endif
 		step = pItem->dwFlags & 0xFFF;
 		nSteps = (pItem->dwFlags & 0xFFF000) >> 12;
@@ -220,14 +220,14 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 #else
 		gmenu_clear_buffer(x + 2, t - 10, pos + 13, 28);
 #endif
-		CelDecodeOnly(x + 2 + pos, y - 12, option_cel, 1, 27);
+		CelDraw(x + 2 + pos, y - 12, option_cel, 1, 27);
 	}
 	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
 	light_table_index = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
 	gmenu_print_text(x, y, pItem->pszStr);
 	if (pItem == sgpCurrItem) {
-		CelDecodeOnly(x - 54, y + 1, PentSpin_cel, PentSpin_frame, 48);
-		CelDecodeOnly(x + 4 + w, y + 1, PentSpin_cel, PentSpin_frame, 48);
+		CelDraw(x - 54, y + 1, PentSpin_cel, PentSpin_frame, 48);
+		CelDraw(x + 4 + w, y + 1, PentSpin_cel, PentSpin_frame, 48);
 	}
 }
 

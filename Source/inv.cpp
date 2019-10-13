@@ -181,7 +181,7 @@ void DrawInv()
 	int frame, frame_width, colour, screen_x, screen_y, i, j, ii;
 	BYTE *pBuff;
 
-	CelDecodeOnly(PANEL_RIGHT, 351 + SCREEN_Y, pInvCels, 1, 320);
+	CelDraw(PANEL_RIGHT, 351 + SCREEN_Y, pInvCels, 1, 320);
 
 	if (plr[myplr].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(PANEL_RIGHT + 133, 59 + SCREEN_Y, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);
@@ -200,32 +200,32 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag) {
 #ifdef HELLFIRE
-			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			if (frame <= 179) {
+			CelClippedDraw(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrLightRed(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -248,10 +248,10 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
@@ -260,20 +260,20 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
+				CelDrawLightRed(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			} else {
-				CelDrawHdrLightRed(PANEL_RIGHT + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -296,10 +296,10 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
@@ -308,20 +308,20 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrLightRed(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(PANEL_RIGHT + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -344,10 +344,10 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
@@ -356,20 +356,20 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrLightRed(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(PANEL_RIGHT + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -395,10 +395,10 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
@@ -407,20 +407,20 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -441,10 +441,10 @@ void DrawInv()
 #ifdef HELLFIRE
 				if (frame <= 179) {
 #endif
-					CelDecodeHdrLightTrans(pBuff, pCursCels, frame, frame_width, 0, 8);
+					CelClippedBlitLightTrans(pBuff, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 				} else {
-					CelDecodeHdrLightTrans(pBuff, pCursCels2, frame - 179, frame_width, 0, 8);
+					CelClippedBlitLightTrans(pBuff, pCursCels2, frame - 179, frame_width, 0, 8);
 				}
 #endif
 
@@ -474,10 +474,10 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
@@ -486,20 +486,20 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -522,10 +522,10 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDecodeClr(colour, PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDecodeClr(colour, PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		}
@@ -534,20 +534,20 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrOnly(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrOnly(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
 			}
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
-				CelDrawHdrLightRed(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
-				CelDrawHdrLightRed(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(PANEL_RIGHT + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
 		}
@@ -584,14 +584,14 @@ void DrawInv()
 #ifdef HELLFIRE
 				if (frame <= 179) {
 #endif
-					CelDecodeClr(
-						colour,
-						InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
-						InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
-						pCursCels, frame, frame_width, 0, 8);
+				CelBlitOutline(
+				    colour,
+				    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
+				    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
+				    pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 				} else {
-					CelDecodeClr(
+					CelBlitOutline(
 					    colour,
 					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_Y,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
@@ -604,13 +604,13 @@ void DrawInv()
 #ifdef HELLFIRE
 				if (frame <= 179) {
 #endif
-					CelDrawHdrOnly(
-						InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
-						InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
-						pCursCels, frame, frame_width, 0, 8);
+				CelClippedDraw(
+				    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
+				    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
+				    pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 				} else {
-					CelDrawHdrOnly(
+					CelClippedDraw(
 					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_Y,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
 					    pCursCels2, frame - 179, frame_width, 0, 8);
@@ -620,13 +620,13 @@ void DrawInv()
 #ifdef HELLFIRE
 				if (frame <= 179) {
 #endif
-					CelDrawHdrLightRed(
-						InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
-						InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
-						pCursCels, frame, frame_width, 0, 8, 1);
+				CelDrawLightRed(
+				    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
+				    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
+				    pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 				} else {
-					CelDrawHdrLightRed(
+					CelDrawLightRed(
 					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_Y,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
 					    pCursCels2, frame - 179, frame_width, 0, 8, 1);
@@ -666,10 +666,10 @@ void DrawInvBelt()
 #ifdef HELLFIRE
 			if (frame <= 179)
 #endif
-				CelDecodeClr(colour, InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			else
-				CelDecodeClr(colour, InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelBlitOutline(colour, InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels2, frame - 179, frame_width, 0, 8);
 #endif
 		}
 
@@ -677,19 +677,19 @@ void DrawInvBelt()
 #ifdef HELLFIRE
 			if (frame <= 179)
 #endif
-				CelDrawHdrOnly(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			else
-				CelDrawHdrOnly(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels2, frame - 179, frame_width, 0, 8);
+				CelClippedDraw(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels2, frame - 179, frame_width, 0, 8);
 #endif
 		} else {
 #ifdef HELLFIRE
 			if (frame <= 179)
 #endif
-				CelDrawHdrLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			else
-				CelDrawHdrLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels2, frame - 179, frame_width, 0, 8, 1);
+				CelDrawLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 #endif
 		}
 
