@@ -305,9 +305,11 @@ void UiOkDialog(const char *text, const char *caption, bool error, UiItem *rende
 		return;
 	}
 
+	gbActive = false;
 	Init(text, caption, error);
 	DialogLoop(dialogItems, dialogItemsSize, render_behind, render_behind_size);
 	Deinit();
+	gbActive = true;
 }
 
 void UiErrorOkDialog(const char *text, const char *caption, UiItem *render_behind, std::size_t render_behind_size)
