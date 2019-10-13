@@ -25,18 +25,6 @@ void FreeDebugGFX()
 	MemFreeDbg(pSquareCel);
 }
 
-#ifdef _DEBUG
-void seed_desync_index_get()
-{
-	if (currlevel == 0) {
-		return;
-	}
-
-	update_seed_check = TRUE;
-	seed_index = level_seeds[currlevel];
-}
-#endif
-
 void CheckDungeonClear()
 {
 	int i, j;

@@ -8,9 +8,6 @@ extern char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
 void LoadDebugGFX();
 void FreeDebugGFX();
-#ifdef _DEBUG
-void seed_desync_check(int seed);
-#endif
 void CheckDungeonClear();
 #ifdef _DEBUG
 void GiveGoldCheat();
