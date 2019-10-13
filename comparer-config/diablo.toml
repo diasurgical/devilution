@@ -1308,12 +1308,12 @@ addr = 0x411614
 size = 0x15E
 
 [[func]]
-name = "DRLG_L3SpawnEdge"
+name = "DRLG_L3Spawn"
 addr = 0x411772
 size = 0x12A
 
 [[func]]
-name = "DRLG_L3Spawn"
+name = "DRLG_L3SpawnEdge"
 addr = 0x41189C
 size = 0x144
 
