@@ -1123,16 +1123,16 @@ void InitControlPan()
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", NULL);
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", NULL);
-	CelDecodeRect(pBtmBuff, 0, (PANEL_HEIGHT + 16) - 1, PANEL_WIDTH, pStatusPanel, 1, PANEL_WIDTH);
+	CelBlitWidth(pBtmBuff, 0, (PANEL_HEIGHT + 16) - 1, PANEL_WIDTH, pStatusPanel, 1, PANEL_WIDTH);
 	MemFreeDbg(pStatusPanel);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", NULL);
-	CelDecodeRect(pLifeBuff, 0, 87, 88, pStatusPanel, 1, 88);
-	CelDecodeRect(pManaBuff, 0, 87, 88, pStatusPanel, 2, 88);
+	CelBlitWidth(pLifeBuff, 0, 87, 88, pStatusPanel, 1, 88);
+	CelBlitWidth(pManaBuff, 0, 87, 88, pStatusPanel, 2, 88);
 	MemFreeDbg(pStatusPanel);
 	talkflag = FALSE;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", NULL);
-		CelDecodeRect(pBtmBuff, 0, (PANEL_HEIGHT + 16) * 2 - 1, PANEL_WIDTH, pTalkPanel, 1, PANEL_WIDTH);
+		CelBlitWidth(pBtmBuff, 0, (PANEL_HEIGHT + 16) * 2 - 1, PANEL_WIDTH, pTalkPanel, 1, PANEL_WIDTH);
 		MemFreeDbg(pTalkPanel);
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", NULL);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", NULL);
@@ -1201,14 +1201,14 @@ void DrawCtrlPan()
 		if (!panbtn[i])
 			DrawPanelBox(PanBtnPos[i][0], PanBtnPos[i][1] - 336, 71, 20, PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y);
 		else
-			CelDecodeOnly(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y + 18, pPanelButtons, i + 1, 71);
+			CelDraw(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y + 18, pPanelButtons, i + 1, 71);
 	}
 	if (numpanbtns == 8) {
-		CelDecodeOnly(87 + SCREEN_X, 474 + SCREEN_Y, pMultiBtns, panbtn[6] + 1, 33);
+		CelDraw(87 + SCREEN_X, 474 + SCREEN_Y, pMultiBtns, panbtn[6] + 1, 33);
 		if (FriendlyMode)
-			CelDecodeOnly(527 + SCREEN_X, 474 + SCREEN_Y, pMultiBtns, panbtn[7] + 3, 33);
+			CelDraw(527 + SCREEN_X, 474 + SCREEN_Y, pMultiBtns, panbtn[7] + 3, 33);
 		else
-			CelDecodeOnly(527 + SCREEN_X, 474 + SCREEN_Y, pMultiBtns, panbtn[7] + 5, 33);
+			CelDraw(527 + SCREEN_X, 474 + SCREEN_Y, pMultiBtns, panbtn[7] + 5, 33);
 	}
 }
 
@@ -1660,7 +1660,7 @@ void DrawChr()
 	char chrstr[64];
 	int pc, mindam, maxdam;
 
-	CelDecodeOnly(SCREEN_X, 351 + SCREEN_Y, pChrPanel, 1, 320);
+	CelDraw(SCREEN_X, 351 + SCREEN_Y, pChrPanel, 1, 320);
 	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, COL_WHITE);
 
 	if (plr[myplr]._pClass == PC_WARRIOR) {
@@ -1833,13 +1833,13 @@ void DrawChr()
 		ADD_PlrStringXY(95, 266, 126, chrstr, COL_RED);
 		pc = plr[myplr]._pClass;
 		if (plr[myplr]._pBaseStr < MaxStats[pc][ATTRIB_STR])
-			CelDecodeOnly(137 + SCREEN_X, 159 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_STR] + 2, 41);
+			CelDraw(137 + SCREEN_X, 159 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_STR] + 2, 41);
 		if (plr[myplr]._pBaseMag < MaxStats[pc][ATTRIB_MAG])
-			CelDecodeOnly(137 + SCREEN_X, 187 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_MAG] + 4, 41);
+			CelDraw(137 + SCREEN_X, 187 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_MAG] + 4, 41);
 		if (plr[myplr]._pBaseDex < MaxStats[pc][ATTRIB_DEX])
-			CelDecodeOnly(137 + SCREEN_X, 216 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_DEX] + 6, 41);
+			CelDraw(137 + SCREEN_X, 216 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_DEX] + 6, 41);
 		if (plr[myplr]._pBaseVit < MaxStats[pc][ATTRIB_VIT])
-			CelDecodeOnly(137 + SCREEN_X, 244 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_VIT] + 8, 41);
+			CelDraw(137 + SCREEN_X, 244 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_VIT] + 8, 41);
 	}
 
 	col = plr[myplr]._pMaxHP <= plr[myplr]._pMaxHPBase ? COL_WHITE : COL_BLUE;
@@ -1942,7 +1942,7 @@ void DrawLevelUpIcon()
 	if (!stextflag) {
 		nCel = lvlbtndown ? 3 : 2;
 		ADD_PlrStringXY(0, 303, 120, "Level Up", COL_WHITE);
-		CelDecodeOnly(40 + SCREEN_X, 335 + SCREEN_Y, pChrButtons, nCel, 41);
+		CelDraw(40 + SCREEN_X, 335 + SCREEN_Y, pChrButtons, nCel, 41);
 	}
 }
 
@@ -2067,7 +2067,7 @@ int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
 	}
 	if (pItem->_iDurability > 2)
 		c += 8;
-	CelDecodeOnly(x, 335 + SCREEN_Y, pDurIcons, c, 32);
+	CelDraw(x, 335 + SCREEN_Y, pDurIcons, c, 32);
 	return x - 40;
 }
 
@@ -2179,8 +2179,8 @@ void DrawSpellBook()
 	char st;
 	unsigned __int64 spl;
 
-	CelDecodeOnly(PANEL_RIGHT, 351 + SCREEN_Y, pSpellBkCel, 1, 320);
-	CelDecodeOnly(PANEL_RIGHT + 76 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 76);
+	CelDraw(PANEL_RIGHT, 351 + SCREEN_Y, pSpellBkCel, 1, 320);
+	CelDraw(PANEL_RIGHT + 76 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 76);
 
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 
@@ -2305,7 +2305,7 @@ void DrawGoldSplit(int amount)
 	int screen_x, i;
 
 	screen_x = 0;
-	CelDecodeOnly(351 + SCREEN_X, 178 + SCREEN_Y, pGBoxBuff, 1, 261);
+	CelDraw(351 + SCREEN_X, 178 + SCREEN_Y, pGBoxBuff, 1, 261);
 	sprintf(tempstr, "You have %u gold", initialDropGoldValue);
 	ADD_PlrStringXY(366, 87, 600, tempstr, COL_GOLD);
 	sprintf(tempstr, "%s.  How many do", get_pieces_str(initialDropGoldValue));
@@ -2321,7 +2321,7 @@ void DrawGoldSplit(int amount)
 	} else {
 		screen_x = 450;
 	}
-	CelDecodeOnly(screen_x, 140 + SCREEN_Y, pSPentSpn2Cels, nGoldFrame, 12);
+	CelDraw(screen_x, 140 + SCREEN_Y, pSPentSpn2Cels, nGoldFrame, 12);
 	nGoldFrame = (nGoldFrame & 7) + 1;
 }
 
@@ -2428,7 +2428,7 @@ void DrawTalkPan()
 	}
 	if (msg)
 		*msg = '\0';
-	CelDecDatOnly(gpBuffer + x, pSPentSpn2Cels, frame, 12);
+	CelBlitFrame(gpBuffer + x, pSPentSpn2Cels, frame, 12);
 	frame = (frame & 7) + 1;
 	talk_btn = 0;
 	for (i = 0; i < 4; i++) {
@@ -2441,7 +2441,7 @@ void DrawTalkPan()
 					nCel = 4;
 				else
 					nCel = 3;
-				CelDecodeOnly(172 + SCREEN_X, 436 + 18 * talk_btn + SCREEN_Y, pTalkBtns, nCel, 61);
+				CelDraw(172 + SCREEN_X, 436 + 18 * talk_btn + SCREEN_Y, pTalkBtns, nCel, 61);
 			}
 		} else {
 			color = COL_RED;
@@ -2451,7 +2451,7 @@ void DrawTalkPan()
 				nCel = 1;
 			if (talkbtndown[talk_btn])
 				nCel += 4;
-			CelDecodeOnly(172 + SCREEN_X, 436 + 18 * talk_btn + SCREEN_Y, pTalkBtns, nCel, 61);
+			CelDraw(172 + SCREEN_X, 436 + 18 * talk_btn + SCREEN_Y, pTalkBtns, nCel, 61);
 		}
 		if (plr[i].plractive) {
 			control_print_talk_msg(plr[i]._pName, 46, 60 + talk_btn * 18, &x, color);
