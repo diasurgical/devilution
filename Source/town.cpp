@@ -63,7 +63,7 @@ void town_special_lower(BYTE *pBuff, int nCel)
 	BYTE *pRLEBytes;
 
 	pRLEBytes = CelGetFrame(pSpecialCels, nCel, &nDataSize);
-	Cel2DecDatOnly(pBuff, pRLEBytes, nDataSize, 64);
+	CelBlitSafe(pBuff, pRLEBytes, nDataSize, 64);
 #endif
 }
 
