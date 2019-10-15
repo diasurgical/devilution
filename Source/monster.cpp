@@ -2004,7 +2004,11 @@ void M_ChangeLightOffset(int monst)
 	int lx, ly, _mxoff, _myoff, sign;
 
 	if ((DWORD)monst >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_ChangeLightOffset: Invalid monster %d", monst);
+#endif
 
 	lx = monster[monst]._mxoff + 2 * monster[monst]._myoff;
 	ly = 2 * monster[monst]._myoff - monster[monst]._mxoff;
@@ -2024,7 +2028,11 @@ void M_ChangeLightOffset(int monst)
 		_myoff = 1;
 	}
 
-	ChangeLightOff(monster[monst].mlid, _mxoff, _myoff * (ly >> 3));
+	_myoff *= (ly >> 3);
+#ifdef HELLFIRE
+	if (monster[monst].mlid)
+#endif
+		ChangeLightOff(monster[monst].mlid, _mxoff, _myoff);
 }
 
 BOOL M_DoStand(int i)
