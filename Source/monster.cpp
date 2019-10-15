@@ -635,6 +635,18 @@ void PlaceMonster(int i, int mtype, int x, int y)
 {
 	int rd;
 
+#ifdef HELLFIRE
+	if (Monsters[mtype].mtype == MT_NAKRUL) {
+		for (int j = 0; j < nummonsters; j++) {
+			if (monster[j]._mMTidx == mtype) {
+				return;
+			}
+			if (monster[j].MType->mtype == MT_NAKRUL) {
+				return;
+			}
+		}
+	}
+#endif
 	dMonster[x][y] = i + 1;
 
 	rd = random(90, 8);
