@@ -75,32 +75,45 @@ const BYTE fontkern[68] = {
 	3, 2, 7, 6, 3, 10, 10, 6, 6, 7,
 	4, 4, 9, 6, 6, 12, 3, 7
 };
-const int lineoffset[25] = {
-	BUFFER_WIDTH * 594 + 241,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 32 + 180,
-	BUFFER_WIDTH * 582 + 241,
-	BUFFER_WIDTH * 606 + 241,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 576 + 241,
-	BUFFER_WIDTH * 594 + 241,
-	BUFFER_WIDTH * 612 + 241,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 572 + 241,
-	BUFFER_WIDTH * 587 + 241,
-	BUFFER_WIDTH * 601 + 241,
-	BUFFER_WIDTH * 616 + 241,
-	BUFFER_WIDTH * 32,
-	BUFFER_WIDTH * 570 + 241,
-	BUFFER_WIDTH * 582 + 241,
-	BUFFER_WIDTH * 594 + 241,
-	BUFFER_WIDTH * 606 + 241,
-	BUFFER_WIDTH * 617 + 241
+/**
+ * Line height for info box when displaying 1, 2, 3, 4 and 5 lines respectivly
+ */
+const int lineOffsets[5][5] = {
+	{
+		BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * 32,
+		BUFFER_WIDTH * 32,
+		BUFFER_WIDTH * 32,
+		BUFFER_WIDTH * 32 + 180,
+	},
+	{
+		BUFFER_WIDTH * (422 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (446 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * 32,
+		BUFFER_WIDTH * 32,
+		BUFFER_WIDTH * 32,
+	},
+	{
+		BUFFER_WIDTH * (416 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (452 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * 32,
+		BUFFER_WIDTH * 32,
+	},
+	{
+		BUFFER_WIDTH * (412 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (427 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (441 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (456 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * 32,
+	},
+	{
+		BUFFER_WIDTH * (410 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (422 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (446 + SCREEN_Y) + 177 + SCREEN_X,
+		BUFFER_WIDTH * (457 + SCREEN_Y) + 177 + SCREEN_X,
+	}
 };
 const BYTE gbFontTransTbl[256] = {
 	// clang-format off
@@ -1612,31 +1625,31 @@ void control_print_info_str(int y, char *str, BOOL center, int lines)
 {
 	BYTE c;
 	char *tmp;
-	int screen_x, line, nOffset;
+	int strWidth, lineOffset, lineStart;
 
-	line = 0;
-	nOffset = lineoffset[y + 4 * lines + lines] + (SCREEN_WIDTH - PANEL_WIDTH) / 2;
+	ceterOfffset = 0;
+	lineStart = lineOffsets[lines][y] + (SCREEN_WIDTH - PANEL_WIDTH) / 2;
 	if (center == 1) {
-		screen_x = 0;
+		strWidth = 0;
 		tmp = str;
 		while (*tmp) {
 			c = gbFontTransTbl[(BYTE)*tmp++];
-			screen_x += fontkern[fontframe[c]] + 1;
+			strWidth += fontkern[fontframe[c]] + 1;
 		}
-		if (screen_x < 288)
-			line = (288 - screen_x) >> 1;
-		nOffset += line;
+		if (strWidth < 288)
+			lineOffset = (288 - strWidth) >> 1;
+		lineStart += lineOffset;
 	}
 	while (*str) {
 		c = gbFontTransTbl[(BYTE)*str++];
 		c = fontframe[c];
-		line += fontkern[c] + 2;
+		lineOffset += fontkern[c] + 2;
 		if (c) {
-			if (line < 288) {
-				CPrintString(nOffset, c, infoclr);
+			if (lineOffset < 288) {
+				CPrintString(lineStart, c, infoclr);
 			}
 		}
-		nOffset += fontkern[c] + 2;
+		lineStart += fontkern[c] + 2;
 	}
 }
 

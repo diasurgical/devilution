@@ -123,7 +123,7 @@ void control_up_down(int v);
 /* rdata */
 extern const BYTE fontframe[128];
 extern const BYTE fontkern[68];
-extern const int lineoffset[25];
+extern const int lineOffsets[5][5];
 extern const BYTE gbFontTransTbl[256];
 
 /* data */
