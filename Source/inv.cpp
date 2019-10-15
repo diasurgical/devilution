@@ -210,9 +210,9 @@ void DrawInv()
 
 		if (plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag) {
 #ifdef HELLFIRE
-#endif
 			if (frame <= 179) {
-			CelClippedDraw(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
+#endif
+				CelClippedDraw(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8);
 #ifdef HELLFIRE
 			} else {
 				CelClippedDraw(PANEL_RIGHT + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8);
