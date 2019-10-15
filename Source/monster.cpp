@@ -635,7 +635,7 @@ void PlaceMonster(int i, int mtype, int x, int y)
 {
 	int rd;
 
-	#ifdef HELLFIRE
+#ifdef HELLFIRE
 	if (Monsters[mtype].mtype == MT_NAKRUL) {
 		for (int j = 0; j < nummonsters; j++) {
 			if (monster[j]._mMTidx == mtype) {
