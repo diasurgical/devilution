@@ -2032,7 +2032,7 @@ void M_ChangeLightOffset(int monst)
 #ifdef HELLFIRE
 	if (monster[monst].mlid)
 #endif
-		ChangeLightOff(monster[monst].mlid, _mxoff, _myoff);
+	ChangeLightOff(monster[monst].mlid, _mxoff, _myoff);
 }
 
 BOOL M_DoStand(int i)
