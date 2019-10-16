@@ -1627,7 +1627,7 @@ void control_print_info_str(int y, char *str, BOOL center, int lines)
 	char *tmp;
 	int strWidth, lineOffset, lineStart;
 
-	ceterOfffset = 0;
+	lineOffset = 0;
 	lineStart = lineOffsets[lines][y] + (SCREEN_WIDTH - PANEL_WIDTH) / 2;
 	if (center == 1) {
 		strWidth = 0;
