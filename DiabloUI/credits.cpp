@@ -135,7 +135,7 @@ void __fastcall credits_LoadImgCreditTxt(HWND hWnd, LPARAM lParam)
 	SDlgSetBitmapI(v13, 0, 0, -1, 1, credit_back_img, (int)&Rect, v7, v8, -1);
 	credit_vertical_pos2 = v8 - 30;
 	credits_CalcPosROP3(hWnd);
-	v9 = CreateFontA(-17, 0, 0, 0, 700, 0, 0, 0, 0, 0, 0, 0, 0x12u, "Times New Roman");
+	v9 = CreateFontA(-17, 0, 0, 0, 700, 0, 0, 0, 0, 0, 0, 0, VARIABLE_PITCH | (FF_SCRIPT << 2), "Times New Roman");
 	if (!v9 || (v11 = SGdiImportFont(v9, (int)&creditsobj), DeleteObject(v9), !v11))
 		Title_KillAndFadeDlg(hWnd);
 }
