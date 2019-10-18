@@ -1521,7 +1521,7 @@ void AutoGetItem(int pnum, int ii)
 	}
 
 	item[ii]._iCreateInfo &= 0x7FFF;
-	plr[pnum].HoldItem = item[ii];
+	plr[pnum].HoldItem = item[ii]; /// BUGFIX: overwrites cursor item, allowing for belt dupe bug
 	CheckQuestItem(pnum);
 	CheckBookLevel(pnum);
 	CheckItemStats(pnum);
