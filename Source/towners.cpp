@@ -355,7 +355,7 @@ void InitCows()
 		SetTownerGPtrs(towner[numtowners]._tNData, towner[numtowners]._tNAnim);
 		towner[numtowners]._tNFrames = 12;
 		NewTownerAnim(numtowners, towner[numtowners]._tNAnim[dir], towner[numtowners]._tNFrames, 3);
-		towner[numtowners]._tAnimFrame = random(0, 11) + 1;
+		towner[numtowners]._tAnimFrame = random_(0, 11) + 1;
 		towner[numtowners]._tSelFlag = 1;
 		strcpy(towner[numtowners]._tName, "Cow");
 
@@ -596,9 +596,9 @@ void TalkToTowner(int p, int t)
 	int i, dx, dy, rv1, rv2, rv3;
 	ItemStruct *Item;
 
-	rv1 = random(6, 3); /* unused */
-	rv2 = random(6, 4); /* unused */
-	rv3 = random(6, 5); /* unused */
+	rv1 = random_(6, 3); /* unused */
+	rv2 = random_(6, 4); /* unused */
+	rv3 = random_(6, 5); /* unused */
 
 	dx = abs(plr[p].WorldX - towner[t]._tx);
 	dy = abs(plr[p].WorldY - towner[t]._ty);

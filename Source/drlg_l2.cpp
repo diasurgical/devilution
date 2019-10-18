@@ -797,12 +797,12 @@ BOOL DRLG_L2PlaceMiniSet(BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL
 	if (tmax - tmin == 0) {
 		numt = 1;
 	} else {
-		numt = random(0, tmax - tmin) + tmin;
+		numt = random_(0, tmax - tmin) + tmin;
 	}
 
 	for (i = 0; i < numt; i++) {
-		sx = random(0, DMAXX - sw);
-		sy = random(0, DMAXY - sh);
+		sx = random_(0, DMAXX - sw);
+		sy = random_(0, DMAXY - sh);
 		found = FALSE;
 		for (bailcnt = 0; !found && bailcnt < 200; bailcnt++) {
 			found = TRUE;
@@ -810,13 +810,13 @@ BOOL DRLG_L2PlaceMiniSet(BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL
 				found = FALSE;
 			}
 			if (cx != -1 && sx >= cx - sw && sx <= cx + 12) {
-				sx = random(0, DMAXX - sw);
-				sy = random(0, DMAXY - sh);
+				sx = random_(0, DMAXX - sw);
+				sy = random_(0, DMAXY - sh);
 				found = FALSE;
 			}
 			if (cy != -1 && sy >= cy - sh && sy <= cy + 12) {
-				sx = random(0, DMAXX - sw);
-				sy = random(0, DMAXY - sh);
+				sx = random_(0, DMAXX - sw);
+				sy = random_(0, DMAXY - sh);
 				found = FALSE;
 			}
 			ii = 2;
@@ -909,7 +909,7 @@ void DRLG_L2PlaceRndSet(BYTE *miniset, int rndper)
 					}
 				}
 			}
-			if (found == TRUE && random(0, 100) < rndper) {
+			if (found == TRUE && random_(0, 100) < rndper) {
 				for (yy = 0; yy < sh; yy++) {
 					for (xx = 0; xx < sw; xx++) {
 						if (miniset[kk] != 0) {
@@ -930,10 +930,10 @@ void DRLG_L2Subs()
 
 	for (y = 0; y < DMAXY; y++) {
 		for (x = 0; x < DMAXX; x++) {
-			if ((x < nSx1 || x > nSx2) && (y < nSy1 || y > nSy2) && random(0, 4) == 0) {
+			if ((x < nSx1 || x > nSx2) && (y < nSy1 || y > nSy2) && random_(0, 4) == 0) {
 				c = BTYPESL2[dungeon[x][y]];
 				if (c != 0) {
-					rv = random(0, 16);
+					rv = random_(0, 16);
 					k = -1;
 					while (rv >= 0) {
 						k++;
@@ -1181,16 +1181,16 @@ void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, BOOL 
 	}
 
 	if (nAw > Room_Max) {
-		nRw = random(0, Room_Max - Room_Min) + Room_Min;
+		nRw = random_(0, Room_Max - Room_Min) + Room_Min;
 	} else if (nAw > Room_Min) {
-		nRw = random(0, nAw - Room_Min) + Room_Min;
+		nRw = random_(0, nAw - Room_Min) + Room_Min;
 	} else {
 		nRw = nAw;
 	}
 	if (nAh > Room_Max) {
-		nRh = random(0, Room_Max - Room_Min) + Room_Min;
+		nRh = random_(0, Room_Max - Room_Min) + Room_Min;
 	} else if (nAh > Room_Min) {
-		nRh = random(0, nAh - Room_Min) + Room_Min;
+		nRh = random_(0, nAh - Room_Min) + Room_Min;
 	} else {
 		nRh = nAh;
 	}
@@ -1200,8 +1200,8 @@ void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, BOOL 
 		nRh = nH;
 	}
 
-	nRx1 = random(0, nX2 - nX1) + nX1;
-	nRy1 = random(0, nY2 - nY1) + nY1;
+	nRx1 = random_(0, nX2 - nX1) + nX1;
+	nRy1 = random_(0, nY2 - nY1) + nY1;
 	nRx2 = nRw + nRx1;
 	nRy2 = nRh + nRy1;
 	if (nRx2 > nX2) {
@@ -1251,32 +1251,32 @@ void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, BOOL 
 
 	if (nRDest != 0) {
 		if (nHDir == 1) {
-			nHx1 = random(0, nRx2 - nRx1 - 2) + nRx1 + 1;
+			nHx1 = random_(0, nRx2 - nRx1 - 2) + nRx1 + 1;
 			nHy1 = nRy1;
 			nHw = RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2;
-			nHx2 = random(0, nHw) + RoomList[nRDest].nRoomx1 + 1;
+			nHx2 = random_(0, nHw) + RoomList[nRDest].nRoomx1 + 1;
 			nHy2 = RoomList[nRDest].nRoomy2;
 		}
 		if (nHDir == 3) {
-			nHx1 = random(0, nRx2 - nRx1 - 2) + nRx1 + 1;
+			nHx1 = random_(0, nRx2 - nRx1 - 2) + nRx1 + 1;
 			nHy1 = nRy2;
 			nHw = RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2;
-			nHx2 = random(0, nHw) + RoomList[nRDest].nRoomx1 + 1;
+			nHx2 = random_(0, nHw) + RoomList[nRDest].nRoomx1 + 1;
 			nHy2 = RoomList[nRDest].nRoomy1;
 		}
 		if (nHDir == 2) {
 			nHx1 = nRx2;
-			nHy1 = random(0, nRy2 - nRy1 - 2) + nRy1 + 1;
+			nHy1 = random_(0, nRy2 - nRy1 - 2) + nRy1 + 1;
 			nHx2 = RoomList[nRDest].nRoomx1;
 			nHh = RoomList[nRDest].nRoomy2 - RoomList[nRDest].nRoomy1 - 2;
-			nHy2 = random(0, nHh) + RoomList[nRDest].nRoomy1 + 1;
+			nHy2 = random_(0, nHh) + RoomList[nRDest].nRoomy1 + 1;
 		}
 		if (nHDir == 4) {
 			nHx1 = nRx1;
-			nHy1 = random(0, nRy2 - nRy1 - 2) + nRy1 + 1;
+			nHy1 = random_(0, nRy2 - nRy1 - 2) + nRy1 + 1;
 			nHx2 = RoomList[nRDest].nRoomx2;
 			nHh = RoomList[nRDest].nRoomy2 - RoomList[nRDest].nRoomy1 - 2;
-			nHy2 = random(0, nHh) + RoomList[nRDest].nRoomy1 + 1;
+			nHy2 = random_(0, nHh) + RoomList[nRDest].nRoomy1 + 1;
 		}
 		AddHall(nHx1, nHy1, nHx2, nHy2, nHDir);
 	}
@@ -1380,8 +1380,8 @@ void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	BOOL fDoneflag, fInroom;
 
 	fDoneflag = FALSE;
-	fMinusFlag = random(0, 100);
-	fPlusFlag = random(0, 100);
+	fMinusFlag = random_(0, 100);
+	fPlusFlag = random_(0, 100);
 	nOrigX1 = nX1;
 	nOrigY1 = nY1;
 	CreateDoorType(nX1, nY1);
@@ -1457,7 +1457,7 @@ void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			if (nRp > 30) {
 				nRp = 30;
 			}
-			if (random(0, 100) < nRp) {
+			if (random_(0, 100) < nRp) {
 				if (nX2 <= nX1 || nX1 >= DMAXX) {
 					nCurrd = 4;
 				} else {
@@ -1469,7 +1469,7 @@ void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			if (nRp > 80) {
 				nRp = 80;
 			}
-			if (random(0, 100) < nRp) {
+			if (random_(0, 100) < nRp) {
 				if (nY2 <= nY1 || nY1 >= DMAXY) {
 					nCurrd = 1;
 				} else {
@@ -1638,8 +1638,8 @@ BOOL DL2_FillVoids()
 
 	to = 0;
 	while (DL2_NumNoChar() > 700 && to < 100) {
-		xx = random(0, 38) + 1;
-		yy = random(0, 38) + 1;
+		xx = random_(0, 38) + 1;
+		yy = random_(0, 38) + 1;
 		if (predungeon[xx][yy] != 35) {
 			continue;
 		}

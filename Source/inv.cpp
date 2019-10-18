@@ -1621,12 +1621,12 @@ void AutoGetItem(int pnum, int ii)
 	} else {
 		if (pnum == myplr) {
 			if (plr[pnum]._pClass == PC_WARRIOR) {
-				PlaySFX(random(0, 3) + PS_WARR14);
+				PlaySFX(random_(0, 3) + PS_WARR14);
 #ifndef SPAWN
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
-				PlaySFX(random(0, 3) + PS_ROGUE14);
+				PlaySFX(random_(0, 3) + PS_ROGUE14);
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
-				PlaySFX(random(0, 3) + PS_MAGE14);
+				PlaySFX(random_(0, 3) + PS_MAGE14);
 #endif
 			}
 		}
