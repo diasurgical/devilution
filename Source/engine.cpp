@@ -2356,7 +2356,7 @@ int GetRndSeed()
 	return abs(sglGameSeed);
 }
 
-int random(BYTE idx, int v)
+int random_(BYTE idx, int v)
 {
 	if (v <= 0)
 		return 0;
