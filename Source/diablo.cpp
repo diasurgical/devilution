@@ -1538,6 +1538,9 @@ void LoadAllGFX()
 	IncProgress();
 }
 
+/**
+ * @param lvldir method of entry
+ */
 void CreateLevel(int lvldir)
 {
 	switch (leveltype) {

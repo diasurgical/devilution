@@ -226,7 +226,7 @@ void CheckCursMove()
 	mx = ViewX + tx + ty - (zoomflag ? 10 : 5);
 	my = ViewY + ty - tx;
 
-	flipy = py<px>> 1;
+	flipy = py < (px >> 1);
 	if (flipy) {
 		my--;
 	}

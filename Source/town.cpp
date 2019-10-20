@@ -1,5 +1,10 @@
 #include "diablo.h"
 
+/**
+ * Used under building to avoid HOM and outside of level
+ * @brief world_draw_black_tile but limited to upper half of screen
+ * @param pBuff location in back buffer to render the tile, must be on upper half of screen
+ */
 void town_clear_upper_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
@@ -62,6 +67,11 @@ void town_clear_upper_buf(BYTE *pBuff)
 #endif
 }
 
+/**
+ * Used under building to avoid HOM and outside of level
+ * @brief world_draw_black_tile but limited to lower half of screen
+ * @param pBuff location in back buffer to render the tile, must be on lower half of screen
+ */
 void town_clear_low_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
@@ -138,6 +148,11 @@ void town_clear_low_buf(BYTE *pBuff)
 #endif
 }
 
+/**
+ * @brief Render trees on top of player, buggy disabled in 1.09
+ * @param pBuff backbuffer pointing where to render on lower part of screen
+ * @param nCel Frame number for pSpecialCels tile to draw
+ */
 void town_special_lower(BYTE *pBuff, int nCel)
 {
 #if 0
@@ -252,6 +267,11 @@ void town_special_lower(BYTE *pBuff, int nCel)
 #endif
 }
 
+/**
+ * @brief Render trees on top of player, buggy disabled in 1.09
+ * @param pBuff backbuffer pointing where to render on upper part of screen
+ * @param nCel Frame number for pSpecialCels tile to draw
+ */
 void town_special_upper(BYTE *pBuff, int nCel)
 {
 #if 0
@@ -362,6 +382,16 @@ void town_special_upper(BYTE *pBuff, int nCel)
 #endif
 }
 
+/**
+ * This variant checks for of screen element on the lower screen
+ * This function it self causes rendering issues since it will render on top of objects on the other side of walls
+ * @brief Re render tile to workaround sorting issues with players walking east/west
+ * @param pBuff Pointer to output buffer at location sx,sy
+ * @param y dPiece coordinate
+ * @param x dPiece coordinate
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ */
 void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
 	int i;
@@ -386,6 +416,15 @@ void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 	town_draw_clipped_town(pBuff, x, y, sx, sy, 0);
 }
 
+/**
+ * @brief Render object sprites
+ * @param pBuff where to render to with sx,sy already applied
+ * @param sx dPice coordinate
+ * @param sy dPice coordinate
+ * @param dx Backbuffer coordinate
+ * @param dy Backbuffer coordinate
+ * @param eflag Should the sorting workaround be applied
+ */
 void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int eflag)
 {
 	int mi, px, py;
@@ -454,6 +493,15 @@ void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int efl
 	}
 }
 
+/**
+ * @brief Render a row of tile
+ * @param x dPice coordinate
+ * @param y dPice coordinate
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ * @param chunks tile width of row
+ * @param eflag is it an even (0) or odd (1) row
+ */
 void town_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 {
 	int i, j;
@@ -539,22 +587,34 @@ void town_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 	}
 }
 
-void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, int CelSkip, int sx, int sy)
+/**
+ * This variant checks for of screen element on the lower screen
+ * This function it self causes rendering issues since it will render on top of objects on the other side of walls
+ * @brief Re render tile to workaround sorting issues with players walking east/west
+ * @param pBuff Pointer to output buffer at location sx,sy
+ * @param y dPiece coordinate
+ * @param x dPiece coordinate
+ * @param row The current row being rendered
+ * @param CelSkip chunks of cell to skip
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ */
+void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, int CelSkip, int sx, int sy)
 {
 	int i;
 	BYTE *dst;
 	MICROS *pMap;
 
-	if (skipChunks == 0) {
+	if (row == 0) {
 		dst = pBuff;
 	} else {
-		dst = &pBuff[BUFFER_WIDTH * 32 * skipChunks];
+		dst = &pBuff[BUFFER_WIDTH * 32 * row];
 	}
 
 	pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 6; i++) {
-		if (skipChunks <= i) {
+		if (row <= i) {
 			level_cel_block = pMap->mt[2 * i + 2];
 			if (level_cel_block != 0) {
 				drawLowerScreen(dst);
@@ -568,11 +628,22 @@ void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, int C
 	}
 
 	if (CelSkip < 8) {
-		town_draw_clipped_town_2(pBuff, x, y, skipChunks, CelSkip, sx, sy, 0);
+		town_draw_clipped_town_2(pBuff, x, y, row, CelSkip, sx, sy, 0);
 	}
 }
 
-void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int skipChunks, int CelSkip, int dx, int dy, int eflag)
+/**
+ * @brief Render object sprites, skip offscreen parts for lower screen
+ * @param pBuff where to render to with sx,sy already applied
+ * @param sx dPice coordinate
+ * @param sy dPice coordinate
+ * @param row The current row being rendered
+ * @param CelSkip chunks of cell to skip
+ * @param dx Backbuffer coordinate
+ * @param dy Backbuffer coordinate
+ * @param eflag Should the sorting workaround be applied
+ */
+void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int row, int CelSkip, int dx, int dy, int eflag)
 {
 	int mi, px, py;
 	char bv;
@@ -610,7 +681,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int skipChunks, int C
 		}
 		Cl2DrawSafe(px, py, plr[bv]._pAnimData, plr[bv]._pAnimFrame, plr[bv]._pAnimWidth, CelSkip, 8);
 		if (eflag && plr[bv]._peflag) {
-			town_draw_clipped_e_flag_2(pBuff - 64, sx - 1, sy + 1, skipChunks, CelSkip, dx - 64, dy);
+			town_draw_clipped_e_flag_2(pBuff - 64, sx - 1, sy + 1, row, CelSkip, dx - 64, dy);
 		}
 	}
 	if (dFlags[sx][sy] & BFLAG_DEAD_PLAYER) {
@@ -625,7 +696,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int skipChunks, int C
 		}
 		Cl2DrawSafe(px, py, plr[bv]._pAnimData, plr[bv]._pAnimFrame, plr[bv]._pAnimWidth, CelSkip, 8);
 		if (eflag && plr[bv]._peflag) {
-			town_draw_clipped_e_flag_2(pBuff - 64, sx - 1, sy + 1, skipChunks, CelSkip, dx - 64, dy);
+			town_draw_clipped_e_flag_2(pBuff - 64, sx - 1, sy + 1, row, CelSkip, dx - 64, dy);
 		}
 	}
 	if (dFlags[sx][sy] & BFLAG_MISSILE) {
@@ -636,7 +707,17 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int skipChunks, int C
 	}
 }
 
-void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks, int eflag)
+/**
+ * @brief Render a row of tile, checking for overdrawing on lower part of screen
+ * @param x dPice coordinate
+ * @param y dPice coordinate
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ * @param chunks tile width of row
+ * @param row current row being rendered
+ * @param eflag is it an even (0) or odd (1) row
+ */
+void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int row, int eflag)
 {
 	int i, j, CelSkip;
 	BYTE *dst;
@@ -644,7 +725,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 
 	/// ASSERT: assert(gpBuffer);
 
-	CelSkip = 2 * skipChunks + 2;
+	CelSkip = 2 * row + 2;
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
@@ -653,7 +734,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 				dst = &gpBuffer[sx - (BUFFER_WIDTH * 32 - 32) + PitchTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
-					if (skipChunks <= i) {
+					if (row <= i) {
 						level_cel_block = pMap->mt[2 * i + 3];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst);
@@ -662,7 +743,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 					dst -= BUFFER_WIDTH * 32;
 				}
 				if (CelSkip < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, skipChunks, CelSkip, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelSkip, sx, sy, 0);
 				}
 			} else {
 				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
@@ -682,7 +763,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 				dst = &gpBuffer[sx - BUFFER_WIDTH * 32 + PitchTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
-					if (skipChunks <= i) {
+					if (row <= i) {
 						level_cel_block = pMap->mt[2 * i + 2];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst);
@@ -695,7 +776,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 					dst -= BUFFER_WIDTH * 32;
 				}
 				if (CelSkip < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy] - BUFFER_WIDTH * 16 * CelSkip], x, y, skipChunks, CelSkip, sx, sy, 1);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy] - BUFFER_WIDTH * 16 * CelSkip], x, y, row, CelSkip, sx, sy, 1);
 				}
 			} else {
 				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
@@ -715,7 +796,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 				dst = &gpBuffer[sx - BUFFER_WIDTH * 32 + PitchTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
-					if (skipChunks <= i) {
+					if (row <= i) {
 						level_cel_block = pMap->mt[2 * i + 2];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst);
@@ -724,7 +805,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 					dst -= BUFFER_WIDTH * 32;
 				}
 				if (CelSkip < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, skipChunks, CelSkip, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelSkip, sx, sy, 0);
 				}
 			} else {
 				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
@@ -735,7 +816,19 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks,
 	}
 }
 
-void town_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int sx, int sy)
+/**
+ * This variant checks for of screen element on the upper screen
+ * This function it self causes rendering issues since it will render on top of objects on the other side of walls
+ * @brief Re render tile to workaround sorting issues with players walking east/west
+ * @param pBuff Pointer to output buffer at location sx,sy
+ * @param y dPiece coordinate
+ * @param x dPiece coordinate
+ * @param row The current row being rendered
+ * @param CelCap chunks of cell to skip
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ */
+void town_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, int sy)
 {
 	int i;
 	BYTE *dst;
@@ -745,7 +838,7 @@ void town_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int 
 	pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 7; i++) {
-		if (capChunks >= i) {
+		if (row >= i) {
 			level_cel_block = pMap->mt[2 * i];
 			if (level_cel_block != 0) {
 				drawUpperScreen(dst);
@@ -758,10 +851,21 @@ void town_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int 
 		dst -= BUFFER_WIDTH * 32;
 	}
 
-	town_draw_town_all(pBuff, x, y, capChunks, CelCap, sx, sy, 0);
+	town_draw_town_all(pBuff, x, y, row, CelCap, sx, sy, 0);
 }
 
-void town_draw_town_all(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int sx, int sy, int eflag)
+/**
+ * @brief Render object sprites, skip offscreen parts for upper screen
+ * @param pBuff where to render to with sx,sx already applied
+ * @param x dPice coordinate
+ * @param y dPice coordinate
+ * @param row The current row being rendered
+ * @param CelCap chunks of cell to skip
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ * @param eflag Should the sorting workaround be applied
+ */
+void town_draw_town_all(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, int sy, int eflag)
 {
 	int mi, px, py;
 	char bv;
@@ -803,7 +907,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int capChunks, int CelCap, in
 		/// ASSERT: assert(plr[bv]._pAnimData);
 		Cl2Draw(px, py, plr[bv]._pAnimData, plr[bv]._pAnimFrame, plr[bv]._pAnimWidth, 0, CelCap);
 		if (eflag && plr[bv]._peflag) {
-			town_draw_e_flag(pBuff - 64, x - 1, y + 1, capChunks, CelCap, sx - 64, sy);
+			town_draw_e_flag(pBuff - 64, x - 1, y + 1, row, CelCap, sx - 64, sy);
 		}
 	}
 	if (dFlags[x][y] & BFLAG_DEAD_PLAYER) {
@@ -819,7 +923,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int capChunks, int CelCap, in
 		/// ASSERT: assert(plr[bv]._pAnimData);
 		Cl2Draw(px, py, plr[bv]._pAnimData, plr[bv]._pAnimFrame, plr[bv]._pAnimWidth, 0, CelCap);
 		if (eflag && plr[bv]._peflag) {
-			town_draw_e_flag(pBuff - 64, x - 1, y + 1, capChunks, CelCap, sx - 64, sy);
+			town_draw_e_flag(pBuff - 64, x - 1, y + 1, row, CelCap, sx - 64, sy);
 		}
 	}
 	if (dFlags[x][y] & BFLAG_MISSILE) {
@@ -830,7 +934,17 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int capChunks, int CelCap, in
 	}
 }
 
-void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, int eflag)
+/**
+ * @brief Render a row of tile, checking for overdrawing on upper part of screen
+ * @param x dPice coordinate
+ * @param y dPice coordinate
+ * @param sx Backbuffer coordinate
+ * @param sy Backbuffer coordinate
+ * @param chunks tile width of row
+ * @param row current row being rendered
+ * @param eflag is it an even (0) or odd (1) row
+ */
+void town_draw_upper(int x, int y, int sx, int sy, int chunks, int row, int eflag)
 {
 	int i, j, CelCap;
 	BYTE *dst;
@@ -838,7 +952,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 
 	/// ASSERT: assert(gpBuffer);
 
-	CelCap = 2 * capChunks + 2;
+	CelCap = 2 * row + 2;
 	if (CelCap > 8) {
 		CelCap = 8;
 	}
@@ -850,7 +964,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
-					if (capChunks >= i) {
+					if (row >= i) {
 						level_cel_block = pMap->mt[2 * i + 1];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst);
@@ -858,7 +972,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 					}
 					dst -= BUFFER_WIDTH * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, capChunks, CelCap, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelCap, sx, sy, 0);
 			} else {
 				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
@@ -877,7 +991,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
-					if (capChunks >= i) {
+					if (row >= i) {
 						level_cel_block = pMap->mt[2 * i];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst);
@@ -889,7 +1003,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 					}
 					dst -= BUFFER_WIDTH * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, capChunks, CelCap, sx, sy, 1);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelCap, sx, sy, 1);
 			} else {
 				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
@@ -908,7 +1022,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
-					if (capChunks >= i) {
+					if (row >= i) {
 						level_cel_block = pMap->mt[2 * i];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst);
@@ -916,7 +1030,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 					}
 					dst -= BUFFER_WIDTH * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, capChunks, CelCap, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelCap, sx, sy, 0);
 			} else {
 				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
@@ -926,6 +1040,11 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, in
 	}
 }
 
+/**
+ * @brief Configure render and process screen rows
+ * @param x Center of view in dPice coordinate
+ * @param y Center of view in dPice coordinate
+ */
 void T_DrawGame(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
@@ -1039,6 +1158,11 @@ void T_DrawGame(int x, int y)
 	}
 }
 
+/**
+ * @brief Configure render for zoomed view and process screen rows
+ * @param x Center of view in dPice coordinate
+ * @param y Center of view in dPice coordinate
+ */
 void T_DrawZoom(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
@@ -1207,6 +1331,12 @@ void T_DrawZoom(int x, int y)
 #endif
 }
 
+/**
+ * Mostly like DrawView but enables stores and lacks death screen
+ * @brief Start rendering of screen, town variation
+ * @param StartX Center of view in dPice coordinate
+ * @param StartY Center of view in dPice coordinate
+ */
 void T_DrawView(int StartX, int StartY)
 {
 	light_table_index = 0;
@@ -1303,6 +1433,15 @@ void SetTownMicros()
 	}
 }
 
+/**
+ * @brief Load level data into dPiece
+ * @param P3Tiles Tile set
+ * @param pSector Sector data
+ * @param xi upper left destination
+ * @param yi upper left destination
+ * @param w width of sector
+ * @param h height of sector
+ */
 void T_FillSector(BYTE *P3Tiles, BYTE *pSector, int xi, int yi, int w, int h)
 {
 	int i, j, xx, yy;
@@ -1353,7 +1492,7 @@ void T_FillSector(BYTE *P3Tiles, BYTE *pSector, int xi, int yi, int w, int h)
 
 			Map = (WORD *)&pSector[ii];
 			if (*Map) {
-				v1 = *((WORD *)&P3Tiles[(*Map - 1) * 8]) + 1;
+				v1 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 0) + 1;
 				v2 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 1) + 1;
 				v3 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 2) + 1;
 				v4 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 3) + 1;
@@ -1375,6 +1514,13 @@ void T_FillSector(BYTE *P3Tiles, BYTE *pSector, int xi, int yi, int w, int h)
 	}
 }
 
+/**
+ * @brief Load a tile in to dPiece
+ * @param P3Tiles Tile set
+ * @param xx upper left destination
+ * @param yy upper left destination
+ * @param t tile id
+ */
 void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 {
 	long v1, v2, v3, v4;
@@ -1408,7 +1554,7 @@ void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 		nop
 	}
 #else
-	v1 = *((WORD *)&P3Tiles[(t - 1) * 8]) + 1;
+	v1 = *((WORD *)&P3Tiles[(t - 1) * 8] + 0) + 1;
 	v2 = *((WORD *)&P3Tiles[(t - 1) * 8] + 1) + 1;
 	v3 = *((WORD *)&P3Tiles[(t - 1) * 8] + 2) + 1;
 	v4 = *((WORD *)&P3Tiles[(t - 1) * 8] + 3) + 1;
@@ -1420,6 +1566,9 @@ void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 	dPiece[xx + 1][yy + 1] = v4;
 }
 
+/**
+ * @brief Initialize all of the levels data
+ */
 void T_Pass3()
 {
 	int xx, yy, x;
@@ -1480,6 +1629,10 @@ void T_Pass3()
 	mem_free_dbg(P3Tiles);
 }
 
+/**
+ * @brief Initialize town level
+ * @param entry Methode of entry
+ */
 void CreateTown(int entry)
 {
 	int x, y;

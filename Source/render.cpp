@@ -5191,6 +5191,10 @@ void drawLowerScreen(BYTE *pBuff)
 	}
 }
 
+/**
+ * @brief Render a black tile
+ * @param pBuff pointer where to render the tile
+ */
 void world_draw_black_tile(BYTE *pBuff)
 {
 	BYTE *dst;
