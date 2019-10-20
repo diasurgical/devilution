@@ -18,7 +18,7 @@ BOOL drawmanaflag;
 BOOL chrbtnactive;
 char sgszTalkMsg[MAX_SEND_STR_LEN];
 BYTE *pPanelText;
-int nGoldFrame;
+int nGoldFrame; /** current frame # for the pentagram caret in gold input */
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 BYTE *pTalkBtns;
@@ -36,7 +36,7 @@ char tempstr[256];
 BOOLEAN whisper[MAX_PLRS];
 int sbooktab;
 int pSplType;
-int frame;
+int frame; /** current frame # for the pentagram caret in chat input */
 int initialDropGoldIndex;
 BOOL talkflag;
 BYTE *pSBkIconCels;
@@ -947,6 +947,9 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 #endif
 }
 
+/**
+ * Draws parts of the flasks that are on the panel
+ */
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 {
 	int nSrcOff, nDstOff, w;
@@ -982,6 +985,9 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 #endif
 }
 
+/**
+ * Draws parts of the flasks that are above the panel
+ */
 void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h)
 {
 #ifdef USE_ASM

@@ -11,7 +11,7 @@ int WaterDone;
 int ReturnLvlY;
 int ReturnLvlX;
 int ReturnLvlT;
-int ALLQUESTS;
+int ALLQUESTS; /** current frame # for the pentagram selector */
 int ReturnLvl;
 
 QuestData questlist[MAXQUESTS] = {

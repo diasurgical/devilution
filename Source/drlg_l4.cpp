@@ -1902,7 +1902,7 @@ static void DRLG_L4Pass3()
 		mov		v4, eax
 	}
 #else
-	v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+	v1 = *((WORD *)&pMegaTiles[lv * 8] + 0) + 1;
 	v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
 	v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
 	v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
@@ -1952,7 +1952,7 @@ static void DRLG_L4Pass3()
 			}
 #else
 			if (lv >= 0) {
-				v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+				v1 = *((WORD *)&pMegaTiles[lv * 8] + 0) + 1;
 				v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
 				v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
 				v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;

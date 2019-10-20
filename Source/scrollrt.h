@@ -14,9 +14,9 @@ extern void (*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
 extern int draw_monster_num;
 
 void ClearCursor();
-void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL pre);
-void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL pre);
-void DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL clipped);
+void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre);
+void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre);
+void DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL clipped);
 void DrawView(int StartX, int StartY);
 void ClearScreenBuffer();
 #ifdef _DEBUG

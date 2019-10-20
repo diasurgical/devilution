@@ -12,7 +12,7 @@ int talker;
 STextStruct stext[24];
 char stextsize;
 int stextsmax;
-int InStoreFlag;
+int InStoreFlag; /** current frame # for the pentagram selector */
 ItemStruct storehold[48];
 int gossipstart;
 ItemStruct witchitem[20];

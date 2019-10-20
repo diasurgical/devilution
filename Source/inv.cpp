@@ -426,7 +426,7 @@ void DrawInvBelt()
 			continue;
 		}
 
-		InvDrawSlotBack(InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, 28, 28);
+		InvDrawSlotBack(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, 28, 28);
 		frame = plr[myplr].SpdList[i]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
@@ -436,20 +436,20 @@ void DrawInvBelt()
 				colour = ICOL_BLUE;
 			if (!plr[myplr].SpdList[i]._iStatFlag)
 				colour = ICOL_RED;
-			CelBlitOutline(colour, InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, pCursCels, frame, frame_width, 0, 8);
 		}
 
 		if (plr[myplr].SpdList[i]._iStatFlag)
-			CelClippedDraw(InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, pCursCels, frame, frame_width, 0, 8);
 		else
-			CelDrawLightRed(InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, pCursCels, frame, frame_width, 0, 8, 1);
 
 		if (AllItemsList[plr[myplr].SpdList[i].IDidx].iUsable
 		    && plr[myplr].SpdList[i]._iStatFlag
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
 			ff = fontframe[gbFontTransTbl[fi]];
-			CPrintString(InvRect[i + SLOTXY_BELT_FIRST].X + 64 + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + 159] - fontkern[ff] + 28, ff, 0);
+			CPrintString(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + 28, ff, 0);
 		}
 	}
 }
@@ -1354,6 +1354,9 @@ void CheckInvItem()
 	}
 }
 
+/**
+ * Check for interactions with belt
+ */
 void CheckInvScrn()
 {
 	if (MouseX > 190 && MouseX < 437
