@@ -1371,7 +1371,7 @@ void PressChar(int vkey)
 	case '&':
 	case '7':
 		if (plr[myplr].SpdList[6]._itype != -1 && plr[myplr].SpdList[6]._itype != 11) {
-			UseInvItem(myplr, INVITEM_BELT_FIRST + 7);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 6);
 		}
 		return;
 	case '*':
@@ -1383,7 +1383,7 @@ void PressChar(int vkey)
 		}
 #endif
 		if (plr[myplr].SpdList[7]._itype != -1 && plr[myplr].SpdList[7]._itype != 11) {
-			UseInvItem(myplr, INVITEM_BELT_FIRST + 8);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 7);
 		}
 		return;
 #ifdef _DEBUG
