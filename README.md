@@ -63,7 +63,7 @@ cmake --build . -j $(sysctl -n hw.ncpu)
 
 <details><summary>Windows via MinGW</summary>
 
-### Installing dependencies on Debian and Ubuntu
+### Installing dependencies on WSL, Debian and Ubuntu
 
 Download and place the 32bit MinGW Development Libraries of [SDL2](https://www.libsdl.org/download-2.0.php), [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/), [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/) and [Libsodium](https://github.com/jedisct1/libsodium/releases) in `/usr/i686-w64-mingw32`.
 
@@ -73,7 +73,7 @@ sudo apt-get install cmake gcc-mingw-w64-i686 g++-mingw-w64-i686
 ### Compiling
 ```
 cd build
-cmake -DASAN=OFF -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
+cmake -DASAN=OFF -UBSAN=OFF -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
 cmake --build . -j $(nproc)
 ```
 </details>
