@@ -426,30 +426,30 @@ void DrawInvBelt()
 			continue;
 		}
 
-		InvDrawSlotBack(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, 28, 28);
+		InvDrawSlotBack(InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, 28, 28);
 		frame = plr[myplr].SpdList[i]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
-		if (pcursinvitem == i + 47) {
+		if (pcursinvitem == i + INVITEM_BELT_FIRST) {
 			colour = ICOL_WHITE;
 			if (plr[myplr].SpdList[i]._iMagical)
 				colour = ICOL_BLUE;
 			if (!plr[myplr].SpdList[i]._iStatFlag)
 				colour = ICOL_RED;
-			CelBlitOutline(colour, InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8);
+			CelBlitOutline(colour, InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, pCursCels, frame, frame_width, 0, 8);
 		}
 
 		if (plr[myplr].SpdList[i]._iStatFlag)
-			CelClippedDraw(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8);
+			CelClippedDraw(InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, pCursCels, frame, frame_width, 0, 8);
 		else
-			CelDrawLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, pCursCels, frame, frame_width, 0, 8, 1);
+			CelDrawLightRed(InvRect[i + SLOTXY_BELT_FIRST].X + 64, InvRect[i + SLOTXY_BELT_FIRST].Y + 159, pCursCels, frame, frame_width, 0, 8, 1);
 
 		if (AllItemsList[plr[myplr].SpdList[i].IDidx].iUsable
 		    && plr[myplr].SpdList[i]._iStatFlag
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
 			ff = fontframe[gbFontTransTbl[fi]];
-			CPrintString(InvRect[i + 65].X + 64 + PitchTbl[InvRect[i + 65].Y + 159] - fontkern[ff] + 28, ff, 0);
+			CPrintString(InvRect[i + SLOTXY_BELT_FIRST].X + 64 + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + 159] - fontkern[ff] + 28, ff, 0);
 		}
 	}
 }
@@ -2078,10 +2078,10 @@ BOOL UseStaff()
 void StartGoldDrop()
 {
 	initialDropGoldIndex = pcursinvitem;
-	if (pcursinvitem <= 46)
-		initialDropGoldValue = plr[myplr].InvList[pcursinvitem - 7]._ivalue;
+	if (pcursinvitem <= INVITEM_INV_LAST)
+		initialDropGoldValue = plr[myplr].InvList[pcursinvitem - INVITEM_INV_FIRST]._ivalue;
 	else
-		initialDropGoldValue = plr[myplr].SpdList[pcursinvitem - 47]._ivalue;
+		initialDropGoldValue = plr[myplr].SpdList[pcursinvitem - INVITEM_BELT_FIRST]._ivalue;
 	dropGoldFlag = TRUE;
 	dropGoldValue = 0;
 	if (talkflag)
