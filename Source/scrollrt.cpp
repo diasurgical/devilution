@@ -2731,7 +2731,7 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 					break;
 				}
 				retry = FALSE;
-				dx_reinit();
+				j_dx_reinit();
 				ysize = SCREEN_HEIGHT;
 				dwTicks = GetTickCount();
 			}
