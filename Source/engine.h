@@ -5,7 +5,7 @@
 //offset 0
 //pCelBuff->pFrameTable[0]
 
-extern char gbPixelCol; // automap pixel color 8-bit (palette entry)
+extern char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 extern BOOL gbRotateMap; // flip - if y < x
 extern int orgseed;
 extern int SeedCount;

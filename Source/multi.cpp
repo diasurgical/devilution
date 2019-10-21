@@ -544,7 +544,7 @@ void multi_send_zero_packet(int pnum, BYTE bCmd, BYTE *pbSrc, DWORD dwLen)
 
 	dwOffset = 0;
 
-	while(dwLen != 0) {
+	while (dwLen != 0) {
 		pkt.hdr.wCheck = 'ip';
 		pkt.hdr.px = 0;
 		pkt.hdr.py = 0;
@@ -559,7 +559,7 @@ void multi_send_zero_packet(int pnum, BYTE bCmd, BYTE *pbSrc, DWORD dwLen)
 		p->bCmd = bCmd;
 		p->wOffset = dwOffset;
 		dwBody = gdwLargestMsgSize - sizeof(pkt.hdr) - sizeof(*p);
-		if(dwLen < dwBody) {
+		if (dwLen < dwBody) {
 			dwBody = dwLen;
 		}
 		/// ASSERT: assert(dwBody <= 0x0ffff);
@@ -569,7 +569,7 @@ void multi_send_zero_packet(int pnum, BYTE bCmd, BYTE *pbSrc, DWORD dwLen)
 		dwMsg += sizeof(*p);
 		dwMsg += p->wBytes;
 		pkt.hdr.wLen = dwMsg;
-		if(!SNetSendMessage(pnum, &pkt, dwMsg)) {
+		if (!SNetSendMessage(pnum, &pkt, dwMsg)) {
 			nthread_terminate_game("SNetSendMessage2");
 			return;
 		}

@@ -241,9 +241,9 @@ void init_archives()
 		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\spawn.mpq", "DiabloSpawn", 1000, FS_PC);
 #else
 #ifdef COPYPROT
-		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
+	diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
 #else
-		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_PC);
+	diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_PC);
 #endif
 #endif
 #ifdef COPYPROT

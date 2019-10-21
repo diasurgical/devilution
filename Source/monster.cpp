@@ -2835,7 +2835,7 @@ BOOL M_CallWalk2(int i, int md)
 	int mdtemp;
 
 	mdtemp = md;
-	ok = DirOK(i, md);    // Can we continue in the same direction
+	ok = DirOK(i, md);     // Can we continue in the same direction
 	if (random_(101, 2)) { // Randomly go left or right
 		ok = ok || (mdtemp = left[md], DirOK(i, left[md])) || (mdtemp = right[md], DirOK(i, right[md]));
 	} else {

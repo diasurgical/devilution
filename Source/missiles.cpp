@@ -491,14 +491,14 @@ BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, BOOLEAN shif
 	mir = missiledata[t].mResist;
 	mor = monster[m].mMagicRes;
 	if (mor & IMUNE_MAGIC && mir == MISR_MAGIC
-	|| mor & IMUNE_FIRE && mir == MISR_FIRE
-	|| mor & IMUNE_LIGHTNING && mir == MISR_LIGHTNING) {
+	    || mor & IMUNE_FIRE && mir == MISR_FIRE
+	    || mor & IMUNE_LIGHTNING && mir == MISR_LIGHTNING) {
 		return FALSE;
 	}
 
 	if ((mor & RESIST_MAGIC && mir == MISR_MAGIC)
-	|| (mor & RESIST_FIRE && mir == MISR_FIRE)
-	|| (mor & RESIST_LIGHTNING && mir == MISR_LIGHTNING)) {
+	    || (mor & RESIST_FIRE && mir == MISR_FIRE)
+	    || (mor & RESIST_LIGHTNING && mir == MISR_LIGHTNING)) {
 		resist = TRUE;
 	}
 

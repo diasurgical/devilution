@@ -80,39 +80,39 @@ const BYTE fontkern[68] = {
  */
 const int lineOffsets[5][5] = {
 	{
-		BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * 32,
-		BUFFER_WIDTH * 32,
-		BUFFER_WIDTH * 32,
-		BUFFER_WIDTH * 32 + 180,
+	    BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * 32 + 180,
 	},
 	{
-		BUFFER_WIDTH * (422 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (446 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * 32,
-		BUFFER_WIDTH * 32,
-		BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * (422 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(446 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * 32,
 	},
 	{
-		BUFFER_WIDTH * (416 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (452 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * 32,
-		BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * (416 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(434 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(452 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * 32,
 	},
 	{
-		BUFFER_WIDTH * (412 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (427 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (441 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (456 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * 32,
+	    BUFFER_WIDTH * (412 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(427 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(441 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(456 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH * 32,
 	},
 	{
-		BUFFER_WIDTH * (410 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (422 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (434 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (446 + SCREEN_Y) + 177 + SCREEN_X,
-		BUFFER_WIDTH * (457 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH * (410 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(422 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(434 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(446 + SCREEN_Y) + 177 + SCREEN_X,
+	    BUFFER_WIDTH *(457 + SCREEN_Y) + 177 + SCREEN_X,
 	}
 };
 const BYTE gbFontTransTbl[256] = {
@@ -2257,7 +2257,7 @@ void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 	char *tmp;
 	int screen_x, line, width;
 
-	width = PitchTbl[y] + x + SCREEN_WIDTH - 320 + 120;;
+	width = PitchTbl[y] + x + SCREEN_WIDTH - 320 + 120;
 	line = 0;
 	if (cjustflag) {
 		screen_x = 0;
