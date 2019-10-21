@@ -419,8 +419,8 @@ void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 /**
  * @brief Render object sprites
  * @param pBuff where to render to with sx,sy already applied
- * @param sx dPice coordinate
- * @param sy dPice coordinate
+ * @param sx dPiece coordinate
+ * @param sy dPiece coordinate
  * @param dx Backbuffer coordinate
  * @param dy Backbuffer coordinate
  * @param eflag Should the sorting workaround be applied
@@ -495,8 +495,8 @@ void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int efl
 
 /**
  * @brief Render a row of tile
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param chunks tile width of row
@@ -635,8 +635,8 @@ void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, int CelSkip,
 /**
  * @brief Render object sprites, skip offscreen parts for lower screen
  * @param pBuff where to render to with sx,sy already applied
- * @param sx dPice coordinate
- * @param sy dPice coordinate
+ * @param sx dPiece coordinate
+ * @param sy dPiece coordinate
  * @param row The current row being rendered
  * @param CelSkip chunks of cell to skip
  * @param dx Backbuffer coordinate
@@ -709,8 +709,8 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int row, int CelSkip,
 
 /**
  * @brief Render a row of tile, checking for overdrawing on lower part of screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param chunks tile width of row
@@ -857,8 +857,8 @@ void town_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, in
 /**
  * @brief Render object sprites, skip offscreen parts for upper screen
  * @param pBuff where to render to with sx,sx already applied
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param row The current row being rendered
  * @param CelCap chunks of cell to skip
  * @param sx Backbuffer coordinate
@@ -936,8 +936,8 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, 
 
 /**
  * @brief Render a row of tile, checking for overdrawing on upper part of screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param chunks tile width of row
@@ -1042,8 +1042,8 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int row, int efla
 
 /**
  * @brief Configure render and process screen rows
- * @param x Center of view in dPice coordinate
- * @param y Center of view in dPice coordinate
+ * @param x Center of view in dPiece coordinate
+ * @param y Center of view in dPiece coordinate
  */
 void T_DrawGame(int x, int y)
 {
@@ -1160,8 +1160,8 @@ void T_DrawGame(int x, int y)
 
 /**
  * @brief Configure render for zoomed view and process screen rows
- * @param x Center of view in dPice coordinate
- * @param y Center of view in dPice coordinate
+ * @param x Center of view in dPiece coordinate
+ * @param y Center of view in dPiece coordinate
  */
 void T_DrawZoom(int x, int y)
 {
@@ -1334,8 +1334,8 @@ void T_DrawZoom(int x, int y)
 /**
  * Mostly like DrawView but enables stores and lacks death screen
  * @brief Start rendering of screen, town variation
- * @param StartX Center of view in dPice coordinate
- * @param StartY Center of view in dPice coordinate
+ * @param StartX Center of view in dPiece coordinate
+ * @param StartY Center of view in dPiece coordinate
  */
 void T_DrawView(int StartX, int StartY)
 {

@@ -172,8 +172,8 @@ static void scrollrt_draw_cursor_item()
 
 /**
  * @brief Render a missile sprite
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param CelSkip Skip part of sprite, see Cl2Draw
@@ -243,8 +243,8 @@ void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre
 
 /**
  * @brief Render a missile sprite, check for overdraw on lower screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param CelSkip Skip part of sprite, see Cl2Draw
@@ -314,8 +314,8 @@ void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, B
 
 /**
  * @brief Render a monster sprite
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param mx Backbuffer coordinate
  * @param my Backbuffer coordinate
  * @param CelSkip Skip part of sprite, see Cl2Draw
@@ -376,8 +376,8 @@ static void DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int Ce
 
 /**
  * @brief Render a monster sprite, check for overdraw on lower screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param mx Backbuffer coordinate
  * @param my Backbuffer coordinate
  * @param CelSkip Skip part of sprite, see Cl2Draw
@@ -439,8 +439,8 @@ static void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip,
 /**
  * @brief Render a monster sprite
  * @param pnum Player id
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param px Backbuffer coordinate
  * @param py Backbuffer coordinate
  * @param pCelBuff sprite buffer
@@ -525,8 +525,8 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 /**
  * @brief Render a monster sprite, check for overdraw on lower screen
  * @param pnum Player id
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param px Backbuffer coordinate
  * @param py Backbuffer coordinate
  * @param pCelBuff sprite buffer
@@ -610,8 +610,8 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 
 /**
  * @brief Render a monster sprite
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param CelSkip Skip part of sprite, see Cl2Draw
@@ -656,8 +656,8 @@ void DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL 
 
 /**
  * @brief Render an object sprite
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param ox Backbuffer coordinate
  * @param oy Backbuffer coordinate
  * @param pre Is the sprite in the background
@@ -719,8 +719,8 @@ static void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
 
 /**
  * @brief Render an object sprite, check for overdraw on lower screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param ox Backbuffer coordinate
  * @param oy Backbuffer coordinate
  * @param pre Is the sprite in the background
@@ -840,8 +840,8 @@ static void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int 
 /**
  * @brief Render object sprites
  * @param pBuff where to render to with sx,sy already applied
- * @param sx dPice coordinate
- * @param sy dPice coordinate
+ * @param sx dPiece coordinate
+ * @param sy dPiece coordinate
  * @param dx Backbuffer coordinate
  * @param dy Backbuffer coordinate
  * @param eflag Should the sorting workaround be applied
@@ -1062,8 +1062,8 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 
 /**
  * @brief Render a row of tile
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param chunks tile width of row
@@ -1303,8 +1303,8 @@ static void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, i
  * This variant checks for of screen element on the lower screen
  * @brief Render object sprites, skip offscreen parts for lower screen
  * @param pBuff where to render to with sx,sy already applied
- * @param sx dPice coordinate
- * @param sy dPice coordinate
+ * @param sx dPiece coordinate
+ * @param sy dPiece coordinate
  * @param row The current row being rendered
  * @param CelSkip chunks of cell to skip
  * @param dx Backbuffer coordinate
@@ -1527,8 +1527,8 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 
 /**
  * @brief Render a row of tile, checking for overdrawing on lower part of screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param chunks tile width of row
@@ -1701,8 +1701,8 @@ static void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap,
 /**
  * @brief Render object sprites, skip offscreen parts for upper screen
  * @param pBuff where to render to with sx,sx already applied
- * @param sx dPice coordinate
- * @param sy dPice coordinate
+ * @param sx dPiece coordinate
+ * @param sy dPiece coordinate
  * @param row The current row being rendered
  * @param CelCap chunks of cell to skip
  * @param dx Backbuffer coordinate
@@ -1915,8 +1915,8 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
 
 /**
  * @brief Render a row of tile, checking for overdrawing on upper part of screen
- * @param x dPice coordinate
- * @param y dPice coordinate
+ * @param x dPiece coordinate
+ * @param y dPiece coordinate
  * @param sx Backbuffer coordinate
  * @param sy Backbuffer coordinate
  * @param chunks tile width of row
@@ -2073,8 +2073,8 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 
 /**
  * @brief Configure render and process screen rows
- * @param x Center of view in dPice coordinate
- * @param y Center of view in dPice coordinate
+ * @param x Center of view in dPiece coordinate
+ * @param y Center of view in dPiece coordinate
  */
 static void DrawGame(int x, int y)
 {
@@ -2180,8 +2180,8 @@ static void DrawGame(int x, int y)
 
 /**
  * @brief Configure render for zoomed view and process screen rows
- * @param x Center of view in dPice coordinate
- * @param y Center of view in dPice coordinate
+ * @param x Center of view in dPiece coordinate
+ * @param y Center of view in dPiece coordinate
  */
 static void DrawZoom(int x, int y)
 {
@@ -2342,8 +2342,8 @@ static void DrawZoom(int x, int y)
 
 /**
  * @brief Start rendering of screen, town variation
- * @param StartX Center of view in dPice coordinate
- * @param StartY Center of view in dPice coordinate
+ * @param StartX Center of view in dPiece coordinate
+ * @param StartY Center of view in dPiece coordinate
  */
 void DrawView(int StartX, int StartY)
 {
