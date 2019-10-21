@@ -156,7 +156,7 @@ static void scrollrt_draw_cursor_item()
 		if (col != PAL16_RED + 5) {
 			CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW);
 		} else {
-			CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8, 1);
+			CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 1);
 		}
 	} else {
 		CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW);
@@ -185,7 +185,7 @@ void DrawMissilePrivate(MissileStruct *m, int sx, int sy, BOOL pre)
 	mx = sx + m->_mixoff - m->_miAnimWidth2;
 	my = sy + m->_miyoff;
 	if (m->_miUniqTrans)
-		Cl2DrawLightTbl(mx, my, m->_miAnimData, m->_miAnimFrame, m->_miAnimWidth, 0, 8, m->_miUniqTrans + 3);
+		Cl2DrawLightTbl(mx, my, m->_miAnimData, m->_miAnimFrame, m->_miAnimWidth, m->_miUniqTrans + 3);
 	else if (m->_miLightFlag)
 		Cl2DrawLight(mx, my, m->_miAnimData, m->_miAnimFrame, m->_miAnimWidth);
 	else
@@ -253,7 +253,7 @@ static void DrawMonster(int x, int y, int mx, int my, int m)
 	}
 
 	if (!(dFlags[x][y] & BFLAG_LIT)) {
-		Cl2DrawLightTbl(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width, 0, 8, 1);
+		Cl2DrawLightTbl(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width, 1);
 	} else {
 		trans = 0;
 		if (monster[m]._uniqtype)
@@ -263,7 +263,7 @@ static void DrawMonster(int x, int y, int mx, int my, int m)
 		if (plr[myplr]._pInfraFlag && light_table_index > 8)
 			trans = 1;
 		if (trans)
-			Cl2DrawLightTbl(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width, 0, 8, trans);
+			Cl2DrawLightTbl(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width, trans);
 		else
 			Cl2DrawLight(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width);
 	}
@@ -307,7 +307,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    1,
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0]);
 		} else if (!(dFlags[x][y] & BFLAG_LIT) || plr[myplr]._pInfraFlag && light_table_index > 8) {
-			Cl2DrawLightTbl(px, py, pCelBuff, nCel, nWidth, 0, 8, 1);
+			Cl2DrawLightTbl(px, py, pCelBuff, nCel, nWidth, 1);
 			if (plr[pnum].pManaShield)
 				Cl2DrawLightTbl(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -315,8 +315,6 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    misfiledata[MFILE_MANASHLD].mAnimData[0],
 				    1,
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
-				    0,
-				    8,
 				    1);
 		} else {
 			l = light_table_index;
@@ -331,9 +329,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    py,
 				    misfiledata[MFILE_MANASHLD].mAnimData[0],
 				    1,
-				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
-				    0,
-				    8);
+				    misfiledata[MFILE_MANASHLD].mAnimWidth[0]);
 			light_table_index = l;
 		}
 	}
@@ -586,7 +582,7 @@ static void scrollrt_draw_dungeon(int sx, int sy, int dx, int dy, int eflag)
 		/// ASSERT: assert(pDeadGuy->_deadData[dd] != NULL);
 		if (pCelBuff != NULL) {
 			if (pDeadGuy->_deadtrans != 0) {
-				Cl2DrawLightTbl(px, dy, pCelBuff, pDeadGuy->_deadFrame, pDeadGuy->_deadWidth, 0, 8, pDeadGuy->_deadtrans);
+				Cl2DrawLightTbl(px, dy, pCelBuff, pDeadGuy->_deadFrame, pDeadGuy->_deadWidth, pDeadGuy->_deadtrans);
 			} else {
 				Cl2DrawLight(px, dy, pCelBuff, pDeadGuy->_deadFrame, pDeadGuy->_deadWidth);
 			}
