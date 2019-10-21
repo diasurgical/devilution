@@ -1511,7 +1511,7 @@ static void DRLG_L3(int entry)
 				}
 			} while (!found);
 			DRLG_L3MakeMegas();
-			if (entry == 0) {
+			if (entry == ENTRY_MAIN) {
 				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 1, 0);
 				if (!genok) {
 					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
@@ -1519,7 +1519,7 @@ static void DRLG_L3(int entry)
 						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
 					}
 				}
-			} else if (entry == 1) {
+			} else if (entry == ENTRY_PREV) {
 				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
 				if (!genok) {
 					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 1, 1);
