@@ -951,7 +951,7 @@ static void DrawFPS()
 	char String[12];
 	HDC hdc;
 
-	if (frameflag && gbActive) {
+	if (frameflag && gbActive && pPanelText) {
 		frameend++;
 		tc = GetTickCount();
 		frames = tc - framestart;
@@ -962,8 +962,8 @@ static void DrawFPS()
 		}
 		if (framerate > 99)
 			framerate = 99;
-		wsprintf(String, "%2d", framerate);
-		TextOut(hdc, 0, 400, String, strlen(String));
+		wsprintf(String, "%2d FPS", framerate);
+		PrintGameStr(8, 65, String, COL_RED);
 	}
 }
 #endif
@@ -1029,10 +1029,6 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 			DoBlitScreen(sgdwCursX, sgdwCursY, sgdwCursWdt, sgdwCursHgt);
 		}
 	}
-
-#ifdef _DEBUG
-	DrawFPS();
-#endif
 }
 
 void scrollrt_draw_game_screen(BOOL draw_cursor)
@@ -1108,6 +1104,11 @@ void DrawAndBlit()
 		hgt = SCREEN_HEIGHT;
 	}
 	scrollrt_draw_cursor_item();
+
+#ifdef _DEBUG
+	DrawFPS();
+#endif
+
 	unlock_buf(0);
 
 	DrawMain(hgt, ddsdesc, drawhpflag, drawmanaflag, drawsbarflag, drawbtnflag);
