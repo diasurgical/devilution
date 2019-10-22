@@ -1056,15 +1056,15 @@ void T_DrawGame(int x, int y)
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 175;
-	x -= 10;
+	x -= SCREEN_WIDTH / 64;
 	y--;
-	chunks = 10;
+	chunks = SCREEN_WIDTH / 64;
 	blocks = 5;
 
 	if (chrflag || questlog) {
 		x += 2;
 		y -= 2;
-		sx += 288;
+		sx += (SCREEN_WIDTH / 2) - 32;
 		chunks = 6;
 	}
 	if (invflag || sbookflag) {

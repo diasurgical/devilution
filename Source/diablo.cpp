@@ -794,10 +794,10 @@ BOOL LeftMouseDown(int wParam)
 						sfx_stop();
 					} else if (chrflag && MouseX < 320) {
 						CheckChrBtns();
-					} else if (invflag && MouseX > 320) {
+					} else if (invflag && MouseX > RIGHT_PANEL) {
 						if (!dropGoldFlag)
 							CheckInvItem();
-					} else if (sbookflag && MouseX > 320) {
+					} else if (sbookflag && MouseX > RIGHT_PANEL) {
 						CheckSBook();
 					} else if (pcurs >= CURSOR_FIRSTITEM) {
 						if (TryInvPut()) {

@@ -223,7 +223,7 @@ void CheckCursMove()
 	ty = sy >> 5;
 	px = sx & 0x3F;
 	py = sy & 0x1F;
-	mx = ViewX + tx + ty - (zoomflag ? 10 : 5);
+	mx = ViewX + tx + ty - (zoomflag ? (SCREEN_WIDTH / 64) : (SCREEN_WIDTH / 2 / 64));
 	my = ViewY + ty - tx;
 
 	flipy = py < (px >> 1);
@@ -278,14 +278,14 @@ void CheckCursMove()
 	if (doomflag) {
 		return;
 	}
-	if (invflag && MouseX > 320) {
+	if (invflag && MouseX > RIGHT_PANEL) {
 		pcursinvitem = CheckInvHLight();
 		return;
 	}
-	if (sbookflag && MouseX > 320) {
+	if (sbookflag && MouseX > RIGHT_PANEL) {
 		return;
 	}
-	if ((chrflag || questlog) && MouseX < 320) {
+	if ((chrflag || questlog) && MouseX < RIGHT_PANEL) {
 		return;
 	}
 
