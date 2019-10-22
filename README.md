@@ -73,7 +73,7 @@ sudo apt-get install cmake gcc-mingw-w64-i686 g++-mingw-w64-i686
 ### Compiling
 ```
 cd build
-cmake -DASAN=OFF -UBSAN=OFF -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
 cmake --build . -j $(nproc)
 ```
 </details>
