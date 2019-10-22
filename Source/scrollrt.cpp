@@ -2085,24 +2085,24 @@ static void DrawGame(int x, int y)
 	dword_5C2FF8 = SCREEN_WIDTH / 64;
 	dword_5C2FFC = VIEWPORT_HEIGHT / 32;
 
-	sx = ScrollInfo._sxoff + 64;
-	sy = ScrollInfo._syoff + 175;
-	x -= 10;
+	sx = ScrollInfo._sxoff + SCREEN_X;
+	sy = ScrollInfo._syoff + SCREEN_Y + 15;
+	x -= SCREEN_WIDTH / 64;
 	y--;
-	chunks = 10;
+	chunks = SCREEN_WIDTH / 64;
 	blocks = 8;
 
 	if (chrflag || questlog) {
 		x += 2;
 		y -= 2;
-		sx += 288;
-		chunks = 6;
+		sx += (SCREEN_WIDTH / 2) - 32;
+		chunks = (SCREEN_WIDTH / 64) - 4;
 	}
 	if (invflag || sbookflag) {
 		x += 2;
 		y -= 2;
 		sx -= 32;
-		chunks = 6;
+		chunks = (SCREEN_WIDTH / 64) - 4;
 	}
 
 	switch (ScrollInfo._sdir) {
@@ -2189,15 +2189,15 @@ static void DrawZoom(int x, int y)
 	int wdt, nSrcOff, nDstOff;
 
 	scr_pix_width = ZOOM_WIDTH;
-	scr_pix_height = 192;
+	scr_pix_height = ZOOM_HEIGHT - 32;
 	dword_5C2FF8 = ZOOM_WIDTH / 64;
-	dword_5C2FFC = 192 / 32;
+	dword_5C2FFC = (ZOOM_HEIGHT - 32) / 32;
 
-	sx = ScrollInfo._sxoff + 64;
-	sy = ScrollInfo._syoff + 143;
-	x -= 6;
+	sx = ScrollInfo._sxoff + SCREEN_X;
+	sy = ScrollInfo._syoff + SCREEN_Y - 17;
+	x -= ZOOM_WIDTH / 64;
 	y--;
-	chunks = 6;
+	chunks = ZOOM_WIDTH / 64;
 	blocks = 3;
 
 	switch (ScrollInfo._sdir) {

@@ -69,7 +69,7 @@ void InitQTextMsg(int m)
 
 void DrawQTextBack()
 {
-	CelDraw(88, 487, pTextBoxCels, 1, 591);
+	CelDraw(PANEL_X + 24, 487, pTextBoxCels, 1, 591);
 
 #define TRANS_RECT_X 27
 #define TRANS_RECT_Y 28
