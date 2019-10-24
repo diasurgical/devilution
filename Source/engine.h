@@ -37,7 +37,7 @@ inline BYTE *CelGetFrameClipped(BYTE *pCelBuff, int nCel, int *nDataSize)
 	DWORD nDataStart;
 	BYTE *pRLEBytes = CelGetFrame(pCelBuff, nCel, nDataSize);
 
-	nDataStart = SwapLE16(pRLEBytes[1] << 8 | pRLEBytes[0]);
+	nDataStart = pRLEBytes[1] << 8 | pRLEBytes[0];
 	*nDataSize -= nDataStart;
 
 	return pRLEBytes + nDataStart;
