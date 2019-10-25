@@ -181,6 +181,14 @@ int SpellPages[6][7] = {
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
+/**
+ * Draw spell cell onto the back buffer.
+ * @param xp Backbuffer coordinate
+ * @param yp Backbuffer coordinate
+ * @param Trans Pointer to the cel buffer.
+ * @param nCel Index of the cel frame to draw. 0 based.
+ * @param w Width of the frame.
+ */
 void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 {
 	BYTE *dst, *tbl, *end;
@@ -362,6 +370,9 @@ void SetSpellTrans(char t)
 	}
 }
 
+/**
+ * Sets the spell frame to draw and its position then draws it.
+ */
 void DrawSpell()
 {
 	char spl, st;
@@ -948,7 +959,14 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 }
 
 /**
- * Draws parts of the flasks that are on the panel
+ * Draws a section of the empty flask cel on top of the panel to create the illusion
+ * of the flask getting empty. This function takes a cel and draws a
+ * horizontal stripe of height (max-min) onto the back buffer.
+ * @param pCelBuff Buffer of the empty flask cel.
+ * @param min Top of the flask cel section to draw.
+ * @param max Bottom of the flask cel section to draw.
+ * @param c X Backbuffer coordinate
+ * @param r Y Backbuffer coordinate
  */
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
@@ -986,7 +1004,15 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 }
 
 /**
- * Draws parts of the flasks that are above the panel
+ * Draws the dome of the flask that protrudes above the panel top line.
+ * It draws a rectangle of fixed width 59 and height 'h' from the source buffer
+ * into the target buffer.
+ * @param pCelBuff The flask cel buffer.
+ * @param w Width of the cel.
+ * @param nSrcOffset Offset of the source buffer from where the bytes will start to be copied from.
+ * @param pBuff Target buffer.
+ * @param nDstOff Offset of the target buffer where the bytes will start to be copied to.
+ * @param h How many lines of the source buffer that will be copied.
  */
 void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h)
 {
@@ -1031,6 +1057,10 @@ void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int
 #endif
 }
 
+/**
+ * Draws the top dome of the life flask (that part that protrudes out of the control panel).
+ * First it draws the empty flask cel and then draws the filled part on top if needed.
+ */
 void DrawLifeFlask()
 {
 	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
@@ -1048,6 +1078,11 @@ void DrawLifeFlask()
 		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * filled + 2029, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173, 13 - filled);
 }
 
+/**
+ * Controls the drawing of the area of the life flask within the control panel.
+ * First sets the fill amount then draws the empty flask cel portion then the filled
+ * flask portion.
+ */
 void UpdateLifeFlask()
 {
 	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
@@ -1095,6 +1130,10 @@ void control_update_life_mana()
 	plr[myplr]._pHPPer = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
 }
 
+/**
+ * Controls the drawing of the area of the life flask within the control panel.
+ * Also for some reason draws the current right mouse button spell.
+ */
 void UpdateManaFlask()
 {
 	int filled;
@@ -1212,6 +1251,10 @@ void ClearCtrlPan()
 	DrawInfoBox();
 }
 
+/**
+ * Draws the control panel buttons in their current state. If the button is in the default
+ * state draw it from the panel cel(extract its sub-rect). Else draw it from the buttons cel.
+ */
 void DrawCtrlPan()
 {
 	int i;
@@ -1231,6 +1274,10 @@ void DrawCtrlPan()
 	}
 }
 
+/**
+ * Draws the "Speed Book": the rows of known spells for quick-setting a spell that
+ * show up when you click the spell slot at the control panel.
+ */
 void DoSpeedBook()
 {
 	unsigned __int64 spells, spell;
@@ -1284,6 +1331,9 @@ void DoSpeedBook()
 	SetCursorPos(X, Y);
 }
 
+/**
+ * Checks if the mouse cursor is within any of the panel buttons and flag it if so.
+ */
 void DoPanBtn()
 {
 	int i;
@@ -1338,6 +1388,10 @@ void DoAutoMap()
 	}
 }
 
+/**
+ * Checks the mouse cursor position within the control panel and sets information
+ * strings if needed.
+ */
 void CheckPanelInfo()
 {
 	int i, c, v, s;
@@ -1432,6 +1486,10 @@ void CheckPanelInfo()
 		pcursinvitem = CheckInvHLight();
 }
 
+/**
+ * Check if the mouse is within a control panel button that's flagged.
+ * Takes apropiate action if so.
+ */
 void CheckBtnUp()
 {
 	int i;
@@ -1544,6 +1602,9 @@ BOOL control_WriteStringToBuffer(BYTE *str)
 	return TRUE;
 }
 
+/**
+ * Sets a string to be drawn in the info box and then draws it.
+ */
 void DrawInfoBox()
 {
 	int nGold;
