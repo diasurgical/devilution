@@ -181,6 +181,14 @@ int SpellPages[6][7] = {
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
+/**
+ * Draw a spell cell(but any cel really) onto the game buffer.
+ * @param xp x coordinate at the game buffer(which means SCREEN_X must be considered) to draw the cel.
+ * @param yp Bottom position of the cel in the game buffer. SCREEN_Y must be considered.
+ * @param Trans Pointer to the cel buffer.
+ * @param nCel Index of the cel frame to draw. 0 based.
+ * @param w Width of the frame.
+ */
 void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 {
 	BYTE *dst, *tbl, *end;
@@ -362,6 +370,9 @@ void SetSpellTrans(char t)
 	}
 }
 
+/**
+ * Set the spell frame to draw and it's position then draws it.
+ */
 void DrawSpell()
 {
 	char spl, st;
@@ -948,7 +959,14 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 }
 
 /**
- * Draws parts of the flasks that are on the panel
+ * Draw a section of the empty flask cel on top of the panel to create the illusion
+ * of the flask getting empty. But acctually this function takes a cel and draws a
+ * horizontal stripe of height (max-min) onto the game buffer.
+ * @param pCelBuff Buffer of the empty flask cel. But can be any buffer really.
+ * @param min Top of the flask cel section to draw.
+ * @param max Bottom of the flask cel section to draw.
+ * @param c X coord offset in the game buffer(SCREEN_X must be accounted for).
+ * @param r Y coord offset in the game buffer(SCREEN_Y must be accounted for).
  */
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 {
@@ -986,7 +1004,15 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 }
 
 /**
- * Draws parts of the flasks that are above the panel
+ * Draw the dome of the flask that protrudes above the panel top line. But what it really
+ * does is draw a rectangle of fixed width 59 and height 'h' from the source buffer 
+ * into the target buffer. 
+ * @param pCelBuff The flask cel buffer. But any cel buffer really.
+ * @param w Width of the cel.
+ * @param nSrcOffset Offset of the source buffer from where the bytes will start to be copied from.
+ * @param pBuff Target buffer.
+ * @param nDstOff Offset of the target buffer where the bytes will start to be copied to.
+ * @param h How many lines of the source buffer that will be copied.
  */
 void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h)
 {
@@ -1031,6 +1057,10 @@ void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int
 #endif
 }
 
+/**
+ * Draw the top dome of the life flask(that part that protrude out of the control panel).
+ * Firs it draws the empty flask cel and then draws the filled part on top if needed.
+ */
 void DrawLifeFlask()
 {
 	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
