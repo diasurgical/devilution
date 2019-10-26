@@ -250,6 +250,10 @@ RenderTile(BYTE *pBuff)
 	}
 }
 
+/**
+ * @brief Render a black tile
+ * @param pBuff pointer where to render the tile
+ */
 void world_draw_black_tile(int sx, int sy)
 {
 	int i, j, k;
