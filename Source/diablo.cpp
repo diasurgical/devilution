@@ -51,11 +51,11 @@ int dbgplr;
 int dbgqst;
 int dbgmon;
 int arrowdebug;
+#endif
 int frameflag;
 int frameend;
 int framerate;
 int framestart;
-#endif
 BOOL FriendlyMode = TRUE;
 char *spszMsgTbl[4] = {
 	"I need help! Come Here!",
@@ -292,8 +292,8 @@ void diablo_parse_flags(char *args)
 		{
 			c = tolower(*args);
 			args++;
-#ifdef _DEBUG
 			switch (c) {
+#ifdef _DEBUG
 			case '^':
 				debug_mode_key_inverted_v = 1;
 				break;
@@ -309,9 +309,11 @@ void diablo_parse_flags(char *args)
 				showintrodebug = 0;
 				debug_mode_key_d = 1;
 				break;
+#endif
 			case 'f':
 				EnableFrameCount();
 				break;
+#ifdef _DEBUG
 			case 'i':
 				debug_mode_key_i = 1;
 				break;
@@ -413,8 +415,8 @@ void diablo_parse_flags(char *args)
 			case 'x':
 				fullscreen = FALSE;
 				break;
-			}
 #endif
+			}
 		}
 	}
 }

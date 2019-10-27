@@ -1022,6 +1022,7 @@ void ScrollView()
 	if (scroll)
 		ScrollInfo._sdir = SDIR_NONE;
 }
+#endif
 
 /**
  * @brief Initialize the FPS meter
@@ -1056,7 +1057,6 @@ static void DrawFPS()
 		PrintGameStr(8, 65, String, COL_RED);
 	}
 }
-#endif
 
 /**
  * @brief Update part of the screen from the backbuffer
@@ -1214,9 +1214,7 @@ void DrawAndBlit()
 	}
 	scrollrt_draw_cursor_item();
 
-#ifdef _DEBUG
 	DrawFPS();
-#endif
 
 	unlock_buf(0);
 
