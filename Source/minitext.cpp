@@ -71,7 +71,7 @@ void DrawQTextBack()
 {
 	CelDraw(PANEL_X + 24, 487, pTextBoxCels, 1, 591);
 
-#define TRANS_RECT_X 27
+#define TRANS_RECT_X (PANEL_LEFT + 27)
 #define TRANS_RECT_Y 28
 #define TRANS_RECT_WIDTH 585
 #define TRANS_RECT_HEIGHT 297
@@ -208,7 +208,7 @@ void DrawQText()
 
 	p = qtextptr;
 	pnl = NULL;
-	tx = 112;
+	tx = 48 + PANEL_X;
 	ty = qtexty;
 
 	doneflag = FALSE;
@@ -251,7 +251,7 @@ void DrawQText()
 		if (pnl == NULL) {
 			pnl = p;
 		}
-		tx = 112;
+		tx = 48 + PANEL_X;
 		ty += 38;
 		if (ty > 501) {
 			doneflag = TRUE;
