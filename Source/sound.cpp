@@ -15,7 +15,7 @@ LPDIRECTSOUNDBUFFER sglpDSB;
 BOOLEAN gbMusicOn = TRUE;
 BOOLEAN gbSoundOn = TRUE;
 BOOLEAN gbDupSounds = TRUE;
-int sgnMusicTrack = 6;
+int sgnMusicTrack = NUM_MUSIC;
 char *sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
 	"Music\\sTowne.wav",
@@ -447,7 +447,7 @@ void music_stop()
 		SFileDdaEnd(sgpMusicTrack);
 		SFileCloseFile(sgpMusicTrack);
 		sgpMusicTrack = NULL;
-		sgnMusicTrack = 6;
+		sgnMusicTrack = NUM_MUSIC;
 	}
 }
 
@@ -479,7 +479,7 @@ void sound_disable_music(BOOL disable)
 {
 	if (disable) {
 		music_stop();
-	} else if (sgnMusicTrack != 6) {
+	} else if (sgnMusicTrack != NUM_MUSIC) {
 		music_start(sgnMusicTrack);
 	}
 }
