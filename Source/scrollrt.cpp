@@ -825,22 +825,20 @@ static void DrawGame(int x, int y)
 	if (zoomflag)
 		return;
 
-	nSrcOff = SCREENXY(32, 159);
-	nDstOff = SCREENXY(0, 350);
+	nSrcOff = SCREENXY(32, VIEWPORT_HEIGHT / 2 - 17);
+	nDstOff = SCREENXY(0, VIEWPORT_HEIGHT - 2);
 	wdt = SCREEN_WIDTH / 2;
 	if (SCREEN_WIDTH == PANEL_WIDTH && SCREEN_HEIGHT == VIEWPORT_HEIGHT + PANEL_HEIGHT) {
 		if (chrflag || questlog) {
-			nSrcOff = SCREENXY(112, 159);
-			nDstOff = SCREENXY(320, 350);
+			nSrcOff = SCREENXY(112, VIEWPORT_HEIGHT / 2 - 17);
+			nDstOff = SCREENXY(320, VIEWPORT_HEIGHT - 2);
 			wdt = (SCREEN_WIDTH - 320) / 2;
 		} else if (invflag || sbookflag) {
-			nSrcOff = SCREENXY(112, 159);
-			nDstOff = SCREENXY(0, 350);
+			nSrcOff = SCREENXY(112, VIEWPORT_HEIGHT / 2 - 17);
+			nDstOff = SCREENXY(0, VIEWPORT_HEIGHT - 2);
 			wdt = (SCREEN_WIDTH - 320) / 2;
 		}
 	}
-
-	assert(gpBuffer);
 
 	int hgt;
 	BYTE *src, *dst1, *dst2;
@@ -849,7 +847,7 @@ static void DrawGame(int x, int y)
 	dst1 = &gpBuffer[nDstOff];
 	dst2 = &gpBuffer[nDstOff + BUFFER_WIDTH];
 
-	for (hgt = 176; hgt != 0; hgt--, src -= BUFFER_WIDTH + wdt, dst1 -= 2 * (BUFFER_WIDTH + wdt), dst2 -= 2 * (BUFFER_WIDTH + wdt)) {
+	for (hgt = VIEWPORT_HEIGHT / 2; hgt != 0; hgt--, src -= BUFFER_WIDTH + wdt, dst1 -= 2 * (BUFFER_WIDTH + wdt), dst2 -= 2 * (BUFFER_WIDTH + wdt)) {
 		for (i = wdt; i != 0; i--) {
 			*dst1++ = *src;
 			*dst1++ = *src;
