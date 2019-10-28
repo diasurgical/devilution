@@ -1012,10 +1012,10 @@ void PressKey(int vkey)
 	} else if (vkey == VK_TAB) {
 		DoAutoMap();
 	} else if (vkey == VK_SPACE) {
-		if (!chrflag && invflag && MouseX < 480 && MouseY < PANEL_TOP) {
+		if (!chrflag && invflag && MouseX < 480 && MouseY < PANEL_TOP && PANELS_COVER) {
 			SetCursorPos(MouseX + 160, MouseY);
 		}
-		if (!invflag && chrflag && MouseX > 160 && MouseY < PANEL_TOP) {
+		if (!invflag && chrflag && MouseX > 160 && MouseY < PANEL_TOP && PANELS_COVER) {
 			SetCursorPos(MouseX - 160, MouseY);
 		}
 		helpflag = 0;
@@ -1086,11 +1086,11 @@ void PressChar(int vkey)
 			sbookflag = FALSE;
 			invflag = invflag == 0;
 			if (!invflag || chrflag) {
-				if (MouseX < 480 && MouseY < PANEL_TOP) {
+				if (MouseX < 480 && MouseY < PANEL_TOP && PANELS_COVER) {
 					SetCursorPos(MouseX + 160, MouseY);
 				}
 			} else {
-				if (MouseX > 160 && MouseY < PANEL_TOP) {
+				if (MouseX > 160 && MouseY < PANEL_TOP && PANELS_COVER) {
 					SetCursorPos(MouseX - 160, MouseY);
 				}
 			}
@@ -1102,11 +1102,11 @@ void PressChar(int vkey)
 			questlog = FALSE;
 			chrflag = !chrflag;
 			if (!chrflag || invflag) {
-				if (MouseX > 160 && MouseY < PANEL_TOP) {
+				if (MouseX > 160 && MouseY < PANEL_TOP && PANELS_COVER) {
 					SetCursorPos(MouseX - 160, MouseY);
 				}
 			} else {
-				if (MouseX < 480 && MouseY < PANEL_TOP) {
+				if (MouseX < 480 && MouseY < PANEL_TOP && PANELS_COVER) {
 					SetCursorPos(MouseX + 160, MouseY);
 				}
 			}
