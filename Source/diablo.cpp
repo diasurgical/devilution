@@ -119,6 +119,22 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 	return gbRunGameResult;
 }
 
+static void ProcessInput()
+{
+	if (PauseMode == 2) {
+		return;
+	}
+	if (gbMaxPlayers == 1 && gmenu_exception()) {
+		drawpanflag |= 1;
+		return;
+	}
+
+	if (!gmenu_exception() && sgnTimeoutCurs == 0) {
+		CheckCursMove();
+		track_process();
+	}
+}
+
 void run_game_loop(unsigned int uMsg)
 {
 	BOOL bLoop;
@@ -160,6 +176,7 @@ void run_game_loop(unsigned int uMsg)
 				continue;
 			}
 		} else if (!nthread_has_500ms_passed(FALSE)) {
+			ProcessInput();
 			DrawAndBlit();
 			continue;
 		}
