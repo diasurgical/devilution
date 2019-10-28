@@ -2273,16 +2273,16 @@ static void DrawZoom(int x, int y)
 	}
 
 	if (chrflag || questlog) {
-		nSrcOff = SCREENXY(112, 159);
-		nDstOff = SCREENXY(320, 350);
+		nSrcOff = SCREENXY(112, VIEWPORT_HEIGHT / 2 - 17);
+		nDstOff = SCREENXY(320, VIEWPORT_HEIGHT - 2);
 		wdt = (SCREEN_WIDTH - 320) / 2;
 	} else if (invflag || sbookflag) {
-		nSrcOff = SCREENXY(112, 159);
-		nDstOff = SCREENXY(0, 350);
+		nSrcOff = SCREENXY(112, VIEWPORT_HEIGHT / 2 - 17);
+		nDstOff = SCREENXY(0, VIEWPORT_HEIGHT - 2);
 		wdt = (SCREEN_WIDTH - 320) / 2;
 	} else {
-		nSrcOff = SCREENXY(32, 159);
-		nDstOff = SCREENXY(0, 350);
+		nSrcOff = SCREENXY(32, VIEWPORT_HEIGHT / 2 - 17);
+		nDstOff = SCREENXY(0, VIEWPORT_HEIGHT - 2);
 		wdt = SCREEN_WIDTH / 2;
 	}
 
@@ -2298,7 +2298,7 @@ static void DrawZoom(int x, int y)
 		add		esi, ecx
 		mov		ebx, edi
 		add		ebx, BUFFER_WIDTH
-		mov		edx, 176
+		mov		edx, (VIEWPORT_HEIGHT / 2)
 	label1:
 		mov		ecx, wdt
 	label2:
@@ -2328,7 +2328,7 @@ static void DrawZoom(int x, int y)
 	dst1 = &gpBuffer[nDstOff];
 	dst2 = &gpBuffer[nDstOff + BUFFER_WIDTH];
 
-	for (hgt = 176; hgt != 0; hgt--, src -= BUFFER_WIDTH + wdt, dst1 -= 2 * (BUFFER_WIDTH + wdt), dst2 -= 2 * (BUFFER_WIDTH + wdt)) {
+	for (hgt = VIEWPORT_HEIGHT / 2; hgt != 0; hgt--, src -= BUFFER_WIDTH + wdt, dst1 -= 2 * (BUFFER_WIDTH + wdt), dst2 -= 2 * (BUFFER_WIDTH + wdt)) {
 		for (i = wdt; i != 0; i--) {
 			*dst1++ = *src;
 			*dst1++ = *src;

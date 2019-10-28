@@ -578,6 +578,12 @@ void ToggleSpell(int slot)
 	}
 }
 
+/**
+ * @brief Print letter to the backbuffer
+ * @param nOffset Backbuffer offset
+ * @param nCel Number of letter in Windows-1252
+ * @param col text_color color value
+ */
 void CPrintString(int nOffset, int nCel, char col)
 {
 	/// ASSERT: assert(gpBuffer);
@@ -890,7 +896,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	/// ASSERT: assert(gpBuffer);
 
 	nSrcOff = x + PANEL_WIDTH * y;
-	nDstOff = sx + BUFFER_WIDTH * sy + PANEL_LEFT;
+	nDstOff = sx + BUFFER_WIDTH * sy;
 
 #ifdef USE_ASM
 	__asm {
@@ -1009,7 +1015,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
  * into the target buffer.
  * @param pCelBuff The flask cel buffer.
  * @param w Width of the cel.
- * @param nSrcOffset Offset of the source buffer from where the bytes will start to be copied from.
+ * @param nSrcOff Offset of the source buffer from where the bytes will start to be copied from.
  * @param pBuff Target buffer.
  * @param nDstOff Offset of the target buffer where the bytes will start to be copied to.
  * @param h How many lines of the source buffer that will be copied.
@@ -1073,9 +1079,9 @@ void DrawLifeFlask()
 		filled = 11;
 	filled += 2;
 
-	DrawFlask(pLifeBuff, 88, 277, gpBuffer, BUFFER_WIDTH * 499 + 173, filled);
+	DrawFlask(pLifeBuff, 88, 277, gpBuffer, SCREENXY(PANEL_LEFT + 109, PANEL_TOP - 13), filled);
 	if (filled != 13)
-		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * filled + 2029, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173, 13 - filled);
+		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * (filled + 3) + 109, gpBuffer, SCREENXY(PANEL_LEFT + 109, PANEL_TOP - 13 + filled), 13 - filled);
 }
 
 /**
@@ -1108,9 +1114,9 @@ void DrawManaFlask()
 		filled = 11;
 	filled += 2;
 
-	DrawFlask(pManaBuff, 88, 277, gpBuffer, BUFFER_WIDTH * 499 + 173 + 366, filled);
+	DrawFlask(pManaBuff, 88, 277, gpBuffer, SCREENXY(PANEL_LEFT + 475, PANEL_TOP - 13), filled);
 	if (filled != 13)
-		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * filled + 2029 + 366, gpBuffer, BUFFER_WIDTH * filled + BUFFER_WIDTH * 499 + 173 + 366, 13 - filled);
+		DrawFlask(pBtmBuff, PANEL_WIDTH, PANEL_WIDTH * (filled + 3) + 475, gpBuffer, SCREENXY(PANEL_LEFT + 475, PANEL_TOP - 13 + filled), 13 - filled);
 }
 
 void control_update_life_mana()
@@ -1261,9 +1267,9 @@ void DrawCtrlPan()
 
 	for (i = 0; i < 6; i++) {
 		if (!panbtn[i])
-			DrawPanelBox(PanBtnPos[i][0] - PANEL_LEFT, PanBtnPos[i][1] - (PANEL_TOP - 16), 71, 20, PanBtnPos[i][0] + PANEL_X, PanBtnPos[i][1] + SCREEN_Y);
+			DrawPanelBox(PanBtnPos[i][0] - PANEL_LEFT, PanBtnPos[i][1] - (PANEL_TOP - 16), 71, 20, PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y);
 		else
-			CelDraw(PanBtnPos[i][0] + PANEL_X, PanBtnPos[i][1] + (PANEL_Y - 334), pPanelButtons, i + 1, 71);
+			CelDraw(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + (PANEL_Y - 334), pPanelButtons, i + 1, 71);
 	}
 	if (numpanbtns == 8) {
 		CelDraw(87 + PANEL_X, 122 + PANEL_Y, pMultiBtns, panbtn[6] + 1, 33);
@@ -1972,14 +1978,23 @@ void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 	}
 }
 
-void MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base)
+/**
+ * @brief Render text string to back buffer
+ * @param x Screen coordinate
+ * @param y Screen coordinate
+ * @param endX End of line in screen coordinate
+ * @param pszStr String to print, in Windows-1252 encoding
+ * @param col text_color color value
+ * @param base Letter spacing
+ */
+void MY_PlrStringXY(int x, int y, int endX, char *pszStr, char col, int base)
 {
 	BYTE c;
 	char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
 	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
-	widthOffset = width - x + 1;
+	widthOffset = endX - x + 1;
 	line = 0;
 	screen_x = 0;
 	tmp = pszStr;
@@ -2021,7 +2036,7 @@ void DrawLevelUpIcon()
 
 	if (!stextflag) {
 		nCel = lvlbtndown ? 3 : 2;
-		ADD_PlrStringXY(0, 303, 120, "Level Up", COL_WHITE);
+		ADD_PlrStringXY(PANEL_LEFT + 0, PANEL_TOP - 49, PANEL_LEFT + 120, "Level Up", COL_WHITE);
 		CelDraw(40 + PANEL_X, -17 + PANEL_Y, pChrButtons, nCel, 41);
 	}
 }
@@ -2207,7 +2222,7 @@ void RedBack()
 	if (leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = PANEL_TOP; h; h--, dst += BUFFER_WIDTH - SCREEN_WIDTH) {
+		for (h = VIEWPORT_HEIGHT; h; h--, dst += BUFFER_WIDTH - SCREEN_WIDTH) {
 			for (w = SCREEN_WIDTH; w; w--) {
 				*dst = tbl[*dst];
 				dst++;
@@ -2216,7 +2231,7 @@ void RedBack()
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for (h = PANEL_TOP; h; h--, dst += BUFFER_WIDTH - SCREEN_WIDTH) {
+		for (h = VIEWPORT_HEIGHT; h; h--, dst += BUFFER_WIDTH - SCREEN_WIDTH) {
 			for (w = SCREEN_WIDTH; w; w--) {
 				if (*dst >= 32)
 					*dst = tbl[*dst];

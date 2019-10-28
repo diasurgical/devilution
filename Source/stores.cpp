@@ -132,7 +132,7 @@ void DrawSTextBack()
 {
 	CelDraw(PANEL_X + 344, 487, pSTextBoxCels, 1, 271);
 
-#define TRANS_RECT_X 347
+#define TRANS_RECT_X (PANEL_LEFT + 347)
 #define TRANS_RECT_Y 28
 #define TRANS_RECT_WIDTH 265
 #define TRANS_RECT_HEIGHT 297
@@ -179,7 +179,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		off = PitchTbl[s + 204] + 656 - x;
+		off = PitchTbl[s + 204] + PANEL_X + 592 - x;
 		for (i = strlen(valstr) - 1; i >= 0; i--) {
 			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
 			off -= fontkern[c] + 1;
@@ -189,7 +189,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 		}
 	}
 	if (stextsel == y) {
-		CelDraw(cjustflag ? xx + x + k + 4 : 660 - x, s + 205, pSPentSpn2Cels, InStoreFlag, 12);
+		CelDraw(cjustflag ? (xx + x + k + 4) : (PANEL_X + 596 - x), s + 205, pSPentSpn2Cels, InStoreFlag, 12);
 	}
 }
 
@@ -199,13 +199,13 @@ void DrawSLine(int y)
 
 	sy = SStringY[y];
 	if (stextsize == 1) {
-		xy = SCREENXY(26, 25);
-		yy = PitchTbl[sy + 198] + 26 + 64;
+		xy = SCREENXY(PANEL_LEFT + 26, 25);
+		yy = PitchTbl[sy + 198] + 26 + PANEL_X;
 		width = 586 / 4;
 		line = BUFFER_WIDTH - 586;
 	} else {
-		xy = SCREENXY(346, 25);
-		yy = PitchTbl[sy + 198] + 346 + 64;
+		xy = SCREENXY(PANEL_LEFT + 346, 25);
+		yy = PitchTbl[sy + 198] + 346 + PANEL_X;
 		width = 266 / 4;
 		line = BUFFER_WIDTH - 266;
 	}
