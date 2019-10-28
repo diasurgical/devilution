@@ -1109,24 +1109,24 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 	}
 	if (ysize < SCREEN_HEIGHT) {
 		if (draw_sbar) {
-			DoBlitScreen(204, 357, 232, 28);
+			DoBlitScreen(PANEL_LEFT + 204, PANEL_TOP + 5, 232, 28);
 		}
 		if (draw_desc) {
-			DoBlitScreen(176, 398, 288, 60);
+			DoBlitScreen(PANEL_LEFT + 176, PANEL_TOP + 46, 288, 60);
 		}
 		if (draw_mana) {
-			DoBlitScreen(460, 352, 88, 72);
-			DoBlitScreen(564, 416, 56, 56);
+			DoBlitScreen(PANEL_LEFT + 460, PANEL_TOP, 88, 72);
+			DoBlitScreen(PANEL_LEFT + 564, PANEL_TOP + 64, 56, 56);
 		}
 		if (draw_hp) {
-			DoBlitScreen(96, 352, 88, 72);
+			DoBlitScreen(PANEL_LEFT + 96, PANEL_TOP, 88, 72);
 		}
 		if (draw_btn) {
-			DoBlitScreen(8, 357, 72, 119);
-			DoBlitScreen(556, 357, 72, 48);
+			DoBlitScreen(PANEL_LEFT + 8, PANEL_TOP + 5, 72, 119);
+			DoBlitScreen(PANEL_LEFT + 556, PANEL_TOP + 5, 72, 48);
 			if (gbMaxPlayers > 1) {
-				DoBlitScreen(84, 443, 36, 32);
-				DoBlitScreen(524, 443, 36, 32);
+				DoBlitScreen(PANEL_LEFT + 84, PANEL_TOP + 91, 36, 32);
+				DoBlitScreen(PANEL_LEFT + 524, PANEL_TOP + 91, 36, 32);
 			}
 		}
 		if (sgdwCursWdtOld != 0) {

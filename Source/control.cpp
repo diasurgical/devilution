@@ -524,8 +524,8 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
  * @param pCelBuff Buffer of the empty flask cel.
  * @param min Top of the flask cel section to draw.
  * @param max Bottom of the flask cel section to draw.
- * @param c X Backbuffer coordinate
- * @param r Y Backbuffer coordinate
+ * @param sx X Backbuffer coordinate
+ * @param sy Y Backbuffer coordinate
  */
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
