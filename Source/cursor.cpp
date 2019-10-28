@@ -278,18 +278,18 @@ void CheckCursMove()
 		cursmy = my;
 		return;
 	}
-	if (MouseY > PANEL_TOP) {
+	if (MouseY > PANEL_TOP && MouseX >= PANEL_LEFT && MouseX <= PANEL_LEFT + PANEL_WIDTH) {
 		CheckPanelInfo();
 		return;
 	}
 	if (doomflag) {
 		return;
 	}
-	if (invflag && MouseX > RIGHT_PANEL) {
+	if (invflag && MouseX > RIGHT_PANEL && MouseY <= SPANEL_HEIGHT) {
 		pcursinvitem = CheckInvHLight();
 		return;
 	}
-	if (sbookflag && MouseX > RIGHT_PANEL) {
+	if (sbookflag && MouseX > RIGHT_PANEL && MouseY <= SPANEL_HEIGHT) {
 		return;
 	}
 	if ((chrflag || questlog) && MouseX < RIGHT_PANEL) {
