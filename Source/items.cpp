@@ -2960,7 +2960,7 @@ void DrawUniqueInfo()
 {
 	int uid, y;
 
-	if (!chrflag && !questlog) {
+	if ((!chrflag && !questlog) || SCREEN_WIDTH >= 320 * 3) {
 		uid = curruitem._iUid;
 		DrawUTextBack();
 		PrintUString(0 + RIGHT_PANEL - 320, 2, 1, UniqueItemList[uid].UIName, 3);

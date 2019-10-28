@@ -689,10 +689,10 @@ static void scrollrt_draw(int x, int y, int sx, int sy, int chunks, int row)
 	assert(gpBuffer);
 
 	if (row & 1) {
-		x--;
-		y++;
+		x -= 1;
+		y += 1;
 		sx -= 32;
-		chunks++;
+		chunks += 1;
 	}
 
 	for (int j = 0; j < chunks; j++) {
@@ -722,43 +722,49 @@ static void DrawGame(int x, int y)
 	int i, sx, sy, chunks, blocks;
 	int wdt, nSrcOff, nDstOff;
 
-	sx = ScrollInfo._sxoff + SCREEN_X;
-	if (zoomflag) {
-		sy = ScrollInfo._syoff + SCREEN_Y + 15;
+	sx = (SCREEN_WIDTH % 64) / 2;
+	sy = (VIEWPORT_HEIGHT % 32) / 2;
 
+	if (zoomflag) {
 		chunks = ceil(SCREEN_WIDTH / 64);
-		// Fill screen + keep evaulating untill MicroTiles can't affect screen
-		blocks = ceil(VIEWPORT_HEIGHT / 32) + ceil(MicroTileLen / 2);
+		blocks = ceil(VIEWPORT_HEIGHT / 32);
 
 		gpBufStart = &gpBuffer[BUFFER_WIDTH * SCREEN_Y];
 		gpBufEnd = &gpBuffer[BUFFER_WIDTH * (VIEWPORT_HEIGHT + SCREEN_Y)];
 	} else {
-		sy = ScrollInfo._syoff + -17 + SCREEN_Y ;
+		sy -= 32;
 
 		chunks = ceil(SCREEN_WIDTH / 2 / 64) + 1; // TODO why +1?
-		// Fill screen + keep evaulating untill MicroTiles can't affect screen
-		blocks = ceil(VIEWPORT_HEIGHT / 2 / 32) + ceil(MicroTileLen / 2);
+		blocks = ceil(VIEWPORT_HEIGHT / 2 / 32);
 
 		gpBufStart = &gpBuffer[(-17 + SCREEN_Y) * BUFFER_WIDTH];
 		gpBufEnd = &gpBuffer[(160 + SCREEN_Y) * BUFFER_WIDTH];
 	}
 
+	sx += ScrollInfo._sxoff + SCREEN_X;
+	sy += ScrollInfo._syoff + SCREEN_Y + 15;
+
 	// Center screen
 	x -= chunks;
 	y--;
 
-	if (zoomflag && SCREEN_WIDTH <= PANEL_WIDTH && SCREEN_HEIGHT <= VIEWPORT_HEIGHT + PANEL_HEIGHT) {
-		if (chrflag || questlog) {
-			x += 2;
-			y -= 2;
-			sx += 288;
-			chunks -= 4;
-		}
-		if (invflag || sbookflag) {
-			x += 2;
-			y -= 2;
-			sx -= 32;
-			chunks -= 4;
+	// Keep evaulating untill MicroTiles can't affect screen
+	blocks += ceil(MicroTileLen / 2);
+
+	if (PANELS_COVER) {
+		if (zoomflag) {
+			if (chrflag || questlog) {
+				x += 2;
+				y -= 2;
+				sx += 288;
+				chunks -= 4;
+			}
+			if (invflag || sbookflag) {
+				x += 2;
+				y -= 2;
+				sx -= 32;
+				chunks -= 4;
+			}
 		}
 	}
 
@@ -810,7 +816,6 @@ static void DrawGame(int x, int y)
 		break;
 	}
 
-	assert(gpBuffer);
 	for (i = 0; i < (blocks << 1); i++) {
 		scrollrt_draw(x, y, sx, sy, chunks, i);
 		sy += 16;
@@ -828,7 +833,7 @@ static void DrawGame(int x, int y)
 	nSrcOff = SCREENXY(32, VIEWPORT_HEIGHT / 2 - 17);
 	nDstOff = SCREENXY(0, VIEWPORT_HEIGHT - 2);
 	wdt = SCREEN_WIDTH / 2;
-	if (SCREEN_WIDTH == PANEL_WIDTH && SCREEN_HEIGHT == VIEWPORT_HEIGHT + PANEL_HEIGHT) {
+	if (PANELS_COVER) {
 		if (chrflag || questlog) {
 			nSrcOff = SCREENXY(112, VIEWPORT_HEIGHT / 2 - 17);
 			nDstOff = SCREENXY(320, VIEWPORT_HEIGHT - 2);
@@ -883,7 +888,8 @@ void DrawView(int StartX, int StartY)
 		DrawChr();
 	} else if (questlog) {
 		DrawQuestLog();
-	} else if (plr[myplr]._pStatPts != 0 && !spselflag) {
+	}
+	if (!chrflag && plr[myplr]._pStatPts != 0 && !spselflag) {
 		DrawLevelUpIcon();
 	}
 	if (uitemflag) {
@@ -1066,9 +1072,6 @@ static void DrawFPS()
 static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 {
 	RECT SrcRect;
-
-	assert(! (dwX & 3));
-	assert(! (dwWdt & 3));
 
 	SrcRect.left = dwX + SCREEN_X;
 	SrcRect.top = dwY + SCREEN_Y;
