@@ -1186,6 +1186,9 @@ static void L5tileFix()
 {
 	int i, j;
 
+	// BUGFIX: Bounds checks are required in all loop bodies.
+	// See https://github.com/diasurgical/devilutionX/pull/401
+
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 2 && dungeon[i + 1][j] == 22)
