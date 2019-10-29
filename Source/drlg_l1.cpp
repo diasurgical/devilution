@@ -1522,13 +1522,13 @@ static void DRLG_L5TransFix()
 		xx = 16;
 
 		for (i = 0; i < DMAXX; i++) {
-			// BUGFIX: Should check for `j > 0` first.
-			if (dungeon[i][j] == 23 && dungeon[i][j - 1] == 18) {
+			// BUGFIX: Should check for `j > 0` first. (fixed)
+			if (dungeon[i][j] == 23 && j > 0 && dungeon[i][j - 1] == 18) {
 				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
-			// BUGFIX: Should check for `i + 1 < DMAXY` first.
-			if (dungeon[i][j] == 24 && dungeon[i + 1][j] == 19) {
+			// BUGFIX: Should check for `i + 1 < DMAXY` first. (fixed)
+			if (dungeon[i][j] == 24 && i + 1 < DMAXY && dungeon[i + 1][j] == 19) {
 				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
