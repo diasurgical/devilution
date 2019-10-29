@@ -375,7 +375,7 @@ void SetSpellTrans(char t)
  */
 void DrawSpell()
 {
-	char spl, st;
+	signed char spl, st;
 	int tlvl;
 
 	spl = plr[myplr]._pRSpell;
