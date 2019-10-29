@@ -1310,12 +1310,14 @@ static void DRLG_L5Subs()
 							rv--;
 					}
 
+					// BUGFIX: Add `&& y > 0` to the if statement.
 					if (i == 89) {
 						if (L5BTYPES[dungeon[x][y - 1]] != 79 || L5dflags[x][y - 1])
 							i = 79;
 						else
 							dungeon[x][y - 1] = 90;
 					}
+					// BUGFIX: Add `&& x + 1 < DMAXX` to the if statement.
 					if (i == 91) {
 						if (L5BTYPES[dungeon[x + 1][y]] != 80 || L5dflags[x + 1][y])
 							i = 80;
