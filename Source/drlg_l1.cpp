@@ -53,6 +53,8 @@ const ShadowStruct SPATS[37] = {
 	{      3, 13, 11, 12, 150,   0,   0 }
 	// clang-format on
 };
+
+// BUGFIX: This array should contain an additional 0 (207 elements).
 const BYTE BSTYPES[206] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	10, 11, 12, 13, 14, 15, 16, 17, 0, 0,
@@ -76,6 +78,8 @@ const BYTE BSTYPES[206] = {
 	28, 1, 2, 25, 26, 22, 22, 25, 26, 0,
 	0, 0, 0, 0, 0, 0
 };
+
+// BUGFIX: This array should contain an additional 0 (207 elements).
 const BYTE L5BTYPES[206] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	10, 11, 12, 13, 14, 15, 16, 17, 0, 0,
