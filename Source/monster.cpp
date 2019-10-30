@@ -1215,7 +1215,7 @@ void M_CheckEFlag(int i)
 	}
 
 	f = 0;
-	// BUGFIX check (x > 0 && y < MAXDUNY)
+	// BUGFIX check (x > 0 && y < MAXDUNY) (fixed)
 	m = dpiece_defs_map_2[x][y].mt;
 	if (m >= dpiece_defs_map_2[0][0].mt) {
 		for (j = 2; j < 10; j++) {
