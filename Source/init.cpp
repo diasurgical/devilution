@@ -119,7 +119,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	case WM_ERASEBKGND:
 		return 0;
 	case WM_PAINT:
-		drawpanflag = 255;
+		force_redraw = 255;
 		break;
 	case WM_CLOSE:
 		return 0;
