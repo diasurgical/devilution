@@ -125,7 +125,7 @@ static void ProcessInput()
 		return;
 	}
 	if (gbMaxPlayers == 1 && gmenu_exception()) {
-		drawpanflag |= 1;
+		force_redraw |= 1;
 		return;
 	}
 
