@@ -405,7 +405,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_PAINT:
-		drawpanflag = 255;
+		force_redraw = 255;
 		break;
 	case WM_CLOSE:
 		return 0;
@@ -449,7 +449,7 @@ void init_activate_window(HWND hWnd, BOOL bActive)
 	SetWindowLong(hWnd, GWL_STYLE, dwNewLong);
 
 	if (gbActive) {
-		drawpanflag = 255;
+		force_redraw = 255;
 		ResetPal();
 	}
 }

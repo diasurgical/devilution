@@ -346,7 +346,7 @@ void dx_reinit()
 
 	dx_cleanup();
 
-	drawpanflag = 255;
+	force_redraw = 255;
 
 	dx_init(ghMainWnd);
 

@@ -46,7 +46,7 @@ void DrawCutscene()
 	}
 
 	unlock_buf(1);
-	drawpanflag = 255;
+	force_redraw = 255;
 	scrollrt_draw_game_screen(0);
 }
 

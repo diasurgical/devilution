@@ -3808,8 +3808,8 @@ void PlayInGameMovie(char *pszMovie)
 	PaletteFadeOut(8);
 	play_movie(pszMovie, 0);
 	ClearScreenBuffer();
-	drawpanflag = 255;
+	force_redraw = 255;
 	scrollrt_draw_game_screen(1);
 	PaletteFadeIn(8);
-	drawpanflag = 255;
+	force_redraw = 255;
 }

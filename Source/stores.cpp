@@ -1847,7 +1847,7 @@ void TakePlrsMoney(int cost)
 			}
 		}
 	}
-	drawpanflag = 255;
+	force_redraw = 255;
 	if (cost > 0) {
 		for (i = 0; i < plr[myplr]._pNumInv && cost > 0; i++) {
 			if (plr[myplr].InvList[i]._itype == ITYPE_GOLD && plr[myplr].InvList[i]._ivalue != GOLD_MAX_LIMIT) {

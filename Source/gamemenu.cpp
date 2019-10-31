@@ -98,7 +98,7 @@ void gamemenu_new_game(BOOL bActivate)
 	}
 
 	deathflag = FALSE;
-	drawpanflag = 255;
+	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);
 	gbRunGame = FALSE;
 	gamemenu_off();
@@ -116,13 +116,13 @@ void gamemenu_load_game(BOOL bActivate)
 	gamemenu_off();
 	SetCursor_(CURSOR_NONE);
 	InitDiabloMsg(EMSG_LOADING);
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	LoadGame(FALSE);
 	ClrDiabloMsg();
 	PaletteFadeOut(8);
 	deathflag = FALSE;
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	PaletteFadeIn(8);
 	SetCursor_(CURSOR_HAND);
@@ -145,11 +145,11 @@ void gamemenu_save_game(BOOL bActivate)
 	SetCursor_(CURSOR_NONE);
 	gamemenu_off();
 	InitDiabloMsg(EMSG_SAVING);
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	SaveGame();
 	ClrDiabloMsg();
-	drawpanflag = 255;
+	force_redraw = 255;
 	SetCursor_(CURSOR_HAND);
 	interface_msg_pump();
 	SetWindowProc(saveProc);

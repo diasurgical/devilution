@@ -2801,8 +2801,8 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
 {
 	int hgt;
 
-	if (drawpanflag == 255) {
-		drawpanflag = 0;
+	if (force_redraw == 255) {
+		force_redraw = 0;
 		hgt = SCREEN_HEIGHT;
 	} else {
 		hgt = 0;
@@ -2835,7 +2835,7 @@ void DrawAndBlit()
 		return;
 	}
 
-	if (drawpanflag == 255) {
+	if (force_redraw == 255) {
 		drawhpflag = TRUE;
 		drawmanaflag = TRUE;
 		drawbtnflag = TRUE;
@@ -2843,7 +2843,7 @@ void DrawAndBlit()
 		ddsdesc = FALSE;
 		ctrlPan = TRUE;
 		hgt = SCREEN_HEIGHT;
-	} else if (drawpanflag == 1) {
+	} else if (force_redraw == 1) {
 		ddsdesc = TRUE;
 		ctrlPan = FALSE;
 		hgt = VIEWPORT_HEIGHT;
@@ -2851,7 +2851,7 @@ void DrawAndBlit()
 		return;
 	}
 
-	drawpanflag = 0;
+	force_redraw = 0;
 
 	lock_buf(0);
 	if (leveltype != DTYPE_TOWN) {
