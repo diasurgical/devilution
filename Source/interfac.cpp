@@ -36,11 +36,11 @@ void DrawCutscene()
 	DWORD i;
 
 	lock_buf(1);
-	CelDraw(SCREEN_X + PANEL_LEFT, 480 + SCREEN_Y - 1, (BYTE *)sgpBackCel, 1, 640);
+	CelDraw(PANEL_X, 480 + SCREEN_Y - 1, (BYTE *)sgpBackCel, 1, 640);
 
 	for (i = 0; i < sgdwProgress; i++) {
 		DrawProgress(
-		    BarPos[progress_id][0] + i + SCREEN_X + PANEL_LEFT,
+		    BarPos[progress_id][0] + i + PANEL_X,
 		    BarPos[progress_id][1] + SCREEN_Y,
 		    progress_id);
 	}
