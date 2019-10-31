@@ -3455,7 +3455,7 @@ void OperateShrine(int pnum, int i, int sType)
 	}
 
 	CalcPlrInv(pnum, TRUE);
-	drawpanflag = 255;
+	force_redraw = 255;
 
 	if (pnum == myplr)
 		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
@@ -3577,7 +3577,7 @@ void OperateGoatShrine(int pnum, int i, int sType)
 	object[i]._oVar1 = FindValidShrine(i);
 	OperateShrine(pnum, i, sType);
 	object[i]._oAnimDelay = 2;
-	drawpanflag = 255;
+	force_redraw = 255;
 }
 
 void OperateCauldron(int pnum, int i, int sType)
@@ -3587,7 +3587,7 @@ void OperateCauldron(int pnum, int i, int sType)
 	OperateShrine(pnum, i, sType);
 	object[i]._oAnimFlag = 0;
 	object[i]._oAnimFrame = 3;
-	drawpanflag = 255;
+	force_redraw = 255;
 }
 
 BOOL OperateFountains(int pnum, int i)
@@ -3705,7 +3705,7 @@ BOOL OperateFountains(int pnum, int i)
 			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		break;
 	}
-	drawpanflag = 255;
+	force_redraw = 255;
 	return applied;
 }
 
