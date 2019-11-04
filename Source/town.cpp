@@ -1410,7 +1410,7 @@ void SetTownMicros()
 				lv--;
 				pPiece = (WORD *)&pLevelPieces[32 * lv];
 				for (i = 0; i < 16; i++) {
-					pMap->mt[i] = pPiece[(i & 1) + 14 - (i & 0xE)];
+					pMap->mt[i] = pPiece[(i & 1) + 16 - 2 - (i & 0xE)];
 				}
 			} else {
 				for (i = 0; i < 16; i++) {
