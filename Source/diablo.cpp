@@ -192,7 +192,7 @@ void run_game_loop(unsigned int uMsg)
 
 	pfile_flush_W();
 	PaletteFadeOut(8);
-	SetCursor_(0);
+	SetCursor_(CURSOR_NONE);
 	ClearScreenBuffer();
 	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);

@@ -2,6 +2,36 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
+static void PackItem(PkItemStruct *id, ItemStruct *is)
+{
+	if (is->_itype == -1) {
+		id->idx = 0xFFFF;
+	} else {
+		id->idx = is->IDidx;
+		if (is->IDidx == IDI_EAR) {
+			id->iCreateInfo = is->_iName[8] | (is->_iName[7] << 8);
+			id->iSeed = is->_iName[12] | ((is->_iName[11] | ((is->_iName[10] | (is->_iName[9] << 8)) << 8)) << 8);
+			id->bId = is->_iName[13];
+			id->bDur = is->_iName[14];
+			id->bMDur = is->_iName[15];
+			id->bCh = is->_iName[16];
+			id->bMCh = is->_iName[17];
+			id->wValue = is->_ivalue | (is->_iName[18] << 8) | ((is->_iCurs - 19) << 6);
+			id->dwBuff = is->_iName[22] | ((is->_iName[21] | ((is->_iName[20] | (is->_iName[19] << 8)) << 8)) << 8);
+		} else {
+			id->iSeed = is->_iSeed;
+			id->iCreateInfo = is->_iCreateInfo;
+			id->bId = is->_iIdentified + 2 * is->_iMagical;
+			id->bDur = is->_iDurability;
+			id->bMDur = is->_iMaxDur;
+			id->bCh = is->_iCharges;
+			id->bMCh = is->_iMaxCharges;
+			if (!is->IDidx)
+				id->wValue = is->_ivalue;
+		}
+	}
+}
+
 void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
 	PlayerStruct *pPlayer;
@@ -77,33 +107,35 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 		pPack->pManaShield = FALSE;
 }
 
-void PackItem(PkItemStruct *id, ItemStruct *is)
+// Note: last slot of item[MAXITEMS+1] used as temporary buffer
+// find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
+static void UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
-	if (is->_itype == -1) {
-		id->idx = 0xFFFF;
+	if (is->idx == 0xFFFF) {
+		id->_itype = -1;
 	} else {
-		id->idx = is->IDidx;
-		if (is->IDidx == IDI_EAR) {
-			id->iCreateInfo = is->_iName[8] | (is->_iName[7] << 8);
-			id->iSeed = is->_iName[12] | ((is->_iName[11] | ((is->_iName[10] | (is->_iName[9] << 8)) << 8)) << 8);
-			id->bId = is->_iName[13];
-			id->bDur = is->_iName[14];
-			id->bMDur = is->_iName[15];
-			id->bCh = is->_iName[16];
-			id->bMCh = is->_iName[17];
-			id->wValue = is->_ivalue | (is->_iName[18] << 8) | ((is->_iCurs - 19) << 6);
-			id->dwBuff = is->_iName[22] | ((is->_iName[21] | ((is->_iName[20] | (is->_iName[19] << 8)) << 8)) << 8);
+		if (is->idx == IDI_EAR) {
+			RecreateEar(
+			    MAXITEMS,
+			    is->iCreateInfo,
+			    is->iSeed,
+			    is->bId,
+			    is->bDur,
+			    is->bMDur,
+			    is->bCh,
+			    is->bMCh,
+			    is->wValue,
+			    is->dwBuff);
 		} else {
-			id->iSeed = is->_iSeed;
-			id->iCreateInfo = is->_iCreateInfo;
-			id->bId = is->_iIdentified + 2 * is->_iMagical;
-			id->bDur = is->_iDurability;
-			id->bMDur = is->_iMaxDur;
-			id->bCh = is->_iCharges;
-			id->bMCh = is->_iMaxCharges;
-			if (!is->IDidx)
-				id->wValue = is->_ivalue;
+			RecreateItem(MAXITEMS, is->idx, is->iCreateInfo, is->iSeed, is->wValue);
+			item[MAXITEMS]._iMagical = is->bId >> 1;
+			item[MAXITEMS]._iIdentified = is->bId & 1;
+			item[MAXITEMS]._iDurability = is->bDur;
+			item[MAXITEMS]._iMaxDur = is->bMDur;
+			item[MAXITEMS]._iCharges = is->bCh;
+			item[MAXITEMS]._iMaxCharges = is->bMCh;
 		}
+		*id = item[MAXITEMS];
 	}
 }
 
@@ -216,38 +248,6 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
 	pPlayer->pBattleNet = pPack->pBattleNet;
 	pPlayer->pManaShield = pPack->pManaShield;
-}
-
-// Note: last slot of item[MAXITEMS+1] used as temporary buffer
-// find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
-void UnPackItem(PkItemStruct *is, ItemStruct *id)
-{
-	if (is->idx == 0xFFFF) {
-		id->_itype = -1;
-	} else {
-		if (is->idx == IDI_EAR) {
-			RecreateEar(
-			    MAXITEMS,
-			    is->iCreateInfo,
-			    is->iSeed,
-			    is->bId,
-			    is->bDur,
-			    is->bMDur,
-			    is->bCh,
-			    is->bMCh,
-			    is->wValue,
-			    is->dwBuff);
-		} else {
-			RecreateItem(MAXITEMS, is->idx, is->iCreateInfo, is->iSeed, is->wValue);
-			item[MAXITEMS]._iMagical = is->bId >> 1;
-			item[MAXITEMS]._iIdentified = is->bId & 1;
-			item[MAXITEMS]._iDurability = is->bDur;
-			item[MAXITEMS]._iMaxDur = is->bMDur;
-			item[MAXITEMS]._iCharges = is->bCh;
-			item[MAXITEMS]._iMaxCharges = is->bMCh;
-		}
-		*id = item[MAXITEMS];
-	}
 }
 
 DEVILUTION_END_NAMESPACE

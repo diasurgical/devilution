@@ -11,7 +11,7 @@ BOOL dovision;
 int numvision;
 char lightmax;
 BOOL dolighting;
-BYTE lightblock[8][8][16][16];
+BYTE lightblock[64][16][16];
 int visionid;
 BYTE *pLightTbl;
 BOOL lightflag;
@@ -558,7 +558,7 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < max_x; x++) {
-			radius_block = lightblock[0][mult][y][x];
+			radius_block = lightblock[mult][y][x];
 			if (radius_block < 128) {
 				temp_x = nXPos + x;
 				temp_y = nYPos + y;
@@ -575,7 +575,7 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < max_y; y++) {
 		for (x = 1; x < max_x; x++) {
-			radius_block = lightblock[0][mult][y + block_y][x + block_x];
+			radius_block = lightblock[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos + y;
 				temp_y = nYPos - x;
@@ -592,7 +592,7 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < max_y; y++) {
 		for (x = 1; x < min_x; x++) {
-			radius_block = lightblock[0][mult][y + block_y][x + block_x];
+			radius_block = lightblock[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos - x;
 				temp_y = nYPos - y;
@@ -609,7 +609,7 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < min_x; x++) {
-			radius_block = lightblock[0][mult][y + block_y][x + block_x];
+			radius_block = lightblock[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos - y;
 				temp_y = nYPos + x;
@@ -960,7 +960,7 @@ void MakeLightTable()
 					} else {
 						fa = 0.5;
 					}
-					lightblock[i][j][k][l] = fs + fa;
+					lightblock[i * 8 + j][k][l] = fs + fa;
 				}
 			}
 		}
