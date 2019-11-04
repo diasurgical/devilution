@@ -51,7 +51,7 @@ extern char dItem[MAXDUNX][MAXDUNY];
 extern BYTE setlvlnum;
 extern int level_frame_sizes[MAXTILES];
 extern BOOLEAN nMissileTable[2049];
-extern char *pSetPiece;
+extern BYTE *pSetPiece;
 extern char setlvltype;
 extern BOOLEAN setlevel;
 extern int LvlViewY;
