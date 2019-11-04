@@ -340,18 +340,18 @@ void DRLG_LoadL4SP()
 {
 	setloadflag = FALSE;
 	if (QuestStatus(QTYPE_WARLRD)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Warlord.DUN", NULL);
+		pSetPiece = (char *)LoadFileInMem("Levels\\L4Data\\Warlord.DUN", NULL);
 		setloadflag = TRUE;
 	}
 	if (currlevel == 15 && gbMaxPlayers != 1) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Vile1.DUN", NULL);
+		pSetPiece = (char *)LoadFileInMem("Levels\\L4Data\\Vile1.DUN", NULL);
 		setloadflag = TRUE;
 	}
 }
 
 void DRLG_FreeL4SP()
 {
-	MemFreeDbg(pSetPiece_2);
+	MemFreeDbg(pSetPiece);
 }
 
 void DRLG_L4SetSPRoom(int rx1, int ry1)
@@ -359,15 +359,15 @@ void DRLG_L4SetSPRoom(int rx1, int ry1)
 	int rw, rh, i, j;
 	BYTE *sp;
 
-	rw = (BYTE)pSetPiece_2[0];
-	rh = (BYTE)pSetPiece_2[2];
+	rw = (BYTE)pSetPiece[0];
+	rh = (BYTE)pSetPiece[2];
 
 	setpc_x = rx1;
 	setpc_y = ry1;
 	setpc_w = rw;
 	setpc_h = rh;
 
-	sp = (BYTE *)&pSetPiece_2[4];
+	sp = (BYTE *)&pSetPiece[4];
 
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {

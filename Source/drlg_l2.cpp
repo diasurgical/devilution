@@ -466,20 +466,20 @@ static void DRLG_LoadL2SP()
 	setloadflag = FALSE;
 
 	if (QuestStatus(QTYPE_BLIND)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blind2.DUN", NULL);
+		pSetPiece = (char *)LoadFileInMem("Levels\\L2Data\\Blind2.DUN", NULL);
 		setloadflag = TRUE;
 	} else if (QuestStatus(QTYPE_BLOOD)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blood1.DUN", NULL);
+		pSetPiece = (char *)LoadFileInMem("Levels\\L2Data\\Blood1.DUN", NULL);
 		setloadflag = TRUE;
 	} else if (QuestStatus(QTYPE_BONE)) {
-		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Bonestr2.DUN", NULL);
+		pSetPiece = (char *)LoadFileInMem("Levels\\L2Data\\Bonestr2.DUN", NULL);
 		setloadflag = TRUE;
 	}
 }
 
 static void DRLG_FreeL2SP()
 {
-	MemFreeDbg(pSetPiece_2);
+	MemFreeDbg(pSetPiece);
 }
 
 static void DRLG_L2SetRoom(int rx1, int ry1)
@@ -487,15 +487,15 @@ static void DRLG_L2SetRoom(int rx1, int ry1)
 	int rw, rh, i, j;
 	BYTE *sp;
 
-	rw = (BYTE)pSetPiece_2[0];
-	rh = (BYTE)pSetPiece_2[2];
+	rw = (BYTE)pSetPiece[0];
+	rh = (BYTE)pSetPiece[2];
 
 	setpc_x = rx1;
 	setpc_y = ry1;
 	setpc_w = rw;
 	setpc_h = rh;
 
-	sp = (BYTE *)&pSetPiece_2[4];
+	sp = (BYTE *)&pSetPiece[4];
 
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {

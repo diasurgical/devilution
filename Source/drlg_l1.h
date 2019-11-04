@@ -11,7 +11,7 @@ extern int HR3;
 extern int VR1;
 extern int VR2;
 extern int VR3;
-extern BYTE *pSetPiece;
+extern BYTE *L5pSetPiece;
 
 void DRLG_Init_Globals();
 void LoadL1Dungeon(char *sFileName, int vx, int vy);

@@ -49,7 +49,7 @@ char dItem[MAXDUNX][MAXDUNY];
 BYTE setlvlnum;
 int level_frame_sizes[MAXTILES];
 BOOLEAN nMissileTable[2049];
-char *pSetPiece_2;
+char *pSetPiece;
 char setlvltype;
 BOOLEAN setlevel;
 int LvlViewY;
