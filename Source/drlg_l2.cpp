@@ -463,17 +463,17 @@ void InitDungeon()
 
 static void DRLG_LoadL2SP()
 {
-	setloadflag_2 = 0;
+	setloadflag = FALSE;
 
 	if (QuestStatus(QTYPE_BLIND)) {
 		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blind2.DUN", NULL);
-		setloadflag_2 = 1;
+		setloadflag = TRUE;
 	} else if (QuestStatus(QTYPE_BLOOD)) {
 		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blood1.DUN", NULL);
-		setloadflag_2 = 1;
+		setloadflag = TRUE;
 	} else if (QuestStatus(QTYPE_BONE)) {
 		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Bonestr2.DUN", NULL);
-		setloadflag_2 = 1;
+		setloadflag = TRUE;
 	}
 }
 
@@ -1776,7 +1776,7 @@ static void DRLG_L2(int entry)
 			continue;
 		}
 		L2TileFix();
-		if (setloadflag_2) {
+		if (setloadflag) {
 			DRLG_L2SetRoom(nSx1, nSy1);
 		}
 		DRLG_L2FloodTVal();

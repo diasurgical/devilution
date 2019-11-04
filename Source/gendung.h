@@ -20,7 +20,7 @@ extern int MicroTileLen;
 extern char dflags[DMAXX][DMAXY];
 extern int dPiece[MAXDUNX][MAXDUNY];
 extern char dLight[MAXDUNX][MAXDUNY];
-extern int setloadflag_2;
+extern BOOL setloadflag;
 extern int tile_defs[MAXTILES];
 extern BYTE *pMegaTiles;
 extern BYTE *pLevelPieces;

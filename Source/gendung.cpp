@@ -18,7 +18,7 @@ int MicroTileLen;
 char dflags[DMAXX][DMAXY];
 int dPiece[MAXDUNX][MAXDUNY];
 char dLight[MAXDUNX][MAXDUNY];
-int setloadflag_2;
+BOOL setloadflag;
 int tile_defs[MAXTILES];
 BYTE *pMegaTiles;
 BYTE *pLevelPieces;

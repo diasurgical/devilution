@@ -2,7 +2,7 @@
 
 BYTE L5dungeon[80][80];
 BYTE L5dflags[DMAXX][DMAXY];
-BOOL setloadflag;
+BOOL L5setloadflag;
 int HR1;
 int HR2;
 int HR3;
@@ -483,18 +483,18 @@ static void DRLG_L1Pass3()
 
 static void DRLG_LoadL1SP()
 {
-	setloadflag = FALSE;
+	L5setloadflag = FALSE;
 	if (QuestStatus(QTYPE_BUTCH)) {
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", NULL);
-		setloadflag = TRUE;
+		L5setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_KING) && gbMaxPlayers == 1) {
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", NULL);
-		setloadflag = TRUE;
+		L5setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_BOL)) {
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", NULL);
-		setloadflag = TRUE;
+		L5setloadflag = TRUE;
 	}
 }
 
@@ -1415,7 +1415,7 @@ static void L5FillChambers()
 	if (VR1 && !VR2 && VR3)
 		DRLG_L5GHall(18, 12, 18, 28);
 
-	if (setloadflag) {
+	if (L5setloadflag) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
 			if (!VR1 && VR2 && VR3 && random_(0, 2))
