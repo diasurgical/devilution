@@ -71,8 +71,6 @@ extern MICROS dpiece_defs_map_2[MAXDUNX][MAXDUNY];
 
 void FillSolidBlockTbls();
 void MakeSpeedCels();
-void SortTiles(int frames);
-void SwapTile(int f1, int f2);
 int IsometricCoord(int x, int y);
 void SetSpeedCels();
 void SetDungeonMicros();

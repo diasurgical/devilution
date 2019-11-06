@@ -120,6 +120,42 @@ void FillSolidBlockTbls()
 	mem_free_dbg(pSBFile);
 }
 
+static void SwapTile(int f1, int f2)
+{
+	int swap;
+
+	swap = level_frame_count[f1];
+	level_frame_count[f1] = level_frame_count[f2];
+	level_frame_count[f2] = swap;
+	swap = tile_defs[f1];
+	tile_defs[f1] = tile_defs[f2];
+	tile_defs[f2] = swap;
+	swap = level_frame_types[f1];
+	level_frame_types[f1] = level_frame_types[f2];
+	level_frame_types[f2] = swap;
+	swap = level_frame_sizes[f1];
+	level_frame_sizes[f1] = level_frame_sizes[f2];
+	level_frame_sizes[f2] = swap;
+}
+
+static void SortTiles(int frames)
+{
+	int i;
+	BOOL doneflag;
+
+	doneflag = FALSE;
+	while (frames > 0 && !doneflag) {
+		doneflag = TRUE;
+		for (i = 0; i < frames; i++) {
+			if (level_frame_count[i] < level_frame_count[i + 1]) {
+				SwapTile(i, i + 1);
+				doneflag = FALSE;
+			}
+		}
+		frames--;
+	}
+}
+
 void MakeSpeedCels()
 {
 	int i, j, x, y, mt, t, z;
@@ -444,42 +480,6 @@ void MakeSpeedCels()
 			}
 		}
 	}
-}
-
-void SortTiles(int frames)
-{
-	int i;
-	BOOL doneflag;
-
-	doneflag = FALSE;
-	while (frames > 0 && !doneflag) {
-		doneflag = TRUE;
-		for (i = 0; i < frames; i++) {
-			if (level_frame_count[i] < level_frame_count[i + 1]) {
-				SwapTile(i, i + 1);
-				doneflag = FALSE;
-			}
-		}
-		frames--;
-	}
-}
-
-void SwapTile(int f1, int f2)
-{
-	int swap;
-
-	swap = level_frame_count[f1];
-	level_frame_count[f1] = level_frame_count[f2];
-	level_frame_count[f2] = swap;
-	swap = tile_defs[f1];
-	tile_defs[f1] = tile_defs[f2];
-	tile_defs[f2] = swap;
-	swap = level_frame_types[f1];
-	level_frame_types[f1] = level_frame_types[f2];
-	level_frame_types[f2] = swap;
-	swap = level_frame_sizes[f1];
-	level_frame_sizes[f1] = level_frame_sizes[f2];
-	level_frame_sizes[f2] = swap;
 }
 
 int IsometricCoord(int x, int y)
