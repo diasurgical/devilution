@@ -48,7 +48,7 @@ void SetCursorPos(int X, int Y)
 // Moves the mouse to the first attribute "+" button.
 void FocusOnCharInfo()
 {
-	if (!chrflag || plr[myplr]._pStatPts <= 0)
+	if (invflag || plr[myplr]._pStatPts <= 0)
 		return;
 
 	// Find the first incrementable stat.
@@ -360,6 +360,8 @@ void BlurInventory()
 		DropItemBeforeTrig();
 	if (pcurs == CURSOR_REPAIR || pcurs == CURSOR_RECHARGE)
 		SetCursor_(CURSOR_HAND);
+	if (chrflag)
+		FocusOnCharInfo();
 }
 
 WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg)
