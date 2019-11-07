@@ -300,6 +300,7 @@ foreach(
   NONET
   DINGUX
   RETROFW
+  PREFILL_PLAYER_NAME
 )
 if(${def_name})
   list(APPEND def_list ${def_name})
