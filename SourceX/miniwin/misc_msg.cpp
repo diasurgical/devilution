@@ -446,6 +446,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 			chrflag = false;
 			questlog = false;
 			invflag = false;
+			BlurInventory();
 			sbookflag = false;
 			StoreSpellCoords();
 			break;
