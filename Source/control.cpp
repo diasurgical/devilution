@@ -369,7 +369,7 @@ void DrawSpellList()
 		}
 		if (mask != 0 && x != 636 + PANEL_LEFT)
 			x -= 56;
-		if (x == 20) {
+		if (x == 20 + PANEL_LEFT) {
 			y -= 56;
 			x = 636 + PANEL_LEFT;
 		}
