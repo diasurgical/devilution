@@ -258,7 +258,7 @@ void DrawSpellList()
 
 	pSpell = SPL_INVALID;
 	infostr[0] = '\0';
-	x = 636;
+	x = 636 + PANEL_LEFT;
 	y = 495;
 	ClearPanel();
 	for (i = 0; i < 4; i++) {
@@ -362,16 +362,16 @@ void DrawSpellList()
 				}
 			}
 			x -= 56;
-			if (x == 20) {
+			if (x == 20 + PANEL_LEFT) {
 				y -= 56;
-				x = 636;
+				x = 636 + PANEL_LEFT;
 			}
 		}
-		if (mask != 0 && x != 636)
+		if (mask != 0 && x != 636 + PANEL_LEFT)
 			x -= 56;
 		if (x == 20) {
 			y -= 56;
-			x = 636;
+			x = 636 + PANEL_LEFT;
 		}
 	}
 }
@@ -804,9 +804,9 @@ void DoSpeedBook()
 	int xo, yo, X, Y, i, j;
 
 	spselflag = 1;
-	xo = 636;
+	xo = 636 + PANEL_LEFT;
 	yo = 495;
-	X = 600;
+	X = 600 + PANEL_LEFT;
 	Y = 307;
 	if (plr[myplr]._pRSpell != SPL_INVALID) {
 		for (i = 0; i < 4; i++) {
@@ -832,17 +832,17 @@ void DoSpeedBook()
 						Y = yo - 188;
 					}
 					xo -= 56;
-					if (xo == 20) {
-						xo = 636;
+					if (xo == 20 + PANEL_LEFT) {
+						xo = 636 + PANEL_LEFT;
 						yo -= 56;
 					}
 				}
 				spell <<= (__int64)1;
 			}
-			if (spells && xo != 636)
+			if (spells && xo != 636 + PANEL_LEFT)
 				xo -= 56;
-			if (xo == 20) {
-				xo = 636;
+			if (xo == 20 + PANEL_LEFT) {
+				xo = 636 + PANEL_LEFT;
 				yo -= 56;
 			}
 		}
