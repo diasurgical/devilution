@@ -259,7 +259,7 @@ void DrawSpellList()
 	pSpell = SPL_INVALID;
 	infostr[0] = '\0';
 	x = 636 + PANEL_LEFT;
-	y = 495;
+	y = 495 + HEIGHT_DIFF;
 	ClearPanel();
 	for (i = 0; i < 4; i++) {
 		switch ((spell_type)i) {
@@ -805,9 +805,9 @@ void DoSpeedBook()
 
 	spselflag = 1;
 	xo = 636 + PANEL_LEFT;
-	yo = 495;
+	yo = 495 + HEIGHT_DIFF;
 	X = 600 + PANEL_LEFT;
-	Y = 307;
+	Y = 307 + HEIGHT_DIFF;
 	if (plr[myplr]._pRSpell != SPL_INVALID) {
 		for (i = 0; i < 4; i++) {
 			switch (i) {
