@@ -285,7 +285,7 @@ void CheckCursMove()
 	if (sbookflag && MouseX > RIGHT_PANEL) {
 		return;
 	}
-	if ((chrflag || questlog) && MouseX < RIGHT_PANEL) {
+	if ((chrflag || questlog) && MouseX < 320) {
 		return;
 	}
 
