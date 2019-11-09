@@ -407,8 +407,8 @@ void DrawSpellList()
 
 	pSpell = SPL_INVALID;
 	infostr[0] = '\0';
-	x = 636;
-	y = 495;
+	x = PANEL_X + 12 + 56 * 10;
+	y = PANEL_Y - 17;
 	ClearPanel();
 	for (i = 0; i < 4; i++) {
 		switch ((spell_type)i) {
@@ -448,8 +448,8 @@ void DrawSpellList()
 			if (currlevel == 0 && !spelldata[j].sTownSpell)
 				SetSpellTrans(RSPLTYPE_INVALID);
 			DrawSpellCel(x, y, pSpellCels, SpellITbl[j], 56);
-			lx = x - 64;
-			ly = y - 216;
+			lx = x - BORDER_LEFT;
+			ly = y - BORDER_TOP - 56;
 			if (MouseX >= lx && MouseX < lx + 56 && MouseY >= ly && MouseY < ly + 56) {
 				pSpell = j;
 				pSplType = i;
@@ -511,16 +511,16 @@ void DrawSpellList()
 				}
 			}
 			x -= 56;
-			if (x == 20) {
+			if (x == PANEL_X + 12 - 56) {
 				y -= 56;
-				x = 636;
+				x = PANEL_X + 12 + 56 * 10;
 			}
 		}
-		if (mask != 0 && x != 636)
+		if (mask != 0 && x != PANEL_X + 12 + 56 * 10)
 			x -= 56;
-		if (x == 20) {
+		if (x == PANEL_X + 12 - 56) {
 			y -= 56;
-			x = 636;
+			x = PANEL_X + 12 + 56 * 10;
 		}
 	}
 }
