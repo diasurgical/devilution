@@ -3688,8 +3688,8 @@ void CheckPlrSpell()
 	}
 
 	if (pcurs != CURSOR_HAND
-	    || MouseY >= PANEL_TOP
-	    || (chrflag && MouseX < 320 || invflag && MouseX > RIGHT_PANEL)
+	    || (MouseY >= PANEL_TOP && MouseX >= PANEL_LEFT && MouseX <= RIGHT_PANEL) // allows casting spells through the sides of the main panel if it doesn't cover the whole screen
+	    || ((chrflag || questlog) && MouseX < 320 && MouseY < SPANEL_HEIGHT) || (invflag && MouseX > RIGHT_PANEL && MouseY < SPANEL_HEIGHT) // allows casting spells below the side panels
 	        && rspell != SPL_HEAL
 	        && rspell != SPL_IDENTIFY
 	        && rspell != SPL_REPAIR
