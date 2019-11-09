@@ -513,7 +513,7 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 		pHdr->version = 0;
 		*pdwNextFileStart = 0x10068;
 		save_archive_modified = TRUE;
-		save_archive_open = 1;
+		save_archive_open = TRUE;
 	}
 
 	return TRUE;
