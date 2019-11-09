@@ -380,7 +380,7 @@ void DrawSpell()
 
 	spl = plr[myplr]._pRSpell;
 	st = plr[myplr]._pRSplType;
-	
+
 	// BUGFIX: Move the next line into the if statement to avoid OOB (SPL_INVALID is -1)
 	tlvl = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[spl];
 	if (st == RSPLTYPE_SPELL && spl != SPL_INVALID) {
@@ -1292,10 +1292,10 @@ void DoSpeedBook()
 	int xo, yo, X, Y, i, j;
 
 	spselflag = 1;
-	xo = 636;
-	yo = 495;
-	X = 600;
-	Y = 307;
+	xo = PANEL_X + 12 + 56 * 10;
+	yo = PANEL_Y - 17;
+	X = PANEL_LEFT + 12 + 56 * 10 + 56 / 2;
+	Y = PANEL_TOP - 17 - 56 / 2;
 	if (plr[myplr]._pRSpell != SPL_INVALID) {
 		for (i = 0; i < 4; i++) {
 			switch (i) {
@@ -1316,21 +1316,21 @@ void DoSpeedBook()
 			for (j = 1; j < MAX_SPELLS; j++) {
 				if (spell & spells) {
 					if (j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType) {
-						X = xo - 36;
-						Y = yo - 188;
+						X = xo - (BORDER_LEFT - 56 / 2);
+						Y = yo - (BORDER_TOP + 56 / 2);
 					}
 					xo -= 56;
-					if (xo == 20) {
-						xo = 636;
+					if (xo == PANEL_X + 12 - 56) {
+						xo = PANEL_X + 12 + 56 * 10;
 						yo -= 56;
 					}
 				}
 				spell <<= (__int64)1;
 			}
-			if (spells && xo != 636)
+			if (spells && xo != PANEL_X + 12 + 56 * 10)
 				xo -= 56;
-			if (xo == 20) {
-				xo = 636;
+			if (xo == PANEL_X + 12 - 56) {
+				xo = PANEL_X + 12 + 56 * 10;
 				yo -= 56;
 			}
 		}
