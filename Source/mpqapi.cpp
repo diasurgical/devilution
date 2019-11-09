@@ -146,7 +146,7 @@ void mpqapi_remove_hash_entry(const char *pszName)
 		block_size = blockEntry->sizealloc;
 		memset(blockEntry, 0, sizeof(*blockEntry));
 		mpqapi_alloc_block(block_offset, block_size);
-		save_archive_modified = 1;
+		save_archive_modified = TRUE;
 	}
 }
 
