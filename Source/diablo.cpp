@@ -652,7 +652,7 @@ BOOL LeftMouseDown(int wParam)
 					} else if (qtextflag) {
 						qtextflag = FALSE;
 						sfx_stop();
-					} else if (chrflag && MouseX < 320 && MouseY < SPANEL_HEIGHT) {
+					} else if (chrflag && MouseX < SPANEL_WIDTH && MouseY < SPANEL_HEIGHT) {
 						CheckChrBtns();
 					} else if (invflag && MouseX > RIGHT_PANEL && MouseY < SPANEL_HEIGHT) {
 						if (!dropGoldFlag)

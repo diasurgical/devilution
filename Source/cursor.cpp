@@ -292,7 +292,7 @@ void CheckCursMove()
 	if (sbookflag && MouseX > RIGHT_PANEL && MouseY <= SPANEL_HEIGHT) {
 		return;
 	}
-	if ((chrflag || questlog) && MouseX < 320 && MouseY <= SPANEL_HEIGHT) {
+	if ((chrflag || questlog) && MouseX < SPANEL_WIDTH && MouseY <= SPANEL_HEIGHT) {
 		return;
 	}
 

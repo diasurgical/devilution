@@ -141,7 +141,7 @@ void DrawInv()
 	BOOL invtest[NUM_INV_GRID_ELEM];
 	int frame, frame_width, colour, screen_x, screen_y, i, j, ii;
 
-	CelDraw(RIGHT_PANEL_X, 351 + SCREEN_Y, pInvCels, 1, 320);
+	CelDraw(RIGHT_PANEL_X, 351 + SCREEN_Y, pInvCels, 1, SPANEL_WIDTH);
 
 	if (plr[myplr].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(RIGHT_PANEL_X + 133, 59 + SCREEN_Y, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);

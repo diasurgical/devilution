@@ -1262,7 +1262,7 @@ void DrawChr()
 	char chrstr[64];
 	int pc, mindam, maxdam;
 
-	CelDraw(SCREEN_X, 351 + SCREEN_Y, pChrPanel, 1, 320);
+	CelDraw(SCREEN_X, 351 + SCREEN_Y, pChrPanel, 1, SPANEL_WIDTH);
 	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, COL_WHITE);
 
 	if (plr[myplr]._pClass == PC_WARRIOR) {
@@ -1716,7 +1716,7 @@ void DrawSpellBook()
 	char st;
 	unsigned __int64 spl;
 
-	CelDraw(RIGHT_PANEL_X, 351 + SCREEN_Y, pSpellBkCel, 1, 320);
+	CelDraw(RIGHT_PANEL_X, 351 + SCREEN_Y, pSpellBkCel, 1, SPANEL_WIDTH);
 	CelDraw(RIGHT_PANEL_X + 76 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 76);
 
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
@@ -1822,7 +1822,7 @@ void CheckSBook()
 			force_redraw = 255;
 		}
 	}
-	if (MouseX >= RIGHT_PANEL + 7 && MouseX < RIGHT_PANEL + 313 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 313` to `< 311`
+	if (MouseX >= RIGHT_PANEL + 7 && MouseX < RIGHT_PANEL + 311 && MouseY >= SPANEL_WIDTH && MouseY < 349) { /// BUGFIX: change `< 313` to `< 311` (fixed)
 		sbooktab = (MouseX - (RIGHT_PANEL + 7)) / 76;
 	}
 }

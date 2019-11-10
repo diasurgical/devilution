@@ -2726,7 +2726,7 @@ void CheckStoreBtn()
 		qtextflag = FALSE;
 		if (leveltype == DTYPE_TOWN)
 			sfx_stop();
-	} else if (stextsel != -1 && MouseY >= 32 && MouseY <= 320) {
+	} else if (stextsel != -1 && MouseY >= 32 && MouseY <= SPANEL_WIDTH) {
 		if (!stextsize) {
 			if (MouseX < 344 + PANEL_LEFT || MouseX > 616 + PANEL_LEFT)
 				return;
