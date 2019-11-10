@@ -3171,7 +3171,7 @@ void MI_Etherealize(int i)
 	}
 	GetMissilePos(i);
 	if (plr[src]._pmode == PM_WALK3) {
-		if (plr[src]._pdir == 2)
+		if (plr[src]._pdir == DIR_W)
 			missile[i]._mix++;
 		else
 			missile[i]._miy++;
