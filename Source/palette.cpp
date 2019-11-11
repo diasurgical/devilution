@@ -12,10 +12,89 @@ int gamma_correction = 100;
 BOOL color_cycling_enabled = TRUE;
 BOOLEAN sgbFadedIn = TRUE;
 
+static void palette_update()
+{
+	int nentries;
+	int max_entries;
+
+	if (lpDDPalette) {
+		nentries = 0;
+		max_entries = 256;
+		if (!fullscreen) {
+			nentries = gdwPalEntries;
+			max_entries = 2 * (128 - gdwPalEntries);
+		}
+		SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
+	}
+}
+
+static void ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
+{
+	int i;
+	double g;
+
+	g = gamma_correction / 100.0;
+
+	for (i = 0; i < n; i++) {
+		dst->peRed = pow(src->peRed / 256.0, g) * 256.0;
+		dst->peGreen = pow(src->peGreen / 256.0, g) * 256.0;
+		dst->peBlue = pow(src->peBlue / 256.0, g) * 256.0;
+		dst++;
+		src++;
+	}
+}
+
 void SaveGamma()
 {
 	SRegSaveValue("Diablo", "Gamma Correction", 0, gamma_correction);
 	SRegSaveValue("Diablo", "Color Cycling", FALSE, color_cycling_enabled);
+}
+
+static void LoadGamma()
+{
+	int gamma_value;
+	int value;
+
+	value = gamma_correction;
+	if (!SRegLoadValue("Diablo", "Gamma Correction", 0, &value))
+		value = 100;
+	gamma_value = value;
+	if (value < 30) {
+		gamma_value = 30;
+	} else if (value > 100) {
+		gamma_value = 100;
+	}
+	gamma_correction = gamma_value - gamma_value % 5;
+	if (!SRegLoadValue("Diablo", "Color Cycling", 0, &value))
+		value = 1;
+	color_cycling_enabled = value;
+}
+
+static void LoadSysPal()
+{
+	HDC hDC;
+	int i, iStartIndex;
+
+	for (i = 0; i < 256; i++)
+		system_palette[i].peFlags = PC_NOCOLLAPSE | PC_RESERVED;
+
+	if (!fullscreen) {
+		hDC = GetDC(NULL);
+
+		gdwPalEntries = GetDeviceCaps(hDC, NUMRESERVED) / 2;
+		GetSystemPaletteEntries(hDC, 0, gdwPalEntries, system_palette);
+		for (i = 0; i < gdwPalEntries; i++)
+			system_palette[i].peFlags = 0;
+
+		iStartIndex = 256 - gdwPalEntries;
+		GetSystemPaletteEntries(hDC, iStartIndex, gdwPalEntries, &system_palette[iStartIndex]);
+		if (iStartIndex < 256) {
+			for (i = iStartIndex; i < 256; i++)
+				system_palette[i].peFlags = 0;
+		}
+
+		ReleaseDC(NULL, hDC);
+	}
 }
 
 void palette_init()
@@ -41,53 +120,6 @@ void palette_init()
 	if (error_code)
 		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
 #endif
-}
-
-void LoadGamma()
-{
-	int gamma_value;
-	int value;
-
-	value = gamma_correction;
-	if (!SRegLoadValue("Diablo", "Gamma Correction", 0, &value))
-		value = 100;
-	gamma_value = value;
-	if (value < 30) {
-		gamma_value = 30;
-	} else if (value > 100) {
-		gamma_value = 100;
-	}
-	gamma_correction = gamma_value - gamma_value % 5;
-	if (!SRegLoadValue("Diablo", "Color Cycling", 0, &value))
-		value = 1;
-	color_cycling_enabled = value;
-}
-
-void LoadSysPal()
-{
-	HDC hDC;
-	int i, iStartIndex;
-
-	for (i = 0; i < 256; i++)
-		system_palette[i].peFlags = PC_NOCOLLAPSE | PC_RESERVED;
-
-	if (!fullscreen) {
-		hDC = GetDC(NULL);
-
-		gdwPalEntries = GetDeviceCaps(hDC, NUMRESERVED) / 2;
-		GetSystemPaletteEntries(hDC, 0, gdwPalEntries, system_palette);
-		for (i = 0; i < gdwPalEntries; i++)
-			system_palette[i].peFlags = 0;
-
-		iStartIndex = 256 - gdwPalEntries;
-		GetSystemPaletteEntries(hDC, iStartIndex, gdwPalEntries, &system_palette[iStartIndex]);
-		if (iStartIndex < 256) {
-			for (i = iStartIndex; i < 256; i++)
-				system_palette[i].peFlags = 0;
-		}
-
-		ReleaseDC(NULL, hDC);
-	}
 }
 
 void LoadPalette(char *pszFileName)
@@ -149,38 +181,6 @@ void IncreaseGamma()
 	}
 }
 
-void palette_update()
-{
-	int nentries;
-	int max_entries;
-
-	if (lpDDPalette) {
-		nentries = 0;
-		max_entries = 256;
-		if (!fullscreen) {
-			nentries = gdwPalEntries;
-			max_entries = 2 * (128 - gdwPalEntries);
-		}
-		SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
-	}
-}
-
-void ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
-{
-	int i;
-	double g;
-
-	g = gamma_correction / 100.0;
-
-	for (i = 0; i < n; i++) {
-		dst->peRed = pow(src->peRed / 256.0, g) * 256.0;
-		dst->peGreen = pow(src->peGreen / 256.0, g) * 256.0;
-		dst->peBlue = pow(src->peBlue / 256.0, g) * 256.0;
-		dst++;
-		src++;
-	}
-}
-
 void DecreaseGamma()
 {
 	if (gamma_correction > 30) {
@@ -202,12 +202,7 @@ int UpdateGamma(int gamma)
 	return 130 - gamma_correction;
 }
 
-void BlackPalette()
-{
-	SetFadeLevel(0);
-}
-
-void SetFadeLevel(DWORD fadeval)
+static void SetFadeLevel(DWORD fadeval)
 {
 	int i;
 
@@ -225,6 +220,11 @@ void SetFadeLevel(DWORD fadeval)
 #endif
 		palette_update();
 	}
+}
+
+void BlackPalette()
+{
+	SetFadeLevel(0);
 }
 
 void PaletteFadeIn(int fr)
