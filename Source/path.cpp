@@ -1,4 +1,6 @@
-#include "diablo.h"
+#include "../types.h"
+#include "path.h"
+#include "gendung.h"
 
 // preallocated nodes, search is terminated after 300 nodes are visited
 PATHNODE path_nodes[MAXPATHNODES];

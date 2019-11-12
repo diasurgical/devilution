@@ -1,5 +1,14 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "effects.h"
+#include "appfat.h"
+#include "engine.h"
+#include "monstdat.h"
+#include "monster.h"
+#include "msg.h"
+#include "multi.h"
+#include "player.h"
+#include "sound.h"
 
 int sfxdelay;
 int sfxdnum;

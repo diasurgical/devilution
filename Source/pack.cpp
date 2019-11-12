@@ -1,5 +1,11 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "pack.h"
+#include "engine.h"
+#include "items.h"
+#include "multi.h"
+#include "player.h"
+#include "stores.h"
 
 static void PackItem(PkItemStruct *id, ItemStruct *is)
 {

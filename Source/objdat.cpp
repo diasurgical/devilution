@@ -1,4 +1,5 @@
-#include "diablo.h"
+#include "../types.h"
+#include "objdat.h"
 
 int ObjTypeConv[113] = {
 	0,

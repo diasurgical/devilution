@@ -2,7 +2,9 @@
 #include <stddef.h> // for offsetof
 #include <typeinfo> // for typeid
 
-#include "diablo.h"
+#include "../types.h"
+#include "../3rdParty/Storm/Source/storm.h"
+#include "msgcmd.h"
 #include "list.h"
 
 #define COMMAND_LEN 128

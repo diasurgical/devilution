@@ -1,4 +1,6 @@
-#include "diablo.h"
+#include "../types.h"
+#include "fault.h"
+#include "logging.h"
 
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
 

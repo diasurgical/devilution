@@ -1,4 +1,15 @@
-#include "diablo.h"
+#include "../types.h"
+#include "setmaps.h"
+#include "appfat.h"
+#include "drlg_l1.h"
+#include "drlg_l2.h"
+#include "drlg_l3.h"
+#include "engine.h"
+#include "gendung.h"
+#include "objects.h"
+#include "palette.h"
+#include "quests.h"
+#include "trigs.h"
 
 // BUGFIX: constant data should be const
 BYTE SkelKingTrans1[8] = {

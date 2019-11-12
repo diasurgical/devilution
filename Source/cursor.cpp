@@ -1,4 +1,21 @@
+#include "../types.h"
+#include "cursor.h"
+#include "control.h"
 #include "diablo.h"
+#include "doom.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "items.h"
+#include "missiles.h"
+#include "monster.h"
+#include "objects.h"
+#include "player.h"
+#include "quests.h"
+#include "scrollrt.h"
+#include "towners.h"
+#include "track.h"
+#include "trigs.h"
 
 int cursH;
 int icursH28;

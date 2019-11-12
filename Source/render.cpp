@@ -1,4 +1,9 @@
-#include "diablo.h"
+#include "../types.h"
+#include "render.h"
+#include "gendung.h"
+#include "lighting.h"
+#include "scrollrt.h"
+
 #include "_asm.cpp"
 
 int WorldBoolFlag = 0;

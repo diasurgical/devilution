@@ -1,4 +1,18 @@
-#include "diablo.h"
+#include "../types.h"
+#include "towners.h"
+#include "cursor.h"
+#include "effects.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "itemdat.h"
+#include "items.h"
+#include "minitext.h"
+#include "msg.h"
+#include "multi.h"
+#include "player.h"
+#include "quests.h"
+#include "stores.h"
 
 BOOL storeflag;
 int sgnCowMsg;

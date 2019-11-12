@@ -1,4 +1,17 @@
+#include "../types.h"
+#include "trigs.h"
+#include "appfat.h"
+#include "control.h"
+#include "cursor.h"
 #include "diablo.h"
+#include "effects.h"
+#include "error.h"
+#include "gendung.h"
+#include "inv.h"
+#include "msg.h"
+#include "multi.h"
+#include "player.h"
+#include "quests.h"
 
 BOOL townwarps[3];
 BOOL trigflag;

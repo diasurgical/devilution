@@ -1,4 +1,7 @@
-#include "diablo.h"
+#include "../types.h"
+#include "doom.h"
+#include "control.h"
+#include "engine.h"
 
 int doom_quest_time;
 int doom_stars_drawn;

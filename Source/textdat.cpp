@@ -1,4 +1,5 @@
-#include "diablo.h"
+#include "../types.h"
+#include "textdat.h"
 
 /* todo: move text out of struct */
 

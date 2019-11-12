@@ -1,4 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
+#include "error.h"
+#include "control.h"
+#include "dx.h"
+#include "engine.h"
+#include "scrollrt.h"
+#include "stores.h"
 
 char msgtable[MAX_SEND_STR_LEN];
 char msgdelay;

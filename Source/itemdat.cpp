@@ -1,4 +1,5 @@
-#include "diablo.h"
+#include "../types.h"
+#include "itemdat.h"
 
 ItemDataStruct AllItemsList[157] = {
 	// clang-format off

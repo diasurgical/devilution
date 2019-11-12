@@ -1,5 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "dthread.h"
+#include "appfat.h"
+#include "engine.h"
+#include "multi.h"
+#include "nthread.h"
 
 #ifdef __cplusplus
 static CCritSect sgMemCrit;

@@ -1,4 +1,18 @@
+#include "../types.h"
+#include "debug.h"
+#include "appfat.h"
+#include "cursor.h"
 #include "diablo.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "items.h"
+#include "monster.h"
+#include "msg.h"
+#include "player.h"
+#include "quests.h"
+#include "spells.h"
+#include "stores.h"
 
 #ifdef _DEBUG
 BOOL update_seed_check = FALSE;

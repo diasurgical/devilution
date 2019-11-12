@@ -1,3 +1,5 @@
+#include "../types.h"
+#include "restrict.h"
 #include "diablo.h"
 
 BOOL SystemSupported()

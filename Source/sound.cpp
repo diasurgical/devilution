@@ -1,5 +1,9 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "sound.h"
+#include "appfat.h"
+#include "engine.h"
+#include "wave.h"
 
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;

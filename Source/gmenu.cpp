@@ -1,4 +1,12 @@
+#include "../types.h"
+#include "gmenu.h"
+#include "control.h"
 #include "diablo.h"
+#include "dx.h"
+#include "effects.h"
+#include "engine.h"
+#include "gendung.h"
+#include "scrollrt.h"
 
 BYTE *optbar_cel;
 BOOLEAN mouseNavigation;

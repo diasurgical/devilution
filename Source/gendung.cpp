@@ -1,4 +1,9 @@
+#include "../types.h"
+#include "gendung.h"
+#include "appfat.h"
 #include "diablo.h"
+#include "engine.h"
+#include "lighting.h"
 
 WORD level_frame_types[MAXTILES];
 int themeCount;

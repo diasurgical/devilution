@@ -1,4 +1,7 @@
-#include "diablo.h"
+#include "../types.h"
+#include "codec.h"
+#include "appfat.h"
+#include "sha.h"
 
 struct CodecSignature {
 	DWORD checksum;

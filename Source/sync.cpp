@@ -1,4 +1,12 @@
-#include "diablo.h"
+#include "../types.h"
+#include "sync.h"
+#include "appfat.h"
+#include "engine.h"
+#include "gendung.h"
+#include "items.h"
+#include "monster.h"
+#include "msg.h"
+#include "player.h"
 
 WORD sync_word_6AA708[MAXMONSTERS];
 int sgnMonsters;

@@ -1,5 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "mpqapi.h"
+#include "appfat.h"
+#include "encrypt.h"
+#include "engine.h"
+#include "multi.h"
 
 DWORD sgdwMpqOffset;
 char mpq_buf[4096];

@@ -1,5 +1,6 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "logging.h"
 
 #ifdef __cplusplus
 static CCritSect sgMemCrit;

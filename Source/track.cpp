@@ -1,5 +1,9 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "track.h"
+#include "cursor.h"
+#include "msg.h"
+#include "player.h"
 
 static BYTE sgbIsScrolling;
 static DWORD sgdwLastWalk;

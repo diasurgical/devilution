@@ -1,4 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
+#include "dead.h"
+#include "gendung.h"
+#include "lighting.h"
+#include "misdat.h"
+#include "missiles.h"
+#include "monster.h"
 
 // unused, this was probably for blood boil/burn
 int spurtndx;

@@ -1,4 +1,12 @@
-#include "diablo.h"
+#include "../types.h"
+#include "minitext.h"
+#include "control.h"
+#include "dx.h"
+#include "effects.h"
+#include "engine.h"
+#include "quests.h"
+#include "scrollrt.h"
+#include "textdat.h"
 
 int qtexty;
 char *qtextptr;

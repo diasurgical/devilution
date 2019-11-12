@@ -1,5 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "appfat.h"
+#include "diablo.h"
+#include "dx.h"
+#include "init.h"
+#include "multi.h"
 
 char sz_error_buf[256];
 BOOL terminating;

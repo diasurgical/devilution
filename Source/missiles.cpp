@@ -1,4 +1,23 @@
+#include "../types.h"
+#include "missiles.h"
+#include "control.h"
+#include "cursor.h"
+#include "dead.h"
 #include "diablo.h"
+#include "effects.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "items.h"
+#include "lighting.h"
+#include "misdat.h"
+#include "monster.h"
+#include "msg.h"
+#include "multi.h"
+#include "objects.h"
+#include "player.h"
+#include "spells.h"
+#include "trigs.h"
 
 int missileactive[MAXMISSILES];
 int missileavail[MAXMISSILES];

@@ -1,5 +1,14 @@
 #ifndef SPAWN
+#include "../types.h"
+#include "drlg_l2.h"
 #include "diablo.h"
+#include "drlg_l1.h"
+#include "engine.h"
+#include "gendung.h"
+#include "monster.h"
+#include "multi.h"
+#include "objects.h"
+#include "quests.h"
 
 int nSx1;
 int nSx2;

@@ -1,5 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "movie.h"
+#include "diablo.h"
+#include "effects.h"
+#include "init.h"
+#include "sound.h"
 
 BYTE movie_playing;
 BOOL loop_movie;

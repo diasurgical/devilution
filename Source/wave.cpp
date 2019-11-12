@@ -1,5 +1,9 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "wave.h"
+#include "appfat.h"
+#include "engine.h"
+#include "init.h"
 
 BOOL WCloseFile(HANDLE file)
 {

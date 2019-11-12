@@ -1,4 +1,23 @@
+#include "../types.h"
+#include "stores.h"
+#include "control.h"
+#include "cursor.h"
 #include "diablo.h"
+#include "dx.h"
+#include "effects.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "itemdat.h"
+#include "items.h"
+#include "minitext.h"
+#include "multi.h"
+#include "player.h"
+#include "quests.h"
+#include "scrollrt.h"
+#include "spelldat.h"
+#include "spells.h"
+#include "towners.h"
 
 int stextup;
 int storenumh;

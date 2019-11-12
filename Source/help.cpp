@@ -1,4 +1,9 @@
-#include "diablo.h"
+#include "../types.h"
+#include "help.h"
+#include "control.h"
+#include "minitext.h"
+#include "scrollrt.h"
+#include "stores.h"
 
 int help_select_line;
 int dword_634494;

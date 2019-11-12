@@ -1,4 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
+#include "drlg_l4.h"
+#include "drlg_l1.h"
+#include "engine.h"
+#include "gendung.h"
+#include "multi.h"
+#include "quests.h"
 
 int diabquad1x;
 int diabquad1y;

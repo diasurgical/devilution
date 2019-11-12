@@ -1,5 +1,11 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "palette.h"
+#include "appfat.h"
+#include "diablo.h"
+#include "dx.h"
+#include "engine.h"
+#include "wave.h"
 
 PALETTEENTRY logical_palette[256];
 PALETTEENTRY system_palette[256];

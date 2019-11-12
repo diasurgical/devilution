@@ -1,4 +1,5 @@
-#include "diablo.h"
+#include "../types.h"
+#include "monstdat.h"
 
 MonsterData monsterdata[112] = {
 	// clang-format off

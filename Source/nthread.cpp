@@ -1,5 +1,8 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "nthread.h"
+#include "appfat.h"
+#include "multi.h"
 
 BYTE sgbNetUpdateRate;
 DWORD gdwMsgLenTbl[MAX_PLRS];

@@ -1,4 +1,21 @@
+#include "../types.h"
+#include "gamemenu.h"
+#include "cursor.h"
 #include "diablo.h"
+#include "effects.h"
+#include "error.h"
+#include "gendung.h"
+#include "gmenu.h"
+#include "init.h"
+#include "interfac.h"
+#include "loadsave.h"
+#include "msg.h"
+#include "multi.h"
+#include "palette.h"
+#include "pfile.h"
+#include "player.h"
+#include "scrollrt.h"
+#include "sound.h"
 
 TMenuItem sgSingleMenu[6] = {
 	// clang-format off

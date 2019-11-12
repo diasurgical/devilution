@@ -1,4 +1,6 @@
-#include "diablo.h"
+#include "../types.h"
+#include "misdat.h"
+#include "missiles.h"
 
 MissileData missiledata[68] = {
 	// clang-format off

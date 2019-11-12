@@ -1,4 +1,5 @@
-#include "diablo.h"
+#include "../types.h"
+#include "sha.h"
 
 SHA1Context sgSHA1[3];
 

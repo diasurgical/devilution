@@ -1,4 +1,11 @@
-#include "diablo.h"
+#include "../types.h"
+#include "portal.h"
+#include "gendung.h"
+#include "lighting.h"
+#include "misdat.h"
+#include "missiles.h"
+#include "msg.h"
+#include "player.h"
 
 PortalStruct portal[MAXPORTAL];
 int portalindex;

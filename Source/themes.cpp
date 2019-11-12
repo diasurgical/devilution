@@ -1,4 +1,12 @@
-#include "diablo.h"
+#include "../types.h"
+#include "themes.h"
+#include "engine.h"
+#include "gendung.h"
+#include "items.h"
+#include "monster.h"
+#include "objects.h"
+#include "quests.h"
+#include "trigs.h"
 
 int numthemes;
 BOOL armorFlag;

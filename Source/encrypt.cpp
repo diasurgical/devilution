@@ -1,5 +1,7 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/PKWare/pkware.h"
+#include "encrypt.h"
+#include "engine.h"
 
 DWORD hashtable[1280];
 

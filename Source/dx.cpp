@@ -1,5 +1,12 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "dx.h"
+#include "appfat.h"
+#include "diablo.h"
+#include "engine.h"
+#include "missiles.h"
+#include "palette.h"
+#include "scrollrt.h"
 
 BYTE *sgpBackBuf;
 LPDIRECTDRAW lpDDInterface;

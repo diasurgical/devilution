@@ -1,4 +1,10 @@
-#include "diablo.h"
+#include "../types.h"
+#include "plrmsg.h"
+#include "control.h"
+#include "inv.h"
+#include "player.h"
+#include "quests.h"
+#include "scrollrt.h"
 
 static BYTE plr_msg_slot;
 _plrmsg plr_msgs[PMSG_COUNT];

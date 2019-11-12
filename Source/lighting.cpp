@@ -1,4 +1,10 @@
+#include "../types.h"
+#include "lighting.h"
+#include "automap.h"
 #include "diablo.h"
+#include "engine.h"
+#include "gendung.h"
+#include "player.h"
 
 LightListStruct VisionList[MAXVISION];
 BYTE lightactive[MAXLIGHTS];

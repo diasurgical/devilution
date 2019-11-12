@@ -1,5 +1,13 @@
 #ifndef SPAWN
-#include "diablo.h"
+#include "../types.h"
+#include "drlg_l3.h"
+#include "drlg_l1.h"
+#include "engine.h"
+#include "gendung.h"
+#include "lighting.h"
+#include "monster.h"
+#include "objects.h"
+#include "quests.h"
 
 BOOLEAN lavapool;
 int abyssx;

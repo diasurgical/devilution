@@ -1,6 +1,17 @@
-#include "diablo.h"
+#include "../types.h"
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
+#include "mainmenu.h"
+#include "appfat.h"
+#include "diablo.h"
+#include "effects.h"
+#include "gendung.h"
+#include "init.h"
+#include "movie.h"
+#include "multi.h"
+#include "pfile.h"
+#include "player.h"
+#include "sound.h"
 
 char gszHero[16];
 

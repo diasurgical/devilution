@@ -1,4 +1,17 @@
+#include "../types.h"
+#include "spells.h"
+#include "control.h"
+#include "cursor.h"
 #include "diablo.h"
+#include "engine.h"
+#include "gamemenu.h"
+#include "gendung.h"
+#include "inv.h"
+#include "items.h"
+#include "missiles.h"
+#include "monster.h"
+#include "player.h"
+#include "spelldat.h"
 
 int GetManaAmount(int id, int sn)
 {

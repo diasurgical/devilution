@@ -1,4 +1,13 @@
+#include "../types.h"
+#include "drlg_l1.h"
 #include "diablo.h"
+#include "engine.h"
+#include "gendung.h"
+#include "lighting.h"
+#include "monster.h"
+#include "multi.h"
+#include "objects.h"
+#include "quests.h"
 
 BYTE L5dungeon[80][80];
 BYTE L5dflags[DMAXX][DMAXY];

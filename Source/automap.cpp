@@ -1,4 +1,15 @@
-#include "diablo.h"
+#include "../types.h"
+#include "automap.h"
+#include "control.h"
+#include "dx.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "multi.h"
+#include "player.h"
+#include "quests.h"
+#include "scrollrt.h"
+#include "setmaps.h"
 
 // BUGFIX: only the first 256 elements are ever read
 WORD automaptype[512];

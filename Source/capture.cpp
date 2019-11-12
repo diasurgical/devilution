@@ -1,4 +1,8 @@
-#include "diablo.h"
+#include "../types.h"
+#include "capture.h"
+#include "dx.h"
+#include "engine.h"
+#include "scrollrt.h"
 
 void CaptureScreen()
 {

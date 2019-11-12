@@ -1,4 +1,6 @@
-#include "diablo.h"
+#include "../types.h"
+#include "tmsg.h"
+#include "engine.h"
 
 static TMsg *sgpTimedMsgHead;
 
