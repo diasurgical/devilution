@@ -1060,9 +1060,7 @@ static void DrawFPS()
 			framerate = 1000 * frameend / frames;
 			frameend = 0;
 		}
-		if (framerate > 99)
-			framerate = 99;
-		wsprintf(String, "%2d FPS", framerate);
+		wsprintf(String, "%d FPS", framerate);
 		PrintGameStr(8, 65, String, COL_RED);
 	}
 }
