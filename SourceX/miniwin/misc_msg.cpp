@@ -244,10 +244,10 @@ WPARAM keystate_for_mouse(WPARAM ret)
 	return ret;
 }
 
-WINBOOL false_avail()
+WINBOOL false_avail(char *name, int value)
 {
-	DUMMY_PRINT("return %s although event available", "false");
-	return false;
+	DUMMY_PRINT("Unhandled SDL event: %s %d", name, value);
+	return true;
 }
 
 void SetMouseLMBMessage(const SDL_Event &event, LPMSG lpMsg)
@@ -501,7 +501,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 	case SDL_KEYUP: {
 		int key = translate_sdl_key(e.key.keysym);
 		if (key == -1)
-			return false_avail();
+			return false_avail("SDL_KEYUP", key);
 		lpMsg->message = e.type == SDL_KEYDOWN ? DVL_WM_KEYDOWN : DVL_WM_KEYUP;
 		lpMsg->wParam = (DWORD)key;
 		// HACK: Encode modifier in lParam for TranslateMessage later
@@ -523,7 +523,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
 			lpMsg->wParam = keystate_for_mouse(DVL_MK_RBUTTON);
 		} else {
-			return false_avail();
+			return false_avail("SDL_MOUSEBUTTONDOWN", button);
 		}
 	} break;
 	case SDL_MOUSEBUTTONUP: {
@@ -537,7 +537,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
 			lpMsg->wParam = keystate_for_mouse(0);
 		} else {
-			return false_avail();
+			return false_avail("SDL_MOUSEBUTTONUP", button);
 		}
 	} break;
 #ifndef USE_SDL1
@@ -548,7 +548,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 #endif
 	case SDL_TEXTEDITING:
 	case SDL_TEXTINPUT:
-		return false_avail();
+		return false_avail("SDL_TEXTINPUT", 0);
 	case SDL_WINDOWEVENT:
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
 			lpMsg->message = DVL_WM_QUERYENDSESSION;
@@ -567,13 +567,12 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 				mouseWarping = false;
 			}
 		} else {
-			return false_avail();
+			return false_avail("SDL_WINDOWEVENT", e.window.event);
 		}
 		break;
 #endif
 	default:
-		DUMMY_PRINT("unknown SDL message 0x%X", e.type);
-		return false_avail();
+		return false_avail("unknown", e.type);
 	}
 	return true;
 }
