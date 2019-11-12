@@ -39,11 +39,7 @@ void init_cleanup()
 		hellfire_mpq = NULL;
 	}
 
-	UiDestroy();
-	effects_cleanup_sfx();
-	sound_cleanup();
 	NetClose();
-	dx_cleanup();
 }
 
 void init_create_window()
@@ -51,6 +47,7 @@ void init_create_window()
 	if (!SpawnWindow(PROJECT_NAME, SCREEN_WIDTH, SCREEN_HEIGHT))
 		app_fatal("Unable to create main window");
 	dx_init(NULL);
+	atexit(dx_cleanup);
 	gbActive = true;
 	gpBufStart = &gpBuffer[BUFFER_WIDTH * SCREEN_Y];
 	gpBufEnd = &gpBuffer[BUFFER_WIDTH * (SCREEN_HEIGHT + SCREEN_Y)];

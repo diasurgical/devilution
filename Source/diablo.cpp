@@ -254,11 +254,13 @@ void diablo_init(LPSTR lpCmdLine)
 
 	SFileEnableDirectAccess(TRUE);
 	init_archives();
+	atexit(init_cleanup);
 
 	UiInitialize();
 #ifdef SPAWN
 	UiSetSpawned(TRUE);
 #endif
+	atexit(UiDestroy);
 
 	ReadOnlyTest();
 
@@ -269,7 +271,9 @@ void diablo_init(LPSTR lpCmdLine)
 	diablo_parse_flags(lpCmdLine);
 
 	snd_init(NULL);
+	atexit(sound_cleanup);
 	sound_init();
+	atexit(effects_cleanup_sfx);
 }
 
 void diablo_splash()
@@ -294,7 +298,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	diablo_init(lpCmdLine);
 	diablo_splash();
 	mainmenu_loop();
-	UiDestroy();
 
 	return 0;
 }
