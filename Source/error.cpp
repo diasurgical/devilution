@@ -3,7 +3,7 @@
 DEVILUTION_BEGIN_NAMESPACE
 
 char msgtable[MAX_SEND_STR_LEN];
-char msgdelay;
+DWORD msgdelay;
 char msgflag;
 char msgcnt;
 
@@ -58,17 +58,19 @@ void InitDiabloMsg(char e)
 {
 	int i;
 
+	if (msgcnt >= sizeof(msgtable))
+		return;
+
 	for (i = 0; i < msgcnt; i++) {
 		if (msgtable[i] == e)
 			return;
 	}
 
 	msgtable[msgcnt] = e;
-	if (msgcnt < (BYTE)sizeof(msgtable))
-		msgcnt++;
+	msgcnt++;
 
 	msgflag = msgtable[0];
-	msgdelay = 70;
+	msgdelay = GetTickCount();
 }
 
 void ClrDiabloMsg()
@@ -131,16 +133,16 @@ void DrawDiabloMsg()
 		sx += fontkern[c] + 1;
 	}
 
-	if (msgdelay > 0) {
-		msgdelay--;
+	if (msgdelay > 0 && msgdelay <= GetTickCount() - 3500) {
+		msgdelay = 0;
 	}
 	if (msgdelay == 0) {
 		msgcnt--;
-		msgdelay = 70;
 		if (msgcnt == 0) {
 			msgflag = 0;
 		} else {
 			msgflag = msgtable[msgcnt];
+			msgdelay = GetTickCount();
 		}
 	}
 }
