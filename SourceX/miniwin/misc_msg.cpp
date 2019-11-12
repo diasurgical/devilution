@@ -552,6 +552,10 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 	case SDL_WINDOWEVENT:
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE) {
 			lpMsg->message = DVL_WM_QUERYENDSESSION;
+		} else if (e.window.event == SDL_WINDOWEVENT_SHOWN) {
+			lpMsg->message = DVL_WM_PAINT;
+		} else if (e.window.event == SDL_WINDOWEVENT_EXPOSED) {
+			lpMsg->message = DVL_WM_PAINT;
 		} else if (e.window.event == SDL_WINDOWEVENT_ENTER) {
 			lpMsg->message = DVL_WM_MOUSEHOVER;
 			// Bug in SDL, SDL_WarpMouseInWindow doesn't emit SDL_MOUSEMOTION
