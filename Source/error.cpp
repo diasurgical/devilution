@@ -61,7 +61,7 @@ void InitDiabloMsg(char e)
 			return;
 	}
 
-	msgtable[msgcnt] = e;
+	msgtable[msgcnt] = e; // BUGFIX: this can cause an OOB
 	if (msgcnt < (BYTE)sizeof(msgtable))
 		msgcnt++;
 
