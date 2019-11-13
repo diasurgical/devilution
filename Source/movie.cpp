@@ -41,6 +41,7 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	}
 	SetWindowProc(saveProc);
 	sound_disable_music(FALSE);
+	movie_playing = FALSE;
 }
 
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
