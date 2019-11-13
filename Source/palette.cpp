@@ -167,7 +167,6 @@ void SetFadeLevel(DWORD fadeval)
 			system_palette[i].peGreen = (fadeval * logical_palette[i].peGreen) >> 8;
 			system_palette[i].peBlue = (fadeval * logical_palette[i].peBlue) >> 8;
 		}
-		Sleep(3);
 		palette_update();
 
 		// Workaround for flickering mouse in caves https://github.com/diasurgical/devilutionX/issues/7
@@ -185,7 +184,8 @@ void PaletteFadeIn(int fr)
 	int i;
 
 	ApplyGamma(logical_palette, orig_palette, 256);
-	for (i = 0; i < 256; i += fr) {
+	DWORD tc = SDL_GetTicks();
+	for (i = 0; i < 256; i = (SDL_GetTicks() - tc) / 1.875) { // 1000ms / 60 * 32
 		SetFadeLevel(i);
 	}
 	SetFadeLevel(256);
@@ -198,7 +198,8 @@ void PaletteFadeOut(int fr)
 	int i;
 
 	if (sgbFadedIn) {
-		for (i = 256; i > 0; i -= fr) {
+		DWORD tc = SDL_GetTicks();
+		for (i = 256; i > 0; i = 256 - (SDL_GetTicks() - tc) / 1.875) { // 1000ms / 60 * 32
 			SetFadeLevel(i);
 		}
 		SetFadeLevel(0);

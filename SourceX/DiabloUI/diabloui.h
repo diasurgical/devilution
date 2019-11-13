@@ -39,7 +39,7 @@ constexpr size_t size(T (&)[N])
 extern void (*gfnSoundFunction)(char *file);
 
 bool IsInsideRect(const SDL_Event &event, const SDL_Rect &rect);
-void UiFadeIn(int steps = 16);
+void UiFadeIn();
 bool UiFocusNavigation(SDL_Event *event);
 bool UiItemMouseEvents(SDL_Event *event, UiItem *items, std::size_t size);
 int GetCenterOffset(int w, int bw = 0);

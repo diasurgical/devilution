@@ -500,12 +500,16 @@ void LoadBackgroundArt(const char *pszFile)
 	ApplyGamma(logical_palette, orig_palette, 256);
 }
 
-void UiFadeIn(int steps)
+void UiFadeIn()
 {
+	static DWORD tc;
+	if (fadeValue == 0 && tc == 0)
+		tc = SDL_GetTicks();
 	if (fadeValue < 256) {
-		fadeValue += steps;
+		fadeValue = (SDL_GetTicks() - tc) / 1.875; // 1000ms / 60 * 32
 		if (fadeValue > 256) {
 			fadeValue = 256;
+			tc = 0;
 		}
 	}
 
