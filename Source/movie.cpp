@@ -11,10 +11,6 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	WNDPROC saveProc;
 	HANDLE video_stream;
 
-	if (!gbActive) {
-		return;
-	}
-
 	saveProc = SetWindowProc(MovieWndProc);
 	movie_playing = TRUE;
 	sound_disable_music(TRUE);
@@ -25,7 +21,7 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	if (video_stream) {
 		MSG Msg;
 		while (video_stream) {
-			if (!gbActive || user_can_close && !movie_playing)
+			if (user_can_close && !movie_playing)
 				break;
 			while (PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE)) {
 				if (Msg.message != WM_QUIT) {

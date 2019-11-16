@@ -555,31 +555,26 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 		return false_avail("SDL_TEXTINPUT", e.text.windowID);
 	case SDL_WINDOWEVENT:
 		switch (e.window.event) {
-		case SDL_WINDOWEVENT_HIDDEN:
-			// TODO stop rendering to minimize CPU usage (gbActive)
-			break;
-		case SDL_WINDOWEVENT_MINIMIZED:
-			// TODO pause
-			break;
-		case SDL_WINDOWEVENT_FOCUS_GAINED:
-		case SDL_WINDOWEVENT_TAKE_FOCUS:
-		case SDL_WINDOWEVENT_RESIZED:
-		case SDL_WINDOWEVENT_SIZE_CHANGED:
-		case SDL_WINDOWEVENT_MOVED:
-		case SDL_WINDOWEVENT_RESTORED:
-		case SDL_WINDOWEVENT_MAXIMIZED:
-		case SDL_WINDOWEVENT_LEAVE:
-		case SDL_WINDOWEVENT_FOCUS_LOST:
-			break;
-		case SDL_WINDOWEVENT_CLOSE:
-			lpMsg->message = DVL_WM_QUERYENDSESSION;
-			break;
 		case SDL_WINDOWEVENT_SHOWN:
 			gbActive = true;
 			lpMsg->message = DVL_WM_PAINT;
 			break;
+		case SDL_WINDOWEVENT_HIDDEN:
+			gbActive = false;
+			break;
 		case SDL_WINDOWEVENT_EXPOSED:
 			lpMsg->message = DVL_WM_PAINT;
+			break;
+		case SDL_WINDOWEVENT_MOVED:
+		case SDL_WINDOWEVENT_RESIZED:
+		case SDL_WINDOWEVENT_SIZE_CHANGED:
+		case SDL_WINDOWEVENT_MINIMIZED:
+		case SDL_WINDOWEVENT_MAXIMIZED:
+		case SDL_WINDOWEVENT_RESTORED:
+		case SDL_WINDOWEVENT_LEAVE:
+		case SDL_WINDOWEVENT_FOCUS_GAINED:
+		case SDL_WINDOWEVENT_FOCUS_LOST:
+		case SDL_WINDOWEVENT_TAKE_FOCUS:
 			break;
 		case SDL_WINDOWEVENT_ENTER:
 			lpMsg->message = DVL_WM_MOUSEHOVER;
@@ -591,6 +586,9 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 				MouseY = mouseWarpingY;
 				mouseWarping = false;
 			}
+			break;
+		case SDL_WINDOWEVENT_CLOSE:
+			lpMsg->message = DVL_WM_QUERYENDSESSION;
 			break;
 		default:
 			return false_avail("SDL_WINDOWEVENT", e.window.event);
