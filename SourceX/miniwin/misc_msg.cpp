@@ -250,38 +250,6 @@ WINBOOL false_avail(const char *name, int value)
 	return true;
 }
 
-void SetMouseLMBMessage(const SDL_Event &event, LPMSG lpMsg)
-{
-	switch (event.type) {
-#ifndef USE_SDL1
-	case SDL_CONTROLLERBUTTONDOWN:
-	case SDL_CONTROLLERBUTTONUP:
-		lpMsg->message = event.type == SDL_CONTROLLERBUTTONUP ? DVL_WM_LBUTTONUP : DVL_WM_LBUTTONDOWN;
-		lpMsg->lParam = (MouseY << 16) | (MouseX & 0xFFFF);
-		break;
-#endif
-	case SDL_JOYBUTTONDOWN:
-	case SDL_JOYBUTTONUP:
-		lpMsg->message = event.type == SDL_JOYBUTTONUP ? DVL_WM_LBUTTONUP : DVL_WM_LBUTTONDOWN;
-		lpMsg->lParam = (MouseY << 16) | (MouseX & 0xFFFF);
-		break;
-	case SDL_MOUSEBUTTONDOWN:
-	case SDL_MOUSEBUTTONUP:
-		lpMsg->message = event.type == SDL_MOUSEBUTTONUP ? DVL_WM_LBUTTONUP : DVL_WM_LBUTTONDOWN;
-		lpMsg->lParam = (event.button.y << 16) | (event.button.x & 0xFFFF);
-		break;
-	case SDL_KEYDOWN:
-	case SDL_KEYUP:
-		lpMsg->message = event.type == SDL_KEYUP ? DVL_WM_LBUTTONUP : DVL_WM_LBUTTONDOWN;
-		lpMsg->lParam = (MouseY << 16) | (MouseX & 0xFFFF);
-		break;
-	default:
-		UNIMPLEMENTED();
-	}
-	if (lpMsg->message == DVL_WM_LBUTTONUP || lpMsg->message == DVL_WM_LBUTTONDOWN)
-		lpMsg->wParam = keystate_for_mouse(lpMsg->message == DVL_WM_LBUTTONUP ? 0 : DVL_MK_LBUTTON);
-}
-
 // Moves the mouse to the first inventory slot.
 void FocusOnInventory()
 {
@@ -398,12 +366,6 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 	}
 #endif
 
-	if (movie_playing) {
-		if (ShouldSkipMovie(e))
-			SetMouseLMBMessage(e, lpMsg);
-		return true;
-	}
-
 	if (ProcessControllerMotion(e)) {
 		ScaleJoysticks();
 		return true;
@@ -413,6 +375,13 @@ WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilter
 	if (GetGameAction(e, &action)) {
 		if (action.type != GameActionType::NONE) {
 			sgbControllerActive = true;
+
+			if (movie_playing) {
+				lpMsg->message = DVL_WM_CHAR;
+				if (action.type == GameActionType::SEND_KEY)
+					lpMsg->wParam = action.send_key.vk_code;
+				return true;
+			}
 		}
 
 		switch (action.type) {
