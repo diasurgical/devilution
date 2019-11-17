@@ -423,11 +423,11 @@ static void DRLG_L3River()
 			rx = 0;
 			ry = 0;
 			i = 0;
-			while ((dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && i < 100) {
+			while ((dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && i < 100) { /// BUGFIX: OOB `while (ry < DMAXY && (`
 				rx = random_(0, DMAXX);
 				ry = random_(0, DMAXY);
 				i++;
-				while ((dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && ry < DMAXY) {
+				while ((dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && ry < DMAXY) { /// BUGFIX: OOB `while (ry < DMAXY && (`
 					rx++;
 					if (rx >= DMAXX) {
 						rx = 0;
@@ -435,6 +435,7 @@ static void DRLG_L3River()
 					}
 				}
 			}
+			/// BUGFIX: OOB `if (ry >= DMAXY) continue;`
 			if (i >= 100) {
 				return;
 			}
