@@ -428,10 +428,12 @@ static void DRLG_L3River()
 			rx = 0;
 			ry = 0;
 			i = 0;
+			// BUGFIX: Replace with `(ry >= DMAXY || dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && i < 100`
 			while ((dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && i < 100) {
 				rx = random_(0, DMAXX);
 				ry = random_(0, DMAXY);
 				i++;
+				// BUGFIX: Move `ry < DMAXY` check before dungeon checks
 				while ((dungeon[rx][ry] < 25 || dungeon[rx][ry] > 28) && ry < DMAXY) {
 					rx++;
 					if (rx >= DMAXX) {
@@ -440,6 +442,7 @@ static void DRLG_L3River()
 					}
 				}
 			}
+			// BUGFIX: Continue if `ry >= DMAXY`
 			if (i >= 100) {
 				return;
 			}
@@ -552,6 +555,7 @@ static void DRLG_L3River()
 					ry = py;
 				}
 			}
+			// BUGFIX: Check `ry >= 2`
 			if (dir == 0 && dungeon[rx][ry - 1] == 10 && dungeon[rx][ry - 2] == 8) {
 				river[0][riveramt] = rx;
 				river[1][riveramt] = ry - 1;
@@ -564,6 +568,7 @@ static void DRLG_L3River()
 				}
 				bail = TRUE;
 			}
+			// BUGFIX: Check `ry + 2 < DMAXY`
 			if (dir == 1 && dungeon[rx][ry + 1] == 2 && dungeon[rx][ry + 2] == 8) {
 				river[0][riveramt] = rx;
 				river[1][riveramt] = ry + 1;
@@ -576,6 +581,7 @@ static void DRLG_L3River()
 				}
 				bail = TRUE;
 			}
+			// BUGFIX: Check `rx + 2 < DMAXX`
 			if (dir == 2 && dungeon[rx + 1][ry] == 4 && dungeon[rx + 2][ry] == 8) {
 				river[0][riveramt] = rx + 1;
 				river[1][riveramt] = ry;
@@ -588,6 +594,7 @@ static void DRLG_L3River()
 				}
 				bail = TRUE;
 			}
+			// BUGFIX: Check `rx >= 2`
 			if (dir == 3 && dungeon[rx - 1][ry] == 9 && dungeon[rx - 2][ry] == 8) {
 				river[0][riveramt] = rx - 1;
 				river[1][riveramt] = ry;
@@ -1273,11 +1280,13 @@ static void DRLG_L3Wood()
 				}
 				if (rt == 1) {
 					x1 = i;
+					// BUGFIX: Check `x1 >= 0` first (fixed)
 					while (WoodHorizL(x1, j)) {
 						x1--;
 					}
 					x1++;
 					x2 = i;
+					// BUGFIX: Check `x2 < DMAXX` first (fixed)
 					while (WoodHorizR(x2, j)) {
 						x2++;
 					}
