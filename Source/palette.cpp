@@ -30,7 +30,7 @@ static void palette_update()
 	}
 }
 
-static void ApplyGamma(PALETTEENTRY *dst, const PALETTEENTRY *src, int n)
+void ApplyGamma(PALETTEENTRY *dst, const PALETTEENTRY *src, int n)
 {
 	int i;
 	double g;
