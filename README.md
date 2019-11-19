@@ -99,16 +99,21 @@ Make sure to install the `C++ CMake tools for Windows` component for Visual Stud
 * **Using vcpkg (recommended)**
 1. Install vcpkg following the instructions from https://github.com/microsoft/vcpkg#quick-start.
 
-	Don't forget to perform _user-wide integration_ step for additional convenience.
+   Don't forget to perform _user-wide integration_ step for additional convenience.
 2. Install required dependencies by executing the following command (via cmd or powershell):
 
- 	For the 64-bit version of the dependencies please run this command: 
-	`vcpkg install sdl2:x64-windows sdl2-mixer:x64-windows sdl2-ttf:x64-windows libsodium:x64-windows`
-	
-	
-	For the 32-bit version of the dependencies please run this command: 
-	`vcpkg install sdl2:x86-windows sdl2-mixer:x86-windows sdl2-ttf:x86-windows libsodium:x86-windows`
-	
+   For the 64-bit version of the dependencies please run this command:
+
+   ```
+   vcpkg install sdl2:x64-windows sdl2-mixer:x64-windows sdl2-ttf:x64-windows libsodium:x64-windows
+   ```
+
+   For the 32-bit version of the dependencies please run this command:
+
+   ```
+   vcpkg install sdl2:x86-windows sdl2-mixer:x86-windows sdl2-ttf:x86-windows libsodium:x86-windows
+   ```
+
 * **Manually**
 1. Download and place the MSVC Development Libraries of [SDL2](https://www.libsdl.org/download-2.0.php), [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/), [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/) and [Libsodium](https://github.com/jedisct1/libsodium/releases) in `%USERPROFILE%\AppData\Local\Microsoft\WindowsApps\`.
 2. If dependencies are not found or you wish to place them in other location - configure required path variables in _"Manage Configurations..."_ dialog inside Visual Studio or in _cmake-gui_.
@@ -185,16 +190,6 @@ This OpenDingux build uses the buildroot at `$HOME/buildroot-rg350-devilutionx`.
 ~~~ bash
 Packaging/OpenDingux/build-rg350.sh
 ~~~
-
-
-### Old OpenDingux (RS90)
-
-This OpenDingux build uses the buildroot at `$HOME/buildroot-rs90-devilutionx`.
-
-~~~ bash
-Packaging/OpenDingux/build-rs90.sh
-~~~
-
 
 </details>
 
