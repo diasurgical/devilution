@@ -137,6 +137,7 @@ Make sure to install the `C++ CMake tools for Windows` component for Visual Stud
 
 <details><summary>Nintendo Switch</summary>
 Run:
+	
 ```
 Packaging/switch/build.sh
 ```
@@ -147,7 +148,7 @@ This will install the [Switch devkit](https://switchbrew.org/wiki/Setting_up_Dev
 DEVKITPRO=<path to devkit> Packaging/switch/build.sh
 ```
 
-- .nro lives in release. Test with an emulator (RyuJinx) or real hardware.
+The nro-file will be generated in the build folder. Test with an emulator (RyuJinx) or real hardware.
 </details>
 
 <details><summary>Haiku</summary>
