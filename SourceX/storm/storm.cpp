@@ -28,6 +28,7 @@ static std::string getIniPath()
 	return result;
 }
 
+static radon::File ini(getIniPath());
 static Mix_Chunk *SFileChunk;
 
 void GetBasePath(char *buffer, size_t size)
@@ -321,8 +322,6 @@ bool getIniBool(const char *sectionName, const char *keyName, bool defaultValue)
 
 bool getIniValue(const char *sectionName, const char *keyName, char *string, int stringSize, int *dataSize)
 {
-	radon::File ini(getIniPath());
-
 	radon::Section *section = ini.getSection(sectionName);
 	if (!section)
 		return false;
@@ -343,8 +342,6 @@ bool getIniValue(const char *sectionName, const char *keyName, char *string, int
 
 void setIniValue(const char *sectionName, const char *keyName, char *value, int len)
 {
-	radon::File ini(getIniPath());
-
 	radon::Section *section = ini.getSection(sectionName);
 	if (!section) {
 		ini.addSection(sectionName);
