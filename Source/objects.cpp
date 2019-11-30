@@ -458,12 +458,15 @@ void AddL2Torches()
 	}
 }
 
-BOOL TorchLocOK(int xp, int yp)
+DIABOOL TorchLocOK(int xp, int yp)
 {
 	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
 
-	return nTrapTable[dPiece[xp][yp]] != FALSE;
+	if (nTrapTable[dPiece[xp][yp]] != FALSE)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 void AddObjTraps()

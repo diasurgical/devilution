@@ -30,7 +30,7 @@ void AddL2Objs(int x1, int y1, int x2, int y2);
 void AddL3Objs(int x1, int y1, int x2, int y2);
 BOOL WallTrapLocOk(int xp, int yp);
 void AddL2Torches();
-BOOL TorchLocOK(int xp, int yp);
+DIABOOL TorchLocOK(int xp, int yp);
 void AddObjTraps();
 void AddChestTraps();
 void LoadMapObjects(BYTE *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx);
