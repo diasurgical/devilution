@@ -1299,7 +1299,7 @@ void AddTorturedBody(int i)
 
 void GetRndObjLoc(int randarea, int *xx, int *yy)
 {
-	BOOL failed;
+	DIABOOL failed;
 	int i, j, tries;
 
 	if (randarea == 0)
