@@ -152,6 +152,7 @@ void SyncL3Doors(int i);
 void SyncObjectAnim(int o);
 void GetObjectStr(int i);
 #ifdef HELLFIRE
+void operate_lv24_lever();
 void objects_454BA8();
 #endif
 

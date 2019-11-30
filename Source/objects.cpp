@@ -2439,7 +2439,7 @@ void OperateL1Door(int pnum, int i, BOOL sendflag)
 void OperateLever(int pnum, int i)
 {
 	int j, oi;
-	BOOL mapflag;
+	DIABOOL mapflag;
 
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
@@ -2457,6 +2457,14 @@ void OperateLever(int pnum, int i)
 				}
 			}
 		}
+#ifdef HELLFIRE
+		if (currlevel == 24) {
+			operate_lv24_lever();
+			IsUberLeverActivated = 1;
+			mapflag = FALSE;
+			quests[QTYPE_NAKRUL]._qactive = 3;
+		}
+#endif
 		if (mapflag)
 			ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 		if (pnum == myplr)
@@ -4569,6 +4577,19 @@ void GetObjectStr(int i)
 }
 
 #ifdef HELLFIRE
+void operate_lv24_lever()
+{
+	if (currlevel == 24) {
+		PlaySfxLoc(IS_CROPEN, UberRow, UberCol);
+		//the part below is the same as objects_454BA8
+		dPiece[UberRow][UberCol] = 298;
+		dPiece[UberRow][UberCol - 1] = 301;
+		dPiece[UberRow][UberCol - 2] = 300;
+		dPiece[UberRow][UberCol + 1] = 299;
+		SetDungeonMicros();
+	}
+}
+
 void objects_454BA8()
 {
 	dPiece[UberRow][UberCol] = 298;
