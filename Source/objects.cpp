@@ -1085,6 +1085,14 @@ void AddTrap(int i, int ot)
 	int mt;
 
 	mt = currlevel / 3 + 1;
+#ifdef HELLFIRE
+	if (currlevel > 16) {
+		mt = (currlevel - 4) / 3 + 1;
+	}
+	if (currlevel > 20) {
+		mt = (currlevel - 8) / 3 + 1;
+	}
+#endif
 	mt = random(148, mt);
 	if (mt == 0)
 		object[i]._oVar3 = 0; // arrow
