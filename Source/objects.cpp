@@ -1217,8 +1217,8 @@ void AddMagicCircle(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
 	object[i]._oPreFlag = TRUE;
-	object[i]._oVar5 = 1;
 	object[i]._oVar6 = 0;
+	object[i]._oVar5 = 1;
 }
 
 void AddBrnCross(int i)
