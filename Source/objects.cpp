@@ -2404,7 +2404,8 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	if (leveltype == DTYPE_CATHEDRAL && currlevel < 17) {
 #else
 	if (leveltype == DTYPE_CATHEDRAL) {
-#endif ObjL1Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
+#endif
+		ObjL1Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
 	}
 	if (leveltype == DTYPE_CATACOMBS) {
 		ObjL2Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
