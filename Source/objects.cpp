@@ -1635,7 +1635,7 @@ void Obj_FlameTrap(int i)
 void Obj_Trap(int i)
 {
 	int oti, dir;
-	BOOL otrig;
+	BOOLEAN otrig;
 	int sx, sy, dx, dy, x, y;
 
 	otrig = FALSE;
