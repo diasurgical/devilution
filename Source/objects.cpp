@@ -3552,7 +3552,7 @@ int FindValidShrine(int i)
 	while (1) {
 		done = FALSE;
 		while (!done) {
-			rv = random_(0, 26);
+			rv = random_(0, NUM_SHRINETYPE);
 			if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != 8)
 				done = TRUE;
 		}
