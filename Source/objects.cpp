@@ -966,18 +966,14 @@ void SetBookMsg(int i, int msg)
 
 void AddL1Door(int i, int x, int y, int ot)
 {
-	int p1, p2;
-
 	object[i]._oDoorFlag = TRUE;
 	if (ot == 1) {
-		p1 = dPiece[x][y];
-		p2 = dPiece[x][y - 1];
+		object[i]._oVar1 = dPiece[x][y];
+		object[i]._oVar2 = dPiece[x][y - 1];
 	} else {
-		p1 = dPiece[x][y];
-		p2 = dPiece[x - 1][y];
+		object[i]._oVar1 = dPiece[x][y];
+		object[i]._oVar2 = dPiece[x - 1][y];
 	}
-	object[i]._oVar1 = p1;
-	object[i]._oVar2 = p2;
 	object[i]._oVar4 = 0;
 }
 
