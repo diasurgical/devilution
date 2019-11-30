@@ -26,6 +26,9 @@ void AddCandles();
 void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, int y2, int msg);
 void InitRndBarrels();
 void AddL1Objs(int x1, int y1, int x2, int y2);
+#ifdef HELLFIRE
+void add_crypt_objs(int x1, int y1, int x2, int y2);
+#endif
 void AddL2Objs(int x1, int y1, int x2, int y2);
 void AddL3Objs(int x1, int y1, int x2, int y2);
 DIABOOL WallTrapLocOk(int xp, int yp);

@@ -396,6 +396,24 @@ void AddL1Objs(int x1, int y1, int x2, int y2)
 	}
 }
 
+#ifdef HELLFIRE
+void add_crypt_objs(int x1, int y1, int x2, int y2)
+{
+	int i, j, pn;
+
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
+			if (pn == 77)
+				AddObject(OBJ_L1LDOOR, i, j);
+			if (pn == 80)
+				AddObject(OBJ_L1RDOOR, i, j);
+		}
+	}
+
+}
+
+#endif
 void AddL2Objs(int x1, int y1, int x2, int y2)
 {
 	int i, j, pn;
