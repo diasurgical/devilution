@@ -28,7 +28,7 @@ void InitRndBarrels();
 void AddL1Objs(int x1, int y1, int x2, int y2);
 void AddL2Objs(int x1, int y1, int x2, int y2);
 void AddL3Objs(int x1, int y1, int x2, int y2);
-BOOL WallTrapLocOk(int xp, int yp);
+DIABOOL WallTrapLocOk(int xp, int yp);
 void AddL2Torches();
 DIABOOL TorchLocOK(int xp, int yp);
 void AddObjTraps();
