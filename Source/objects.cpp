@@ -1477,13 +1477,18 @@ void AddObject(int ot, int ox, int oy)
 void Obj_Light(int i, int lr)
 {
 	int ox, oy, dx, dy, p, tr;
-	BOOL turnon;
+	DIABOOL turnon;
 
+#ifdef HELLFIRE
+	turnon = FALSE;
+#endif
 	if (object[i]._oVar1 != -1) {
 		ox = object[i]._ox;
 		oy = object[i]._oy;
 		tr = lr + 10;
+#ifndef HELLFIRE
 		turnon = FALSE;
+#endif
 		if (!lightflag) {
 			for (p = 0; p < MAX_PLRS && !turnon; p++) {
 				if (plr[p].plractive) {
