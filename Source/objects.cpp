@@ -1269,7 +1269,7 @@ void AddTorturedBody(int i)
 	object[i]._oPreFlag = TRUE;
 }
 
-void GetRndObjLoc(int randarea, int *xx, int *yy)
+void GetRndObjLoc(int randarea, int &xx, int &yy)
 {
 	BOOL failed;
 	int i, j, tries;
@@ -1282,12 +1282,12 @@ void GetRndObjLoc(int randarea, int *xx, int *yy)
 		tries++;
 		if (tries > 1000 && randarea > 1)
 			randarea--;
-		*xx = random_(0, MAXDUNX);
-		*yy = random_(0, MAXDUNY);
+		xx = random_(0, MAXDUNX);
+		yy = random_(0, MAXDUNY);
 		failed = FALSE;
 		for (i = 0; i < randarea && !failed; i++) {
 			for (j = 0; j < randarea && !failed; j++) {
-				failed = !RndLocOk(i + *xx, j + *yy);
+				failed = !RndLocOk(i + xx, j + yy);
 			}
 		}
 		if (!failed)
@@ -1302,7 +1302,7 @@ void AddMushPatch()
 
 	if (nobjects < MAXOBJECTS) {
 		i = objectavail[0];
-		GetRndObjLoc(5, &x, &y);
+		GetRndObjLoc(5, x, y);
 		dObject[x + 1][y + 1] = -1 - i;
 		dObject[x + 2][y + 1] = -1 - i;
 		dObject[x + 1][y + 2] = -1 - i;
@@ -1314,7 +1314,7 @@ void AddSlainHero()
 {
 	int x, y;
 
-	GetRndObjLoc(5, &x, &y);
+	GetRndObjLoc(5, x, y);
 	AddObject(OBJ_SLAINHERO, x + 2, y + 2);
 }
 
@@ -2636,7 +2636,7 @@ void OperateMushPatch(int pnum, int i)
 			object[i]._oAnimFrame++;
 			object[i]._oSelFlag = 0;
 			if (!deltaload) {
-				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, x, y);
 				SpawnQuestItem(IDI_MUSHROOM, x, y, 0, 0);
 				quests[QTYPE_BLKM]._qvar1 = QS_MUSHSPAWNED;
 			}
@@ -2667,7 +2667,7 @@ void OperateInnSignChest(int pnum, int i)
 			object[i]._oAnimFrame += 2;
 			object[i]._oSelFlag = 0;
 			if (!deltaload) {
-				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, x, y);
 				SpawnQuestItem(IDI_BANNER, x, y, 0, 0);
 			}
 		}
@@ -3758,7 +3758,7 @@ void OperateLazStand(int pnum, int i)
 	if (object[i]._oSelFlag != 0 && !deltaload && !qtextflag && pnum == myplr) {
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
-		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
+		GetSuperItemLoc(object[i]._ox, object[i]._oy, xx, yy);
 		SpawnQuestItem(IDI_LAZSTAFF, xx, yy, 0, 0);
 	}
 }
