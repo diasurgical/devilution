@@ -961,6 +961,7 @@ BOOL ItemSpaceOk(int i, int j)
 {
 	int oi;
 
+	// BUGFIX: Check `i + 1 >= MAXDUNX` and `j + 1 >= MAXDUNY`
 	if (i < 0 || i >= MAXDUNX || j < 0 || j >= MAXDUNY)
 		return FALSE;
 
