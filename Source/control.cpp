@@ -80,7 +80,7 @@ const BYTE fontkern[68] = {
  */
 const int lineOffsets[5][5] = {
 	{
-	    SCREENXY(177,434),
+	    SCREENXY(177, 434),
 	    BUFFER_WIDTH * 32,
 	    BUFFER_WIDTH * 32,
 	    BUFFER_WIDTH * 32,
