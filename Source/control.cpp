@@ -47,7 +47,7 @@ BYTE *pSpellBkCel;
 char infostr[MAX_PATH];
 int numpanbtns;
 BYTE *pStatusPanel;
-char panelstr[256];
+char panelstr[4][64];
 BOOL panelflag;
 BYTE SplTransTbl[256];
 int initialDropGoldValue;
@@ -878,7 +878,7 @@ void CPrintString(int nOffset, int nCel, char col)
 
 void AddPanelString(char *str, BOOL just)
 {
-	strcpy(&panelstr[64 * pnumlines], str);
+	strcpy(panelstr[pnumlines], str);
 	pstrjust[pnumlines] = just;
 
 	if (pnumlines < 4)
@@ -1691,7 +1691,7 @@ void control_draw_info_str()
 		}
 
 		for (i = 0; i < pnumlines; i++) {
-			control_print_info_str(i + yo, &panelstr[64 * i], pstrjust[i], pnumlines - lo);
+			control_print_info_str(i + yo, panelstr[i], pstrjust[i], pnumlines - lo);
 		}
 	}
 }
