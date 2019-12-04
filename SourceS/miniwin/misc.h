@@ -113,7 +113,6 @@ typedef struct tagSIZE {
 } SIZE;
 
 typedef struct tagMSG {
-	HWND hwnd;
 	UINT message;
 	WPARAM wParam;
 	LPARAM lParam;
@@ -199,7 +198,7 @@ WINBOOL WINAPI PeekMessageA(LPMSG lpMsg);
 
 WINBOOL WINAPI TranslateMessage(const MSG *lpMsg);
 LRESULT WINAPI DispatchMessageA(const MSG *lpMsg);
-WINBOOL WINAPI PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WINBOOL WINAPI PostMessageA(UINT Msg, WPARAM wParam, LPARAM lParam);
 
 bool SpawnWindow(LPCSTR lpWindowName, int nWidth, int nHeight);
 

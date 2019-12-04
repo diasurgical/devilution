@@ -652,7 +652,7 @@ WINBOOL TranslateMessage(const MSG *lpMsg)
 #endif
 
 			// XXX: This does not add extended info to lParam
-			PostMessageA(lpMsg->hwnd, DVL_WM_CHAR, key, 0);
+			PostMessageA(DVL_WM_CHAR, key, 0);
 		}
 	}
 
@@ -690,15 +690,12 @@ LRESULT DispatchMessageA(const MSG *lpMsg)
 	assert(CurrentProc);
 	// assert(CurrentProc == GM_Game);
 
-	return CurrentProc(lpMsg->hwnd, lpMsg->message, lpMsg->wParam, lpMsg->lParam);
+	return CurrentProc(NULL, lpMsg->message, lpMsg->wParam, lpMsg->lParam);
 }
 
-WINBOOL PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+WINBOOL PostMessageA(UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	assert(hWnd == 0);
-
 	MSG msg;
-	msg.hwnd = hWnd;
 	msg.message = Msg;
 	msg.wParam = wParam;
 	msg.lParam = lParam;
