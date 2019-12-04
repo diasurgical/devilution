@@ -124,14 +124,14 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 extern void finish_simulated_mouse_clicks(int current_mouse_x, int current_mouse_y);
 extern void plrctrls_after_check_curs_move();
 
-static void ProcessInput()
+static bool ProcessInput()
 {
 	if (PauseMode == 2) {
-		return;
+		return false;
 	}
 	if (gbMaxPlayers == 1 && gmenu_exception()) {
 		force_redraw |= 1;
-		return;
+		return false;
 	}
 
 	if (!gmenu_exception() && sgnTimeoutCurs == 0) {
@@ -142,6 +142,8 @@ static void ProcessInput()
 		plrctrls_after_check_curs_move();
 		track_process();
 	}
+
+	return true;
 }
 
 void run_game_loop(unsigned int uMsg)
@@ -1687,7 +1689,9 @@ extern void plrctrls_after_game_logic();
 
 void game_logic()
 {
-	ProcessInput();
+	if (!ProcessInput()) {
+		return;
+	}
 	if (gbProcessPlayers) {
 		ProcessPlayers();
 	}
