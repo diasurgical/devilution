@@ -1686,13 +1686,15 @@ void SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 			if (itemactive[i] == ii) {
 				DeleteItem(itemactive[i], i);
 				FindGetItem(idx, ci, iseed);
-				FindGetItem(idx, ci, iseed); /* check idx */
+				/// ASSERT: assert(FindGetItem(idx,ci,iseed) == -1);
+				FindGetItem(idx, ci, iseed); /* todo: replace with above */
 				i = 0;
 			} else {
 				i++;
 			}
 		}
-		FindGetItem(idx, ci, iseed);
+		/// ASSERT: assert(FindGetItem(idx, ci, iseed) == -1);
+		FindGetItem(idx, ci, iseed); /* todo: replace with above */
 	}
 }
 
