@@ -187,30 +187,29 @@ bool CanTargetMonster(int mi)
 
 void FindRangedTarget()
 {
-	int newRotations, newDdistance;
-	int distance = 2 * (MAXDUNX + MAXDUNY);
-	int rotations = 5;
+	int distance, rotations;
+	bool currentCanTalk;
 
 	// The first MAX_PLRS monsters are reserved for players' golems.
-	for (int i = MAX_PLRS; i < MAXMONSTERS; i++) {
-		const auto &monst = monster[i];
+	for (int mi = MAX_PLRS; mi < MAXMONSTERS; mi++) {
+		const auto &monst = monster[mi];
 		const int mx = monst._mx;
 		const int my = monst._my;
-		if (!CanTargetMonster(i))
+		if (!CanTargetMonster(mi))
 			continue;
 
-		newDdistance = GetDistanceRanged(mx, my);
-		if (distance < newDdistance || (pcursmonst != -1 && CanTalkToMonst(i))) {
+		const int newDdistance = GetDistanceRanged(mx, my);
+		if (pcursmonst != -1 && !currentCanTalk && distance < newDdistance) {
 			continue;
 		}
-		if (distance == newDdistance) {
-			newRotations = GetRotaryDistance(mx, my);
-			if (rotations < newRotations)
-				continue;
+		const int newRotations = GetRotaryDistance(mx, my);
+		if (pcursmonst != -1 && !currentCanTalk && distance == newDdistance && rotations < newRotations) {
+			continue;
 		}
 		distance = newDdistance;
 		rotations = newRotations;
-		pcursmonst = i;
+		pcursmonst = mi;
+		currentCanTalk = CanTalkToMonst(mi);
 	}
 }
 
@@ -218,7 +217,8 @@ void FindMeleeTarget()
 {
 	bool visited[MAXDUNX][MAXDUNY] = { 0 };
 	int maxSteps = 25; // Max steps for FindPath is 25
-	int rotations = 5;
+	int rotations;
+	bool currentCanTalk;
 
 	struct SearchNode {
 		int x, y;
@@ -244,7 +244,7 @@ void FindMeleeTarget()
 			if (visited[dx][dy])
 				continue; // already visisted
 
-			if (node.steps >= maxSteps) {
+			if (node.steps > maxSteps) {
 				visited[dx][dy] = true;
 				continue;
 			}
@@ -256,11 +256,13 @@ void FindMeleeTarget()
 					const int mi = dMonster[dx][dy] > 0 ? dMonster[dx][dy] - 1 : -(dMonster[dx][dy] + 1);
 					if (CanTargetMonster(mi)) {
 						const int newRotations = GetRotaryDistance(dx, dy);
-						if (rotations < newRotations || (pcursmonst != -1 && CanTalkToMonst(i)))
+						if (pcursmonst != -1 && !currentCanTalk && rotations < newRotations)
 							continue;
 						rotations = newRotations;
 						pcursmonst = mi;
-						maxSteps = node.steps; // Monsters found, cap search to current steps
+						currentCanTalk = CanTalkToMonst(mi);
+						if (!currentCanTalk)
+							maxSteps = node.steps; // Monsters found, cap search to current steps
 					}
 				}
 
@@ -377,7 +379,7 @@ void FindTrigger()
 		}
 	}
 
-	if (pcursmonst != -1 || pcursplr != -1)
+	if (pcursmonst != -1 || pcursplr != -1 || cursmx == -1 || cursmy == -1)
 		return; // Prefer monster/player info text
 
 	CheckTrigForce();
@@ -813,6 +815,8 @@ void plrctrls_after_check_curs_move()
 		pcursobj = -1;
 		pcursmissile = -1;
 		pcurstrig = -1;
+		cursmx = -1;
+		cursmy = -1;
 		if (!invflag) {
 			*infostr = '\0';
 			ClearPanel();
