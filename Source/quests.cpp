@@ -304,12 +304,12 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		sfxdelay = 30;
 		quests[QTYPE_MOD]._qactive = 2;
 
-		for (j = 0; j < 112; j++) {
-			for (i = 0; i < 112; i++) {
+		for (j = 0; j < MAXDUNY; j++) {
+			for (i = 0; i < MAXDUNX; i++) {
 				if (dPiece[i][j] == 370) {
 					trigs[numtrigs]._tx = i;
 					trigs[numtrigs]._ty = j;
-					trigs[numtrigs]._tmsg = 1026;
+					trigs[numtrigs]._tmsg = WM_DIABNEXTLVL;
 					numtrigs++;
 				}
 			}
