@@ -91,8 +91,8 @@ int GetDistance(int dx, int dy, int maxDistance)
  */
 int GetDistanceRanged(int dx, int dy)
 {
-	int a = abs(plr[myplr]._px - dx);
-	int b = abs(plr[myplr]._py - dy);
+	int a = plr[myplr]._px - dx;
+	int b = plr[myplr]._py - dy;
 
 	return sqrt(a * a + b * b);
 }
