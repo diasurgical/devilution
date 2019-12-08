@@ -81,7 +81,11 @@ int GetDistance(int dx, int dy, int maxDistance)
 	}
 
 	char walkpath[25];
-	return FindPath(PosOkPlayer, myplr, plr[myplr]._px, plr[myplr]._py, dx, dy, walkpath);
+	int steps = FindPath(PosOkPlayer, myplr, plr[myplr]._px, plr[myplr]._py, dx, dy, walkpath);
+	if (steps > maxDistance)
+		return 0;
+
+	return steps;
 }
 
 /**
@@ -149,7 +153,7 @@ void CheckTownersNearby()
 {
 	for (int i = 0; i < 16; i++) {
 		int distance = GetDistance(towner[i]._tx, towner[i]._ty, 2);
-		if (distance == 0 || distance > 2)
+		if (distance == 0)
 			continue;
 		pcursmonst = i;
 	}
@@ -188,7 +192,7 @@ bool CanTargetMonster(int mi)
 void FindRangedTarget()
 {
 	int distance, rotations;
-	bool currentCanTalk;
+	bool canTalk;
 
 	// The first MAX_PLRS monsters are reserved for players' golems.
 	for (int mi = MAX_PLRS; mi < MAXMONSTERS; mi++) {
@@ -199,17 +203,16 @@ void FindRangedTarget()
 			continue;
 
 		const int newDdistance = GetDistanceRanged(mx, my);
-		if (pcursmonst != -1 && !currentCanTalk && distance < newDdistance) {
+		const int newCanTalk = CanTalkToMonst(mi);
+		if (pcursmonst != -1 && !canTalk && (newCanTalk || distance < newDdistance))
 			continue;
-		}
 		const int newRotations = GetRotaryDistance(mx, my);
-		if (pcursmonst != -1 && !currentCanTalk && distance == newDdistance && rotations < newRotations) {
+		if (pcursmonst != -1 && !canTalk && distance == newDdistance && rotations < newRotations)
 			continue;
-		}
 		distance = newDdistance;
 		rotations = newRotations;
 		pcursmonst = mi;
-		currentCanTalk = CanTalkToMonst(mi);
+		canTalk = newCanTalk;
 	}
 }
 
@@ -218,7 +221,7 @@ void FindMeleeTarget()
 	bool visited[MAXDUNX][MAXDUNY] = { 0 };
 	int maxSteps = 25; // Max steps for FindPath is 25
 	int rotations;
-	bool currentCanTalk;
+	bool canTalk;
 
 	struct SearchNode {
 		int x, y;
@@ -256,12 +259,13 @@ void FindMeleeTarget()
 					const int mi = dMonster[dx][dy] > 0 ? dMonster[dx][dy] - 1 : -(dMonster[dx][dy] + 1);
 					if (CanTargetMonster(mi)) {
 						const int newRotations = GetRotaryDistance(dx, dy);
-						if (pcursmonst != -1 && !currentCanTalk && rotations < newRotations)
+						const bool newCanTalk = CanTalkToMonst(mi);
+						if (pcursmonst != -1 && !canTalk && (newCanTalk || rotations < newRotations))
 							continue;
 						rotations = newRotations;
 						pcursmonst = mi;
-						currentCanTalk = CanTalkToMonst(mi);
-						if (!currentCanTalk)
+						canTalk = newCanTalk;
+						if (!canTalk)
 							maxSteps = node.steps; // Monsters found, cap search to current steps
 					}
 				}
@@ -293,9 +297,7 @@ void CheckMonstersNearby()
 
 void CheckPlayerNearby()
 {
-	int newRotations, newDdistance;
-	int distance = 2 * (MAXDUNX + MAXDUNY);
-	int rotations = 5;
+	int distance, newDdistance, rotations;
 
 	if (pcursmonst != -1)
 		return;
@@ -314,19 +316,20 @@ void CheckPlayerNearby()
 		    || (plr[i]._pHitPoints == 0 && spl != SPL_RESURRECT))
 			continue;
 
-		if (plr[myplr]._pwtype == WT_RANGED || HasRangedSpell() || spl == SPL_HEALOTHER)
+		if (plr[myplr]._pwtype == WT_RANGED || HasRangedSpell() || spl == SPL_HEALOTHER) {
 			newDdistance = GetDistanceRanged(mx, my);
-		else
+		} else {
 			newDdistance = GetDistance(mx, my, distance);
-
-		if (newDdistance == 0 || distance < newDdistance) {
-			continue;
-		}
-		if (distance == newDdistance) {
-			newRotations = GetRotaryDistance(mx, my);
-			if (rotations < newRotations)
+			if (newDdistance == 0)
 				continue;
 		}
+
+		if (pcursplr != -1 && distance < newDdistance)
+			continue;
+		const int newRotations = GetRotaryDistance(mx, my);
+		if (pcursplr != -1 && distance == newDdistance && rotations < newRotations)
+			continue;
+
 		distance = newDdistance;
 		rotations = newRotations;
 		pcursplr = i;
@@ -349,18 +352,29 @@ int pcurstrig;
 
 void FindTrigger()
 {
+	int distance, rotations;
+
 	if (pcursitem != -1 || pcursobj != -1)
 		return; // Prefer showing items/objects over triggers (use of cursm* conflicts)
 
 	for (int i = 0; i < nummissiles; i++) {
 		int mi = missileactive[i];
 		if (missile[mi]._mitype == MIS_TOWN || missile[mi]._mitype == MIS_RPORTAL) {
-			int distance = GetDistance(missile[mi]._mix, missile[mi]._miy, 2);
-			if (distance == 0 || distance > 2)
+			int mix = missile[mi]._mix;
+			int miy = missile[mi]._miy;
+			const int newDdistance = GetDistance(mix, miy, 2);
+			if (newDdistance == 0)
 				continue;
-			cursmx = missile[mi]._mix;
-			cursmy = missile[mi]._miy;
+			if (pcursmissile != -1 && distance < newDdistance)
+				continue;
+			const int newRotations = GetRotaryDistance(mix, miy);
+			if (pcursmissile != -1 && distance == newDdistance && rotations < newRotations)
+				continue;
+			cursmx = mix;
+			cursmy = miy;
 			pcursmissile = mi;
+			distance = newDdistance;
+			rotations = newRotations;
 		}
 	}
 
@@ -370,8 +384,8 @@ void FindTrigger()
 			int ty = trigs[i]._ty;
 			if (trigs[i]._tlvl == 13)
 				ty -= 1;
-			int distance = GetDistance(tx, ty, 2);
-			if (distance == 0 || distance > 2)
+			const int newDdistance = GetDistance(tx, ty, 2);
+			if (newDdistance == 0)
 				continue;
 			cursmx = tx;
 			cursmy = ty;
