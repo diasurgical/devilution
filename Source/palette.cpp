@@ -28,9 +28,9 @@ void palette_init()
 	memcpy(system_palette, orig_palette, sizeof(orig_palette));
 	LoadSysPal();
 #ifdef __cplusplus
-	error_code = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	error_code = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_INITIALIZE | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 #else
-	error_code = lpDDInterface->lpVtbl->CreatePalette(lpDDInterface, DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	error_code = lpDDInterface->lpVtbl->CreatePalette(lpDDInterface, DDPCAPS_ALLOW256 | DDPCAPS_INITIALIZE | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 #endif
 	if (error_code)
 		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
