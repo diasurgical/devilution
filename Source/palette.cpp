@@ -286,6 +286,87 @@ void palette_update_caves()
 	palette_update();
 }
 
+#ifdef HELLFIRE
+int dword_6E2D58;
+int dword_6E2D54;
+void palette_update_crypt()
+{
+	int i;
+	PALETTEENTRY col;
+
+	if (dword_6E2D58 > 1) {		
+		col = system_palette[15];
+		for (i = 15; i > 0; i--) {
+			system_palette[i].peRed = system_palette[i - 1].peRed;
+			system_palette[i].peGreen = system_palette[i - 1].peGreen;
+			system_palette[i].peBlue = system_palette[i - 1].peBlue;
+		}
+		system_palette[i].peRed = col.peRed;
+		system_palette[i].peGreen = col.peGreen;
+		system_palette[i].peBlue = col.peBlue;
+
+
+
+		dword_6E2D58 = 0;
+	} else {
+		dword_6E2D58++;
+	}
+	if (dword_6E2D54 > 0) {
+		col = system_palette[31];
+		for (i = 31; i > 16; i--) {
+			system_palette[i].peRed = system_palette[i - 1].peRed;
+			system_palette[i].peGreen = system_palette[i - 1].peGreen;
+			system_palette[i].peBlue = system_palette[i - 1].peBlue;
+		}
+		system_palette[i].peRed = col.peRed;
+		system_palette[i].peGreen = col.peGreen;
+		system_palette[i].peBlue = col.peBlue;
+		palette_update();
+		dword_6E2D54++;
+	} else {
+		dword_6E2D54 = 1;
+	}
+}
+
+int dword_6E2D5C;
+int dword_6E2D60;
+void palette_update_hive()
+{
+	int i;
+	PALETTEENTRY col;
+
+	if (dword_6E2D60 == 2) {
+		col = system_palette[8];
+		for (i = 8; i > 0; i--) {
+			system_palette[i].peRed = system_palette[i - 1].peRed;
+			system_palette[i].peGreen = system_palette[i - 1].peGreen;
+			system_palette[i].peBlue = system_palette[i - 1].peBlue;
+		}
+		system_palette[i].peRed = col.peRed;
+		system_palette[i].peGreen = col.peGreen;
+		system_palette[i].peBlue = col.peBlue;
+		dword_6E2D60 = 0;
+	} else {
+		dword_6E2D60++;
+	}
+	if (dword_6E2D5C == 2) {
+		col = system_palette[15];
+		for (i = 15; i > 9; i--) {
+			system_palette[i].peRed = system_palette[i - 1].peRed;
+			system_palette[i].peGreen = system_palette[i - 1].peGreen;
+			system_palette[i].peBlue = system_palette[i - 1].peBlue;
+		}
+		system_palette[i].peRed = col.peRed;
+		system_palette[i].peGreen = col.peGreen;
+		system_palette[i].peBlue = col.peBlue;
+		palette_update();
+		dword_6E2D5C = 0;
+	} else {
+		dword_6E2D5C++;
+	}
+}
+
+#endif
 #ifndef SPAWN
 void palette_update_quest_palette(int n)
 {
