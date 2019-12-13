@@ -349,6 +349,7 @@ void FindActor()
 
 int pcursmissile;
 int pcurstrig;
+int pcursquest;
 
 void FindTrigger()
 {
@@ -390,6 +391,19 @@ void FindTrigger()
 			cursmx = tx;
 			cursmy = ty;
 			pcurstrig = i;
+		}
+
+		if (pcurstrig == -1) {
+			for (int i = 0; i < MAXQUESTS; i++) {
+				if (i == QTYPE_VB || currlevel != quests[i]._qlevel || quests[i]._qslvl == 0)
+					continue;
+				const int newDdistance = GetDistance(quests[i]._qtx, quests[i]._qty, 2);
+				if (newDdistance == 0)
+					continue;
+				cursmx = quests[i]._qtx;
+				cursmy = quests[i]._qty;
+				pcursquest = i;
+			}
 		}
 	}
 
@@ -829,6 +843,7 @@ void plrctrls_after_check_curs_move()
 		pcursobj = -1;
 		pcursmissile = -1;
 		pcurstrig = -1;
+		pcursquest = -1;
 		cursmx = -1;
 		cursmy = -1;
 		if (!invflag) {
@@ -984,6 +999,9 @@ void PerformSecondaryAction()
 		plr[myplr].destAction = ACTION_WALK;
 	} else if (pcurstrig != -1) {
 		MakePlrPath(myplr, trigs[pcurstrig]._tx, trigs[pcurstrig]._ty, true);
+		plr[myplr].destAction = ACTION_WALK;
+	} else if (pcursquest != -1) {
+		MakePlrPath(myplr, quests[pcursquest]._qtx, quests[pcursquest]._qty, true);
 		plr[myplr].destAction = ACTION_WALK;
 	}
 }
