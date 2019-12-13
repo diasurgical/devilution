@@ -170,13 +170,21 @@ void palette_update()
 	int max_entries;
 
 	if (lpDDPalette) {
+#ifndef HELLFIRE
 		nentries = 0;
 		max_entries = 256;
+#endif
 		if (!fullscreen) {
 			nentries = gdwPalEntries;
 			max_entries = 2 * (128 - gdwPalEntries);
 		}
-		SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
+#ifdef HELLFIRE
+		else {
+			nentries = 0;
+			max_entries = 256;
+		}
+#endif
+		    SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
 	}
 }
 
