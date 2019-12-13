@@ -184,7 +184,7 @@ void palette_update()
 			max_entries = 256;
 		}
 #endif
-		    SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
+		SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
 	}
 }
 
