@@ -425,7 +425,7 @@ void Interact()
 		} else {
 			NetSendCmdParam1(true, CMD_RATTACKID, pcursmonst);
 		}
-	} else if (pcursplr != -1 && !FriendlyMode) {
+	} else if (leveltype != DTYPE_TOWN && pcursplr != -1 && !FriendlyMode) {
 		NetSendCmdParam1(true, plr[myplr]._pwtype == WT_RANGED ? CMD_RATTACKPID : CMD_ATTACKPID, pcursplr);
 	}
 }
