@@ -709,12 +709,6 @@ void HotSpellMove(MoveDirection dir)
 	}
 }
 
-static const _walk_path kMoveToWalkDir[3][3] = {
-	// NONE      UP      DOWN
-	{ WALK_NONE, WALK_N, WALK_S }, // NONE
-	{ WALK_W, WALK_NW, WALK_SW },  // LEFT
-	{ WALK_E, WALK_NE, WALK_SE },  // RIGHT
-};
 static const direction kFaceDir[3][3] = {
 	// NONE      UP      DOWN
 	{ DIR_OMNI, DIR_N, DIR_S }, // NONE
@@ -733,21 +727,16 @@ static const int kOffsets[8][2] = {
 };
 void WalkInDir(MoveDirection dir)
 {
+	const int x = plr[myplr]._px;
+	const int y = plr[myplr]._py;
 	if (dir.x == MoveDirectionX::NONE && dir.y == MoveDirectionY::NONE) {
-		if (sgbControllerActive && plr[myplr].destAction == ACTION_NONE)
-			ClrPlrPath(myplr);
+		if (sgbControllerActive && plr[myplr].walkpath[0] != WALK_NONE && plr[myplr].destAction == ACTION_NONE)
+			NetSendCmdLoc(true, CMD_WALKXY, x, y);
 		return;
 	}
 
-	ClrPlrPath(myplr);
-	PATHNODE pPath = { 0 };
-	pPath.x = plr[myplr]._px;
-	pPath.y = plr[myplr]._py;
-	int pdir = kFaceDir[static_cast<std::size_t>(dir.x)][static_cast<std::size_t>(dir.y)];
-	if (path_solid_pieces(&pPath, pPath.x + kOffsets[pdir][0], pPath.y + kOffsets[pdir][1])) {
-		plr[myplr].walkpath[0] = kMoveToWalkDir[static_cast<std::size_t>(dir.x)][static_cast<std::size_t>(dir.y)];
-	}
-	plr[myplr].destAction = ACTION_NONE; // stop attacking, etc.
+	const int pdir = kFaceDir[static_cast<std::size_t>(dir.x)][static_cast<std::size_t>(dir.y)];
+	NetSendCmdLoc(true, CMD_WALKXY, x + kOffsets[pdir][0], y + kOffsets[pdir][1]);
 	plr[myplr]._pdir = pdir;
 }
 
