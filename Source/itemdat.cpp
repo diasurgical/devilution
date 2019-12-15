@@ -305,8 +305,8 @@ const PLStruct PL_Prefix[] = {
 	{ "Jester's",       IPL_JESTERS,            1,        1,        7,                       PLT_WEAP                                 ,  0, FALSE,    TRUE,      1200,     1200,         3 },
 	{ "Crystalline",    IPL_CRYSTALLINE,       30,       70,        5,                       PLT_WEAP                                 ,  0, FALSE,    TRUE,      1000,     3000,         3 },
 	{ "Doppelganger's", IPL_DOPPELGANGER,      81,       95,       11,                       PLT_WEAP | PLT_STAFF                     ,  0, FALSE,    TRUE,      2000,     2400,        10 },
-	{ "",               IPL_INVALID,            0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 },
 #endif
+	{ "",               IPL_INVALID,            0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 },
 	// clang-format on
 };
 

@@ -21,7 +21,11 @@ SpellData spelldata[MAX_SPELLS] = {
 	{ SPL_WAVE,         35, STYPE_FIRE,      "Flame Wave",         NULL,              9,         8, TRUE,      FALSE,           54, IS_CAST2, { MIS_WAVE,          0,          0 },        3,       20,        20,        40,     10000,        650 },
 	{ SPL_DOOMSERP,      0, STYPE_LIGHTNING, "Doom Serpents",      NULL,             -1,        -1, FALSE,     FALSE,            0, IS_CAST2, { 0,                 0,          0 },        0,        0,        40,        80,         0,          0 },
 	{ SPL_BLODRIT,       0, STYPE_MAGIC,     "Blood Ritual",       NULL,             -1,        -1, FALSE,     FALSE,            0, IS_CAST2, { 0,                 0,          0 },        0,        0,        40,        80,         0,          0 },
+#ifdef HELLFIRE
 	{ SPL_NOVA,         60, STYPE_MAGIC,     "Nova",               NULL,             14,        10, FALSE,     FALSE,           87, IS_CAST4, { MIS_NOVA,          0,          0 },        3,       35,        16,        32,     21000,       1300 },
+#else
+	{ SPL_NOVA,         60, STYPE_MAGIC,     "Nova",               NULL,             -1,        10, FALSE,     FALSE,           87, IS_CAST4, { MIS_NOVA,          0,          0 },        3,       35,        16,        32,     21000,       1300 },
+#endif
 	{ SPL_INVISIBIL,     0, STYPE_MAGIC,     "Invisibility",       NULL,             -1,        -1, FALSE,     FALSE,            0, IS_CAST2, { 0,                 0,          0 },        0,        0,        40,        80,         0,          0 },
 	{ SPL_FLAME,        11, STYPE_FIRE,      "Inferno",            NULL,              3,         2, TRUE,      FALSE,           20, IS_CAST2, { MIS_FLAMEC,        0,          0 },        1,        6,        20,        40,      2000,        100 },
 	{ SPL_GOLEM,       100, STYPE_FIRE,      "Golem",              NULL,             11,         9, FALSE,     FALSE,           81, IS_CAST2, { MIS_GOLEM,         0,          0 },        6,       60,        16,        32,     18000,       1100 },

@@ -78,8 +78,8 @@ MissileData missiledata[] = {
 	{  MIS_WEAPEXP,       &AddWeapexp,                &MI_Weapexp,        TRUE,      2, 0,              MFILE_NONE,      -1,          -1          },
 	{  MIS_RPORTAL,       &AddRportal,                &MI_Rportal,        TRUE,      2, 0,              MFILE_RPORTAL,   LS_SENTINEL, LS_ELEMENTL },
 	{  MIS_BOOM2,         &AddBoom,                   &MI_Boom,           TRUE,      2, 0,              MFILE_FIREPLAR,  -1,          -1          },
-#ifdef HELLFIRE
 	{  MIS_DIABAPOCA,     &AddDiabApoca,              &MI_Dummy,          FALSE,     2, 0,              MFILE_NONE,      -1,          -1          },
+#ifdef HELLFIRE
 	{  MIS_MANA,          &missiles_rech_mana,        &MI_Dummy,          FALSE,     1, 0,              MFILE_NONE,      -1,          -1          },
 	{  MIS_MAGI,          &missiles_magi,             &MI_Dummy,          FALSE,     1, 0,              MFILE_NONE,      -1,          -1          },
 	{  MIS_LIGHTWALL,     &missiles_light_wall,       &mi_light_wall,     TRUE,      1, MISR_LIGHTNING, MFILE_LGHNING,   LS_LMAG,     LS_ELECIMP1 },
@@ -189,4 +189,5 @@ MisFileData misfiledata[] = {
 	{  MFILE_EXBL3,       1, "ex_bl3",   1, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, {  7,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, { 292,   0,   0,   0,   0,   0,   0,   0,  0,  0,  0,  0,  0,  0,  0,  0 }, { 114,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 } },
 #endif
 	{  MFILE_NONE,        0, "",         0, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, {   0,   0,   0,   0,   0,   0,   0,   0,  0,  0,  0,  0,  0,  0,  0,  0 }, {   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 } },
+	// clang-format on
 };
