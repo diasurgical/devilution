@@ -77,8 +77,7 @@ static BOOL CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE 
 	BYTE *pBuffer, *pBufferEnd;
 
 	pBuffer = (BYTE *)DiabloAllocPtr(2 * width);
-	while (height != 0) {
-		height--;
+	while (height--) {
 		pBufferEnd = CaptureEnc(pixels, pBuffer, width);
 		pixels += stride;
 		writeSize = pBufferEnd - pBuffer;
@@ -158,9 +157,9 @@ void CaptureScreen()
 		success = CaptureHdr(hObject, SCREEN_WIDTH, SCREEN_HEIGHT);
 		if (success) {
 			success = CapturePix(hObject, SCREEN_WIDTH, SCREEN_HEIGHT, BUFFER_WIDTH, &gpBuffer[SCREENXY(0, 0)]);
-			if (success) {
-				success = CapturePal(hObject, palette);
-			}
+		}
+		if (success) {
+			success = CapturePal(hObject, palette);
 		}
 		unlock_buf(2);
 		CloseHandle(hObject);

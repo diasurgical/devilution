@@ -1,5 +1,7 @@
 // some global definitions, found in debug release
 
+#define GAME_NAME				"DIABLO"
+
 #define DMAXX					40
 #define DMAXY					40
 
@@ -50,6 +52,10 @@
 
 // todo: enums
 #define NUMLEVELS				17
+#define SMITH_ITEMS				20
+#define SMITH_PREMIUM_ITEMS		6
+#define SMITH_MAX_VALUE			140000
+#define SMITH_MAX_PREMIUM_VALUE 140000
 
 // from diablo 2 beta
 #define MAXEXP					2000000000
