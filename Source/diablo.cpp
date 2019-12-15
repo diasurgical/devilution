@@ -20,7 +20,7 @@ BOOL gbLoadGame;
 HINSTANCE ghInst;
 int DebugMonsters[10];
 BOOLEAN cineflag;
-int drawpanflag;
+int force_redraw;
 BOOL visiondebug;
 BOOL scrollflag; /* unused */
 BOOL light4flag;
@@ -142,10 +142,10 @@ void run_game_loop(unsigned int uMsg)
 	gbRunGame = TRUE;
 	gbProcessPlayers = TRUE;
 	gbRunGameResult = TRUE;
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	PaletteFadeIn(8);
-	drawpanflag = 255;
+	force_redraw = 255;
 	gbGameLoopStartup = TRUE;
 	nthread_ignore_mutex(FALSE);
 
@@ -188,9 +188,9 @@ void run_game_loop(unsigned int uMsg)
 
 	pfile_flush_W();
 	PaletteFadeOut(8);
-	SetCursor_(0);
+	SetCursor_(CURSOR_NONE);
 	ClearScreenBuffer();
-	drawpanflag = 255;
+	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);
 	saveProc = SetWindowProc(saveProc);
 	/// ASSERT: assert(saveProc == GM_Game);
@@ -777,7 +777,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		sgbMouseDown = 0;
 		ReleaseCapture();
 		ShowProgress(uMsg);
-		drawpanflag = 255;
+		force_redraw = 255;
 		DrawAndBlit();
 		if (gbRunGame)
 			PaletteFadeIn(8);
@@ -810,10 +810,10 @@ BOOL LeftMouseDown(int wParam)
 						sfx_stop();
 					} else if (chrflag && MouseX < 320) {
 						CheckChrBtns();
-					} else if (invflag && MouseX > 320) {
+					} else if (invflag && MouseX > RIGHT_PANEL) {
 						if (!dropGoldFlag)
 							CheckInvItem();
-					} else if (sbookflag && MouseX > 320) {
+					} else if (sbookflag && MouseX > RIGHT_PANEL) {
 						CheckSBook();
 					} else if (pcurs >= CURSOR_FIRSTITEM) {
 						if (TryInvPut()) {
@@ -856,7 +856,7 @@ BOOL LeftMouseCmd(BOOL bShift)
 	} else {
 		bNear = abs(plr[myplr].WorldX - cursmx) < 2 && abs(plr[myplr].WorldY - cursmy) < 2;
 		if (pcursitem != -1 && pcurs == CURSOR_HAND && !bShift) {
-			NetSendCmdLocParam1(pcurs, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
+			NetSendCmdLocParam1(TRUE, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
 		} else if (pcursobj != -1 && (!bShift || bNear && object[pcursobj]._oBreak == 1)) {
 			NetSendCmdLocParam1(TRUE, pcurs == CURSOR_DISARM ? CMD_DISARMXY : CMD_OPOBJXY, cursmx, cursmy, pcursobj);
 		} else if (plr[myplr]._pwtype == WT_RANGED) {
@@ -967,8 +967,8 @@ void RightMouseDown()
 		} else if (!stextflag) {
 			if (spselflag) {
 				SetSpell();
-			} else if (MouseY >= PANEL_TOP
-			    || (!sbookflag || MouseX <= 320)
+			} else if (MouseY >= SPANEL_HEIGHT
+			    || (!sbookflag || MouseX <= RIGHT_PANEL)
 			        && !TryIconCurs()
 			        && (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))) {
 				if (pcurs == 1) {
@@ -1229,7 +1229,7 @@ void diablo_pause_game()
 			FreeMonsterSnd();
 			track_repeat_walk(0);
 		}
-		drawpanflag = 255;
+		force_redraw = 255;
 	}
 }
 
@@ -1351,43 +1351,43 @@ void PressChar(int vkey)
 	case '!':
 	case '1':
 		if (plr[myplr].SpdList[0]._itype != -1 && plr[myplr].SpdList[0]._itype != 11) {
-			UseInvItem(myplr, 47);
+			UseInvItem(myplr, INVITEM_BELT_FIRST);
 		}
 		return;
 	case '@':
 	case '2':
 		if (plr[myplr].SpdList[1]._itype != -1 && plr[myplr].SpdList[1]._itype != 11) {
-			UseInvItem(myplr, 48);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 1);
 		}
 		return;
 	case '#':
 	case '3':
 		if (plr[myplr].SpdList[2]._itype != -1 && plr[myplr].SpdList[2]._itype != 11) {
-			UseInvItem(myplr, 49);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 2);
 		}
 		return;
 	case '$':
 	case '4':
 		if (plr[myplr].SpdList[3]._itype != -1 && plr[myplr].SpdList[3]._itype != 11) {
-			UseInvItem(myplr, 50);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 3);
 		}
 		return;
 	case '%':
 	case '5':
 		if (plr[myplr].SpdList[4]._itype != -1 && plr[myplr].SpdList[4]._itype != 11) {
-			UseInvItem(myplr, 51);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 4);
 		}
 		return;
 	case '^':
 	case '6':
 		if (plr[myplr].SpdList[5]._itype != -1 && plr[myplr].SpdList[5]._itype != 11) {
-			UseInvItem(myplr, 52);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 5);
 		}
 		return;
 	case '&':
 	case '7':
 		if (plr[myplr].SpdList[6]._itype != -1 && plr[myplr].SpdList[6]._itype != 11) {
-			UseInvItem(myplr, 53);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 6);
 		}
 		return;
 	case '*':
@@ -1399,7 +1399,7 @@ void PressChar(int vkey)
 		}
 #endif
 		if (plr[myplr].SpdList[7]._itype != -1 && plr[myplr].SpdList[7]._itype != 11) {
-			UseInvItem(myplr, 54);
+			UseInvItem(myplr, INVITEM_BELT_FIRST + 7);
 		}
 		return;
 #ifdef _DEBUG
@@ -1581,6 +1581,9 @@ void LoadAllGFX()
 	IncProgress();
 }
 
+/**
+ * @param lvldir method of entry
+ */
 void CreateLevel(int lvldir)
 {
 	switch (leveltype) {
@@ -1907,7 +1910,7 @@ void game_logic()
 		PauseMode = 2;
 	}
 	if (gbMaxPlayers == 1 && gmenu_exception()) {
-		drawpanflag |= 1;
+		force_redraw |= 1;
 		return;
 	}
 
@@ -1941,7 +1944,7 @@ void game_logic()
 	ClearPlrMsg();
 	CheckTriggers();
 	CheckQuests();
-	drawpanflag |= 1;
+	force_redraw |= 1;
 	pfile_update(FALSE);
 }
 
@@ -1955,14 +1958,14 @@ void timeout_cursor(BOOL bTimeout)
 			AddPanelString("-- Network timeout --", TRUE);
 			AddPanelString("-- Waiting for players --", TRUE);
 			SetCursor_(CURSOR_HOURGLASS);
-			drawpanflag = 255;
+			force_redraw = 255;
 		}
 		scrollrt_draw_game_screen(1);
 	} else if (sgnTimeoutCurs) {
 		SetCursor_(sgnTimeoutCurs);
 		sgnTimeoutCurs = 0;
 		ClearPanel();
-		drawpanflag = 255;
+		force_redraw = 255;
 	}
 }
 

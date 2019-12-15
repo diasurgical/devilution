@@ -98,7 +98,7 @@ void gamemenu_new_game(BOOL bActivate)
 	}
 
 	deathflag = FALSE;
-	drawpanflag = 255;
+	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);
 #ifdef HELLFIRE
 	dword_691CB0 = 0;
@@ -119,7 +119,7 @@ void gamemenu_load_game(BOOL bActivate)
 	gamemenu_off();
 	SetCursor_(CURSOR_NONE);
 	InitDiabloMsg(EMSG_LOADING);
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	LoadGame(FALSE);
 	ClrDiabloMsg();
@@ -128,7 +128,7 @@ void gamemenu_load_game(BOOL bActivate)
 #endif
 	PaletteFadeOut(8);
 	deathflag = FALSE;
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	PaletteFadeIn(8);
 	SetCursor_(CURSOR_HAND);
@@ -151,11 +151,11 @@ void gamemenu_save_game(BOOL bActivate)
 	SetCursor_(CURSOR_NONE);
 	gamemenu_off();
 	InitDiabloMsg(EMSG_SAVING);
-	drawpanflag = 255;
+	force_redraw = 255;
 	DrawAndBlit();
 	SaveGame();
 	ClrDiabloMsg();
-	drawpanflag = 255;
+	force_redraw = 255;
 	SetCursor_(CURSOR_HAND);
 #ifdef HELLFIRE
 	if (dword_691CB0 != 0) {

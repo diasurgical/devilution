@@ -287,9 +287,9 @@ void init_archives()
 		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\spawn.mpq", "DiabloSpawn", 1000, FS_PC);
 #else
 #ifdef COPYPROT
-		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
+	diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
 #else
-		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_PC);
+	diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_PC);
 #endif
 #endif
 #ifdef COPYPROT
@@ -461,7 +461,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		break;
 	case WM_PAINT:
-		drawpanflag = 255;
+		force_redraw = 255;
 		break;
 	case WM_CLOSE:
 		return 0;
@@ -505,7 +505,7 @@ void init_activate_window(HWND hWnd, BOOL bActive)
 	SetWindowLong(hWnd, GWL_STYLE, dwNewLong);
 
 	if (gbActive) {
-		drawpanflag = 255;
+		force_redraw = 255;
 		ResetPal();
 	}
 }

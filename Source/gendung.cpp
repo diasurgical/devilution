@@ -18,7 +18,7 @@ int MicroTileLen;
 char dflags[DMAXX][DMAXY];
 int dPiece[MAXDUNX][MAXDUNY];
 char dLight[MAXDUNX][MAXDUNY];
-int setloadflag_2;
+BOOL setloadflag;
 int tile_defs[MAXTILES];
 BYTE *pMegaTiles;
 BYTE *pLevelPieces;
@@ -49,7 +49,7 @@ char dItem[MAXDUNX][MAXDUNY];
 BYTE setlvlnum;
 int level_frame_sizes[MAXTILES];
 BOOLEAN nMissileTable[2049];
-char *pSetPiece_2;
+BYTE *pSetPiece;
 char setlvltype;
 BOOLEAN setlevel;
 int LvlViewY;
@@ -136,6 +136,42 @@ void FillSolidBlockTbls()
 	}
 
 	mem_free_dbg(pSBFile);
+}
+
+static void SwapTile(int f1, int f2)
+{
+	int swap;
+
+	swap = level_frame_count[f1];
+	level_frame_count[f1] = level_frame_count[f2];
+	level_frame_count[f2] = swap;
+	swap = tile_defs[f1];
+	tile_defs[f1] = tile_defs[f2];
+	tile_defs[f2] = swap;
+	swap = level_frame_types[f1];
+	level_frame_types[f1] = level_frame_types[f2];
+	level_frame_types[f2] = swap;
+	swap = level_frame_sizes[f1];
+	level_frame_sizes[f1] = level_frame_sizes[f2];
+	level_frame_sizes[f2] = swap;
+}
+
+static void SortTiles(int frames)
+{
+	int i;
+	BOOL doneflag;
+
+	doneflag = FALSE;
+	while (frames > 0 && !doneflag) {
+		doneflag = TRUE;
+		for (i = 0; i < frames; i++) {
+			if (level_frame_count[i] < level_frame_count[i + 1]) {
+				SwapTile(i, i + 1);
+				doneflag = FALSE;
+			}
+		}
+		frames--;
+	}
 }
 
 void MakeSpeedCels()
@@ -462,42 +498,6 @@ void MakeSpeedCels()
 			}
 		}
 	}
-}
-
-void SortTiles(int frames)
-{
-	int i;
-	BOOL doneflag;
-
-	doneflag = FALSE;
-	while (frames > 0 && !doneflag) {
-		doneflag = TRUE;
-		for (i = 0; i < frames; i++) {
-			if (level_frame_count[i] < level_frame_count[i + 1]) {
-				SwapTile(i, i + 1);
-				doneflag = FALSE;
-			}
-		}
-		frames--;
-	}
-}
-
-void SwapTile(int f1, int f2)
-{
-	int swap;
-
-	swap = level_frame_count[f1];
-	level_frame_count[f1] = level_frame_count[f2];
-	level_frame_count[f2] = swap;
-	swap = tile_defs[f1];
-	tile_defs[f1] = tile_defs[f2];
-	tile_defs[f2] = swap;
-	swap = level_frame_types[f1];
-	level_frame_types[f1] = level_frame_types[f2];
-	level_frame_types[f2] = swap;
-	swap = level_frame_sizes[f1];
-	level_frame_sizes[f1] = level_frame_sizes[f2];
-	level_frame_sizes[f2] = swap;
 }
 
 int IsometricCoord(int x, int y)
@@ -856,7 +856,7 @@ void DRLG_CreateThemeRoom(int themeIndex)
 	}
 
 	if (leveltype == DTYPE_CATACOMBS) {
-		switch (random(0, 2)) {
+		switch (random_(0, 2)) {
 		case 0:
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2] = 4;
 			break;
@@ -866,7 +866,7 @@ void DRLG_CreateThemeRoom(int themeIndex)
 		}
 	}
 	if (leveltype == DTYPE_CAVES) {
-		switch (random(0, 2)) {
+		switch (random_(0, 2)) {
 		case 0:
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2] = 147;
 			break;
@@ -876,7 +876,7 @@ void DRLG_CreateThemeRoom(int themeIndex)
 		}
 	}
 	if (leveltype == DTYPE_HELL) {
-		switch (random(0, 2)) {
+		switch (random_(0, 2)) {
 		case 0:
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2 - 1] = 53;
 			dungeon[themeLoc[themeIndex].x + themeLoc[themeIndex].width - 1][themeLoc[themeIndex].y + themeLoc[themeIndex].height / 2] = 6;
@@ -904,16 +904,16 @@ void DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rnd
 	memset(themeLoc, 0, sizeof(*themeLoc));
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
-			if (dungeon[i][j] == floor && !random(0, freq) && DRLG_WillThemeRoomFit(floor, i, j, minSize, maxSize, &themeW, &themeH)) {
+			if (dungeon[i][j] == floor && !random_(0, freq) && DRLG_WillThemeRoomFit(floor, i, j, minSize, maxSize, &themeW, &themeH)) {
 				if (rndSize) {
 					min = minSize - 2;
 					max = maxSize - 2;
-					rv2 = min + random(0, random(0, themeW - min + 1));
+					rv2 = min + random_(0, random_(0, themeW - min + 1));
 					if (rv2 >= min && rv2 <= max)
 						themeW = rv2;
 					else
 						themeW = min;
-					rv2 = min + random(0, random(0, themeH - min + 1));
+					rv2 = min + random_(0, random_(0, themeH - min + 1));
 					if (rv2 >= min && rv2 <= max)
 						themeH = rv2;
 					else

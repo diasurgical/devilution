@@ -146,7 +146,7 @@ void mpqapi_remove_hash_entry(const char *pszName)
 		block_size = blockEntry->sizealloc;
 		memset(blockEntry, 0, sizeof(*blockEntry));
 		mpqapi_alloc_block(block_offset, block_size);
-		save_archive_modified = 1;
+		save_archive_modified = TRUE;
 	}
 }
 
@@ -513,7 +513,7 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 		pHdr->version = 0;
 		*pdwNextFileStart = 0x10068;
 		save_archive_modified = TRUE;
-		save_archive_open = 1;
+		save_archive_open = TRUE;
 	}
 
 	return TRUE;

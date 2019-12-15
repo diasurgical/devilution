@@ -103,6 +103,7 @@ That's a tricky question. Under the DMCA, reverse-engineering has exceptions for
 - [BWAPI Team](https://github.com/bwapi) - providing library API to work with Storm
 - [Ladislav Zezula](https://github.com/ladislav-zezula) - reversing PKWARE library, further documenting Storm
 - [fearedbliss](https://github.com/fearedbliss) - being awe-inspiring
+- Diablodin - providing additional info about the PSX release
 - Climax Studios & Sony - secretly helping with their undercover QA :P
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)

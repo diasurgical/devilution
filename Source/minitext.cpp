@@ -35,6 +35,9 @@ const BYTE mfontkern[56] = {
 
 /* data */
 
+/**
+ * Positive numbers will delay scrolling 1 out of n frames, negative numbers will scroll 1+(-n) pixels.
+ */
 int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
 void FreeQuestText()
@@ -57,7 +60,7 @@ void InitQTextMsg(int m)
 		qtextptr = alltext[m].txtstr;
 		qtextflag = TRUE;
 		qtexty = 500;
-		sgLastScroll = qscroll_spd_tbl[alltext[m].txtspd - 1]; /* double check offset */
+		sgLastScroll = qscroll_spd_tbl[alltext[m].txtspd - 1];
 		scrolltexty = sgLastScroll;
 		qtextSpd = GetTickCount();
 	}
@@ -66,9 +69,9 @@ void InitQTextMsg(int m)
 
 void DrawQTextBack()
 {
-	CelDraw(88, 487, pTextBoxCels, 1, 591);
+	CelDraw(PANEL_X + 24, 487, pTextBoxCels, 1, 591);
 
-#define TRANS_RECT_X 27
+#define TRANS_RECT_X (PANEL_LEFT + 27)
 #define TRANS_RECT_Y 28
 #define TRANS_RECT_WIDTH 585
 #define TRANS_RECT_HEIGHT 297
@@ -205,7 +208,7 @@ void DrawQText()
 
 	p = qtextptr;
 	pnl = NULL;
-	tx = 112;
+	tx = 48 + PANEL_X;
 	ty = qtexty;
 
 	doneflag = FALSE;
@@ -248,7 +251,7 @@ void DrawQText()
 		if (pnl == NULL) {
 			pnl = p;
 		}
-		tx = 112;
+		tx = 48 + PANEL_X;
 		ty += 38;
 		if (ty > 501) {
 			doneflag = TRUE;

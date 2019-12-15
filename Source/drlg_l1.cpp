@@ -2,7 +2,7 @@
 
 BYTE L5dungeon[80][80];
 BYTE L5dflags[DMAXX][DMAXY];
-BOOL setloadflag;
+BOOL L5setloadflag;
 int HR1;
 int HR2;
 int HR3;
@@ -19,7 +19,7 @@ int UberDiabloMonsterIndex;
 int VR1;
 int VR2;
 int VR3;
-BYTE *pSetPiece;
+BYTE *L5pSetPiece;
 
 const ShadowStruct SPATS[37] = {
 	// clang-format off
@@ -63,6 +63,8 @@ const ShadowStruct SPATS[37] = {
 	{      3, 13, 11, 12, 150,   0,   0 }
 	// clang-format on
 };
+
+// BUGFIX: This array should contain an additional 0 (207 elements).
 const BYTE BSTYPES[206] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	10, 11, 12, 13, 14, 15, 16, 17, 0, 0,
@@ -86,6 +88,8 @@ const BYTE BSTYPES[206] = {
 	28, 1, 2, 25, 26, 22, 22, 25, 26, 0,
 	0, 0, 0, 0, 0, 0
 };
+
+// BUGFIX: This array should contain an additional 0 (207 elements).
 const BYTE L5BTYPES[206] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	10, 11, 12, 13, 14, 15, 16, 17, 0, 0,
@@ -703,11 +707,11 @@ static int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, in
 	if (tmax - tmin == 0)
 		numt = 1;
 	else
-		numt = random(0, tmax - tmin) + tmin;
+		numt = random_(0, tmax - tmin) + tmin;
 
 	for (i = 0; i < numt; i++) {
-		sx = random(0, DMAXX - sw);
-		sy = random(0, DMAXY - sh);
+		sx = random_(0, DMAXX - sw);
+		sy = random_(0, DMAXY - sh);
 		abort = FALSE;
 		found = 0;
 
@@ -813,7 +817,7 @@ static void DRLG_L1Floor()
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
 			if (L5dflags[i][j] == 0 && dungeon[i][j] == 13) {
-				rv = random(0, 3);
+				rv = random_(0, 3);
 
 				if (rv == 1)
 					dungeon[i][j] = 162;
@@ -852,7 +856,7 @@ static void DRLG_L1Pass3()
 		mov		v4, eax
 	}
 #else
-	v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+	v1 = *((WORD *)&pMegaTiles[lv * 8] + 0) + 1;
 	v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
 	v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
 	v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
@@ -895,7 +899,7 @@ static void DRLG_L1Pass3()
 				mov		v4, eax
 			}
 #else
-			v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+			v1 = *((WORD *)&pMegaTiles[lv * 8] + 0) + 1;
 			v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
 			v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
 			v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
@@ -912,24 +916,24 @@ static void DRLG_L1Pass3()
 
 static void DRLG_LoadL1SP()
 {
-	setloadflag = FALSE;
+	L5setloadflag = FALSE;
 	if (QuestStatus(QTYPE_BUTCH)) {
-		pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", NULL);
-		setloadflag = TRUE;
+		L5pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", NULL);
+		L5setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_KING) && gbMaxPlayers == 1) {
-		pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", NULL);
-		setloadflag = TRUE;
+		L5pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", NULL);
+		L5setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_BOL)) {
-		pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", NULL);
-		setloadflag = TRUE;
+		L5pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", NULL);
+		L5setloadflag = TRUE;
 	}
 }
 
 static void DRLG_FreeL1SP()
 {
-	MemFreeDbg(pSetPiece);
+	MemFreeDbg(L5pSetPiece);
 }
 
 void DRLG_Init_Globals()
@@ -1156,14 +1160,14 @@ static void L5roomGen(int x, int y, int w, int h, int dir)
 	int width, height, rx, ry, ry2;
 	int cw, ch, cx1, cy1, cx2;
 
-	dirProb = random(0, 4);
+	dirProb = random_(0, 4);
 
 	switch (dir == 1 ? dirProb != 0 : dirProb == 0) {
 	case FALSE:
 		num = 0;
 		do {
-			cw = (random(0, 5) + 2) & 0xFFFFFFFE;
-			ch = (random(0, 5) + 2) & 0xFFFFFFFE;
+			cw = (random_(0, 5) + 2) & 0xFFFFFFFE;
+			ch = (random_(0, 5) + 2) & 0xFFFFFFFE;
 			cy1 = h / 2 + y - ch / 2;
 			cx1 = x - cw;
 			ran = L5checkRoom(cx1 - 1, cy1 - 1, ch + 2, cw + 1); /// BUGFIX: swap args 3 and 4 ("ch+2" and "cw+1")
@@ -1184,8 +1188,8 @@ static void L5roomGen(int x, int y, int w, int h, int dir)
 	case TRUE:
 		num = 0;
 		do {
-			width = (random(0, 5) + 2) & 0xFFFFFFFE;
-			height = (random(0, 5) + 2) & 0xFFFFFFFE;
+			width = (random_(0, 5) + 2) & 0xFFFFFFFE;
+			height = (random_(0, 5) + 2) & 0xFFFFFFFE;
 			rx = w / 2 + x - width / 2;
 			ry = y - height;
 			ran = L5checkRoom(rx - 1, ry - 1, width + 2, height + 1);
@@ -1211,13 +1215,13 @@ static void L5firstRoom()
 	int ys, ye, y;
 	int xs, xe, x;
 
-	if (random(0, 2) == 0) {
+	if (random_(0, 2) == 0) {
 		ys = 1;
 		ye = DMAXY - 1;
 
-		VR1 = random(0, 2);
-		VR2 = random(0, 2);
-		VR3 = random(0, 2);
+		VR1 = random_(0, 2);
+		VR2 = random_(0, 2);
+		VR3 = random_(0, 2);
 
 		if (VR1 + VR3 <= 1)
 			VR2 = 1;
@@ -1256,9 +1260,9 @@ static void L5firstRoom()
 		xs = 1;
 		xe = DMAXX - 1;
 
-		HR1 = random(0, 2);
-		HR2 = random(0, 2);
-		HR3 = random(0, 2);
+		HR1 = random_(0, 2);
+		HR2 = random_(0, 2);
+		HR3 = random_(0, 2);
 
 		if (HR1 + HR3 <= 1)
 			HR2 = 1;
@@ -1409,7 +1413,7 @@ static void L5HorizWall(int i, int j, char p, int dx)
 	int xx;
 	char wt, dt;
 
-	switch (random(0, 4)) {
+	switch (random_(0, 4)) {
 	case 0:
 	case 1:
 		dt = 2;
@@ -1430,7 +1434,7 @@ static void L5HorizWall(int i, int j, char p, int dx)
 		break;
 	}
 
-	if (random(0, 6) == 5)
+	if (random_(0, 6) == 5)
 		wt = 12;
 	else
 		wt = 26;
@@ -1443,7 +1447,7 @@ static void L5HorizWall(int i, int j, char p, int dx)
 		dungeon[i + xx][j] = dt;
 	}
 
-	xx = random(0, dx - 1) + 1;
+	xx = random_(0, dx - 1) + 1;
 
 	if (wt == 12) {
 		dungeon[i + xx][j] = wt;
@@ -1458,7 +1462,7 @@ static void L5VertWall(int i, int j, char p, int dy)
 	int yy;
 	char wt, dt;
 
-	switch (random(0, 4)) {
+	switch (random_(0, 4)) {
 	case 0:
 	case 1:
 		dt = 1;
@@ -1479,7 +1483,7 @@ static void L5VertWall(int i, int j, char p, int dy)
 		break;
 	}
 
-	if (random(0, 6) == 5)
+	if (random_(0, 6) == 5)
 		wt = 11;
 	else
 		wt = 25;
@@ -1492,7 +1496,7 @@ static void L5VertWall(int i, int j, char p, int dy)
 		dungeon[i][j + yy] = dt;
 	}
 
-	yy = random(0, dy - 1) + 1;
+	yy = random_(0, dy - 1) + 1;
 
 	if (wt == 11) {
 		dungeon[i][j + yy] = wt;
@@ -1509,32 +1513,32 @@ static void L5AddWall()
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
 			if (!L5dflags[i][j]) {
-				if (dungeon[i][j] == 3 && random(0, 100) < 100) {
+				if (dungeon[i][j] == 3 && random_(0, 100) < 100) {
 					x = L5HWallOk(i, j);
 					if (x != -1)
 						L5HorizWall(i, j, 2, x);
 				}
-				if (dungeon[i][j] == 3 && random(0, 100) < 100) {
+				if (dungeon[i][j] == 3 && random_(0, 100) < 100) {
 					y = L5VWallOk(i, j);
 					if (y != -1)
 						L5VertWall(i, j, 1, y);
 				}
-				if (dungeon[i][j] == 6 && random(0, 100) < 100) {
+				if (dungeon[i][j] == 6 && random_(0, 100) < 100) {
 					x = L5HWallOk(i, j);
 					if (x != -1)
 						L5HorizWall(i, j, 4, x);
 				}
-				if (dungeon[i][j] == 7 && random(0, 100) < 100) {
+				if (dungeon[i][j] == 7 && random_(0, 100) < 100) {
 					y = L5VWallOk(i, j);
 					if (y != -1)
 						L5VertWall(i, j, 4, y);
 				}
-				if (dungeon[i][j] == 2 && random(0, 100) < 100) {
+				if (dungeon[i][j] == 2 && random_(0, 100) < 100) {
 					x = L5HWallOk(i, j);
 					if (x != -1)
 						L5HorizWall(i, j, 2, x);
 				}
-				if (dungeon[i][j] == 1 && random(0, 100) < 100) {
+				if (dungeon[i][j] == 1 && random_(0, 100) < 100) {
 					y = L5VWallOk(i, j);
 					if (y != -1)
 						L5VertWall(i, j, 1, y);
@@ -1622,6 +1626,9 @@ static void DRLG_L5GHall(int x1, int y1, int x2, int y2)
 static void L5tileFix()
 {
 	int i, j;
+
+	// BUGFIX: Bounds checks are required in all loop bodies.
+	// See https://github.com/diasurgical/devilutionX/pull/401
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -1768,7 +1775,7 @@ void drlg_l1_crypt_rndset(const BYTE *miniset, int rndper)
 					found = FALSE;
 				}
 			}
-			if (found == TRUE && random(0, 100) < rndper) {
+			if (found == TRUE && random_(0, 100) < rndper) {
 				for (yy = 0; yy < sh; yy++) {
 					for (xx = 0; xx < sw; xx++) {
 						if (miniset[kk] != 0) {
@@ -1789,11 +1796,11 @@ static void DRLG_L5Subs()
 
 	for (y = 0; y < DMAXY; y++) {
 		for (x = 0; x < DMAXX; x++) {
-			if (!random(0, 4)) {
+			if (!random_(0, 4)) {
 				BYTE c = L5BTYPES[dungeon[x][y]];
 
 				if (c && !L5dflags[x][y]) {
-					rv = random(0, 16);
+					rv = random_(0, 16);
 					i = -1;
 
 					while (rv >= 0) {
@@ -1803,12 +1810,14 @@ static void DRLG_L5Subs()
 							rv--;
 					}
 
+					// BUGFIX: Add `&& y > 0` to the if statement.
 					if (i == 89) {
 						if (L5BTYPES[dungeon[x][y - 1]] != 79 || L5dflags[x][y - 1])
 							i = 79;
 						else
 							dungeon[x][y - 1] = 90;
 					}
+					// BUGFIX: Add `&& x + 1 < DMAXX` to the if statement.
 					if (i == 91) {
 						if (L5BTYPES[dungeon[x + 1][y]] != 80 || L5dflags[x + 1][y])
 							i = 80;
@@ -1827,15 +1836,15 @@ static void DRLG_L5SetRoom(int rx1, int ry1)
 	int rw, rh, i, j;
 	BYTE *sp;
 
-	rw = *pSetPiece;
-	rh = *(pSetPiece + 2);
+	rw = *L5pSetPiece;
+	rh = *(L5pSetPiece + 2);
 
 	setpc_x = rx1;
 	setpc_y = ry1;
 	setpc_w = rw;
 	setpc_h = rh;
 
-	sp = pSetPiece + 4;
+	sp = L5pSetPiece + 4;
 
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
@@ -1903,20 +1912,20 @@ static void L5FillChambers()
 	if (currlevel == 24) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
-			if (!VR1 && VR2 && VR3 && random(0, 2))
+			if (!VR1 && VR2 && VR3 && random_(0, 2))
 				c = 2;
-			if (VR1 && VR2 && !VR3 && random(0, 2))
+			if (VR1 && VR2 && !VR3 && random_(0, 2))
 				c = 0;
 
 			if (VR1 && !VR2 && VR3) {
-				if (random(0, 2))
+				if (random_(0, 2))
 					c = 0;
 				else
 					c = 2;
 			}
 
 			if (VR1 && VR2 && VR3)
-				c = random(0, 3);
+				c = random_(0, 3);
 
 			switch (c) {
 			case 0:
@@ -1931,20 +1940,20 @@ static void L5FillChambers()
 			}
 		} else {
 			c = 1;
-			if (!HR1 && HR2 && HR3 && random(0, 2))
+			if (!HR1 && HR2 && HR3 && random_(0, 2))
 				c = 2;
-			if (HR1 && HR2 && !HR3 && random(0, 2))
+			if (HR1 && HR2 && !HR3 && random_(0, 2))
 				c = 0;
 
 			if (HR1 && !HR2 && HR3) {
-				if (random(0, 2))
+				if (random_(0, 2))
 					c = 0;
 				else
 					c = 2;
 			}
 
 			if (HR1 && HR2 && HR3)
-				c = random(0, 3);
+				c = random_(0, 3);
 
 			switch (c) {
 			case 0:
@@ -1962,20 +1971,20 @@ static void L5FillChambers()
 	if (currlevel == 21) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
-			if (!VR1 && VR2 && VR3 && random(0, 2))
+			if (!VR1 && VR2 && VR3 && random_(0, 2))
 				c = 2;
-			if (VR1 && VR2 && !VR3 && random(0, 2))
+			if (VR1 && VR2 && !VR3 && random_(0, 2))
 				c = 0;
 
 			if (VR1 && !VR2 && VR3) {
-				if (random(0, 2))
+				if (random_(0, 2))
 					c = 0;
 				else
 					c = 2;
 			}
 
 			if (VR1 && VR2 && VR3)
-				c = random(0, 3);
+				c = random_(0, 3);
 
 			switch (c) {
 			case 0:
@@ -1990,20 +1999,20 @@ static void L5FillChambers()
 			}
 		} else {
 			c = 1;
-			if (!HR1 && HR2 && HR3 && random(0, 2))
+			if (!HR1 && HR2 && HR3 && random_(0, 2))
 				c = 2;
-			if (HR1 && HR2 && !HR3 && random(0, 2))
+			if (HR1 && HR2 && !HR3 && random_(0, 2))
 				c = 0;
 
 			if (HR1 && !HR2 && HR3) {
-				if (random(0, 2))
+				if (random_(0, 2))
 					c = 0;
 				else
 					c = 2;
 			}
 
 			if (HR1 && HR2 && HR3)
-				c = random(0, 3);
+				c = random_(0, 3);
 
 			switch (c) {
 			case 0:
@@ -2019,23 +2028,23 @@ static void L5FillChambers()
 		}
 	}
 #endif
-	if (setloadflag) {
+	if (L5setloadflag) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
-			if (!VR1 && VR2 && VR3 && random(0, 2))
+			if (!VR1 && VR2 && VR3 && random_(0, 2))
 				c = 2;
-			if (VR1 && VR2 && !VR3 && random(0, 2))
+			if (VR1 && VR2 && !VR3 && random_(0, 2))
 				c = 0;
 
 			if (VR1 && !VR2 && VR3) {
-				if (random(0, 2))
+				if (random_(0, 2))
 					c = 0;
 				else
 					c = 2;
 			}
 
 			if (VR1 && VR2 && VR3)
-				c = random(0, 3);
+				c = random_(0, 3);
 
 			switch (c) {
 			case 0:
@@ -2050,20 +2059,20 @@ static void L5FillChambers()
 			}
 		} else {
 			c = 1;
-			if (!HR1 && HR2 && HR3 && random(0, 2))
+			if (!HR1 && HR2 && HR3 && random_(0, 2))
 				c = 2;
-			if (HR1 && HR2 && !HR3 && random(0, 2))
+			if (HR1 && HR2 && !HR3 && random_(0, 2))
 				c = 0;
 
 			if (HR1 && !HR2 && HR3) {
-				if (random(0, 2))
+				if (random_(0, 2))
 					c = 0;
 				else
 					c = 2;
 			}
 
 			if (HR1 && HR2 && HR3)
-				c = random(0, 3);
+				c = random_(0, 3);
 
 			switch (c) {
 			case 0:
@@ -2214,10 +2223,12 @@ static void DRLG_L5TransFix()
 		xx = 16;
 
 		for (i = 0; i < DMAXX; i++) {
+			// BUGFIX: Should check for `j > 0` first.
 			if (dungeon[i][j] == 23 && dungeon[i][j - 1] == 18) {
 				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
+			// BUGFIX: Should check for `i + 1 < DMAXY` first.
 			if (dungeon[i][j] == 24 && dungeon[i + 1][j] == 19) {
 				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
 				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];

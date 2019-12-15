@@ -46,7 +46,7 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg) {
-	case WM_KEYFIRST:
+	case WM_KEYDOWN:
 	case WM_CHAR:
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:

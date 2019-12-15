@@ -11,7 +11,7 @@ int WaterDone;
 int ReturnLvlY;
 int ReturnLvlX;
 int ReturnLvlT;
-int ALLQUESTS;
+int ALLQUESTS; /** current frame # for the pentagram selector */
 int ReturnLvl;
 
 QuestData questlist[MAXQUESTS] = {
@@ -112,15 +112,15 @@ void InitQuests()
 
 	if (gbMaxPlayers == 1) {
 		SetRndSeed(glSeedTbl[15]);
-		if (random(0, 2))
+		if (random_(0, 2))
 			quests[QTYPE_PW]._qactive = 0;
 		else
 			quests[QTYPE_KING]._qactive = 0;
 
-		quests[QuestGroup1[random(0, sizeof(QuestGroup1) / sizeof(int))]]._qactive = 0;
-		quests[QuestGroup2[random(0, sizeof(QuestGroup2) / sizeof(int))]]._qactive = 0;
-		quests[QuestGroup3[random(0, sizeof(QuestGroup3) / sizeof(int))]]._qactive = 0;
-		quests[QuestGroup4[random(0, sizeof(QuestGroup4) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup1[random_(0, sizeof(QuestGroup1) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup2[random_(0, sizeof(QuestGroup2) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup3[random_(0, sizeof(QuestGroup3) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup4[random_(0, sizeof(QuestGroup4) / sizeof(int))]]._qactive = 0;
 	}
 #ifdef _DEBUG
 	if (questdebug != -1)
@@ -351,12 +351,12 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		sfxdelay = 30;
 		quests[QTYPE_MOD]._qactive = 2;
 
-		for (j = 0; j < 112; j++) {
-			for (i = 0; i < 112; i++) {
+		for (j = 0; j < MAXDUNY; j++) {
+			for (i = 0; i < MAXDUNX; i++) {
 				if (dPiece[i][j] == 370) {
 					trigs[numtrigs]._tx = i;
 					trigs[numtrigs]._ty = j;
-					trigs[numtrigs]._tmsg = 1026;
+					trigs[numtrigs]._tmsg = WM_DIABNEXTLVL;
 					numtrigs++;
 				}
 			}

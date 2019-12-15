@@ -309,13 +309,15 @@ void sound_file_cleanup(TSnd *sound_file)
 
 void snd_init(HWND hWnd)
 {
+	int error_code;
 	sound_load_volume("Sound Volume", &sglSoundVolume);
 	gbSoundOn = sglSoundVolume > VOLUME_MIN;
 
 	sound_load_volume("Music Volume", &sglMusicVolume);
 	gbMusicOn = sglMusicVolume > VOLUME_MIN;
 
-	if (sound_DirectSoundCreate(NULL, &sglpDS, NULL) != DS_OK)
+	error_code = sound_DirectSoundCreate(NULL, &sglpDS, NULL);
+	if (error_code != DS_OK)
 		sglpDS = NULL;
 
 #ifdef __cplusplus
@@ -406,9 +408,9 @@ HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pU
 
 	if (hDsound_dll == NULL) {
 		hDsound_dll = LoadLibrary("dsound.dll");
-		if (hDsound_dll == NULL) {
-			ErrDlg(IDD_DIALOG5, GetLastError(), "C:\\Src\\Diablo\\Source\\SOUND.CPP", 422);
-		}
+	}
+	if (hDsound_dll == NULL) {
+		ErrDlg(IDD_DIALOG5, GetLastError(), "C:\\Src\\Diablo\\Source\\SOUND.CPP", 422);
 	}
 
 	DirectSoundCreate = (HRESULT(WINAPI *)(LPGUID, LPDIRECTSOUND *, LPUNKNOWN))GetProcAddress(hDsound_dll, "DirectSoundCreate");

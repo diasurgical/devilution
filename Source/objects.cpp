@@ -143,12 +143,12 @@ void InitRndLocObj(int min, int max, int objtype)
 {
 	int i, xp, yp, numobjs;
 
-	numobjs = random(139, max - min) + min;
+	numobjs = random_(139, max - min) + min;
 
 	for (i = 0; i < numobjs; i++) {
 		while (1) {
-			xp = random(139, 80) + 16;
-			yp = random(139, 80) + 16;
+			xp = random_(139, 80) + 16;
+			yp = random_(139, 80) + 16;
 			if (RndLocOk(xp - 1, yp - 1)
 			    && RndLocOk(xp, yp - 1)
 			    && RndLocOk(xp + 1, yp - 1)
@@ -169,11 +169,11 @@ void InitRndLocBigObj(int min, int max, int objtype)
 {
 	int i, xp, yp, numobjs;
 
-	numobjs = random(140, max - min) + min;
+	numobjs = random_(140, max - min) + min;
 	for (i = 0; i < numobjs; i++) {
 		while (1) {
-			xp = random(140, 80) + 16;
-			yp = random(140, 80) + 16;
+			xp = random_(140, 80) + 16;
+			yp = random_(140, 80) + 16;
 			if (RndLocOk(xp - 1, yp - 2)
 			    && RndLocOk(xp, yp - 2)
 			    && RndLocOk(xp + 1, yp - 2)
@@ -198,13 +198,13 @@ void InitRndLocObj5x5(int min, int max, int objtype)
 	BOOL exit;
 	int xp, yp, numobjs, i, k, m, n;
 
-	numobjs = min + random(139, max - min);
+	numobjs = min + random_(139, max - min);
 	for (i = 0; i < numobjs; i++) {
 		k = 0;
 		for (;;) {
 			exit = TRUE;
-			xp = random(139, 80) + 16;
-			yp = random(139, 80) + 16;
+			xp = random_(139, 80) + 16;
+			yp = random_(139, 80) + 16;
 			for (n = -2; n <= 2; n++) {
 				for (m = -2; m <= 2; m++) {
 					if (!RndLocOk(xp + m, yp + n))
@@ -301,8 +301,8 @@ void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, in
 	k = 0;
 	for (;;) {
 		exit = TRUE;
-		xp = random(139, 80) + 16;
-		yp = random(139, 80) + 16;
+		xp = random_(139, 80) + 16;
+		yp = random_(139, 80) + 16;
 		for (n = -2; n <= 2; n++) {
 			for (m = -2; m <= 2; m++) {
 				if (!RndLocOk(xp + m, yp + n))
@@ -344,24 +344,24 @@ void InitRndBarrels()
 	int c; // number of barrels in current group
 	int i;
 
-	numobjs = random(143, 5) + 3;
+	numobjs = random_(143, 5) + 3;
 	for (i = 0; i < numobjs; i++) {
 		do {
-			xp = random(143, 80) + 16;
-			yp = random(143, 80) + 16;
+			xp = random_(143, 80) + 16;
+			yp = random_(143, 80) + 16;
 		} while (!RndLocOk(xp, yp));
-		o = (random(143, 4) != 0) ? OBJ_BARREL : OBJ_BARRELEX;
+		o = (random_(143, 4) != 0) ? OBJ_BARREL : OBJ_BARRELEX;
 		AddObject(o, xp, yp);
 		found = TRUE;
 		p = 0;
 		c = 1;
-		while (random(143, p) == 0 && found) {
+		while (random_(143, p) == 0 && found) {
 			t = 0;
 			found = FALSE;
 			while (TRUE) {
 				if (t >= 3)
 					break;
-				dir = random(143, 8);
+				dir = random_(143, 8);
 				xp += bxadd[dir];
 				yp += byadd[dir];
 				found = RndLocOk(xp, yp);
@@ -370,7 +370,7 @@ void InitRndBarrels()
 					break;
 			}
 			if (found) {
-				o = (random(143, 5) != 0) ? OBJ_BARREL : OBJ_BARRELEX;
+				o = (random_(143, 5) != 0) ? OBJ_BARREL : OBJ_BARRELEX;
 				AddObject(o, xp, yp);
 				c++;
 			}
@@ -461,16 +461,16 @@ void AddL2Torches()
 				continue;
 
 			pn = dPiece[i][j];
-			if (pn == 1 && random(145, 3) == 0)
+			if (pn == 1 && random_(145, 3) == 0)
 				AddObject(OBJ_TORCHL2, i, j);
 
-			if (pn == 5 && random(145, 3) == 0)
+			if (pn == 5 && random_(145, 3) == 0)
 				AddObject(OBJ_TORCHR2, i, j);
 
-			if (pn == 37 && random(145, 10) == 0 && dObject[i - 1][j] == 0)
+			if (pn == 37 && random_(145, 10) == 0 && dObject[i - 1][j] == 0)
 				AddObject(OBJ_TORCHL, i - 1, j);
 
-			if (pn == 41 && random(145, 10) == 0 && dObject[i][j - 1] == 0)
+			if (pn == 41 && random_(145, 10) == 0 && dObject[i][j - 1] == 0)
 				AddObject(OBJ_TORCHR, i, j - 1);
 		}
 	}
@@ -504,14 +504,14 @@ void AddObjTraps()
 		rndv = 25;
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			if (dObject[i][j] <= 0 || random(144, 100) >= rndv)
+			if (dObject[i][j] <= 0 || random_(144, 100) >= rndv)
 				continue;
 
 			oi = dObject[i][j] - 1;
 			if (!AllObjects[object[oi]._otype].oTrapFlag)
 				continue;
 
-			if (random(144, 2) == 0) {
+			if (random_(144, 2) == 0) {
 				xp = i - 1;
 				while (!nSolidTable[dPiece[xp][j]])
 					xp--;
@@ -551,16 +551,16 @@ void AddChestTraps()
 		for (i = 0; i < MAXDUNX; i++) {
 			if (dObject[i][j] > 0) {
 				oi = dObject[i][j] - 1;
-				if (object[oi]._otype >= OBJ_CHEST1 && object[oi]._otype <= OBJ_CHEST3 && !object[oi]._oTrapFlag && random(0, 100) < 10) {
+				if (object[oi]._otype >= OBJ_CHEST1 && object[oi]._otype <= OBJ_CHEST3 && !object[oi]._oTrapFlag && random_(0, 100) < 10) {
 					object[oi]._otype += OBJ_BOOKCASER;
 					object[oi]._oTrapFlag = TRUE;
 					if (leveltype == DTYPE_CATACOMBS) {
-						object[oi]._oVar4 = random(0, 2);
+						object[oi]._oVar4 = random_(0, 2);
 					} else {
 #ifdef HELLFIRE
-						object[oi]._oVar4 = random(0, 6);
+						object[oi]._oVar4 = random_(0, 6);
 #else
-						object[oi]._oVar4 = random(0, 3);
+						object[oi]._oVar4 = random_(0, 3);
 #endif
 					}
 				}
@@ -652,8 +652,8 @@ void AddStoryBooks()
 	cnt = 0;
 	while (TRUE) {
 		done = TRUE;
-		xp = random(139, 80) + 16;
-		yp = random(139, 80) + 16;
+		xp = random_(139, 80) + 16;
+		yp = random_(139, 80) + 16;
 		for (yy = -2; yy <= 2; yy++) {
 			for (xx = -3; xx <= 3; xx++) {
 				if (!RndLocOk(xx + xp, yy + yp))
@@ -685,12 +685,12 @@ void AddHookedBodies(int freq)
 			ii = 16 + i * 2;
 			if (dungeon[i][j] != 1 && dungeon[i][j] != 2)
 				continue;
-			if (random(0, freq) != 0)
+			if (random_(0, freq) != 0)
 				continue;
 			if (!SkipThemeRoom(i, j))
 				continue;
 			if (dungeon[i][j] == 1 && dungeon[i + 1][j] == 6) {
-				switch (random(0, 3)) {
+				switch (random_(0, 3)) {
 				case 0:
 					AddObject(OBJ_TORTURE1, ii + 1, jj);
 					break;
@@ -704,7 +704,7 @@ void AddHookedBodies(int freq)
 				continue;
 			}
 			if (dungeon[i][j] == 2 && dungeon[i][j + 1] == 6) {
-				switch (random(0, 2)) {
+				switch (random_(0, 2)) {
 				case 0:
 					AddObject(OBJ_TORTURE3, ii, jj);
 					break;
@@ -740,8 +740,8 @@ void AddLazStand()
 	cnt = 0;
 	while (TRUE) {
 		found = 1;
-		xp = random(139, 80) + 16;
-		yp = random(139, 80) + 16;
+		xp = random_(139, 80) + 16;
+		yp = random_(139, 80) + 16;
 		for (yy = -3; yy <= 3; yy++) {
 			for (xx = -2; xx <= 3; xx++) {
 				if (!RndLocOk(xp + xx, yp + yy))
@@ -963,9 +963,9 @@ void SetupObject(int i, int x, int y, int ot)
 	object[i]._oAnimFlag = AllObjects[ot].oAnimFlag;
 	if (AllObjects[ot].oAnimFlag) {
 		object[i]._oAnimDelay = AllObjects[ot].oAnimDelay;
-		object[i]._oAnimCnt = random(146, AllObjects[ot].oAnimDelay);
+		object[i]._oAnimCnt = random_(146, AllObjects[ot].oAnimDelay);
 		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
-		object[i]._oAnimFrame = random(146, AllObjects[ot].oAnimLen - 1) + 1;
+		object[i]._oAnimFrame = random_(146, AllObjects[ot].oAnimLen - 1) + 1;
 	} else {
 		object[i]._oAnimDelay = 1000;
 		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
@@ -1000,18 +1000,14 @@ void SetBookMsg(int i, int msg)
 
 void AddL1Door(int i, int x, int y, int ot)
 {
-	int p1, p2;
-
 	object[i]._oDoorFlag = TRUE;
 	if (ot == 1) {
-		p1 = dPiece[x][y];
-		p2 = dPiece[x][y - 1];
+		object[i]._oVar1 = dPiece[x][y];
+		object[i]._oVar2 = dPiece[x][y - 1];
 	} else {
-		p1 = dPiece[x][y];
-		p2 = dPiece[x - 1][y];
+		object[i]._oVar1 = dPiece[x][y];
+		object[i]._oVar2 = dPiece[x - 1][y];
 	}
-	object[i]._oVar1 = p1;
-	object[i]._oVar2 = p2;
 	object[i]._oVar4 = 0;
 }
 
@@ -1026,7 +1022,7 @@ void AddSCambBook(int i)
 
 void AddChest(int i, int t)
 {
-	if (!random(147, 2))
+	if (!random_(147, 2))
 		object[i]._oAnimFrame += 3;
 	object[i]._oRndSeed = GetRndSeed();
 	switch (t) {
@@ -1036,7 +1032,7 @@ void AddChest(int i, int t)
 			object[i]._oVar1 = 1;
 			break;
 		}
-		object[i]._oVar1 = random(147, 2);
+		object[i]._oVar1 = random_(147, 2);
 		break;
 	case OBJ_TCHEST2:
 	case OBJ_CHEST2:
@@ -1044,7 +1040,7 @@ void AddChest(int i, int t)
 			object[i]._oVar1 = 2;
 			break;
 		}
-		object[i]._oVar1 = random(147, 3);
+		object[i]._oVar1 = random_(147, 3);
 		break;
 	case OBJ_TCHEST3:
 	case OBJ_CHEST3:
@@ -1052,10 +1048,10 @@ void AddChest(int i, int t)
 			object[i]._oVar1 = 3;
 			break;
 		}
-		object[i]._oVar1 = random(147, 4);
+		object[i]._oVar1 = random_(147, 4);
 		break;
 	}
-	object[i]._oVar2 = random(147, 8);
+	object[i]._oVar2 = random_(147, 8);
 }
 
 void AddL2Door(int i, int x, int y, int ot)
@@ -1081,7 +1077,7 @@ void AddL3Door(int i, int x, int y, int ot)
 void AddSarc(int i)
 {
 	dObject[object[i]._ox][object[i]._oy - 1] = -(i + 1);
-	object[i]._oVar1 = random(153, 10);
+	object[i]._oVar1 = random_(153, 10);
 	object[i]._oRndSeed = GetRndSeed();
 	if (object[i]._oVar1 >= 8)
 		object[i]._oVar2 = PreSpawnSkeleton();
@@ -1114,7 +1110,7 @@ void AddTrap(int i, int ot)
 		mt = (currlevel - 8) / 3 + 1;
 	}
 #endif
-	mt = random(148, mt);
+	mt = random_(148, mt);
 	if (mt == 0)
 		object[i]._oVar3 = 0; // arrow
 	if (mt == 1)
@@ -1138,8 +1134,8 @@ void AddBarrel(int i, int t)
 {
 	object[i]._oVar1 = 0;
 	object[i]._oRndSeed = GetRndSeed();
-	object[i]._oVar2 = random(149, 10);
-	object[i]._oVar3 = random(149, 3);
+	object[i]._oVar2 = random_(149, 10);
+	object[i]._oVar3 = random_(149, 3);
 
 	if (object[i]._oVar2 >= 8)
 		object[i]._oVar4 = PreSpawnSkeleton();
@@ -1167,14 +1163,14 @@ void AddShrine(int i)
 		}
 	}
 	while (1) {
-		val = random(150, NUM_SHRINETYPE);
+		val = random_(150, NUM_SHRINETYPE);
 		if (slist[val]) {
 			break;
 		}
 	}
 
 	object[i]._oVar1 = val;
-	if (random(150, 2)) {
+	if (random_(150, 2)) {
 		object[i]._oAnimFrame = 12;
 		object[i]._oAnimLen = 22;
 	}
@@ -1248,7 +1244,7 @@ void AddTearFountain(int i)
 void AddDecap(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
-	object[i]._oAnimFrame = random(151, 8) + 1;
+	object[i]._oAnimFrame = random_(151, 8) + 1;
 	object[i]._oPreFlag = TRUE;
 }
 
@@ -1263,8 +1259,8 @@ void AddMagicCircle(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
 	object[i]._oPreFlag = TRUE;
-	object[i]._oVar5 = 1;
 	object[i]._oVar6 = 0;
+	object[i]._oVar5 = 1;
 }
 
 void AddBrnCross(int i)
@@ -1285,7 +1281,7 @@ void AddStoryBook(int i)
 	int bookframe;
 
 	SetRndSeed(glSeedTbl[16]);
-	bookframe = random(0, 3);
+	bookframe = random_(0, 3);
 
 	object[i]._oVar1 = bookframe;
 	if (currlevel == 4)
@@ -1311,11 +1307,11 @@ void AddWeaponRack(int i)
 void AddTorturedBody(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
-	object[i]._oAnimFrame = random(0, 4) + 1;
+	object[i]._oAnimFrame = random_(0, 4) + 1;
 	object[i]._oPreFlag = TRUE;
 }
 
-void GetRndObjLoc(int randarea, int *xx, int *yy)
+void GetRndObjLoc(int randarea, int &xx, int &yy)
 {
 	DIABOOL failed;
 	int i, j, tries;
@@ -1328,12 +1324,12 @@ void GetRndObjLoc(int randarea, int *xx, int *yy)
 		tries++;
 		if (tries > 1000 && randarea > 1)
 			randarea--;
-		*xx = random(0, MAXDUNX);
-		*yy = random(0, MAXDUNY);
+		xx = random_(0, MAXDUNX);
+		yy = random_(0, MAXDUNY);
 		failed = FALSE;
 		for (i = 0; i < randarea && !failed; i++) {
 			for (j = 0; j < randarea && !failed; j++) {
-				failed = !RndLocOk(i + *xx, j + *yy);
+				failed = !RndLocOk(i + xx, j + yy);
 			}
 		}
 		if (!failed)
@@ -1348,7 +1344,7 @@ void AddMushPatch()
 
 	if (nobjects < MAXOBJECTS) {
 		i = objectavail[0];
-		GetRndObjLoc(5, &x, &y);
+		GetRndObjLoc(5, x, y);
 		dObject[x + 1][y + 1] = -1 - i;
 		dObject[x + 2][y + 1] = -1 - i;
 		dObject[x + 1][y + 2] = -1 - i;
@@ -1360,7 +1356,7 @@ void AddSlainHero()
 {
 	int x, y;
 
-	GetRndObjLoc(5, &x, &y);
+	GetRndObjLoc(5, x, y);
 	AddObject(OBJ_SLAINHERO, x + 2, y + 2);
 }
 
@@ -1682,7 +1678,7 @@ void Obj_FlameTrap(int i)
 void Obj_Trap(int i)
 {
 	int oti, dir;
-	BOOL otrig;
+	BOOLEAN otrig;
 	int sx, sy, dx, dy, x, y;
 
 	otrig = FALSE;
@@ -2719,7 +2715,7 @@ void OperateMushPatch(int pnum, int i)
 			object[i]._oSelFlag = 0;
 			object[i]._oAnimFrame++;
 			if (!deltaload) {
-				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, x, y);
 				SpawnQuestItem(IDI_MUSHROOM, x, y, 0, 0);
 				quests[QTYPE_BLKM]._qvar1 = QS_MUSHSPAWNED;
 			}
@@ -2750,7 +2746,7 @@ void OperateInnSignChest(int pnum, int i)
 			object[i]._oAnimFrame += 2;
 			object[i]._oSelFlag = 0;
 			if (!deltaload) {
-				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, x, y);
 				SpawnQuestItem(IDI_BANNER, x, y, 0, 0);
 			}
 		}
@@ -2877,7 +2873,7 @@ void OperatePedistal(int pnum, int i)
 	int iv;
 
 	if (object[i]._oVar6 != 3) {
-		if (PlrHasItem(pnum, IDI_BLDSTONE, &iv)) {
+		if (PlrHasItem(pnum, IDI_BLDSTONE, iv)) {
 			RemoveInvItem(pnum, iv);
 			object[i]._oAnimFrame++;
 			object[i]._oVar6++;
@@ -2914,7 +2910,7 @@ void TryDisarm(int pnum, int i)
 		SetCursor_(CURSOR_HAND);
 	if (object[i]._oTrapFlag) {
 		trapdisper = 2 * plr[pnum]._pDexterity - 5 * currlevel;
-		if (random(154, 100) <= trapdisper) {
+		if (random_(154, 100) <= trapdisper) {
 			for (j = 0; j < nobjects; j++) {
 				checkflag = FALSE;
 				oi = objectactive[j];
@@ -2987,7 +2983,7 @@ void OperateShrine(int pnum, int i, int sType)
 		ModifyPlrMag(pnum, -1);
 		ModifyPlrDex(pnum, -1);
 		ModifyPlrVit(pnum, -1);
-		switch (random(0, 4)) {
+		switch (random_(0, 4)) {
 		case 0:
 			ModifyPlrStr(pnum, 6);
 			break;
@@ -3035,7 +3031,7 @@ void OperateShrine(int pnum, int i, int sType)
 				}
 				if (cnt == 0)
 					break;
-				r = random(0, 7);
+				r = random_(0, 7);
 				if (plr[pnum].InvBody[r]._itype == -1 || plr[pnum].InvBody[r]._iMaxDur == DUR_INDESTRUCTIBLE || plr[pnum].InvBody[r]._iMaxDur == 0)
 					continue;
 
@@ -3199,7 +3195,7 @@ void OperateShrine(int pnum, int i, int sType)
 				spell <<= 1;
 			}
 			do {
-				r = random(0, 37);
+				r = random_(0, 37);
 			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << r)));
 			if (plr[pnum]._pSplLvl[r] >= 2)
 				plr[pnum]._pSplLvl[r] -= 2;
@@ -3332,11 +3328,11 @@ void OperateShrine(int pnum, int i, int sType)
 		if (pnum != myplr)
 			return;
 		if (2 * currlevel < 7) {
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLMANA, 0, 1);
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLHEAL, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_FULLMANA, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_FULLHEAL, 0, 1);
 		} else {
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
 		}
 		plr[pnum]._pMana = plr[pnum]._pMaxMana;
 		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
@@ -3349,8 +3345,8 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		j = 0;
 		do {
-			xx = random(159, MAXDUNX);
-			yy = random(159, MAXDUNY);
+			xx = random_(159, MAXDUNX);
+			yy = random_(159, MAXDUNY);
 			j++;
 			if (j > MAXDUNX * 112)
 				break;
@@ -3393,7 +3389,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
 			if (!plr[pnum].InvGrid[j]) {
-				r = 5 * leveltype + random(160, 10 * leveltype);
+				r = 5 * leveltype + random_(160, 10 * leveltype);
 				t = plr[pnum]._pNumInv; // check
 				plr[pnum].InvList[t] = golditem;
 				plr[pnum].InvList[t]._iSeed = GetRndSeed();
@@ -3515,7 +3511,7 @@ void OperateShrine(int pnum, int i, int sType)
 			InitDiabloMsg(EMSG_SHRINE_TAINTED1);
 		} else {
 			InitDiabloMsg(EMSG_SHRINE_TAINTED2);
-			r = random(155, 4);
+			r = random_(155, 4);
 
 			if (r != 0)
 				v1 = -1;
@@ -3545,7 +3541,7 @@ void OperateShrine(int pnum, int i, int sType)
 	}
 
 	CalcPlrInv(pnum, TRUE);
-	drawpanflag = 255;
+	force_redraw = 255;
 
 	if (pnum == myplr)
 		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
@@ -3560,10 +3556,10 @@ void OperateSkelBook(int pnum, int i, BOOL sendmsg)
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
-			if (random(161, 5))
-				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 21, sendmsg, 0);
+			if (random_(161, 5))
+				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, 21, sendmsg, 0);
 			else
-				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 24, sendmsg, 0);
+				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, 24, sendmsg, 0);
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
@@ -3579,7 +3575,7 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_BOOK, sendmsg, 0);
+			CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_BOOK, sendmsg, 0);
 			if (QuestStatus(QTYPE_ZHAR)
 			    && monster[MAX_PLRS].mName == UniqMonst[UMT_ZHAR].mName
 			    && monster[MAX_PLRS]._msquelch == UCHAR_MAX
@@ -3610,22 +3606,22 @@ void OperateDecap(int pnum, int i, BOOL sendmsg)
 
 void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 {
-	int uniqueRnd;
+	BOOL uniqueRnd;
 
 	if (object[i]._oSelFlag != 0) {
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
-			uniqueRnd = random(0, 2);
+			uniqueRnd = random_(0, 2);
 			if (currlevel <= 5) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, 1, ITYPE_LARMOR, 0, sendmsg, 0);
+				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_LARMOR, 0, sendmsg, 0);
 			} else if (currlevel >= 6 && currlevel <= 9) {
 				CreateTypeItem(object[i]._ox, object[i]._oy, uniqueRnd, ITYPE_MARMOR, 0, sendmsg, 0);
 			} else if (currlevel >= 10 && currlevel <= 12) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_HARMOR, 0, sendmsg, 0);
+				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_HARMOR, 0, sendmsg, 0);
 			} else if (currlevel >= 13 && currlevel <= 16) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, 1, ITYPE_HARMOR, 0, sendmsg, 0);
+				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, 0, sendmsg, 0);
 			}
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
@@ -3642,7 +3638,7 @@ int FindValidShrine(int i)
 	while (1) {
 		done = FALSE;
 		while (!done) {
-			rv = random(0, 26);
+			rv = random_(0, NUM_SHRINETYPE);
 			if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != 8)
 				done = TRUE;
 		}
@@ -3667,7 +3663,7 @@ void OperateGoatShrine(int pnum, int i, int sType)
 	object[i]._oVar1 = FindValidShrine(i);
 	OperateShrine(pnum, i, sType);
 	object[i]._oAnimDelay = 2;
-	drawpanflag = 255;
+	force_redraw = 255;
 }
 
 void OperateCauldron(int pnum, int i, int sType)
@@ -3677,7 +3673,7 @@ void OperateCauldron(int pnum, int i, int sType)
 	OperateShrine(pnum, i, sType);
 	object[i]._oAnimFlag = 0;
 	object[i]._oAnimFrame = 3;
-	drawpanflag = 255;
+	force_redraw = 255;
 }
 
 BOOL OperateFountains(int pnum, int i)
@@ -3764,7 +3760,7 @@ BOOL OperateFountains(int pnum, int i)
 		if (pnum != myplr)
 			return FALSE;
 		while (!done) {
-			rnd = random(0, 4);
+			rnd = random_(0, 4);
 			if (rnd != prev) {
 				switch (rnd) {
 				case 0:
@@ -3795,7 +3791,7 @@ BOOL OperateFountains(int pnum, int i)
 			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		break;
 	}
-	drawpanflag = 255;
+	force_redraw = 255;
 	return applied;
 }
 
@@ -3807,7 +3803,7 @@ void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 		return;
 	SetRndSeed(object[i]._oRndSeed);
 
-	switch (random(0, 4) + 1) {
+	switch (random_(0, 4) + 1) {
 	case ITYPE_SWORD:
 		weaponType = ITYPE_SWORD;
 		break;
@@ -3828,9 +3824,9 @@ void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 		return;
 
 	if (leveltype > 1)
-		CreateTypeItem(object[i]._ox, object[i]._oy, 1, weaponType, 0, sendmsg, 0);
+		CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, weaponType, 0, sendmsg, 0);
 	else
-		CreateTypeItem(object[i]._ox, object[i]._oy, 0, weaponType, 0, sendmsg, 0);
+		CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, weaponType, 0, sendmsg, 0);
 	if (pnum == myplr)
 		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 }
@@ -3852,7 +3848,7 @@ void OperateLazStand(int pnum, int i)
 	if (object[i]._oSelFlag != 0 && !deltaload && !qtextflag && pnum == myplr) {
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
-		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
+		GetSuperItemLoc(object[i]._ox, object[i]._oy, xx, yy);
 		SpawnQuestItem(IDI_LAZSTAFF, xx, yy, 0, 0);
 	}
 }
@@ -4242,7 +4238,7 @@ void BreakObject(int pnum, int oi)
 
 	if (pnum != -1) {
 		mind = plr[pnum]._pIMinDam;
-		maxd = random(163, plr[pnum]._pIMaxDam - mind + 1);
+		maxd = random_(163, plr[pnum]._pIMaxDam - mind + 1);
 		objdam = maxd + mind;
 		objdam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + objdam * plr[pnum]._pIBonusDam / 100;
 	} else {

@@ -4,7 +4,7 @@
 
 extern BYTE L5dungeon[80][80];
 extern BYTE L5dflags[DMAXX][DMAXY];
-extern BOOL setloadflag;
+extern BOOL L5setloadflag;
 extern int HR1;
 extern int HR2;
 extern int HR3;
@@ -21,7 +21,7 @@ extern int UberDiabloMonsterIndex;
 extern int VR1;
 extern int VR2;
 extern int VR3;
-extern BYTE *pSetPiece;
+extern BYTE *L5pSetPiece;
 
 void DRLG_Init_Globals();
 void LoadL1Dungeon(char *sFileName, int vx, int vy);
@@ -44,8 +44,11 @@ void drlg_l1_crypt_pattern7(int rndper);
 
 /* rdata */
 extern const ShadowStruct SPATS[37];
+
+// BUGFIX: These arrays should contain an additional 0 (207 elements).
 extern const BYTE BSTYPES[206];
 extern const BYTE L5BTYPES[206];
+
 extern const BYTE STAIRSUP[];
 extern const BYTE L5STAIRSUP[];
 extern const BYTE STAIRSDOWN[];

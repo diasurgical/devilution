@@ -85,34 +85,34 @@ void DrawDiabloMsg()
 	int i, len, off, width, sx, sy;
 	BYTE c;
 
-	CelDraw(165, 318, pSTextSlidCels, 1, 12);
-	CelDraw(591, 318, pSTextSlidCels, 4, 12);
-	CelDraw(165, 366, pSTextSlidCels, 2, 12);
-	CelDraw(591, 366, pSTextSlidCels, 3, 12);
+	CelDraw(PANEL_X + 101, DIALOG_Y, pSTextSlidCels, 1, 12);
+	CelDraw(PANEL_X + 527, DIALOG_Y, pSTextSlidCels, 4, 12);
+	CelDraw(PANEL_X + 101, DIALOG_Y + 48, pSTextSlidCels, 2, 12);
+	CelDraw(PANEL_X + 527, DIALOG_Y + 48, pSTextSlidCels, 3, 12);
 
-	sx = 173;
+	sx = PANEL_X + 109;
 	for (i = 0; i < 35; i++) {
-		CelDraw(sx, 318, pSTextSlidCels, 5, 12);
-		CelDraw(sx, 366, pSTextSlidCels, 7, 12);
+		CelDraw(sx, DIALOG_Y, pSTextSlidCels, 5, 12);
+		CelDraw(sx, DIALOG_Y + 48, pSTextSlidCels, 7, 12);
 		sx += 12;
 	}
-	sy = 330;
+	sy = DIALOG_Y + 12;
 	for (i = 0; i < 3; i++) {
-		CelDraw(165, sy, pSTextSlidCels, 6, 12);
-		CelDraw(591, sy, pSTextSlidCels, 8, 12);
+		CelDraw(PANEL_X + 101, sy, pSTextSlidCels, 6, 12);
+		CelDraw(PANEL_X + 527, sy, pSTextSlidCels, 8, 12);
 		sy += 12;
 	}
 
 	/// ASSERT: assert(gpBuffer);
 
-#define TRANS_RECT_X 104
-#define TRANS_RECT_Y 150
+#define TRANS_RECT_X (PANEL_LEFT + 104)
+#define TRANS_RECT_Y (DIALOG_TOP - 8)
 #define TRANS_RECT_WIDTH 432
 #define TRANS_RECT_HEIGHT 54
 #include "asm_trans_rect.inc"
 
 	strcpy(tempstr, MsgStrings[msgflag]);
-	off = 165 + PitchTbl[342];
+	off = PANEL_X + 101 + PitchTbl[DIALOG_Y + 24];
 	len = strlen(tempstr);
 	width = 0;
 

@@ -44,7 +44,7 @@ extern BYTE *pSpellBkCel;
 extern char infostr[MAX_PATH];
 extern int numpanbtns;
 extern BYTE *pStatusPanel;
-extern char panelstr[256];
+extern char panelstr[4][64];
 extern BOOL panelflag;
 extern BYTE SplTransTbl[256];
 extern int initialDropGoldValue;
@@ -65,7 +65,7 @@ void AddPanelString(char *str, BOOL just);
 void ClearPanel();
 void DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
 void InitPanelStr();
-void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r);
+void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy);
 void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h);
 void DrawLifeFlask();
 void UpdateLifeFlask();
@@ -123,7 +123,7 @@ void control_up_down(int v);
 /* rdata */
 extern const BYTE fontframe[128];
 extern const BYTE fontkern[68];
-extern const int lineoffset[25];
+extern const int lineOffsets[5][5];
 extern const BYTE gbFontTransTbl[256];
 
 /* data */
