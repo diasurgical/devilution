@@ -2181,6 +2181,7 @@ size = 0x80
 name = "gamemenu_gamma"
 addr = 0x418C30
 size = 0x2A
+
 [[func]]
 name = "gamemenu_slider_gamma"
 addr = 0x418C5A
