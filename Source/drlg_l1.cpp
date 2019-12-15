@@ -1347,9 +1347,9 @@ static void L5makeDmt()
 	for (j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
 		for (i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
 			val = 8 * L5dungeon[dmtx + 1][dmty + 1]
-			+ 4 * L5dungeon[dmtx][dmty + 1]
-			+ 2 * L5dungeon[dmtx + 1][dmty]
-			+ L5dungeon[dmtx][dmty];
+			    + 4 * L5dungeon[dmtx][dmty + 1]
+			    + 2 * L5dungeon[dmtx + 1][dmty]
+			    + L5dungeon[dmtx][dmty];
 			idx = L5ConvTbl[val];
 			dungeon[i][j] = idx;
 		}

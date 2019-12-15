@@ -4499,7 +4499,6 @@ void MI_Manashield(int i)
 				plr[id]._pMana -= diff;
 				plr[id]._pManaBase -= diff;
 			} else {
-
 #ifdef HELLFIRE
 				plr[id]._pHitPoints += plr[id]._pMana - diff;
 				plr[id]._pHPBase += plr[id]._pMana - diff;

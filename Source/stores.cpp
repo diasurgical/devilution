@@ -1893,8 +1893,8 @@ void SmithBuyItem()
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	if (idx == SMITH_ITEMS-1) {
-		smithitem[SMITH_ITEMS-1]._itype = ITYPE_NONE;
+	if (idx == SMITH_ITEMS - 1) {
+		smithitem[SMITH_ITEMS - 1]._itype = ITYPE_NONE;
 	} else {
 		for (; smithitem[idx + 1]._itype != ITYPE_NONE; idx++) {
 			smithitem[idx] = smithitem[idx + 1];

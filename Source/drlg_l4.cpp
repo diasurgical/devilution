@@ -389,9 +389,9 @@ static void L4makeDmt()
 	for (j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
 		for (i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
 			val = 8 * L4dungeon[dmtx + 1][dmty + 1]
-			+ 4 * L4dungeon[dmtx][dmty + 1]
-			+ 2 * L4dungeon[dmtx + 1][dmty]
-			+ L4dungeon[dmtx][dmty];
+			    + 4 * L4dungeon[dmtx][dmty + 1]
+			    + 2 * L4dungeon[dmtx + 1][dmty]
+			    + L4dungeon[dmtx][dmty];
 			idx = L4ConvTbl[val];
 			dungeon[i][j] = idx;
 		}

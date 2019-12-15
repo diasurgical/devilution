@@ -436,8 +436,8 @@ void DrawInv()
 				cel_transparency_active = 1;
 
 				pBuff = frame_width == INV_SLOT_SIZE_PX
-					? &gpBuffer[SCREENXY(RIGHT_PANEL_X + 197, SCREEN_Y)]
-					: &gpBuffer[SCREENXY(RIGHT_PANEL_X + 183, SCREEN_Y)];
+				    ? &gpBuffer[SCREENXY(RIGHT_PANEL_X + 197, SCREEN_Y)]
+				    : &gpBuffer[SCREENXY(RIGHT_PANEL_X + 183, SCREEN_Y)];
 #ifdef HELLFIRE
 				if (frame <= 179) {
 #endif
