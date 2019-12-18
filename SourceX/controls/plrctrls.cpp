@@ -935,7 +935,13 @@ void PerformSpellAction()
 	if (invflag) {
 		int spl = plr[myplr]._pRSpell;
 		if (pcurs >= CURSOR_FIRSTITEM) {
-			DropItemBeforeTrig();
+			cursmx = plr[myplr].WorldX;
+			cursmy = plr[myplr].WorldY;
+			if (!DropItemBeforeTrig()) {
+				cursmx--; // Try to drop on the other side
+				cursmy++;
+				DropItemBeforeTrig();
+			}
 			return;
 		}
 		if (spl != SPL_IDENTIFY && spl != SPL_REPAIR && spl != SPL_RECHARGE)
