@@ -971,11 +971,29 @@ void PerformSpellAction()
 	CheckPlrSpell();
 }
 
+void CtrlUseInvItem()
+{
+	ItemStruct *Item;
+
+	if (pcursinvitem == -1)
+		return;
+
+	if (pcursinvitem <= INVITEM_INV_LAST)
+		Item = &plr[myplr].InvList[pcursinvitem - INVITEM_INV_FIRST];
+	else
+		Item = &plr[myplr].SpdList[pcursinvitem - INVITEM_BELT_FIRST];
+
+	if ((Item->_iMiscId == IMISC_SCROLLT || Item->_iMiscId == IMISC_SCROLL) && spelldata[Item->_iSpell].sTargeted) {
+		return;
+	}
+
+	UseInvItem(myplr, pcursinvitem);
+}
+
 void PerformSecondaryAction()
 {
 	if (invflag) {
-		if (pcursinvitem != -1)
-			UseInvItem(myplr, pcursinvitem);
+		CtrlUseInvItem();
 		return;
 	}
 
