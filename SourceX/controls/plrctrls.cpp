@@ -930,18 +930,26 @@ void UpdateSpellTarget()
 	cursmy = player._py + kOffsets[player._pdir][1];
 }
 
+/**
+ * @brief Try dropping item in all 9 possible places
+ */
+void TryDropItem()
+{
+	cursmx = plr[myplr].WorldX;
+	cursmy = plr[myplr].WorldY;
+	if (!DropItemBeforeTrig()) {
+		cursmx--; // Try to drop on the other side
+		cursmy++;
+		DropItemBeforeTrig();
+	}
+}
+
 void PerformSpellAction()
 {
 	if (invflag) {
 		int spl = plr[myplr]._pRSpell;
 		if (pcurs >= CURSOR_FIRSTITEM) {
-			cursmx = plr[myplr].WorldX;
-			cursmy = plr[myplr].WorldY;
-			if (!DropItemBeforeTrig()) {
-				cursmx--; // Try to drop on the other side
-				cursmy++;
-				DropItemBeforeTrig();
-			}
+			TryDropItem();
 			return;
 		}
 		if (spl != SPL_IDENTIFY && spl != SPL_REPAIR && spl != SPL_RECHARGE)

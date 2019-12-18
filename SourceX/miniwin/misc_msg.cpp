@@ -319,16 +319,33 @@ void StoreSpellCoords()
 } // namespace
 
 /**
- * @brief Clean the inventory related cursor states.
+ * @brief Try to clean the inventory related cursor states.
+ * @return True if it is safe to close the inventory
  */
-void BlurInventory()
+bool BlurInventory()
 {
-	if (pcurs >= CURSOR_FIRSTITEM) // drop item to allow us to pick up other items
-		DropItemBeforeTrig();
+	if (pcurs >= CURSOR_FIRSTITEM) {
+		TryDropItem();
+		if (pcurs >= CURSOR_FIRSTITEM) {
+			if (plr[myplr]._pClass == PC_WARRIOR) {
+				PlaySFX(PS_WARR16); // "Where would I put this?"
+#ifndef SPAWN
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
+				PlaySFX(PS_ROGUE16);
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
+				PlaySFX(PS_MAGE16);
+#endif
+			}
+			return false;
+		}
+	}
+
 	if (pcurs == CURSOR_REPAIR || pcurs == CURSOR_RECHARGE)
 		SetCursor_(CURSOR_HAND);
 	if (chrflag)
 		FocusOnCharInfo();
+
+	return true;
 }
 
 WINBOOL PeekMessageA(LPMSG lpMsg)
@@ -411,14 +428,15 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 			PerformSpellAction();
 			break;
 		case GameActionType::TOGGLE_QUICK_SPELL_MENU:
-			lpMsg->message = DVL_WM_KEYDOWN;
-			lpMsg->wParam = 'S';
-			chrflag = false;
-			questlog = false;
-			invflag = false;
-			BlurInventory();
-			sbookflag = false;
-			StoreSpellCoords();
+			if (BlurInventory()) {
+				lpMsg->message = DVL_WM_KEYDOWN;
+				lpMsg->wParam = 'S';
+				chrflag = false;
+				questlog = false;
+				invflag = false;
+				sbookflag = false;
+				StoreSpellCoords();
+			}
 			break;
 		case GameActionType::TOGGLE_CHARACTER_INFO:
 			chrflag = !chrflag;
@@ -429,13 +447,13 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 			}
 			break;
 		case GameActionType::TOGGLE_INVENTORY:
-			invflag = !invflag;
 			if (invflag) {
+				invflag = !BlurInventory();
+			} else {
 				sbookflag = false;
 				spselflag = false;
+				invflag = true;
 				FocusOnInventory();
-			} else {
-				BlurInventory();
 			}
 			break;
 		case GameActionType::SEND_KEY:
