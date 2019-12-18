@@ -287,11 +287,12 @@ Hellfire was a bit of a flop on the developer's part. Support may come in the fu
 - [BWAPI Team](https://github.com/bwapi) - providing library API to work with Storm
 - [Ladislav Zezula](https://github.com/ladislav-zezula) - reversing PKWARE library, further documenting Storm
 - [fearedbliss](https://github.com/fearedbliss) - being awe-inspiring
+- Diablodin - providing additional info about the PSX release
 - Climax Studios & Sony - secretly helping with their undercover QA :P
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)
 
-And a special thanks to all the support and people who work on Devilution to make it possible! <3
+And a special thanks to all the support and people who work on this project to make it possible! <3
 
 # Changelog
 [From the beginning until release](docs/CHANGELOG.md)

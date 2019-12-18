@@ -80,9 +80,14 @@ static void scrollrt_draw_cursor_back_buffer()
 	assert(gpBuffer);
 	src = sgSaveBack;
 	dst = &gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
+	i = sgdwCursHgt;
 
-	for (i = sgdwCursHgt; i != 0; i--, src += sgdwCursWdt, dst += BUFFER_WIDTH) {
-		memcpy(dst, src, sgdwCursWdt);
+	if (sgdwCursHgt != 0) {
+		while (i--) {
+			memcpy(dst, src, sgdwCursWdt);
+			src += sgdwCursWdt;
+			dst += BUFFER_WIDTH;
+		}
 	}
 
 	sgdwCursXOld = sgdwCursX;
