@@ -725,19 +725,73 @@ static const int kOffsets[8][2] = {
 	{ 1, -1 },  // DIR_E
 	{ 1, 0 },   // DIR_SE
 };
+
+/**
+ * @brief check if stepping in direction (dir) from x, y is blocked.
+ *
+ * If you step from A to B, at leat one of the Xs need to be clear:
+ *
+ *  AX
+ *  XB
+ *
+ *  @return true if step is blocked
+ */
+bool IsPathBlocked(int x, int y, int dir)
+{
+	int d1, d2, d1x, d1y, d2x, d2y;
+
+	switch (dir) {
+	case DIR_N:
+		d1 = DIR_NW;
+		d2 = DIR_NE;
+		break;
+	case DIR_E:
+		d1 = DIR_NE;
+		d2 = DIR_SE;
+		break;
+	case DIR_S:
+		d1 = DIR_SE;
+		d2 = DIR_SW;
+		break;
+	case DIR_W:
+		d1 = DIR_SW;
+		d2 = DIR_NW;
+		break;
+	default:
+		return false;
+	}
+
+	d1x = x + kOffsets[d1][0];
+	d1y = y + kOffsets[d1][1];
+	d2x = x + kOffsets[d2][0];
+	d2y = y + kOffsets[d2][1];
+
+	if (!nSolidTable[dPiece[d1x][d1y]] && !nSolidTable[dPiece[d2x][d2y]])
+		return false;
+
+	return !PosOkPlayer(myplr, d1x, d1y) && !PosOkPlayer(myplr, d2x, d2y);
+}
+
 void WalkInDir(MoveDirection dir)
 {
 	const int x = plr[myplr]._px;
 	const int y = plr[myplr]._py;
+
 	if (dir.x == MoveDirectionX::NONE && dir.y == MoveDirectionY::NONE) {
 		if (sgbControllerActive && plr[myplr].walkpath[0] != WALK_NONE && plr[myplr].destAction == ACTION_NONE)
-			NetSendCmdLoc(true, CMD_WALKXY, x, y);
+			NetSendCmdLoc(true, CMD_WALKXY, x, y); // Stop walking
 		return;
 	}
 
 	const int pdir = kFaceDir[static_cast<std::size_t>(dir.x)][static_cast<std::size_t>(dir.y)];
-	NetSendCmdLoc(true, CMD_WALKXY, x + kOffsets[pdir][0], y + kOffsets[pdir][1]);
+	const int dx = x + kOffsets[pdir][0];
+	const int dy = y + kOffsets[pdir][1];
 	plr[myplr]._pdir = pdir;
+
+	if (PosOkPlayer(myplr, dx, dy) && IsPathBlocked(x, y, pdir))
+		return; // Don't start backtrack around obstacles
+
+	NetSendCmdLoc(true, CMD_WALKXY, dx, dy);
 }
 
 void Movement()
