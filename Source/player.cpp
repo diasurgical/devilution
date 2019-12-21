@@ -3965,6 +3965,11 @@ void SyncInitPlrPos(int pnum)
 		}
 	}
 
+#ifdef HELLFIRE
+	plr[pnum].WorldX += plrxoff2[i];
+	plr[pnum].WorldY += plryoff2[i];
+	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+#else
 	if (!PosOkPlayer(pnum, x, y)) {
 		posOk = FALSE;
 		for (range = 1; range < 50 && !posOk; range++) {
@@ -3992,6 +3997,7 @@ void SyncInitPlrPos(int pnum)
 		ViewX = x;
 		ViewY = y;
 	}
+#endif
 }
 
 void SyncInitPlr(int pnum)
