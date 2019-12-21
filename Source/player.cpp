@@ -966,11 +966,11 @@ void InitPlayer(int pnum, BOOL FirstTime)
 	ClearPlrRVars(&plr[pnum]);
 
 	if (FirstTime) {
+		plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 		plr[pnum]._pRSpell = SPL_INVALID;
 		plr[pnum]._pSBkSpell = SPL_INVALID;
-		plr[pnum]._pSpell = SPL_INVALID;
-		plr[pnum]._pRSplType = RSPLTYPE_INVALID;
-		plr[pnum]._pSplType = RSPLTYPE_INVALID;
+		plr[pnum]._pSpell = plr[pnum]._pRSpell;
+		plr[pnum]._pSplType = plr[pnum]._pRSplType;
 		if ((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_BOW) {
 			plr[pnum]._pwtype = WT_RANGED;
 		} else {
@@ -1043,6 +1043,14 @@ void InitPlayer(int pnum, BOOL FirstTime)
 		plr[pnum]._pAblSpells = 1 << (SPL_DISARM - 1);
 	} else if (plr[pnum]._pClass == PC_SORCERER) {
 		plr[pnum]._pAblSpells = 1 << (SPL_RECHARGE - 1);
+#ifdef HELLFIRE
+	} else if (plr[pnum]._pClass == PC_MONK) {
+		plr[pnum]._pAblSpells = (unsigned __int64)1 << (SPL_SEARCH - 1);
+	} else if (plr[pnum]._pClass == PC_BARD) {
+		plr[pnum]._pAblSpells = 1 << (SPL_IDENTIFY - 1);
+	} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+		plr[pnum]._pAblSpells = 1 << (SPL_BLODBOIL - 1);
+#endif
 #endif
 	}
 
