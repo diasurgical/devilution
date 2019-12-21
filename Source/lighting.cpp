@@ -1297,7 +1297,7 @@ void lighting_color_cycling()
 			tbl[0] = tbl[1];
 			tbl++;
 		}
-		*tbl++ = col;
-		tbl += 224;
+		*tbl = col;
+		tbl += 225;
 	}
 }
