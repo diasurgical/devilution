@@ -3587,6 +3587,7 @@ void ProcessPlayers()
 #endif
 		}
 	}
+
 	ValidatePlayer();
 
 	for (pnum = 0; pnum < MAX_PLRS; pnum++) {
