@@ -3515,8 +3515,13 @@ void ValidatePlayer()
 	gt = 0;
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (plr[myplr].InvList[i]._itype == ITYPE_GOLD) {
+#ifdef HELLFIRE
+			if (plr[myplr].InvList[i]._ivalue > MaxGold) {
+				plr[myplr].InvList[i]._ivalue = MaxGold;
+#else
 			if (plr[myplr].InvList[i]._ivalue > GOLD_MAX_LIMIT) {
 				plr[myplr].InvList[i]._ivalue = GOLD_MAX_LIMIT;
+#endif
 			}
 			gt += plr[myplr].InvList[i]._ivalue;
 		}
