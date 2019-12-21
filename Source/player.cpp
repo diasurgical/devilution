@@ -3570,7 +3570,26 @@ void ProcessPlayers()
 	if (sfxdelay > 0) {
 		sfxdelay--;
 		if (sfxdelay == 0) {
+#ifdef HELLFIRE
+			switch (sfxdnum) {
+			case USFX_DEFILER1:
+				InitQTextMsg(286);
+				break;
+			case USFX_DEFILER2:
+				InitQTextMsg(287);
+				break;
+			case USFX_DEFILER3:
+				InitQTextMsg(288);
+				break;
+			case USFX_DEFILER4:
+				InitQTextMsg(289);
+				break;
+			default:
+#endif
 			PlaySFX(sfxdnum);
+#ifdef HELLFIRE
+			}
+#endif
 		}
 	}
 
