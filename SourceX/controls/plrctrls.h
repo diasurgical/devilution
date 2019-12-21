@@ -31,7 +31,8 @@ void PerformPrimaryAction();
 
 // Open chests, doors, pickup items.
 void PerformSecondaryAction();
-void TryDropItem();
+bool TryDropItem();
+void FocusOnInventory();
 void PerformSpellAction();
 
 typedef struct coords {

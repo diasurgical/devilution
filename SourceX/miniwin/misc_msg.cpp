@@ -262,12 +262,6 @@ WINBOOL false_avail(const char *name, int value)
 	return true;
 }
 
-// Moves the mouse to the first inventory slot.
-void FocusOnInventory()
-{
-	SetCursorPos(InvRect[25].X + (INV_SLOT_SIZE_PX / 2), InvRect[25].Y - (INV_SLOT_SIZE_PX / 2));
-}
-
 void StoreSpellCoords()
 {
 	constexpr int START_X = 20;
@@ -325,8 +319,7 @@ void StoreSpellCoords()
 bool BlurInventory()
 {
 	if (pcurs >= CURSOR_FIRSTITEM) {
-		TryDropItem();
-		if (pcurs >= CURSOR_FIRSTITEM) {
+		if (!TryDropItem()) {
 			if (plr[myplr]._pClass == PC_WARRIOR) {
 				PlaySFX(PS_WARR16); // "Where would I put this?"
 #ifndef SPAWN
@@ -340,7 +333,7 @@ bool BlurInventory()
 		}
 	}
 
-	if (pcurs == CURSOR_REPAIR || pcurs == CURSOR_RECHARGE)
+	if (pcurs > CURSOR_HAND)
 		SetCursor_(CURSOR_HAND);
 	if (chrflag)
 		FocusOnCharInfo();
@@ -428,7 +421,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 			PerformSpellAction();
 			break;
 		case GameActionType::TOGGLE_QUICK_SPELL_MENU:
-			if (BlurInventory()) {
+			if (!invflag || BlurInventory()) {
 				lpMsg->message = DVL_WM_KEYDOWN;
 				lpMsg->wParam = 'S';
 				chrflag = false;
@@ -443,6 +436,8 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 			if (chrflag) {
 				questlog = false;
 				spselflag = false;
+				if (pcurs == CURSOR_DISARM)
+					SetCursor_(CURSOR_HAND);
 				FocusOnCharInfo();
 			}
 			break;
@@ -453,6 +448,8 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 				sbookflag = false;
 				spselflag = false;
 				invflag = true;
+				if (pcurs == CURSOR_DISARM)
+					SetCursor_(CURSOR_HAND);
 				FocusOnInventory();
 			}
 			break;

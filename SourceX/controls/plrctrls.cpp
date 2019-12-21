@@ -873,6 +873,14 @@ void HandleRightStickMotion()
 	}
 }
 
+/**
+ * @brief Moves the mouse to the first inventory slot.
+ */
+void FocusOnInventory()
+{
+	SetCursorPos(InvRect[25].X + (INV_SLOT_SIZE_PX / 2), InvRect[25].Y - (INV_SLOT_SIZE_PX / 2));
+}
+
 void plrctrls_after_check_curs_move()
 {
 	HandleRightStickMotion();
@@ -923,14 +931,12 @@ void UseBeltItem(int type)
 void PerformPrimaryAction()
 {
 	if (invflag) { // inventory is open
-		if (pcurs == CURSOR_IDENTIFY)
-			CheckIdentify(myplr, pcursinvitem);
-		else if (pcurs == CURSOR_REPAIR)
-			DoRepair(myplr, pcursinvitem);
-		else if (pcurs == CURSOR_RECHARGE)
-			DoRecharge(myplr, pcursinvitem);
-		else
+		if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM) {
+			TryIconCurs();
+			SetCursor_(CURSOR_HAND);
+		} else {
 			CheckInvItem();
+		}
 		return;
 	}
 
@@ -987,38 +993,44 @@ void UpdateSpellTarget()
 /**
  * @brief Try dropping item in all 9 possible places
  */
-void TryDropItem()
+bool TryDropItem()
 {
-	cursmx = plr[myplr].WorldX;
+	cursmx = plr[myplr].WorldX + 1;
 	cursmy = plr[myplr].WorldY;
 	if (!DropItemBeforeTrig()) {
-		cursmx--; // Try to drop on the other side
-		cursmy++;
+		// Try to drop on the other side
+		cursmx = plr[myplr].WorldX;
+		cursmy = plr[myplr].WorldY + 1;
 		DropItemBeforeTrig();
 	}
+
+	return pcurs == CURSOR_HAND;
 }
 
 void PerformSpellAction()
 {
+	if (InGameMenu())
+		return;
+
 	if (invflag) {
-		int spl = plr[myplr]._pRSpell;
-		if (pcurs >= CURSOR_FIRSTITEM) {
+		if (pcurs >= CURSOR_FIRSTITEM)
 			TryDropItem();
-			return;
+		else if (pcurs > CURSOR_HAND) {
+			TryIconCurs();
+			SetCursor_(CURSOR_HAND);
 		}
-		if (spl != SPL_IDENTIFY && spl != SPL_REPAIR && spl != SPL_RECHARGE)
-			return;
+		return;
 	}
+
+	if (pcurs >= CURSOR_FIRSTITEM && !TryDropItem())
+		return;
+	if (pcurs > CURSOR_HAND)
+		SetCursor_(CURSOR_HAND);
 
 	if (spselflag) {
 		SetSpell();
 		return;
 	}
-
-	if (InGameMenu())
-		return;
-	if (TryIconCurs())
-		return;
 
 	int spl = plr[myplr]._pRSpell;
 	if ((pcursplr == -1 && (spl == SPL_RESURRECT || spl == SPL_HEALOTHER))
@@ -1065,7 +1077,12 @@ void PerformSecondaryAction()
 		return;
 	}
 
-	if (pcursitem != -1 && pcurs == CURSOR_HAND) {
+	if (pcurs >= CURSOR_FIRSTITEM && !TryDropItem())
+		return;
+	if (pcurs > CURSOR_HAND)
+		SetCursor_(CURSOR_HAND);
+
+	if (pcursitem != -1) {
 		NetSendCmdLocParam1(true, CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
 	} else if (pcursobj != -1) {
 		NetSendCmdLocParam1(true, CMD_OPOBJXY, cursmx, cursmy, pcursobj);

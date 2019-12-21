@@ -2082,6 +2082,8 @@ void AddElement(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy,
 	UseMana(id, SPL_ELEMENT);
 }
 
+extern void FocusOnInventory();
+
 void AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
@@ -2089,8 +2091,11 @@ void AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 	if (id == myplr) {
 		if (sbookflag)
 			sbookflag = FALSE;
-		if (!invflag)
+		if (!invflag) {
 			invflag = 1;
+			if (sgbControllerActive)
+				FocusOnInventory();
+		}
 		SetCursor_(CURSOR_IDENTIFY);
 	}
 }
@@ -2187,8 +2192,11 @@ void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 	if (id == myplr) {
 		if (sbookflag)
 			sbookflag = FALSE;
-		if (!invflag)
+		if (!invflag) {
 			invflag = 1;
+			if (sgbControllerActive)
+				FocusOnInventory();
+		}
 		SetCursor_(CURSOR_REPAIR);
 	}
 }
@@ -2200,8 +2208,11 @@ void AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 	if (id == myplr) {
 		if (sbookflag)
 			sbookflag = FALSE;
-		if (!invflag)
+		if (!invflag) {
 			invflag = 1;
+			if (sgbControllerActive)
+				FocusOnInventory();
+		}
 		SetCursor_(CURSOR_RECHARGE);
 	}
 }
