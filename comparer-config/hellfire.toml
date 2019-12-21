@@ -3605,7 +3605,7 @@ size = 0x101
 [[func]]
 name = "lighting_color_cycling"
 addr = 0x42CDD7
-size = 0x5A
+size = 0x5B
 
 [[func]]
 name = "LoadGame"
