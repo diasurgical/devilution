@@ -5,7 +5,7 @@ DEVILUTION_BEGIN_NAMESPACE
 int cursH;
 int icursH28;
 int cursW;
-int pcursmonst;
+int pcursmonst = -1;
 int icursW28;
 BYTE *pCursCels;
 int icursH;

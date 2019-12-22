@@ -119,6 +119,8 @@ void FindItemOrObject()
 			int newRotations = GetRotaryDistance(mx + xx, my + yy);
 			if (rotations < newRotations)
 				continue;
+			if (xx != 0 && yy != 0 && GetDistance(mx + xx, my + yy, 1) == 0)
+				continue;
 			rotations = newRotations;
 			pcursitem = i;
 			cursmx = mx + xx;
@@ -140,6 +142,8 @@ void FindItemOrObject()
 				continue; // Ignore doorway so we don't get stuck behind barrels
 			int newRotations = GetRotaryDistance(mx + xx, my + yy);
 			if (rotations < newRotations)
+				continue;
+			if (xx != 0 && yy != 0 && GetDistance(mx + xx, my + yy, 1) == 0)
 				continue;
 			rotations = newRotations;
 			pcursobj = o;
@@ -202,17 +206,21 @@ void FindRangedTarget()
 		if (!CanTargetMonster(mi))
 			continue;
 
+		const bool newCanTalk = CanTalkToMonst(mi);
+		if (pcursmonst != -1 && !canTalk && newCanTalk)
+			continue;
 		const int newDdistance = GetDistanceRanged(mx, my);
-		const int newCanTalk = CanTalkToMonst(mi);
-		if (pcursmonst != -1 && !canTalk && (newCanTalk || distance < newDdistance))
-			continue;
 		const int newRotations = GetRotaryDistance(mx, my);
-		if (pcursmonst != -1 && !canTalk && distance == newDdistance && rotations < newRotations)
-			continue;
+		if (pcursmonst != -1 && canTalk == newCanTalk) {
+			if (distance < newDdistance)
+				continue;
+			if (distance == newDdistance && rotations < newRotations)
+				continue;
+		}
 		distance = newDdistance;
 		rotations = newRotations;
-		pcursmonst = mi;
 		canTalk = newCanTalk;
+		pcursmonst = mi;
 	}
 }
 
@@ -258,13 +266,15 @@ void FindMeleeTarget()
 				if (dMonster[dx][dy] != 0) {
 					const int mi = dMonster[dx][dy] > 0 ? dMonster[dx][dy] - 1 : -(dMonster[dx][dy] + 1);
 					if (CanTargetMonster(mi)) {
-						const int newRotations = GetRotaryDistance(dx, dy);
 						const bool newCanTalk = CanTalkToMonst(mi);
-						if (pcursmonst != -1 && !canTalk && (newCanTalk || rotations < newRotations))
+						if (pcursmonst != -1 && !canTalk && newCanTalk)
+							continue;
+						const int newRotations = GetRotaryDistance(dx, dy);
+						if (pcursmonst != -1 && canTalk == newCanTalk && rotations < newRotations)
 							continue;
 						rotations = newRotations;
-						pcursmonst = mi;
 						canTalk = newCanTalk;
+						pcursmonst = mi;
 						if (!canTalk)
 							maxSteps = node.steps; // Monsters found, cap search to current steps
 					}
