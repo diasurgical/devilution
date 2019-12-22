@@ -1400,7 +1400,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	plr[pnum]._pxoff = xoff;
 	plr[pnum]._pyoff = yoff;
 
-	if (leveltype) {
+	if (leveltype != DTYPE_TOWN) {
 		ChangeLightXY(plr[pnum]._plid, x, y);
 		PM_ChangeLightOff(pnum);
 	}
