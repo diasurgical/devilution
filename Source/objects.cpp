@@ -4104,7 +4104,7 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
 	object[i]._oMissFlag = TRUE;
 	object[i]._oSelFlag = 0;
 	object[i]._oPreFlag = TRUE;
-	if (deltaload != 0) {
+	if (deltaload) {
 		object[i]._oAnimCnt = 0;
 		object[i]._oAnimFrame = object[i]._oAnimLen;
 		object[i]._oAnimDelay = 1000;
