@@ -1607,7 +1607,7 @@ void CheckBtnUp()
 			break;
 		case PANBTN_INVENTORY:
 			sbookflag = FALSE;
-			invflag = invflag == 0;
+			invflag = !invflag;
 			if (dropGoldFlag) {
 				dropGoldFlag = FALSE;
 				dropGoldValue = 0;
@@ -1628,7 +1628,7 @@ void CheckBtnUp()
 				control_type_message();
 			break;
 		case PANBTN_FRIENDLY:
-			FriendlyMode = FriendlyMode == 0;
+			FriendlyMode = !FriendlyMode;
 			break;
 		}
 	}

@@ -1280,7 +1280,7 @@ void PressChar(int vkey)
 	case 'i':
 		if (!stextflag) {
 			sbookflag = FALSE;
-			invflag = invflag == 0;
+			invflag = !invflag;
 			if (!invflag || chrflag) {
 				if (MouseX < 480 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX + 160, MouseY);
