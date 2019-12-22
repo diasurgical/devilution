@@ -4073,7 +4073,7 @@ void BreakCrux(int i)
 	ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 
-void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
+void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, BOOL sendmsg)
 {
 	int oi;
 	int xp, yp;

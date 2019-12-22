@@ -825,7 +825,7 @@ typedef struct TCmdChItem {
 	WORD wIndx;
 	WORD wCI;
 	int dwSeed;
-	BYTE bId;
+	BOOLEAN bId;
 } TCmdChItem;
 
 typedef struct TCmdDelItem {
@@ -1523,7 +1523,7 @@ typedef struct STextStruct {
 	int _sx;
 	int _syoff;
 	char _sstr[128];
-	int _sjust;
+	BOOL _sjust;
 	char _sclr;
 	int _sline;
 	int _ssel;
