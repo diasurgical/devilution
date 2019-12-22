@@ -22,7 +22,7 @@ int nGoldFrame; /** current frame # for the pentagram caret in gold input */
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 BYTE *pTalkBtns;
-int pstrjust[4];
+BOOL pstrjust[4];
 int pnumlines;
 BOOL pinfoflag;
 BOOL talkbtndown[3];
