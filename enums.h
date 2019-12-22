@@ -1864,7 +1864,7 @@ typedef enum dungeon_type {
 	DTYPE_CATACOMBS = 0x2,
 	DTYPE_CAVES     = 0x3,
 	DTYPE_HELL      = 0x4,
-	DTYPE_NONE      = 0xFF,
+	DTYPE_NONE      = -1,
 } dungeon_type;
 
 typedef enum dflag {
