@@ -881,7 +881,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 		CelClippedBlitSafe(pBuff, pSquareCel, 1, 64, 0, 8);
 	}
 	if (MissilePreFlag && bFlag & BFLAG_MISSILE) {
-		DrawClippedMissile(sx, sy, dx, dy, 0, 8, 1);
+		DrawClippedMissile(sx, sy, dx, dy, 0, 8, TRUE);
 	}
 	if (light_table_index < lightmax) {
 		if (bDead != 0) {
@@ -980,7 +980,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 		}
 	}
 	if (bFlag & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(sx, sy, dx, dy, 0, 8, 1);
+		DrawDeadPlayer(sx, sy, dx, dy, 0, 8, TRUE);
 	}
 	if (bPlr > 0) {
 		p = bPlr - 1;
@@ -1023,7 +1023,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 		}
 	}
 	if (bFlag & BFLAG_MISSILE) {
-		DrawClippedMissile(sx, sy, dx, dy, 0, 8, 0);
+		DrawClippedMissile(sx, sy, dx, dy, 0, 8, FALSE);
 	}
 	if (bObj != 0 && light_table_index < lightmax) {
 		DrawClippedObject(sx, sy, dx, dy, 0, 0, 8);
@@ -1346,7 +1346,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 		CelClippedBlitSafe(pBuff, pSquareCel, 1, 64, CelSkip, 8);
 	}
 	if (MissilePreFlag && bFlag & BFLAG_MISSILE) {
-		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, 1);
+		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, TRUE);
 	}
 	if (light_table_index < lightmax) {
 		if (bDead != 0) {
@@ -1445,7 +1445,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 		}
 	}
 	if (bFlag & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(sx, sy, dx, dy, CelSkip, 8, 1);
+		DrawDeadPlayer(sx, sy, dx, dy, CelSkip, 8, TRUE);
 	}
 	if (bPlr > 0) {
 		p = bPlr - 1;
@@ -1488,7 +1488,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 		}
 	}
 	if (bFlag & BFLAG_MISSILE) {
-		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, 0);
+		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, FALSE);
 	}
 	if (bObj != 0 && light_table_index < lightmax) {
 		DrawClippedObject(sx, sy, dx, dy, 0, CelSkip, 8);
@@ -1747,7 +1747,7 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
 	ty = dy - 16;
 
 	if (MissilePreFlag && bFlag & BFLAG_MISSILE) {
-		DrawMissile(sx, sy, dx, dy, 0, CelCap, 1);
+		DrawMissile(sx, sy, dx, dy, 0, CelCap, TRUE);
 	}
 
 	if (light_table_index < lightmax) {
@@ -1840,7 +1840,7 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
 		}
 	}
 	if (bFlag & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, 0);
+		DrawDeadPlayer(sx, sy, dx, dy, 0, CelCap, FALSE);
 	}
 	if (bPlr > 0) {
 		p = bPlr - 1;
@@ -1883,7 +1883,7 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
 		}
 	}
 	if (bFlag & BFLAG_MISSILE) {
-		DrawMissile(sx, sy, dx, dy, 0, CelCap, 0);
+		DrawMissile(sx, sy, dx, dy, 0, CelCap, FALSE);
 	}
 	if (bObj != 0 && light_table_index < lightmax) {
 		DrawObject(sx, sy, dx, dy, 0, 0, CelCap);

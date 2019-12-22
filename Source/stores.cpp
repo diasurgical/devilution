@@ -1447,7 +1447,7 @@ void StartStore(char s)
 
 	for (t = s;; t = STORE_SMITH) {
 		sbookflag = FALSE;
-		invflag = 0;
+		invflag = FALSE;
 		chrflag = FALSE;
 		questlog = FALSE;
 		dropGoldFlag = FALSE;
@@ -1921,7 +1921,7 @@ void S_SBuyEnter()
 			done = FALSE;
 
 			for (i = 0; i < 40 && !done; i++) {
-				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, FALSE);
 			}
 			if (done)
 				StartStore(STORE_CONFIRM);
@@ -1982,7 +1982,7 @@ void S_SPBuyEnter()
 			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = FALSE;
 			for (i = 0; i < 40 && !done; i++) {
-				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, FALSE);
 			}
 			if (done)
 				StartStore(STORE_CONFIRM);
@@ -2233,7 +2233,7 @@ void S_WBuyEnter()
 			done = FALSE;
 
 			for (i = 0; i < 40 && !done; i++) {
-				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, FALSE);
 			}
 
 			if (done)
@@ -2400,7 +2400,7 @@ void S_BBuyEnter()
 			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = FALSE;
 			for (i = 0; i < 40 && !done; i++) {
-				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, FALSE);
 			}
 			if (done)
 				StartStore(STORE_CONFIRM);
@@ -2531,7 +2531,7 @@ void S_HBuyEnter()
 			done = FALSE;
 			i = 0;
 			for (i = 0; i < 40 && !done; i++) {
-				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, FALSE);
 			}
 			if (done)
 				StartStore(STORE_CONFIRM);
