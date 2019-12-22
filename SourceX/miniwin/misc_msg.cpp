@@ -333,6 +333,7 @@ bool BlurInventory()
 		}
 	}
 
+	invflag = false;
 	if (pcurs > CURSOR_HAND)
 		SetCursor_(CURSOR_HAND);
 	if (chrflag)
@@ -426,7 +427,6 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 				lpMsg->wParam = 'S';
 				chrflag = false;
 				questlog = false;
-				invflag = false;
 				sbookflag = false;
 				StoreSpellCoords();
 			}
@@ -443,7 +443,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 			break;
 		case GameActionType::TOGGLE_INVENTORY:
 			if (invflag) {
-				invflag = !BlurInventory();
+				BlurInventory();
 			} else {
 				sbookflag = false;
 				spselflag = false;
