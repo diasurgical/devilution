@@ -116,14 +116,14 @@ static void scrollrt_draw_cursor_item()
 	}
 
 	mx = MouseX - 1;
-	if (mx < 0) {
-		mx = 0;
+	if (mx < 0 - cursW - 1) {
+		return;
 	} else if (mx > SCREEN_WIDTH - 1) {
 		return;
 	}
 	my = MouseY - 1;
-	if (my < 0) {
-		my = 0;
+	if (my < 0 - cursH - 1) {
+		return;
 	} else if (my > SCREEN_HEIGHT - 1) {
 		return;
 	}

@@ -244,9 +244,9 @@ static int translate_sdl_key(SDL_Keysym key)
 
 namespace {
 
-LPARAM position_for_mouse(int x, int y)
+LPARAM position_for_mouse(short x, short y)
 {
-	return ((y & 0xFFFF) << 16) | (x & 0xFFFF);
+	return (((uint16_t)(y & 0xFFFF)) << 16) | (uint16_t)(x & 0xFFFF);
 }
 
 WPARAM keystate_for_mouse(WPARAM ret)
@@ -508,30 +508,26 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 		break;
 	case SDL_MOUSEBUTTONDOWN: {
 		int button = e.button.button;
-		if (e.button.x > 0 && e.button.y > 0 && e.button.x <= SCREEN_WIDTH && e.button.y <= SCREEN_HEIGHT) {
-			if (button == SDL_BUTTON_LEFT) {
-				lpMsg->message = DVL_WM_LBUTTONDOWN;
-				lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
-				lpMsg->wParam = keystate_for_mouse(DVL_MK_LBUTTON);
-			} else if (button == SDL_BUTTON_RIGHT) {
-				lpMsg->message = DVL_WM_RBUTTONDOWN;
-				lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
-				lpMsg->wParam = keystate_for_mouse(DVL_MK_RBUTTON);
-			}
+		if (button == SDL_BUTTON_LEFT) {
+			lpMsg->message = DVL_WM_LBUTTONDOWN;
+			lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
+			lpMsg->wParam = keystate_for_mouse(DVL_MK_LBUTTON);
+		} else if (button == SDL_BUTTON_RIGHT) {
+			lpMsg->message = DVL_WM_RBUTTONDOWN;
+			lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
+			lpMsg->wParam = keystate_for_mouse(DVL_MK_RBUTTON);
 		}
 	} break;
 	case SDL_MOUSEBUTTONUP: {
 		int button = e.button.button;
-		if (e.button.x > 0 && e.button.y > 0 && e.button.x <= SCREEN_WIDTH && e.button.y <= SCREEN_HEIGHT) {
-			if (button == SDL_BUTTON_LEFT) {
-				lpMsg->message = DVL_WM_LBUTTONUP;
-				lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
-				lpMsg->wParam = keystate_for_mouse(0);
-			} else if (button == SDL_BUTTON_RIGHT) {
-				lpMsg->message = DVL_WM_RBUTTONUP;
-				lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
-				lpMsg->wParam = keystate_for_mouse(0);
-			}
+		if (button == SDL_BUTTON_LEFT) {
+			lpMsg->message = DVL_WM_LBUTTONUP;
+			lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
+			lpMsg->wParam = keystate_for_mouse(0);
+		} else if (button == SDL_BUTTON_RIGHT) {
+			lpMsg->message = DVL_WM_RBUTTONUP;
+			lpMsg->lParam = position_for_mouse(e.button.x, e.button.y);
+			lpMsg->wParam = keystate_for_mouse(0);
 		}
 	} break;
 #ifndef USE_SDL1
