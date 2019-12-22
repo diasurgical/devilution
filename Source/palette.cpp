@@ -130,7 +130,7 @@ void LoadPalette(char *pszFileName)
 
 	/// ASSERT: assert(pszFileName);
 
-	WOpenFile(pszFileName, &pBuf, 0);
+	WOpenFile(pszFileName, &pBuf, FALSE);
 	WReadFile(pBuf, (char *)PalData, sizeof(PalData));
 	WCloseFile(pBuf);
 
