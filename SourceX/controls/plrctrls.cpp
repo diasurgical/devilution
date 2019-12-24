@@ -826,60 +826,56 @@ void Movement()
 }
 
 struct RightStickAccumulator {
-	void start(int *x, int *y)
+	void pool(int *x, int *y, int slowdown)
 	{
-		hiresDX += rightStickX * kGranularity;
-		hiresDY += rightStickY * kGranularity;
+		DWORD tc = SDL_GetTicks();
+		hiresDX += rightStickX * (tc - lastTc);
+		hiresDY += rightStickY * (tc - lastTc);
 		*x += hiresDX / slowdown;
 		*y += -hiresDY / slowdown;
-	}
-
-	void finish()
-	{
+		lastTc = tc;
 		// keep track of remainder for sub-pixel motion
 		hiresDX %= slowdown;
 		hiresDY %= slowdown;
 	}
 
-	static const int kGranularity = (1 << 15) - 1;
-	int slowdown; // < kGranularity
-	int hiresDX;
-	int hiresDY;
+	void clear()
+	{
+		lastTc = SDL_GetTicks();
+	}
+
+	DWORD lastTc = SDL_GetTicks();
+	int hiresDX = 0;
+	int hiresDY = 0;
 };
 
 } // namespace
 
 void HandleRightStickMotion()
 {
+	static RightStickAccumulator acc;
 	// deadzone is handled in ScaleJoystickAxes() already
-	if (rightStickX == 0 && rightStickY == 0)
+	if (rightStickX == 0 && rightStickY == 0) {
+		acc.clear();
 		return;
+	}
 
 	if (automapflag) { // move map
-		static RightStickAccumulator acc = { /*slowdown=*/(1 << 14) + (1 << 13), 0, 0 };
 		int dx = 0, dy = 0;
-		acc.start(&dx, &dy);
-		if (dy > 1)
-			AutomapUp();
-		else if (dy < -1)
-			AutomapDown();
-		else if (dx < -1)
-			AutomapRight();
-		else if (dx > 1)
-			AutomapLeft();
-		acc.finish();
-	} else { // move cursor
+		acc.pool(&dx, &dy, 32);
+		AutoMapXOfs += dy + dx;
+		AutoMapYOfs += dy - dx;
+		return;
+	}
+
+	{ // move cursor
 		sgbControllerActive = false;
-		static RightStickAccumulator acc = { /*slowdown=*/(1 << 13) + (1 << 12), 0, 0 };
 		int x = MouseX;
 		int y = MouseY;
-		acc.start(&x, &y);
-		if (x < 0)
-			x = 0;
-		if (y < 0)
-			y = 0;
+		acc.pool(&x, &y, 2);
+		x = std::min(std::max(x, 0), SCREEN_WIDTH - 1);
+		y = std::min(std::max(y, 0), SCREEN_HEIGHT - 1);
 		SetCursorPos(x, y);
-		acc.finish();
 	}
 }
 
