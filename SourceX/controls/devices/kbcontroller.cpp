@@ -13,8 +13,8 @@ namespace {
 
 bool IsModifierKey()
 {
-#ifdef KBCTRL_MODIFIER_KEY
-	return SDLC_GetKeyState()[KBCTRL_MODIFIER_KEY];
+#ifdef KBCTRL_BUTTON_BACK
+	return SDLC_GetKeyState()[KBCTRL_BUTTON_BACK];
 #else
 	return false;
 #endif
@@ -30,10 +30,6 @@ ControllerButton KbCtrlToControllerButton(const SDL_Event &event)
 		switch (event.key.keysym.sym) {
 #ifdef KBCTRL_IGNORE_1
 		case KBCTRL_IGNORE_1:
-			return ControllerButton::IGNORE;
-#endif
-#ifdef KBCTRL_MODIFIER_KEY
-		case KBCTRL_MODIFIER_KEY:
 			return ControllerButton::IGNORE;
 #endif
 #ifdef KBCTRL_BUTTON_A

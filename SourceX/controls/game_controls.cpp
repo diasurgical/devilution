@@ -48,18 +48,36 @@ bool GetGameAction(const SDL_Event &event, GameAction *action)
 		switch (ctrl_event.button) {
 		case ControllerButton::AXIS_TRIGGERLEFT: // ZL (aka L2)
 			if (!ctrl_event.up)
+#if HAS_KBCTRL == 0
 				if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 					*action = GameAction(GameActionType::TOGGLE_QUEST_LOG);
 				else
+#endif
 					*action = GameAction(GameActionType::TOGGLE_CHARACTER_INFO);
 			return true;
 		case ControllerButton::AXIS_TRIGGERRIGHT: // ZR (aka R2)
 			if (!ctrl_event.up)
+#if HAS_KBCTRL == 0
 				if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 					*action = GameAction(GameActionType::TOGGLE_SPELL_BOOK);
 				else
+#endif
 					*action = GameAction(GameActionType::TOGGLE_INVENTORY);
 			return true;
+#if HAS_KBCTRL == 1
+		case ControllerButton::BUTTON_LEFTSTICK:
+			if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK)) {
+				*action = GameActionSendMouseClick { GameActionSendMouseClick::LEFT, ctrl_event.up };
+				return true;
+			}
+			break;
+		case ControllerButton::BUTTON_START:
+			if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK)) {
+				*action = GameActionSendMouseClick { GameActionSendMouseClick::RIGHT, ctrl_event.up };
+				return true;
+			}
+			break;
+#endif
 		}
 		if (!questlog && !sbookflag) {
 			switch (ctrl_event.button) {
@@ -108,12 +126,19 @@ bool GetGameAction(const SDL_Event &event, GameAction *action)
 				// The rest is handled in charMovement() on every game_logic() call.
 				return true;
 			case ControllerButton::BUTTON_RIGHTSTICK:
-				*action = GameActionSendMouseClick { GameActionSendMouseClick::LEFT, ctrl_event.up };
+				if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
+					*action = GameActionSendMouseClick { GameActionSendMouseClick::RIGHT, ctrl_event.up };
+				else
+					*action = GameActionSendMouseClick { GameActionSendMouseClick::LEFT, ctrl_event.up };
 				return true;
 			default:
 				break;
 			}
 		}
+	}
+
+	if (ctrl_event.button == ControllerButton::BUTTON_BACK) {
+		return true; // Ignore mod button
 	}
 
 	// By default, map to a keyboard key.
