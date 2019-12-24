@@ -1010,8 +1010,13 @@ void UpdateSpellTarget()
 	pcursmonst = -1;
 
 	const auto &player = plr[myplr];
-	cursmx = player._px + kOffsets[player._pdir][0];
-	cursmy = player._py + kOffsets[player._pdir][1];
+
+	int range = 1;
+	if (plr[myplr]._pRSpell == SPL_TELEPORT)
+		range = 4;
+
+	cursmx = player._px + kOffsets[player._pdir][0] * range;
+	cursmy = player._py + kOffsets[player._pdir][1] * range;
 }
 
 /**
