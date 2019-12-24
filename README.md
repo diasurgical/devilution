@@ -270,9 +270,9 @@ variable (see
 > Wow, does this mean I can download and play Diablo for free now?
 
 No, you'll need access to the data from the original game. If you don't have an original CD then you can [buy Diablo from GoG.com](https://www.gog.com/game/diablo). Alternatively you can also use `spawn.mpq` from the [http://ftp.blizzard.com/pub/demos/diablosw.exe](shareware) version and compile the with the SPAWN flag defined.
-> What game changes does Deviuions provide
+> What game changes does DevilutionX provide
 
-DeviltuionX's main focuse is to making the game work on multiple platforms and making the engine mod frindly. As such there are not change to the gameplay, but we will be making some enhancments to the engine it self. To give some examples there is now upscaling, unlocked fps and controller support and multiplayer via TCP.
+DevilutionX's main focuse is to making the game work on multiple platforms and making the engine mod frindly. As such there are not change to the gameplay, but we will be making some enhancments to the engine it self. To give some examples there is now upscaling, unlocked fps and controller support and multiplayer via TCP.
 > Is 1080p supported?
 
 Currently the game simply scales the original 640x480 to beset fit, but we are working on widescreen support.
