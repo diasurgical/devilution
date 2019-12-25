@@ -2068,7 +2068,7 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 			iblvl = lvl + 4;
 		if (iblvl != -1) {
 			uid = CheckUnique(ii, iblvl, uper, recreate);
-			if (uid == -1) {
+			if (uid == UITYPE_INVALID) {
 				GetItemBonus(ii, idx, iblvl >> 1, iblvl, onlygood);
 			} else {
 				GetUniqueItem(ii, uid);
