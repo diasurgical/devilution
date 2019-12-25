@@ -47,22 +47,24 @@ bool GetGameAction(const SDL_Event &event, GameAction *action)
 	if (!InGameMenu()) {
 		switch (ctrl_event.button) {
 		case ControllerButton::AXIS_TRIGGERLEFT: // ZL (aka L2)
-			if (!ctrl_event.up)
+			if (!ctrl_event.up) {
 #if HAS_KBCTRL == 0
 				if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 					*action = GameAction(GameActionType::TOGGLE_QUEST_LOG);
 				else
 #endif
 					*action = GameAction(GameActionType::TOGGLE_CHARACTER_INFO);
+			}
 			return true;
 		case ControllerButton::AXIS_TRIGGERRIGHT: // ZR (aka R2)
-			if (!ctrl_event.up)
+			if (!ctrl_event.up) {
 #if HAS_KBCTRL == 0
 				if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 					*action = GameAction(GameActionType::TOGGLE_SPELL_BOOK);
 				else
 #endif
 					*action = GameAction(GameActionType::TOGGLE_INVENTORY);
+			}
 			return true;
 #if HAS_KBCTRL == 1
 		case ControllerButton::BUTTON_LEFTSTICK:
@@ -78,38 +80,44 @@ bool GetGameAction(const SDL_Event &event, GameAction *action)
 			}
 			break;
 #endif
+		default:
+			break;
 		}
 		if (!questlog && !sbookflag) {
 			switch (ctrl_event.button) {
 			case ControllerButton::IGNORE:
 				return true;
 			case ControllerButton::BUTTON_B: // Right button
-				if (!ctrl_event.up)
+				if (!ctrl_event.up) {
 					if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 						*action = GameActionSendKey { DVL_VK_F8, ctrl_event.up };
 					else
 						*action = GameAction(GameActionType::PRIMARY_ACTION);
+				}
 				return true;
 			case ControllerButton::BUTTON_Y: // Top button
-				if (!ctrl_event.up)
+				if (!ctrl_event.up) {
 					if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 						*action = GameActionSendKey { DVL_VK_F6, ctrl_event.up };
 					else
 						*action = GameAction(GameActionType::SECONDARY_ACTION);
+				}
 				return true;
 			case ControllerButton::BUTTON_X: // Left button
-				if (!ctrl_event.up)
+				if (!ctrl_event.up) {
 					if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 						*action = GameActionSendKey { DVL_VK_F5, ctrl_event.up };
 					else
 						*action = GameAction(GameActionType::CAST_SPELL);
+				}
 				return true;
 			case ControllerButton::BUTTON_A: // Bottom button
-				if (!ctrl_event.up)
+				if (!ctrl_event.up) {
 					if (IsControllerButtonPressed(ControllerButton::BUTTON_BACK))
 						*action = GameActionSendKey { DVL_VK_F7, ctrl_event.up };
 					else
 						*action = GameAction(GameActionType::TOGGLE_QUICK_SPELL_MENU);
+				}
 				return true;
 			case ControllerButton::BUTTON_LEFTSHOULDER:
 				if (!stextflag && !ctrl_event.up)
