@@ -1206,7 +1206,7 @@ BOOL calc_snd_position(int x, int y, int *plVolume, int *plPan)
 void PlaySFX(int psfx)
 {
 	psfx = RndSFX(psfx);
-	PlaySFX_priv(&sgSFX[psfx], 0, 0, 0);
+	PlaySFX_priv(&sgSFX[psfx], FALSE, 0, 0);
 }
 
 void PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
@@ -1324,7 +1324,7 @@ void PlaySfxLoc(int psfx, int x, int y)
 			pSnd->start_tc = 0;
 	}
 
-	PlaySFX_priv(&sgSFX[psfx], 1, x, y);
+	PlaySFX_priv(&sgSFX[psfx], TRUE, x, y);
 }
 
 void FreeMonsterSnd()

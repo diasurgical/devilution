@@ -144,7 +144,7 @@ void __cdecl log_printf(const char *pszFmt, ...)
 	msg[511] = 0;
 	size = strlen(msg);
 	if (size + nNumberOfBytesToWrite > 0x1000) {
-		log_flush(0);
+		log_flush(FALSE);
 	}
 
 	if (lpAddress == NULL) {

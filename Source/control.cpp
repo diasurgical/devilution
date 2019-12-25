@@ -1302,7 +1302,7 @@ void InitControlPan()
 	pPanelButtons = LoadFileInMem("CtrlPan\\Panel8bu.CEL", NULL);
 	for (i = 0; i < sizeof(panbtn) / sizeof(panbtn[0]); i++)
 		panbtn[i] = 0;
-	panbtndown = 0;
+	panbtndown = FALSE;
 	if (gbMaxPlayers == 1)
 		numpanbtns = 6;
 	else
@@ -1486,7 +1486,7 @@ void DoAutoMap()
 		if (!automapflag)
 			StartAutomap();
 		else
-			automapflag = 0;
+			automapflag = FALSE;
 	} else {
 		InitDiabloMsg(EMSG_NO_AUTOMAP_IN_TOWN);
 	}
@@ -1646,7 +1646,7 @@ void CheckBtnUp()
 			}
 			break;
 		case PANBTN_SPELLBOOK:
-			invflag = 0;
+			invflag = FALSE;
 			if (dropGoldFlag) {
 				dropGoldFlag = FALSE;
 				dropGoldValue = 0;
@@ -1785,7 +1785,7 @@ void control_draw_info_str()
 		yo = 0;
 		lo = 1;
 		if (infostr[0]) {
-			control_print_info_str(0, infostr, 1, pnumlines);
+			control_print_info_str(0, infostr, TRUE, pnumlines);
 			yo = 1;
 			lo = 0;
 		}
@@ -2552,9 +2552,9 @@ void control_drop_gold(char vkey)
 	if (vkey == VK_RETURN) {
 		if (dropGoldValue > 0)
 			control_remove_gold(myplr, initialDropGoldIndex);
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 	} else if (vkey == VK_ESCAPE) {
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	} else if (vkey == VK_BACK) {
 		input[strlen(input) - 1] = '\0';

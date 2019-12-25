@@ -113,7 +113,7 @@ void InitInv()
 #endif
 	}
 
-	invflag = 0;
+	invflag = FALSE;
 	drawsbarflag = FALSE;
 }
 
@@ -1176,7 +1176,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 		}
 		break;
 	case ILOC_AMULET:
-		NetSendCmdChItem(0, INVLOC_AMULET);
+		NetSendCmdChItem(FALSE, INVLOC_AMULET);
 		if (plr[pnum].InvBody[INVLOC_AMULET]._itype == ITYPE_NONE)
 			plr[pnum].InvBody[INVLOC_AMULET] = plr[pnum].HoldItem;
 		else
@@ -1412,7 +1412,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 			if (plr[pnum].HoldItem._itype == 11)
 				plr[pnum]._pGold = CalculateGold(pnum);
 		}
-		drawsbarflag = 1;
+		drawsbarflag = TRUE;
 		break;
 	}
 	CalcPlrInv(pnum, TRUE);
@@ -2192,7 +2192,7 @@ void AutoGetItem(int pnum, int ii)
 			}
 		}
 		plr[pnum].HoldItem = item[ii];
-		RespawnItem(ii, 1);
+		RespawnItem(ii, TRUE);
 		NetSendCmdPItem(TRUE, CMD_RESPAWNITEM, item[ii]._ix, item[ii]._iy);
 		plr[pnum].HoldItem._itype = ITYPE_NONE;
 #ifdef HELLFIRE
@@ -2432,7 +2432,7 @@ int InvPutItem(int pnum, int x, int y)
 	item[ii] = plr[pnum].HoldItem;
 	item[ii]._ix = x;
 	item[ii]._iy = y;
-	RespawnItem(ii, 1);
+	RespawnItem(ii, TRUE);
 	numitems++;
 #ifdef HELLFIRE
 	if (currlevel == 21 && x == RowOfCornerStone && y == ColOfCornerStone) {
@@ -2532,7 +2532,7 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 
 	item[ii]._ix = x;
 	item[ii]._iy = y;
-	RespawnItem(ii, 1);
+	RespawnItem(ii, TRUE);
 	numitems++;
 #ifdef HELLFIRE
 	if (currlevel == 21 && x == RowOfCornerStone && y == ColOfCornerStone) {

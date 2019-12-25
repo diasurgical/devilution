@@ -456,7 +456,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		ghMainWnd = hWnd;
 		break;
 	case WM_DESTROY:
-		init_cleanup(1);
+		init_cleanup(TRUE);
 		ghMainWnd = 0;
 		PostQuitMessage(0);
 		break;

@@ -2500,7 +2500,7 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 			iblvl = lvl + 4;
 		if (iblvl != -1) {
 			uid = CheckUnique(ii, iblvl, uper, recreate);
-			if (uid == -1) {
+			if (uid == UITYPE_INVALID) {
 #ifdef HELLFIRE
 				GetItemBonus(ii, idx, iblvl >> 1, iblvl, onlygood, TRUE);
 #else
@@ -3599,30 +3599,30 @@ void DrawUniqueInfo()
 	if (!chrflag && !questlog) {
 		uid = curruitem._iUid;
 		DrawUTextBack();
-		PrintUString(PANEL_LEFT + 0, 2, 1, UniqueItemList[uid].UIName, 3);
+		PrintUString(PANEL_LEFT + 0, 2, TRUE, UniqueItemList[uid].UIName, 3);
 		DrawULine(5);
 		PrintItemPower(UniqueItemList[uid].UIPower1, &curruitem);
 		y = 6 - UniqueItemList[uid].UINumPL + 8;
-		PrintUString(PANEL_LEFT + 0, y, 1, tempstr, 0);
+		PrintUString(PANEL_LEFT + 0, y, TRUE, tempstr, 0);
 		if (UniqueItemList[uid].UINumPL > 1) {
 			PrintItemPower(UniqueItemList[uid].UIPower2, &curruitem);
-			PrintUString(PANEL_LEFT + 0, y + 2, 1, tempstr, 0);
+			PrintUString(PANEL_LEFT + 0, y + 2, TRUE, tempstr, 0);
 		}
 		if (UniqueItemList[uid].UINumPL > 2) {
 			PrintItemPower(UniqueItemList[uid].UIPower3, &curruitem);
-			PrintUString(PANEL_LEFT + 0, y + 4, 1, tempstr, 0);
+			PrintUString(PANEL_LEFT + 0, y + 4, TRUE, tempstr, 0);
 		}
 		if (UniqueItemList[uid].UINumPL > 3) {
 			PrintItemPower(UniqueItemList[uid].UIPower4, &curruitem);
-			PrintUString(PANEL_LEFT + 0, y + 6, 1, tempstr, 0);
+			PrintUString(PANEL_LEFT + 0, y + 6, TRUE, tempstr, 0);
 		}
 		if (UniqueItemList[uid].UINumPL > 4) {
 			PrintItemPower(UniqueItemList[uid].UIPower5, &curruitem);
-			PrintUString(PANEL_LEFT + 0, y + 8, 1, tempstr, 0);
+			PrintUString(PANEL_LEFT + 0, y + 8, TRUE, tempstr, 0);
 		}
 		if (UniqueItemList[uid].UINumPL > 5) {
 			PrintItemPower(UniqueItemList[uid].UIPower6, &curruitem);
-			PrintUString(PANEL_LEFT + 0, y + 10, 1, tempstr, 0);
+			PrintUString(PANEL_LEFT + 0, y + 10, TRUE, tempstr, 0);
 		}
 	}
 }
@@ -4175,9 +4175,9 @@ void SpawnOnePremium(int i, int plvl)
 		itype = RndPremiumItem(plvl >> 2, plvl) - 1;
 		GetItemAttrs(0, itype, plvl);
 #ifdef HELLFIRE
-		GetItemBonus(0, itype, plvl >> 1, plvl, 1, FALSE);
+		GetItemBonus(0, itype, plvl >> 1, plvl, TRUE, FALSE);
 #else
-		GetItemBonus(0, itype, plvl >> 1, plvl, 1);
+		GetItemBonus(0, itype, plvl >> 1, plvl, TRUE);
 #endif
 	} while (item[0]._iIvalue > SMITH_MAX_PREMIUM_VALUE);
 	premiumitem[i] = item[0];
@@ -4344,9 +4344,9 @@ void SpawnWitch(int lvl)
 				maxlvl = 2 * lvl;
 			if (maxlvl != -1)
 #ifdef HELLFIRE
-				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1, TRUE);
+				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, TRUE, TRUE);
 #else
-				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1);
+				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, TRUE);
 #endif
 		} while (item[0]._iIvalue > 140000);
 		witchitem[i] = item[0];
@@ -4393,9 +4393,9 @@ void SpawnBoy(int lvl)
 			itype = RndBoyItem(lvl) - 1;
 			GetItemAttrs(0, itype, lvl);
 #ifdef HELLFIRE
-			GetItemBonus(0, itype, lvl, 2 * lvl, 1, TRUE);
+			GetItemBonus(0, itype, lvl, 2 * lvl, TRUE, TRUE);
 #else
-			GetItemBonus(0, itype, lvl, 2 * lvl, 1);
+			GetItemBonus(0, itype, lvl, 2 * lvl, TRUE);
 #endif
 		} while (item[0]._iIvalue > 90000);
 		boyitem = item[0];
@@ -4567,9 +4567,9 @@ void RecreatePremiumItem(int ii, int idx, int plvl, int iseed)
 	itype = RndPremiumItem(plvl >> 2, plvl) - 1;
 	GetItemAttrs(ii, itype, plvl);
 #ifdef HELLFIRE
-	GetItemBonus(ii, itype, plvl >> 1, plvl, 1, FALSE);
+	GetItemBonus(ii, itype, plvl >> 1, plvl, TRUE, FALSE);
 #else
-	GetItemBonus(ii, itype, plvl >> 1, plvl, 1);
+	GetItemBonus(ii, itype, plvl >> 1, plvl, TRUE);
 #endif
 
 	item[ii]._iSeed = iseed;
@@ -4585,9 +4585,9 @@ void RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 	itype = RndBoyItem(lvl) - 1;
 	GetItemAttrs(ii, itype, lvl);
 #ifdef HELLFIRE
-	GetItemBonus(ii, itype, lvl, 2 * lvl, 1, TRUE);
+	GetItemBonus(ii, itype, lvl, 2 * lvl, TRUE, TRUE);
 #else
-	GetItemBonus(ii, itype, lvl, 2 * lvl, 1);
+	GetItemBonus(ii, itype, lvl, 2 * lvl, TRUE);
 #endif
 	item[ii]._iSeed = iseed;
 	item[ii]._iCreateInfo = lvl | 0x1000;
@@ -4619,10 +4619,10 @@ void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 			iblvl = 2 * lvl;
 		if (iblvl != -1)
 #ifdef HELLFIRE
-			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1, TRUE);
+			GetItemBonus(ii, itype, iblvl >> 1, iblvl, TRUE, TRUE);
 	}
 #else
-			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1);
+			GetItemBonus(ii, itype, iblvl >> 1, iblvl, TRUE);
 #endif
 }
 

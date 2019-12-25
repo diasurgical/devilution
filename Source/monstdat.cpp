@@ -293,7 +293,11 @@ BYTE MonstAvailTbl[] = {
 	2, // Storm Rider
 	2, // Storm Lord
 	2, // Maelstorm
+#ifdef HELLFIRE
 	2, // Devil Kin Brute
+#else
+	0, // Devil Kin Brute
+#endif
 	2, // Winged-Demon
 	2, // Gargoyle
 	2, // Blood Claw

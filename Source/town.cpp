@@ -471,7 +471,7 @@ void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int efl
 		}
 	}
 	if (dFlags[sx][sy] & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(sx, sy, dx, dy, 0, 8, 1);
+		DrawDeadPlayer(sx, sy, dx, dy, 0, 8, TRUE);
 	}
 	if (dPlayer[sx][sy] > 0) {
 		bv = dPlayer[sx][sy] - 1;
@@ -685,7 +685,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int row, int CelSkip,
 		}
 	}
 	if (dFlags[sx][sy] & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(sx, sy, dx, dy, CelSkip, 8, 1);
+		DrawDeadPlayer(sx, sy, dx, dy, CelSkip, 8, TRUE);
 	}
 	if (dPlayer[sx][sy] > 0) {
 		bv = dPlayer[sx][sy] - 1;
@@ -911,7 +911,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, 
 		}
 	}
 	if (dFlags[x][y] & BFLAG_DEAD_PLAYER) {
-		DrawDeadPlayer(x, y, sx, sy, 0, CelCap, 0);
+		DrawDeadPlayer(x, y, sx, sy, 0, CelCap, FALSE);
 	}
 	if (dPlayer[x][y] > 0) {
 		bv = dPlayer[x][y] - 1;
@@ -927,7 +927,7 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, 
 		}
 	}
 	if (dFlags[x][y] & BFLAG_MISSILE) {
-		DrawMissile(x, y, sx, sy, 0, CelCap, 0);
+		DrawMissile(x, y, sx, sy, 0, CelCap, FALSE);
 	}
 	if (dArch[x][y] != 0) {
 		town_special_upper(pBuff, dArch[x][y]);

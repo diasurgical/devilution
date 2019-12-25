@@ -101,7 +101,7 @@ int L6DownList[9] = { 57, 58, 59, 60, 61, 62, 63, 64, -1 };
 void InitNoTriggers()
 {
 	numtrigs = 0;
-	trigflag = 0;
+	trigflag = FALSE;
 }
 #endif
 
@@ -258,7 +258,7 @@ void InitL1Triggers()
 		}
 	}
 #endif
-	trigflag = 0;
+	trigflag = FALSE;
 }
 
 #ifndef SPAWN
@@ -292,7 +292,7 @@ void InitL2Triggers()
 			}
 		}
 	}
-	trigflag = 0;
+	trigflag = FALSE;
 }
 
 void InitL3Triggers()
@@ -356,7 +356,7 @@ void InitL3Triggers()
 		}
 	}
 #endif
-	trigflag = 0;
+	trigflag = FALSE;
 }
 
 void InitL4Triggers()
@@ -400,12 +400,12 @@ void InitL4Triggers()
 			}
 		}
 	}
-	trigflag = 0;
+	trigflag = FALSE;
 }
 
 void InitSKingTriggers()
 {
-	trigflag = 0;
+	trigflag = FALSE;
 	numtrigs = 1;
 	trigs[0]._tx = 82;
 	trigs[0]._ty = 42;
@@ -414,7 +414,7 @@ void InitSKingTriggers()
 
 void InitSChambTriggers()
 {
-	trigflag = 0;
+	trigflag = FALSE;
 	numtrigs = 1;
 	trigs[0]._tx = 70;
 	trigs[0]._ty = 39;
@@ -423,7 +423,7 @@ void InitSChambTriggers()
 
 void InitPWaterTriggers()
 {
-	trigflag = 0;
+	trigflag = FALSE;
 	numtrigs = 1;
 	trigs[0]._tx = 30;
 	trigs[0]._ty = 83;
@@ -432,7 +432,7 @@ void InitPWaterTriggers()
 
 void InitVPTriggers()
 {
-	trigflag = 0;
+	trigflag = FALSE;
 	numtrigs = 1;
 	trigs[0]._tx = 35;
 	trigs[0]._ty = 32;

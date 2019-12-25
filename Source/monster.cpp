@@ -1781,7 +1781,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	monster[i]._mhitpoints = 0;
 	SetRndSeed(monster[i]._mRndSeed);
 	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[UMT_GARBUD].mName) {
-		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, 4, FALSE, TRUE, FALSE);
+		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, 4, 0, TRUE, FALSE);
 	} else if (i > 3) {
 		SpawnItem(i, monster[i]._mx, monster[i]._my, sendmsg);
 	}
@@ -2332,7 +2332,7 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 		SyncPlrKill(pnum, 0);
 		return;
 	}
-	StartPlrHit(pnum, dam, 0);
+	StartPlrHit(pnum, dam, FALSE);
 	if (monster[i]._mFlags & MFLAG_KNOCKBACK) {
 		if (plr[pnum]._pmode != PM_GOTHIT)
 			StartPlrHit(pnum, 0, TRUE);
@@ -2585,7 +2585,7 @@ int M_DoTalk(int i)
 	    && !(Monst->_mFlags & MFLAG_QUEST_COMPLETE)) {
 		quests[QTYPE_ZHAR]._qactive = 2;
 		quests[QTYPE_ZHAR]._qlog = TRUE;
-		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, FALSE, 0, 24, TRUE, 0);
+		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, FALSE, 0, 24, TRUE, FALSE);
 		Monst->_mFlags |= MFLAG_QUEST_COMPLETE;
 	}
 	if (Monst->mName == UniqMonst[UMT_SNOTSPIL].mName) {
@@ -2720,13 +2720,13 @@ void DoEnding()
 
 #ifndef SPAWN
 	if (plr[myplr]._pClass == PC_WARRIOR) {
-		play_movie("gendata\\DiabVic2.smk", 0);
+		play_movie("gendata\\DiabVic2.smk", FALSE);
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
-		play_movie("gendata\\DiabVic1.smk", 0);
+		play_movie("gendata\\DiabVic1.smk", FALSE);
 	} else {
-		play_movie("gendata\\DiabVic3.smk", 0);
+		play_movie("gendata\\DiabVic3.smk", FALSE);
 	}
-	play_movie("gendata\\Diabend.smk", 0);
+	play_movie("gendata\\Diabend.smk", FALSE);
 
 	bMusicOn = gbMusicOn;
 	gbMusicOn = TRUE;
@@ -2736,7 +2736,7 @@ void DoEnding()
 
 	music_start(TMUSIC_L2);
 	loop_movie = TRUE;
-	play_movie("gendata\\loopdend.smk", 1);
+	play_movie("gendata\\loopdend.smk", TRUE);
 	loop_movie = FALSE;
 	music_stop();
 
@@ -5437,7 +5437,7 @@ void PrintMonstHistory(int mt)
 			}
 		}
 	}
-	pinfoflag = 1;
+	pinfoflag = TRUE;
 }
 
 void PrintUniqueHistory()
@@ -5506,7 +5506,7 @@ void MissToMonst(int i, int x, int y)
 				M_TryH2HHit(m, dPlayer[oldx][oldy] - 1, 500, Monst->mMinDamage2, Monst->mMaxDamage2);
 				if (pnum == dPlayer[oldx][oldy] - 1 && (Monst->MType->mtype < MT_NSNAKE || Monst->MType->mtype > MT_GSNAKE)) {
 					if (plr[pnum]._pmode != 7 && plr[pnum]._pmode != 8)
-						StartPlrHit(pnum, 0, 1);
+						StartPlrHit(pnum, 0, TRUE);
 					newx = oldx + offset_x[Monst->_mdir];
 					newy = oldy + offset_y[Monst->_mdir];
 					if (PosOkPlayer(pnum, newx, newy)) {
@@ -5681,7 +5681,7 @@ int M_SpawnSkel(int x, int y, int dir)
 			if (IsSkel(Monsters[i].mtype))
 				j++;
 		}
-		skel = AddMonster(x, y, dir, i - 1, 1);
+		skel = AddMonster(x, y, dir, i - 1, TRUE);
 		if (skel != -1)
 			M_StartSpStand(skel, dir);
 
@@ -5776,7 +5776,7 @@ int PreSpawnSkeleton()
 			if (IsSkel(Monsters[i].mtype))
 				j++;
 		}
-		skel = AddMonster(0, 0, 0, i - 1, 0);
+		skel = AddMonster(0, 0, 0, i - 1, FALSE);
 		if (skel != -1)
 			M_StartStand(skel, 0);
 

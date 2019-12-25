@@ -74,7 +74,7 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 	fault_hex_format((BYTE *)ctx->Eip, 16);
 
 	log_printf("\r\n");
-	log_flush(1);
+	log_flush(TRUE);
 
 	if (lpTopLevelExceptionFilter)
 		return lpTopLevelExceptionFilter(ExceptionInfo);

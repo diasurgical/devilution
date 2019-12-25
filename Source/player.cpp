@@ -1278,7 +1278,7 @@ void StartWalkStand(int pnum)
 	plr[pnum]._pxoff = 0;
 	plr[pnum]._pyoff = 0;
 
-	CheckEFlag(pnum, 0);
+	CheckEFlag(pnum, FALSE);
 
 	if (pnum == myplr) {
 		ScrollInfo._sxoff = 0;
