@@ -226,7 +226,7 @@ void start_game(unsigned int uMsg)
 	InitLevelCursor();
 	sgnTimeoutCurs = 0;
 	sgbMouseDown = 0;
-	track_repeat_walk(0);
+	track_repeat_walk(FALSE);
 }
 
 void free_game()
@@ -892,7 +892,7 @@ void PressKey(int vkey)
 	}
 	if (vkey == VK_ESCAPE) {
 		if (!PressEscKey()) {
-			track_repeat_walk(0);
+			track_repeat_walk(FALSE);
 			gamemenu_previous();
 		}
 		return;
@@ -924,7 +924,7 @@ void PressKey(int vkey)
 			ClearPanel();
 			AddPanelString("No help available", TRUE); /// BUGFIX: message isn't displayed
 			AddPanelString("while in stores", TRUE);
-			track_repeat_walk(0);
+			track_repeat_walk(FALSE);
 		} else {
 			invflag = 0;
 			chrflag = FALSE;
@@ -935,7 +935,7 @@ void PressKey(int vkey)
 				sfx_stop();
 			}
 			questlog = FALSE;
-			automapflag = 0;
+			automapflag = FALSE;
 			msgdelay = 0;
 			gamemenu_off();
 			DisplayHelp();
@@ -1044,7 +1044,7 @@ void PressKey(int vkey)
 			SetCursorPos(MouseX - 160, MouseY);
 		}
 		helpflag = 0;
-		invflag = 0;
+		invflag = FALSE;
 		chrflag = FALSE;
 		sbookflag = FALSE;
 		spselflag = 0;
@@ -1053,7 +1053,7 @@ void PressKey(int vkey)
 			sfx_stop();
 		}
 		questlog = FALSE;
-		automapflag = 0;
+		automapflag = FALSE;
 		msgdelay = 0;
 		gamemenu_off();
 		doom_close();
@@ -1068,7 +1068,7 @@ void diablo_pause_game()
 		} else {
 			PauseMode = 2;
 			FreeMonsterSnd();
-			track_repeat_walk(0);
+			track_repeat_walk(FALSE);
 		}
 		force_redraw = 255;
 	}
@@ -1155,19 +1155,19 @@ void PressChar(int vkey)
 	case 'S':
 	case 's':
 		if (!stextflag) {
-			invflag = 0;
+			invflag = FALSE;
 			if (!spselflag) {
 				DoSpeedBook();
 			} else {
 				spselflag = 0;
 			}
-			track_repeat_walk(0);
+			track_repeat_walk(FALSE);
 		}
 		return;
 	case 'B':
 	case 'b':
 		if (!stextflag) {
-			invflag = 0;
+			invflag = FALSE;
 			sbookflag = !sbookflag;
 		}
 		return;
