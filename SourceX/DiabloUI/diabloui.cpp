@@ -107,18 +107,6 @@ void UiInitScrollBar(UiScrollBar *ui_sb, std::size_t viewport_size, const std::s
 	}
 }
 
-void UiPlayMoveSound()
-{
-	if (gfnSoundFunction)
-		gfnSoundFunction("sfx\\items\\titlemov.wav");
-}
-
-void UiPlaySelectSound()
-{
-	if (gfnSoundFunction)
-		gfnSoundFunction("sfx\\items\\titlslct.wav");
-}
-
 void UiFocus(int itemIndex, bool wrap = false)
 {
 	if (!wrap) {
@@ -138,9 +126,10 @@ void UiFocus(int itemIndex, bool wrap = false)
 	if (SelectedItem == itemIndex)
 		return;
 
-	SelectedItem = itemIndex;
+	if (gfnSoundFunction)
+		gfnSoundFunction("sfx\\items\\titlemov.wav");
 
-	UiPlayMoveSound();
+	SelectedItem = itemIndex;
 
 	if (gfnListFocus)
 		gfnListFocus(itemIndex);
@@ -313,7 +302,8 @@ void UiHandleEvents(SDL_Event *event)
 
 void UiFocusNavigationSelect()
 {
-	UiPlaySelectSound();
+	if (gfnSoundFunction)
+		gfnSoundFunction("sfx\\items\\titlslct.wav");
 	if (SDL_IsTextInputActive()) {
 		if (strlen(UiTextInput) == 0) {
 			return;
@@ -328,7 +318,8 @@ void UiFocusNavigationSelect()
 
 void UiFocusNavigationEsc()
 {
-	UiPlaySelectSound();
+	if (gfnSoundFunction)
+		gfnSoundFunction("sfx\\items\\titlslct.wav");
 	if (SDL_IsTextInputActive()) {
 		SDL_StopTextInput();
 		UiTextInput = NULL;
@@ -343,8 +334,8 @@ void UiFocusNavigationYesNo()
 	if (gfnListYesNo == NULL)
 		return;
 
-	if (gfnListYesNo())
-		UiPlaySelectSound();
+	if (gfnListYesNo() && gfnSoundFunction)
+		gfnSoundFunction("sfx\\items\\titlslct.wav");
 }
 
 bool IsInsideRect(const SDL_Event &event, const SDL_Rect &rect)
