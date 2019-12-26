@@ -12,11 +12,6 @@ struct IDirectSoundBuffer {
 
 typedef IDirectSoundBuffer *LPDIRECTSOUNDBUFFER;
 
-const auto DVL_DS_OK = 0;
 const auto DVL_ERROR_SUCCESS = 0L;
-const auto DVL_DSBSTATUS_PLAYING = 0x00000001;
-
-constexpr auto DVL_SW_HIDE = 0;
-constexpr auto DVL_SW_SHOWNORMAL = 1;
 
 } // namespace dvl

@@ -204,7 +204,6 @@ bool SpawnWindow(LPCSTR lpWindowName, int nWidth, int nHeight);
 
 uintptr_t DVL_beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_StartAddress)(void *),
     void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
-HANDLE GetCurrentThread();
 DWORD GetCurrentThreadId();
 WINBOOL SetThreadPriority(HANDLE hThread, int nPriority);
 void Sleep(DWORD dwMilliseconds);
@@ -330,7 +329,6 @@ HANDLE CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
 WINBOOL ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
     LPOVERLAPPED lpOverlapped);
 DWORD GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh);
-WINBOOL GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize);
 WINBOOL DeleteFileA(LPCSTR lpFileName);
 
 typedef struct _CONTEXT {

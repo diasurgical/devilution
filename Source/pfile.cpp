@@ -216,7 +216,6 @@ BOOL pfile_ui_set_hero_infos(BOOL(*ui_add_hero_info)(_uiheroinfo *))
 BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 {
 	HANDLE file;
-	BOOL decoded;
 	DWORD dwlen, nSize;
 	BYTE *buf;
 
@@ -235,16 +234,8 @@ BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 			DWORD read;
 			buf = DiabloAllocPtr(dwlen);
 			if (SFileReadFile(file, buf, dwlen, &read, NULL)) {
-				decoded = TRUE;
 				read = codec_decode(buf, dwlen, password);
-				if (!read && gbMaxPlayers > 1) {
-					GetComputerName(password, &nSize);
-					if (SFileSetFilePointer(file, 0, NULL, FILE_BEGIN) || !SFileReadFile(file, buf, dwlen, &read, NULL))
-						decoded = FALSE;
-					else
-						read = codec_decode(buf, dwlen, password);
-				}
-				if (decoded && read == sizeof(*pPack)) {
+				if (read == sizeof(*pPack)) {
 					memcpy(pPack, buf, sizeof(*pPack));
 					ret = TRUE;
 				}
@@ -571,19 +562,7 @@ BYTE *pfile_read(const char *pszName, DWORD *pdwLen)
 
 		*pdwLen = codec_decode(buf, *pdwLen, password);
 		if (*pdwLen == 0) {
-			// BUGFIFX: *pdwLen has already been overwritten with zero and the savefile has been closed
-			// there is no way this can work correctly
-			if (gbMaxPlayers > 1) {
-				GetComputerName(password, &nSize);
-				if (SFileSetFilePointer(save, 0, NULL, FILE_BEGIN))
-					app_fatal("Unable to read save file");
-
-				if (!SFileReadFile(save, buf, *pdwLen, &nread, NULL))
-					app_fatal("Unable to read save file");
-				*pdwLen = codec_decode(buf, *pdwLen, password);
-			}
-			if (*pdwLen == 0)
-				app_fatal("Invalid save file");
+			app_fatal("Invalid save file");
 		}
 	}
 	return buf;

@@ -92,14 +92,6 @@ void Sleep(DWORD dwMilliseconds)
 	SDL_Delay(dwMilliseconds);
 }
 
-WINBOOL GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
-{
-	DUMMY();
-	strncpy(lpBuffer, "localhost", *nSize);
-	*nSize = strlen(lpBuffer);
-	return true;
-}
-
 WINBOOL DeleteFileA(LPCSTR lpFileName)
 {
 	char name[DVL_MAX_PATH];
