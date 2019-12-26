@@ -878,7 +878,7 @@ void HandleRightStickMotion()
 		return;
 	}
 
-	if (automapflag) { // move map
+	if (automapflag && currlevel != DTYPE_TOWN) { // move map
 		int dx = 0, dy = 0;
 		acc.pool(&dx, &dy, 32);
 		AutoMapXOfs += dy + dx;
