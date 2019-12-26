@@ -38,17 +38,10 @@ char *sgszMusicTracks[NUM_MUSIC] = {
 
 BOOL snd_playing(TSnd *pSnd)
 {
-	DWORD dwStatus;
-
-	if (!pSnd)
+	if (pSnd == NULL || pSnd->DSB == NULL)
 		return false;
 
-	if (pSnd->DSB == NULL)
-		return false;
-
-	pSnd->DSB->GetStatus(&dwStatus);
-
-	return dwStatus == DVL_DSBSTATUS_PLAYING;
+	return pSnd->DSB->IsPlaying();
 }
 
 void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
