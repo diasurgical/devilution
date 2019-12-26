@@ -225,7 +225,7 @@ void FindRangedTarget()
 
 void FindMeleeTarget()
 {
-	bool visited[MAXDUNX][MAXDUNY] = { 0 };
+	bool visited[MAXDUNX][MAXDUNY] = { { 0 } };
 	int maxSteps = 25; // Max steps for FindPath is 25
 	int rotations;
 	bool canTalk;
