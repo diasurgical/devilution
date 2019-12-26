@@ -396,7 +396,7 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 			sgbControllerActive = true;
 
 			if (movie_playing) {
-				lpMsg->message = DVL_WM_CHAR;
+				lpMsg->message = DVL_WM_KEYDOWN;
 				if (action.type == GameActionType::SEND_KEY)
 					lpMsg->wParam = action.send_key.vk_code;
 				return true;
