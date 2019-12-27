@@ -237,7 +237,7 @@ static int translate_sdl_key(SDL_Keysym key)
 		} else if (sym >= SDLK_F1 && sym <= SDLK_F12) {
 			return DVL_VK_F1 + (sym - SDLK_F1);
 		}
-		DUMMY_PRINT("unknown key: name=%s sym=0x%X scan=%d mod=0x%X", SDL_GetKeyName(sym), sym, key.scancode, key.mod);
+		SDL_Log("unknown key: name=%s sym=0x%X scan=%d mod=0x%X", SDL_GetKeyName(sym), sym, key.scancode, key.mod);
 		return -1;
 	}
 }
@@ -258,7 +258,7 @@ WPARAM keystate_for_mouse(WPARAM ret)
 
 WINBOOL false_avail(const char *name, int value)
 {
-	DUMMY_PRINT("Unhandled SDL event: %s %d", name, value);
+	SDL_Log("Unhandled SDL event: %s %d", name, value);
 	return true;
 }
 
@@ -715,9 +715,7 @@ SHORT GetAsyncKeyState(int vKey)
 
 LRESULT DispatchMessageA(const MSG *lpMsg)
 {
-	DUMMY_ONCE();
 	assert(CurrentProc);
-	// assert(CurrentProc == GM_Game);
 
 	return CurrentProc(NULL, lpMsg->message, lpMsg->wParam, lpMsg->lParam);
 }
