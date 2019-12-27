@@ -62,26 +62,6 @@ int _strnicmp(const char *_Str1, const char *_Str2, size_t n)
 	return strncasecmp(_Str1, _Str2, n);
 }
 
-char *_itoa(int _Value, char *_Dest, int _Radix)
-{
-	switch (_Radix) {
-	case 8:
-		sprintf(_Dest, "%o", _Value);
-		break;
-	case 10:
-		sprintf(_Dest, "%d", _Value);
-		break;
-	case 16:
-		sprintf(_Dest, "%x", _Value);
-		break;
-	default:
-		UNIMPLEMENTED();
-		break;
-	}
-
-	return _Dest;
-}
-
 DWORD GetTickCount()
 {
 	return SDL_GetTicks();

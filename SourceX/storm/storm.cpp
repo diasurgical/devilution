@@ -16,6 +16,8 @@
 
 namespace dvl {
 
+std::string basePath;
+
 DWORD nLastError = 0;
 bool directFileAccess = false;
 
@@ -33,6 +35,11 @@ static Mix_Chunk *SFileChunk;
 
 void GetBasePath(char *buffer, size_t size)
 {
+	if (basePath.length()) {
+		snprintf(buffer, size, "%s", basePath.c_str());
+		return;
+	}
+
 	char *path = SDL_GetBasePath();
 	if (path == NULL) {
 		SDL_Log(SDL_GetError());

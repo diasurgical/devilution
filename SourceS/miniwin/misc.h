@@ -212,7 +212,6 @@ int wsprintfA(LPSTR, LPCSTR, ...);
 int wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist);
 int _strcmpi(const char *_Str1, const char *_Str2);
 int _strnicmp(const char *_Str1, const char *_Str2, size_t n);
-char *_itoa(int _Value, char *_Dest, int _Radix);
 
 //
 // File I/O

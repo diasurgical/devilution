@@ -1906,7 +1906,7 @@ void control_drop_gold(char vkey)
 	}
 
 	memset(input, 0, sizeof(input));
-	_itoa(dropGoldValue, input, 10);
+	SDL_itoa(dropGoldValue, input, 10);
 	if (vkey == VK_RETURN) {
 		if (dropGoldValue > 0)
 			control_remove_gold(myplr, initialDropGoldIndex);

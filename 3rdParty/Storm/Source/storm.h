@@ -4,7 +4,10 @@
 #define __BLIZZARD_STORM_HEADER
 
 #include <limits>
+#include <string>
 namespace dvl {
+
+extern std::string basePath;
 
 // Note to self: Linker error => forgot a return value in cpp
 

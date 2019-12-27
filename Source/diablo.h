@@ -125,8 +125,8 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer);
 void run_game_loop(unsigned int uMsg);
 void start_game(unsigned int uMsg);
 void free_game();
-int DiabloMain(const char *lpCmdLine);
-void diablo_parse_flags(const char *args);
+int DiabloMain(int argc, char **argv);
+void diablo_parse_flags(int argc, char **argv);
 void diablo_init_screen();
 void diablo_reload_process(HINSTANCE hInstance);
 BOOL PressEscKey();
@@ -158,8 +158,8 @@ void diablo_color_cyc_logic();
 /* rdata */
 
 extern BOOL fullscreen;
-#ifdef _DEBUG
 extern int showintrodebug;
+#ifdef _DEBUG
 extern int questdebug;
 extern int debug_mode_key_s;
 extern int debug_mode_key_w;
