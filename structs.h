@@ -1400,7 +1400,7 @@ typedef struct PkPlayerStruct {
 	PkItemStruct InvBody[NUM_INVLOC];
 	PkItemStruct InvList[NUM_INV_GRID_ELEM];
 	BYTE _pNumInv;
-	char InvGrid[NUM_INV_GRID_ELEM];
+	char InvGrid[NUM_INV_GRID_ELEM+3]; //align?
 	PkItemStruct SpdList[MAXBELTITEMS];
 	char pTownWarps;
 	char pDungMsgs;
