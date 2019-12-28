@@ -3528,13 +3528,13 @@ void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 			SetRndSeed(object[i]._oRndSeed);
 			uniqueRnd = random_(0, 2);
 			if (currlevel <= 5) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_LARMOR, 0, sendmsg, FALSE);
+				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_LARMOR, IMISC_NONE, sendmsg, FALSE);
 			} else if (currlevel >= 6 && currlevel <= 9) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, uniqueRnd, ITYPE_MARMOR, 0, sendmsg, FALSE);
+				CreateTypeItem(object[i]._ox, object[i]._oy, uniqueRnd, ITYPE_MARMOR, IMISC_NONE, sendmsg, FALSE);
 			} else if (currlevel >= 10 && currlevel <= 12) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_HARMOR, 0, sendmsg, FALSE);
+				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_HARMOR, IMISC_NONE, sendmsg, FALSE);
 			} else if (currlevel >= 13 && currlevel <= 16) {
-				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, 0, sendmsg, FALSE);
+				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, IMISC_NONE, sendmsg, FALSE);
 			}
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
@@ -3737,9 +3737,9 @@ void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 		return;
 
 	if (leveltype > 1)
-		CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, weaponType, 0, sendmsg, FALSE);
+		CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, weaponType, IMISC_NONE, sendmsg, FALSE);
 	else
-		CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, weaponType, 0, sendmsg, FALSE);
+		CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, weaponType, IMISC_NONE, sendmsg, FALSE);
 	if (pnum == myplr)
 		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 }

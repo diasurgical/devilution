@@ -2504,8 +2504,8 @@ void CheckIdentify(int pnum, int cii)
 {
 	ItemStruct *pi;
 
-	if (cii >= 7)
-		pi = &plr[pnum].InvList[cii - 7];
+	if (cii >= NUM_INVLOC)
+		pi = &plr[pnum].InvList[cii - NUM_INVLOC];
 	else
 		pi = &plr[pnum].InvBody[cii];
 
@@ -2524,8 +2524,8 @@ void DoRepair(int pnum, int cii)
 	p = &plr[pnum];
 	PlaySfxLoc(IS_REPAIR, p->WorldX, p->WorldY);
 
-	if (cii >= 7) {
-		pi = &p->InvList[cii - 7];
+	if (cii >= NUM_INVLOC) {
+		pi = &p->InvList[cii - NUM_INVLOC];
 	} else {
 		pi = &p->InvBody[cii];
 	}
@@ -2575,8 +2575,8 @@ void DoRecharge(int pnum, int cii)
 	int r;
 
 	p = &plr[pnum];
-	if (cii >= 7) {
-		pi = &p->InvList[cii - 7];
+	if (cii >= NUM_INVLOC) {
+		pi = &p->InvList[cii - NUM_INVLOC];
 	} else {
 		pi = &p->InvBody[cii];
 	}
