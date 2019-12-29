@@ -1399,8 +1399,8 @@ typedef struct PkPlayerStruct {
 	unsigned __int64 pMemSpells;
 	PkItemStruct InvBody[NUM_INVLOC];
 	PkItemStruct InvList[NUM_INV_GRID_ELEM];
-	BYTE _pNumInv;
 	char InvGrid[NUM_INV_GRID_ELEM];
+	BYTE _pNumInv;
 	PkItemStruct SpdList[MAXBELTITEMS];
 	char pTownWarps;
 	char pDungMsgs;
