@@ -377,7 +377,6 @@ void UiInitialize()
 
 int UiProfileGetString()
 {
-	DUMMY();
 	return 0;
 }
 
