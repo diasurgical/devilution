@@ -1327,7 +1327,7 @@ typedef struct _SNETUIDATA {
 	void(* categorylistcallback)();
 	void(* newaccountcallback)();
 	void(* profilecallback)();
-	int profilefields;
+	const char **profilefields;
 	void(* profilebitmapcallback)();
 	int(__stdcall *selectnamecallback)(
 	    const struct _SNETPROGRAMDATA *,
