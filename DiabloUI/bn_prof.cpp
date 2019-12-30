@@ -10,7 +10,7 @@ signed int bn_prof_100014E8() { return 0; }
 // 10029404: using guessed type int dword_10029404;
 
 // ref: 0x100014F3
-int __stdcall UiProfileGetString() { return 0; }
+const char **__stdcall UiProfileGetString() { return NULL; }
 //const char *UiProfileGetString() { return 0; }
 /* {
 	return "profile\\sex";

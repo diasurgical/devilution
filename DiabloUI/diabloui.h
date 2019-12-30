@@ -37,7 +37,7 @@ BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 BOOL __stdcall UiCreditsDialog(int a1);
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4);
 BOOL __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)(), int rate);
-int __stdcall UiProfileGetString();
+const char **__stdcall UiProfileGetString();
 void __cdecl UiProfileCallback();
 void __cdecl UiProfileDraw();
 BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, DWORD *a6, DWORD *a7);
