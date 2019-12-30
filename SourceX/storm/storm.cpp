@@ -20,6 +20,7 @@ std::string basePath;
 
 DWORD nLastError = 0;
 bool directFileAccess = false;
+char SBasePath[DVL_MAX_PATH];
 
 static std::string getIniPath()
 {
@@ -167,9 +168,11 @@ BOOL SFileOpenFile(const char *filename, HANDLE *phFile)
 
 	if (directFileAccess) {
 		char directPath[DVL_MAX_PATH] = "\0";
+		char tmpPath[DVL_MAX_PATH] = "\0";
 		for (size_t i = 0; i < strlen(filename); i++) {
-			directPath[i] = AsciiToLowerTable_Path[static_cast<unsigned char>(filename[i])];
+			tmpPath[i] = AsciiToLowerTable_Path[static_cast<unsigned char>(filename[i])];
 		}
+		snprintf(directPath, DVL_MAX_PATH, "%s%s", SBasePath, tmpPath);
 		result = SFileOpenFileEx((HANDLE)0, directPath, 0xFFFFFFFF, phFile);
 	}
 	if (!result && patch_rt_mpq) {
@@ -786,9 +789,9 @@ int SStrCopy(char *dest, const char *src, int max_length)
 	return strlen(dest);
 }
 
-BOOL SFileSetBasePath(char *)
+BOOL SFileSetBasePath(char *path)
 {
-	DUMMY();
+	strncpy(SBasePath, path, DVL_MAX_PATH);
 	return true;
 }
 
