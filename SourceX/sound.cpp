@@ -120,6 +120,7 @@ void snd_init(HWND hWnd)
 {
 	sound_load_volume("Sound Volume", &sglSoundVolume);
 	gbSoundOn = sglSoundVolume > VOLUME_MIN;
+	sgbSaveSoundOn = gbSoundOn;
 
 	sound_load_volume("Music Volume", &sglMusicVolume);
 	gbMusicOn = sglMusicVolume > VOLUME_MIN;
