@@ -518,7 +518,9 @@ void SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 		return;
 	}
 
-	SVidLoop = flags & 0x40000;
+	SVidLoop = false;
+	if (flags & 0x40000)
+		SVidLoop = true;
 	bool enableVideo = !(flags & 0x100000);
 	bool enableAudio = !(flags & 0x1000000);
 	//0x8 // Non-interlaced
