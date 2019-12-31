@@ -1,5 +1,6 @@
 #include "diablo.h"
 #include "../3rdParty/Storm/Source/storm.h"
+#include "../SourceX/miniwin/ddraw.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -39,6 +40,8 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 		SVidPlayEnd(video_stream);
 	sound_disable_music(FALSE);
 	movie_playing = FALSE;
+	SDL_GetMouseState(&MouseX, &MouseY);
+	OutputToLogical(&MouseX, &MouseY);
 }
 
 DEVILUTION_END_NAMESPACE

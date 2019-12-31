@@ -413,6 +413,8 @@ void diablo_init_screen()
 
 	MouseX = SCREEN_WIDTH / 2;
 	MouseY = SCREEN_HEIGHT / 2;
+	if (!sgbControllerActive)
+		SetCursorPos(MouseX, MouseY);
 	ScrollInfo._sdx = 0;
 	ScrollInfo._sdy = 0;
 	ScrollInfo._sxoff = 0;
@@ -473,6 +475,8 @@ LRESULT DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_SYSKEYDOWN:
 	case WM_SYSCOMMAND:
 	case WM_MOUSEMOVE:
+		MouseX = (short)LOWORD(lParam);
+		MouseY = (short)HIWORD(lParam);
 		return 0;
 	case WM_LBUTTONDOWN:
 		if (sgbMouseDown == 0) {

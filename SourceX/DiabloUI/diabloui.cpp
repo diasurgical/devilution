@@ -302,6 +302,15 @@ void UiFocusNavigation(SDL_Event *event)
 
 void UiHandleEvents(SDL_Event *event)
 {
+	if (event->type == SDL_MOUSEMOTION) {
+#ifdef USE_SDL1
+		OutputToLogical(&event->motion.x, &event->motion.y);
+#endif
+		MouseX = event->motion.x;
+		MouseY = event->motion.y;
+		return;
+	}
+
 	if (event->type == SDL_QUIT)
 		exit(0);
 
@@ -837,8 +846,6 @@ void DrawMouse()
 	if (sgbControllerActive)
 		return;
 
-	SDL_GetMouseState(&MouseX, &MouseY);
-	OutputToLogical(&MouseX, &MouseY);
 	DrawArt(MouseX, MouseY, &ArtCursor);
 }
 
