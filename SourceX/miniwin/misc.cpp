@@ -8,11 +8,6 @@
 #include "DiabloUI/diabloui.h"
 #include "DiabloUI/dialogs.h"
 
-#ifdef _MSC_VER
-#define strcasecmp _stricmp
-#define strncasecmp _strnicmp
-#endif
-
 #if defined(USE_SDL1) && defined(RETROFW)
 #include <unistd.h>
 #endif

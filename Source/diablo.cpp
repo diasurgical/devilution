@@ -3,11 +3,6 @@
 #include "../DiabloUI/diabloui.h"
 #include <config.h>
 
-#ifdef _MSC_VER
-#define strcasecmp _stricmp
-#define strncasecmp _strnicmp
-#endif
-
 DEVILUTION_BEGIN_NAMESPACE
 
 HWND ghMainWnd;
