@@ -240,6 +240,15 @@ void UiFocusNavigation(SDL_Event *event)
 		break;
 	}
 
+	if (event->type == SDL_MOUSEWHEEL) {
+		if (event->wheel.y > 0) {
+			UiFocus(SelectedItem - 1, UiItemsWraps);
+		} else if (event->wheel.y < 0) {
+			UiFocus(SelectedItem + 1, UiItemsWraps);
+		}
+		return;
+	}
+
 	if (SDL_IsTextInputActive()) {
 		switch (event->type) {
 		case SDL_KEYDOWN: {

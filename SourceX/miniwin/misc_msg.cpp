@@ -549,6 +549,18 @@ WINBOOL PeekMessageA(LPMSG lpMsg)
 		}
 	} break;
 #ifndef USE_SDL1
+	case SDL_MOUSEWHEEL:
+		lpMsg->message = DVL_WM_KEYDOWN;
+		if (e.wheel.y > 0) {
+			lpMsg->wParam = GetAsyncKeyState(DVL_VK_CONTROL) ? DVL_VK_OEM_PLUS : DVL_VK_UP;
+		} else if (e.wheel.y < 0) {
+			lpMsg->wParam = GetAsyncKeyState(DVL_VK_CONTROL) ? DVL_VK_OEM_MINUS : DVL_VK_DOWN;
+		} else if (e.wheel.x > 0) {
+			lpMsg->wParam = DVL_VK_LEFT;
+		} else if (e.wheel.x < 0) {
+			lpMsg->wParam = DVL_VK_RIGHT;
+		}
+		break;
 #if SDL_VERSION_ATLEAST(2, 0, 4)
 	case SDL_AUDIODEVICEADDED:
 		return false_avail("SDL_AUDIODEVICEADDED", e.adevice.which);
@@ -696,6 +708,8 @@ SHORT GetAsyncKeyState(int vKey)
 		return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT);
 	const Uint8 *state = SDLC_GetKeyState();
 	switch (vKey) {
+	case DVL_VK_CONTROL:
+		return state[SDLC_KEYSTATE_LEFTCTRL] || state[SDLC_KEYSTATE_RIGHTCTRL] ? 0x8000 : 0;
 	case DVL_VK_SHIFT:
 		return state[SDLC_KEYSTATE_LEFTSHIFT] || state[SDLC_KEYSTATE_RIGHTSHIFT] ? 0x8000 : 0;
 	case DVL_VK_MENU:
