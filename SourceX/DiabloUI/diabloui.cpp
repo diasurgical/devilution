@@ -233,10 +233,18 @@ void UiFocusNavigation(SDL_Event *event)
 	case SDL_FINGERMOTION:
 	case SDL_CONTROLLERBUTTONUP:
 	case SDL_CONTROLLERAXISMOTION:
-	case SDL_WINDOWEVENT:
 #endif
 	case SDL_SYSWMEVENT:
 		mainmenu_restart_repintro();
+		break;
+#ifndef USE_SDL1
+	case SDL_WINDOWEVENT:
+		if (event->window.event == SDL_WINDOWEVENT_SHOWN)
+			gbActive = true;
+		else if (event->window.event == SDL_WINDOWEVENT_HIDDEN)
+			gbActive = false;
+		break;
+#endif
 	}
 
 	if (SDL_IsTextInputActive()) {

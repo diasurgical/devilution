@@ -156,6 +156,10 @@ bool SpawnWindow(LPCSTR lpWindowName, int nWidth, int nHeight)
 
 #ifdef USE_SDL1
 	refreshDelay = 1000000 / 60; // 60hz
+#else
+	SDL_DisplayMode mode;
+	SDL_GetDisplayMode(0, 0, &mode);
+	refreshDelay = 1000000 / mode.refresh_rate;
 #endif
 
 	if (upscale) {
@@ -175,12 +179,6 @@ bool SpawnWindow(LPCSTR lpWindowName, int nWidth, int nHeight)
 		if (SDL_RenderSetLogicalSize(renderer, nWidth, nHeight) <= -1) {
 			ErrSdl();
 		}
-#endif
-	} else {
-#ifndef USE_SDL1
-		SDL_DisplayMode mode;
-		SDL_GetDisplayMode(0, 0, &mode);
-		refreshDelay = 1000000 / mode.refresh_rate;
 #endif
 	}
 

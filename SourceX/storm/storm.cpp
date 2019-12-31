@@ -718,7 +718,6 @@ BOOL SVidPlayContinue(void)
 		SDL_FreeSurface(tmp);
 	}
 
-	bufferUpdated = true;
 	RenderPresent();
 
 	double now = SDL_GetTicks() * 1000;

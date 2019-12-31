@@ -1170,6 +1170,7 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
 		scrollrt_draw_cursor_back_buffer();
 		unlock_buf(0);
 	}
+	RenderPresent();
 }
 
 /**
@@ -1232,6 +1233,7 @@ void DrawAndBlit()
 	lock_buf(0);
 	scrollrt_draw_cursor_back_buffer();
 	unlock_buf(0);
+	RenderPresent();
 
 	drawhpflag = FALSE;
 	drawmanaflag = FALSE;
