@@ -240,6 +240,7 @@ void UiFocusNavigation(SDL_Event *event)
 		break;
 	}
 
+#ifndef USE_SDL1
 	if (event->type == SDL_MOUSEWHEEL) {
 		if (event->wheel.y > 0) {
 			UiFocus(SelectedItem - 1, UiItemsWraps);
@@ -248,6 +249,7 @@ void UiFocusNavigation(SDL_Event *event)
 		}
 		return;
 	}
+#endif
 
 	if (SDL_IsTextInputActive()) {
 		switch (event->type) {
