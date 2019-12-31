@@ -189,6 +189,29 @@ void selhero_CatToName(char *in_buf, char *out_buf, int cnt)
 
 void UiFocusNavigation(SDL_Event *event)
 {
+	switch (event->type) {
+	case SDL_KEYUP:
+	case SDL_MOUSEBUTTONUP:
+	case SDL_MOUSEMOTION:
+#ifndef USE_SDL1
+	case SDL_MOUSEWHEEL:
+#endif
+	case SDL_JOYBUTTONUP:
+	case SDL_JOYAXISMOTION:
+	case SDL_JOYBALLMOTION:
+	case SDL_JOYHATMOTION:
+#ifndef USE_SDL1
+	case SDL_FINGERUP:
+	case SDL_FINGERMOTION:
+	case SDL_CONTROLLERBUTTONUP:
+	case SDL_CONTROLLERAXISMOTION:
+	case SDL_WINDOWEVENT:
+#endif
+	case SDL_SYSWMEVENT:
+		mainmenu_restart_repintro();
+		break;
+	}
+
 	switch (GetMenuAction(*event)) {
 	case MenuAction::SELECT:
 		UiFocusNavigationSelect();
@@ -215,36 +238,6 @@ void UiFocusNavigation(SDL_Event *event)
 		return;
 	default:
 		break;
-	}
-
-	switch (event->type) {
-	case SDL_KEYUP:
-	case SDL_MOUSEBUTTONUP:
-	case SDL_MOUSEMOTION:
-#ifndef USE_SDL1
-	case SDL_MOUSEWHEEL:
-#endif
-	case SDL_JOYBUTTONUP:
-	case SDL_JOYAXISMOTION:
-	case SDL_JOYBALLMOTION:
-	case SDL_JOYHATMOTION:
-#ifndef USE_SDL1
-	case SDL_FINGERUP:
-	case SDL_FINGERMOTION:
-	case SDL_CONTROLLERBUTTONUP:
-	case SDL_CONTROLLERAXISMOTION:
-#endif
-	case SDL_SYSWMEVENT:
-		mainmenu_restart_repintro();
-		break;
-#ifndef USE_SDL1
-	case SDL_WINDOWEVENT:
-		if (event->window.event == SDL_WINDOWEVENT_SHOWN)
-			gbActive = true;
-		else if (event->window.event == SDL_WINDOWEVENT_HIDDEN)
-			gbActive = false;
-		break;
-#endif
 	}
 
 	if (SDL_IsTextInputActive()) {
@@ -316,6 +309,13 @@ void UiHandleEvents(SDL_Event *event)
 	if (event->type == SDL_JOYDEVICEADDED || event->type == SDL_JOYDEVICEREMOVED) {
 		InitController();
 		return;
+	}
+
+	if (event->type == SDL_WINDOWEVENT) {
+		if (event->window.event == SDL_WINDOWEVENT_SHOWN)
+			gbActive = true;
+		else if (event->window.event == SDL_WINDOWEVENT_HIDDEN)
+			gbActive = false;
 	}
 #endif
 }
