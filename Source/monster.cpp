@@ -827,9 +827,22 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 #endif
 	Monst->mlid = AddLight(Monst->_mx, Monst->_my, 3);
 
+#ifdef HELLFIRE
 	if (gbMaxPlayers != 1 && Monst->_mAi == AI_LAZHELP) {
 		Monst->mtalkmsg = 0;
-#ifndef HELLFIRE
+	}
+	if (Monst->mtalkmsg) {
+		Monst->_mgoal = MGOAL_INQUIRING;
+	}
+#else
+	if (gbMaxPlayers == 1) {
+		if (Monst->mtalkmsg) {
+			Monst->_mgoal = MGOAL_INQUIRING;
+		}
+	} else {
+		if (Monst->_mAi == AI_LAZHELP) {
+			Monst->mtalkmsg = 0;
+		}
 		if (Monst->_mAi != AI_LAZURUS || quests[QTYPE_VB]._qvar1 <= 3) {
 			if (Monst->mtalkmsg) {
 				Monst->_mgoal = MGOAL_INQUIRING;
@@ -837,11 +850,8 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 		} else {
 			Monst->_mgoal = MGOAL_NORMAL;
 		}
+	}
 #endif
-	}
-	if (Monst->mtalkmsg) {
-		Monst->_mgoal = MGOAL_INQUIRING;
-	}
 
 	if (gnDifficulty == DIFF_NIGHTMARE) {
 #ifdef HELLFIRE
