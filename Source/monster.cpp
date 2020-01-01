@@ -631,6 +631,26 @@ BOOL MonstPlace(int xp, int yp)
 	return !SolidLoc(xp, yp);
 }
 
+
+#ifdef HELLFIRE
+void monster_some_crypt()
+{
+	MonsterStruct *mon;
+	int hp;
+
+	if (currlevel == 24 && UberDiabloMonsterIndex >= 0 && UberDiabloMonsterIndex < nummonsters) {
+		mon = &monster[UberDiabloMonsterIndex];
+		PlayEffect(UberDiabloMonsterIndex, 2);
+		quests[QTYPE_NAKRUL]._qlog = 0;
+		mon->mArmorClass -= 50;
+		hp = mon->_mmaxhp / 2;
+		mon->mMagicRes = 0;
+		mon->_mhitpoints = hp;
+		mon->_mmaxhp = hp;
+	}
+}
+
+#endif
 void PlaceMonster(int i, int mtype, int x, int y)
 {
 	int rd;
