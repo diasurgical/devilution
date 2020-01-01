@@ -2348,11 +2348,19 @@ char GetSBookTrans(int ii, BOOL townok)
 {
 	char st;
 
+#ifdef HELLFIRE
+	if ((plr[myplr]._pClass == PC_MONK) && (ii == 46))
+		return RSPLTYPE_SKILL;
+#endif
 	st = RSPLTYPE_SPELL;
 	if (plr[myplr]._pISpells & (__int64)1 << (ii - 1)) {
 		st = RSPLTYPE_CHARGES;
 	}
+#ifdef HELLFIRE
+	if (plr[myplr]._pAblSpells & (__int64)1 << (ii - 1)) {
+#else
 	if (plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64)
+#endif
 		st = RSPLTYPE_SKILL;
 	}
 	if (st == RSPLTYPE_SPELL) {
