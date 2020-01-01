@@ -780,6 +780,17 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 		}
 	}
 
+#ifdef HELLFIRE
+	if (uniqindex == 12) { // TODO: add indexes for hellfire unique monsters
+		if (UberRow == 0 || UberCol == 0) {
+			UberDiabloMonsterIndex = -1;
+			return;
+		}
+		xp = UberRow - 2;
+		yp = UberCol;
+		UberDiabloMonsterIndex = nummonsters;
+	}
+#endif
 	PlaceMonster(nummonsters, uniqtype, xp, yp);
 	Monst->_uniqtype = uniqindex + 1;
 
@@ -809,17 +820,16 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 	Monst->mMaxDamage2 = Uniq->mMaxDamage;
 	Monst->mMagicRes = Uniq->mMagicRes;
 	Monst->mtalkmsg = Uniq->mtalkmsg;
+#ifdef HELLFIRE
+	if (uniqindex == 10) // TODO: add indexes for hellfire unique monsters
+		Monst->mlid = 0;
+	else
+#endif
 	Monst->mlid = AddLight(Monst->_mx, Monst->_my, 3);
 
-	if (gbMaxPlayers == 1) {
-		if (Monst->mtalkmsg) {
-			Monst->_mgoal = MGOAL_INQUIRING;
-		}
-	} else {
-		if (Monst->_mAi == AI_LAZHELP) {
-			Monst->mtalkmsg = 0;
-		}
-
+	if (gbMaxPlayers != 1 && Monst->_mAi == AI_LAZHELP) {
+		Monst->mtalkmsg = 0;
+#ifndef HELLFIRE
 		if (Monst->_mAi != AI_LAZURUS || quests[QTYPE_VB]._qvar1 <= 3) {
 			if (Monst->mtalkmsg) {
 				Monst->_mgoal = MGOAL_INQUIRING;
@@ -827,11 +837,19 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 		} else {
 			Monst->_mgoal = MGOAL_NORMAL;
 		}
+#endif
+	}
+	if (Monst->mtalkmsg) {
+		Monst->_mgoal = MGOAL_INQUIRING;
 	}
 
 	if (gnDifficulty == DIFF_NIGHTMARE) {
-		Monst->mLevel += 15;
+#ifdef HELLFIRE
+		Monst->_mmaxhp = 3 * Monst->_mmaxhp + ((gbMaxPlayers != 1 ? 100 : 50) << 6);
+#else
 		Monst->_mmaxhp = 3 * Monst->_mmaxhp + 64;
+#endif
+		Monst->mLevel += 15;
 		Monst->_mhitpoints = Monst->_mmaxhp;
 		Monst->mExp = 2 * (Monst->mExp + 1000);
 		Monst->mMinDamage = 2 * (Monst->mMinDamage + 2);
@@ -840,9 +858,17 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 		Monst->mMaxDamage2 = 2 * (Monst->mMaxDamage2 + 2);
 	}
 
+#ifdef HELLFIRE
+	else if (gnDifficulty == DIFF_HELL) {
+#else
 	if (gnDifficulty == DIFF_HELL) {
-		Monst->mLevel += 30;
+#endif
+#ifdef HELLFIRE
+		Monst->_mmaxhp = 4 * Monst->_mmaxhp + ((gbMaxPlayers != 1 ? 200 : 100) << 6);
+#else
 		Monst->_mmaxhp = 4 * Monst->_mmaxhp + 192;
+#endif
+		Monst->mLevel += 30;
 		Monst->_mhitpoints = Monst->_mmaxhp;
 		Monst->mExp = 4 * (Monst->mExp + 1000);
 		Monst->mMinDamage = 4 * Monst->mMinDamage + 6;
