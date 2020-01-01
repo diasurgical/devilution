@@ -5811,7 +5811,11 @@ void TalktoMonster(int i)
 	int pnum, itm;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("TalktoMonster: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	pnum = Monst->_menemy;
