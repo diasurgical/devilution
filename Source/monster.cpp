@@ -631,7 +631,6 @@ BOOL MonstPlace(int xp, int yp)
 	return !SolidLoc(xp, yp);
 }
 
-
 #ifdef HELLFIRE
 void monster_some_crypt()
 {

@@ -28,7 +28,7 @@ void InitMonster(int i, int rd, int mtype, int x, int y);
 void ClrAllMonsters();
 BOOL MonstPlace(int xp, int yp);
 #ifdef HELLFIRE
-void monster_some_crypt()
+void monster_some_crypt();
 #endif
 void PlaceMonster(int i, int mtype, int x, int y);
 void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize);
