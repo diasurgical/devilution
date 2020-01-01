@@ -11,7 +11,6 @@ GitHub: https://github.com/diasurgical/devilutionX
 
 # Multiplayer
  - TCP/IP only requires the host to expose port 6112
- - UPD/IP requires that all players expose port 6112 (currently disabled)
 
 All games are encrypted and password protected.
 

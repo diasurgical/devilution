@@ -5,19 +5,18 @@ Discord: https://discord.gg/aQBQdDe
 GitHub: https://github.com/diasurgical/devilutionX
 
 # How To Install:
- - Extract the files in the zip.
+ - Extract the files in the archive.
  - Install libsdl2 libsdl2-mixer libsdl2-ttf
  - Copy diabdat.mpq from your CD, or GoG install folder, to the DevilutionX install folder; Make sure it is all lowercase.
  - Run ./devilutionx
 
 # Raspberry Pi performance
- - This build is compiled for Raspbian Buster
+ - This build is compiled for Raspbian Stretch
  - For the best experience set upscale=0 in diablo.ini and set the system resolution to 640x480
  - Alternatly you can enable experimental GL-drivers via raspi-config for upscaling support
 
 # Multiplayer
  - TCP/IP only requires the host to expose port 6112
- - UPD/IP requires that all players expose port 6112 (currently disabled)
 
 All games are encrypted and password protected.
 

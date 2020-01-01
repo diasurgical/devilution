@@ -5,14 +5,13 @@ Discord: https://discord.gg/aQBQdDe
 GitHub: https://github.com/diasurgical/devilutionX
 
 # How To Install:
- - Extract the files in the zip.
+ - Extract the files in the archive.
  - Install libsdl2 libsdl2-mixer libsdl2-ttf
  - Copy diabdat.mpq from your CD, or GoG install folder, to the DevilutionX install folder; Make sure it is all lowercase.
  - Run ./devilutionx
 
 # Multiplayer
  - TCP/IP only requires the host to expose port 6112
- - UPD/IP requires that all players expose port 6112 (currently disabled)
 
 All games are encrypted and password protected.
 
