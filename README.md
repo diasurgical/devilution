@@ -15,10 +15,8 @@ Nightly builds | Platform
     - Linux `~/.local/share/diasurgical/devilution/`
     - Windows `C:\Users\[username]\AppData\Roaming\diasurgical\devilution`
  - [Download DevilutionX](https://github.com/diasurgical/devilutionX/releases), or build from source
- - Install [SDL2](https://www.libsdl.org/download-2.0.php) (including [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/) and [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/))
+ - Install [SDL2](https://www.libsdl.org/download-2.0.php) (including [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/) and [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)) (included in macOS and Windows bundle)
  - Run `./devilutionx`
-
-Please keep in mind that this is still being worked on and is missing parts of UI and some minor bugs, see [milestone 1](https://github.com/diasurgical/devilutionX/milestone/1) for a full list of known issues.
 
 # Building from Source
 <details><summary>Linux</summary>
