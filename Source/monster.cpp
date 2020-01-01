@@ -5869,7 +5869,11 @@ void SpawnGolum(int i, int x, int y, int mi)
 BOOL CanTalkToMonst(int m)
 {
 	if ((DWORD)m >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("CanTalkToMonst: Invalid monster %d", m);
+#endif
 	}
 
 	if (monster[m]._mgoal == MGOAL_INQUIRING) {
