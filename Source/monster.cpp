@@ -943,6 +943,28 @@ void PlaceQuestMonsters()
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
+#ifdef HELLFIRE
+
+		if (currlevel == 24) {
+			UberDiabloMonsterIndex = -1;
+			int i1;
+			for (i1 = 0; i1 < nummtypes; i1++) {
+				if (Monsters[i1].mtype == UniqMonst[12].mtype) // TODO: replace 12 with hellfire unique monster enum when it gets created
+					break;
+			}
+
+			if (i1 < nummtypes) {
+				for (int i2 = 0; i2 < nummonsters; i2++) {
+					if (monster[i2]._uniqtype == 0 || monster[i2]._mMTidx == i1) {
+						UberDiabloMonsterIndex = i2;
+						break;
+					}
+				}
+			}
+			if (UberDiabloMonsterIndex == -1)
+				PlaceUniqueMonst(12, 0, 0);
+		}
+#endif
 	} else if (setlvlnum == SL_SKELKING) {
 		PlaceUniqueMonst(UMT_SKELKING, 0, 0);
 	}
