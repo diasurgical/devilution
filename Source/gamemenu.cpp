@@ -255,7 +255,7 @@ void gamemenu_music_volume(BOOL bActivate)
 			int lt;
 			if (currlevel >= 17) {
 				if (currlevel > 20)
-					lt = 5; // TODO: add hellfire level types enum
+					lt = DTYPE_NEST;
 				else
 					lt = 6; // TODO: add hellfire level types enum
 			} else
