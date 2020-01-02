@@ -3584,8 +3584,8 @@ void OperateCauldron(int pnum, int i, int sType)
 	SetRndSeed(object[i]._oRndSeed);
 	object[i]._oVar1 = FindValidShrine(i);
 	OperateShrine(pnum, i, sType);
-	object[i]._oAnimFlag = 0;
 	object[i]._oAnimFrame = 3;
+	object[i]._oAnimFlag = 0;
 	force_redraw = 255;
 }
 
