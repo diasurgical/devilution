@@ -1592,21 +1592,28 @@ void Obj_StopAnim(int i)
 void Obj_Door(int i)
 {
 	int dx, dy;
+	DIABOOL dok;
 
-	if (!object[i]._oVar4) {
-		object[i]._oMissFlag = FALSE;
+	if (object[i]._oVar4 == 0) {
 		object[i]._oSelFlag = 3;
+		object[i]._oMissFlag = FALSE;
 	} else {
-		dy = object[i]._oy;
 		dx = object[i]._ox;
+		dy = object[i]._oy;
+#ifdef HELLFIRE
+		dok = !dMonster[dx][dy];
+		dok = dok && !dItem[dx][dy];
+		dok = dok && !dDead[dx][dy];
+		dok = dok && !dPlayer[dx][dy];
+#else
+		dok = !dMonster[dx][dy];
+		dok = dok & !dItem[dx][dy];
+		dok = dok & !dDead[dx][dy];
+		dok = dok & !dPlayer[dx][dy];
+#endif
 		object[i]._oSelFlag = 2;
+		object[i]._oVar4 = dok ? 1 : 2;
 		object[i]._oMissFlag = TRUE;
-		object[i]._oVar4 = (((dItem[dx][dy] == 0 ? 1 : 0)
-		                        & (dDead[dx][dy] == 0 ? 1 : 0)
-		                        & (dPlayer[dx][dy] == 0 ? 1 : 0)
-		                        & (dMonster[dx][dy] == 0 ? 1 : 0))
-		                       == 0)
-		    + 1;
 	}
 }
 
