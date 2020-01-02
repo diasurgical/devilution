@@ -4266,30 +4266,22 @@ void SyncPedistal(int i)
 
 void SyncL2Doors(int i)
 {
-	int val;
 	int x, y;
 
-	val = object[i]._oVar4;
-	if (!val)
+	if (object[i]._oVar4 == 0)
 		object[i]._oMissFlag = FALSE;
 	else
 		object[i]._oMissFlag = TRUE;
 	x = object[i]._ox;
 	y = object[i]._oy;
 	object[i]._oSelFlag = 2;
-	if (object[i]._otype == OBJ_L2LDOOR && val == 0) {
+	if (object[i]._otype == OBJ_L2LDOOR && object[i]._oVar4 == 0) {
 		ObjSetMicro(x, y, 538);
-		return;
-	}
-	if (object[i]._otype == OBJ_L2LDOOR && (val == 1 || val == 2)) {
+	} else if (object[i]._otype == OBJ_L2LDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
 		ObjSetMicro(x, y, 13);
-		return;
-	}
-	if (object[i]._otype == OBJ_L2RDOOR && val == 0) {
+	} else if (object[i]._otype == OBJ_L2RDOOR && object[i]._oVar4 == 0) {
 		ObjSetMicro(x, y, 540);
-		return;
-	}
-	if (object[i]._otype == OBJ_L2RDOOR && (val == 1 || val == 2)) {
+	} else if (object[i]._otype == OBJ_L2RDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
 		ObjSetMicro(x, y, 17);
 	}
 }
@@ -4304,17 +4296,11 @@ void SyncL3Doors(int i)
 	object[i]._oSelFlag = 2;
 	if (object[i]._otype == OBJ_L3LDOOR && object[i]._oVar4 == 0) {
 		ObjSetMicro(x, y, 531);
-		return;
-	}
-	if (object[i]._otype == OBJ_L3LDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
+	} else if (object[i]._otype == OBJ_L3LDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
 		ObjSetMicro(x, y, 538);
-		return;
-	}
-	if (object[i]._otype == OBJ_L3RDOOR && object[i]._oVar4 == 0) {
+	} else if (object[i]._otype == OBJ_L3RDOOR && object[i]._oVar4 == 0) {
 		ObjSetMicro(x, y, 534);
-		return;
-	}
-	if (object[i]._otype == OBJ_L3RDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
+	} else if (object[i]._otype == OBJ_L3RDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
 		ObjSetMicro(x, y, 541);
 	}
 }
