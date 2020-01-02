@@ -4,7 +4,7 @@
  - Put `devilutionx.nro` and `CharisSILB.ttf` in into `/switch/devilutionx`
  - Copy diabdat.mpq from your CD (or GoG install folder) to `/switch/devilutionx`. Make sure it is all lowercase.
  - Launch `devilutionx.nro`. (Do not use album to launch; see the note below.)
- - *Note:* Hold R on any installed game and launch it. Do not use album to launch. If you use album, the homebrew will only have a small amount memory available, and the touch keyboard won't work. This is true for all homebrew, not just Diablo-NX.
+ - *Note:* Hold R on any installed game and launch it. Do not use album to launch. If you use album, the homebrew will only have a small amount memory available, and the touch keyboard won't work. This is true for all homebrew, not just DevilutionX.
 
 # Joycon Controls
  - Left analog/DPad: move hero
