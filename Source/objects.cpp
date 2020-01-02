@@ -2821,7 +2821,7 @@ void OperateTrapLvr(int i)
 	}
 }
 
-void OperateSarc(int pnum, int i, BOOL sendmsg)
+void OperateSarc(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
@@ -2904,7 +2904,7 @@ void OperatePedistal(int pnum, int i)
 void TryDisarm(int pnum, int i)
 {
 	int j, oi, oti, trapdisper;
-	BOOL checkflag;
+	BOOLEAN checkflag;
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);

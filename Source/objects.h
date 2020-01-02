@@ -118,7 +118,7 @@ void OperateMushPatch(int pnum, int i);
 void OperateInnSignChest(int pnum, int i);
 void OperateSlainHero(int pnum, int i, BOOL sendmsg);
 void OperateTrapLvr(int i);
-void OperateSarc(int pnum, int i, BOOL sendmsg);
+void OperateSarc(int pnum, int i, DIABOOL sendmsg);
 void OperateL2Door(int pnum, int i, BOOL sendflag);
 void OperateL3Door(int pnum, int i, BOOL sendflag);
 void OperatePedistal(int pnum, int i);
