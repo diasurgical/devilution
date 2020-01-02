@@ -2866,7 +2866,7 @@ void OperateTrapLvr(int i)
 	}
 }
 
-void OperateSarc(int pnum, int i, BOOL sendmsg)
+void OperateSarc(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
