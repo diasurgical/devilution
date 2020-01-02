@@ -1805,6 +1805,11 @@ typedef enum {
 	UMT_LACHDAN   = 7,
 	UMT_WARLORD   = 8,
 	UMT_BUTCHER   = 9,
+#ifdef HELLFIRE
+	UMT_HORKDMN   = 10,
+	UMT_DEFILER   = 11,
+	UMT_NAKRUL    = 12,
+#endif
 } _uniq_monsterid;
 
 typedef enum monster_flag {
@@ -2178,6 +2183,10 @@ typedef enum dungeon_type {
 	DTYPE_CATACOMBS = 0x2,
 	DTYPE_CAVES     = 0x3,
 	DTYPE_HELL      = 0x4,
+#ifdef HELLFIRE
+	DTYPE_NEST      = 0x5,
+	DTYPE_CRYPT     = 0x6,
+#endif
 	DTYPE_NONE      = 0xFF,
 } dungeon_type;
 

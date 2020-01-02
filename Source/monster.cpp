@@ -975,7 +975,7 @@ void PlaceQuestMonsters()
 			UberDiabloMonsterIndex = -1;
 			int i1;
 			for (i1 = 0; i1 < nummtypes; i1++) {
-				if (Monsters[i1].mtype == UniqMonst[12].mtype) // TODO: replace 12 with hellfire unique monster enum when it gets created
+				if (Monsters[i1].mtype == UniqMonst[UMT_NAKRUL].mtype)
 					break;
 			}
 
@@ -988,7 +988,7 @@ void PlaceQuestMonsters()
 				}
 			}
 			if (UberDiabloMonsterIndex == -1)
-				PlaceUniqueMonst(12, 0, 0);
+				PlaceUniqueMonst(UMT_NAKRUL, 0, 0);
 		}
 #endif
 	} else if (setlvlnum == SL_SKELKING) {
