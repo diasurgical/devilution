@@ -1594,9 +1594,16 @@ void CelDrawLightRedSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 }
 
 /**
- * @brief Same as CelBlit but cropped to given width
+ * @brief Blit to a buffer at given coordinates
+ * @param pBuff Target buffer
+ * @param x Cordinate in pBuff buffer
+ * @param y Cordinate in pBuff buffer
+ * @param wdt Width of pBuff
+ * @param pCelBuff Cel data
+ * @param nCel Frame of cel
+ * @param nWidth Width of cel
  */
-void CelBlitWidth(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, int nCel, int nWidth)
+void CelBlitWidth(BYTE *pBuff, int x, int y, int wdt, BYTE *pCelBuff, int nCel, int nWidth)
 {
 	BYTE *pRLEBytes, *dst, *end;
 
@@ -1621,7 +1628,7 @@ void CelBlitWidth(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, in
 		mov		pRLEBytes, eax
 	}
 
-	dst = &pBuff[hgt * wdt + CelSkip];
+	dst = &pBuff[y * wdt + x];
 
 	__asm {
 		mov		esi, pRLEBytes
@@ -1671,7 +1678,7 @@ void CelBlitWidth(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, in
 
 	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
 	end = &pRLEBytes[nDataSize];
-	dst = &pBuff[hgt * wdt + CelSkip];
+	dst = &pBuff[y * wdt + x];
 
 	for (; pRLEBytes != end; dst -= wdt + nWidth) {
 		for (i = nWidth; i;) {

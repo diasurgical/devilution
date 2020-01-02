@@ -294,7 +294,8 @@ void gamemenu_gamma(BOOL bActivate)
 {
 	int gamma;
 	if (bActivate) {
-		if (UpdateGamma(0) == 30)
+		gamma = UpdateGamma(0);
+		if (gamma == 30)
 			gamma = 100;
 		else
 			gamma = 30;
