@@ -2773,6 +2773,14 @@ void OperateInnSignChest(int pnum, int i)
 				PlaySFX(PS_ROGUE24);
 			} else if (plr[myplr]._pClass == PC_SORCERER) {
 				PlaySFX(PS_MAGE24);
+#ifdef HELLFIRE
+			} else if (plr[myplr]._pClass == PC_MONK) {
+				PlaySFX(PS_MONK24);
+			} else if (plr[myplr]._pClass == PC_BARD) {
+				PlaySFX(PS_ROGUE24);
+			} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+				PlaySFX(PS_WARR24);
+#endif
 #endif
 			}
 		}
@@ -2780,8 +2788,8 @@ void OperateInnSignChest(int pnum, int i)
 		if (object[i]._oSelFlag != 0) {
 			if (!deltaload)
 				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
-			object[i]._oAnimFrame += 2;
 			object[i]._oSelFlag = 0;
+			object[i]._oAnimFrame += 2;
 			if (!deltaload) {
 				GetSuperItemLoc(object[i]._ox, object[i]._oy, x, y);
 				SpawnQuestItem(IDI_BANNER, x, y, 0, 0);
