@@ -1496,34 +1496,25 @@ void Obj_Light(int i, int lr)
 
 void Obj_Circle(int i)
 {
-	int ox, oy;
+	int ox, oy, wx, wy;
 
 	ox = object[i]._ox;
 	oy = object[i]._oy;
-	if (plr[myplr].WorldX != ox || plr[myplr].WorldY != object[i]._oy) {
-		if (object[i]._otype == OBJ_MCIRCLE1)
-			object[i]._oAnimFrame = 1;
-		if (object[i]._otype == OBJ_MCIRCLE2)
-			object[i]._oAnimFrame = 3;
-		object[i]._oVar6 = 0;
-	} else {
+	wx = plr[myplr].WorldX;
+	wy = plr[myplr].WorldY;
+	if (wx == ox && wy == oy) {
 		if (object[i]._otype == OBJ_MCIRCLE1)
 			object[i]._oAnimFrame = 2;
 		if (object[i]._otype == OBJ_MCIRCLE2)
 			object[i]._oAnimFrame = 4;
-		if (ox == 45) {
-			if (oy == 47) {
-				object[i]._oVar6 = 2;
-				return;
-			}
+		if (ox == 45 && oy == 47) {
+			object[i]._oVar6 = 2;
+		} else if (ox == 26 && oy == 46) {
+			object[i]._oVar6 = 1;
 		} else {
-			if (object[i]._ox == 26 && object[i]._oy == 46) {
-				object[i]._oVar6 = 1;
-				return;
-			}
+			object[i]._oVar6 = 0;
 		}
-		object[i]._oVar6 = 0;
-		if (ox == 35 && object[i]._oy == 36 && object[i]._oVar5 == 3) {
+		if (ox == 35 && oy == 36 && object[i]._oVar5 == 3) {
 			object[i]._oVar6 = 4;
 			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 			if (quests[QTYPE_VB]._qactive == 2)
@@ -1535,6 +1526,12 @@ void Obj_Circle(int i)
 			ClrPlrPath(myplr);
 			StartStand(myplr, 0);
 		}
+	} else {
+		if (object[i]._otype == OBJ_MCIRCLE1)
+			object[i]._oAnimFrame = 1;
+		if (object[i]._otype == OBJ_MCIRCLE2)
+			object[i]._oAnimFrame = 3;
+		object[i]._oVar6 = 0;
 	}
 }
 
