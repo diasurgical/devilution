@@ -3292,6 +3292,16 @@ typedef enum shrine_type {
 	SHRINE_ORNATE       = 23,
 	SHRINE_GLIMMERING   = 24,
 	SHRINE_TAINTED      = 25,
+#ifdef HELLFIRE
+	SHRINE_OILY         = 26,
+	SHRINE_GLOWING      = 27,
+	SHRINE_MENDICANT    = 28,
+	SHRINE_SPARKLING    = 29,
+	SHRINE_TOWN         = 30,
+	SHRINE_SHIMMERING   = 31,
+	SHRINE_SOLAR        = 32,
+	SHRINE_MURPYS       = 33,
+#endif
 	NUM_SHRINETYPE
 } shrine_type;
 
