@@ -3623,7 +3623,7 @@ void OperateArmorStand(int pnum, int i, DIABOOL sendmsg)
 			} else if (currlevel >= 13 && currlevel <= 16) {
 				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, 0, sendmsg, FALSE);
 #ifdef HELLFIRE
-			}else if (currlevel >= 17){
+			} else if (currlevel >= 17) {
 				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, 0, sendmsg, FALSE);
 #endif
 			}
