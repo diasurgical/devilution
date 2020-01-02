@@ -2904,7 +2904,7 @@ void OperatePedistal(int pnum, int i)
 void TryDisarm(int pnum, int i)
 {
 	int j, oi, oti, trapdisper;
-	BOOLEAN checkflag;
+	BOOL checkflag;
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
