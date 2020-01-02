@@ -1593,21 +1593,29 @@ void Obj_StopAnim(int i)
 void Obj_Door(int i)
 {
 	int dx, dy;
-
-	if (!object[i]._oVar4) {
-		object[i]._oMissFlag = FALSE;
+	if (object[i]._oVar4 == 0) {
 		object[i]._oSelFlag = 3;
+		object[i]._oMissFlag = FALSE;
 	} else {
-		dy = object[i]._oy;
 		dx = object[i]._ox;
+		dy = object[i]._oy;
+#ifdef HELLFIRE
+		BOOLEAN v1 = !dMonster[dx][dy];
+		BOOLEAN v3 = v1 && !dItem[dx][dy];
+		BOOLEAN v4 = v3 && !dDead[dx][dy];
+		BOOLEAN v5 = v4 && !dPlayer[dx][dy];
 		object[i]._oSelFlag = 2;
-		object[i]._oMissFlag = TRUE;
+		object[i]._oVar4 = (v5 == 0) + 1;
+#else
+		object[i]._oSelFlag = 2;
 		object[i]._oVar4 = (((dItem[dx][dy] == 0 ? 1 : 0)
 		                        & (dDead[dx][dy] == 0 ? 1 : 0)
 		                        & (dPlayer[dx][dy] == 0 ? 1 : 0)
 		                        & (dMonster[dx][dy] == 0 ? 1 : 0))
 		                       == 0)
 		    + 1;
+#endif
+		object[i]._oMissFlag = TRUE;
 	}
 }
 
