@@ -4052,15 +4052,13 @@ void SyncOpL1Door(int pnum, int cmd, int i)
 
 void SyncOpL2Door(int pnum, int cmd, int i)
 {
-	BOOL do_sync;
+	DIABOOL do_sync;
 
 	if (pnum == myplr)
 		return;
 
 	do_sync = FALSE;
-	if (cmd == CMD_OPENDOOR) {
-		if (object[i]._oVar4 != 0)
-			return;
+	if (cmd == CMD_OPENDOOR && object[i]._oVar4 == 0) {
 		do_sync = TRUE;
 	}
 	if (cmd == CMD_CLOSEDOOR && object[i]._oVar4 == 1)
@@ -4075,15 +4073,13 @@ void SyncOpL2Door(int pnum, int cmd, int i)
 
 void SyncOpL3Door(int pnum, int cmd, int i)
 {
-	BOOL do_sync;
+	DIABOOL do_sync;
 
 	if (pnum == myplr)
 		return;
 
 	do_sync = FALSE;
-	if (cmd == CMD_OPENDOOR) {
-		if (object[i]._oVar4 != 0)
-			return;
+	if (cmd == CMD_OPENDOOR && object[i]._oVar4 == 0) {
 		do_sync = TRUE;
 	}
 	if (cmd == CMD_CLOSEDOOR && object[i]._oVar4 == 1)
