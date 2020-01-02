@@ -233,7 +233,7 @@ void gamemenu_music_volume(BOOL bActivate)
 				if (currlevel > 20)
 					lt = DTYPE_NEST;
 				else
-					lt = 6; // TODO: add hellfire level types enum
+					lt = DTYPE_CRYPT;
 			} else
 				lt = leveltype;
 			music_start(lt);
