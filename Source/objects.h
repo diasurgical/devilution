@@ -126,7 +126,7 @@ void TryDisarm(int pnum, int i);
 int ItemMiscIdIdx(int imiscid);
 void OperateShrine(int pnum, int i, int sType);
 void OperateSkelBook(int pnum, int i, BOOL sendmsg);
-void OperateBookCase(int pnum, int i, BOOL sendmsg);
+void OperateBookCase(int pnum, int i, DIABOOL sendmsg);
 void OperateDecap(int pnum, int i, DIABOOL sendmsg);
 void OperateArmorStand(int pnum, int i, DIABOOL sendmsg);
 int FindValidShrine(int i);
