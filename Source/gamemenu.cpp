@@ -217,44 +217,56 @@ void gamemenu_get_gamma()
 
 void gamemenu_music_volume(BOOL bActivate)
 {
-	int volume;
-	if (bActivate) {
-		if (gbMusicOn) {
-			gbMusicOn = FALSE;
-			music_stop();
-			sound_get_or_set_music_volume(VOLUME_MIN);
-			gamemenu_get_music();
-			return;
-		}
-		gbMusicOn = TRUE;
-		sound_get_or_set_music_volume(VOLUME_MAX);
-		music_start(leveltype);
-		gamemenu_get_music();
-		return;
-	}
+    int volume;
 
-	volume = gamemenu_slider_music_sound(sgOptionsMenu);
-	sound_get_or_set_music_volume(volume);
-
-	if (volume == VOLUME_MIN) {
-
-		if (gbMusicOn) {
-			gbMusicOn = FALSE;
-			music_stop();
-		}
-
-		gamemenu_get_music();
-		return;
-	}
-
-	if (gbMusicOn) {
-		gamemenu_get_music();
-		return;
-	}
-
-	gbMusicOn = TRUE;
-	music_start(leveltype);
-	gamemenu_get_music();
+    if (bActivate) {
+        if (gbMusicOn) {
+            gbMusicOn = FALSE;
+            music_stop();
+            sound_get_or_set_music_volume(VOLUME_MIN);
+        } else {
+            gbMusicOn = TRUE;
+            sound_get_or_set_music_volume(VOLUME_MAX);
+#ifdef HELLFIRE
+			int lt;
+			if (currlevel >= 17) {
+				if (currlevel > 20)
+					lt = DTYPE_NEST;
+				else
+					lt = DTYPE_CRYPT;
+			} else
+				lt = leveltype;
+			music_start(lt);
+#else
+			music_start(leveltype);
+#endif
+        }
+    } else {
+        volume = gamemenu_slider_music_sound(sgOptionsMenu);
+        sound_get_or_set_music_volume(volume);
+        if (volume == VOLUME_MIN) {
+            if (gbMusicOn) {
+                gbMusicOn = FALSE;
+                music_stop();
+            }
+        } else if (!gbMusicOn) {
+            gbMusicOn = TRUE;
+#ifdef HELLFIRE
+			int lt;
+			if (currlevel >= 17) {
+				if (currlevel > 20)
+					lt = DTYPE_NEST;
+				else
+					lt = DTYPE_CRYPT;
+			} else
+				lt = leveltype;
+			music_start(lt);
+#else
+			music_start(leveltype);
+#endif
+        }
+    }
+    gamemenu_get_music();
 }
 
 int gamemenu_slider_music_sound(TMenuItem *menu_item)
