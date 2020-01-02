@@ -3649,13 +3649,13 @@ void OperateDecap(int pnum, int i, DIABOOL sendmsg)
 	}
 }
 
-void OperateArmorStand(int pnum, int i, BOOL sendmsg)
+void OperateArmorStand(int pnum, int i, DIABOOL sendmsg)
 {
 	BOOL uniqueRnd;
 
 	if (object[i]._oSelFlag != 0) {
-		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
+		object[i]._oAnimFrame++;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
 			uniqueRnd = random_(0, 2);
@@ -3667,6 +3667,10 @@ void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_HARMOR, 0, sendmsg, FALSE);
 			} else if (currlevel >= 13 && currlevel <= 16) {
 				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, 0, sendmsg, FALSE);
+#ifdef HELLFIRE
+			} else if (currlevel >= 17) {
+				CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, ITYPE_HARMOR, 0, sendmsg, FALSE);
+#endif
 			}
 			if (pnum == myplr)
 				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
