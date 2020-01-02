@@ -3840,7 +3840,7 @@ BOOL OperateFountains(int pnum, int i)
 	return applied;
 }
 
-void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
+void OperateWeaponRack(int pnum, int i, DIABOOL sendmsg)
 {
 	int weaponType;
 
@@ -3863,8 +3863,8 @@ void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 		break;
 	}
 
-	object[i]._oAnimFrame++;
 	object[i]._oSelFlag = 0;
+	object[i]._oAnimFrame++;
 	if (deltaload)
 		return;
 
