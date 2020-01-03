@@ -937,16 +937,16 @@ void SetupObject(int i, int x, int y, int ot)
 		object[i]._oAnimFrame = random_(146, AllObjects[ot].oAnimLen - 1) + 1;
 	} else {
 		object[i]._oAnimDelay = 1000;
+		object[i]._oAnimCnt = 0;
 		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
 		object[i]._oAnimFrame = AllObjects[ot].oAnimDelay;
-		object[i]._oAnimCnt = 0;
 	}
 	object[i]._oAnimWidth = AllObjects[ot].oAnimWidth;
 	object[i]._oSolidFlag = AllObjects[ot].oSolidFlag;
 	object[i]._oMissFlag = AllObjects[ot].oMissFlag;
 	object[i]._oLight = AllObjects[ot].oLightFlag;
-	object[i]._oBreak = AllObjects[ot].oBreak;
 	object[i]._oDelFlag = FALSE;
+	object[i]._oBreak = AllObjects[ot].oBreak;
 	object[i]._oSelFlag = AllObjects[ot].oSelFlag;
 	object[i]._oPreFlag = FALSE;
 	object[i]._oTrapFlag = FALSE;
