@@ -642,7 +642,38 @@ WINBOOL TranslateMessage(const MSG *lpMsg)
 			if (!upper && is_alpha) {
 				key = tolower(key);
 			} else if (shift && is_numeric) {
-				key = key == '0' ? ')' : key - 0x10;
+				switch (key) {
+				case '1':
+					key = '!';
+					break;
+				case '2':
+					key = '@';
+					break;
+				case '3':
+					key = '#';
+					break;
+				case '4':
+					key = '$';
+					break;
+				case '5':
+					key = '%';
+					break;
+				case '6':
+					key = '^';
+					break;
+				case '7':
+					key = '&';
+					break;
+				case '8':
+					key = '*';
+					break;
+				case '9':
+					key = '(';
+					break;
+				case '0':
+					key = ')';
+					break;
+				}
 			} else if (is_oem) {
 				// XXX: This probably only supports US keyboard layout
 				switch (key) {
@@ -667,7 +698,6 @@ WINBOOL TranslateMessage(const MSG *lpMsg)
 				case DVL_VK_OEM_7:
 					key = shift ? '"' : '\'';
 					break;
-
 				case DVL_VK_OEM_MINUS:
 					key = shift ? '_' : '-';
 					break;
