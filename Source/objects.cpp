@@ -3797,7 +3797,7 @@ void OperateShrine(int pnum, int i, int sType)
 				ModifyPlrStr(myplr, 2);
 			}
 		} else {
-			InitDiabloMsg(52); // TODO: add hellfire shrine messages and enums for them
+			InitDiabloMsg(EMSG_SHRINE_SOLAR3);
 			ModifyPlrMag(myplr, 2);
 		}
 		CheckStats(myplr);
