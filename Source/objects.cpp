@@ -3784,7 +3784,7 @@ void OperateShrine(int pnum, int i, int sType)
 		time_t tm = time(0);
 		int hour = localtime(&tm)->tm_hour;
 		if (hour > 20 || hour < 4) {
-			InitDiabloMsg(53);
+			InitDiabloMsg(EMSG_SHRINE_SOLAR4);
 			ModifyPlrVit(myplr, 2);
 		} else if (hour <= 18) {
 			if (hour <= 12) {
