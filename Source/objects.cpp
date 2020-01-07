@@ -3660,7 +3660,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		InitDiabloMsg((char)44); // TODO: add hellfire shrine messages and enums for them
+		InitDiabloMsg(EMSG_SHRINE_OILY);
 
 		switch (plr[myplr]._pClass) {
 		case PC_WARRIOR:
