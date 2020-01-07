@@ -99,7 +99,7 @@ void ObjL1Special(int x1, int y1, int x2, int y2);
 void ObjL2Special(int x1, int y1, int x2, int y2);
 void DoorSet(int oi, int dx, int dy);
 void RedoPlayerVision();
-void OperateL1RDoor(int pnum, int oi, BOOL sendflag);
+void OperateL1RDoor(int pnum, int oi, DIABOOL sendflag);
 void OperateL1LDoor(int pnum, int oi, BOOL sendflag);
 void OperateL2RDoor(int pnum, int oi, BOOL sendflag);
 void OperateL2LDoor(int pnum, int oi, BOOL sendflag);
