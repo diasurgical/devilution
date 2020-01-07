@@ -3727,32 +3727,7 @@ void SyncPlrAnim(int pnum)
 
 	dir = plr[pnum]._pdir;
 	switch (plr[pnum]._pmode) {
-	case PM_BLOCK:
-		plr[pnum]._pAnimData = plr[pnum]._pBAnim[dir];
-		break;
-	case PM_GOTHIT:
-		plr[pnum]._pAnimData = plr[pnum]._pHAnim[dir];
-		break;
-	case PM_DEATH:
-		plr[pnum]._pAnimData = plr[pnum]._pDAnim[dir];
-		break;
-	case PM_SPELL:
-		if (pnum == myplr) {
-			sType = spelldata[plr[pnum]._pSpell].sType;
-		} else {
-			sType = STYPE_FIRE;
-		}
-		if (sType == STYPE_FIRE)
-			plr[pnum]._pAnimData = plr[pnum]._pFAnim[dir];
-		if (sType == STYPE_LIGHTNING)
-			plr[pnum]._pAnimData = plr[pnum]._pLAnim[dir];
-		if (sType == STYPE_MAGIC) {
-			plr[pnum]._pAnimData = plr[pnum]._pTAnim[dir];
-		}
-		break;
 	case PM_STAND:
-	case PM_NEWLVL:
-	case PM_QUIT:
 		plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
 		break;
 	case PM_WALK:
@@ -3761,8 +3736,37 @@ void SyncPlrAnim(int pnum)
 		plr[pnum]._pAnimData = plr[pnum]._pWAnim[dir];
 		break;
 	case PM_ATTACK:
+		plr[pnum]._pAnimData = plr[pnum]._pAAnim[dir];
+		break;
 	case PM_RATTACK:
 		plr[pnum]._pAnimData = plr[pnum]._pAAnim[dir];
+		break;
+	case PM_BLOCK:
+		plr[pnum]._pAnimData = plr[pnum]._pBAnim[dir];
+		break;
+	case PM_SPELL:
+		if (pnum == myplr)
+			sType = spelldata[plr[pnum]._pSpell].sType;
+		else
+			sType = STYPE_FIRE;
+		if (sType == STYPE_FIRE)
+			plr[pnum]._pAnimData = plr[pnum]._pFAnim[dir];
+		if (sType == STYPE_LIGHTNING)
+			plr[pnum]._pAnimData = plr[pnum]._pLAnim[dir];
+		if (sType == STYPE_MAGIC)
+			plr[pnum]._pAnimData = plr[pnum]._pTAnim[dir];
+		break;
+	case PM_GOTHIT:
+		plr[pnum]._pAnimData = plr[pnum]._pHAnim[dir];
+		break;
+	case PM_NEWLVL:
+		plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
+		break;
+	case PM_DEATH:
+		plr[pnum]._pAnimData = plr[pnum]._pDAnim[dir];
+		break;
+	case PM_QUIT:
+		plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
 		break;
 	default:
 		app_fatal("SyncPlrAnim");
