@@ -3808,7 +3808,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		InitDiabloMsg((char)54); // TODO: add hellfire shrine messages and enums for them
+		InitDiabloMsg(EMSG_SHRINE_MURPHYS);
 		BOOLEAN broke = FALSE;
 		for (int j = 0; j < NUM_INVLOC; j++) {
 			if (plr[pnum].InvBody[j]._itype != ITYPE_NONE && random_(0, 3) == 0) {
