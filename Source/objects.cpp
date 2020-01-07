@@ -1143,8 +1143,13 @@ void AddBarrel(int i, int t)
 
 void AddShrine(int i)
 {
-	int val, j, slist[NUM_SHRINETYPE];
-
+	int val;
+	DIABOOL slist[NUM_SHRINETYPE];
+#ifdef HELLFIRE
+	unsigned int j;
+#else
+	int j;
+#endif
 	object[i]._oPreFlag = TRUE;
 	for (j = 0; j < NUM_SHRINETYPE; j++) {
 		if (currlevel < shrinemin[j] || currlevel > shrinemax[j]) {
@@ -1152,22 +1157,16 @@ void AddShrine(int i)
 		} else {
 			slist[j] = 1;
 		}
-		if (gbMaxPlayers != 1) {
-			if (shrineavail[j] == 1) {
-				slist[j] = 0;
-			}
-		} else {
-			if (shrineavail[j] == 2) {
-				slist[j] = 0;
-			}
+		if (gbMaxPlayers != 1 && shrineavail[j] == 1) {
+			slist[j] = 0;
+		}
+		if (gbMaxPlayers == 1 && shrineavail[j] == 2) {
+			slist[j] = 0;
 		}
 	}
-	while (1) {
+	do {
 		val = random_(150, NUM_SHRINETYPE);
-		if (slist[val]) {
-			break;
-		}
-	}
+	} while (!slist[val]);
 
 	object[i]._oVar1 = val;
 	if (random_(150, 2)) {
