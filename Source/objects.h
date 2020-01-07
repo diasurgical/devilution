@@ -113,7 +113,7 @@ void OperateLever(int pnum, int i);
 void OperateBook(int pnum, int i);
 void OperateBookLever(int pnum, int i);
 void OperateSChambBk(int pnum, int i);
-void OperateChest(int pnum, int i, BOOL sendmsg);
+void OperateChest(int pnum, int i, DIABOOL sendmsg);
 void OperateMushPatch(int pnum, int i);
 void OperateInnSignChest(int pnum, int i);
 void OperateSlainHero(int pnum, int i, BOOL sendmsg);
