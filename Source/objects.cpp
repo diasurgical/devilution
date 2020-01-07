@@ -1334,6 +1334,15 @@ void AddObject(int ot, int ox, int oy)
 	dObject[ox][oy] = oi + 1;
 	SetupObject(oi, ox, oy, ot);
 	switch (ot) {
+	case OBJ_L1LIGHT:
+		AddObjLight(oi, 5);
+		break;
+	case OBJ_SKFIRE:
+	case OBJ_CANDLE1:
+	case OBJ_CANDLE2:
+	case OBJ_BOOKCANDLE:
+		AddObjLight(oi, 5);
+		break;
 	case OBJ_STORYCANDLE:
 		AddObjLight(oi, 3);
 		break;
@@ -1436,13 +1445,6 @@ void AddObject(int ot, int ox, int oy)
 	case OBJ_BCROSS:
 	case OBJ_TBCROSS:
 		AddBrnCross(oi);
-		AddObjLight(oi, 5);
-		break;
-	case OBJ_L1LIGHT:
-	case OBJ_SKFIRE:
-	case OBJ_CANDLE1:
-	case OBJ_CANDLE2:
-	case OBJ_BOOKCANDLE:
 		AddObjLight(oi, 5);
 		break;
 	case OBJ_PEDISTAL:
