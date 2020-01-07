@@ -3771,7 +3771,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		InitDiabloMsg((char)49); // TODO: add hellfire shrine messages and enums for them
+		InitDiabloMsg(EMSG_SHRINE_SHIMMERING);
 		plr[myplr]._pMana = plr[myplr]._pMaxMana;
 		plr[myplr]._pManaBase = plr[myplr]._pMaxManaBase;
 		break;
