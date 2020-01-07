@@ -3654,6 +3654,178 @@ void OperateShrine(int pnum, int i, int sType)
 			CheckStats(myplr);
 		}
 		break;
+#ifdef HELLFIRE
+	case SHRINE_OILY:
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)44); // TODO: add hellfire shrine messages and enums for them
+
+		switch (plr[myplr]._pClass) {
+		case PC_WARRIOR:
+			ModifyPlrStr(myplr, 2);
+			break;
+		case PC_ROGUE:
+			ModifyPlrDex(myplr, 2);
+			break;
+		case PC_SORCERER:
+			ModifyPlrMag(myplr, 2);
+			break;
+		case PC_MONK:
+			ModifyPlrStr(myplr, 1);
+			ModifyPlrDex(myplr, 1);
+			break;
+		case PC_BARD:
+			ModifyPlrDex(myplr, 1);
+			ModifyPlrMag(myplr, 1);
+			break;
+		case PC_BARBARIAN:
+			ModifyPlrVit(myplr, 2);
+			break;
+		}
+		CheckStats(myplr);
+		AddMissile(
+		    object[i]._ox,
+		    object[i]._oy,
+		    plr[myplr].WorldX,
+		    plr[myplr].WorldY,
+		    plr[myplr]._pdir,
+		    MIS_FIREWALL,
+		    1,
+		    0,
+		    2 * currlevel + 2,
+		    0);
+		break;
+
+	case SHRINE_GLOWING: {
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)45); // TODO: add hellfire shrine messages and enums for them
+		int playerXP = plr[myplr]._pExperience;
+		int xpLoss, magicGain;
+		if (playerXP > 5000) {
+			magicGain = 5;
+			xpLoss = (signed __int64)((double)playerXP * 0.95);
+		} else {
+			xpLoss = 0;
+			magicGain = playerXP / 1000;
+		}
+		ModifyPlrMag(myplr, magicGain);
+		plr[myplr]._pExperience = xpLoss;
+		CheckStats(myplr);
+	} break;
+
+	case SHRINE_MENDICANT:
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)46); // TODO: add hellfire shrine messages and enums for them
+		AddPlrExperience(myplr, plr[myplr]._pLevel, plr[myplr]._pGold / 2);
+		TakePlrsMoney(plr[myplr]._pGold / 2);
+		CheckStats(myplr);
+		break;
+	case SHRINE_SPARKLING:
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)47); // TODO: add hellfire shrine messages and enums for them
+		AddPlrExperience(myplr, plr[myplr]._pLevel, 1000 * currlevel);
+		AddMissile(
+		    object[i]._ox,
+		    object[i]._oy,
+		    plr[myplr].WorldX,
+		    plr[myplr].WorldY,
+		    plr[myplr]._pdir,
+		    MIS_FLASH,
+		    1,
+		    0,
+		    3 * currlevel + 2,
+		    0);
+		CheckStats(myplr);
+		break;
+	case SHRINE_TOWN:
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)48); // TODO: add hellfire shrine messages and enums for them
+		AddMissile(
+		    object[i]._ox,
+		    object[i]._oy,
+		    plr[myplr].WorldX,
+		    plr[myplr].WorldY,
+		    plr[myplr]._pdir,
+		    MIS_TOWN,
+		    1,
+		    0,
+		    0,
+		    0);
+		break;
+	case SHRINE_SHIMMERING:
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)49); // TODO: add hellfire shrine messages and enums for them
+		plr[myplr]._pMana = plr[myplr]._pMaxMana;
+		plr[myplr]._pManaBase = plr[myplr]._pMaxManaBase;
+		break;
+
+	case SHRINE_SOLAR: {
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		time_t tm = time(0);
+		int hour = localtime(&tm)->tm_hour;
+		if (hour > 20 || hour < 4) {
+			InitDiabloMsg(53);
+			ModifyPlrVit(myplr, 2);
+		} else if (hour <= 18) {
+			if (hour <= 12) {
+				if (hour > 4) {
+					InitDiabloMsg(50); // TODO: add hellfire shrine messages and enums for them
+					ModifyPlrDex(myplr, 2);
+				}
+			} else {
+				InitDiabloMsg(51); // TODO: add hellfire shrine messages and enums for them
+				ModifyPlrStr(myplr, 2);
+			}
+		} else {
+			InitDiabloMsg(52); // TODO: add hellfire shrine messages and enums for them
+			ModifyPlrMag(myplr, 2);
+		}
+		CheckStats(myplr);
+	} break;
+
+	case SHRINE_MURPHYS:
+		if (deltaload)
+			return;
+		if (pnum != myplr)
+			return;
+		InitDiabloMsg((char)54); // TODO: add hellfire shrine messages and enums for them
+		BOOLEAN broke = FALSE;
+		for (int j = 0; j < NUM_INVLOC; j++) {
+			if (plr[pnum].InvBody[j]._itype != ITYPE_NONE && random_(0, 3) == 0) {
+				if (plr[pnum].InvBody[j]._iDurability != DUR_INDESTRUCTIBLE) {
+					if (plr[pnum].InvBody[j]._iDurability) {
+						plr[pnum].InvBody[j]._iDurability /= 2;
+						broke = TRUE;
+						break;
+					}
+				}
+			}
+		}
+		if (!broke) {
+			TakePlrsMoney(plr[myplr]._pGold / 3);
+		}
+		break;
+#endif
 	}
 
 	CalcPlrInv(pnum, TRUE);

@@ -3309,7 +3309,7 @@ typedef enum shrine_type {
 	SHRINE_TOWN         = 30,
 	SHRINE_SHIMMERING   = 31,
 	SHRINE_SOLAR        = 32,
-	SHRINE_MURPYS       = 33,
+	SHRINE_MURPHYS       = 33,
 #endif
 	NUM_SHRINETYPE
 } shrine_type;
