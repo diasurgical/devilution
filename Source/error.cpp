@@ -5,7 +5,7 @@ char msgdelay;
 char msgflag;
 char msgcnt;
 
-char *MsgStrings[44] = {
+char *MsgStrings[] = {
 	"",
 	"No automap available in town",
 	"No multiplayer functions in demo",
@@ -49,7 +49,20 @@ char *MsgStrings[44] = {
 	"You must be at least level 8 to use this.",
 	"You must be at least level 13 to use this.",
 	"You must be at least level 17 to use this.",
-	"Arcane knowledge gained!"
+	"Arcane knowledge gained!",
+#ifdef HELLFIRE
+	"That which does not kill you...",
+	"Knowledge is power.",
+	"Give and you shall receive.",
+	"Some experience is gained by touch.",
+	"There's no place like home.",
+	"Spirtual energy is restored.",
+	"You feel more agile.",
+	"You feel stronger.",
+	"You feel wiser.",
+	"You feel refreshed.",
+	"That which can break will.",
+#endif
 };
 
 void InitDiabloMsg(char e)

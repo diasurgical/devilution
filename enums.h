@@ -2254,6 +2254,19 @@ typedef enum diablo_message {
 	EMSG_REQUIRES_LVL_13        = 41,
 	EMSG_REQUIRES_LVL_17        = 42,
 	EMSG_BONECHAMB              = 43,
+#ifdef HELLFIRE
+	EMSG_SHRINE_OILY            = 44,
+	EMSG_SHRINE_GLOWING         = 45,
+	EMSG_SHRINE_MENDICANT       = 46,
+	EMSG_SHRINE_SPARKLING       = 47,
+	EMSG_SHRINE_TOWN            = 48,
+	EMSG_SHRINE_SHIMMERING      = 49,
+	EMSG_SHRINE_SOLAR1          = 50,
+	EMSG_SHRINE_SOLAR2          = 51,
+	EMSG_SHRINE_SOLAR3          = 52,
+	EMSG_SHRINE_SOLAR4          = 53,
+	EMSG_SHRINE_MURPHYS         = 54,
+#endif
 } diablo_message;
 
 typedef enum magic_type {
