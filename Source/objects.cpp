@@ -3723,7 +3723,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		InitDiabloMsg((char)46); // TODO: add hellfire shrine messages and enums for them
+		InitDiabloMsg(EMSG_SHRINE_MENDICANT);
 		AddPlrExperience(myplr, plr[myplr]._pLevel, plr[myplr]._pGold / 2);
 		TakePlrsMoney(plr[myplr]._pGold / 2);
 		CheckStats(myplr);
