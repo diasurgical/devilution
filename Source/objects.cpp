@@ -2970,7 +2970,7 @@ void OperatePedistal(int pnum, int i)
 void TryDisarm(int pnum, int i)
 {
 	int j, oi, oti, trapdisper;
-	BOOL checkflag;
+	DIABOOL checkflag;
 
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
@@ -2990,9 +2990,11 @@ void TryDisarm(int pnum, int i)
 					object[i]._oTrapFlag = FALSE;
 				}
 			}
+#ifndef HELLFIRE
 			oti = object[i]._otype;
 			if (oti >= OBJ_TCHEST1 && oti <= OBJ_TCHEST3)
 				object[i]._oTrapFlag = FALSE;
+#endif
 		}
 	}
 }
