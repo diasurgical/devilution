@@ -3789,7 +3789,7 @@ void OperateShrine(int pnum, int i, int sType)
 		} else if (hour <= 18) {
 			if (hour <= 12) {
 				if (hour > 4) {
-					InitDiabloMsg(50); // TODO: add hellfire shrine messages and enums for them
+					InitDiabloMsg(EMSG_SHRINE_SOLAR1);
 					ModifyPlrDex(myplr, 2);
 				}
 			} else {
