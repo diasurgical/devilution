@@ -2117,7 +2117,7 @@ void RedoPlayerVision()
 	}
 }
 
-void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
+void OperateL1RDoor(int pnum, int oi, DIABOOL sendflag)
 {
 	int xp, yp;
 
@@ -2132,10 +2132,30 @@ void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 	if (object[oi]._oVar4 == 0) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+#ifdef HELLFIRE
+		if (currlevel < 21) {
+			if (!deltaload)
+				PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		} else {
+			if (!deltaload)
+				PlaySfxLoc(IS_CROPEN, object[oi]._ox, object[oi]._oy);
+		}
+		if (currlevel < 21) {
+			ObjSetMicro(xp, yp, 395);
+		} else {
+			ObjSetMicro(xp, yp, 209);
+		}
+		if (currlevel < 17) {
+			dArch[xp][yp] = 8;
+		} else {
+			dArch[xp][yp] = 2;
+		}
+#else
 		if (!deltaload)
 			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
 		ObjSetMicro(xp, yp, 395);
 		dArch[xp][yp] = 8;
+#endif
 		objects_set_door_piece(xp, yp - 1);
 		object[oi]._oAnimFrame += 2;
 		object[oi]._oPreFlag = TRUE;
@@ -2146,14 +2166,31 @@ void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 		return;
 	}
 
+#ifdef HELLFIRE
+	if (currlevel < 21) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
+	} else {
+		if (!deltaload)
+			PlaySfxLoc(IS_CRCLOS, xp, object[oi]._oy);
+	}
+	BOOLEAN dok = !dMonster[xp][yp];
+	dok = dok && !dItem[xp][yp];
+	dok = dok && !dDead[xp][yp];
+	if (dok) {
+#else
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
 	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+#endif
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
 		object[oi]._oVar4 = 0;
 		object[oi]._oSelFlag = 3;
 		ObjSetMicro(xp, yp, object[oi]._oVar1);
+#ifdef HELLFIRE
+		if (currlevel < 17) {
+#endif
 		if (object[oi]._oVar2 != 50) {
 			ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
 		} else {
@@ -2162,6 +2199,18 @@ void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 			else
 				ObjSetMicro(xp - 1, yp, 50);
 		}
+#ifdef HELLFIRE
+		} else {
+			if (object[oi]._oVar2 != 86) {
+				ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
+			} else{
+				if (dPiece[xp - 1][yp] == 210)
+					ObjSetMicro(xp - 1, yp, 232);
+				else
+					ObjSetMicro(xp - 1, yp, 86);
+			}
+		}
+#endif
 		object[oi]._oAnimFrame -= 2;
 		object[oi]._oPreFlag = FALSE;
 		RedoPlayerVision();
