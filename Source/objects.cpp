@@ -2669,6 +2669,14 @@ void OperateSChambBk(int pnum, int i)
 			textdef = QUEST_RBONER;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			textdef = QUEST_MBONER;
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			textdef = 0x103; // TODO: create and apply hellfire quest enum
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			textdef = 0x107; // TODO: create and apply hellfire quest enum
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			textdef = QUEST_BONER;
+#endif
 		}
 		quests[QTYPE_BONE]._qmsg = textdef;
 		InitQTextMsg(textdef);
