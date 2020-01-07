@@ -3733,7 +3733,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		InitDiabloMsg((char)47); // TODO: add hellfire shrine messages and enums for them
+		InitDiabloMsg(EMSG_SHRINE_SPARKLING);
 		AddPlrExperience(myplr, plr[myplr]._pLevel, 1000 * currlevel);
 		AddMissile(
 		    object[i]._ox,
