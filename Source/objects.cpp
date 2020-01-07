@@ -2675,15 +2675,15 @@ void OperateSChambBk(int pnum, int i)
 	}
 }
 
-void OperateChest(int pnum, int i, BOOL sendmsg)
+void OperateChest(int pnum, int i, DIABOOL sendmsg)
 {
 	int j, mdir, mtype;
 
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
 			PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
-		object[i]._oAnimFrame += 2;
 		object[i]._oSelFlag = 0;
+		object[i]._oAnimFrame += 2;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
 			if (setlevel) {
@@ -2710,6 +2710,19 @@ void OperateChest(int pnum, int i, BOOL sendmsg)
 				case 2:
 					mtype = MIS_NOVA;
 					break;
+#ifdef HELLFIRE
+				case 3:
+					mtype = MIS_FIRERING;
+					break;
+				case 4:
+					mtype = MIS_STEALPOTS;
+					break;
+				case 5:
+					mtype = MIS_MANATRAP;
+					break;
+				default:
+					mtype = MIS_ARROW;
+#endif
 				}
 				AddMissile(object[i]._ox, object[i]._oy, plr[pnum].WorldX, plr[pnum].WorldY, mdir, mtype, 1, -1, 0, 0);
 				object[i]._oTrapFlag = FALSE;
