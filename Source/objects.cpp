@@ -2535,7 +2535,8 @@ void OperateBook(int pnum, int i)
 {
 	int j, oi;
 	int dx, dy;
-	BOOL do_add_missile, missile_added;
+	int otype;
+	DIABOOL do_add_missile, missile_added;
 
 	if (object[i]._oSelFlag == 0)
 		return;
@@ -2544,19 +2545,18 @@ void OperateBook(int pnum, int i)
 		missile_added = FALSE;
 		for (j = 0; j < nobjects; j++) {
 			oi = objectactive[j];
-			if (object[oi]._otype == OBJ_MCIRCLE2) {
-				if (object[oi]._oVar6 == 1) {
-					dx = 27;
-					dy = 29;
-					object[oi]._oVar6 = 4;
-					do_add_missile = TRUE;
-				}
-				if (object[oi]._oVar6 == 2) {
-					dx = 43;
-					dy = 29;
-					object[oi]._oVar6 = 4;
-					do_add_missile = TRUE;
-				}
+			otype = object[oi]._otype;
+			if (otype == OBJ_MCIRCLE2 && object[oi]._oVar6 == 1) {
+				dx = 27;
+				dy = 29;
+				object[oi]._oVar6 = 4;
+				do_add_missile = TRUE;
+			}
+			if (otype == OBJ_MCIRCLE2 && object[oi]._oVar6 == 2) {
+				dx = 43;
+				dy = 29;
+				object[oi]._oVar6 = 4;
+				do_add_missile = TRUE;
 			}
 			if (do_add_missile) {
 				object[dObject[35][36] - 1]._oVar5++;
@@ -2568,8 +2568,8 @@ void OperateBook(int pnum, int i)
 		if (!missile_added)
 			return;
 	}
-	object[i]._oAnimFrame++;
 	object[i]._oSelFlag = 0;
+	object[i]._oAnimFrame++;
 	if (!setlevel)
 		return;
 
