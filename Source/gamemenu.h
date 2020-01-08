@@ -2,6 +2,10 @@
 #ifndef __GAMEMENU_H__
 #define __GAMEMENU_H__
 
+#ifdef HELLFIRE
+extern BOOL jogging_opt;
+#endif
+
 void gamemenu_previous();
 void gamemenu_enable_single(TMenuItem *pMenuItems);
 void gamemenu_enable_multi(TMenuItem *pMenuItems);

@@ -1,5 +1,9 @@
 #include "diablo.h"
 
+#ifdef HELLFIRE
+BOOL jogging_opt = TRUE;
+#endif
+
 TMenuItem sgSingleMenu[6] = {
 	// clang-format off
 	//   dwFlags, pszStr,        fnMenu

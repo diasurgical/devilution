@@ -1344,12 +1344,23 @@ void PM_ChangeOffset(int pnum)
 
 	plr[pnum]._pVar6 += plr[pnum]._pxvel;
 	plr[pnum]._pVar7 += plr[pnum]._pyvel;
+
+#ifdef HELLFIRE
+	if (currlevel == 0 && jogging_opt) {
+		plr[pnum]._pVar6 += plr[pnum]._pxvel;
+		plr[pnum]._pVar7 += plr[pnum]._pyvel;
+	}
+#endif
+
 	plr[pnum]._pxoff = plr[pnum]._pVar6 >> 8;
 	plr[pnum]._pyoff = plr[pnum]._pVar7 >> 8;
 
+	px -= plr[pnum]._pVar6 >> 8;
+	py -= plr[pnum]._pVar7 >> 8;
+
 	if (pnum == myplr && ScrollInfo._sdir) {
-		ScrollInfo._sxoff += px - plr[pnum]._pxoff;
-		ScrollInfo._syoff += py - plr[pnum]._pyoff;
+		ScrollInfo._sxoff += px;
+		ScrollInfo._syoff += py;
 	}
 
 	PM_ChangeLightOff(pnum);
