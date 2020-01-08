@@ -189,7 +189,7 @@ void InitItemGFX()
 	int i;
 	char arglist[64];
 
-	for (i = 0; i < 35; i++) {
+	for (i = 0; i < ITEMTYPES; i++) {
 		sprintf(arglist, "Items\\%s.CEL", ItemDropNames[i]);
 		itemanims[i] = LoadFileInMem(arglist, NULL);
 	}
