@@ -561,7 +561,7 @@ void DrawSpellList()
 void SetSpell()
 {
 	spselflag = 0;
-	if (pSpell != -1) {
+	if (pSpell != SPL_INVALID) {
 		ClearPanel();
 		plr[myplr]._pRSpell = pSpell;
 		plr[myplr]._pRSplType = pSplType;
