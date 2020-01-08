@@ -7970,7 +7970,7 @@ size = 0xBF
 [[func]]
 name = "CheckPlrSpell"
 addr = 0x45E003
-size = 0x21
+size = 0x336
 
 [[func]]
 name = "SyncPlrAnim"
