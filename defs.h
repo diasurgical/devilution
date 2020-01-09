@@ -3,9 +3,11 @@
 #ifdef HELLFIRE
 #define DIABOOL					BOOLEAN
 #define GAME_NAME				"HELLFIRE"
+#define APP_NAME				"Hellfire"
 #else
 #define DIABOOL					BOOL
 #define GAME_NAME				"DIABLO"
+#define APP_NAME				"Diablo"
 #endif
 
 
