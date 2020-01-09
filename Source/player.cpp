@@ -2139,6 +2139,7 @@ BOOL PM_DoWalk(int pnum)
 		}
 
 		ClearPlrPVars(pnum);
+
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
@@ -2171,6 +2172,7 @@ BOOL PM_DoWalk2(int pnum)
 
 	if (plr[pnum]._pVar8 == anim_len) {
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = 0;
+
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
 			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
@@ -2224,10 +2226,10 @@ BOOL PM_DoWalk3(int pnum)
 		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~BFLAG_PLAYERLR;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
 		plr[pnum].WorldY = plr[pnum]._pVar2;
-		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
+		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
 
 		if (leveltype != DTYPE_TOWN) {
-			ChangeLightXY(plr[pnum]._plid, plr[pnum]._pVar1, plr[pnum]._pVar2);
+			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
 			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
 		}
 
