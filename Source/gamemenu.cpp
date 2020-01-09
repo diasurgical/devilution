@@ -46,7 +46,9 @@ char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
 #ifdef HELLFIRE
 char *jogging_toggle_names[] = { "Jog", "Walk", "Fast Walk" };
 #endif
+#ifndef HELLFIRE
 char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
+#endif
 
 void gamemenu_previous()
 {
