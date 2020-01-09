@@ -2326,18 +2326,34 @@ BOOL PM_DoWalk2(int pnum)
 		app_fatal("PM_DoWalk2: illegal player %d", pnum);
 	}
 
+#ifndef HELLFIRE
 	if (plr[pnum]._pAnimFrame == 3
 	    || (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
 	    || (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)) {
 		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
+#else
+	if (!currlevel && jogging_opt) {
+		if (plr[pnum]._pAnimFrame % 2 == 0) {
+			plr[pnum]._pAnimFrame++;
+			plr[pnum]._pVar8++;
+		}
+		if (plr[pnum]._pAnimFrame >= plr[pnum]._pWFrames) {
+			plr[pnum]._pAnimFrame = 0;
+		}
+	}
+#endif
 
 	anim_len = 8;
 	if (currlevel != 0) {
 		anim_len = AnimLenFromClass[plr[pnum]._pClass];
 	}
 
+#ifndef HELLFIRE
 	if (plr[pnum]._pVar8 == anim_len) {
+#else
+	if (plr[pnum]._pVar8 >= anim_len) {
+#endif
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = 0;
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
