@@ -393,8 +393,10 @@ BOOL palette_get_colour_cycling()
 	return color_cycling_enabled;
 }
 
+#ifndef HELLFIRE
 BOOL palette_set_color_cycling(BOOL enabled)
 {
 	color_cycling_enabled = enabled;
 	return enabled;
 }
+#endif
