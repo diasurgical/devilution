@@ -2812,9 +2812,9 @@ void items_427A72()
 	if (dword_691CB0) {
 		if (CornerItemMaybe.IDidx >= 0) {
 			PackItem(&id, &CornerItemMaybe);
-			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)&id, 19);
+			SRegSaveData(APP_NAME, off_4A5AC4, 0, (BYTE *)&id, 19);
 		} else {
-			SRegSaveData("Hellfire", off_4A5AC4, 0, (BYTE *)"", 1);
+			SRegSaveData(APP_NAME, off_4A5AC4, 0, (BYTE *)"", 1);
 		}
 	}
 }
@@ -2842,7 +2842,7 @@ void items_427ABA(int x, int y)
 		dItem[x][y] = 0;
 	}
 	dwSize = 0;
-	if (SRegLoadData("Hellfire", off_4A5AC4, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize)) {
+	if (SRegLoadData(APP_NAME, off_4A5AC4, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize)) {
 		if (dwSize == sizeof(PkSItem)) {
 			ii = itemavail[0];
 			dItem[x][y] = ii + 1;

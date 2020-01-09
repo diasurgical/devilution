@@ -21,11 +21,17 @@ void gamemenu_options(BOOL bActivate);
 void gamemenu_get_music();
 void gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int gamma);
 void gamemenu_get_sound();
+#ifdef HELLFIRE
+void gamemenu_jogging();
+#endif
 void gamemenu_get_color_cycling();
 void gamemenu_get_gamma();
 void gamemenu_music_volume(BOOL bActivate);
 int gamemenu_slider_music_sound(TMenuItem *menu_item);
 void gamemenu_sound_volume(BOOL bActivate);
+#ifdef HELLFIRE
+void gamemenu_loadjog(BOOL bActivate);
+#endif
 void gamemenu_gamma(BOOL bActivate);
 int gamemenu_slider_gamma();
 void gamemenu_color_cycling(BOOL bActivate);

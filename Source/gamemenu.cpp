@@ -1,4 +1,5 @@
 #include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 #ifdef HELLFIRE
 BOOL jogging_opt = TRUE;
@@ -31,13 +32,20 @@ TMenuItem sgOptionsMenu[6] = {
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_music_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_sound_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, "Gamma",         &gamemenu_gamma         },
+#ifndef HELLFIRE
 	{ GMENU_ENABLED               , NULL,            &gamemenu_color_cycling },
+#else
+	{ GMENU_ENABLED               , NULL,            &gamemenu_loadjog },
+#endif
 	{ GMENU_ENABLED               , "Previous Menu", &j_gamemenu_previous    },
 	{ GMENU_ENABLED               , NULL,            NULL                    }
 	// clang-format on
 };
 char *music_toggle_names[] = { "Music", "Music Disabled" };
 char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
+#ifdef HELLFIRE
+char *jogging_toggle_names[] = { "Jog", "Walk", "Fast Walk" };
+#endif
 char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 
 void gamemenu_previous()
@@ -179,8 +187,13 @@ void gamemenu_options(BOOL bActivate)
 {
 	gamemenu_get_music();
 	gamemenu_get_sound();
+#ifdef HELLFIRE
+	gamemenu_jogging();
+#endif
 	gamemenu_get_gamma();
+#ifndef HELLFIRE
 	gamemenu_get_color_cycling();
+#endif
 	gmenu_call_proc(sgOptionsMenu, NULL);
 }
 
@@ -208,10 +221,21 @@ void gamemenu_get_sound()
 	gamemenu_sound_music_toggle(sound_toggle_names, &sgOptionsMenu[1], sound_get_or_set_sound_volume(1));
 }
 
+#ifdef HELLFIRE
+void gamemenu_jogging()
+{
+	gmenu_slider_steps(&sgOptionsMenu[3], 2);
+	gmenu_slider_set(&sgOptionsMenu[3], 0, 1, jogging_opt);
+	sgOptionsMenu[3].pszStr = jogging_toggle_names[!jogging_opt ? 1 : 0];
+}
+#endif
+
+#ifndef HELLFIRE
 void gamemenu_get_color_cycling()
 {
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
 }
+#endif
 
 void gamemenu_get_gamma()
 {
@@ -306,6 +330,18 @@ void gamemenu_sound_volume(BOOL bActivate)
 	gamemenu_get_sound();
 }
 
+#ifdef HELLFIRE
+void gamemenu_loadjog(BOOL bActivate)
+{
+	if (gbMaxPlayers == 1) {
+		jogging_opt = !jogging_opt;
+		SRegSaveValue(APP_NAME, jogging_toggle_names[3], FALSE, jogging_opt);
+		PlaySFX(IS_TITLEMOV);
+		gamemenu_jogging();
+	}
+}
+#endif
+
 void gamemenu_gamma(BOOL bActivate)
 {
 	int gamma;
@@ -328,6 +364,7 @@ int gamemenu_slider_gamma()
 	return gmenu_slider_get(&sgOptionsMenu[2], 30, 100);
 }
 
+#ifndef HELLFIRE
 void gamemenu_color_cycling(BOOL bActivate)
 {
 	BOOL color_cycling;
@@ -335,3 +372,4 @@ void gamemenu_color_cycling(BOOL bActivate)
 	color_cycling = palette_set_color_cycling(palette_get_colour_cycling() == 0);
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[color_cycling & 1];
 }
+#endif

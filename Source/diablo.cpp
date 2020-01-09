@@ -300,11 +300,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #ifndef SPAWN
 		{
 			char szValueName[] = "Intro";
-			if (!SRegLoadValue("Diablo", szValueName, 0, &nData))
+			if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
 				nData = 1;
 			if (nData)
 				play_movie("gendata\\diablo1.smk", TRUE);
-			SRegSaveValue("Diablo", szValueName, 0, 0);
+			SRegSaveValue(APP_NAME, szValueName, 0, 0);
 		}
 #endif
 
