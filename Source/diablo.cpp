@@ -1893,7 +1893,7 @@ void diablo_color_cyc_logic()
 	tc = GetTickCount();
 	if (tc - color_cycle_timer >= 50) {
 		color_cycle_timer = tc;
-		if (palette_get_colour_cycling()) {
+		if (palette_get_color_cycling()) {
 			if (leveltype == DTYPE_HELL) {
 				lighting_color_cycling();
 			} else if (leveltype == DTYPE_CAVES) {
