@@ -3198,6 +3198,27 @@ void DoRecharge(int pnum, int cii)
 		SetCursor_(CURSOR_HAND);
 }
 
+#ifdef HELLFIRE
+void DoOil(int pnum, int cii)
+{
+	PlayerStruct *p = &plr[pnum];
+
+	if (cii >= 7 || cii == 0 || (cii > 3 && cii <= 6)) {
+		if (OilItem(&p->InvBody[cii], p)) {
+			CalcPlrInv(pnum, TRUE);
+			if (pnum == myplr) {
+				SetCursor_(CURSOR_HAND);
+			}
+		}
+	}
+}
+
+BOOL OilItem(ItemStruct *x, PlayerStruct *p)
+{
+	return FALSE;
+}
+
+#endif
 void RechargeItem(ItemStruct *i, int r)
 {
 	while (i->_iCharges != i->_iMaxCharges) {

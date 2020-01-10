@@ -927,6 +927,15 @@ BOOL TryIconCurs()
 			SetCursor_(CURSOR_HAND);
 		}
 		return TRUE;
+#ifdef HELLFIRE
+	} else if (pcurs == CURSOR_OIL) {
+		if (pcursinvitem != -1) {
+			DoOil(myplr, pcursinvitem);
+		} else {
+			SetCursor_(CURSOR_HAND);
+		}
+		return TRUE;
+#endif
 	} else if (pcurs == CURSOR_TELEPORT) {
 		if (pcursmonst != -1) {
 			NetSendCmdParam3(TRUE, CMD_TSPELLID, pcursmonst, plr[myplr]._pTSpell, GetSpellLevel(myplr, plr[myplr]._pTSpell));

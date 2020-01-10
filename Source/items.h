@@ -115,6 +115,10 @@ void CheckIdentify(int pnum, int cii);
 void DoRepair(int pnum, int cii);
 void RepairItem(ItemStruct *i, int lvl);
 void DoRecharge(int pnum, int cii);
+#ifdef HELLFIRE
+void DoOil(int pnum, int cii);
+BOOL OilItem(ItemStruct *x, PlayerStruct *p);
+#endif
 void RechargeItem(ItemStruct *i, int r);
 void PrintItemOil(char IDidx);
 void PrintItemPower(char plidx, ItemStruct *x);
