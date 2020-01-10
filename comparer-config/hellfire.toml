@@ -2693,7 +2693,7 @@ addr = 0x420E7F
 size = 0x151
 
 [[func]]
-name = "inv_420FD0"
+name = "inv_diablo_to_hellfire"
 addr = 0x420FD0
 size = 0x152
 

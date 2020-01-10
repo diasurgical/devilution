@@ -119,7 +119,7 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 		if (!gbValidSaveFile || !gbLoadGame) {
 #else
 			if (!gbValidSaveFile && gbLoadGame)
-				inv_420FD0(myplr);
+				inv_diablo_to_hellfire(myplr);
 #endif
 			uMsg = WM_DIABNEWGAME;
 		} else {
