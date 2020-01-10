@@ -3203,7 +3203,7 @@ void DoOil(int pnum, int cii)
 {
 	PlayerStruct *p = &plr[pnum];
 
-	if (cii >= 7 || cii == 0 || (cii > 3 && cii <= 6)) {
+	if (cii >= NUM_INVLOC || cii == INVLOC_HEAD || (cii > INVLOC_AMULET && cii <= INVLOC_CHEST)) {
 		if (OilItem(&p->InvBody[cii], p)) {
 			CalcPlrInv(pnum, TRUE);
 			if (pnum == myplr) {
