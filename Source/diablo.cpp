@@ -641,32 +641,33 @@ LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	case WM_MOUSEMOVE:
 		return 0;
 	case WM_LBUTTONDOWN:
-		if (sgbMouseDown == 0) {
-			sgbMouseDown = 1;
-			SetCapture(hWnd);
-		}
+		if (sgbMouseDown != 0)
+			return 0;
+		sgbMouseDown = 1;
+		SetCapture(hWnd);
 		return 0;
 	case WM_LBUTTONUP:
-		if (sgbMouseDown == 1) {
-			sgbMouseDown = 0;
-			ReleaseCapture();
-		}
+		if (sgbMouseDown != 1)
+			return 0;
+		sgbMouseDown = 0;
+		ReleaseCapture();
 		return 0;
 	case WM_RBUTTONDOWN:
-		if (sgbMouseDown == 0) {
-			sgbMouseDown = 2;
-			SetCapture(hWnd);
-		}
+		if (sgbMouseDown != 0)
+			return 0;
+		sgbMouseDown = 2;
+		SetCapture(hWnd);
 		return 0;
 	case WM_RBUTTONUP:
-		if (sgbMouseDown == 2) {
-			sgbMouseDown = 0;
-			ReleaseCapture();
-		}
+		if (sgbMouseDown != 2)
+			return 0;
+		sgbMouseDown = 0;
+		ReleaseCapture();
 		return 0;
 	case WM_CAPTURECHANGED:
-		if (hWnd != (HWND)lParam)
-			sgbMouseDown = 0;
+		if (hWnd == (HWND)lParam)
+			return 0;
+		sgbMouseDown = 0;
 		return 0;
 	}
 
