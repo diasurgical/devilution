@@ -98,7 +98,9 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 
 	do {
 		fExitProgram = FALSE;
+#ifndef HELLFIRE
 		gbLoadGame = FALSE;
+#endif
 
 		if (!NetInit(bSinglePlayer, &fExitProgram)) {
 			gbRunGameResult = !fExitProgram;
@@ -112,16 +114,25 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 			InitQuests();
 			InitPortals();
 			InitDungMsgs(myplr);
+#ifndef HELLFIRE
 		}
-		if (!gbValidSaveFile || !gbLoadGame)
+		if (!gbValidSaveFile || !gbLoadGame) {
+#else
+			if (!gbValidSaveFile && gbLoadGame)
+				inv_420FD0(myplr);
+#endif
 			uMsg = WM_DIABNEWGAME;
-		else
+		} else {
 			uMsg = WM_DIABLOADGAME;
-
+		}
 		run_game_loop(uMsg);
 		NetClose();
+#ifndef HELLFIRE
 		pfile_create_player_description(0, 0);
 	} while (gbRunGameResult);
+#else
+	} while (gbMaxPlayers == 1 || !gbRunGameResult);
+#endif
 
 	SNetDestroy();
 	return gbRunGameResult;
