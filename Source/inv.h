@@ -21,7 +21,7 @@ void CheckInvCut(int pnum, int mx, int my);
 void inv_update_rem_item(int pnum, BYTE iv);
 void RemoveInvItem(int pnum, int iv);
 #ifdef HELLFIRE
-BOOL inv_420FD0(int pnum);
+BOOL inv_diablo_to_hellfire(int pnum);
 #endif
 void RemoveSpdBarItem(int pnum, int iv);
 void CheckInvItem();

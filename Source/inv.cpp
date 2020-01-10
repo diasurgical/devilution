@@ -1664,7 +1664,10 @@ void RemoveInvItem(int pnum, int iv)
 }
 
 #ifdef HELLFIRE
-BOOL inv_420FD0(int pnum)
+/**
+ * @brief This destroyes all items except gold
+ */
+BOOL inv_diablo_to_hellfire(int pnum)
 {
 	ItemStruct tmp;
 	ItemStruct *item;
