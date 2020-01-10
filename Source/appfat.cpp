@@ -450,13 +450,16 @@ char *TraceLastError()
 	return GetErrorStr(GetLastError());
 }
 
+#ifdef HELLFIRE
+__declspec(naked)
+#endif
 void __cdecl app_fatal(const char *pszFmt, ...)
 {
 	va_list va;
 
 	va_start(va, pszFmt);
 	FreeDlg();
-#ifdef _DEBUG
+#if defined(_MSC_VER) || defined(HELLFIRE)
 	TriggerBreak();
 #endif
 
@@ -467,6 +470,9 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 
 	init_cleanup(FALSE);
 	exit(1);
+#ifdef HELLFIRE
+	ExitProcess(1);
+#endif
 }
 
 void MsgBox(const char *pszFmt, va_list va)
