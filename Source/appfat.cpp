@@ -459,7 +459,7 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 
 	va_start(va, pszFmt);
 	FreeDlg();
-#if defined(_MSC_VER) || defined(HELLFIRE)
+#if defined(_DEBUG) || defined(HELLFIRE)
 	TriggerBreak();
 #endif
 
