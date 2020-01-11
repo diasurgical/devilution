@@ -9,7 +9,9 @@ int gdwPalEntries;
 /* data */
 
 int gamma_correction = 100;
+#ifndef HELLFIRE
 BOOL color_cycling_enabled = TRUE;
+#endif
 BOOLEAN sgbFadedIn = TRUE;
 
 static void palette_update()
@@ -388,12 +390,12 @@ void palette_update_quest_palette(int n)
 }
 #endif
 
+#ifndef HELLFIRE
 BOOL palette_get_colour_cycling()
 {
 	return color_cycling_enabled;
 }
 
-#ifndef HELLFIRE
 BOOL palette_set_color_cycling(BOOL enabled)
 {
 	color_cycling_enabled = enabled;
