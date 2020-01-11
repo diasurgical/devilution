@@ -2268,23 +2268,40 @@ BOOL PM_DoStand(int pnum)
 BOOL PM_DoWalk(int pnum)
 {
 	int anim_len;
+	BOOL rv;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk: illegal player %d", pnum);
 	}
 
+#ifndef HELLFIRE
 	if (plr[pnum]._pAnimFrame == 3
 	    || (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
 	    || (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)) {
 		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
+#else
+	if (!currlevel && jogging_opt) {
+		if (plr[pnum]._pAnimFrame % 2 == 0) {
+			plr[pnum]._pAnimFrame++;
+			plr[pnum]._pVar8++;
+		}
+		if (plr[pnum]._pAnimFrame >= plr[pnum]._pWFrames) {
+			plr[pnum]._pAnimFrame = 0;
+		}
+	}
+#endif
 
 	anim_len = 8;
 	if (currlevel != 0) {
 		anim_len = AnimLenFromClass[plr[pnum]._pClass];
 	}
 
+#ifndef HELLFIRE
 	if (plr[pnum]._pVar8 == anim_len) {
+#else
+	if (plr[pnum]._pVar8 >= anim_len) {
+#endif
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
 		plr[pnum].WorldX += plr[pnum]._pVar1;
 		plr[pnum].WorldY += plr[pnum]._pVar2;
@@ -2310,17 +2327,19 @@ BOOL PM_DoWalk(int pnum)
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
-
-		return TRUE;
+		rv = TRUE;
+	} else {
+		PM_ChangeOffset(pnum);
+		rv = FALSE;
 	}
 
-	PM_ChangeOffset(pnum);
-	return FALSE;
+	return rv;
 }
 
 BOOL PM_DoWalk2(int pnum)
 {
 	int anim_len;
+	BOOL rv;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk2: illegal player %d", pnum);
@@ -2372,46 +2391,63 @@ BOOL PM_DoWalk2(int pnum)
 		}
 
 		ClearPlrPVars(pnum);
-
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
-
-		return TRUE;
+		rv = TRUE;
+	} else {
+		PM_ChangeOffset(pnum);
+		rv = FALSE;
 	}
 
-	PM_ChangeOffset(pnum);
-	return FALSE;
+	return rv;
 }
 
 BOOL PM_DoWalk3(int pnum)
 {
 	int anim_len;
+	BOOL rv;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk3: illegal player %d", pnum);
 	}
 
+#ifndef HELLFIRE
 	if (plr[pnum]._pAnimFrame == 3
 	    || (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
 	    || (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)) {
 		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
+#else
+	if (!currlevel && jogging_opt) {
+		if (plr[pnum]._pAnimFrame % 2 == 0) {
+			plr[pnum]._pAnimFrame++;
+			plr[pnum]._pVar8++;
+		}
+		if (plr[pnum]._pAnimFrame >= plr[pnum]._pWFrames) {
+			plr[pnum]._pAnimFrame = 0;
+		}
+	}
+#endif
 
 	anim_len = 8;
 	if (currlevel != 0) {
 		anim_len = AnimLenFromClass[plr[pnum]._pClass];
 	}
 
+#ifndef HELLFIRE
 	if (plr[pnum]._pVar8 == anim_len) {
+#else
+	if (plr[pnum]._pVar8 >= anim_len) {
+#endif
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
 		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~BFLAG_PLAYERLR;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
 		plr[pnum].WorldY = plr[pnum]._pVar2;
-		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
+		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
 
 		if (leveltype != DTYPE_TOWN) {
-			ChangeLightXY(plr[pnum]._plid, plr[pnum]._pVar1, plr[pnum]._pVar2);
+			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
 			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
 		}
 
@@ -2431,12 +2467,13 @@ BOOL PM_DoWalk3(int pnum)
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
-
-		return TRUE;
+		rv = TRUE;
+	} else {
+		PM_ChangeOffset(pnum);
+		rv = FALSE;
 	}
 
-	PM_ChangeOffset(pnum);
-	return FALSE;
+	return rv;
 }
 
 BOOL WeaponDur(int pnum, int durrnd)
