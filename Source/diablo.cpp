@@ -1919,7 +1919,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		{
 			items_427ABA(RowOfCornerStone, ColOfCornerStone);
 		}
-		if ( quests[QTYPE_NAKRUL]._qactive == 3 && currlevel == 24 ) // fix quest struct
+		if ( quests[QTYPE_NAKRUL]._qactive == 3 && currlevel == 24 ) // TODO: fix quest struct
 		{
 			objects_454BA8();
 		}
