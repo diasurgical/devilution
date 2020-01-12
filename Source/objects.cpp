@@ -925,7 +925,7 @@ void InitObjects()
 				} else if (plr[myplr]._pClass == PC_MONK) {
 					sp_id = QUEST_HBLINDING;
 				} else if (plr[myplr]._pClass == PC_BARD) {
-					sp_id = 265; // TODO: create and apply hellfire quest speech enums
+					sp_id = QUEST_BBLINDING;
 				} else if (plr[myplr]._pClass == PC_BARBARIAN) {
 					sp_id = QUEST_BLINDING;
 #endif
