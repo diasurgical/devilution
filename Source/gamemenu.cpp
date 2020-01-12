@@ -235,7 +235,7 @@ void gamemenu_jogging()
 #ifndef HELLFIRE
 void gamemenu_get_color_cycling()
 {
-	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
+	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[palette_get_color_cycling() & 1];
 }
 #endif
 
@@ -371,7 +371,7 @@ void gamemenu_color_cycling(BOOL bActivate)
 {
 	BOOL color_cycling;
 
-	color_cycling = palette_set_color_cycling(palette_get_colour_cycling() == 0);
+	color_cycling = palette_set_color_cycling(palette_get_color_cycling() == 0);
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[color_cycling & 1];
 }
 #endif

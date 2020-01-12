@@ -2324,6 +2324,7 @@ BOOL PM_DoWalk(int pnum)
 		}
 
 		ClearPlrPVars(pnum);
+
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
@@ -2374,6 +2375,7 @@ BOOL PM_DoWalk2(int pnum)
 	if (plr[pnum]._pVar8 >= anim_len) {
 #endif
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = 0;
+
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
 			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
@@ -3992,32 +3994,7 @@ void SyncPlrAnim(int pnum)
 
 	dir = plr[pnum]._pdir;
 	switch (plr[pnum]._pmode) {
-	case PM_BLOCK:
-		plr[pnum]._pAnimData = plr[pnum]._pBAnim[dir];
-		break;
-	case PM_GOTHIT:
-		plr[pnum]._pAnimData = plr[pnum]._pHAnim[dir];
-		break;
-	case PM_DEATH:
-		plr[pnum]._pAnimData = plr[pnum]._pDAnim[dir];
-		break;
-	case PM_SPELL:
-		if (pnum == myplr) {
-			sType = spelldata[plr[pnum]._pSpell].sType;
-		} else {
-			sType = STYPE_FIRE;
-		}
-		if (sType == STYPE_FIRE)
-			plr[pnum]._pAnimData = plr[pnum]._pFAnim[dir];
-		if (sType == STYPE_LIGHTNING)
-			plr[pnum]._pAnimData = plr[pnum]._pLAnim[dir];
-		if (sType == STYPE_MAGIC) {
-			plr[pnum]._pAnimData = plr[pnum]._pTAnim[dir];
-		}
-		break;
 	case PM_STAND:
-	case PM_NEWLVL:
-	case PM_QUIT:
 		plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
 		break;
 	case PM_WALK:
@@ -4026,8 +4003,37 @@ void SyncPlrAnim(int pnum)
 		plr[pnum]._pAnimData = plr[pnum]._pWAnim[dir];
 		break;
 	case PM_ATTACK:
+		plr[pnum]._pAnimData = plr[pnum]._pAAnim[dir];
+		break;
 	case PM_RATTACK:
 		plr[pnum]._pAnimData = plr[pnum]._pAAnim[dir];
+		break;
+	case PM_BLOCK:
+		plr[pnum]._pAnimData = plr[pnum]._pBAnim[dir];
+		break;
+	case PM_SPELL:
+		if (pnum == myplr)
+			sType = spelldata[plr[pnum]._pSpell].sType;
+		else
+			sType = STYPE_FIRE;
+		if (sType == STYPE_FIRE)
+			plr[pnum]._pAnimData = plr[pnum]._pFAnim[dir];
+		if (sType == STYPE_LIGHTNING)
+			plr[pnum]._pAnimData = plr[pnum]._pLAnim[dir];
+		if (sType == STYPE_MAGIC)
+			plr[pnum]._pAnimData = plr[pnum]._pTAnim[dir];
+		break;
+	case PM_GOTHIT:
+		plr[pnum]._pAnimData = plr[pnum]._pHAnim[dir];
+		break;
+	case PM_NEWLVL:
+		plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
+		break;
+	case PM_DEATH:
+		plr[pnum]._pAnimData = plr[pnum]._pDAnim[dir];
+		break;
+	case PM_QUIT:
+		plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
 		break;
 	default:
 		app_fatal("SyncPlrAnim");

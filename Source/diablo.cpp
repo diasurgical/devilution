@@ -749,32 +749,33 @@ LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	case WM_MOUSEMOVE:
 		return 0;
 	case WM_LBUTTONDOWN:
-		if (sgbMouseDown == 0) {
-			sgbMouseDown = 1;
-			SetCapture(hWnd);
-		}
+		if (sgbMouseDown != 0)
+			return 0;
+		sgbMouseDown = 1;
+		SetCapture(hWnd);
 		return 0;
 	case WM_LBUTTONUP:
-		if (sgbMouseDown == 1) {
-			sgbMouseDown = 0;
-			ReleaseCapture();
-		}
+		if (sgbMouseDown != 1)
+			return 0;
+		sgbMouseDown = 0;
+		ReleaseCapture();
 		return 0;
 	case WM_RBUTTONDOWN:
-		if (sgbMouseDown == 0) {
-			sgbMouseDown = 2;
-			SetCapture(hWnd);
-		}
+		if (sgbMouseDown != 0)
+			return 0;
+		sgbMouseDown = 2;
+		SetCapture(hWnd);
 		return 0;
 	case WM_RBUTTONUP:
-		if (sgbMouseDown == 2) {
-			sgbMouseDown = 0;
-			ReleaseCapture();
-		}
+		if (sgbMouseDown != 2)
+			return 0;
+		sgbMouseDown = 0;
+		ReleaseCapture();
 		return 0;
 	case WM_CAPTURECHANGED:
-		if (hWnd != (HWND)lParam)
-			sgbMouseDown = 0;
+		if (hWnd == (HWND)lParam)
+			return 0;
+		sgbMouseDown = 0;
 		return 0;
 	}
 
@@ -1228,28 +1229,32 @@ void PressKey(int vkey)
 #endif
 	else if (vkey == VK_F5) {
 		if (spselflag) {
-			SetSpeedSpell(0);
-		} else {
 			ToggleSpell(0);
+			return;
 		}
+		SetSpeedSpell(0);
+		return;
 	} else if (vkey == VK_F6) {
 		if (spselflag) {
-			SetSpeedSpell(1);
-		} else {
 			ToggleSpell(1);
+			return;
 		}
+		SetSpeedSpell(1);
+		return;
 	} else if (vkey == VK_F7) {
 		if (spselflag) {
-			SetSpeedSpell(2);
-		} else {
 			ToggleSpell(2);
+			return;
 		}
+		SetSpeedSpell(2);
+		return;
 	} else if (vkey == VK_F8) {
 		if (spselflag) {
-			SetSpeedSpell(3);
-		} else {
 			ToggleSpell(3);
+			return;
 		}
+		SetSpeedSpell(3);
+		return;
 	} else if (vkey == VK_F9) {
 		diablo_hotkey_msg(0);
 	} else if (vkey == VK_F10) {
@@ -2088,7 +2093,7 @@ void diablo_color_cyc_logic()
 	if (tc - color_cycle_timer >= 50) {
 		color_cycle_timer = tc;
 #ifndef HELLFIRE
-		if (!palette_get_colour_cycling())
+		if (!palette_get_color_cycling())
 			return;
 #endif
 		if (leveltype == DTYPE_HELL) {

@@ -1385,7 +1385,7 @@ void S_StartTalk()
 	AddSText(0, 16, 1, "version", COL_WHITE, 0);
 #else
 	sn = 0;
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < MAXQUESTS; i++) {
 		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
@@ -1400,7 +1400,7 @@ void S_StartTalk()
 
 	sn2 = sn - 2;
 
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < MAXQUESTS; i++) {
 		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			AddSText(0, sn, 1, questlist[i]._qlstr, COL_WHITE, 1);
 			sn += la;
@@ -2605,7 +2605,7 @@ void S_TalkEnter()
 	}
 
 	sn = 0;
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < MAXQUESTS; i++) {
 		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
@@ -2624,7 +2624,7 @@ void S_TalkEnter()
 		return;
 	}
 
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < MAXQUESTS; i++) {
 		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			if (sn == stextsel) {
 				InitQTextMsg(((DWORD *)&Qtalklist[talker])[i]);

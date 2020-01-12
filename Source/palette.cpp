@@ -391,7 +391,7 @@ void palette_update_quest_palette(int n)
 #endif
 
 #ifndef HELLFIRE
-BOOL palette_get_colour_cycling()
+BOOL palette_get_color_cycling()
 {
 	return color_cycling_enabled;
 }

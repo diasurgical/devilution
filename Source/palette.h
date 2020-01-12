@@ -25,7 +25,7 @@ void palette_update_hive();
 #endif
 void palette_update_quest_palette(int n);
 #ifndef HELLFIRE
-BOOL palette_get_colour_cycling();
+BOOL palette_get_color_cycling();
 BOOL palette_set_color_cycling(BOOL enabled);
 #endif
 
