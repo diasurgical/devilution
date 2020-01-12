@@ -205,7 +205,7 @@ void InitRndLocObj5x5(int min, int max, int objtype)
 	for (i = 0; i < numobjs; i++) {
 		cnt = 0;
 		exit = FALSE;
-		while(!exit) {
+		while (!exit) {
 			exit = TRUE;
 			xp = random_(139, 80) + 16;
 			yp = random_(139, 80) + 16;
@@ -314,7 +314,7 @@ void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, in
 					exit = FALSE;
 			}
 		}
-		if (!exit){
+		if (!exit) {
 			cnt++;
 			if (cnt > 20000)
 				return;
@@ -867,9 +867,10 @@ void InitObjects()
 			AddSlainHero();
 		if (currlevel == quests[QTYPE_BLKM]._qlevel && quests[QTYPE_BLKM]._qactive == 1)
 			AddMushPatch();
+
+#ifdef HELLFIRE
 		if (currlevel == 4 || currlevel == 8 || currlevel == 12)
 			AddStoryBooks();
-#ifdef HELLFIRE
 		if (currlevel == 21) {
 			objects_add_lv22(1);
 		} else if (currlevel == 22) {
@@ -882,6 +883,13 @@ void InitObjects()
 		if (currlevel == 24) {
 			objects_add_lv24();
 		}
+#else
+		if (currlevel == 4)
+			AddStoryBooks();
+		if (currlevel == 8)
+			AddStoryBooks();
+		if (currlevel == 12)
+			AddStoryBooks();
 #endif
 		if (leveltype == DTYPE_CATHEDRAL) {
 			if (QuestStatus(QTYPE_BUTCH))
@@ -896,7 +904,7 @@ void InitObjects()
 				add_crypt_objs(0, 0, MAXDUNX, MAXDUNY);
 			else
 #endif
-			AddL1Objs(0, 0, MAXDUNX, MAXDUNY);
+				AddL1Objs(0, 0, MAXDUNX, MAXDUNY);
 			InitRndBarrels();
 		}
 		if (leveltype == DTYPE_CATACOMBS) {
@@ -1484,7 +1492,6 @@ void AddSlainHero()
 #ifdef HELLFIRE
 void objects_44D8C5(int a1, int a2, int a3, int a4)
 {
-
 }
 #endif
 void AddObject(int ot, int ox, int oy)
@@ -2170,40 +2177,40 @@ void DoorSet(int oi, int dx, int dy)
 #ifdef HELLFIRE
 	if (currlevel < 17) {
 #endif
-	if (pn == 43)
-		ObjSetMicro(dx, dy, 392);
-	if (pn == 45)
-		ObjSetMicro(dx, dy, 394);
-	if (pn == 50 && object[oi]._otype == OBJ_L1LDOOR)
-		ObjSetMicro(dx, dy, 411);
-	if (pn == 50 && object[oi]._otype == OBJ_L1RDOOR)
-		ObjSetMicro(dx, dy, 412);
-	if (pn == 54)
-		ObjSetMicro(dx, dy, 397);
-	if (pn == 55)
-		ObjSetMicro(dx, dy, 398);
-	if (pn == 61)
-		ObjSetMicro(dx, dy, 399);
-	if (pn == 67)
-		ObjSetMicro(dx, dy, 400);
-	if (pn == 68)
-		ObjSetMicro(dx, dy, 401);
-	if (pn == 69)
-		ObjSetMicro(dx, dy, 403);
-	if (pn == 70)
-		ObjSetMicro(dx, dy, 404);
-	if (pn == 72)
-		ObjSetMicro(dx, dy, 406);
-	if (pn == 212)
-		ObjSetMicro(dx, dy, 407);
-	if (pn == 354)
-		ObjSetMicro(dx, dy, 409);
-	if (pn == 355)
-		ObjSetMicro(dx, dy, 410);
-	if (pn == 411)
-		ObjSetMicro(dx, dy, 396);
-	if (pn == 412)
-		ObjSetMicro(dx, dy, 396);
+		if (pn == 43)
+			ObjSetMicro(dx, dy, 392);
+		if (pn == 45)
+			ObjSetMicro(dx, dy, 394);
+		if (pn == 50 && object[oi]._otype == OBJ_L1LDOOR)
+			ObjSetMicro(dx, dy, 411);
+		if (pn == 50 && object[oi]._otype == OBJ_L1RDOOR)
+			ObjSetMicro(dx, dy, 412);
+		if (pn == 54)
+			ObjSetMicro(dx, dy, 397);
+		if (pn == 55)
+			ObjSetMicro(dx, dy, 398);
+		if (pn == 61)
+			ObjSetMicro(dx, dy, 399);
+		if (pn == 67)
+			ObjSetMicro(dx, dy, 400);
+		if (pn == 68)
+			ObjSetMicro(dx, dy, 401);
+		if (pn == 69)
+			ObjSetMicro(dx, dy, 403);
+		if (pn == 70)
+			ObjSetMicro(dx, dy, 404);
+		if (pn == 72)
+			ObjSetMicro(dx, dy, 406);
+		if (pn == 212)
+			ObjSetMicro(dx, dy, 407);
+		if (pn == 354)
+			ObjSetMicro(dx, dy, 409);
+		if (pn == 355)
+			ObjSetMicro(dx, dy, 410);
+		if (pn == 411)
+			ObjSetMicro(dx, dy, 396);
+		if (pn == 412)
+			ObjSetMicro(dx, dy, 396);
 #ifdef HELLFIRE
 	} else {
 		if (pn == 75)
@@ -2325,19 +2332,19 @@ void OperateL1RDoor(int pnum, int oi, DIABOOL sendflag)
 #ifdef HELLFIRE
 		if (currlevel < 17) {
 #endif
-		if (object[oi]._oVar2 != 50) {
-			ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
-		} else {
-			if (dPiece[xp - 1][yp] == 396)
-				ObjSetMicro(xp - 1, yp, 411);
-			else
-				ObjSetMicro(xp - 1, yp, 50);
-		}
+			if (object[oi]._oVar2 != 50) {
+				ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
+			} else {
+				if (dPiece[xp - 1][yp] == 396)
+					ObjSetMicro(xp - 1, yp, 411);
+				else
+					ObjSetMicro(xp - 1, yp, 50);
+			}
 #ifdef HELLFIRE
 		} else {
 			if (object[oi]._oVar2 != 86) {
 				ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
-			} else{
+			} else {
 				if (dPiece[xp - 1][yp] == 210)
 					ObjSetMicro(xp - 1, yp, 232);
 				else
