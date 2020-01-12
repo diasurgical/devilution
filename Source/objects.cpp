@@ -195,13 +195,14 @@ void InitRndLocBigObj(int min, int max, int objtype)
 
 void InitRndLocObj5x5(int min, int max, int objtype)
 {
-	BOOL exit;
-	int xp, yp, numobjs, i, k, m, n;
+	DIABOOL exit;
+	int xp, yp, numobjs, i, cnt, m, n;
 
 	numobjs = min + random_(139, max - min);
 	for (i = 0; i < numobjs; i++) {
-		k = 0;
-		for (;;) {
+		cnt = 0;
+		exit = FALSE;
+		while(!exit) {
 			exit = TRUE;
 			xp = random_(139, 80) + 16;
 			yp = random_(139, 80) + 16;
@@ -211,11 +212,11 @@ void InitRndLocObj5x5(int min, int max, int objtype)
 						exit = FALSE;
 				}
 			}
-			if (exit)
-				break;
-			k++;
-			if (k > 20000)
-				return;
+			if (!exit) {
+				cnt++;
+				if (cnt > 20000)
+					return;
+			}
 		}
 		AddObject(objtype, xp, yp);
 	}
@@ -295,11 +296,12 @@ void AddCandles()
 
 void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, int y2, int msg)
 {
-	BOOL exit;
-	int xp, yp, ob, k, m, n;
+	DIABOOL exit;
+	int xp, yp, ob, cnt, m, n;
 
-	k = 0;
-	for (;;) {
+	cnt = 0;
+	exit = FALSE;
+	while (!exit) {
 		exit = TRUE;
 		xp = random_(139, 80) + 16;
 		yp = random_(139, 80) + 16;
@@ -309,11 +311,11 @@ void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, in
 					exit = FALSE;
 			}
 		}
-		if (exit)
-			break;
-		k++;
-		if (k > 20000)
-			return;
+		if (!exit){
+			cnt++;
+			if (cnt > 20000)
+				return;
+		}
 	}
 
 	if (QuestStatus(QTYPE_BLIND))
@@ -647,10 +649,11 @@ void AddStoryBooks()
 {
 	int xp, yp, xx, yy;
 	int cnt;
-	BOOL done;
+	DIABOOL done;
 
 	cnt = 0;
-	while (TRUE) {
+	done = FALSE;
+	while (!done) {
 		done = TRUE;
 		xp = random_(139, 80) + 16;
 		yp = random_(139, 80) + 16;
@@ -660,11 +663,11 @@ void AddStoryBooks()
 					done = FALSE;
 			}
 		}
-		if (done)
-			break;
-		cnt++;
-		if (cnt > 20000)
-			return;
+		if (!done) {
+			cnt++;
+			if (cnt > 20000)
+				return;
+		}
 	}
 	AddObject(OBJ_STORYBOOK, xp, yp);
 	AddObject(OBJ_STORYCANDLE, xp - 2, yp + 1);
@@ -735,11 +738,12 @@ void AddLazStand()
 {
 	int xp, yp, xx, yy;
 	int cnt;
-	BOOL found;
+	DIABOOL found;
 
 	cnt = 0;
-	while (TRUE) {
-		found = 1;
+	found = FALSE;
+	while (!found) {
+		found = TRUE;
 		xp = random_(139, 80) + 16;
 		yp = random_(139, 80) + 16;
 		for (yy = -3; yy <= 3; yy++) {
@@ -748,13 +752,12 @@ void AddLazStand()
 					found = FALSE;
 			}
 		}
-		if (found)
-			break;
-
-		cnt++;
-		if (cnt > 10000) {
-			InitRndLocObj(1, 1, OBJ_LAZSTAND);
-			return;
+		if (!found) {
+			cnt++;
+			if (cnt > 10000) {
+				InitRndLocObj(1, 1, OBJ_LAZSTAND);
+				return;
+			}
 		}
 	}
 	AddObject(OBJ_LAZSTAND, xp, yp);
