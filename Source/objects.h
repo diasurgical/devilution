@@ -39,6 +39,10 @@ void AddChestTraps();
 void LoadMapObjects(BYTE *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx);
 void LoadMapObjs(BYTE *pMap, int startx, int starty);
 void AddDiabObjs();
+#ifdef HELLFIRE
+void objects_add_lv22(int s);
+void objects_add_lv24();
+#endif
 void AddStoryBooks();
 void AddHookedBodies(int freq);
 void AddL4Goodies();
@@ -81,6 +85,10 @@ void AddTorturedBody(int i);
 void GetRndObjLoc(int randarea, int &xx, int &yy);
 void AddMushPatch();
 void AddSlainHero();
+#ifdef HELLFIRE
+void objects_44D8C5(int a1, int a2, int a3, int a4);
+void objects_454AF0(int a1, int a2, int a3);
+#endif
 void AddObject(int ot, int ox, int oy);
 void Obj_Light(int i, int lr);
 void Obj_Circle(int i);
@@ -157,6 +165,7 @@ void GetObjectStr(int i);
 #ifdef HELLFIRE
 void operate_lv24_lever();
 void objects_454BA8();
+void objects_rnd_454BEA();
 #endif
 
 /* rdata */
