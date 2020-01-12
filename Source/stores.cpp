@@ -83,7 +83,11 @@ void InitStores()
 	pSTextBoxCels = LoadFileInMem("Data\\TextBox2.CEL", NULL);
 	pSPentSpn2Cels = LoadFileInMem("Data\\PentSpn2.CEL", NULL);
 	pSTextSlidCels = LoadFileInMem("Data\\TextSlid.CEL", NULL);
+#ifdef HELLFIRE
+	ClearSText(0, 104);
+#else
 	ClearSText(0, 24);
+#endif
 	stextflag = STORE_NONE;
 	InStoreFlag = 1;
 	stextsize = 0;
