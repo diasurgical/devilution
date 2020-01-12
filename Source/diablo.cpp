@@ -344,139 +344,181 @@ void diablo_parse_flags(char *args)
 		if (_strnicmp("dd_emulate", args, strlen("dd_emulate")) == 0) {
 			gbEmulate = 1;
 			args += strlen("dd_emulate");
-		} else if (_strnicmp("dd_backbuf", args, strlen("dd_backbuf")) == 0) {
+			continue;
+		}
+		if (_strnicmp("dd_backbuf", args, strlen("dd_backbuf")) == 0) {
 			gbBackBuf = 1;
 			args += strlen("dd_backbuf");
-		} else if (_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
+			continue;
+		}
+		if (_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
 			gbDupSounds = FALSE;
 			args += strlen("ds_noduplicates");
-		} else {
-			c = tolower(*args);
-			args++;
-#ifdef _DEBUG
-			switch (c) {
-			case '^':
-				debug_mode_key_inverted_v = 1;
-				break;
-			case '$':
-				debug_mode_dollar_sign = 1;
-				break;
-			case 'b':
-				/*
-				debug_mode_key_b = 1;
-			*/
-				break;
-			case 'd':
-				showintrodebug = 0;
-				debug_mode_key_d = 1;
-				break;
-			case 'f':
-				EnableFrameCount();
-				break;
-			case 'i':
-				debug_mode_key_i = 1;
-				break;
-			case 'j':
-				/*
-				while(isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while(isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				debug_mode_key_J_trigger = i;
-			*/
-				break;
-			case 'l':
-				setlevel = FALSE;
-				leveldebug = TRUE;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				leveltype = i;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				currlevel = i;
-				plr[0].plrlevel = i;
-				break;
-			case 'm':
-				monstdebug = TRUE;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				DebugMonsters[debugmonsttypes++] = i;
-				break;
-			case 'n':
-				showintrodebug = 0;
-				break;
-			case 'q':
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				questdebug = i;
-				break;
-			case 'r':
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				setseed = i;
-				break;
-			case 's':
-				debug_mode_key_s = 1;
-				break;
-			case 't':
-				leveldebug = TRUE;
-				setlevel = TRUE;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				setlvlnum = i;
-				break;
-			case 'v':
-				visiondebug = TRUE;
-				break;
-			case 'w':
-				debug_mode_key_w = 1;
-				break;
-			case 'x':
-				fullscreen = FALSE;
-				break;
-			}
-#endif
+			continue;
 		}
+#ifdef HELLFIRE
+		char tq[] = "Theoquest";
+		if (_strnicmp(tq, args, strlen(tq)) == 0) {
+			UseTheoQuest = TRUE;
+			args += strlen(tq);
+			continue;
+		}
+		char cq[] = "Cowquest";
+		if (_strnicmp(cq, args, strlen(cq)) == 0) {
+			UseCowFarmer = TRUE;
+			args += strlen(cq);
+			continue;
+		}
+		char na[] = "NestArt";
+		if (_strnicmp(na, args, strlen(na)) == 0) {
+			UseNestArt = TRUE;
+			args += strlen(na);
+			continue;
+		}
+		char bt[] = "Bardtest";
+		if (_strnicmp(bt, args, strlen(bt)) == 0) {
+			UseBardTest = TRUE;
+			args += strlen(bt);
+			continue;
+		}
+		char mt[] = "Multitest";
+		if (_strnicmp(mt, bt, strlen(mt)) == 0) { // BUGFIX: secound arg should be args
+			UseMultiTest = TRUE;
+			args += strlen(mt);
+			continue;
+		}
+		char bb[] = "Barbariantest";
+		if (_strnicmp(bb, args, strlen(bb)) == 0) {
+			UseBarbarianTest = TRUE;
+			args += strlen(bb);
+			continue;
+		}
+#endif
+		c = tolower(*args);
+		args++;
+#ifdef _DEBUG
+		switch (c) {
+		case '^':
+			debug_mode_key_inverted_v = 1;
+			break;
+		case '$':
+			debug_mode_dollar_sign = 1;
+			break;
+		case 'b':
+			/*
+			debug_mode_key_b = 1;
+		*/
+			break;
+		case 'd':
+			showintrodebug = 0;
+			debug_mode_key_d = 1;
+			break;
+		case 'f':
+			EnableFrameCount();
+			break;
+		case 'i':
+			debug_mode_key_i = 1;
+			break;
+		case 'j':
+			/*
+			while(isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while(isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			debug_mode_key_J_trigger = i;
+		*/
+			break;
+		case 'l':
+			setlevel = FALSE;
+			leveldebug = TRUE;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			leveltype = i;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			currlevel = i;
+			plr[0].plrlevel = i;
+			break;
+		case 'm':
+			monstdebug = TRUE;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			DebugMonsters[debugmonsttypes++] = i;
+			break;
+		case 'n':
+			showintrodebug = 0;
+			break;
+		case 'q':
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			questdebug = i;
+			break;
+		case 'r':
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			setseed = i;
+			break;
+		case 's':
+			debug_mode_key_s = 1;
+			break;
+		case 't':
+			leveldebug = TRUE;
+			setlevel = TRUE;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			setlvlnum = i;
+			break;
+		case 'v':
+			visiondebug = TRUE;
+			break;
+		case 'w':
+			debug_mode_key_w = 1;
+			break;
+		case 'x':
+			fullscreen = FALSE;
+			break;
+		}
+#endif
 	}
 }
 
