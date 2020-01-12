@@ -4217,7 +4217,7 @@ void SpawnPremium(int lvl)
 	int i;
 
 #ifdef HELLFIRE
-	int lvl = plr[lvl]._pLevel;
+	int lvl = plr[pnum]._pLevel;
 #endif
 	if (numpremium < SMITH_PREMIUM_ITEMS) {
 		for (i = 0; i < SMITH_PREMIUM_ITEMS; i++) {
