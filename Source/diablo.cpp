@@ -266,6 +266,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	int nData;
 	char szFileName[MAX_PATH];
 	BOOL bNoEvent;
+#ifdef HELLFIRE
+	char content[256];
+	FILE *file;
+#endif
 
 	hInst = hInstance;
 #ifndef DEBUGGER
@@ -273,6 +277,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #endif
 	ghInst = hInst;
 
+#ifndef HELLFIRE
 	if (RestrictedTest())
 		ErrOkDlg(IDD_DIALOG10, 0, "C:\\Src\\Diablo\\Source\\DIABLO.CPP", 877);
 	if (ReadOnlyTest()) {
@@ -280,65 +285,87 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			szFileName[0] = '\0';
 		DirErrorDlg(szFileName);
 	}
+#endif
 
 	ShowCursor(FALSE);
 	srand(GetTickCount());
 	InitHash();
 #ifdef HELLFIRE
 	alloc_plr();
-#endif
+	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter(diablo_TopLevelExceptionFilter);
+#else
 	fault_get_filter();
+#endif
 
 	bNoEvent = diablo_get_not_running();
-	if (!diablo_find_window("DIABLO") && bNoEvent) {
-#ifdef _DEBUG
-		SFileEnableDirectAccess(TRUE);
+#ifdef HELLFIRE
+	if (diablo_find_window("DIABLO"))
+		return 0;
 #endif
-		diablo_init_screen();
-		diablo_parse_flags(lpCmdLine);
-		init_create_window(nCmdShow);
-		sound_init();
-		UiInitialize();
-#ifdef SPAWN
-		UiSetSpawned(TRUE);
-#endif
+	if (diablo_find_window(GAME_NAME) || !bNoEvent)
+		return 0;
 
 #ifdef _DEBUG
-		if (showintrodebug)
+	SFileEnableDirectAccess(TRUE);
 #endif
-			play_movie("gendata\\logo.smk", TRUE);
-
-#ifndef SPAWN
-		{
-			char szValueName[] = "Intro";
-			if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
-				nData = 1;
-			if (nData)
-				play_movie("gendata\\diablo1.smk", TRUE);
-			SRegSaveValue(APP_NAME, szValueName, 0, 0);
-		}
-#endif
-
-#ifdef _DEBUG
-		if (showintrodebug) {
-#endif
-			UiTitleDialog(7);
-			BlackPalette();
-#ifdef _DEBUG
-		}
-#endif
-
-		mainmenu_loop();
-		UiDestroy();
-		SaveGamma();
-
-		if (ghMainWnd) {
-			Sleep(300);
-			DestroyWindow(ghMainWnd);
+	diablo_init_screen();
+#ifdef HELLFIRE
+	if (lpCmdLine[0] == '\0') {
+		content[0] = '\0';
+		if (file = fopen("command.txt", "r")) {
+			fgets(content, 255, file);
+			lpCmdLine = content;
+			fclose(file);
 		}
 	}
+#endif
+	diablo_parse_flags(lpCmdLine);
+	init_create_window(nCmdShow);
+	sound_init();
+	UiInitialize();
+#ifdef SPAWN
+	UiSetSpawned(TRUE);
+#endif
 
-	return FALSE;
+#ifdef _DEBUG
+	if (showintrodebug)
+#endif
+		play_movie("gendata\\logo.smk", TRUE);
+
+#ifndef SPAWN
+	{
+		char szValueName[] = "Intro";
+		if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
+			nData = 1;
+#ifndef HELLFIRE
+		if (nData)
+			play_movie("gendata\\diablo1.smk", TRUE);
+#else
+		play_movie("gendata\\Hellfire.smk", TRUE);
+#endif
+		SRegSaveValue(APP_NAME, szValueName, 0, 0);
+	}
+#endif
+
+#ifdef _DEBUG
+	if (showintrodebug) {
+#endif
+		UiTitleDialog(7);
+		BlackPalette();
+#ifdef _DEBUG
+	}
+#endif
+
+	mainmenu_loop();
+	UiDestroy();
+	SaveGamma();
+
+	if (ghMainWnd) {
+		Sleep(300);
+		DestroyWindow(ghMainWnd);
+	}
+
+	return 0;
 }
 
 void diablo_parse_flags(char *args)
@@ -550,6 +577,18 @@ void diablo_init_screen()
 
 	ClrDiabloMsg();
 }
+
+#ifdef HELLFIRE
+LONG __stdcall diablo_TopLevelExceptionFilter(PEXCEPTION_POINTERS pExc)
+{
+	dx_cleanup();
+	init_cleanup(0);
+	if (lpTopLevelExceptionFilter)
+		return lpTopLevelExceptionFilter(pExc);
+
+	return 0;
+}
+#endif
 
 BOOL diablo_find_window(LPCSTR lpClassName)
 {
