@@ -139,7 +139,11 @@ void SpawnSmith(int lvl);
 BOOL PremiumItemOk(int i);
 int RndPremiumItem(int minlvl, int maxlvl);
 void SpawnOnePremium(int i, int plvl);
+#ifdef HELLFIRE
+void SpawnPremium(int pnum);
+#else
 void SpawnPremium(int lvl);
+#endif
 BOOL WitchItemOk(int i);
 int RndWitchItem(int lvl);
 void SortWitch();

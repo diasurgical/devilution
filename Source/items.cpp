@@ -4208,10 +4208,17 @@ void SpawnOnePremium(int i, int plvl)
 	item[0] = holditem;
 }
 
+#ifdef HELLFIRE
+void SpawnPremium(int pnum)
+#else
 void SpawnPremium(int lvl)
+#endif
 {
 	int i;
 
+#ifdef HELLFIRE
+	int lvl = plr[lvl]._pLevel;
+#endif
 	if (numpremium < SMITH_PREMIUM_ITEMS) {
 		for (i = 0; i < SMITH_PREMIUM_ITEMS; i++) {
 			if (premiumitem[i]._itype == ITYPE_NONE)
