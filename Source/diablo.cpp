@@ -1405,7 +1405,17 @@ void PressChar(int vkey)
 		}
 		return;
 	case 'v':
+#ifndef HELLFIRE
 		NetSendCmdString(1 << myplr, gszProductName);
+#else
+		char *local_10[3];
+		char pszStr[120];
+		local_10[0] = "Normal";
+		local_10[1] = "Nightmare";
+		local_10[2] = "Hell";
+		sprintf(pszStr, "%s, mode = %s", gszProductName, local_10[gnDifficulty]);
+		NetSendCmdString(1 << myplr, pszStr);
+#endif
 		return;
 	case 'V':
 		NetSendCmdString(1 << myplr, gszVersionNumber);
