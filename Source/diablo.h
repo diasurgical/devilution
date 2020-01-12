@@ -130,6 +130,9 @@ void free_game();
 BOOL diablo_get_not_running();
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 void diablo_parse_flags(char *args);
+#ifdef HELLFIRE
+LONG __stdcall diablo_TopLevelExceptionFilter(PEXCEPTION_POINTERS pExc);
+#endif
 void diablo_init_screen();
 BOOL diablo_find_window(LPCSTR lpClassName);
 void diablo_reload_process(HINSTANCE hInstance);
