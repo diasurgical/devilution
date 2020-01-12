@@ -11,6 +11,9 @@ int objectavail[MAXOBJECTS];
 ObjectStruct object[MAXOBJECTS];
 BOOL InitObjFlag;
 int numobjfiles;
+#ifdef HELLFIRE
+int dword_6DE0E0;
+#endif
 
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -410,7 +413,6 @@ void add_crypt_objs(int x1, int y1, int x2, int y2)
 				AddObject(OBJ_L1RDOOR, i, j);
 		}
 	}
-
 }
 
 #endif
@@ -643,6 +645,81 @@ void AddDiabObjs()
 	mem_free_dbg(lpSetPiece);
 }
 
+#ifdef HELLFIRE
+void objects_add_lv22(int s)
+{
+	DIABOOL exit;
+	int xp, yp, cnt, m, n;
+
+	cnt = 0;
+	exit = FALSE;
+	while (!exit) {
+		exit = TRUE;
+		xp = random_(139, 80) + 16;
+		yp = random_(139, 80) + 16;
+		for (n = -2; n <= 2; n++) {
+			for (m = -3; m <= 3; m++) {
+				if (!RndLocOk(xp + m, yp + n))
+					exit = FALSE;
+			}
+		}
+		if (!exit) {
+			cnt++;
+			if (cnt > 20000)
+				return;
+		}
+	}
+	objects_44D8C5(86, s, xp, yp);
+	AddObject(OBJ_STORYCANDLE, xp - 2, yp + 1);
+	AddObject(OBJ_STORYCANDLE, xp - 2, yp);
+	AddObject(OBJ_STORYCANDLE, xp - 1, yp - 1);
+	AddObject(OBJ_STORYCANDLE, xp + 1, yp - 1);
+	AddObject(OBJ_STORYCANDLE, xp + 2, yp);
+	AddObject(OBJ_STORYCANDLE, xp + 2, yp + 1);
+}
+
+void objects_add_lv24()
+{
+	objects_rnd_454BEA();
+	switch (random_(0, 6)) {
+	case 0:
+		objects_454AF0(6, UberRow + 3, UberCol);
+		objects_454AF0(7, UberRow + 2, UberCol - 3);
+		objects_454AF0(8, UberRow + 2, UberCol + 2);
+		break;
+	case 1:
+		objects_454AF0(6, UberRow + 3, UberCol);
+		objects_454AF0(8, UberRow + 2, UberCol - 3);
+		objects_454AF0(7, UberRow + 2, UberCol + 2);
+		break;
+	case 2:
+		objects_454AF0(7, UberRow + 3, UberCol);
+		objects_454AF0(6, UberRow + 2, UberCol - 3);
+		objects_454AF0(8, UberRow + 2, UberCol + 2);
+		break;
+	case 3:
+		objects_454AF0(7, UberRow + 3, UberCol);
+		objects_454AF0(8, UberRow + 2, UberCol - 3);
+		objects_454AF0(6, UberRow + 2, UberCol + 2);
+		break;
+	case 4:
+		objects_454AF0(8, UberRow + 3, UberCol);
+		objects_454AF0(7, UberRow + 2, UberCol - 3);
+		objects_454AF0(6, UberRow + 2, UberCol + 2);
+		break;
+	case 5:
+		objects_454AF0(8, UberRow + 3, UberCol);
+		objects_454AF0(6, UberRow + 2, UberCol - 3);
+		objects_454AF0(7, UberRow + 2, UberCol + 2);
+		break;
+	}
+}
+
+void objects_454AF0(int a1, int a2, int a3)
+{
+	objects_44D8C5(86, a1, a2, a3);
+}
+#endif
 void AddStoryBooks()
 {
 	int xp, yp, xx, yy;
@@ -775,6 +852,9 @@ void InitObjects()
 	BYTE *mem;
 
 	ClrAllObjects();
+#ifdef HELLFIRE
+	dword_6DE0E0 = 0;
+#endif
 	if (currlevel == 16) {
 		AddDiabObjs();
 	} else {
@@ -784,12 +864,22 @@ void InitObjects()
 			AddSlainHero();
 		if (currlevel == quests[QTYPE_BLKM]._qlevel && quests[QTYPE_BLKM]._qactive == 1)
 			AddMushPatch();
-		if (currlevel == 4)
+		if (currlevel == 4 || currlevel == 8 || currlevel == 12)
 			AddStoryBooks();
-		if (currlevel == 8)
-			AddStoryBooks();
-		if (currlevel == 12)
-			AddStoryBooks();
+#ifdef HELLFIRE
+		if (currlevel == 21) {
+			objects_add_lv22(1);
+		} else if (currlevel == 22) {
+			objects_add_lv22(2);
+			objects_add_lv22(3);
+		} else if (currlevel == 23) {
+			objects_add_lv22(4);
+			objects_add_lv22(5);
+		}
+		if (currlevel == 24) {
+			objects_add_lv24();
+		}
+#endif
 		if (leveltype == DTYPE_CATHEDRAL) {
 			if (QuestStatus(QTYPE_BUTCH))
 				AddTortures();
@@ -798,6 +888,11 @@ void InitObjects()
 			if (QuestStatus(QTYPE_BOL))
 				AddObject(OBJ_SIGNCHEST, 2 * setpc_x + 26, 2 * setpc_y + 19);
 			InitRndLocBigObj(10, 15, OBJ_SARC);
+#ifdef HELLFIRE
+			if (currlevel >= 21)
+				add_crypt_objs(0, 0, MAXDUNX, MAXDUNY);
+			else
+#endif
 			AddL1Objs(0, 0, MAXDUNX, MAXDUNY);
 			InitRndBarrels();
 		}
@@ -815,6 +910,14 @@ void InitObjects()
 					sp_id = QUEST_RBLINDING;
 				} else if (plr[myplr]._pClass == PC_SORCERER) {
 					sp_id = QUEST_MBLINDING;
+#ifdef HELLFIRE
+				} else if (plr[myplr]._pClass == PC_MONK) {
+					sp_id = 261; // TODO: create and apply hellfire quest speech enums
+				} else if (plr[myplr]._pClass == PC_BARD) {
+					sp_id = 265; // TODO: create and apply hellfire quest speech enums
+				} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+					sp_id = QUEST_BLINDING;
+#endif
 				}
 				quests[QTYPE_BLIND]._qmsg = sp_id;
 				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, sp_id);
@@ -829,6 +932,14 @@ void InitObjects()
 					sp_id = QUEST_RBLOODY;
 				} else if (plr[myplr]._pClass == PC_SORCERER) {
 					sp_id = QUEST_MBLOODY;
+#ifdef HELLFIRE
+				} else if (plr[myplr]._pClass == PC_MONK) {
+					sp_id = 260; // TODO: create and apply hellfire quest speech enums
+				} else if (plr[myplr]._pClass == PC_BARD) {
+					sp_id = 264; // TODO: create and apply hellfire quest speech enums
+				} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+					sp_id = QUEST_BLOODY;
+#endif
 				}
 				quests[QTYPE_BLOOD]._qmsg = sp_id;
 				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, sp_id);
@@ -848,6 +959,14 @@ void InitObjects()
 					sp_id = QUEST_RBLOODWAR;
 				} else if (plr[myplr]._pClass == PC_SORCERER) {
 					sp_id = QUEST_MBLOODWAR;
+#ifdef HELLFIRE
+				} else if (plr[myplr]._pClass == PC_MONK) {
+					sp_id = 262; // TODO: create and apply hellfire quest speech enums
+				} else if (plr[myplr]._pClass == PC_BARD) {
+					sp_id = 266; // TODO: create and apply hellfire quest speech enums
+				} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+					sp_id = QUEST_BLOODWAR;
+#endif
 				}
 				quests[QTYPE_WARLRD]._qmsg = sp_id;
 				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, sp_id);
@@ -860,9 +979,9 @@ void InitObjects()
 			InitRndBarrels();
 			AddL4Goodies();
 		}
-		InitRndLocObj(5, 10, 5);
-		InitRndLocObj(3, 6, 6);
-		InitRndLocObj(1, 5, 7);
+		InitRndLocObj(5, 10, OBJ_CHEST1);
+		InitRndLocObj(3, 6, OBJ_CHEST2);
+		InitRndLocObj(1, 5, OBJ_CHEST3);
 		if (leveltype != DTYPE_HELL)
 			AddObjTraps();
 		if (leveltype > 1)
@@ -1359,6 +1478,12 @@ void AddSlainHero()
 	AddObject(OBJ_SLAINHERO, x + 2, y + 2);
 }
 
+#ifdef HELLFIRE
+void objects_44D8C5(int a1, int a2, int a3, int a4)
+{
+
+}
+#endif
 void AddObject(int ot, int ox, int oy)
 {
 	int oi;
@@ -4899,5 +5024,29 @@ void objects_454BA8()
 	dPiece[UberRow][UberCol + 1] = 299;
 
 	SetDungeonMicros();
+}
+
+void objects_rnd_454BEA()
+{
+	int xp, yp;
+
+	while (1) {
+		xp = random_(141, 80) + 16;
+		yp = random_(141, 80) + 16;
+		if (RndLocOk(xp - 1, yp - 1)
+		    && RndLocOk(xp, yp - 1)
+		    && RndLocOk(xp + 1, yp - 1)
+		    && RndLocOk(xp - 1, yp)
+		    && RndLocOk(xp, yp)
+		    && RndLocOk(xp + 1, yp)
+		    && RndLocOk(xp - 1, yp + 1)
+		    && RndLocOk(xp, yp + 1)
+		    && RndLocOk(xp + 1, yp + 1)) {
+			break;
+		}
+	}
+	UberLeverRow = UberRow + 3;
+	UberLeverCol = UberCol - 1;
+	AddObject(OBJ_LEVER, UberRow + 3, UberCol - 1);
 }
 #endif
