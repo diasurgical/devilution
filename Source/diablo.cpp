@@ -532,6 +532,9 @@ void diablo_reload_process(HINSTANCE hInstance)
 	SYSTEM_INFO sinf;
 	PROCESS_INFORMATION pi;
 	char szReload[MAX_PATH + 16];
+#ifdef HELLFIRE
+	char szReload2[MAX_PATH + 16];
+#endif
 	char szFileName[MAX_PATH] = "";
 
 	GetModuleFileName(hInstance, szFileName, sizeof(szFileName));
@@ -543,22 +546,41 @@ void diablo_reload_process(HINSTANCE hInstance)
 	}
 
 	GetSystemInfo(&sinf);
+#ifndef HELLFIRE
 	dwSize = sinf.dwPageSize;
 	if (dwSize < 4096) {
 		dwSize = 4096;
 	}
+#else
+	dwSize = 4096;
+	if (sinf.dwPageSize >= 4096) {
+		dwSize = sinf.dwPageSize;
+	}
+#endif
 
 	hMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, SEC_COMMIT | PAGE_READWRITE, 0, dwSize, szReload);
+#ifndef HELLFIRE
 	bNoExist = GetLastError() != ERROR_ALREADY_EXISTS;
+#else
+	dwProcessId = GetLastError() != ERROR_ALREADY_EXISTS;
+#endif
 	if (hMap == NULL) {
 		return;
 	}
+#ifdef HELLFIRE
+	strcpy(szReload2, "Reload-Diablo");
+	CreateFileMapping(INVALID_HANDLE_VALUE, NULL, SEC_COMMIT | PAGE_READWRITE, 0, dwSize, szReload2);
+#endif
 	plMap = (long *)MapViewOfFile(hMap, FILE_MAP_ALL_ACCESS, 0, 0, dwSize);
 	if (plMap == NULL) {
 		return;
 	}
 
+#ifndef HELLFIRE
 	if (bNoExist) {
+#else
+	if (dwProcessId) {
+#endif
 		plMap[0] = -1;
 		plMap[1] = 0;
 		memset(&si, 0, sizeof(si));
@@ -587,17 +609,15 @@ void diablo_reload_process(HINSTANCE hInstance)
 			}
 			hWnd = hPrev;
 		}
-		while (1) {
+		do {
 			GetWindowThreadProcessId(hWnd, &dwProcessId);
 			if (dwProcessId == plMap[1]) {
 				SetForegroundWindow(hWnd);
 				break;
 			}
 			hWnd = GetWindow(hWnd, GW_HWNDNEXT);
-			if (hWnd == NULL) {
-				break;
-			}
-		}
+		} while (hWnd != NULL);
+
 		UnmapViewOfFile(plMap);
 		CloseHandle(hMap);
 		ExitProcess(0);
