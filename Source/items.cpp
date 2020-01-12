@@ -3671,7 +3671,7 @@ void PrintItemMisc(ItemStruct *x)
 		strcpy(tempstr, "Right click to use");
 		AddPanelString(tempstr, TRUE);
 	}
-	if (x->_iMiscId > 46 && x->_iMiscId < 52) { //TODO: apply enums
+	if (x->_iMiscId > IMISC_RUNEFIRST && x->_iMiscId < IMISC_RUNELAST) {
 		PrintItemOil(x->_iMiscId);
 		strcpy(tempstr, "Right click to use");
 		AddPanelString(tempstr, TRUE);

@@ -34,15 +34,14 @@ QuestData questlist[MAXQUESTS] = {
 	{       6,         -1, DTYPE_CATACOMBS, QTYPE_BONE,   100,      2,       0, QUEST_BONER,    "The Chamber of Bone"      },
 	{      15,         15, DTYPE_CATHEDRAL, QTYPE_VB,     100,      5,       1, QUEST_VILE1,    "Archbishop Lazarus"       },
 #ifdef HELLFIRE
-	// TODO: apply msg enum in second to last column:
-	{      17,         17, DTYPE_NONE,      QTYPE_GRAVE,  100,      0,       1, 0x111,          "Grave Matters"            },
-	{      9,           9, DTYPE_NONE,      QTYPE_FARMER, 100,      0,       1, 0x115,          "Farmer's Orchard"         },
-	{      17,         -1, DTYPE_NONE,      QTYPE_GIRL,   100,      0,       0, 0x11B,          "Little Girl"              },
-	{      19,         -1, DTYPE_NONE,      QTYPE_TRADER, 100,      0,       0, 0x132,          "Wandering Trader"         },
-	{      17,         17, DTYPE_NONE,      QTYPE_DEFILER,100,      0,       1, 0x11E,          "The Defiler"              },
-	{      21,         21, DTYPE_NONE,      QTYPE_NAKRUL, 100,      0,       1, 0x123,          "Na-Krul"                  },
-	{      21,         -1, DTYPE_NONE,      QTYPE_CORNSTN,100,      0,       0, 0x128,          "Cornerstone of the World" },
-	{       9,          9, DTYPE_NONE,      QTYPE_JERSEY, 100,      0,       1, 0x12C,          "The Jersey's Jersey"      },
+	{      17,         17, DTYPE_NONE,      QTYPE_GRAVE,  100,      0,       1, QUEST_GRAVE7,   "Grave Matters"            },
+	{      9,           9, DTYPE_NONE,      QTYPE_FARMER, 100,      0,       1, QUEST_FARMER1,  "Farmer's Orchard"         },
+	{      17,         -1, DTYPE_NONE,      QTYPE_GIRL,   100,      0,       0, QUEST_GIRL2,    "Little Girl"              },
+	{      19,         -1, DTYPE_NONE,      QTYPE_TRADER, 100,      0,       0, QUEST_TRADER,   "Wandering Trader"         },
+	{      17,         17, DTYPE_NONE,      QTYPE_DEFILER,100,      0,       1, QUEST_DEFILER1, "The Defiler"              },
+	{      21,         21, DTYPE_NONE,      QTYPE_NAKRUL, 100,      0,       1, QUEST_NAKRUL1,  "Na-Krul"                  },
+	{      21,         -1, DTYPE_NONE,      QTYPE_CORNSTN,100,      0,       0, QUEST_CORNSTN,  "Cornerstone of the World" },
+	{       9,          9, DTYPE_NONE,      QTYPE_JERSEY, 100,      0,       1, QUEST_JERSEY4,  "The Jersey's Jersey"      },
 #endif
 	// clang-format on
 };

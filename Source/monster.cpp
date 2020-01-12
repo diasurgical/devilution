@@ -781,7 +781,7 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 	}
 
 #ifdef HELLFIRE
-	if (uniqindex == 12) { // TODO: add indexes for hellfire unique monsters
+	if (uniqindex == UMT_NAKRUL) {
 		if (UberRow == 0 || UberCol == 0) {
 			UberDiabloMonsterIndex = -1;
 			return;
@@ -821,7 +821,7 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 	Monst->mMagicRes = Uniq->mMagicRes;
 	Monst->mtalkmsg = Uniq->mtalkmsg;
 #ifdef HELLFIRE
-	if (uniqindex == 10) // TODO: add indexes for hellfire unique monsters
+	if (uniqindex == UMT_HORKDMN)
 		Monst->mlid = 0;
 	else
 #endif
