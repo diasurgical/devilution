@@ -972,7 +972,7 @@ void InitObjects()
 					sp_id = QUEST_MBLOODWAR;
 #ifdef HELLFIRE
 				} else if (plr[myplr]._pClass == PC_MONK) {
-					sp_id = 262; // TODO: create and apply hellfire quest speech enums
+					sp_id = QUEST_HBLOODWAR;
 				} else if (plr[myplr]._pClass == PC_BARD) {
 					sp_id = QUEST_BBLOODWAR;
 				} else if (plr[myplr]._pClass == PC_BARBARIAN) {
