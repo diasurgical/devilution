@@ -1063,7 +1063,7 @@ void AddFlameTrap(int i)
 void AddFlameLvr(int i)
 {
 	object[i]._oVar1 = trapid;
-	object[i]._oVar2 = 49;
+	object[i]._oVar2 = MIS_FLAMEC;
 }
 
 void AddTrap(int i, int ot)
