@@ -1334,6 +1334,15 @@ void AddObject(int ot, int ox, int oy)
 	dObject[ox][oy] = oi + 1;
 	SetupObject(oi, ox, oy, ot);
 	switch (ot) {
+	case OBJ_L1LIGHT:
+		AddObjLight(oi, 5);
+		break;
+	case OBJ_SKFIRE:
+	case OBJ_CANDLE1:
+	case OBJ_CANDLE2:
+	case OBJ_BOOKCANDLE:
+		AddObjLight(oi, 5);
+		break;
 	case OBJ_STORYCANDLE:
 		AddObjLight(oi, 3);
 		break;
@@ -1436,13 +1445,6 @@ void AddObject(int ot, int ox, int oy)
 	case OBJ_BCROSS:
 	case OBJ_TBCROSS:
 		AddBrnCross(oi);
-		AddObjLight(oi, 5);
-		break;
-	case OBJ_L1LIGHT:
-	case OBJ_SKFIRE:
-	case OBJ_CANDLE1:
-	case OBJ_CANDLE2:
-	case OBJ_BOOKCANDLE:
 		AddObjLight(oi, 5);
 		break;
 	case OBJ_PEDISTAL:
@@ -1722,22 +1724,25 @@ void ProcessObjects()
 	for (i = 0; i < nobjects; ++i) {
 		oi = objectactive[i];
 		switch (object[oi]._otype) {
-		case OBJ_STORYCANDLE:
-			Obj_Light(oi, 3);
+		case OBJ_L1LIGHT:
+			Obj_Light(oi, 10);
 			break;
 		case OBJ_SKFIRE:
 		case OBJ_CANDLE2:
 		case OBJ_BOOKCANDLE:
 			Obj_Light(oi, 5);
 			break;
-		case OBJ_TORCHL:
-		case OBJ_TORCHR:
-		case OBJ_TORCHL2:
-		case OBJ_TORCHR2:
-			Obj_Light(oi, 8);
+		case OBJ_STORYCANDLE:
+			Obj_Light(oi, 3);
 			break;
-		case OBJ_L1LIGHT:
-			Obj_Light(oi, 10);
+		case OBJ_CRUX1:
+		case OBJ_CRUX2:
+		case OBJ_CRUX3:
+		case OBJ_BARREL:
+		case OBJ_BARRELEX:
+		case OBJ_SHRINEL:
+		case OBJ_SHRINER:
+			Obj_StopAnim(oi);
 			break;
 		case OBJ_L1LDOOR:
 		case OBJ_L1RDOOR:
@@ -1747,27 +1752,17 @@ void ProcessObjects()
 		case OBJ_L3RDOOR:
 			Obj_Door(oi);
 			break;
-		case OBJ_CRUX1:
-		case OBJ_CRUX2:
-		case OBJ_CRUX3:
-			Obj_StopAnim(oi);
-			break;
-		case OBJ_BCROSS:
-		case OBJ_TBCROSS:
-			Obj_Light(oi, 10);
-			Obj_BCrossDamage(oi);
+		case OBJ_TORCHL:
+		case OBJ_TORCHR:
+		case OBJ_TORCHL2:
+		case OBJ_TORCHR2:
+			Obj_Light(oi, 8);
 			break;
 		case OBJ_SARC:
 			Obj_Sarc(oi);
 			break;
 		case OBJ_FLAMEHOLE:
 			Obj_FlameTrap(oi);
-			break;
-		case OBJ_BARREL:
-		case OBJ_BARRELEX:
-		case OBJ_SHRINEL:
-		case OBJ_SHRINER:
-			Obj_StopAnim(oi);
 			break;
 		case OBJ_TRAPL:
 		case OBJ_TRAPR:
@@ -1776,6 +1771,11 @@ void ProcessObjects()
 		case OBJ_MCIRCLE1:
 		case OBJ_MCIRCLE2:
 			Obj_Circle(oi);
+			break;
+		case OBJ_BCROSS:
+		case OBJ_TBCROSS:
+			Obj_Light(oi, 10);
+			Obj_BCrossDamage(oi);
 			break;
 		}
 		if (object[oi]._oAnimFlag == 0)
