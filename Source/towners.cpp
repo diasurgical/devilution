@@ -182,7 +182,7 @@ void InitQstSnds(int i)
 	tl = i;
 	if (boyloadflag)
 		tl++;
-	for (j = 0; j < 16; j++) {
+	for (j = 0; j < MAXQUESTS; j++) {
 		towner[i].qsts[j]._qsttype = quests[j]._qtype;
 		towner[i].qsts[j]._qstmsg = ((int *)(Qtalklist + tl))[j];
 		if (((int *)(Qtalklist + tl))[j] != -1)
