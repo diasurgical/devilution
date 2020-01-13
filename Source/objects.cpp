@@ -4269,6 +4269,18 @@ void OperateStoryBook(int pnum, int i)
 	if (object[i]._oSelFlag != 0 && !deltaload && !qtextflag && pnum == myplr) {
 		object[i]._oAnimFrame = object[i]._oVar4;
 		PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
+#ifdef HELLFIRE
+		if (object[i]._oVar8 && currlevel == 24) {
+			if (IsUberLeverActivated != 1 && quests[QTYPE_NAKRUL]._qactive != 3 && objects_lv_24_454B04(object[i]._oVar8)) {
+				NetSendCmd(FALSE, CMD_NAKRUL);
+				return;
+			}
+		} else if (currlevel >= 21) {
+			quests[QTYPE_NAKRUL]._qactive = 2;
+			quests[QTYPE_NAKRUL]._qlog = 1;
+			quests[QTYPE_NAKRUL]._qmsg = object[i]._oVar2;
+		}
+#endif
 		InitQTextMsg(object[i]._oVar2);
 		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
@@ -5057,5 +5069,27 @@ void objects_rnd_454BEA()
 	UberLeverRow = UberRow + 3;
 	UberLeverCol = UberCol - 1;
 	AddObject(OBJ_LEVER, UberRow + 3, UberCol - 1);
+}
+
+DIABOOL objects_lv_24_454B04(int s)
+{
+	switch (s) {
+	case 6:
+		dword_6DE0E0 = 1;
+		break;
+	case 7:
+		if (dword_6DE0E0 == 1) {
+			dword_6DE0E0 = 2;
+		} else {
+			dword_6DE0E0 = 0;
+		}
+		break;
+	case 8:
+		if (dword_6DE0E0 == 2)
+			return TRUE;
+		dword_6DE0E0 = 0;
+		break;
+	}
+	return FALSE;
 }
 #endif

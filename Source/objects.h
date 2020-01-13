@@ -166,6 +166,7 @@ void GetObjectStr(int i);
 void operate_lv24_lever();
 void objects_454BA8();
 void objects_rnd_454BEA();
+DIABOOL objects_lv_24_454B04(int s);
 #endif
 
 /* rdata */
