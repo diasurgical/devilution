@@ -6943,7 +6943,7 @@ addr = 0x449398
 size = 0x2E
 
 [[func]]
-name = "palette_get_colour_cycling"
+name = "palette_get_color_cycling"
 addr = 0x4493C6
 size = 0x6
 
