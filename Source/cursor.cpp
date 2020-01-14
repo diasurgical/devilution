@@ -206,7 +206,7 @@ void CheckCursMove()
 	fx -= (plr[myplr]._pVar6 + plr[myplr]._pxvel) >> 8;
 	fy -= (plr[myplr]._pVar7 + plr[myplr]._pyvel) >> 8;
 
-	if (ScrollInfo._sdir != 0) {
+	if (ScrollInfo._sdir != SDIR_NONE) {
 		sx -= fx;
 		sy -= fy;
 	}

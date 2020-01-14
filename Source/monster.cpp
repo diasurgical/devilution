@@ -4056,7 +4056,7 @@ void MAI_Rhino(int i)
 					Monst->_mgoalvar1 = 0;
 					Monst->_mgoalvar2 = random_(133, 2);
 				}
-				Monst->_mgoal = 4;
+				Monst->_mgoal = MGOAL_MOVE;
 				if (abs(mx) > abs(my)) {
 					dist = abs(mx);
 				} else {
