@@ -1,19 +1,19 @@
 #include "diablo.h"
 
-int cursH;
-int icursH28;
 int cursW;
+int cursH;
 int pcursmonst;
 int icursW28;
+int icursH28;
 BYTE *pCursCels;
 #ifdef HELLFIRE
 BYTE *pCursCels2;
 #endif
-int icursH;
 
 // inv_item value
 char pcursinvitem;
 int icursW;
+int icursH;
 char pcursitem;
 char pcursobj;
 char pcursplr;

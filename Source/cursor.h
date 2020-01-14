@@ -2,11 +2,11 @@
 #ifndef __CURSOR_H__
 #define __CURSOR_H__
 
-extern int cursH;
-extern int icursH28;
 extern int cursW;
+extern int cursH;
 extern int pcursmonst;
 extern int icursW28;
+extern int icursH28;
 extern BYTE *pCursCels;
 #ifdef HELLFIRE
 extern BYTE *pCursCels2;
