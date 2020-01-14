@@ -2,8 +2,8 @@
 #include "diablo.h"
 
 int nSx1;
-int nSx2;
 int nSy1;
+int nSx2;
 int nSy2;
 int nRoomCnt;
 BYTE predungeon[DMAXX][DMAXY];

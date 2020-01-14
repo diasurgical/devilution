@@ -8,8 +8,8 @@ int qline;
 int qlist[MAXQUESTS];
 int numqlines;
 int WaterDone;
-int ReturnLvlY;
 int ReturnLvlX;
+int ReturnLvlY;
 int ReturnLvlT;
 int ALLQUESTS; /** current frame # for the pentagram selector */
 int ReturnLvl;
