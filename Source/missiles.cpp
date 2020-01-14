@@ -1123,12 +1123,13 @@ void InitMissileGFX()
 void FreeMissileGFX(int mi)
 {
 	int i;
-	DWORD *pFrameTable;
+	DWORD *p;
 
 	if (misfiledata[mi].mFlags & MFLAG_ALLOW_SPECIAL) {
 		if (misfiledata[mi].mAnimData[0]) {
-			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[0];
-			mem_free_dbg(&pFrameTable[-misfiledata[mi].mAnimFAmt]); // TODO find a cleaner way to access the offeset
+			p = (DWORD *)misfiledata[mi].mAnimData[0];
+			p -= misfiledata[mi].mAnimFAmt;
+			MemFreeDbg(p);
 			misfiledata[mi].mAnimData[0] = NULL;
 		}
 		return;
@@ -1136,9 +1137,7 @@ void FreeMissileGFX(int mi)
 
 	for (i = 0; i < misfiledata[mi].mAnimFAmt; i++) {
 		if (misfiledata[mi].mAnimData[i]) {
-			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[i];
-			misfiledata[mi].mAnimData[i] = NULL;
-			mem_free_dbg(pFrameTable);
+			MemFreeDbg(misfiledata[mi].mAnimData[i]);
 		}
 	}
 }
@@ -2173,6 +2172,11 @@ void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 		missile[mi]._midam = ((DWORD)currlevel >> 1) + random_(66, 3) + random_(66, 3) + random_(66, 3);
 	}
 	missile[mi]._mirange = 1;
+}
+
+void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
+{
+	missile[mi]._miDelFlag = 1;
 }
 
 void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3459,17 +3463,18 @@ void MI_Stone(int i)
 	}
 	if (monster[m]._mmode != MM_STONE) {
 		missile[i]._miDelFlag = TRUE;
-	} else {
-		if (!missile[i]._mirange) {
-			missile[i]._miDelFlag = TRUE;
-			if (monster[m]._mhitpoints > 0)
-				monster[m]._mmode = missile[i]._miVar1;
-			else
-				AddDead(monster[m]._mx, monster[m]._my, stonendx, (direction)monster[m]._mdir);
-		}
-		if (missile[i]._miAnimType == MFILE_SHATTER1)
-			PutMissile(i);
+		return;
 	}
+
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		if (monster[m]._mhitpoints > 0)
+			monster[m]._mmode = missile[i]._miVar1;
+		else
+			AddDead(monster[m]._mx, monster[m]._my, stonendx, (direction)monster[m]._mdir);
+	}
+	if (missile[i]._miAnimType == MFILE_SHATTER1)
+		PutMissile(i);
 }
 
 void MI_Boom(int i)
