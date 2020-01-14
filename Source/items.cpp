@@ -302,7 +302,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	int btohit = 0; // bonus chance to hit
 	int bac = 0;    // bonus accuracy
 
-	int iflgs = 0; // item_special_effect flags
+	int iflgs = ISPL_NONE; // item_special_effect flags
 
 	int sadd = 0; // added strength
 	int madd = 0; // added magic
@@ -1211,7 +1211,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 	char istr[64];
 
 	if (!random_(17, 4)) {
-		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
+		GetItemPower(i, lvl >> 1, lvl, PLT_STAFF, onlygood);
 	} else {
 		l = lvl >> 1;
 		if (l == 0)
@@ -1761,26 +1761,26 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood)
 		case ITYPE_SWORD:
 		case ITYPE_AXE:
 		case ITYPE_MACE:
-			GetItemPower(i, minlvl, maxlvl, 0x1000, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_WEAP, onlygood);
 			break;
 		case ITYPE_BOW:
-			GetItemPower(i, minlvl, maxlvl, 0x10, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_BOW, onlygood);
 			break;
 		case ITYPE_SHIELD:
-			GetItemPower(i, minlvl, maxlvl, 0x10000, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_SHLD, onlygood);
 			break;
 		case ITYPE_LARMOR:
 		case ITYPE_HELM:
 		case ITYPE_MARMOR:
 		case ITYPE_HARMOR:
-			GetItemPower(i, minlvl, maxlvl, 0x100000, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_ARMO, onlygood);
 			break;
 		case ITYPE_STAFF:
 			GetStaffSpell(i, maxlvl, onlygood);
 			break;
 		case ITYPE_RING:
 		case ITYPE_AMULET:
-			GetItemPower(i, minlvl, maxlvl, 1, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_MISC, onlygood);
 			break;
 		}
 	}
