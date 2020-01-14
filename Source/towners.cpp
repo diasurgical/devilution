@@ -97,7 +97,7 @@ int TownCowDir[3] = { 1, 3, 4 };
 int cowoffx[8] = { -1, 0, -1, -1, -1, 0, -1, -1 };
 int cowoffy[8] = { -1, -1, -1, 0, -1, -1, -1, 0 };
 QuestTalkData Qtalklist[] = {
-	// clang-format off
+// clang-format off
 #ifdef HELLFIRE
 	// _qinfra,      _qblkm,       _qgarb,      _qzhar,      _qveil,      _qmod,       _qbutch,      _qbol,         _qblind,      _qblood,      _qanvil,      _qwarlrd,      _qking,       _qpw,           _qbone,      _qvb,         _qgrv,        _qfarm, _qgirl, _qtrade, _qdefiler, _qnakrul, _qjersy, _qhf8
 	{ QUEST_INFRA6,  QUEST_MUSH6,  -1,          -1,          QUEST_VEIL5, -1,          QUEST_BUTCH5, QUEST_BANNER6, QUEST_BLIND5, QUEST_BLOOD5, QUEST_ANVIL6, QUEST_WARLRD5, QUEST_KING7,  QUEST_POISON7,  QUEST_BONE5, QUEST_VILE9,  QUEST_GRAVE2, -1,     -1,     -1,      -1,        -1,       -1,      -1 },
@@ -549,12 +549,13 @@ void TownDead()
 	tidx = GetActiveTowner(TOWN_DEADGUY);
 	TownCtrlMsg(tidx);
 	if (!qtextflag) {
-		if ((quests[QTYPE_BUTCH]._qactive != 2 || quests[QTYPE_BUTCH]._qlog) && quests[QTYPE_BUTCH]._qactive != 1) {
+		if (quests[QTYPE_BUTCH]._qactive == 2 && quests[QTYPE_BUTCH]._qlog == 0) {
+			return;
+		}
+		if (quests[QTYPE_BUTCH]._qactive != 1) {
 			towner[tidx]._tAnimDelay = 1000;
 			towner[tidx]._tAnimFrame = 1;
 			strcpy(towner[tidx]._tName, "Slain Townsman");
-		} else {
-			return;
 		}
 	}
 	if (quests[QTYPE_BUTCH]._qactive != 1)
@@ -834,6 +835,14 @@ void TalkToTowner(int p, int t)
 				PlaySFX(PS_ROGUE8);
 			} else if (plr[p]._pClass == PC_SORCERER && !effect_is_playing(PS_MAGE8)) {
 				PlaySFX(PS_MAGE8);
+#ifdef HELLFIRE
+			} else if (plr[p]._pClass == PC_MONK && !effect_is_playing(PS_MONK8)) {
+				PlaySFX(PS_MONK8);
+			} else if (plr[p]._pClass == PC_BARD && !effect_is_playing(PS_ROGUE8)) {
+				PlaySFX(PS_ROGUE8);
+			} else if (plr[p]._pClass == PC_BARBARIAN && !effect_is_playing(PS_WARR8)) {
+				PlaySFX(PS_WARR8);
+#endif
 			}
 #endif
 			towner[t]._tMsgSaid = TRUE;
