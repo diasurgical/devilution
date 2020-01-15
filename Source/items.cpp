@@ -255,14 +255,14 @@ void InitItems()
 
 	GetItemAttrs(0, IDI_GOLD, 1);
 	golditem = item[0];
-	golditem._iStatFlag = 1;
+	golditem._iStatFlag = TRUE;
 	numitems = 0;
 
 	for (i = 0; i < MAXITEMS; i++) {
 		item[i]._itype = ITYPE_MISC;
 		item[i]._ix = 0;
 		item[i]._iy = 0;
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 0;
 		item[i]._iIdentified = FALSE;
 		item[i]._iPostDraw = FALSE;
@@ -3598,15 +3598,15 @@ void SpawnWitch(int lvl)
 	GetItemAttrs(0, IDI_MANA, 1);
 	witchitem[0] = item[0];
 	witchitem[0]._iCreateInfo = lvl;
-	witchitem[0]._iStatFlag = 1;
+	witchitem[0]._iStatFlag = TRUE;
 	GetItemAttrs(0, IDI_FULLMANA, 1);
 	witchitem[1] = item[0];
 	witchitem[1]._iCreateInfo = lvl;
-	witchitem[1]._iStatFlag = 1;
+	witchitem[1]._iStatFlag = TRUE;
 	GetItemAttrs(0, IDI_PORTAL, 1);
 	witchitem[2] = item[0];
 	witchitem[2]._iCreateInfo = lvl;
-	witchitem[2]._iStatFlag = 1;
+	witchitem[2]._iStatFlag = TRUE;
 	iCnt = random_(51, 8) + 10;
 
 	for (i = 3; i < iCnt; i++) {

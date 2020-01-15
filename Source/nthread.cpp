@@ -91,7 +91,7 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 		sgbTicsOutOfSync = FALSE;
 		sgbSyncCountdown = 1;
 		sgbPacketCountdown = 1;
-		return 0;
+		return FALSE;
 	} else {
 		if (!sgbTicsOutOfSync) {
 			sgbTicsOutOfSync = TRUE;

@@ -610,10 +610,10 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 		return ret;
 #ifdef _DEBUG
 	if (hit >= hper && !debug_mode_key_inverted_v && !debug_mode_dollar_sign)
-		return 0;
+		return FALSE;
 #else
 	if (hit >= hper)
-		return 0;
+		return FALSE;
 #endif
 	if (t == MIS_BONESPIRIT) {
 		dam = monster[m]._mhitpoints / 3 >> 6;

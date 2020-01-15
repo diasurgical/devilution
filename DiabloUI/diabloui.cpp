@@ -138,7 +138,7 @@ BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	} else {
 		local_DelUiPalette();
 	}
-	return 1;
+	return TRUE;
 }
 
 // ref: 0x10005CEA

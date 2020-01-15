@@ -597,12 +597,12 @@ BOOL PressEscKey()
 		rv = TRUE;
 	}
 	if (helpflag) {
-		helpflag = 0;
+		helpflag = FALSE;
 		rv = TRUE;
 	}
 
 	if (qtextflag) {
-		qtextflag = 0;
+		qtextflag = FALSE;
 		sfx_stop();
 		rv = TRUE;
 	} else if (stextflag) {
@@ -623,7 +623,7 @@ BOOL PressEscKey()
 		rv = TRUE;
 	}
 	if (spselflag) {
-		spselflag = 0;
+		spselflag = FALSE;
 		rv = TRUE;
 	}
 
@@ -1063,17 +1063,17 @@ void PressKey(int vkey)
 		}
 	} else if (vkey == VK_F1) {
 		if (helpflag) {
-			helpflag = 0;
+			helpflag = FALSE;
 		} else if (stextflag) {
 			ClearPanel();
 			AddPanelString("No help available", TRUE); /// BUGFIX: message isn't displayed
 			AddPanelString("while in stores", TRUE);
 			track_repeat_walk(FALSE);
 		} else {
-			invflag = 0;
+			invflag = FALSE;
 			chrflag = FALSE;
 			sbookflag = FALSE;
-			spselflag = 0;
+			spselflag = FALSE;
 			if (qtextflag && leveltype == DTYPE_TOWN) {
 				qtextflag = FALSE;
 				sfx_stop();
@@ -1191,11 +1191,11 @@ void PressKey(int vkey)
 		if (!invflag && chrflag && MouseX > 160 && MouseY < PANEL_TOP) {
 			SetCursorPos(MouseX - 160, MouseY);
 		}
-		helpflag = 0;
+		helpflag = FALSE;
 		invflag = FALSE;
 		chrflag = FALSE;
 		sbookflag = FALSE;
-		spselflag = 0;
+		spselflag = FALSE;
 		if (qtextflag && leveltype == DTYPE_TOWN) {
 			qtextflag = FALSE;
 			sfx_stop();
@@ -1307,7 +1307,7 @@ void PressChar(int vkey)
 			if (!spselflag) {
 				DoSpeedBook();
 			} else {
-				spselflag = 0;
+				spselflag = FALSE;
 			}
 			track_repeat_walk(FALSE);
 		}

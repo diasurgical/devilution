@@ -202,7 +202,7 @@ _BLOCKENTRY *mpqapi_new_block(int *block_index)
 		blockEntry++;
 		if (i >= 2048) {
 			app_fatal("Out of free block entries");
-			return 0;
+			return NULL;
 		}
 	}
 	if (block_index)
@@ -593,9 +593,9 @@ BOOL WriteMPQHeader()
 	fhdr.blockcount = 2048;
 
 	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
-		return 0;
+		return FALSE;
 	if (!WriteFile(sghArchive, &fhdr, sizeof(fhdr), &NumberOfBytesWritten, 0))
-		return 0;
+		return FALSE;
 
 	return NumberOfBytesWritten == 104;
 }
