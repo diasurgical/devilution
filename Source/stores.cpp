@@ -2007,7 +2007,7 @@ BOOL StoreGoldFit(int idx)
 	SetCursor_(CURSOR_HAND);
 
 	if (numsqrs >= sz)
-		return 1;
+		return TRUE;
 
 	for (i = 0; i < 40; i++) {
 		if (!plr[myplr].InvGrid[i])

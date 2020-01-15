@@ -3191,14 +3191,14 @@ void OperateShrine(int pnum, int i, int sType)
 				    || plr[pnum].InvList[j]._iMiscId == IMISC_MANA) {
 					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
 					GetPlrHandSeed(&plr[pnum].HoldItem);
-					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].HoldItem._iStatFlag = TRUE;
 					plr[pnum].InvList[j] = plr[pnum].HoldItem;
 				}
 				if (plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
 				    || plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA) {
 					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
 					GetPlrHandSeed(&plr[pnum].HoldItem);
-					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].HoldItem._iStatFlag = TRUE;
 					plr[pnum].InvList[j] = plr[pnum].HoldItem;
 				}
 			}
@@ -3209,14 +3209,14 @@ void OperateShrine(int pnum, int i, int sType)
 				    || plr[pnum].SpdList[j]._iMiscId == IMISC_MANA) {
 					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
 					GetPlrHandSeed(&plr[pnum].HoldItem);
-					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].HoldItem._iStatFlag = TRUE;
 					plr[pnum].SpdList[j] = plr[pnum].HoldItem;
 				}
 				if (plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
 				    || plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA) {
 					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
 					GetPlrHandSeed(&plr[pnum].HoldItem);
-					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].HoldItem._iStatFlag = TRUE;
 					plr[pnum].SpdList[j] = plr[pnum].HoldItem;
 				}
 			}

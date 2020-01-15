@@ -2111,23 +2111,23 @@ BOOL UseInvItem(int pnum, int cii)
 		return TRUE;
 	if (stextflag)
 		return TRUE;
-	if (cii <= 5)
+	if (cii <= INVITEM_HAND_RIGHT)
 		return FALSE;
 
-	if (cii <= 46) {
-		c = cii - 7;
+	if (cii <= INVITEM_INV_LAST) {
+		c = cii - INVITEM_INV_FIRST;
 		Item = &plr[pnum].InvList[c];
 		speedlist = FALSE;
 	} else {
 		if (talkflag)
 			return TRUE;
-		c = cii - 47;
+		c = cii - INVITEM_BELT_FIRST;
 		Item = &plr[pnum].SpdList[c];
 		speedlist = TRUE;
 	}
 
 	switch (Item->IDidx) {
-	case 17:
+	case IDI_MUSHROOM:
 		sfxdelay = 10;
 #ifndef SPAWN
 		if (plr[pnum]._pClass == PC_WARRIOR) {
@@ -2139,7 +2139,7 @@ BOOL UseInvItem(int pnum, int cii)
 		}
 #endif
 		return TRUE;
-	case 19:
+	case IDI_FUNGALTM:
 		PlaySFX(IS_IBOOK);
 		sfxdelay = 10;
 		if (plr[pnum]._pClass == PC_WARRIOR) {

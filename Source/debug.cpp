@@ -241,11 +241,11 @@ void PrintDebugMonster(int m)
 	sprintf(dstr, "Mode = %i, Var1 = %i", monster[m]._mmode, monster[m]._mVar1);
 	NetSendCmdString(1 << myplr, dstr);
 
-	bActive = 0;
+	bActive = FALSE;
 
 	for (i = 0; i < nummonsters; i++) {
 		if (monstactive[i] == m)
-			bActive = 1;
+			bActive = TRUE;
 	}
 
 	sprintf(dstr, "Active List = %i, Squelch = %i", bActive, monster[m]._msquelch);
