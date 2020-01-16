@@ -3458,7 +3458,7 @@ addr = 0x42B803
 size = 0xD9
 
 [[func]]
-name = "items_42B8DC"
+name = "CreateAmulet"
 addr = 0x42B8DC
 size = 0xC7
 

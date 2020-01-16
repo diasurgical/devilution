@@ -4808,6 +4808,36 @@ void CreateMagicArmor(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL del
 	}
 }
 
+#ifdef HELLFIRE
+void CreateAmulet(int x, int y, int curlv, BOOL sendmsg, BOOL delta)
+{
+	int ii, idx;
+	BOOLEAN done;
+
+	done = FALSE;
+	if (numitems < MAXITEMS) {
+		ii = itemavail[0];
+		GetSuperItemSpace(x, y, ii);
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
+		idx = RndTypeItems(ITYPE_AMULET, IMISC_AMULET, curlv);
+		while (!done) {
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * curlv, 1, TRUE, FALSE, delta);
+			if (item[ii]._iCurs == ICURS_AMULET) {
+				done = TRUE;
+			} else {
+				idx = RndTypeItems(ITYPE_AMULET, IMISC_AMULET, curlv);
+			}
+		}
+		if (sendmsg)
+			NetSendCmdDItem(FALSE, ii);
+		if (delta)
+			DeltaAddItem(ii);
+		numitems++;
+	}
+}
+#endif
+
 void CreateMagicWeapon(int x, int y, int imisc, int icurs, BOOL sendmsg, BOOL delta)
 {
 	int ii, idx;
