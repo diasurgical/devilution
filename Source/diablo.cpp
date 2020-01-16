@@ -86,7 +86,7 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 	BOOL fExitProgram;
 	unsigned int uMsg;
 
-	gbGameUninitialized = TRUE;
+	gbSelectProvider = TRUE;
 
 	do {
 		fExitProgram = FALSE;
@@ -97,7 +97,7 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 			break;
 		}
 
-		gbGameUninitialized = FALSE;
+		gbSelectProvider = FALSE;
 
 		if (bNewGame || !gbValidSaveFile) {
 			InitLevels();

@@ -18,7 +18,7 @@ BYTE gbActivePlayers;
 BOOLEAN gbGameDestroyed;
 BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
-BOOLEAN gbGameUninitialized;
+BOOLEAN gbSelectProvider;
 int sglTimeoutStart;
 int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 TBuffer sgLoPriBuf;
@@ -754,7 +754,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		if (sgbPlayerTurnBitTbl[myplr] == 0 || msg_wait_resync())
 			break;
 		NetClose();
-		gbGameUninitialized = FALSE;
+		gbSelectProvider = FALSE;
 	}
 	gnDifficulty = sgGameInitInfo.bDiff;
 	SetRndSeed(sgGameInitInfo.dwSeed);
@@ -859,7 +859,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 
 	for (first = TRUE;; first = FALSE) {
 		type = 0x00;
-		if (gbGameUninitialized) {
+		if (gbSelectProvider) {
 			if (!UiSelectProvider(0, client_info, user_info, ui_info, &fileinfo, &type)
 			    && (!first || SErrGetLastError() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(pfExitProgram))) {
 				return FALSE;
@@ -872,7 +872,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 		if (UiSelectGame(1, client_info, user_info, ui_info, &fileinfo, &playerId))
 			break;
 
-		gbGameUninitialized = TRUE;
+		gbSelectProvider = TRUE;
 	}
 
 	if ((DWORD)playerId >= MAX_PLRS) {
