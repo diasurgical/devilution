@@ -1065,7 +1065,7 @@ typedef struct TownerStruct {
 	int _teflag;
 	int _tbtcnt;
 	int _tSelFlag;
-	int _tMsgSaid;
+	BOOL _tMsgSaid;
 	TNQ qsts[MAXQUESTS];
 	int _tSeed;
 	int _tVar1;

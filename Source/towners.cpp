@@ -166,7 +166,7 @@ void InitTownerInfo(int i, int w, int sel, int t, int x, int y, int ao, int tp)
 	towner[i]._tSelFlag = sel;
 	towner[i]._tAnimWidth = w;
 	towner[i]._tAnimWidth2 = (w - 64) >> 1;
-	towner[i]._tMsgSaid = 0;
+	towner[i]._tMsgSaid = FALSE;
 	towner[i]._ttype = t;
 	towner[i]._tx = x;
 	towner[i]._ty = y;
