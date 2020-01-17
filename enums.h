@@ -3105,7 +3105,11 @@ typedef enum _unique_items {
 	UITEM_STEELVEIL    = 0x6,
 	UITEM_ARMOFVAL     = 0x7,
 	UITEM_GRISWOLD     = 0x8,
+#ifndef HELLFIRE
 	UITEM_LGTFORGE     = 0x9,
+#else
+	UITEM_BOVINE       = 0x9,
+#endif
 	UITEM_RIFTBOW      = 0xA,
 	UITEM_NEEDLER      = 0xB,
 	UITEM_CELESTBOW    = 0xC,
