@@ -414,10 +414,10 @@ void DeltaAddItem(int ii)
 	pD = sgLevels[currlevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != 0xFF
-		    && pD->wIndx == item[ii].IDidx
-		    && pD->wCI == item[ii]._iCreateInfo
-		    && pD->dwSeed == item[ii]._iSeed
-		    && (pD->bCmd == CMD_WALKXY || pD->bCmd == CMD_STAND)) {
+			&& pD->wIndx == item[ii].IDidx
+			&& pD->wCI == item[ii]._iCreateInfo
+			&& pD->dwSeed == item[ii]._iSeed
+			&& (pD->bCmd == CMD_WALKXY || pD->bCmd == CMD_STAND)) {
 			return;
 		}
 	}
@@ -517,9 +517,9 @@ void DeltaLoadLevel()
 		if (sgLevels[currlevel].item[i].bCmd != 0xFF) {
 			if (sgLevels[currlevel].item[i].bCmd == CMD_WALKXY) {
 				ii = FindGetItem(
-				    sgLevels[currlevel].item[i].wIndx,
-				    sgLevels[currlevel].item[i].wCI,
-				    sgLevels[currlevel].item[i].dwSeed);
+					sgLevels[currlevel].item[i].wIndx,
+					sgLevels[currlevel].item[i].wCI,
+					sgLevels[currlevel].item[i].dwSeed);
 				if (ii != -1) {
 					if (dItem[item[ii]._ix][item[ii]._iy] == ii + 1)
 						dItem[item[ii]._ix][item[ii]._iy] = 0;
@@ -532,23 +532,23 @@ void DeltaLoadLevel()
 				itemactive[numitems] = ii;
 				if (sgLevels[currlevel].item[i].wIndx == IDI_EAR) {
 					RecreateEar(
-					    ii,
-					    sgLevels[currlevel].item[i].wCI,
-					    sgLevels[currlevel].item[i].dwSeed,
-					    sgLevels[currlevel].item[i].bId,
-					    sgLevels[currlevel].item[i].bDur,
-					    sgLevels[currlevel].item[i].bMDur,
-					    sgLevels[currlevel].item[i].bCh,
-					    sgLevels[currlevel].item[i].bMCh,
-					    sgLevels[currlevel].item[i].wValue,
-					    sgLevels[currlevel].item[i].dwBuff);
+						ii,
+						sgLevels[currlevel].item[i].wCI,
+						sgLevels[currlevel].item[i].dwSeed,
+						sgLevels[currlevel].item[i].bId,
+						sgLevels[currlevel].item[i].bDur,
+						sgLevels[currlevel].item[i].bMDur,
+						sgLevels[currlevel].item[i].bCh,
+						sgLevels[currlevel].item[i].bMCh,
+						sgLevels[currlevel].item[i].wValue,
+						sgLevels[currlevel].item[i].dwBuff);
 				} else {
 					RecreateItem(
-					    ii,
-					    sgLevels[currlevel].item[i].wIndx,
-					    sgLevels[currlevel].item[i].wCI,
-					    sgLevels[currlevel].item[i].dwSeed,
-					    sgLevels[currlevel].item[i].wValue);
+						ii,
+						sgLevels[currlevel].item[i].wIndx,
+						sgLevels[currlevel].item[i].wCI,
+						sgLevels[currlevel].item[i].dwSeed,
+						sgLevels[currlevel].item[i].wValue);
 					if (sgLevels[currlevel].item[i].bId)
 						item[ii]._iIdentified = TRUE;
 					item[ii]._iDurability = sgLevels[currlevel].item[i].bDur;
@@ -1130,6 +1130,15 @@ DWORD ParseCmd(int pnum, TCmd *pCmd)
 		return On_SETSHIELD(pCmd, pnum);
 	case CMD_REMSHIELD:
 		return On_REMSHIELD(pCmd, pnum);
+#else
+	case CMD_REFLECT:
+		return On_REFLECT(pCmd, pnum);
+	case CMD_NAKRUL:
+		return On_NAKRUL(pCmd, pnum);
+	case CMD_OPENHIVE:
+		return On_OPENHIVE(pCmd, pnum);
+	case CMD_OPENCRYPT:
+		return On_OPENCRYPT(pCmd, pnum);
 #endif
 	}
 
@@ -1264,12 +1273,12 @@ void DeltaImportJunk(BYTE *src)
 			memcpy(&sgJunk.portal[i], src, sizeof(DPortal));
 			src += sizeof(DPortal);
 			SetPortalStats(
-			    i,
-			    TRUE,
-			    sgJunk.portal[i].x,
-			    sgJunk.portal[i].y,
-			    sgJunk.portal[i].level,
-			    sgJunk.portal[i].ltype);
+				i,
+				TRUE,
+				sgJunk.portal[i].x,
+				sgJunk.portal[i].y,
+				sgJunk.portal[i].level,
+				sgJunk.portal[i].ltype);
 		}
 	}
 
@@ -1427,9 +1436,9 @@ BOOL i_own_level(int nReqLevel)
 
 	for (i = 0; i < MAX_PLRS; i++) {
 		if (plr[i].plractive
-		    && !plr[i]._pLvlChanging
-		    && plr[i].plrlevel == nReqLevel
-		    && (i != myplr || !gbBufferMsgs))
+			&& !plr[i]._pLvlChanging
+			&& plr[i].plrlevel == nReqLevel
+			&& (i != myplr || !gbBufferMsgs))
 			break;
 	}
 
@@ -1650,10 +1659,10 @@ void delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 	pD = sgLevels[bLevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != CMD_WALKXY
-		    && pD->bCmd != 0xFF
-		    && pD->wIndx == pI->wIndx
-		    && pD->wCI == pI->wCI
-		    && pD->dwSeed == pI->dwSeed) {
+			&& pD->bCmd != 0xFF
+			&& pD->wIndx == pI->wIndx
+			&& pD->wCI == pI->wCI
+			&& pD->dwSeed == pI->dwSeed) {
 			if (pD->bCmd == CMD_ACK_PLRINFO)
 				return;
 			app_fatal("Trying to drop a floor item?");
@@ -2611,6 +2620,7 @@ DWORD On_DEBUG(TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
+#ifndef HELLFIRE
 DWORD On_NOVA(TCmd *pCmd, int pnum)
 {
 	TCmdLoc *p = (TCmdLoc *)pCmd;
@@ -2628,7 +2638,6 @@ DWORD On_NOVA(TCmd *pCmd, int pnum)
 	return sizeof(*p);
 }
 
-#ifndef HELLFIRE
 DWORD On_SETSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1)
@@ -2642,6 +2651,61 @@ DWORD On_REMSHIELD(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs != 1)
 		plr[pnum].pManaShield = FALSE;
 
+	return sizeof(*pCmd);
+}
+#else
+DWORD On_REFLECT(TCmd *pCmd, int pnum)
+{
+	int i, mx;
+
+	if ( gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel )
+	{
+		for(i = 0; i < nummissiles; i++)
+		{
+			mx = missileactive[i];
+			if ( missile[mx]._mitype == MIS_REFLECT && missile[mx]._misource == pnum )
+			{
+				ClearMissileSpot(mx);
+				DeleteMissile(mx, i);
+			}
+		}
+	}
+
+	return sizeof(*pCmd);
+}
+
+DWORD On_NAKRUL(TCmd *pCmd, int pnum)
+{
+	if ( gbBufferMsgs != 1 )
+	{
+		operate_lv24_lever();
+		IsUberRoomOpened = 1;
+		quests[QTYPE_NAKRUL]._qactive = 3;
+		monster_some_crypt();
+	}
+	return sizeof(*pCmd);
+}
+
+DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
+{
+	TCmdLocParam2 *p = (TCmdLocParam2 *)pCmd;
+	if ( gbBufferMsgs != 1 )
+	{
+		AddMissile(p->x, p->y, p->wParam1, p->wParam2, 0, MIS_HIVEEXP2, 0, pnum, 0, 0);
+		town_4751C6();
+	}
+	return sizeof(*p);
+}
+
+DWORD On_OPENCRYPT(TCmd *pCmd, int pnum)
+{
+	if ( gbBufferMsgs != 1 )
+	{
+		town_475595();
+		InitTownTriggers();
+		if ( !currlevel )
+			PlaySFX(IS_SARC);
+	}
 	return sizeof(*pCmd);
 }
 #endif

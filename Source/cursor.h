@@ -33,7 +33,7 @@ void CheckRportal();
 void CheckCursMove();
 
 /* rdata */
-extern const int InvItemWidth[180];
-extern const int InvItemHeight[180];
+extern const int InvItemWidth[];
+extern const int InvItemHeight[];
 
 #endif /* __CURSOR_H__ */

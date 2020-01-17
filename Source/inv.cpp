@@ -2415,7 +2415,7 @@ int InvPutItem(int pnum, int x, int y)
 			return -1;
 		}
 		if (plr[pnum].HoldItem.IDidx == IDI_MAPOFDOOM && xp >= 35 && xp <= 38 && yp >= 20 && yp <= 24) {
-			NetSendCmd(FALSE, CMD_SETHIVE);
+			NetSendCmd(FALSE, CMD_OPENCRYPT);
 			quests[QTYPE_GRAVE]._qactive = 3;
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, QTYPE_GRAVE);
