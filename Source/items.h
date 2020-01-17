@@ -15,7 +15,7 @@ extern int ColOfCornerStone;
 extern int dword_691CB0;
 extern ItemStruct CornerItemMaybe;
 #endif
-extern BYTE *itemanims[35];
+extern BYTE *itemanims[ITEMTYPES];
 extern BOOL UniqueItemFlag[128];
 extern int numitems;
 extern int gnNumGetRecords;
@@ -185,11 +185,11 @@ extern char OilNames[10][25];
 extern int MaxGold;
 #endif
 
-extern BYTE ItemCAnimTbl[169];
-extern char *ItemDropNames[35];
-extern BYTE ItemAnimLs[35];
-extern int ItemDropSnds[35];
-extern int ItemInvSnds[35];
+extern BYTE ItemCAnimTbl[];
+extern char *ItemDropNames[];
+extern BYTE ItemAnimLs[];
+extern int ItemDropSnds[];
+extern int ItemInvSnds[];
 extern int idoppely;
 extern int premiumlvladd[6];
 

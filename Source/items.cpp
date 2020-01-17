@@ -42,7 +42,8 @@ char OilNames[10][25] = {
 int MaxGold = GOLD_MAX_LIMIT;
 #endif
 
-BYTE ItemCAnimTbl[169] = {
+BYTE ItemCAnimTbl[] = {
+#ifndef HELLFIRE
 	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
 	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,
 	28, 28, 0, 0, 0, 32, 0, 0, 0, 24,
@@ -60,8 +61,33 @@ BYTE ItemCAnimTbl[169] = {
 	33, 1, 1, 1, 1, 1, 7, 7, 7, 14,
 	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
 	8, 8, 6, 1, 3, 3, 11, 3, 4
+#else
+	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
+	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,
+	28, 28, 38, 38, 38, 32, 38, 38, 38, 24,
+	24, 26, 2, 25, 22, 23, 24, 25, 27, 27,
+	29, 0, 0, 0, 12, 12, 12, 12, 12, 0,
+	8, 8, 0, 8, 8, 8, 8, 8, 8, 6,
+	8, 8, 8, 6, 8, 8, 6, 8, 8, 6,
+	6, 6, 8, 8, 8, 5, 9, 13, 13, 13,
+	5, 5, 5, 15, 5, 5, 18, 18, 18, 30,
+	5, 5, 14, 5, 14, 13, 16, 18, 5, 5,
+	7, 1, 3, 17, 1, 15, 10, 14, 3, 11,
+	8, 0, 1, 7, 0, 7, 15, 7, 3, 3,
+	3, 6, 6, 11, 11, 11, 31, 14, 14, 14,
+	6, 6, 7, 3, 8, 14, 0, 14, 14, 0,
+	33, 1, 1, 1, 1, 1, 7, 7, 7, 14,
+	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
+	8, 8, 6, 1, 3, 3, 11, 3, 12, 12,
+	12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
+	12, 12, 12, 12, 12, 12, 12, 35, 39, 36,
+	36, 36, 37, 38, 38, 38, 38, 38, 41, 42,
+	8, 8, 8, 17, 0, 6, 8, 11, 11, 3,
+	3, 1, 6, 6, 6, 1, 8, 6, 11, 3,
+	6, 8, 1, 6, 6, 17, 40, 0, 0
+#endif
 };
-char *ItemDropNames[ITEMTYPES] = {
+char *ItemDropNames[] = {
 	"Armor2",
 	"Axe",
 	"FBttle",
@@ -96,9 +122,19 @@ char *ItemDropNames[ITEMTYPES] = {
 	"Innsign",
 	"Bldstn",
 	"Fanvil",
-	"FLazStaf"
+	"FLazStaf",
+#ifdef HELLFIRE
+	"bombs1",
+	"halfps1",
+	"wholeps1",
+	"runes1",
+	"teddys1",
+	"cows1",
+	"donkys1",
+	"mooses1"
+#endif
 };
-BYTE ItemAnimLs[ITEMTYPES] = {
+BYTE ItemAnimLs[] = {
 	15,
 	13,
 	16,
@@ -133,9 +169,19 @@ BYTE ItemAnimLs[ITEMTYPES] = {
 	13,
 	13,
 	13,
-	8
+	8,
+#ifdef HELLFIRE
+	10,
+	16,
+	16,
+	10,
+	10,
+	15,
+	15,
+	15
+#endif
 };
-int ItemDropSnds[ITEMTYPES] = {
+int ItemDropSnds[] = {
 	IS_FHARM,
 	IS_FAXE,
 	IS_FPOT,
@@ -170,9 +216,19 @@ int ItemDropSnds[ITEMTYPES] = {
 	IS_ISIGN,
 	IS_FBLST,
 	IS_FANVL,
-	IS_FSTAF
+	IS_FSTAF,
+#ifdef HELLFIRE
+	IS_FROCK,
+	IS_FSCRL,
+	IS_FSCRL,
+	IS_FROCK,
+	IS_FMUSH,
+	IS_FHARM,
+	IS_FLARM,
+	IS_FLARM
+#endif
 };
-int ItemInvSnds[ITEMTYPES] = {
+int ItemInvSnds[] = {
 	IS_IHARM,
 	IS_IAXE,
 	IS_IPOT,
@@ -207,7 +263,17 @@ int ItemInvSnds[ITEMTYPES] = {
 	IS_ISIGN,
 	IS_IBLST,
 	IS_IANVL,
-	IS_ISTAF
+	IS_ISTAF,
+#ifdef HELLFIRE
+	IS_IROCK,
+	IS_ISCROL,
+	IS_ISCROL,
+	IS_IROCK,
+	IS_IMUSH,
+	IS_IHARM,
+	IS_ILARM,
+	IS_ILARM
+#endif
 };
 #ifdef HELLFIRE
 char *off_4A5AC4 = "SItem";
@@ -434,7 +500,7 @@ void InitItemGFX()
 	int i;
 	char arglist[64];
 
-	for (i = 0; i < 35; i++) {
+	for (i = 0; i < ITEMTYPES; i++) {
 		sprintf(arglist, "Items\\%s.CEL", ItemDropNames[i]);
 		itemanims[i] = LoadFileInMem(arglist, NULL);
 	}
@@ -3077,7 +3143,7 @@ void FreeItemGFX()
 	int i;
 #endif
 
-	for (i = 0; i < 35; i++) {
+	for (i = 0; i < ITEMTYPES; i++) {
 		MemFreeDbg(itemanims[i]);
 	}
 }
