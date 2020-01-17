@@ -593,7 +593,7 @@ void DrawInv()
 				} else {
 					CelBlitOutline(
 					    color,
-					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_Y,
+					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
 					    pCursCels2, frame - 179, frame_width, 0, 8);
 				}
@@ -611,7 +611,7 @@ void DrawInv()
 #ifdef HELLFIRE
 				} else {
 					CelClippedDraw(
-					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_Y,
+					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
 					    pCursCels2, frame - 179, frame_width, 0, 8);
 				}
@@ -627,7 +627,7 @@ void DrawInv()
 #ifdef HELLFIRE
 				} else {
 					CelDrawLightRed(
-					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_Y,
+					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
 					    pCursCels2, frame - 179, frame_width, 0, 8, 1);
 				}
