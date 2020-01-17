@@ -834,7 +834,6 @@ void TalkToTowner(int p, int t)
 				PlaySFX(PS_ROGUE8);
 			} else if (plr[p]._pClass == PC_SORCERER && !effect_is_playing(PS_MAGE8)) {
 				PlaySFX(PS_MAGE8);
-#endif
 #ifdef HELLFIRE
 			} else if (plr[p]._pClass == PC_MONK && !effect_is_playing(PS_MONK8)) {
 				PlaySFX(PS_MONK8);
@@ -844,6 +843,7 @@ void TalkToTowner(int p, int t)
 				PlaySFX(PS_WARR8);
 #endif
 			}
+#endif
 			towner[t]._tMsgSaid = TRUE;
 		} else if (quests[QTYPE_BUTCH]._qactive == 3 && quests[QTYPE_BUTCH]._qvar1 == 1) {
 			quests[QTYPE_BUTCH]._qvar1 = 1;
