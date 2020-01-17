@@ -35,7 +35,7 @@ TMenuItem sgOptionsMenu[6] = {
 #ifndef HELLFIRE
 	{ GMENU_ENABLED               , NULL,            &gamemenu_color_cycling },
 #else
-	{ GMENU_ENABLED               , NULL,            &gamemenu_loadjog },
+	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_loadjog },
 #endif
 	{ GMENU_ENABLED               , "Previous Menu", &j_gamemenu_previous    },
 	{ GMENU_ENABLED               , NULL,            NULL                    }
@@ -337,7 +337,7 @@ void gamemenu_loadjog(BOOL bActivate)
 {
 	if (gbMaxPlayers == 1) {
 		jogging_opt = !jogging_opt;
-		SRegSaveValue(APP_NAME, jogging_toggle_names[3], FALSE, jogging_opt);
+		SRegSaveValue(APP_NAME, jogging_toggle_names[2], FALSE, jogging_opt);
 		PlaySFX(IS_TITLEMOV);
 		gamemenu_jogging();
 	}
