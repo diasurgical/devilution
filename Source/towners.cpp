@@ -1108,7 +1108,7 @@ void TalkToTowner(int p, int t)
 				quests[QTYPE_FARMER]._qvar1 = 1;
 				quests[QTYPE_FARMER]._qlog = 1;
 				quests[QTYPE_FARMER]._qmsg = QUEST_FARMER1;
-				items_427E6F(towner[t]._tx + 1, towner[t]._ty);
+				SpawnRuneBomb(towner[t]._tx + 1, towner[t]._ty);
 			}
 			break;
 		case 1:
@@ -1135,7 +1135,7 @@ void TalkToTowner(int p, int t)
 				quests[QTYPE_FARMER]._qvar1 = 1;
 				quests[QTYPE_FARMER]._qlog = 1;
 				quests[QTYPE_FARMER]._qmsg = QUEST_FARMER1;
-				items_427E6F(towner[t]._tx + 1, towner[t]._ty);
+				SpawnRuneBomb(towner[t]._tx + 1, towner[t]._ty);
 			}
 			break;
 		case 2:
@@ -1222,7 +1222,7 @@ void TalkToTowner(int p, int t)
 					quests[QTYPE_JERSEY]._qmsg = QUEST_JERSEY4;
 					quests[QTYPE_JERSEY]._qlog = 1;
 					quests[QTYPE_JERSEY]._qvar1 = 1;
-					items_427E6F(towner[t]._tx + 1, towner[t]._ty);
+					SpawnRuneBomb(towner[t]._tx + 1, towner[t]._ty);
 				}
 				break;
 			default:
