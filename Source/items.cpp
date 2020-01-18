@@ -3419,6 +3419,86 @@ void RechargeItem(ItemStruct *i, int r)
 void PrintItemOil(char IDidx)
 {
 	switch (IDidx) {
+#ifdef HELLFIRE
+	case IMISC_OILACC:
+		strcpy(tempstr, "increases a weapon\'s");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "chance to hit");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILMAST:
+		strcpy(tempstr, "greatly increases a");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "weapon\'s chance to hit");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILSHARP:
+		strcpy(tempstr, "increases a weapon\'s");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "damage potential");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILDEATH:
+		strcpy(tempstr, "greatly increases a weapon\'s");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "damage potential - not bows");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILSKILL:
+		strcpy(tempstr, "reduces attributes needed");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "to use armor or weapons");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILBSMTH:
+		strcpy(tempstr, "restores 20% of an");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "item\'s durability");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILFORT:
+		strcpy(tempstr, "increases an item\'s");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "current and max durability");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILPERM:
+		strcpy(tempstr, "makes an item indestructible");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILHARD:
+		strcpy(tempstr, "increases the armor class");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "of armor and shields");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_OILIMP:
+		strcpy(tempstr, "greatly increases the armor");
+		AddPanelString(tempstr, TRUE);
+		strcpy(tempstr, "class of armor and shields");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_RUNEF:
+		strcpy(tempstr, "sets fire trap");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_RUNEL:
+		strcpy(tempstr, "sets lightning trap");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_GR_RUNEL:
+		strcpy(tempstr, "sets lightning trap");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_GR_RUNEF:
+		strcpy(tempstr, "sets fire trap");
+		AddPanelString(tempstr, TRUE);
+		break;
+	case IMISC_RUNES:
+		strcpy(tempstr, "sets petrification trap");
+		AddPanelString(tempstr, TRUE);
+		break;
+#endif
 	case IMISC_FULLHEAL:
 		strcpy(tempstr, "fully recover life");
 		AddPanelString(tempstr, TRUE);
