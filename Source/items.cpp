@@ -3281,7 +3281,122 @@ void DoOil(int pnum, int cii)
 
 BOOL OilItem(ItemStruct *x, PlayerStruct *p)
 {
-	return FALSE;
+	int dur, r;
+
+	if (x->_iClass == ICLASS_MISC) {
+		return FALSE;
+	}
+	if (x->_iClass == ICLASS_GOLD) {
+		return FALSE;
+	}
+	if (x->_iClass == ICLASS_QUEST) {
+		return FALSE;
+	}
+
+	switch (p->_pOilType) {
+	case IMISC_OILACC:
+	case IMISC_OILMAST:
+	case IMISC_OILSHARP:
+		if (x->_iClass == ICLASS_ARMOR) {
+			return FALSE;
+		}
+		break;
+	case IMISC_OILDEATH:
+		if (x->_iClass == ICLASS_ARMOR) {
+			return FALSE;
+		}
+		if (x->_itype == ITYPE_BOW) {
+			return FALSE;
+		}
+		break;
+	case IMISC_OILHARD:
+	case IMISC_OILIMP:
+		if (x->_iClass == ICLASS_WEAPON) {
+			return FALSE;
+		}
+		break;
+	}
+
+	switch (p->_pOilType) {
+	case IMISC_OILACC:
+		if (x->_iPLToHit < 50) {
+			x->_iPLToHit += random_(68, 2) + 1;
+		}
+		break;
+	case IMISC_OILMAST:
+		if (x->_iPLToHit < 100) {
+			x->_iPLToHit += random_(68, 3) + 3;
+		}
+		break;
+	case IMISC_OILSHARP:
+		if (x->_iMaxDam - x->_iMinDam < 30) {
+			x->_iMaxDam = x->_iMaxDam + 1;
+		}
+		break;
+	case IMISC_OILDEATH:
+		if (x->_iMaxDam - x->_iMinDam < 30) {
+			x->_iMinDam = x->_iMinDam + 1;
+			x->_iMaxDam = x->_iMaxDam + 2;
+		}
+		break;
+	case IMISC_OILSKILL:
+		r = random_(68, 6) + 5;
+		if (x->_iMinStr > r) {
+			x->_iMinStr = x->_iMinStr - r;
+		} else {
+			x->_iMinStr = 0;
+		}
+		if (x->_iMinMag > r) {
+			x->_iMinMag = x->_iMinMag - r;
+		} else {
+			x->_iMinMag = 0;
+		}
+		if (x->_iMinDex > r) {
+			x->_iMinDex = x->_iMinDex - r;
+		} else {
+			x->_iMinDex = 0;
+		}
+		break;
+	case IMISC_OILBSMTH:
+		if (x->_iMaxDur != 255) {
+			if (x->_iDurability < x->_iMaxDur) {
+				dur = (x->_iMaxDur + 4) / 5 + x->_iDurability;
+				if (dur > x->_iMaxDur) {
+					dur = x->_iMaxDur;
+				}
+			} else {
+				if (x->_iMaxDur >= 100) {
+					return TRUE;
+				}
+				dur = x->_iMaxDur + 1;
+				x->_iMaxDur = dur;
+			}
+			x->_iDurability = dur;
+		}
+		break;
+	case IMISC_OILFORT:
+		if (x->_iMaxDur != 255 && x->_iMaxDur < 200) {
+			r = random_(68, 41) + 10;
+			x->_iMaxDur += r;
+			x->_iDurability += r;
+		}
+		break;
+	case IMISC_OILPERM:
+		x->_iDurability = 255;
+		x->_iMaxDur = 255;
+		break;
+	case IMISC_OILHARD:
+		if (x->_iAC < 60) {
+			x->_iAC += random_(68, 2) + 1;
+		}
+		break;
+	case IMISC_OILIMP:
+		if (x->_iAC < 120) {
+			x->_iAC += random_(68, 3) + 3;
+		}
+		break;
+	}
+	return TRUE;
 }
 
 #endif
