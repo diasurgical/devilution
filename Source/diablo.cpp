@@ -2099,9 +2099,9 @@ void diablo_color_cyc_logic()
 		if (leveltype == DTYPE_HELL) {
 			lighting_color_cycling();
 #ifdef HELLFIRE
-		} else if (currlevel >= 20) {
+		} else if (currlevel >= 21) {
 			palette_update_crypt();
-		} else if (currlevel >= 16) {
+		} else if (currlevel >= 17) {
 			palette_update_hive();
 #endif
 		} else if (leveltype == DTYPE_CAVES) {
