@@ -869,7 +869,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 	bObj = dObject[sx][sy];
 	bItem = dItem[sx][sy];
 	bPlr = dPlayer[sx][sy];
-	bArch = dArch[sx][sy];
+	bArch = dSpecial[sx][sy];
 	bMap = dTransVal[sx][sy];
 	nMon = dMonster[sx][sy];
 
@@ -1334,7 +1334,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 	bObj = dObject[sx][sy];
 	bItem = dItem[sx][sy];
 	bPlr = dPlayer[sx][sy];
-	bArch = dArch[sx][sy];
+	bArch = dSpecial[sx][sy];
 	bMap = dTransVal[sx][sy];
 	nMon = dMonster[sx][sy];
 
@@ -1732,7 +1732,7 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
 	bObj = dObject[sx][sy];
 	bItem = dItem[sx][sy];
 	bPlr = dPlayer[sx][sy];
-	bArch = dArch[sx][sy];
+	bArch = dSpecial[sx][sy];
 	bMap = dTransVal[sx][sy];
 	nMon = dMonster[sx][sy];
 
@@ -2085,10 +2085,10 @@ static void DrawGame(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 
-	scr_pix_width = SCREEN_WIDTH;
-	scr_pix_height = VIEWPORT_HEIGHT;
-	dword_5C2FF8 = SCREEN_WIDTH / 64;
-	dword_5C2FFC = VIEWPORT_HEIGHT / 32;
+	ViewDX = SCREEN_WIDTH;
+	ViewDY = VIEWPORT_HEIGHT;
+	ViewBX = SCREEN_WIDTH / 64;
+	ViewBY = VIEWPORT_HEIGHT / 32;
 
 	sx = ScrollInfo._sxoff + SCREEN_X;
 	sy = ScrollInfo._syoff + SCREEN_Y + 15;
@@ -2193,10 +2193,10 @@ static void DrawZoom(int x, int y)
 	int i, sx, sy, chunks, blocks;
 	int wdt, nSrcOff, nDstOff;
 
-	scr_pix_width = ZOOM_WIDTH;
-	scr_pix_height = ZOOM_HEIGHT - 32;
-	dword_5C2FF8 = ZOOM_WIDTH / 64;
-	dword_5C2FFC = (ZOOM_HEIGHT - 32) / 32;
+	ViewDX = ZOOM_WIDTH;
+	ViewDY = ZOOM_HEIGHT - 32;
+	ViewBX = ZOOM_WIDTH / 64;
+	ViewBY = (ZOOM_HEIGHT - 32) / 32;
 
 	sx = ScrollInfo._sxoff + SCREEN_X;
 	sy = ScrollInfo._syoff + SCREEN_Y - 17;
