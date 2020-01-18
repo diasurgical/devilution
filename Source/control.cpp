@@ -168,11 +168,7 @@ char SpellITbl[MAX_SPELLS] = {
 	23,
 	24,
 	25,
-#ifdef HELLFIRE
-	2,
-#else
 	22,
-#endif
 	26,
 	29,
 	37,
@@ -235,7 +231,11 @@ int SpellPages[6][7] = {
 	{ SPL_RESURRECT, SPL_FIREWALL, SPL_TELEKINESIS, SPL_LIGHTNING, SPL_TOWN, SPL_FLASH, SPL_STONE },
 	{ SPL_RNDTELEPORT, SPL_MANASHIELD, SPL_ELEMENT, SPL_FIREBALL, SPL_WAVE, SPL_CHAIN, SPL_GUARDIAN },
 	{ SPL_NOVA, SPL_GOLEM, SPL_TELEPORT, SPL_APOCA, SPL_BONESPIRIT, SPL_FLARE, SPL_ETHEREALIZE },
+#ifndef HELLFIRE
 	{ -1, -1, -1, -1, -1, -1, -1 },
+#else
+	{ SPL_LIGHTWALL, SPL_IMMOLAT, SPL_WARP, SPL_REFLECT, SPL_BERSERK, SPL_FIRERING, SPL_SEARCH },
+#endif
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
@@ -473,20 +473,32 @@ void DrawSpellList()
 		case RSPLTYPE_SKILL:
 			SetSpellTrans(RSPLTYPE_SKILL);
 			c = 46;
+#ifdef HELLFIRE
+			c += 9;
+#endif
 			mask = plr[myplr]._pAblSpells;
 			break;
 		case RSPLTYPE_SPELL:
 			c = 47;
+#ifdef HELLFIRE
+			c += 9;
+#endif
 			mask = plr[myplr]._pMemSpells;
 			break;
 		case RSPLTYPE_SCROLL:
 			SetSpellTrans(RSPLTYPE_SCROLL);
 			c = 44;
+#ifdef HELLFIRE
+			c += 9;
+#endif
 			mask = plr[myplr]._pScrlSpells;
 			break;
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
 			c = 45;
+#ifdef HELLFIRE
+			c += 9;
+#endif
 			mask = plr[myplr]._pISpells;
 			break;
 		}
@@ -511,6 +523,10 @@ void DrawSpellList()
 			if (MouseX >= lx && MouseX < lx + 56 && MouseY >= ly && MouseY < ly + 56) {
 				pSpell = j;
 				pSplType = i;
+#ifdef HELLFIRE
+				if (plr[myplr]._pClass == PC_MONK && j == SPL_SEARCH)
+					i = RSPLTYPE_SKILL;
+#endif
 				DrawSpellCel(x, y, pSpellCels, c, 56);
 				switch (i) {
 				case RSPLTYPE_SKILL:
@@ -1274,7 +1290,11 @@ void InitControlPan()
 	memset(pLifeBuff, 0, 88 * 88);
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", NULL);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", NULL);
+#ifndef HELLFIRE
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", NULL);
+#else
+	pSpellCels = LoadFileInMem("Data\\SpelIcon.CEL", NULL);
+#endif
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", NULL);
 	CelBlitWidth(pBtmBuff, 0, (PANEL_HEIGHT + 16) - 1, PANEL_WIDTH, pStatusPanel, 1, PANEL_WIDTH);
@@ -2349,7 +2369,7 @@ char GetSBookTrans(int ii, BOOL townok)
 	char st;
 
 #ifdef HELLFIRE
-	if ((plr[myplr]._pClass == PC_MONK) && (ii == 46))
+	if ((plr[myplr]._pClass == PC_MONK) && (ii == SPL_SEARCH))
 		return RSPLTYPE_SKILL;
 #endif
 	st = RSPLTYPE_SPELL;
