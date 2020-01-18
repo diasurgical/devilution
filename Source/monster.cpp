@@ -1787,9 +1787,44 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 	Monst->_mVar6 = (int)((k - (Monst->_my << 16)) / (double)dist);
 }
 
+#ifdef HELLFIRE
+void SpawnLoot(int i, BOOL sendmsg)
+{
+	int nSFX;
+	MonsterStruct *Monst;
 
-void M_DefilerDeath(int i, BOOL sendmsg) {
+	Monst = &monster[i];
+	if (QuestStatus(QTYPE_GARB) && Monst->mName == UniqMonst[UMT_GARBUD].mName) {
+		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);
+	} else if (Monst->mName == UniqMonst[UMT_DEFILER].mName) {
+		if (effect_is_playing(USFX_DEFILER8))
+			sfx_stop();
+		quests[QTYPE_DEFILER]._qlog = 0;
+		SpawnMapOfDoom(Monst->_mx, Monst->_my);
+	} else if (Monst->mName == UniqMonst[UMT_HORKDMN].mName) {
+		if (UseTheoQuest) {
+			SpawnTheodore(Monst->_mx, Monst->_my);
+		} else {
+			CreateAmulet(Monst->_mx, Monst->_my, 13, FALSE, TRUE);
+		}
+	} else if (Monst->MType->mtype == MT_HORKSPWN) {
+	} else if (Monst->MType->mtype == MT_NAKRUL) {
+		nSFX = IsUberRoomOpened ? USFX_NAKRUL4 : USFX_NAKRUL5;
+		if (UseCowFarmer)
+			nSFX = USFX_NAKRUL6;
+		if (effect_is_playing(nSFX))
+			sfx_stop();
+		quests[QTYPE_NAKRUL]._qlog = 0;
+		UberDiabloMonsterIndex = -2;
+		CreateMagicWeapon(Monst->_mx, Monst->_my, ITYPE_SWORD, ICURS_GREAT_SWORD, FALSE, TRUE);
+		CreateMagicWeapon(Monst->_mx, Monst->_my, ITYPE_STAFF, ICURS_WAR_STAFF, FALSE, TRUE);
+		CreateMagicWeapon(Monst->_mx, Monst->_my, ITYPE_BOW, ICURS_LONG_WAR_BOW, FALSE, TRUE);
+		CreateSpellBook(Monst->_mx, Monst->_my, SPL_APOCA, FALSE, TRUE);
+	} else if (i > 3) {
+		SpawnItem(i, Monst->_mx, Monst->_my, sendmsg);
+	}
 }
+#endif
 
 void M2MStartHit(int mid, int i, int dam)
 {
@@ -1866,7 +1901,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	Monst->_mhitpoints = 0;
 	SetRndSeed(Monst->_mRndSeed);
 #ifdef HELLFIRE
-	M_DefilerDeath(i, sendmsg);
+	SpawnLoot(i, sendmsg);
 #else
 	if (QuestStatus(QTYPE_GARB) && Monst->mName == UniqMonst[UMT_GARBUD].mName) {
 		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);

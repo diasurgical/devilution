@@ -1143,7 +1143,7 @@ void TalkToTowner(int p, int t)
 			break;
 		case 3:
 			qt = QUEST_FARMER4;
-			items_427DC6(IDI_AURIC, towner[t]._tx + 1, towner[t]._ty);
+			SpawnRewardItem(IDI_AURIC, towner[t]._tx + 1, towner[t]._ty);
 			quests[QTYPE_FARMER]._qactive = 10;
 			quests[QTYPE_FARMER]._qlog = 0;
 			break;
