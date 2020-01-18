@@ -3158,22 +3158,22 @@ addr = 0x427CEE
 size = 0xD8
 
 [[func]]
-name = "items_427DC6"
+name = "SpawnItem"
 addr = 0x427DC6
 size = 0x9B
 
 [[func]]
-name = "items_427E61"
+name = "SpawnMapOfDoom"
 addr = 0x427E61
 size = 0xE
 
 [[func]]
-name = "items_427E6F"
+name = "SpawnRuneBomb"
 addr = 0x427E6F
 size = 0xE
 
 [[func]]
-name = "items_427E7D"
+name = "SpawnTheodore"
 addr = 0x427E7D
 size = 0xE
 

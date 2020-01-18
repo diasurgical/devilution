@@ -3012,7 +3012,7 @@ void SpawnRock()
 }
 
 #ifdef HELLFIRE
-void items_427DC6(int itemid, int xx, int yy)
+void SpawnRewardItem(int itemid, int xx, int yy)
 {
 	int i;
 
@@ -3033,19 +3033,19 @@ void items_427DC6(int itemid, int xx, int yy)
 	numitems++;
 }
 
-void items_427E61(int xx, int yy)
+void SpawnMapOfDoom(int xx, int yy)
 {
-	items_427DC6(IDI_MAPOFDOOM, xx, yy);
+	SpawnRewardItem(IDI_MAPOFDOOM, xx, yy);
 }
 
-void items_427E6F(int xx, int yy)
+void SpawnRuneBomb(int xx, int yy)
 {
-	items_427DC6(IDI_RUNEBOMB, xx, yy);
+	SpawnRewardItem(IDI_RUNEBOMB, xx, yy);
 }
 
-void items_427E7D(int xx, int yy)
+void SpawnTheodore(int xx, int yy)
 {
-	items_427DC6(IDI_THEODORE, xx, yy);
+	SpawnRewardItem(IDI_THEODORE, xx, yy);
 }
 #endif
 

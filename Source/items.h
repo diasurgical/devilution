@@ -99,10 +99,10 @@ void items_427ABA(int x, int y);
 void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag);
 void SpawnRock();
 #ifdef HELLFIRE
-void items_427DC6(int itemid, int xx, int yy);
-void items_427E61(int xx, int yy);
-void items_427E6F(int xx, int yy);
-void items_427E7D(int xx, int yy);
+void SpawnRewardItem(int itemid, int xx, int yy);
+void SpawnMapOfDoom(int xx, int yy);
+void SpawnRuneBomb(int xx, int yy);
+void SpawnTheodore(int xx, int yy);
 #endif
 void RespawnItem(int i, BOOL FlipFlag);
 void DeleteItem(int ii, int i);
