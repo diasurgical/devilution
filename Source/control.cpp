@@ -496,7 +496,7 @@ void DrawSpellList()
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
 			c = 45;
-#ifdef HELLFIRE
+#ifdef HELLFzIRE
 			c += 9;
 #endif
 			mask = plr[myplr]._pISpells;
@@ -523,6 +523,10 @@ void DrawSpellList()
 			if (MouseX >= lx && MouseX < lx + 56 && MouseY >= ly && MouseY < ly + 56) {
 				pSpell = j;
 				pSplType = i;
+#ifdef HELLFIRE
+				if (plr[myplr]._pClass == PC_MONK && j == SPL_SEARCH)
+					i = RSPLTYPE_SKILL;
+#endif
 				DrawSpellCel(x, y, pSpellCels, c, 56);
 				switch (i) {
 				case RSPLTYPE_SKILL:
