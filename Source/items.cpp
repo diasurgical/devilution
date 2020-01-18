@@ -3384,6 +3384,9 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		break;
 	case IPL_TOHIT_DAMP:
 	case IPL_TOHIT_DAMP_CURSE:
+#ifdef HELLFIRE
+	case IPL_DOPPELGANGER:
+#endif
 		sprintf(tempstr, "to hit: %+i%%, %+i%% damage", x->_iPLToHit, x->_iPLDam);
 		break;
 	case IPL_ACP:
@@ -3397,24 +3400,36 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		sprintf(tempstr, "armor class: %i", x->_iAC);
 		break;
 	case IPL_FIRERES:
+#ifdef HELLFIRE
+	case IPL_FIRERES_CURSE:
+#endif
 		if (x->_iPLFR < 75)
 			sprintf(tempstr, "Resist Fire : %+i%%", x->_iPLFR);
 		if (x->_iPLFR >= 75)
 			sprintf(tempstr, "Resist Fire : 75%% MAX");
 		break;
 	case IPL_LIGHTRES:
+#ifdef HELLFIRE
+	case IPL_LIGHTRES_CURSE:
+#endif
 		if (x->_iPLLR < 75)
 			sprintf(tempstr, "Resist Lightning : %+i%%", x->_iPLLR);
 		if (x->_iPLLR >= 75)
 			sprintf(tempstr, "Resist Lightning : 75%% MAX");
 		break;
 	case IPL_MAGICRES:
+#ifdef HELLFIRE
+	case IPL_MAGICRES_CURSE:
+#endif
 		if (x->_iPLMR < 75)
 			sprintf(tempstr, "Resist Magic : %+i%%", x->_iPLMR);
 		if (x->_iPLMR >= 75)
 			sprintf(tempstr, "Resist Magic : 75%% MAX");
 		break;
 	case IPL_ALLRES:
+#ifdef HELLFIRE
+	case IPL_ALLRES_CURSE:
+#endif
 		if (x->_iPLFR < 75)
 			sprintf(tempstr, "Resist All : %+i%%", x->_iPLFR);
 		if (x->_iPLFR >= 75)
@@ -3423,10 +3438,21 @@ void PrintItemPower(char plidx, ItemStruct *x)
 	case IPL_SPLLVLADD:
 		if (x->_iSplLvlAdd == 1)
 			strcpy(tempstr, "spells are increased 1 level");
+#ifdef HELLFIRE
+		if (x->_iSplLvlAdd > 1)
+			sprintf(tempstr, "spells are increased %i levels", x->_iSplLvlAdd);
+#else
 		if (x->_iSplLvlAdd == 2)
 			strcpy(tempstr, "spells are increased 2 levels");
+#endif
 		if (x->_iSplLvlAdd < 1)
 			strcpy(tempstr, "spells are decreased 1 level");
+#ifdef HELLFIRE
+		if (x->_iSplLvlAdd < -1)
+			sprintf(tempstr, "spells are decreased %i levels", x->_iSplLvlAdd);
+		if (x->_iSplLvlAdd == 0)
+			strcpy(tempstr, "spell levels unchanged (?)");
+#endif
 		break;
 	case IPL_CHARGES:
 		strcpy(tempstr, "Extra charges");
@@ -3435,9 +3461,19 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		sprintf(tempstr, "%i %s charges", x->_iMaxCharges, spelldata[x->_iSpell].sNameText);
 		break;
 	case IPL_FIREDAM:
+#ifdef HELLFIRE
+		if (x->_iFMinDam == x->_iFMaxDam)
+			sprintf(tempstr, "Fire hit damage: %i", x->_iFMinDam);
+		else
+#endif
 		sprintf(tempstr, "Fire hit damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
 		break;
 	case IPL_LIGHTDAM:
+#ifdef HELLFIRE
+		if (x->_iLMinDam == x->_iLMaxDam)
+			sprintf(tempstr, "Lightning hit damage: %i", x->_iLMinDam);
+		else
+#endif
 		sprintf(tempstr, "Lightning hit damage: %i-%i", x->_iLMinDam, x->_iLMaxDam);
 		break;
 	case IPL_STR:
@@ -3487,10 +3523,25 @@ void PrintItemPower(char plidx, ItemStruct *x)
 	case IPL_LIGHT_CURSE:
 		sprintf(tempstr, "-%i%% light radius", -10 * x->_iPLLight);
 		break;
+#ifdef HELLFIRE
+	case IPL_MULT_ARROWS:
+		strcpy(tempstr, "multiple arrows per shot");
+		break;
+#endif
 	case IPL_FIRE_ARROWS:
+#ifdef HELLFIRE
+		if (x->_iFMinDam == x->_iFMaxDam)
+			sprintf(tempstr, "fire arrows damage: %i", x->_iFMinDam);
+		else
+#endif
 		sprintf(tempstr, "fire arrows damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
 		break;
 	case IPL_LIGHT_ARROWS:
+#ifdef HELLFIRE
+		if (x->_iLMinDam == x->_iLMaxDam)
+			sprintf(tempstr, "lightning arrows damage %i", x->_iLMinDam);
+		else
+#endif
 		sprintf(tempstr, "lightning arrows damage %i-%i", x->_iLMinDam, x->_iLMaxDam);
 		break;
 	case IPL_THORNS:
@@ -3502,6 +3553,14 @@ void PrintItemPower(char plidx, ItemStruct *x)
 	case IPL_NOHEALPLR:
 		strcpy(tempstr, "you can't heal");
 		break;
+#ifdef HELLFIRE
+	case IPL_FIREBALL:
+		if (x->_iFMinDam != x->_iFMaxDam)
+			sprintf(tempstr, "fireball damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
+		else
+			sprintf(tempstr, "fireball damage: %i", x->_iFMinDam);
+		break;
+#endif
 	case IPL_ABSHALFTRAP:
 		strcpy(tempstr, "absorbs half of trap damage");
 		break;
@@ -3530,7 +3589,11 @@ void PrintItemPower(char plidx, ItemStruct *x)
 			strcpy(tempstr, "hit steals 5% life");
 		break;
 	case IPL_TARGAC:
+#ifdef HELLFIRE
+		strcpy(tempstr, "penetrates target\'s armor");
+#else
 		strcpy(tempstr, "damages target's armor");
+#endif
 		break;
 	case IPL_FASTATTACK:
 		if (x->_iFlags & ISPL_QUICKATTACK)
@@ -3587,10 +3650,22 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		strcpy(tempstr, " ");
 		break;
 	case IPL_ADDACLIFE:
+#ifdef HELLFIRE
+		if (x->_iFMinDam != x->_iFMaxDam) {
+			sprintf(tempstr, "lightning: %i-%i", x->_iFMinDam, x->_iFMaxDam);
+			break;
+		}
+		sprintf(tempstr, "lightning damage: %i", x->_iFMinDam);
+#else
 		strcpy(tempstr, "Armor class added to life");
+#endif
 		break;
 	case IPL_ADDMANAAC:
+#ifdef HELLFIRE
+		strcpy(tempstr, "charged bolts on hits");
+#else
 		strcpy(tempstr, "10% of mana added to armor");
+#endif
 		break;
 	case IPL_FIRERESCLVL:
 		if (x->_iPLFR <= 0)
@@ -3598,6 +3673,35 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		else if (x->_iPLFR >= 1)
 			sprintf(tempstr, "Resist Fire : %+i%%", x->_iPLFR);
 		break;
+#ifdef HELLFIRE
+	case IPL_DEVASTATION:
+		strcpy(tempstr, "occasional triple damage");
+		break;
+	case IPL_DECAY:
+		sprintf(tempstr, "decaying %+i%% damage", x->_iPLDam);
+		break;
+	case IPL_PERIL:
+		strcpy(tempstr, "2x dmg to monst, 1x to you");
+		break;
+	case IPL_JESTERS:
+		strcpy(tempstr, "Random 0 - 500% damage");
+		break;
+	case IPL_CRYSTALLINE:
+		sprintf(tempstr, "low dur, %+i%% damage", x->_iPLDam);
+		break;
+	case IPL_ACDEMON:
+		strcpy(tempstr, "extra AC vs demons");
+		break;
+	case IPL_ACUNDEAD:
+		strcpy(tempstr, "extra AC vs undead");
+		break;
+	case IPL_MANATOLIFE:
+		strcpy(tempstr, "50%% Mana moved to Health");
+		break;
+	case IPL_LIFETOMANA:
+		strcpy(tempstr, "40%% Health moved to Mana");
+		break;
+#endif
 	default:
 		strcpy(tempstr, "Another ability (NW)");
 		break;
