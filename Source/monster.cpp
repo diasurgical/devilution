@@ -1787,6 +1787,10 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 	Monst->_mVar6 = (int)((k - (Monst->_my << 16)) / (double)dist);
 }
 
+
+void M_DefilerDeath(int i, BOOL sendmsg) {
+}
+
 void M2MStartHit(int mid, int i, int dam)
 {
 	if ((DWORD)mid >= MAXMONSTERS) {
@@ -1836,27 +1840,41 @@ void M2MStartHit(int mid, int i, int dam)
 void MonstStartKill(int i, int pnum, BOOL sendmsg)
 {
 	int md;
+	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MonstStartKill: Invalid monster %d", i);
+#endif
 	}
 	if (!monster[i].MType) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MonstStartKill: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 	}
 
+	Monst = &monster[i];
 	if (pnum >= 0)
-		monster[i].mWhoHit |= 1 << pnum;
+		Monst->mWhoHit |= 1 << pnum;
 	if (pnum < MAX_PLRS && i > MAX_PLRS)
-		AddPlrMonstExper(monster[i].mLevel, monster[i].mExp, monster[i].mWhoHit);
-	monstkills[monster[i].MType->mtype]++;
-	monster[i]._mhitpoints = 0;
-	SetRndSeed(monster[i]._mRndSeed);
-	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[UMT_GARBUD].mName) {
-		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);
+		AddPlrMonstExper(Monst->mLevel, Monst->mExp, Monst->mWhoHit);
+	monstkills[Monst->MType->mtype]++;
+	Monst->_mhitpoints = 0;
+	SetRndSeed(Monst->_mRndSeed);
+#ifdef HELLFIRE
+	M_DefilerDeath(i, sendmsg);
+#else
+	if (QuestStatus(QTYPE_GARB) && Monst->mName == UniqMonst[UMT_GARBUD].mName) {
+		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);
 	} else if (i > 3) {
-		SpawnItem(i, monster[i]._mx, monster[i]._my, sendmsg);
+		SpawnItem(i, Monst->_mx, Monst->_my, sendmsg);
 	}
-	if (monster[i].MType->mtype == MT_DIABLO)
+#endif
+	if (Monst->MType->mtype == MT_DIABLO)
 		M_DiabloDeath(i, TRUE);
 	else
 		PlayEffect(i, 2);
@@ -1864,24 +1882,31 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	if (pnum >= 0)
 		md = M_GetDir(i);
 	else
-		md = monster[i]._mdir;
-	monster[i]._mdir = md;
-	NewMonsterAnim(i, monster[i].MType->Anims[MA_DEATH], md);
-	monster[i]._mmode = MM_DEATH;
-	monster[i]._mxoff = 0;
-	monster[i]._myoff = 0;
-	monster[i]._mVar1 = 0;
-	monster[i]._mx = monster[i]._moldx;
-	monster[i]._my = monster[i]._moldy;
-	monster[i]._mfutx = monster[i]._moldx;
-	monster[i]._mfuty = monster[i]._moldy;
+		md = Monst->_mdir;
+	Monst->_mdir = md;
+	NewMonsterAnim(i, Monst->MType->Anims[MA_DEATH], md);
+	Monst->_mmode = MM_DEATH;
+#ifdef HELLFIRE
+	Monst->_mgoal = 0;
+#endif
+	Monst->_mxoff = 0;
+	Monst->_myoff = 0;
+	Monst->_mVar1 = 0;
+	Monst->_mx = Monst->_moldx;
+	Monst->_my = Monst->_moldy;
+	Monst->_mfutx = Monst->_moldx;
+	Monst->_mfuty = Monst->_moldy;
 	M_CheckEFlag(i);
 	M_ClearSquares(i);
-	dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+	dMonster[Monst->_mx][Monst->_my] = i + 1;
 	CheckQuestKill(i, sendmsg);
-	M_FallenFear(monster[i]._mx, monster[i]._my);
-	if (monster[i].MType->mtype >= MT_NACID && monster[i].MType->mtype <= MT_XACID)
-		AddMissile(monster[i]._mx, monster[i]._my, 0, 0, 0, MIS_ACIDPUD, 1, i, monster[i]._mint + 1, 0);
+	M_FallenFear(Monst->_mx, Monst->_my);
+#ifdef HELLFIRE
+	if (Monst->MType->mtype >= MT_NACID && Monst->MType->mtype <= MT_XACID || Monst->MType->mtype == MT_SPIDLORD)
+#else
+	if (Monst->MType->mtype >= MT_NACID && Monst->MType->mtype <= MT_XACID)
+#endif
+		AddMissile(Monst->_mx, Monst->_my, 0, 0, 0, MIS_ACIDPUD, 1, i, Monst->_mint + 1, 0);
 }
 
 void M2MStartKill(int i, int mid)
