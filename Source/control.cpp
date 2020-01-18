@@ -168,11 +168,7 @@ char SpellITbl[MAX_SPELLS] = {
 	23,
 	24,
 	25,
-#ifdef HELLFIRE
-	2,
-#else
 	22,
-#endif
 	26,
 	29,
 	37,
