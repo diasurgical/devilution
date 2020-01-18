@@ -159,6 +159,7 @@ typedef enum item_effect_type {
 	IPL_FIRERES_CURSE    = 0x50,
 	IPL_LIGHTRES_CURSE   = 0x51,
 	IPL_MAGICRES_CURSE   = 0x52,
+	IPL_ALLRES_CURSE     = 0x53,
 	IPL_DEVASTATION      = 0x54,
 	IPL_DECAY            = 0x55,
 	IPL_PERIL            = 0x56,
