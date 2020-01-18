@@ -496,7 +496,7 @@ void DrawSpellList()
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
 			c = 45;
-#ifdef HELLFzIRE
+#ifdef HELLFIRE
 			c += 9;
 #endif
 			mask = plr[myplr]._pISpells;
