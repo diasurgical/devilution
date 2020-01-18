@@ -231,7 +231,11 @@ int SpellPages[6][7] = {
 	{ SPL_RESURRECT, SPL_FIREWALL, SPL_TELEKINESIS, SPL_LIGHTNING, SPL_TOWN, SPL_FLASH, SPL_STONE },
 	{ SPL_RNDTELEPORT, SPL_MANASHIELD, SPL_ELEMENT, SPL_FIREBALL, SPL_WAVE, SPL_CHAIN, SPL_GUARDIAN },
 	{ SPL_NOVA, SPL_GOLEM, SPL_TELEPORT, SPL_APOCA, SPL_BONESPIRIT, SPL_FLARE, SPL_ETHEREALIZE },
+#ifndef HELLFIRE
 	{ -1, -1, -1, -1, -1, -1, -1 },
+#else
+	{ SPL_LIGHTWALL, SPL_IMMOLAT, SPL_WARP, SPL_REFLECT, SPL_BERSERK, SPL_FIRERING, SPL_SEARCH },
+#endif
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
@@ -2365,7 +2369,7 @@ char GetSBookTrans(int ii, BOOL townok)
 	char st;
 
 #ifdef HELLFIRE
-	if ((plr[myplr]._pClass == PC_MONK) && (ii == 46))
+	if ((plr[myplr]._pClass == PC_MONK) && (ii == SPL_SEARCH))
 		return RSPLTYPE_SKILL;
 #endif
 	st = RSPLTYPE_SPELL;
