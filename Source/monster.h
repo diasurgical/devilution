@@ -62,7 +62,7 @@ void M_GetKnockback(int i);
 void M_StartHit(int i, int pnum, int dam);
 void M_DiabloDeath(int i, BOOL sendmsg);
 #ifdef HELLFIRE
-void M_DefilerDeath(int i, BOOL sendmsg);
+void SpawnLoot(int i, BOOL sendmsg);
 #endif
 void M2MStartHit(int mid, int i, int dam);
 void MonstStartKill(int i, int pnum, BOOL sendmsg);

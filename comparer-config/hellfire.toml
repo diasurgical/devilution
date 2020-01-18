@@ -4878,7 +4878,7 @@ addr = 0x43D2B1
 size = 0x230
 
 [[func]]
-name = "M_DefilerDeath"
+name = "SpawnLoot"
 addr = 0x43D4E1
 size = 0x174
 
