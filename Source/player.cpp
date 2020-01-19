@@ -2484,7 +2484,7 @@ BOOL WeaponDur(int pnum, int durrnd)
 		return FALSE;
 	}
 
-	#ifdef HELLFIRE
+#ifdef HELLFIRE
 	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDamAcFlags & 2) {
 		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iPLDam -= 5;
 		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iPLDam <= -100) {
