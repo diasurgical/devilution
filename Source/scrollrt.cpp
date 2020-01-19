@@ -2206,8 +2206,6 @@ static void DrawZoom(int x, int y)
 	blocks = 3;
 
 	switch (ScrollInfo._sdir) {
-	case SDIR_NONE:
-		break;
 	case SDIR_NE:
 		chunks++;
 	case SDIR_N:
