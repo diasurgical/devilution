@@ -1829,7 +1829,8 @@ void StartPlayerKill(int pnum, int earflag)
 	ItemStruct ear;
 	ItemStruct *pi;
 
-	if (plr[pnum]._pHitPoints <= 0 && plr[pnum]._pmode == PM_DEATH) {
+	p = &plr[pnum];
+	if (p->_pHitPoints <= 0 && p->_pmode == PM_DEATH) {
 		return;
 	}
 
@@ -1844,45 +1845,52 @@ void StartPlayerKill(int pnum, int earflag)
 	}
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
-		PlaySfxLoc(PS_DEAD, plr[pnum].WorldX, plr[pnum].WorldY); // BUGFIX: should use `PS_WARR71` like other classes
+		PlaySfxLoc(PS_DEAD, p->WorldX, p->WorldY); // BUGFIX: should use `PS_WARR71` like other classes
 #ifndef SPAWN
 	} else if (plr[pnum]._pClass == PC_ROGUE) {
-		PlaySfxLoc(PS_ROGUE71, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_ROGUE71, p->WorldX, p->WorldY);
 	} else if (plr[pnum]._pClass == PC_SORCERER) {
-		PlaySfxLoc(PS_MAGE71, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_MAGE71, p->WorldX, p->WorldY);
+#ifdef HELLFIRE
+	} else if (plr[pnum]._pClass == PC_MONK) {
+		PlaySfxLoc(PS_MONK71, p->WorldX, p->WorldY);
+	} else if (plr[pnum]._pClass == PC_BARD) {
+		PlaySfxLoc(PS_ROGUE71, p->WorldX, p->WorldY);
+	} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+		PlaySfxLoc(PS_WARR71, p->WorldX, p->WorldY);
+#endif
 #endif
 	}
 
-	if (plr[pnum]._pgfxnum) {
-		plr[pnum]._pgfxnum = 0;
-		plr[pnum]._pGFXLoad = 0;
+	if (p->_pgfxnum) {
+		p->_pgfxnum = 0;
+		p->_pGFXLoad = 0;
 		SetPlrAnims(pnum);
 	}
 
-	if (!(plr[pnum]._pGFXLoad & PFILE_DEATH)) {
+	if (!(p->_pGFXLoad & PFILE_DEATH)) {
 		LoadPlrGFX(pnum, PFILE_DEATH);
 	}
 
-	p = &plr[pnum];
-	NewPlrAnim(pnum, p->_pDAnim[plr[pnum]._pdir], p->_pDFrames, 1, p->_pDWidth);
+	NewPlrAnim(pnum, p->_pDAnim[p->_pdir], p->_pDFrames, 1, p->_pDWidth);
 
-	plr[pnum]._pBlockFlag = FALSE;
-	plr[pnum]._pmode = PM_DEATH;
-	plr[pnum]._pInvincible = TRUE;
+	p->_pBlockFlag = FALSE;
+	p->_pmode = PM_DEATH;
+	p->_pInvincible = TRUE;
 	SetPlayerHitPoints(pnum, 0);
-	plr[pnum]._pVar8 = 1;
+	p->_pVar8 = 1;
 
 	if (pnum != myplr && !earflag && !diablolevel) {
 		for (i = 0; i < NUM_INVLOC; i++) {
-			plr[pnum].InvBody[i]._itype = ITYPE_NONE;
+			p->InvBody[i]._itype = ITYPE_NONE;
 		}
 		CalcPlrInv(pnum, FALSE);
 	}
 
 	if (plr[pnum].plrlevel == currlevel) {
-		FixPlayerLocation(pnum, plr[pnum]._pdir);
+		FixPlayerLocation(pnum, p->_pdir);
 		RemovePlrFromMap(pnum);
-		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
+		dFlags[p->WorldX][p->WorldY] |= BFLAG_DEAD_PLAYER;
 		SetPlayerOld(pnum);
 
 		if (pnum == myplr) {
@@ -1890,7 +1898,7 @@ void StartPlayerKill(int pnum, int earflag)
 			deathdelay = 30;
 
 			if (pcurs >= CURSOR_FIRSTITEM) {
-				PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+				PlrDeadItem(pnum, &p->HoldItem, 0, 0);
 				SetCursor_(CURSOR_HAND);
 			}
 
@@ -1906,6 +1914,10 @@ void StartPlayerKill(int pnum, int earflag)
 							ear._iCurs = ICURS_EAR_WARRIOR;
 						} else if (plr[pnum]._pClass == PC_ROGUE) {
 							ear._iCurs = ICURS_EAR_ROGUE;
+#ifdef HELLFIRE
+						} else if (plr[pnum]._pClass == PC_MONK || plr[pnum]._pClass == PC_BARD || plr[pnum]._pClass == PC_BARBARIAN) {
+							ear._iCurs = ICURS_EAR_ROGUE;
+#endif
 						}
 
 						ear._iCreateInfo = plr[pnum]._pName[0] << 8 | plr[pnum]._pName[1];
@@ -1916,11 +1928,10 @@ void StartPlayerKill(int pnum, int earflag)
 							PlrDeadItem(pnum, &ear, 0, 0);
 						}
 					} else {
-						pi = &plr[pnum].InvBody[0];
+						pi = &p->InvBody[0];
 						i = NUM_INVLOC;
-						while (i != 0) {
-							i--;
-							pdd = (i + plr[pnum]._pdir) & 7;
+						while (i--) {
+							pdd = (i + p->_pdir) & 7;
 							PlrDeadItem(pnum, pi, offset_x[pdd], offset_y[pdd]);
 							pi++;
 						}
@@ -1931,7 +1942,9 @@ void StartPlayerKill(int pnum, int earflag)
 			}
 		}
 	}
+#ifndef HELLFIRE
 	SetPlayerHitPoints(pnum, 0);
+#endif
 }
 
 void PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
