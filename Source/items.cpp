@@ -4244,12 +4244,68 @@ void UseItem(int p, int Mid, int spl)
 	case IMISC_MAPOFDOOM:
 		doom_init();
 		break;
+#ifdef HELLFIRE
+	case IMISC_OILACC:
+	case IMISC_OILMAST:
+	case IMISC_OILSHARP:
+	case IMISC_OILDEATH:
+	case IMISC_OILSKILL:
+	case IMISC_OILBSMTH:
+	case IMISC_OILFORT:
+	case IMISC_OILPERM:
+	case IMISC_OILHARD:
+	case IMISC_OILIMP:
+		plr[p]._pOilType = Mid;
+		if (p != myplr) {
+			return;
+		}
+		if (sbookflag) {
+			sbookflag = FALSE;
+		}
+		if (!invflag) {
+			invflag = TRUE;
+		}
+		SetCursor_(CURSOR_OIL);
+		break;
+#endif
 	case IMISC_SPECELIX:
 		ModifyPlrStr(p, 3);
 		ModifyPlrMag(p, 3);
 		ModifyPlrDex(p, 3);
 		ModifyPlrVit(p, 3);
 		break;
+#ifdef HELLFIRE
+	case IMISC_RUNEF:
+		plr[p]._pTSpell = SPL_RUNEFIRE;
+		plr[p]._pTSplType = RSPLTYPE_INVALID;
+		if (p == myplr)
+			SetCursor_(CURSOR_TELEPORT);
+		break;
+	case IMISC_RUNEL:
+		plr[p]._pTSpell = SPL_RUNELIGHT;
+		plr[p]._pTSplType = RSPLTYPE_INVALID;
+		if (p == myplr)
+			SetCursor_(CURSOR_TELEPORT);
+		break;
+	case IMISC_GR_RUNEL:
+		plr[p]._pTSpell = SPL_RUNENOVA;
+		plr[p]._pTSplType = RSPLTYPE_INVALID;
+		if (p == myplr)
+			SetCursor_(CURSOR_TELEPORT);
+		break;
+	case IMISC_GR_RUNEF:
+		plr[p]._pTSpell = SPL_RUNEIMMOLAT;
+		plr[p]._pTSplType = RSPLTYPE_INVALID;
+		if (p == myplr)
+			SetCursor_(CURSOR_TELEPORT);
+		break;
+	case IMISC_RUNES:
+		plr[p]._pTSpell = SPL_RUNESTONE;
+		plr[p]._pTSplType = RSPLTYPE_INVALID;
+		if (p == myplr)
+			SetCursor_(CURSOR_TELEPORT);
+		break;
+#endif
 	}
 }
 
