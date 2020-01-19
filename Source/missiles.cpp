@@ -4125,6 +4125,33 @@ void mi_reflect(int i)
 
 void mi_fire_ring(int i)
 {
+	int src, tx, ty, dmg, k, j, dp, b;
+	BYTE lvl;
+
+	b = CrawlNum[3];
+	missile[i]._miDelFlag = 1;
+	src = missile[i]._micaster;
+	k = CrawlNum[3] + 1;
+	if (src > 0)
+		lvl = plr[src]._pLevel;
+	else
+		lvl = currlevel;
+	dmg = 16 * (random_(53, 10) + random_(53, 10) + lvl + 2) >> 1;
+	for (j = CrawlTable[b]; j > 0; j--, k += 2) {
+		tx = missile[i]._miVar1 + CrawlTable[k - 1];
+		ty = missile[i]._miVar2 + CrawlTable[k];
+		if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+			dp = dPiece[tx][ty];
+			if (!nSolidTable[dp] && !dObject[tx][ty]) {
+				if (LineClear(missile[i]._mix, missile[i]._miy, tx, ty)) {
+					if (nMissileTable[dp] || missile[i]._miVar8)
+						missile[i]._miVar8 = 1;
+					else
+						AddMissile(tx, ty, tx, ty, 0, MIS_FIREWALL, 2, src, dmg, missile[i]._mispllvl);
+				}
+			}
+		}
+	}
 }
 
 void mi_light_ring(int i)
