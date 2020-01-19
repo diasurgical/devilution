@@ -2522,7 +2522,11 @@ BOOL WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+#ifdef HELLFIRE
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability <= 0) {
+#else
 		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0) {
+#endif
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
 			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
