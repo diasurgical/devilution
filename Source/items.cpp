@@ -497,7 +497,11 @@ void items_42390F()
 
 void InitItemGFX()
 {
+#ifdef HELLFIRE
+	DWORD i;
+#else
 	int i;
+#endif
 	char arglist[64];
 
 	for (i = 0; i < ITEMTYPES; i++) {
