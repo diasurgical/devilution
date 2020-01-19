@@ -891,7 +891,11 @@ void AddPlrExperience(int pnum, int lvl, int exp)
 	}
 
 	// Adjust xp based on difference in level between player and monster
-	exp *= 1 + ((double)lvl - plr[pnum]._pLevel) / 10;
+#ifdef HELLFIRE
+	exp *= ((double)lvl - plr[pnum]._pLevel) / 10 - -1;
+#else
+	exp *= ((double)lvl - plr[pnum]._pLevel) / 10 + 1;
+#endif 
 	if (exp < 0) {
 		exp = 0;
 	}
