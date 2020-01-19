@@ -2105,6 +2105,37 @@ void DropHalfPlayersGold(int pnum)
 	plr[pnum]._pGold = CalculateGold(pnum);
 }
 
+#ifdef HELLFIRE
+void StripTopGold(int pnum)
+{
+	ItemStruct tmpItem;
+	int i, val;
+
+	if ((DWORD)pnum >= MAX_PLRS) {
+		app_fatal("StripTopGold: illegal player %d", pnum);
+	}
+	tmpItem = plr[pnum].HoldItem;
+
+	for (i = 0; i < plr[pnum]._pNumInv; i++) {
+		if (plr[pnum].InvList[i]._itype == ITYPE_GOLD) {
+			if (plr[pnum].InvList[i]._ivalue > MaxGold) {
+				val = plr[pnum].InvList[i]._ivalue - MaxGold;
+				plr[pnum].InvList[i]._ivalue = MaxGold;
+				SetGoldCurs(pnum, i);
+				SetPlrHandItem(&plr[pnum].HoldItem, 0);
+				GetGoldSeed(pnum, &plr[pnum].HoldItem);
+				SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+				plr[pnum].HoldItem._ivalue = val;
+				if (!GoldAutoPlace(pnum))
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+			}
+		}
+	}
+	plr[pnum]._pGold = CalculateGold(pnum);
+	plr[pnum].HoldItem = tmpItem;
+}
+
+#endif
 void SyncPlrKill(int pnum, int earflag)
 {
 	int ma, i;

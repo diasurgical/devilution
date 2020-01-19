@@ -64,6 +64,9 @@ void RespawnDeadItem(ItemStruct *itm, int x, int y);
 void StartPlayerKill(int pnum, int earflag);
 void PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy);
 void DropHalfPlayersGold(int pnum);
+#ifdef HELLFIRE
+void StripTopGold(int pnum);
+#endif
 void SyncPlrKill(int pnum, int earflag);
 void j_StartPlayerKill(int pnum, int earflag);
 void RemovePlrMissiles(int pnum);
