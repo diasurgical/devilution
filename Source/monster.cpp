@@ -6036,23 +6036,28 @@ BOOL CanTalkToMonst(int m)
 BOOL CheckMonsterHit(int m, BOOL &ret)
 {
 	if ((DWORD)m >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("CheckMonsterHit: Invalid monster %d", m);
+#endif
 	}
 
 	if (monster[m]._mAi == AI_GARG && monster[m]._mFlags & MFLAG_ALLOW_SPECIAL) {
-		monster[m]._mmode = MM_SATTACK;
 		monster[m]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
+		monster[m]._mmode = MM_SATTACK;
 		ret = TRUE;
 		return TRUE;
 	}
 
-	if (monster[m].MType->mtype < MT_COUNSLR || monster[m].MType->mtype > MT_ADVOCATE || monster[m]._mgoal == MGOAL_NORMAL) {
-		return FALSE;
-	} else {
-		ret = FALSE;
+	if (monster[m].MType->mtype >= MT_COUNSLR && monster[m].MType->mtype <= MT_ADVOCATE) {
+		if (monster[m]._mgoal != MGOAL_NORMAL) {
+			ret = FALSE;
+			return TRUE;
+		}
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 int encode_enemy(int m)
