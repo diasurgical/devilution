@@ -2133,7 +2133,7 @@ addr = 0x41B099
 size = 0x14C
 
 [[func]]
-name = "log_reset"
+name = "fault_set_filter"
 addr = 0x41B20D
 size = 0x5F
 

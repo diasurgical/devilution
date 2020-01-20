@@ -282,7 +282,23 @@ char *fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 
 void *fault_set_filter(void *unused)
 {
+#ifdef HELLFIRE
+	char *p;
+	int len;
+
+	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)log_create);
+	GetModuleFileName(NULL, FileName, MAX_PATH);
+	p = strrchr(FileName, '.');
+	if (p) {
+		p++;
+		if (strlen(p) >= 3) {
+			strcpy(p, "ERR");
+		}
+	}
+	DeleteFile(FileName);
+#else
 	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
+#endif
 	return unused;
 }
 
