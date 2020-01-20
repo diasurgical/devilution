@@ -171,6 +171,9 @@ void PrintMonstHistory(int mt);
 void PrintUniqueHistory();
 void MissToMonst(int i, int x, int y);
 BOOL PosOkMonst(int i, int x, int y);
+#ifdef HELLFIRE
+BOOLEAN monster_posok(int i, int x, int y);
+#endif
 BOOL PosOkMonst2(int i, int x, int y);
 BOOL PosOkMonst3(int i, int x, int y);
 BOOL IsSkel(int mt);

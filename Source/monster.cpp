@@ -5676,6 +5676,21 @@ void MissToMonst(int i, int x, int y)
 
 BOOL PosOkMonst(int i, int x, int y)
 {
+#ifdef HELLFIRE
+	int oi;
+	BOOL ret;
+
+	ret = !SolidLoc(x, y) && !dPlayer[x][y] && !dMonster[x][y];
+	oi = dObject[x][y];
+	if (ret && oi) {
+		oi = oi > 0 ? oi - 1 : -(oi + 1);
+		if (object[oi]._oSolidFlag)
+			ret = FALSE;
+	}
+
+	if (ret)
+		ret = monster_posok(i, x, y);
+#else
 	int oi, mi, j;
 	BOOL ret, fire;
 
@@ -5702,13 +5717,69 @@ BOOL PosOkMonst(int i, int x, int y)
 		if (fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
 			ret = FALSE;
 	}
+#endif
 
 	return ret;
 }
 
+#ifdef HELLFIRE
+BOOLEAN monster_posok(int i, int x, int y)
+{
+	int mi, j;
+	BOOLEAN ret, fire, lightning;
+
+	ret = TRUE;
+	mi = dMissile[x][y];
+	if (mi && i >= 0) {
+		fire = FALSE;
+		lightning = FALSE;
+		if (mi > 0) {
+			if (missile[mi]._mitype == MIS_FIREWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
+				fire = TRUE;
+			} else if (missile[mi]._mitype == MIS_LIGHTWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
+				lightning = TRUE;
+			}
+		} else {
+			for (j = 0; j < nummissiles; j++) {
+				mi = missileactive[j];
+				if (missile[mi]._mix == x && missile[mi]._miy == y) {
+					if (missile[mi]._mitype == MIS_FIREWALL) {
+						fire = TRUE;
+						break;
+					}
+					if (missile[mi]._mitype == MIS_LIGHTWALL) {
+						lightning = TRUE;
+						break;
+					}
+				}
+			}
+		}
+		if ((fire && !(monster[i].mMagicRes & IMUNE_FIRE)) || (fire && monster[i].MType->mtype == MT_DIABLO))
+			ret = FALSE;
+		if ((lightning && !(monster[i].mMagicRes & IMUNE_LIGHTNING)) || (lightning && monster[i].MType->mtype == MT_DIABLO))
+			ret = FALSE;
+	}
+	return ret;
+}
+#endif
+
 BOOL PosOkMonst2(int i, int x, int y)
 {
 	int oi, mi, j;
+#ifdef HELLFIRE
+	BOOL ret;
+
+	oi = dObject[x][y];
+	ret = !SolidLoc(x, y);
+	if (ret && oi) {
+		oi = oi > 0 ? oi - 1 : -(oi + 1);
+		if (object[oi]._oSolidFlag)
+			ret = FALSE;
+	}
+
+	if (ret)
+		ret = monster_posok(i, x, y);
+#else
 	BOOL ret, fire;
 
 	fire = FALSE;
@@ -5734,6 +5805,7 @@ BOOL PosOkMonst2(int i, int x, int y)
 		if (fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
 			ret = FALSE;
 	}
+#endif
 
 	return ret;
 }
@@ -5741,6 +5813,30 @@ BOOL PosOkMonst2(int i, int x, int y)
 BOOL PosOkMonst3(int i, int x, int y)
 {
 	int j, oi, objtype, mi;
+#ifdef HELLFIRE
+	BOOL ret;
+	DIABOOL isdoor;
+
+	ret = TRUE;
+	isdoor = FALSE;
+
+	oi = dObject[x][y];
+	if (ret && oi != 0) {
+		oi = oi > 0 ? oi - 1 : -(oi + 1);
+		objtype = object[oi]._otype;
+		isdoor = objtype == OBJ_L1LDOOR || objtype == OBJ_L1RDOOR
+		    || objtype == OBJ_L2LDOOR || objtype == OBJ_L2RDOOR
+		    || objtype == OBJ_L3LDOOR || objtype == OBJ_L3RDOOR;
+		if (object[oi]._oSolidFlag && !isdoor) {
+			ret = FALSE;
+		}
+	}
+	if (ret) {
+		ret = (!SolidLoc(x, y) || isdoor) && dPlayer[x][y] == 0 && dMonster[x][y] == 0;
+	}
+	if (ret)
+		ret = monster_posok(i, x, y);
+#else
 	BOOL ret, fire, isdoor;
 
 	fire = FALSE;
@@ -5778,6 +5874,7 @@ BOOL PosOkMonst3(int i, int x, int y)
 			ret = FALSE;
 		}
 	}
+#endif
 
 	return ret;
 }
