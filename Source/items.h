@@ -17,6 +17,9 @@ extern ItemStruct CornerItemMaybe;
 #endif
 extern BYTE *itemanims[ITEMTYPES];
 extern BOOL UniqueItemFlag[128];
+#ifdef HELLFIRE
+extern int auricGold;
+#endif
 extern int numitems;
 extern int gnNumGetRecords;
 
