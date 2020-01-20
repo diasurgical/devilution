@@ -945,7 +945,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 {
 	int oi;
 
-	if (missile[i]._miAnimType != 4 && missile[i]._misource != -1) {
+	if (missile[i]._miAnimType != MFILE_FIREWAL && missile[i]._misource != -1) {
 		if (!missile[i]._micaster) {
 			if (dMonster[mx][my] > 0) {
 				if (MonsterMHit(
@@ -1016,7 +1016,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 		}
 	} else {
 		if (dMonster[mx][my] > 0) {
-			if (missile[i]._miAnimType == 4) {
+			if (missile[i]._miAnimType == MFILE_FIREWAL) {
 				if (MonsterMHit(
 				        missile[i]._misource,
 				        dMonster[mx][my] - 1,
