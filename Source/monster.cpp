@@ -1266,6 +1266,40 @@ int AddMonster(int x, int y, int dir, int mtype, BOOL InMap)
 	return -1;
 }
 
+#ifdef HELLFIRE
+void monster_43C785(int i)
+{
+	int x, y, d, j, oi, dir, mx, my;
+
+	if (monster[i].MType) {
+		mx = monster[i]._mx;
+		my = monster[i]._my;
+		dir = monster[i]._mdir;
+		for (d = 0; d < 8; d++) {
+			x = mx + offset_x[d];
+			y = my + offset_y[d];
+			if (!SolidLoc(x, y)) {
+				if (!dPlayer[x][y] && !dMonster[x][y]) {
+					if (!dObject[x][y])
+						break;
+					oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
+					if (!object[oi]._oSolidFlag)
+						break;
+				}
+			}
+		}
+		if (d < 8) {
+			for (j = 0; j < MAX_LVLMTYPES; j++) {
+				if (Monsters[j].mtype == monster[i].MType->mtype)
+					break;
+			}
+			if (j < MAX_LVLMTYPES)
+				AddMonster(x, y, dir, j, TRUE);
+		}
+	}
+}
+#endif
+
 void NewMonsterAnim(int i, AnimStruct &anim, int md)
 {
 	MonsterStruct *Monst = monster + i;

@@ -40,6 +40,9 @@ void PlaceUniques();
 void SetMapMonsters(BYTE *pMap, int startx, int starty);
 void DeleteMonster(int i);
 int AddMonster(int x, int y, int dir, int mtype, BOOL InMap);
+#ifdef HELLFIRE
+void monster_43C785(int i);
+#endif
 void NewMonsterAnim(int i, AnimStruct &anim, int md);
 BOOL M_Ranged(int i);
 BOOL M_Talker(int i);
