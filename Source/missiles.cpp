@@ -1535,7 +1535,7 @@ void missiles_steal_pots(int mi, int sx, int sy, int dx, int dy, int midir, char
 					pnum = pnum > 0 ? pnum - 1 : -(pnum + 1);
 
 					hasPlayedSFX = FALSE;
-					for (si = 0; si < 8; si++) {
+					for (si = 0; si < MAXBELTITEMS; si++) {
 						ii = -1;
 						if (plr[pnum].SpdList[si]._itype == ITYPE_MISC) {
 							if (random_(205, 2)) {
