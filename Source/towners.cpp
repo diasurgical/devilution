@@ -1312,8 +1312,8 @@ void TalkToTowner(int p, int t)
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, QTYPE_GIRL);
 			}
-#endif
 		}
+#endif
 	}
 }
 

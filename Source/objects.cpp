@@ -1491,8 +1491,90 @@ void AddSlainHero()
 }
 
 #ifdef HELLFIRE
-void objects_44D8C5(int a1, int a2, int a3, int a4)
+void objects_44D8C5(int ot, int v2, int ox, int oy)
 {
+	int oi;
+
+	if (nobjects >= MAXOBJECTS)
+		return;
+
+	oi = objectavail[0];
+	objectavail[0] = objectavail[126 - nobjects];
+	objectactive[nobjects] = oi;
+	dObject[ox][oy] = oi + 1;
+	SetupObject(oi, ox, oy, ot);
+	objects_44DA68(oi, v2);
+	object[oi]._oAnimWidth2 = (object[oi]._oAnimWidth - 64) >> 1;
+	nobjects++;
+}
+
+void objects_44DA68(int i, int a2)
+{
+	int v8, v9;
+	if (a2 > 5) {
+		object[i]._oVar8 = a2;
+		switch (a2) {
+		case 6:
+			if (plr[myplr]._pClass == PC_WARRIOR) {
+				object[i]._oVar2 = 323;
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
+				object[i]._oVar2 = 332;
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
+				object[i]._oVar2 = 329;
+			} else if (plr[myplr]._pClass == PC_MONK) {
+				object[i]._oVar2 = 326;
+			} else if (plr[myplr]._pClass == PC_BARD) {
+				object[i]._oVar2 = 335;
+			} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+				object[i]._oVar2 = 323;
+			}
+			break;
+		case 7:
+			if (plr[myplr]._pClass == PC_WARRIOR) {
+				object[i]._oVar2 = 324;
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
+				object[i]._oVar2 = 333;
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
+				object[i]._oVar2 = 330;
+			} else if (plr[myplr]._pClass == PC_MONK) {
+				object[i]._oVar2 = 327;
+			} else if (plr[myplr]._pClass == PC_BARD) {
+				object[i]._oVar2 = 336;
+			} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+				object[i]._oVar2 = 324;
+			}
+			break;
+		case 8:
+			if (plr[myplr]._pClass == PC_WARRIOR) {
+				object[i]._oVar2 = 325;
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
+				object[i]._oVar2 = 334;
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
+				object[i]._oVar2 = 331;
+			} else if (plr[myplr]._pClass == PC_MONK) {
+				object[i]._oVar2 = 328;
+			} else if (plr[myplr]._pClass == PC_BARD) {
+				object[i]._oVar2 = 337;
+			} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+				object[i]._oVar2 = 325;
+			}
+			break;
+		}
+		object[i]._oVar1 = 1;
+		object[i]._oVar3 = 15;
+		v8 = 2 * object[i]._oVar1;
+		object[i]._oAnimFrame = 5 - v8;
+		object[i]._oVar4 = object[i]._oAnimFrame + 1;
+	} else {
+
+		object[i]._oVar1 = 1;
+		object[i]._oVar2 = a2 + 316;
+		object[i]._oVar3 = a2 + 9;
+		v9 = 2 * object[i]._oVar1;
+		object[i]._oAnimFrame = 5 - v9;
+		object[i]._oVar4 = object[i]._oAnimFrame + 1;
+		object[i]._oVar8 = 0;
+	}
 }
 #endif
 
