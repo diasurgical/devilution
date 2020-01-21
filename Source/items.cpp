@@ -693,10 +693,9 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 						tmpac = 1;
 					bac += tmpac;
 				}
-				iflgs |= itm->_iFlags;
 #ifdef HELLFIRE
+				iflgs |= itm->_iFlags;
 				pDamAcFlags |= itm->_iDamAcFlags;
-#endif
 				sadd += itm->_iPLStr;
 				madd += itm->_iPLMag;
 				dadd += itm->_iPLDex;
@@ -715,6 +714,27 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 				fmax += itm->_iFMaxDam;
 				lmin += itm->_iLMinDam;
 				lmax += itm->_iLMaxDam;
+#else
+				dmod += itm->_iPLDamMod;
+				iflgs |= itm->_iFlags;
+				sadd += itm->_iPLStr;
+				madd += itm->_iPLMag;
+				dadd += itm->_iPLDex;
+				vadd += itm->_iPLVit;
+				fr += itm->_iPLFR;
+				lr += itm->_iPLLR;
+				mr += itm->_iPLMR;
+				ghit += itm->_iPLGetHit;
+				lrad += itm->_iPLLight;
+				ihp += itm->_iPLHP;
+				imana += itm->_iPLMana;
+				spllvladd += itm->_iSplLvlAdd;
+				enac += itm->_iPLEnAc;
+				fmin += itm->_iFMinDam;
+				fmax += itm->_iFMaxDam;
+				lmin += itm->_iLMinDam;
+				lmax += itm->_iLMaxDam;
+#endif
 			}
 		}
 	}
@@ -836,53 +856,24 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		}
 	} else if (plr[p]._pClass == PC_BARBARIAN) {
 
-		/*
-			if (v13 != 5)
-			goto LABEL_87;
-		v20 = v12->InvBody[4]._itype;
-		if (v20 == 2 || (v21 = v12->InvBody[5]._itype, v21 == 2) || v20 == 4 || v21 == 4) {
-			v63 = 75;
-			v22 = v12->_pLevel * v12->_pStrength;
-			goto LABEL_73;
+		if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_AXE || plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_AXE || plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_MACE || plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_MACE) {
+			plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 75;
 		}
-		if (v20 != 3 && v21 != 3) {
-			v63 = 100;
-			v22 = v12->_pLevel * v12->_pStrength;
-		LABEL_73:
-			v23 = v63;
-			goto LABEL_74;
+		else if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW && plr[p].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_BOW) {
+			plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
+		} else{
+			plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 300;
 		}
-		v23 = 300;
-		v22 = v12->_pLevel * v12->_pStrength;
-	LABEL_74:
-		v12->_pDamageMod = v22 / v23;
-		v24 = &plr[v2];
-		v25 = plr[v2].InvBody[4]._itype;
-		if (v25 == 5)
-			goto LABEL_217;
-		v26 = v24->InvBody[5]._itype;
-		if (v26 != 5) {
-			if (v25 != 10 && v26 != 10 && v25 != 3 && v26 != 3)
-				v24->_pDamageMod += v24->_pLevel * v24->_pVitality / 100;
-			goto LABEL_86;
-		}
-		if (v25 == 5) {
-		LABEL_217:
-			v27 = v24->InvBody[4]._iAC;
-		LABEL_85:
-			v24->_pIAC += v27 / -2;
-			goto LABEL_86;
-		}
-		if (v24->InvBody[5]._itype == 5) {
-			v27 = v24->InvBody[5]._iAC;
-			goto LABEL_85;
-		}
-	LABEL_86:
-		plr[v2]._pIAC += plr[v2]._pLevel / 4;
 
-
-		*/
-
+		if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD) {
+			if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_STAFF && plr[p].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_STAFF && plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW && plr[p].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_BOW)
+				plr[p]._pDamageMod += plr[p]._pLevel * plr[p]._pVitality / 100;
+		}
+		else if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
+			plr[p]._pIAC -= plr[p].InvBody[INVLOC_HAND_LEFT]._iAC / 2;
+		} else if (plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
+			plr[p]._pIAC -= plr[p].InvBody[INVLOC_HAND_RIGHT]._iAC / 2;
+		}
 	}
 #endif
 	else {
@@ -1118,16 +1109,15 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		}
 	}
 #ifdef HELLFIRE
-  if (plr[p].InvBody[INVLOC_AMULET]._itype == ITYPE_NONE || plr[p].InvBody[INVLOC_AMULET].IDidx != IDI_AURIC) {
+	if (plr[p].InvBody[INVLOC_AMULET]._itype == ITYPE_NONE || plr[p].InvBody[INVLOC_AMULET].IDidx != IDI_AURIC) {
 		int half = auricGold / 2;
 		BOOL auricOff = MaxGold != half;
 		MaxGold = half;
-		if ( auricOff )
+		if (auricOff)
 			StripTopGold(p);
-  }
-  else {
-    MaxGold = auricGold;
-  }
+	} else {
+		MaxGold = auricGold;
+	}
 #endif
 
 	drawmanaflag = TRUE;
