@@ -1067,16 +1067,16 @@ void TalkToTowner(int p, int t)
 		if (gbMaxPlayers == 1) {
 			if (quests[QTYPE_VB]._qactive == 1 && PlrHasItem(p, IDI_LAZSTAFF, i) != NULL) {
 				RemoveInvItem(p, i);
-				towner[t]._tbtcnt = 150;
 				quests[QTYPE_VB]._qvar1 = 2;
+				towner[t]._tbtcnt = 150;
 				towner[t]._tVar1 = p;
 				InitQTextMsg(QUEST_VILE1);
 				towner[t]._tMsgSaid = TRUE;
 				quests[QTYPE_VB]._qactive = 2;
 				quests[QTYPE_VB]._qlog = TRUE;
 			} else if (quests[QTYPE_VB]._qactive == 3 && quests[QTYPE_VB]._qvar1 == 7) {
-				towner[t]._tbtcnt = 150;
 				quests[QTYPE_VB]._qvar1 = 8;
+				towner[t]._tbtcnt = 150;
 				towner[t]._tVar1 = p;
 				InitQTextMsg(QUEST_VILE3);
 				towner[t]._tMsgSaid = TRUE;
