@@ -1519,8 +1519,81 @@ void missiles_jester(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 
 void missiles_steal_pots(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
+	int i, l, k, j, tx, ty, si, ii, pnum;
+	BOOL hasPlayedSFX;
 
+	missile[mi]._misource = id;
+	for (i = 0; i < 3; i++) {
+		k = CrawlNum[i];
+		l = k + 2;
+		for (j = CrawlTable[k]; j > 0; j--, l += 2) {
+			tx = sx + CrawlTable[l - 1];
+			ty = sy + CrawlTable[l];
+			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+				pnum = dPlayer[tx][ty];
+				if (pnum) {
+					pnum = pnum > 0 ? pnum - 1 : -(pnum + 1);
+
+					hasPlayedSFX = FALSE;
+					for (si = 0; si < 8; si++) {
+						ii = -1;
+						if (plr[pnum].SpdList[si]._itype == ITYPE_MISC) {
+							if (random_(205, 2)) {
+								switch (plr[pnum].SpdList[si]._iMiscId) {
+								case IMISC_FULLHEAL:
+									ii = ItemMiscIdIdx(IMISC_HEAL);
+									break;
+								case IMISC_HEAL:
+								case IMISC_MANA:
+									RemoveSpdBarItem(pnum, si);
+									continue;
+								case IMISC_FULLMANA:
+									ii = ItemMiscIdIdx(IMISC_MANA);
+									break;
+								case IMISC_REJUV:
+									if (random_(205, 2)) {
+										ii = ItemMiscIdIdx(IMISC_MANA);
+									} else {
+										ii = ItemMiscIdIdx(IMISC_HEAL);
+									}
+									ii = ItemMiscIdIdx(IMISC_HEAL);
+									break;
+								case IMISC_FULLREJUV:
+									switch (random_(205, 3)) {
+									case 0:
+										ii = ItemMiscIdIdx(IMISC_FULLMANA);
+										break;
+									case 1:
+										ii = ItemMiscIdIdx(IMISC_FULLHEAL);
+										break;
+									default:
+										ii = ItemMiscIdIdx(IMISC_REJUV);
+										break;
+									}
+									break;
+								}
+							}
+						}
+						if (ii != -1) {
+							SetPlrHandItem(&plr[pnum].HoldItem, ii);
+							GetPlrHandSeed(&plr[pnum].HoldItem);
+							plr[pnum].HoldItem._iStatFlag = 1;
+							plr[pnum].SpdList[si] = plr[pnum].HoldItem;
+						}
+						if (!hasPlayedSFX) {
+							PlaySfxLoc(IS_POPPOP2, tx, ty);
+							hasPlayedSFX = TRUE;
+						}
+					}
+					force_redraw = 255;
+				}
+			}
+		}
+	}
+	missile[mi]._mirange = 0;
+	missile[mi]._miDelFlag = TRUE;
 }
+
 void missiles_mana_trap(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, pn, k, j, tx, ty, pid;
