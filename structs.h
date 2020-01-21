@@ -876,6 +876,14 @@ typedef struct TCmdDamage {
 	DWORD dwDam;
 } TCmdDamage;
 
+#ifdef HELLFIRE
+typedef struct TCmdMonDamage {
+	BYTE bCmd;
+	WORD wMon;
+	DWORD dwDam;
+} TCmdMonDamage;
+#endif
+
 typedef struct TCmdPlrInfoHdr {
 	BYTE bCmd;
 	WORD wOffset;

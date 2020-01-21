@@ -957,6 +957,21 @@ void NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam)
 		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
+#ifdef HELLFIRE
+void NetSendCmdMonDmg(BOOL bHiPri, WORD wMon, DWORD dwDam)
+{
+	TCmdMonDamage cmd;
+
+	cmd.bCmd = CMD_MONSTDAMAGE;
+	cmd.wMon = wMon;
+	cmd.dwDam = dwDam;
+	if (bHiPri)
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
+	else
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
+}
+#endif
+
 void NetSendCmdString(int pmask, const char *pszStr)
 {
 	int dwStrLen;

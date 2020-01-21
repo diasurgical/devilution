@@ -50,6 +50,9 @@ void NetSendCmdChItem(BOOL bHiPri, BYTE bLoc);
 void NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc);
 void NetSendCmdDItem(BOOL bHiPri, int ii);
 void NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam);
+#ifdef HELLFIRE
+void NetSendCmdMonDmg(BOOL bHiPri, WORD bMon, DWORD dwDam);
+#endif
 void NetSendCmdString(int pmask, const char *pszStr);
 void RemovePlrPortal(int pnum);
 DWORD ParseCmd(int pnum, TCmd *pCmd);
