@@ -1387,7 +1387,7 @@ void PressChar(int vkey)
 			return;
 		}
 #endif
-		if (plr[myplr].SpdList[7]._itype != -1 && plr[myplr].SpdList[7]._itype != ITYPE_GOLD) {
+		if (plr[myplr].SpdList[7]._itype != ITYPE_NONE && plr[myplr].SpdList[7]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 7);
 		}
 		return;
