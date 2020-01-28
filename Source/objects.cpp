@@ -2941,8 +2941,8 @@ void OperateShrine(int pnum, int i, int sType)
 				}
 				if (cnt == 0)
 					break;
-				r = random_(0, 7);
-				if (plr[pnum].InvBody[r]._itype == -1 || plr[pnum].InvBody[r]._iMaxDur == DUR_INDESTRUCTIBLE || plr[pnum].InvBody[r]._iMaxDur == 0)
+				r = random_(0, NUM_INVLOC);
+				if (plr[pnum].InvBody[r]._itype == ITYPE_NONE || plr[pnum].InvBody[r]._iMaxDur == DUR_INDESTRUCTIBLE || plr[pnum].InvBody[r]._iMaxDur == 0)
 					continue;
 
 				plr[pnum].InvBody[r]._iDurability -= 20;

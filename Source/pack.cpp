@@ -3,7 +3,7 @@
 
 static void PackItem(PkItemStruct *id, ItemStruct *is)
 {
-	if (is->_itype == -1) {
+	if (is->_itype == ITYPE_NONE) {
 		id->idx = 0xFFFF;
 	} else {
 		id->idx = is->IDidx;
@@ -111,7 +111,7 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 static void UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	if (is->idx == 0xFFFF) {
-		id->_itype = -1;
+		id->_itype = ITYPE_NONE;
 	} else {
 		if (is->idx == IDI_EAR) {
 			RecreateEar(
@@ -237,7 +237,7 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 
 	if (pnum == myplr) {
 		for (i = 0; i < 20; i++)
-			witchitem[i]._itype = -1;
+			witchitem[i]._itype = ITYPE_NONE;
 	}
 
 	CalcPlrInv(pnum, FALSE);

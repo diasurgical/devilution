@@ -1492,14 +1492,14 @@ void CheckPanelInfo()
 				AddPanelString(tempstr, TRUE);
 				s = 0;
 				for (i = 0; i < plr[myplr]._pNumInv; i++) {
-					if (plr[myplr].InvList[i]._itype != -1
+					if (plr[myplr].InvList[i]._itype != ITYPE_NONE
 					    && (plr[myplr].InvList[i]._iMiscId == IMISC_SCROLL || plr[myplr].InvList[i]._iMiscId == IMISC_SCROLLT)
 					    && plr[myplr].InvList[i]._iSpell == v) {
 						s++;
 					}
 				}
 				for (i = 0; i < MAXBELTITEMS; i++) {
-					if (plr[myplr].SpdList[i]._itype != -1
+					if (plr[myplr].SpdList[i]._itype != ITYPE_NONE
 					    && (plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLL || plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLLT)
 					    && plr[myplr].SpdList[i]._iSpell == v) {
 						s++;

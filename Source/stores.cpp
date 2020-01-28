@@ -489,7 +489,7 @@ void PrintStoreItem(ItemStruct *x, int l, char iclr)
 	} else {
 		strcat(sstr, "Indestructible,  ");
 	}
-	if (!x->_itype)
+	if (x->_itype == ITYPE_MISC)
 		sstr[0] = '\0';
 	str = x->_iMinStr;
 	dex = x->_iMinDex;
@@ -552,7 +552,7 @@ void S_ScrollSPBuy(int idx)
 	}
 
 	for (l = 5; l < 20 && idx < 6; l += 4) {
-		if (premiumitem[idx]._itype != -1) {
+		if (premiumitem[idx]._itype != ITYPE_NONE) {
 			iclr = COL_WHITE;
 			if (premiumitem[idx]._iMagical)
 				iclr = COL_BLUE;
