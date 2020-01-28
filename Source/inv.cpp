@@ -1073,7 +1073,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 			plr[pnum].SpdList[ii] = plr[pnum].HoldItem;
 		} else {
 			cn = SwapItem(&plr[pnum].SpdList[ii], &plr[pnum].HoldItem);
-			if (plr[pnum].HoldItem._itype == 11)
+			if (plr[pnum].HoldItem._itype == ITYPE_GOLD)
 				plr[pnum]._pGold = CalculateGold(pnum);
 		}
 		drawsbarflag = TRUE;

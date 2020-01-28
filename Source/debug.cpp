@@ -117,12 +117,12 @@ void StoresCheat()
 	numpremium = 0;
 
 	for (i = 0; i < SMITH_PREMIUM_ITEMS; i++)
-		premiumitem[i]._itype = -1;
+		premiumitem[i]._itype = ITYPE_NONE;
 
 	SpawnPremium(30);
 
 	for (i = 0; i < 20; i++)
-		witchitem[i]._itype = -1;
+		witchitem[i]._itype = ITYPE_NONE;
 
 	SpawnWitch(30);
 }
@@ -140,7 +140,7 @@ void TakeGoldCheat()
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
 		if (plr[myplr].SpdList[i]._itype == ITYPE_GOLD)
-			plr[myplr].SpdList[i]._itype = -1;
+			plr[myplr].SpdList[i]._itype = ITYPE_NONE;
 	}
 
 	plr[myplr]._pGold = 0;
