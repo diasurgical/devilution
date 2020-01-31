@@ -1644,7 +1644,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	SetRndSeed(monster[i]._mRndSeed);
 	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[UMT_GARBUD].mName) {
 		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);
-	} else if (i > 3) {
+	} else if (i > MAX_PLRS - 1) { // Golems should not spawn items
 		SpawnItem(i, monster[i]._mx, monster[i]._my, sendmsg);
 	}
 	if (monster[i].MType->mtype == MT_DIABLO)
