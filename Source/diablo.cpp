@@ -959,7 +959,7 @@ void RightMouseDown()
 				if (pcurs == 1) {
 					if (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))
 						CheckPlrSpell();
-				} else if (pcurs > 1 && pcurs < 12) {
+				} else if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM) {
 					SetCursor_(CURSOR_HAND);
 				}
 			}
