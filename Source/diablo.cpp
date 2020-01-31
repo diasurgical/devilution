@@ -1882,7 +1882,7 @@ void timeout_cursor(BOOL bTimeout)
 			SetCursor_(CURSOR_HOURGLASS);
 			force_redraw = 255;
 		}
-		scrollrt_draw_game_screen(1);
+		scrollrt_draw_game_screen(TRUE);
 	} else if (sgnTimeoutCurs) {
 		SetCursor_(sgnTimeoutCurs);
 		sgnTimeoutCurs = 0;
