@@ -3816,7 +3816,7 @@ void PlayInGameMovie(char *pszMovie)
 	play_movie(pszMovie, FALSE);
 	ClearScreenBuffer();
 	force_redraw = 255;
-	scrollrt_draw_game_screen(1);
+	scrollrt_draw_game_screen(TRUE);
 	PaletteFadeIn(8);
 	force_redraw = 255;
 }
