@@ -778,8 +778,6 @@ static void DrawGame(int x, int y)
 	}
 
 	switch (ScrollInfo._sdir) {
-	case SDIR_NONE:
-		break;
 	case SDIR_N:
 		sy -= 32;
 		x--;

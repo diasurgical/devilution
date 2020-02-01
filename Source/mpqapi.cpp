@@ -108,7 +108,7 @@ _BLOCKENTRY *mpqapi_new_block(int *block_index)
 		blockEntry++;
 		if (i >= 2048) {
 			app_fatal("Out of free block entries");
-			return 0;
+			return NULL;
 		}
 	}
 	if (block_index)
