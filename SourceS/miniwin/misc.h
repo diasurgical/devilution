@@ -55,15 +55,6 @@ typedef struct _FILETIME {
 	DWORD dwHighDateTime;
 } FILETIME, *LPFILETIME;
 
-typedef struct tagRECT {
-	LONG left;
-	LONG top;
-	LONG right;
-	LONG bottom;
-} RECT;
-
-typedef RECT *LPRECT;
-
 typedef struct tagPOINT {
 	LONG x;
 	LONG y;

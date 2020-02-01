@@ -487,12 +487,6 @@ BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *bu
 BOOL STORMAPI SDlgSetSystemCursor(void *lpSrcBuffer, void *p_a2, LPSIZE lpSize, LPCSTR lpCursorName);
 */
 
-BOOL STORMAPI SDlgBltToWindowI(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop);
-BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop);
-BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2);
-
-int  STORMAPI Ordinal224(int a1);
-
 BOOL STORMAPI SFileCloseArchive(HANDLE hArchive);
 BOOL STORMAPI SFileCloseFile(HANDLE hFile);
 
@@ -560,8 +554,6 @@ BOOL STORMAPI SFileLoadFileEx(void *hArchive, char *filename, int a3, int a4, in
 //BOOL STORMAPI StormSetOption(int type, void *pValue, unsigned int size);
 
 BOOL STORMAPI SBltROP3(void *lpDstBuffer, void *lpSrcBuffer, int srcDrawWidth, int srcDrawHeight, int dstWidth, int srcWidth, int a7, DWORD rop);
-BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop);
-BOOL STORMAPI SBltROP3Tiled(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop);
 
 #define SBMP_DEFAULT  0
 #define SBMP_BMP      1
@@ -707,9 +699,6 @@ SDrawGetScreenSize(
     DWORD *pdwBpp);
 
 
-// undefined
-BOOL STORMAPI SDrawLockSurface(int surfacenumber, RECT *lpDestRect, void **lplpSurface, int *lpPitch, int arg_unused);
-
 /*  SDrawPostClose @ 353
  *
  *  Posts a WM_QUIT message to the active drawing window specified
@@ -725,7 +714,6 @@ SDrawPostClose();
 // undefined
 //BOOL STORMAPI SDrawRealizePalette();
 
-BOOL STORMAPI SDrawUnlockSurface(int surfacenumber, void *lpSurface, int a3, RECT *lpRect);
 void SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, SDL_Color *pPalEntries, int a4);
 
 BOOL STORMAPI SEvtDispatch(DWORD dwMessageID, DWORD dwFlags, int type, PS_EVT pEvent);
@@ -1158,7 +1146,6 @@ STORMAPI
 SStrUpper(
       char* string);
 
-void  STORMAPI SRgn523(HANDLE hRgn, RECT *pRect, int a3, int a4);
 void  STORMAPI SRgnCreateRegion(HANDLE *hRgn, int a2);
 void  STORMAPI SRgnDeleteRegion(HANDLE hRgn);
 
