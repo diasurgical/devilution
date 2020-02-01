@@ -411,9 +411,9 @@ void UiInitialize()
 	}
 }
 
-int UiProfileGetString()
+const char **UiProfileGetString()
 {
-	return 0;
+	return NULL;
 }
 
 char connect_plrinfostr[128];
