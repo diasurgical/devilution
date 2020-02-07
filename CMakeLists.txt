@@ -309,8 +309,9 @@ endif()
 
 if(RUN_TESTS)
   list(APPEND devilutionx_SRCS
+    SourceT/automap.cpp
     SourceT/control.cpp
-    SourceT/automap.cpp)
+    SourceT/cursor.cpp)
 endif()
 
 add_executable(${BIN_TARGET} WIN32 MACOSX_BUNDLE ${devilutionx_SRCS})
