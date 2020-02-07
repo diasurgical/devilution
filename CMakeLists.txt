@@ -309,6 +309,7 @@ endif()
 
 if(RUN_TESTS)
   list(APPEND devilutionx_SRCS
+    SourceT/control.cpp
     SourceT/automap.cpp)
 endif()
 
