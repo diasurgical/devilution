@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include "devilution.h"
 #include <SDL.h>
 #include <type_traits>
@@ -14,6 +16,12 @@ extern SDL_Texture *texture;
 extern SDL_Palette *palette;
 extern SDL_Surface *pal_surface;
 extern unsigned int pal_surface_palette_version;
+
+#ifdef USE_SDL1
+void SetVideoMode(int width, int height, int bpp, std::uint32_t flags);
+void SetVideoModeToPrimary(bool fullscreen);
+bool IsFullScreen();
+#endif
 
 // Returns:
 // SDL1: Video surface.

@@ -145,7 +145,6 @@ void dx_cleanup()
 void dx_reinit()
 {
 #ifdef USE_SDL1
-	int flags = window->flags;
 	window = SDL_SetVideoMode(0, 0, 0, window->flags ^ SDL_FULLSCREEN);
 	if (window == NULL) {
 		ErrSdl();
