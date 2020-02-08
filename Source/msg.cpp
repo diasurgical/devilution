@@ -49,7 +49,7 @@ void msg_send_packet(int pnum, const void *packet, DWORD dwSize)
 	sgpCurrPkt->dwSpaceLeft -= dwSize;
 }
 
-TMegaPkt *msg_get_next_packet()
+void msg_get_next_packet()
 {
 	TMegaPkt *result;
 
@@ -62,8 +62,6 @@ TMegaPkt *msg_get_next_packet()
 		result = result->pNext;
 	}
 	result->pNext = sgpCurrPkt;
-
-	return result;
 }
 
 BOOL msg_wait_resync()

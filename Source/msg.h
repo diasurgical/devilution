@@ -8,7 +8,7 @@ extern int pkt_counter;
 
 void msg_send_drop_pkt(int pnum, int reason);
 void msg_send_packet(int pnum, const void *packet, DWORD dwSize);
-TMegaPkt *msg_get_next_packet();
+void msg_get_next_packet();
 BOOL msg_wait_resync();
 void msg_free_packets();
 int msg_wait_for_turns();
