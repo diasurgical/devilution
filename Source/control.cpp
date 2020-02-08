@@ -1336,7 +1336,7 @@ void DrawCtrlBtns()
 		if (!panbtn[i])
 			DrawPanelBox(PanBtnPos[i][0] - PANEL_LEFT, PanBtnPos[i][1] - (PANEL_TOP - 16), 71, 20, PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y);
 		else
-			CelDraw(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + (PANEL_Y - 334), pPanelButtons, i + 1, 71);
+			CelDraw(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y + 18, pPanelButtons, i + 1, 71);
 	}
 	if (numpanbtns == 8) {
 		CelDraw(87 + PANEL_X, 122 + PANEL_Y, pMultiBtns, panbtn[6] + 1, 33);
