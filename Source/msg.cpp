@@ -140,7 +140,7 @@ int msg_wait_for_turns()
 	return 100 * sgbDeltaChunks / 21;
 }
 
-void msg_process_net_packets()
+void run_delta_info()
 {
 	if (gbMaxPlayers != 1) {
 		gbBufferMsgs = 2;
@@ -968,7 +968,7 @@ void NetSendCmdString(int pmask, const char *pszStr)
 	multi_send_msg_packet(pmask, (BYTE *)&cmd.bCmd, dwStrLen + 2);
 }
 
-void RemovePlrPortal(int pnum)
+void delta_close_portal(int pnum)
 {
 	memset(&sgJunk.portal[pnum], 0xFF, sizeof(sgJunk.portal[pnum]));
 	sgbDeltaChanged = TRUE;
@@ -2424,7 +2424,7 @@ DWORD On_DEACTIVATEPORTAL(TCmd *pCmd, int pnum)
 		if (PortalOnLevel(pnum))
 			RemovePortalMissile(pnum);
 		DeactivatePortal(pnum);
-		RemovePlrPortal(pnum);
+		delta_close_portal(pnum);
 	}
 
 	return sizeof(*pCmd);
