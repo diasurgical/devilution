@@ -224,7 +224,11 @@ void CreditsRenderer::Render()
 	while (lines_.back().index + 1 != lines_end)
 		lines_.push_back(PrepareLine(lines_.back().index + 1));
 
-	SDL_SetClipRect(GetOutputSurface(), &VIEWPORT);
+	SDL_Rect viewport = VIEWPORT;
+	ScaleOutputRect(&viewport);
+	SDL_SetClipRect(GetOutputSurface(), &viewport);
+
+	// We use unscaled coordinates for calculation throughout.
 	decltype(SDL_Rect().y) dest_y = VIEWPORT.y - (offset_y - lines_begin * LINE_H);
 	for (std::size_t i = 0; i < lines_.size(); ++i, dest_y += LINE_H) {
 		auto &line = lines_[i];
