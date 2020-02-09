@@ -14,6 +14,7 @@
 #define SDLC_KEYSTATE_LEFT SDL_SCANCODE_LEFT
 #define SDLC_KEYSTATE_RIGHT SDL_SCANCODE_RIGHT
 #else
+#include "sdl2_to_1_2_backports.h"
 #define SDLC_KEYSTATE_LEFTCTRL SDLK_LCTRL
 #define SDLC_KEYSTATE_RIGHTCTRL SDLK_RCTRL
 #define SDLC_KEYSTATE_LEFTSHIFT SDLK_LSHIFT
@@ -25,6 +26,14 @@
 #define SDLC_KEYSTATE_LEFT SDLK_LEFT
 #define SDLC_KEYSTATE_RIGHT SDLK_RIGHT
 #endif
+
+inline bool SDLC_PixelFormatEq(const SDL_PixelFormat *a, const SDL_PixelFormat *b) {
+#ifndef USE_SDL1
+	return a->format == b->format;
+#else
+	return SDLBackport_PixelFormatFormatEq(a, b);
+#endif
+}
 
 inline const Uint8 *SDLC_GetKeyState()
 {
