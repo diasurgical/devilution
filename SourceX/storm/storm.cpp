@@ -22,6 +22,10 @@ DWORD nLastError = 0;
 bool directFileAccess = false;
 char SBasePath[DVL_MAX_PATH];
 
+#ifdef USE_SDL1
+static bool IsSVidVideoMode = false;
+#endif
+
 static std::string getIniPath()
 {
 	char path[DVL_MAX_PATH];
@@ -590,15 +594,18 @@ void SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 	// Set the video mode close to the SVid resolution while preserving aspect ratio.
 	{
 		const auto *display = SDL_GetVideoSurface();
-		int w, h;
-		if (display->w * SVidWidth > display->h * SVidHeight) {
-			w = SVidWidth;
-			h = SVidWidth * display->h / display->w;
-		} else {
-			w = SVidHeight * display->w / display->h;
-			h = SVidHeight;
+		IsSVidVideoMode = (display->flags & (SDL_FULLSCREEN | SDL_NOFRAME)) != 0;
+		if (IsSVidVideoMode) {
+			int w, h;
+			if (display->w * SVidWidth > display->h * SVidHeight) {
+				w = SVidWidth;
+				h = SVidWidth * display->h / display->w;
+			} else {
+				w = SVidHeight * display->w / display->h;
+				h = SVidHeight;
+			}
+			SetVideoMode(w, h, display->format->BitsPerPixel, display->flags);
 		}
-		SetVideoMode(w, h, display->format->BitsPerPixel, display->flags);
 	}
 #endif
 	memcpy(SVidPreviousPalette, orig_palette, 1024);
@@ -787,7 +794,7 @@ void SVidPlayEnd(HANDLE video)
 		}
 	}
 #else
-	SetVideoModeToPrimary(IsFullScreen());
+	if (IsSVidVideoMode) SetVideoModeToPrimary();
 #endif
 }
 

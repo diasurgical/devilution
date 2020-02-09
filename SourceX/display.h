@@ -19,8 +19,8 @@ extern unsigned int pal_surface_palette_version;
 
 #ifdef USE_SDL1
 void SetVideoMode(int width, int height, int bpp, std::uint32_t flags);
-void SetVideoModeToPrimary(bool fullscreen);
 bool IsFullScreen();
+void SetVideoModeToPrimary(bool fullscreen = IsFullScreen());
 #endif
 
 // Returns:
