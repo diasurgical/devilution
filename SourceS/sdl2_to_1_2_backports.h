@@ -217,17 +217,7 @@ SDL_FreePalette(SDL_Palette *palette)
 
 inline bool SDL_HasColorKey(SDL_Surface *surface)
 {
-	return (surface->flags & (SDL_SRCCOLORKEY | SDL_RLEACCELOK)) != 0;
-}
-
-inline int SDL_GetColorKey(SDL_Surface *surface, Uint32 *colorkey)
-{
-	if (!SDL_HasColorKey(surface)) {
-		SDL_SetError("Surface doesn't have a colorkey");
-		return -1;
-	}
-	*colorkey = surface->format->colorkey;
-	return 0;
+	return (surface->flags & SDL_SRCCOLORKEY) != 0;
 }
 
 //= Pixel formats

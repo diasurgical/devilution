@@ -179,16 +179,20 @@ void BltFast(SDL_Rect *src_rect, SDL_Rect *dst_rect)
 void Blit(SDL_Surface *src, SDL_Rect *src_rect, SDL_Rect *dst_rect)
 {
 	SDL_Surface *dst = GetOutputSurface();
+#ifndef USE_SDL1
+	if (SDL_BlitSurface(src, src_rect, dst, dst_rect) < 0)
+			ErrSdl();
+		return;
+#else
 	if (!OutputRequiresScaling()) {
 		if (SDL_BlitSurface(src, src_rect, dst, dst_rect) < 0)
 			ErrSdl();
 		return;
 	}
-
-	ScaleOutputRect(dst_rect);
+	if (dst_rect != nullptr) ScaleOutputRect(dst_rect);
 
 	// Same pixel format: We can call BlitScaled directly.
-	if (SDLC_PixelFormatEq(src->format, dst->format)) {
+	if (SDLBackport_PixelFormatFormatEq(src->format, dst->format)) {
 		if (SDL_BlitScaled(src, src_rect, dst, dst_rect) < 0)
 			ErrSdl();
 		return;
@@ -198,16 +202,9 @@ void Blit(SDL_Surface *src, SDL_Rect *src_rect, SDL_Rect *dst_rect)
 	if (SDL_HasColorKey(src)) {
 		SDL_Surface *stretched = SDL_CreateRGBSurface(SDL_SWSURFACE, dst_rect->w, dst_rect->h, src->format->BitsPerPixel,
 		    src->format->Rmask, src->format->Gmask, src->format->BitsPerPixel, src->format->Amask);
-		Uint32 colorkey;
-		SDL_GetColorKey(src, &colorkey);
-		SDLC_SetColorKey(stretched, colorkey);
-#ifndef USE_SDL1
-		if (SDL_ISPIXELFORMAT_INDEXED(src->format->format))
-			SDL_SetSurfacePalette(stretched, src->format->palette);
-#else
+		SDL_SetColorKey(stretched, SDL_SRCCOLORKEY, src->format->colorkey);
 		if (src->format->palette != nullptr)
 			SDL_SetPalette(stretched, SDL_LOGPAL, src->format->palette->colors, 0, src->format->palette->ncolors);
-#endif
 		SDL_Rect stretched_rect = { 0, 0, dst_rect->w, dst_rect->h };
 		if (SDL_SoftStretch(src, src_rect, stretched, &stretched_rect) < 0
 		    || SDL_BlitSurface(stretched, &stretched_rect, dst, dst_rect) < 0) {
@@ -226,6 +223,7 @@ void Blit(SDL_Surface *src, SDL_Rect *src_rect, SDL_Rect *dst_rect)
 		ErrSdl();
 	}
 	SDL_FreeSurface(converted);
+#endif
 }
 
 /**
