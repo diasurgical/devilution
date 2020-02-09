@@ -171,4 +171,40 @@ void ScaleOutputRect(SDL_Rect *rect)
 	rect->h = rect->h * surface->h / SCREEN_HEIGHT;
 }
 
+#ifdef USE_SDL1
+namespace {
+
+SDL_Surface *CreateScaledSurface(SDL_Surface *src)
+{
+	SDL_Rect stretched_rect = { 0, 0, static_cast<Uint16>(src->w), static_cast<Uint16>(src->h) };
+	ScaleOutputRect(&stretched_rect);
+	SDL_Surface *stretched = SDL_CreateRGBSurface(
+			SDL_SWSURFACE, stretched_rect.w, stretched_rect.h, src->format->BitsPerPixel,
+	    src->format->Rmask, src->format->Gmask, src->format->Bmask, src->format->Amask);
+	if (SDL_HasColorKey(src)) {
+		SDL_SetColorKey(stretched, SDL_SRCCOLORKEY, src->format->colorkey);
+		if (src->format->palette != nullptr)
+			SDL_SetPalette(stretched, SDL_LOGPAL, src->format->palette->colors, 0, src->format->palette->ncolors);
+	}
+	if (SDL_SoftStretch((src), nullptr, stretched, &stretched_rect) < 0) {
+		SDL_FreeSurface(stretched);
+		ErrSdl();
+	}
+	return stretched;
+}
+
+} // namespace
+#endif // USE_SDL1
+
+void ScaleSurfaceToOutput(SDL_Surface **surface)
+{
+#ifdef USE_SDL1
+	if (!OutputRequiresScaling())
+		return;
+	SDL_Surface *stretched = CreateScaledSurface(*surface);
+	SDL_FreeSurface((*surface));
+	*surface = stretched;
+#endif
+}
+
 } // namespace dvl

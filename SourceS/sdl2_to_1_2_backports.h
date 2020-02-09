@@ -215,6 +215,11 @@ SDL_FreePalette(SDL_Palette *palette)
 	SDL_free(palette);
 }
 
+inline bool SDL_HasColorKey(SDL_Surface *surface)
+{
+	return (surface->flags & SDL_SRCCOLORKEY) != 0;
+}
+
 //= Pixel formats
 
 #define SDL_PIXELFORMAT_INDEX8 1
@@ -259,7 +264,8 @@ inline void SDLBackport_PixelformatToMask(int pixelformat, Uint32 *flags, Uint32
  */
 inline bool SDLBackport_PixelFormatFormatEq(const SDL_PixelFormat *a, const SDL_PixelFormat *b)
 {
-	return a->BitsPerPixel == b->BitsPerPixel && (a->palette != nullptr) == (b->palette != nullptr);
+	return a->BitsPerPixel == b->BitsPerPixel && (a->palette != nullptr) == (b->palette != nullptr)
+	    && a->Rmask == b->Rmask && a->Gmask == b->Gmask && a->Bmask == b->Bmask;
 }
 
 /**
