@@ -95,6 +95,10 @@ CachedLine PrepareLine(std::size_t index)
 
 		if (SDL_BlitSurface(text.get(), nullptr, surface.get(), nullptr) <= -1)
 			ErrSdl();
+
+		SDL_Surface *surface_ptr = surface.release();
+		ScaleSurfaceToOutput(&surface_ptr);
+		surface.reset(surface_ptr);
 	}
 
 	return CachedLine(index, std::move(surface));
@@ -243,8 +247,12 @@ void CreditsRenderer::Render()
 		if (CREDITS_LINES[line.index][0] == '\t')
 			dest_x += 40;
 
-		SDL_Rect dest_rect = { dest_x, dest_y, line.surface.get()->w, line.surface.get()->h };
-		Blit(line.surface.get(), nullptr, &dest_rect);
+		SDL_Rect dst_rect = { dest_x, dest_y, 0, 0 };
+		ScaleOutputRect(&dst_rect);
+		dst_rect.w = line.surface.get()->w;
+		dst_rect.h = line.surface.get()->h;
+		if (SDL_BlitSurface(line.surface.get(), nullptr, GetOutputSurface(), &dst_rect) < 0)
+			ErrSdl();
 	}
 	SDL_SetClipRect(GetOutputSurface(), nullptr);
 }
