@@ -95,4 +95,4 @@ extern BOOL FriendlyMode;
 extern char *spszMsgTbl[4];
 extern char *spszMsgHotKeyTbl[4];
 
-#endif /* __APPFAT_H__ */
+#endif /* __DIABLO_H__ */
