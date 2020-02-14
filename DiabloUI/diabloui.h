@@ -35,7 +35,7 @@ BOOL __fastcall UiValidPlayerName(char *name); /* check __stdcall */
 BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, BOOL *hero_is_created, char *name);
 BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty);
 BOOL __stdcall UiCreditsDialog(int a1);
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4);
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int attractTimeOut);
 BOOL __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)(), int rate);
 const char **__stdcall UiProfileGetString();
 void __cdecl UiProfileCallback();
@@ -45,13 +45,13 @@ BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4,
 BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
 BOOL __stdcall UiSoundCallback(int a1, int type, int a3);
 void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType);
-BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
+BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
 BOOL __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6);
 BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, BYTE *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp);
 int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *a6);
 int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *type);
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc);
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc);
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type);
 void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
 BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
 BOOL __stdcall UiBetaDisclaimer(int a1);

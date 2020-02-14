@@ -450,7 +450,7 @@ BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPS
 }
 
 // ref: 0x10003710
-BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8)
+BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8)
 {
 	HDC *v8;                  // ebx
 	HDC v9;                   // esi
@@ -525,7 +525,7 @@ BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, cha
 				GetCurrentPositionEx(v17, (LPPOINT)&a8a[7]);
 				SetTextAlign(v8[6], 0);
 				connect_color_text = 1;
-				UiDrawDescCallback(arg0, 2u, (LPCSTR)a8, a4, 0, 1u, 0, a8a);
+				UiDrawDescCallback(game_type, 2u, (LPCSTR)a8, a4, 0, 1u, 0, a8a);
 				connect_color_text = 0;
 				if (a7) {
 					SetTextAlign(v8[6], 1u);
@@ -599,7 +599,7 @@ BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, cha
 			goto LABEL_45;
 		}
 		if (a5 & 8) {
-			v25          = (arg0 != 'BNET') - 1;
+			v25          = (game_type != 'BNET') - 1;
 			v25 = v25 & 0xFD;
 			v24          = v25 + 4;
 			goto LABEL_46;
@@ -847,7 +847,7 @@ void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str)
 }
 
 // ref: 0x10003FD6
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 {
 	connect_charname = (char *)mode;
 	Connect_MakeDescString(info, desc, 0x80u);
@@ -855,7 +855,7 @@ BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc
 }
 
 // ref: 0x10003FF7
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type)
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
 {
 	connect_charname = (char *)type;
 	SStrCopy(connect_plrinfostr, infostr, 128);

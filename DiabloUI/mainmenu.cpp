@@ -7,12 +7,12 @@ void __cdecl MainMenu_cpp_init()
 // 1002A0D4: using guessed type int mainmenu_cpp_float;
 
 // ref: 0x1000816F
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int attractTimeOut)
 {
 	int v4; // eax
 	int v5; // esi
 
-	menu_item_timer = a4;
+	menu_item_timer = attractTimeOut;
 	TitleSnd_SetSoundFunction(fnSound);
 	artfont_LoadAllFonts();
 	menu_version_str[0] = 0;

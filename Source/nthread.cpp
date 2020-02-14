@@ -216,7 +216,7 @@ void nthread_cleanup()
 		if (!sgbThreadIsRunning)
 			sgMemCrit.Leave();
 #endif
-		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
+		if (WaitForSingleObject(sghThread, INFINITE) == -1) {
 			app_fatal("nthread3:\n(%s)", TraceLastError());
 		}
 		CloseHandle(sghThread);
