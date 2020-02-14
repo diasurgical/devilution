@@ -90,4 +90,6 @@ extern "C" {
 }
 #endif
 
+DEVILUTION_END_NAMESPACE
+
 #endif /* __ALL_H__ */
