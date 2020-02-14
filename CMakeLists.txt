@@ -224,13 +224,13 @@ add_library(devilution STATIC
   Source/player.cpp
   Source/plrmsg.cpp
   Source/portal.cpp
-  Source/spelldat.cpp
   Source/quests.cpp
   Source/render.cpp
   Source/restrict.cpp
   Source/scrollrt.cpp
   Source/setmaps.cpp
   Source/sha.cpp
+  Source/spelldat.cpp
   Source/spells.cpp
   Source/stores.cpp
   Source/sync.cpp

@@ -1,4 +1,5 @@
-#include "devilution.h"
+#include "all.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 #if !SDL_VERSION_ATLEAST(2, 0, 4)
 #include <queue>

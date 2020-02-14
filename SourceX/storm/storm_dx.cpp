@@ -1,6 +1,7 @@
 #include <SDL.h>
 
-#include "devilution.h"
+#include "all.h"
+#include "../3rdParty/Storm/Source/storm.h"
 #include "display.h"
 #include "stubs.h"
 
