@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 // unused, this was probably for blood boil/burn
 int spurtndx;

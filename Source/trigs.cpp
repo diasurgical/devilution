@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 BOOL townwarps[3];
 BOOL trigflag;

@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 static BOOL CaptureHdr(HANDLE hFile, short width, short height)
 {

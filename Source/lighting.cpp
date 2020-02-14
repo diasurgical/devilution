@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 LightListStruct VisionList[MAXVISION];
 BYTE lightactive[MAXLIGHTS];

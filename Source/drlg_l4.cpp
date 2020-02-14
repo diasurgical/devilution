@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 int diabquad1x;
 int diabquad1y;

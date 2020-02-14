@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 BYTE L5dungeon[80][80];
 BYTE L5dflags[DMAXX][DMAXY];

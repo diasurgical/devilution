@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 WORD level_frame_types[MAXTILES];
 int themeCount;

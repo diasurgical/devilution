@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 #include "_asm.cpp"
 
 int WorldBoolFlag = 0;

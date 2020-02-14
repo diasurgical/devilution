@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 /* todo: move text out of struct */
 

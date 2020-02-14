@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 WORD sync_word_6AA708[MAXMONSTERS];
 int sgnMonsters;

@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 SpellData spelldata[MAX_SPELLS] = {
 	// clang-format off

@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 int missileactive[MAXMISSILES];
 int missileavail[MAXMISSILES];

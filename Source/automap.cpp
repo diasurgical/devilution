@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 // BUGFIX: only the first 256 elements are ever read
 WORD automaptype[512];

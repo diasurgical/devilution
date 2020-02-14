@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 char msgtable[MAX_SEND_STR_LEN];
 char msgdelay;
