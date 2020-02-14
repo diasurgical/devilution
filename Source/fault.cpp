@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
 

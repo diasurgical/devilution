@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 int help_select_line;
 int dword_634494;

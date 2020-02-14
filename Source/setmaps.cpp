@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 // BUGFIX: constant data should be const
 BYTE SkelKingTrans1[8] = {

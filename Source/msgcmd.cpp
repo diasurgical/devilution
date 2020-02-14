@@ -2,7 +2,7 @@
 #include <stddef.h> // for offsetof
 #include <typeinfo> // for typeid
 
-#include "diablo.h"
+#include "all.h"
 #include "list.h"
 
 #define COMMAND_LEN 128

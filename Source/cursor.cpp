@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 int cursH;
 int icursH28;

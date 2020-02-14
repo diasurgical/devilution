@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 /**
  * Used under building to avoid HOM and outside of level

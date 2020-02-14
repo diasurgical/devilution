@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 TMenuItem sgSingleMenu[6] = {
 	// clang-format off

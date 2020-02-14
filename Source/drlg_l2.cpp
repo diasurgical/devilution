@@ -1,5 +1,5 @@
 #ifndef SPAWN
-#include "diablo.h"
+#include "all.h"
 
 int nSx1;
 int nSx2;

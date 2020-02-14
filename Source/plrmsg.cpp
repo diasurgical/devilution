@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 static BYTE plr_msg_slot;
 _plrmsg plr_msgs[PMSG_COUNT];

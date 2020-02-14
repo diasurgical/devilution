@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 #ifdef _DEBUG
 BOOL update_seed_check = FALSE;

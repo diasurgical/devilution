@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 PortalStruct portal[MAXPORTAL];
 int portalindex;

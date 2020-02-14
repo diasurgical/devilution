@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 MissileData missiledata[] = {
 	// clang-format off

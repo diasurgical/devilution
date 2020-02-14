@@ -1,5 +1,5 @@
 #ifndef SPAWN
-#include "diablo.h"
+#include "all.h"
 
 BOOLEAN lavapool;
 int abyssx;

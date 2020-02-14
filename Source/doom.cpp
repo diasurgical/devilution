@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 int doom_quest_time;
 int doom_stars_drawn;

@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 BYTE *optbar_cel;
 BOOLEAN mouseNavigation;
