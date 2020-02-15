@@ -216,8 +216,8 @@ int SpellPages[6][7] = {
 
 /**
  * Draw spell cell onto the back buffer.
- * @param xp Backbuffer coordinate
- * @param yp Backbuffer coordinate
+ * @param xp Back buffer coordinate
+ * @param yp Back buffer coordinate
  * @param Trans Pointer to the cel buffer.
  * @param nCel Index of the cel frame to draw. 0 based.
  * @param w Width of the frame.
@@ -614,8 +614,8 @@ void ToggleSpell(int slot)
 }
 
 /**
- * @brief Print letter to the backbuffer
- * @param nOffset Backbuffer offset
+ * @brief Print letter to the back buffer
+ * @param nOffset Back buffer offset
  * @param nCel Number of letter in Windows-1252
  * @param col text_color color value
  */
@@ -1006,8 +1006,8 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
  * @param pCelBuff Buffer of the empty flask cel.
  * @param min Top of the flask cel section to draw.
  * @param max Bottom of the flask cel section to draw.
- * @param sx X Backbuffer coordinate
- * @param sy Y Backbuffer coordinate
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
  */
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
