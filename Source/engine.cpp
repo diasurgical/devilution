@@ -16,7 +16,14 @@ static CCritSect sgMemCrit;
 int SeedCount;
 BOOL gbNotInView; // valid - if x/y are in bounds
 
+/**
+ * Specifies the increment used in the Borland C/C++ pseudo-random.
+ */
 const int RndInc = 1;
+
+/**
+ * Specifies the multiplier used in the Borland C/C++ pseudo-random number generator algorithm.
+ */
 const int RndMult = 0x015A4E35;
 
 __FINLINE BYTE *CelGetFrame(BYTE *pCelBuff, int nCel, int *nDataSize)
@@ -2467,6 +2474,9 @@ DWORD LoadFileWithMem(const char *pszName, void *p)
 
 /**
  * @brief Apply the color swaps to a CL2 sprite
+ * @param p CL2 buffer
+ * @param ttbl Palette translation table
+ * @param nCel Frame number in CL2 file
  */
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 {
@@ -2508,6 +2518,12 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 }
 
 /**
+ * @brief Blit CL2 sprite, to the back buffer at the given coordianates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
  */
@@ -2548,6 +2564,13 @@ void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, 
 	    nWidth);
 }
 
+/**
+ * @brief Blit CL2 sprite to the given buffer
+ * @param pDecodeTo The output buffer
+ * @param pRLEBytes CL2 pixel stream (run-length encoded)
+ * @param nDataSize Size of CL2 in bytes
+ * @param nWidth Width of sprite
+ */
 void Cl2Blit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 #ifdef USE_ASM
@@ -2690,6 +2713,13 @@ void Cl2Blit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 }
 
 /**
+ * @brief Blit a solid colder shape one pix larger then the given sprite shape, to the back buffer at the given coordianates
+ * @param col Color index from current palette
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
  */
@@ -2731,6 +2761,14 @@ void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	    col);
 }
 
+/**
+ * @brief Blit a solid colder shape one pix larger then the given sprite shape, to the given buffer
+ * @param pDecodeTo The output buffer
+ * @param pRLEBytes CL2 pixel stream (run-length encoded)
+ * @param nDataSize Size of CL2 in bytes
+ * @param nWidth Width of sprite
+ * @param col Color index from current palette
+ */
 void Cl2BlitOutline(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
 #ifdef USE_ASM
@@ -2894,8 +2932,15 @@ void Cl2BlitOutline(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 }
 
 /**
+ * @brief Blit CL2 sprite, and apply a given lighting, to the back buffer at the given coordianates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ * @param light Light shade to use
  */
 void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
@@ -2945,6 +2990,14 @@ void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
 	    &pLightTbl[idx]);
 }
 
+/**
+ * @brief Blit CL2 sprite, and apply lighting, to the given buffer
+ * @param pDecodeTo The output buffer
+ * @param pRLEBytes CL2 pixel stream (run-length encoded)
+ * @param nDataSize Size of CL2 in bytes
+ * @param nWidth Width of sprite
+ * @param pTable Light color table
+ */
 void Cl2BlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
 #ifdef USE_ASM
@@ -3096,6 +3149,12 @@ void Cl2BlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, B
 }
 
 /**
+ * @brief Blit CL2 sprite, and apply lighting, to the back buffer at the given coordinates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
  */
@@ -3140,6 +3199,12 @@ void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelS
 }
 
 /**
+ * @brief Blit CL2 sprite to the back buffer, while checking bounds, at the given coordianates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
  */
@@ -3180,6 +3245,13 @@ void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSk
 	    nWidth);
 }
 
+/**
+ * @brief Blit CL2 sprite to pDecodeTo while checking bounds
+ * @param pDecodeTo The output buffer
+ * @param pRLEBytes CL2 pixel stream (run-length encoded)
+ * @param nDataSize Size of CL2 in bytes
+ * @param nWidth Width of sprite
+ */
 void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 #ifdef USE_ASM
@@ -3335,6 +3407,13 @@ void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 }
 
 /**
+ * @brief Blit a solid colder shape one pix larger then the given sprite shape, to the back buffer at the given coordianates, while checking bounds
+ * @param col Color index from current palette
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
  */
@@ -3378,6 +3457,14 @@ void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
 	gpBufEnd += BUFFER_WIDTH;
 }
 
+/**
+ * @brief Blit a solid colder shape one pix larger then the given sprite shape, to the given buffer, while checking bounds
+ * @param pDecodeTo The output buffer
+ * @param pRLEBytes CL2 pixel stream (run-length encoded)
+ * @param nDataSize Size of CL2 in bytes
+ * @param nWidth Width of sprite
+ * @param col Color index from current palette
+ */
 void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
 #ifdef USE_ASM
@@ -3552,8 +3639,15 @@ void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 }
 
 /**
+ * @brief Blit CL2 sprite, and apply a given lighting, to the back buffer at the given coordianates, while checking bounds
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ * @param light light shade to use
  */
 void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
@@ -3603,6 +3697,14 @@ void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 	    &pLightTbl[idx]);
 }
 
+/**
+ * @brief Blit CL2 sprite, and apply light, to pDecodeTo while checking bounds
+ * @param pDecodeTo The output buffer
+ * @param pRLEBytes CL2 pixel stream (run-length encoded)
+ * @param nDataSize Size of CL2 in bytes
+ * @param nWidth With of CL2 sprite
+ * @param pTable Light color table
+ */
 void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
 #ifdef USE_ASM
@@ -3767,6 +3869,12 @@ void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidt
 }
 
 /**
+ * @brief Blit CL2 sprite, and apply lighting, to the back buffer at the given coordinates, while checking bounds
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
  * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
  * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
  */
@@ -3810,6 +3918,10 @@ void Cl2DrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int 
 		Cl2BlitSafe(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
 
+/**
+ * @brief Fade to black and play a video
+ * @param pszMovie file path of movie
+ */
 void PlayInGameMovie(char *pszMovie)
 {
 	PaletteFadeOut(8);
