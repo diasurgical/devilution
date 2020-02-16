@@ -88,6 +88,9 @@ char *szPlrModeAssert[12] = {
 	"quitting"
 };
 
+/**
+ * @brief Clear cursor state
+ */
 void ClearCursor() // CODE_FIX: this was supposed to be in cursor.cpp
 {
 	sgdwCursWdt = 0;
@@ -204,7 +207,7 @@ static void scrollrt_draw_cursor_item()
 }
 
 /**
- * @brief Render a missile sprite
+ * @brief Render a missile sprites for a given tile
  * @param x dPiece coordinate
  * @param y dPiece coordinate
  * @param sx Back buffer coordinate
@@ -470,7 +473,7 @@ static void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip,
 }
 
 /**
- * @brief Render a monster sprite
+ * @brief Render a player sprite
  * @param pnum Player id
  * @param x dPiece coordinate
  * @param y dPiece coordinate
@@ -642,7 +645,7 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 }
 
 /**
- * @brief Render a monster sprite
+ * @brief Render a player sprite
  * @param x dPiece coordinate
  * @param y dPiece coordinate
  * @param sx Back buffer coordinate
