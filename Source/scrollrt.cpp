@@ -1,23 +1,51 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/**
+ * Specifies the current light entry.
+ */
 int light_table_index;
 int PitchTbl[1024];
 DWORD sgdwCursWdtOld;
 DWORD sgdwCursX;
 DWORD sgdwCursY;
+/**
+ * Lower bound of back buffer.
+ */
 BYTE *gpBufEnd;
 DWORD sgdwCursHgt;
+
+/**
+ * Specifies the current MIN block of the level CEL file, as used during rendering of the level tiles.
+ *
+ * frameNum  := block & 0x0FFF
+ * frameType := block & 0x7000 >> 12
+ */
 DWORD level_cel_block;
 DWORD sgdwCursXOld;
 DWORD sgdwCursYOld;
+/**
+ * Specifies the type of arches to render.
+ */
 char arch_draw_type;
+/**
+ * Describes the surface being rendered.
+ */
 DDSURFACEDESC DDS_desc;
+/**
+ * Specifies whether transparency is active for the current CEL file being decoded.
+ */
 int cel_transparency_active;
+/**
+ * Specifies the current dungeon piece ID of the level, as used during rendering of the level tiles.
+ */
 int level_piece_id;
 DWORD sgdwCursWdt;
 void (*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
 BYTE sgSaveBack[8192];
+/**
+ * Specifies the monster_num to render.
+ */
 int draw_monster_num;
 DWORD sgdwCursHgtOld;
 
@@ -2800,6 +2828,10 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 #endif
 }
 
+/**
+ * @brief Redraw screen
+ * @param draw_cursor
+ */
 void scrollrt_draw_game_screen(BOOL draw_cursor)
 {
 	int hgt;
