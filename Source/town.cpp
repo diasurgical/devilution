@@ -1396,6 +1396,9 @@ void T_DrawView(int StartX, int StartY)
 	DrawManaFlask();
 }
 
+/**
+ * @brief Build tile columns
+ */
 void SetTownMicros()
 {
 	int i, x, y, lv;

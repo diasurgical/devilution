@@ -2556,6 +2556,10 @@ int random_(BYTE idx, int v)
 	return GetRndSeed() % v;
 }
 
+/**
+ * @brief Unallocate all remaining pointers
+ * @param show_cursor unused
+ */
 void engine_debug_trap(BOOL show_cursor)
 {
 	/*
