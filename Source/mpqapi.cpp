@@ -2,7 +2,6 @@
 #include <cstring>
 #include <cerrno>
 #include <fstream>
-#include <memory>
 
 #include "all.h"
 #include "../SourceS/file_util.h"
@@ -20,122 +19,26 @@ _BLOCKENTRY *sgpBlockTbl;
 
 /* data */
 
-// #define FSTREAM_LOG_DEBUG(...) {}
-#define FSTREAM_LOG_DEBUG(...) SDL_Log(__VA_ARGS__)
+#define LOG_ERRNO_FAIL(prefix, ...) \
+	SDL_Log(prefix " failed with \"%s\" in %s at %s:%d", __VA_ARGS__, std::strerror(errno), __func__, __FILE__, __LINE__)
+
+#define RETURN_IF_FAIL(obj, op, ...)                     \
+	obj->op(__VA_ARGS__);                                \
+	if (obj->fail()) {                                   \
+		LOG_ERRNO_FAIL("%s->%s(%s)", #obj, #op, #__VA_ARGS__); \
+		return FALSE;                                    \
+	}
+
+#define GOTO_IF_FAIL(label, obj, op, ...)                \
+	obj->op(__VA_ARGS__);                                \
+	if (obj->fail()) {                                   \
+		LOG_ERRNO_FAIL("%s->%s(%s)", #obj, #op, #__VA_ARGS__); \
+		goto label;                                      \
+	}
 
 namespace {
 
-const char *DirToString(std::ios::seekdir dir)
-{
-	switch (dir) {
-	case std::ios::beg:
-		return "std::ios::beg";
-	case std::ios::end:
-		return "std::ios::end";
-	default:
-		return "invalid";
-	}
-}
-
-std::string OpenModeToString(std::ios::openmode mode)
-{
-	std::string result;
-	if ((mode & std::ios::app) != 0)
-		result.append("std::ios::app | ");
-	if ((mode & std::ios::ate) != 0)
-		result.append("std::ios::ate | ");
-	if ((mode & std::ios::binary) != 0)
-		result.append("std::ios::binary | ");
-	if ((mode & std::ios::in) != 0)
-		result.append("std::ios::in | ");
-	if ((mode & std::ios::out) != 0)
-		result.append("std::ios::out | ");
-	if ((mode & std::ios::trunc) != 0)
-		result.append("std::ios::trunc | ");
-	if (!result.empty())
-		result.resize(result.size() - 3);
-	return result;
-}
-
-// Wraps fstream with error checks and logging.
-#define FSTREAM_CHECK(fmt, ...)                                                 \
-	if (s_->fail())                                                             \
-		SDL_Log(fmt ": failed with \"%s\"", __VA_ARGS__, std::strerror(errno)); \
-	else                                                                        \
-		FSTREAM_LOG_DEBUG(fmt, __VA_ARGS__);                                    \
-	return !s_->fail()
-
-struct FStreamWrapper {
-public:
-	bool Open(const char *path, std::ios::openmode mode)
-	{
-		s_.reset(new std::fstream(path, mode));
-		FSTREAM_CHECK("new std::fstream(\"%s\", %s)", path, OpenModeToString(mode).c_str());
-	}
-
-	void Close()
-	{
-		s_ = nullptr;
-	}
-
-	bool IsOpen() const
-	{
-		return s_ == nullptr;
-	}
-
-	bool seekg(std::streampos pos)
-	{
-		s_->seekg(pos);
-		FSTREAM_CHECK("seekg(%d)", pos);
-	}
-
-	bool seekg(std::streampos pos, std::ios::seekdir dir)
-	{
-		s_->seekg(pos, dir);
-		FSTREAM_CHECK("seekg(%d, %s)", static_cast<int>(pos), DirToString(dir));
-	}
-
-	bool seekp(std::streampos pos)
-	{
-		s_->seekp(pos);
-		FSTREAM_CHECK("seekp(%d)", pos);
-	}
-
-	bool seekp(std::streampos pos, std::ios::seekdir dir)
-	{
-		s_->seekp(pos, dir);
-		FSTREAM_CHECK("seekp(%d, %s)", static_cast<int>(pos), DirToString(dir));
-	}
-
-	bool tellg(std::streampos *result)
-	{
-		*result = s_->tellg();
-		FSTREAM_CHECK("tellg() = %d", *result);
-	}
-
-	bool tellp(std::streampos *result)
-	{
-		*result = s_->tellp();
-		FSTREAM_CHECK("tellp() = %d", *result);
-	}
-
-	bool write(const char *data, std::streamsize size)
-	{
-		s_->write(data, size);
-		FSTREAM_CHECK("write(data, %d)", size);
-	}
-
-	bool read(char *out, std::streamsize size)
-	{
-		s_->read(out, size);
-		FSTREAM_CHECK("read(out, %d)", size);
-	}
-
-private:
-	std::unique_ptr<std::fstream> s_;
-};
-
-static FStreamWrapper archive;
+static std::fstream *archive = nullptr;
 
 } // namespace
 
@@ -239,7 +142,7 @@ int mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
 	return -1;
 }
 
-void mpqapi_remove_hash_entries(BOOL (*fnGetName)(DWORD, char *))
+void mpqapi_remove_hash_entries(BOOL(*fnGetName)(DWORD, char *))
 {
 	DWORD dwIndex, i;
 	char pszFileName[MAX_PATH];
@@ -316,12 +219,10 @@ BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD d
 	pBlk->offset = mpqapi_find_free_block(dwLen + nNumberOfBytesToWrite, &pBlk->sizealloc);
 	pBlk->sizefile = dwLen;
 	pBlk->flags = 0x80000100;
-	std::streampos start_pos, end_pos;
-	if (!archive.seekp(pBlk->offset))
-		goto on_error;
+	RETURN_IF_FAIL(archive, seekp, pBlk->offset);
 	j = 0;
-	if (!archive.tellp(&start_pos))
-		goto on_error;
+	const auto start_pos = archive->tellp();
+	std::fstream::streampos end_pos;
 	sectoroffsettable = NULL;
 	while (dwLen != 0) {
 		DWORD len;
@@ -337,31 +238,23 @@ BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, DWORD d
 			nNumberOfBytesToWrite = 4 * num_bytes + 4;
 			sectoroffsettable = (DWORD *)DiabloAllocPtr(nNumberOfBytesToWrite);
 			memset(sectoroffsettable, 0, nNumberOfBytesToWrite);
-			if (!archive.write(reinterpret_cast<const char *>(sectoroffsettable), nNumberOfBytesToWrite))
-				goto on_error;
+			GOTO_IF_FAIL(on_error, archive, write, reinterpret_cast<const char *>(sectoroffsettable), nNumberOfBytesToWrite);
 		}
-		if (archive.tellp(&end_pos))
-			goto on_error;
-		sectoroffsettable[j] = SwapLE32(end_pos - start_pos);
-		if (!archive.write(mpq_buf, len))
-			goto on_error;
+		sectoroffsettable[j] = SwapLE32(archive->tellp() - start_pos);
+		GOTO_IF_FAIL(on_error, archive, write, mpq_buf, len);
 		j++;
 		if (dwLen > 4096)
 			dwLen -= 4096;
 		else
 			dwLen = 0;
 	}
-	if (!archive.tellp(&end_pos))
-		goto on_error;
+	end_pos = archive->tellp();
 	destsize = end_pos - start_pos;
 
 	sectoroffsettable[j] = SwapLE32(destsize);
-	if (!archive.seekp(start_pos))
-		goto on_error;
-	if (!archive.write(reinterpret_cast<const char *>(sectoroffsettable), nNumberOfBytesToWrite))
-		goto on_error;
-	if (!archive.seekp(end_pos))
-		goto on_error;
+	GOTO_IF_FAIL(on_error, archive, seekp, start_pos);
+	GOTO_IF_FAIL(on_error, archive, write, reinterpret_cast<const char *>(sectoroffsettable), nNumberOfBytesToWrite);
+	GOTO_IF_FAIL(on_error, archive, seekp, end_pos);
 
 	mem_free_dbg(sectoroffsettable);
 	if (destsize < pBlk->sizealloc) {
@@ -439,13 +332,20 @@ BOOL OpenMPQ(const char *pszArchive, DWORD dwChar)
 
 	InitHash();
 
-	archive.Close();
+	if (archive != nullptr) {
+		delete archive;
+		archive = nullptr;
+	}
 	const bool exists = FileExists(pszArchive);
-	std::ios::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
-	if (!exists)
-		mode |= std::ios::trunc;
-	if (!archive.Open(pszArchive, mode)) {
-		archive.Close();
+	if (exists) {
+		archive = new std::fstream(pszArchive, std::ios::in | std::ios::out | std::ios::binary);
+	} else {
+		archive = new std::fstream(pszArchive, std::ios::in | std::ios::out | std::ios::binary | std::ios::trunc);
+	}
+	if (archive->fail()) {
+		LOG_ERRNO_FAIL("Failed to OpenMPQ at %s", pszArchive);
+		delete archive;
+		archive = nullptr;
 		return FALSE;
 	}
 	save_archive_modified = !exists;
@@ -457,20 +357,16 @@ BOOL OpenMPQ(const char *pszArchive, DWORD dwChar)
 		sgpBlockTbl = (_BLOCKENTRY *)DiabloAllocPtr(0x8000);
 		memset(sgpBlockTbl, 0, 0x8000);
 		if (fhdr.blockcount) {
-			if (!archive.seekg(104))
-				goto on_error;
-			if (!archive.read(reinterpret_cast<char *>(sgpBlockTbl), 0x8000))
-				goto on_error;
+			GOTO_IF_FAIL(on_error, archive, seekg, 104);
+			GOTO_IF_FAIL(on_error, archive, read, reinterpret_cast<char *>(sgpBlockTbl), 0x8000);
 			key = Hash("(block table)", 3);
 			Decrypt(sgpBlockTbl, 0x8000, key);
 		}
 		sgpHashTbl = (_HASHENTRY *)DiabloAllocPtr(0x8000);
 		memset(sgpHashTbl, 255, 0x8000);
 		if (fhdr.hashcount) {
-			if (!archive.seekg(32872))
-				goto on_error;
-			if (!archive.read(reinterpret_cast<char *>(sgpHashTbl), 0x8000))
-				goto on_error;
+			GOTO_IF_FAIL(on_error, archive, seekg, 32872);
+			GOTO_IF_FAIL(on_error, archive, read, reinterpret_cast<char *>(sgpHashTbl), 0x8000);
 			key = Hash("(hash table)", 3);
 			Decrypt(sgpHashTbl, 0x8000, key);
 		}
@@ -478,8 +374,7 @@ BOOL OpenMPQ(const char *pszArchive, DWORD dwChar)
 	// Set output position to the end to ensure the file is not cleared if the MPQ
 	// is closed without having anything written to it.
 	if (exists)
-		if (!archive.seekp(0, std::ios::end))
-			goto on_error;
+		GOTO_IF_FAIL(on_error, archive, seekp, 0, std::ios::end);
 	return TRUE;
 on_error:
 	CloseMPQ(pszArchive, TRUE, dwChar);
@@ -501,20 +396,14 @@ static void byteSwapHdr(_FILEHEADER *pHdr)
 
 BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 {
-	if (!archive.seekg(0, std::ios::end))
-		return FALSE;
-	std::streampos end_pos;
-	if (!archive.tellg(&end_pos))
-		return FALSE;
-	const std::uint32_t size = end_pos;
+	RETURN_IF_FAIL(archive, seekg, 0, std::ios::end);
+	const std::uint32_t size = archive->tellg();
 	*pdwNextFileStart = size;
 
 	bool ok = size >= sizeof(*pHdr);
 	if (ok) {
-		if (!archive.seekg(0))
-			return FALSE;
-		if (!archive.read(reinterpret_cast<char *>(pHdr), sizeof(*pHdr)))
-			return FALSE;
+		RETURN_IF_FAIL(archive, seekg, 0);
+		RETURN_IF_FAIL(archive, read, reinterpret_cast<char *>(pHdr), sizeof(*pHdr));
 		byteSwapHdr(pHdr);
 	}
 	ok = ok && pHdr->signature == '\x1AQPM'
@@ -527,8 +416,7 @@ BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 	    && pHdr->hashcount == 2048
 	    && pHdr->blockcount == 2048;
 	if (!ok) {
-		if (!archive.seekg(0, std::ios::end))
-			return FALSE;
+		RETURN_IF_FAIL(archive, seekg, 0, std::ios::end);
 		memset(pHdr, 0, sizeof(*pHdr));
 		pHdr->signature = '\x1AQPM';
 		pHdr->headersize = 32;
@@ -547,14 +435,17 @@ void CloseMPQ(const char *pszArchive, BOOL bFree, DWORD dwChar)
 		MemFreeDbg(sgpBlockTbl);
 		MemFreeDbg(sgpHashTbl);
 	}
-	archive.Close();
+	if (archive != nullptr) {
+		delete archive;
+		archive = nullptr;
+	}
 	save_archive_modified = FALSE;
 }
 
 BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, DWORD dwChar)
 {
 	BOOL ret = FALSE;
-	if (!archive.IsOpen())
+	if (archive == nullptr)
 		ret = TRUE;
 	else {
 		ret = FALSE;
@@ -568,10 +459,8 @@ BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, DWORD dwChar)
 		}
 	}
 	CloseMPQ(pszArchive, bFree, dwChar);
-	if (ret && sgdwMpqOffset) {
-		FSTREAM_LOG_DEBUG("ResizeFile(\"%s\", %d)", pszArchive, sgdwMpqOffset);
+	if (ret && sgdwMpqOffset)
 		ret = ResizeFile(pszArchive, sgdwMpqOffset);
-	}
 	return ret;
 }
 
@@ -590,21 +479,17 @@ BOOL WriteMPQHeader()
 	fhdr.hashcount = SDL_SwapLE32(2048);
 	fhdr.blockcount = SDL_SwapLE32(2048);
 
-	if (!archive.seekp(0))
-		return FALSE;
-	if (!archive.write(reinterpret_cast<const char *>(&fhdr), sizeof(fhdr)))
-		return FALSE;
+	RETURN_IF_FAIL(archive, seekp, 0);
+	RETURN_IF_FAIL(archive, write, reinterpret_cast<const char *>(&fhdr), sizeof(fhdr));
 	return TRUE;
 }
 
 BOOL mpqapi_write_block_table()
 {
-	if (!archive.seekp(104))
-		return FALSE;
+	RETURN_IF_FAIL(archive, seekp, 104);
 	Encrypt(sgpBlockTbl, 0x8000, Hash("(block table)", 3));
 	const BOOL success = [=]() {
-		if (!archive.write(reinterpret_cast<const char *>(sgpBlockTbl), 0x8000))
-			return FALSE;
+		RETURN_IF_FAIL(archive, write, reinterpret_cast<const char *>(sgpBlockTbl), 0x8000);
 		return TRUE;
 	}();
 	Decrypt(sgpBlockTbl, 0x8000, Hash("(block table)", 3));
@@ -613,12 +498,10 @@ BOOL mpqapi_write_block_table()
 
 BOOL mpqapi_write_hash_table()
 {
-	if (!archive.seekp(32872))
-		return FALSE;
+	RETURN_IF_FAIL(archive, seekp, 32872);
 	Encrypt(sgpHashTbl, 0x8000, Hash("(hash table)", 3));
 	const BOOL success = [=]() {
-		if (!archive.write(reinterpret_cast<const char *>(sgpHashTbl), 0x8000))
-			return FALSE;
+		RETURN_IF_FAIL(archive, write, reinterpret_cast<const char *>(sgpHashTbl), 0x8000);
 		return TRUE;
 	}();
 	Decrypt(sgpHashTbl, 0x8000, Hash("(hash table)", 3));
@@ -627,8 +510,7 @@ BOOL mpqapi_write_hash_table()
 
 BOOL mpqapi_can_seek()
 {
-	if (!archive.seekp(sgdwMpqOffset))
-		return FALSE;
+	RETURN_IF_FAIL(archive, seekp, sgdwMpqOffset);
 	return TRUE;
 }
 
