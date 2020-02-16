@@ -1603,8 +1603,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		}
 	}
 
-	if (leveltype != DTYPE_TOWN)
-		SetDungeonMicros();
+	SetDungeonMicros();
 
 	InitLightMax();
 	IncProgress();
