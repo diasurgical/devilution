@@ -1435,15 +1435,14 @@ void DoAutoMap()
  */
 void CheckPanelInfo()
 {
-	int i, c, v, s;
+	int i, c, v, s, xend, yend;
 
 	panelflag = FALSE;
 	ClearPanel();
 	for (i = 0; i < numpanbtns; i++) {
-		if (MouseX >= PanBtnPos[i][0]
-		    && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]
-		    && MouseY >= PanBtnPos[i][1]
-		    && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+		xend = PanBtnPos[i][0] + PanBtnPos[i][2];
+		yend = PanBtnPos[i][1] + PanBtnPos[i][3];
+		if (MouseX >= PanBtnPos[i][0] && MouseX <= xend && MouseY >= PanBtnPos[i][1] && MouseY <= yend) {
 			if (i != 7) {
 				strcpy(infostr, PanBtnStr[i]);
 			} else {
