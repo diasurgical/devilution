@@ -1112,31 +1112,31 @@ void PressKey(int vkey)
 #endif
 	else if (vkey == VK_F5) {
 		if (spselflag) {
-			ToggleSpell(0);
+			SetSpeedSpell(0);
 			return;
 		}
-		SetSpeedSpell(0);
+		ToggleSpell(0);
 		return;
 	} else if (vkey == VK_F6) {
 		if (spselflag) {
-			ToggleSpell(1);
+			SetSpeedSpell(1);
 			return;
 		}
-		SetSpeedSpell(1);
+		ToggleSpell(1);
 		return;
 	} else if (vkey == VK_F7) {
 		if (spselflag) {
-			ToggleSpell(2);
+			SetSpeedSpell(2);
 			return;
 		}
-		SetSpeedSpell(2);
+		ToggleSpell(2);
 		return;
 	} else if (vkey == VK_F8) {
 		if (spselflag) {
-			ToggleSpell(3);
+			SetSpeedSpell(3);
 			return;
 		}
-		SetSpeedSpell(3);
+		ToggleSpell(3);
 		return;
 	} else if (vkey == VK_F9) {
 		diablo_hotkey_msg(0);
