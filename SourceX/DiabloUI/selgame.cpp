@@ -171,7 +171,7 @@ void selgame_Diff_Focus(int value)
 
 bool IsDifficultyAllowed(int value)
 {
-	if (value == 0 || (value == 1 && heroLevel >= 20) || (value == 2 && heroLevel >= 30)) {
+	if (value == 0 || (value == 1 && heroInfo->level >= 20) || (value == 2 && heroInfo->level >= 30)) {
 		return true;
 	}
 
