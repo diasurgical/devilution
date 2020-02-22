@@ -386,7 +386,7 @@ BOOL UiSelHeroDialog(
 
 	*dlgresult = selhero_result;
 	strcpy(name, selhero_heroInfo.name);
-	heroInfo = &selhero_heroInfo;
+	heroLevel = selhero_heroInfo.level;
 
 	UnloadScrollBar();
 	return true;
