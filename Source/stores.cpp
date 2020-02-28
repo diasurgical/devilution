@@ -173,7 +173,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
 		k += fontkern[c] + 1;
 		if (c && k <= yy) {
-			CPrintString(off, c, col);
+			PrintChar(off, c, col);
 		}
 		off += fontkern[c] + 1;
 	}
@@ -184,7 +184,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
 			off -= fontkern[c] + 1;
 			if (c) {
-				CPrintString(off, c, col);
+				PrintChar(off, c, col);
 			}
 		}
 	}

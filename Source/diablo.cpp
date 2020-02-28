@@ -787,7 +787,7 @@ BOOL LeftMouseDown(int wParam)
 			} else if (stextflag) {
 				CheckStoreBtn();
 			} else if (MouseY < PANEL_TOP) {
-				if (!gmenu_exception() && !TryIconCurs()) {
+				if (!gmenu_is_active() && !TryIconCurs()) {
 					if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
 						QuestlogESC();
 					} else if (qtextflag) {
@@ -813,7 +813,7 @@ BOOL LeftMouseDown(int wParam)
 					}
 				}
 			} else {
-				if (!talkflag && !dropGoldFlag && !gmenu_exception())
+				if (!talkflag && !dropGoldFlag && !gmenu_is_active())
 					CheckInvScrn();
 				DoPanBtn();
 				if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
@@ -946,7 +946,7 @@ void LeftMouseUp()
 
 void RightMouseDown()
 {
-	if (!gmenu_exception() && sgnTimeoutCurs == CURSOR_NONE && PauseMode != 2 && !plr[myplr]._pInvincible) {
+	if (!gmenu_is_active() && sgnTimeoutCurs == CURSOR_NONE && PauseMode != 2 && !plr[myplr]._pInvincible) {
 		if (doomflag) {
 			doom_close();
 		} else if (!stextflag) {
@@ -969,7 +969,7 @@ void RightMouseDown()
 
 BOOL PressSysKey(int wParam)
 {
-	if (gmenu_exception() || wParam != VK_F10)
+	if (gmenu_is_active() || wParam != VK_F10)
 		return FALSE;
 	diablo_hotkey_msg(1);
 	return TRUE;
@@ -1037,7 +1037,7 @@ void PressKey(int vkey)
 	if (vkey == VK_ESCAPE) {
 		if (!PressEscKey()) {
 			track_repeat_walk(FALSE);
-			gamemenu_previous();
+			gamemenu_on();
 		}
 		return;
 	}
@@ -1225,7 +1225,7 @@ void diablo_pause_game()
 /* NOTE: `return` must be used instead of `break` to be bin exact as C++ */
 void PressChar(int vkey)
 {
-	if (gmenu_exception() || control_talk_last_key(vkey) || sgnTimeoutCurs != 0 || deathflag) {
+	if (gmenu_is_active() || control_talk_last_key(vkey) || sgnTimeoutCurs != 0 || deathflag) {
 		return;
 	}
 	if ((char)vkey == 'p' || (char)vkey == 'P') {
@@ -1831,12 +1831,12 @@ void game_logic()
 	if (PauseMode == 1) {
 		PauseMode = 2;
 	}
-	if (gbMaxPlayers == 1 && gmenu_exception()) {
+	if (gbMaxPlayers == 1 && gmenu_is_active()) {
 		force_redraw |= 1;
 		return;
 	}
 
-	if (!gmenu_exception() && sgnTimeoutCurs == 0) {
+	if (!gmenu_is_active() && sgnTimeoutCurs == 0) {
 		CheckCursMove();
 		track_process();
 	}

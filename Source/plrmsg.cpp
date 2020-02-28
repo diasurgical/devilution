@@ -133,7 +133,7 @@ void PrintPlrMsg(DWORD x, DWORD y, DWORD width, const char *str, BYTE col)
 			c = gbFontTransTbl[(BYTE)*str++];
 			c = fontframe[c];
 			if (c)
-				CPrintString(screen, c, col);
+				PrintChar(screen, c, col);
 			screen += fontkern[c] + 1;
 		}
 
