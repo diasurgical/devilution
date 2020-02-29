@@ -2942,7 +2942,7 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
 		k += fontkern[c] + 1;
 		if (c && k <= 257) {
-			CPrintString(off, c, col);
+			PrintChar(off, c, col);
 		}
 		off += fontkern[c] + 1;
 	}

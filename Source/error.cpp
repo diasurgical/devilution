@@ -127,7 +127,7 @@ void DrawDiabloMsg()
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
 		if (c != '\0') {
-			CPrintString(off, c, COL_GOLD);
+			PrintChar(off, c, COL_GOLD);
 		}
 		off += fontkern[c] + 1;
 	}

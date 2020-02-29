@@ -2898,7 +2898,7 @@ void DrawAndBlit()
 		T_DrawView(ViewX, ViewY);
 	}
 	if (ctrlPan) {
-		ClearCtrlPan();
+		DrawCtrlPan();
 	}
 	if (drawhpflag) {
 		UpdateLifeFlask();
@@ -2907,7 +2907,7 @@ void DrawAndBlit()
 		UpdateManaFlask();
 	}
 	if (drawbtnflag) {
-		DrawCtrlPan();
+		DrawCtrlBtns();
 	}
 	if (drawsbarflag) {
 		DrawInvBelt();
