@@ -1,3 +1,8 @@
+/**
+ * @file control.cpp
+ *
+ * Implementation of the character and main control panels
+ */
 #include "all.h"
 
 BYTE sgbNextTalkSave;
@@ -18,7 +23,8 @@ BOOL drawmanaflag;
 BOOL chrbtnactive;
 char sgszTalkMsg[MAX_SEND_STR_LEN];
 BYTE *pPanelText;
-int nGoldFrame; /** current frame # for the pentagram caret in gold input */
+/** current frame # for the pentagram caret in gold input */
+int nGoldFrame;
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 BYTE *pTalkBtns;
@@ -36,7 +42,8 @@ char tempstr[256];
 BOOLEAN whisper[MAX_PLRS];
 int sbooktab;
 int pSplType;
-int frame; /** current frame # for the pentagram caret in chat input */
+/** current frame # for the pentagram caret in chat input */
+int frame;
 int initialDropGoldIndex;
 BOOL talkflag;
 BYTE *pSBkIconCels;

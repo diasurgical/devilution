@@ -4,8 +4,10 @@
 DWORD sgdwMpqOffset;
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
+/** Has the savegame-file been modified in memory. */
 BOOL save_archive_modified;
 _BLOCKENTRY *sgpBlockTbl;
+/** Is the savegame-file currently open. */
 BOOLEAN save_archive_open;
 
 //note: 32872 = 32768 + 104 (sizeof(_FILEHEADER))

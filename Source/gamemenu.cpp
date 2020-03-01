@@ -1,3 +1,8 @@
+/**
+ * @file gamemenu.cpp
+ *
+ * Implementation of the ingame menu functions.
+ */
 #include "all.h"
 
 TMenuItem sgSingleMenu[6] = {

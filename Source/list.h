@@ -1,4 +1,6 @@
-/* Intrusive double-linked list implementation,
+/**
+ * @file list.h
+ * Intrusive double-linked list implementation,
  * based on https://github.com/webcoyote/coho/blob/master/Base/List.h
  */
 
@@ -7,22 +9,22 @@
 #define OBJECT_NAME(obj) (((const char *)&typeid(obj)) + 8)
 
 /******************************************************************************
-*
-*   List definition macros
-*
-***/
+ *
+ *   List definition macros
+ *
+ ***/
 
-// Define a field within a structure that will be used to link it into a list
+/** Define a field within a structure that will be used to link it into a list */
 #define LIST_LINK(T) TLink<T>
 
 template <class T>
 class TLink;
 
 /******************************************************************************
-*
-*   TList
-*
-***/
+ *
+ *   TList
+ *
+ ***/
 
 //=============================================================================
 template <class T>
@@ -159,10 +161,10 @@ void TList<T>::UnlinkAll()
 }
 
 /******************************************************************************
-*
-*   TLink
-*
-***/
+ *
+ *   TLink
+ *
+ ***/
 
 //=============================================================================
 template <class T>

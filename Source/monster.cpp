@@ -1,7 +1,12 @@
+/**
+ * @file monster.cpp
+ *
+ * Implementation of monster functionality, AI, actions, spawning, loading, etc.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-// Tracks which missile files are already loaded
+/** Tracks which missile files are already loaded */
 int MissileFileFlag;
 
 // BUGFIX: replace monstkills[MAXMONSTERS] with monstkills[NUM_MTYPES].
@@ -54,7 +59,7 @@ int opposite[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
 int offset_x[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 int offset_y[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 
-/* unused */
+/** unused */
 int rnd5[4] = { 5, 10, 15, 20 };
 int rnd10[4] = { 10, 15, 20, 30 };
 int rnd20[4] = { 20, 30, 40, 50 };

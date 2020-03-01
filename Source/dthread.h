@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file dthread.h
+ *
+ * Interface of functions for updating game state from network commands.
+ */
 #ifndef __DTHREAD_H__
 #define __DTHREAD_H__
 

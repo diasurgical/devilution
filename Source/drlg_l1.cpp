@@ -1,3 +1,8 @@
+/**
+ * @file drlg_l1.cpp
+ *
+ * Implementation of the cathedral level generation algorithms.
+ */
 #include "all.h"
 
 BYTE L5dungeon[80][80];

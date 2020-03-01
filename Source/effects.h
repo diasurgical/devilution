@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file effects.h
+ *
+ * Interface of functions for loading and playing sounds.
+ */
 #ifndef __EFFECTS_H__
 #define __EFFECTS_H__
 

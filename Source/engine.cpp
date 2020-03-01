@@ -1,3 +1,15 @@
+/**
+ * @file engine.cpp
+ *
+ * Implementation of basic engine helper functions:
+ * - Sprite blitting
+ * - Drawing
+ * - Angle calculation
+ * - RNG
+ * - Memory allocation
+ * - File loading
+ * - Video playback
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
@@ -8,7 +20,9 @@
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 BOOL gbRotateMap; // flip - if y < x
 int orgseed;
+/** Width of sprite being blitted */
 int sgnWidth;
+/** Current game seed */
 int sglGameSeed;
 #ifdef __cplusplus
 static CCritSect sgMemCrit;
@@ -2255,12 +2269,14 @@ void engine_draw_pixel(int sx, int sy)
 #endif
 }
 
+/** Macro used in DrawLine() */
 #define GG_SWAP(A, B) \
 	{                 \
 		(A) ^= (B);   \
 		(B) ^= (A);   \
 		(A) ^= (B);   \
 	}
+/** Macro used in DrawLine() */
 #define GG_ABSOLUTE(I, J, K) (((I) - (J)) * ((K) = (((I) - (J)) < 0 ? -1 : 1)))
 
 /**

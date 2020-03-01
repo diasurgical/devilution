@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file control.h
+ *
+ * Interface of the character and main control panels
+ */
 #ifndef __CONTROL_H__
 #define __CONTROL_H__
 

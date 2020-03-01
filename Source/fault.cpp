@@ -1,3 +1,8 @@
+/**
+ * @file fault.cpp
+ *
+ * Implementation of exception logging functionality.
+ */
 #include "all.h"
 
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;

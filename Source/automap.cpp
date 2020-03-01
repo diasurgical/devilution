@@ -1,3 +1,8 @@
+/**
+ * @file automap.cpp
+ *
+ * Implementation of the ingame map overlay.
+ */
 #include "all.h"
 
 // BUGFIX: only the first 256 elements are ever read
@@ -16,15 +21,15 @@ int AmLine16;
 int AmLine8;
 int AmLine4;
 
-// color used to draw the player's arrow
+/** color used to draw the player's arrow */
 #define COLOR_PLAYER (PAL8_ORANGE + 1)
-// color for bright map lines (doors, stairs etc.)
+/** color for bright map lines (doors, stairs etc.) */
 #define COLOR_BRIGHT PAL8_YELLOW
-// color for dim map lines/dots
+/** color for dim map lines/dots */
 #define COLOR_DIM (PAL16_YELLOW + 8)
 
 #define MAPFLAG_TYPE 0x000F
-// these are in the second byte
+/** these are in the second byte */
 #define MAPFLAG_VERTDOOR 0x01
 #define MAPFLAG_HORZDOOR 0x02
 #define MAPFLAG_VERTARCH 0x04

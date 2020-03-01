@@ -60,6 +60,7 @@ int SStringY[24] = {
 	264,
 	276
 };
+/** Maps from towner IDs to NPC names. */
 char *talkname[9] = {
 	"Griswold",
 	"Pepin",

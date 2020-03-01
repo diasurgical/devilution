@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file gamemenu.h
+ *
+ * Interface of the ingame menu functions.
+ */
 #ifndef __GAMEMENU_H__
 #define __GAMEMENU_H__
 

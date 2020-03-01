@@ -1,5 +1,17 @@
+/**
+ * @file capture.cpp
+ *
+ * Implementation of the screenshot function.
+ */
 #include "all.h"
 
+/**
+ * @brief Write the PCX-file header
+ * @param hFile File handler for the PCX file.
+ * @param width Image width
+ * @param height Image height
+ * @return True on success
+ */
 static BOOL CaptureHdr(HANDLE hFile, short width, short height)
 {
 	DWORD lpNumBytes;

@@ -1,3 +1,8 @@
+/**
+ * @file drlg_l2.cpp
+ *
+ * Implementation of the catacombs level generation algorithms.
+ */
 #ifndef SPAWN
 #include "all.h"
 

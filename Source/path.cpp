@@ -1,30 +1,37 @@
+/**
+ * @file path.cpp
+ *
+ * Implementation of the path finding algorithms.
+ */
 #include "all.h"
 
-// preallocated nodes, search is terminated after 300 nodes are visited
+/** Notes visisted by the path finding algorithm. */
 PATHNODE path_nodes[MAXPATHNODES];
-// size of the pnode_tblptr stack
+/** size of the pnode_tblptr stack */
 int gdwCurPathStep;
-// the number of in-use nodes in path_nodes
+/** the number of in-use nodes in path_nodes */
 int gdwCurNodes;
-/* for reconstructing the path after the A* search is done. The longest
+/**
+ * for reconstructing the path after the A* search is done. The longest
  * possible path is actually 24 steps, even though we can fit 25
  */
 int pnode_vals[MAX_PATH_LENGTH];
-// a linked list of all visited nodes
+/** A linked list of all visited nodes */
 PATHNODE *pnode_ptr;
-// a stack for recursively searching nodes
+/** A stack for recursively searching nodes */
 PATHNODE *pnode_tblptr[MAXPATHNODES];
-// a linked list of the A* frontier, sorted by distance
+/** A linked list of the A* frontier, sorted by distance */
 PATHNODE *path_2_nodes;
 PATHNODE path_unusednodes[MAXPATHNODES];
 
-// for iterating over the 8 possible movement directions
+/** For iterating over the 8 possible movement directions */
 const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
 const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
 
 /* data */
 
-/* each step direction is assigned a number like this:
+/**
+ * each step direction is assigned a number like this:
  *       dx
  *     -1 0 1
  *     +-----
