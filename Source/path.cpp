@@ -66,8 +66,7 @@ int FindPath(BOOL (*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx,
 	// A* search until we find (dx,dy) or fail
 	while ((next_node = GetNextPath())) {
 		// reached the end, success!
-		if (next_node->x == dx && next_node->y == dy)
-		{
+		if (next_node->x == dx && next_node->y == dy) {
 			current = next_node;
 			path_length = 0;
 			while (current->Parent) {

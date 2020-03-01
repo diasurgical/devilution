@@ -3076,7 +3076,7 @@ void CheckNewPath(int pnum)
 				plr[pnum].walkpath[i - 1] = plr[pnum].walkpath[i];
 			}
 
-			plr[pnum].walkpath[MAX_PATH_LENGTH-1] = WALK_NONE;
+			plr[pnum].walkpath[MAX_PATH_LENGTH - 1] = WALK_NONE;
 
 			if (plr[pnum]._pmode == PM_STAND) {
 				StartStand(pnum, plr[pnum]._pdir);

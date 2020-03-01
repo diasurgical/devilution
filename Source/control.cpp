@@ -185,6 +185,7 @@ char SpellITbl[MAX_SPELLS] = {
 	30,
 };
 int PanBtnPos[8][5] = {
+	// clang-format off
 	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, 1 }, // char button
 	{ PANEL_LEFT +   9, PANEL_TOP +  35, 71, 19, 0 }, // quests button
 	{ PANEL_LEFT +   9, PANEL_TOP +  75, 71, 19, 1 }, // map button
@@ -193,6 +194,7 @@ int PanBtnPos[8][5] = {
 	{ PANEL_LEFT + 560, PANEL_TOP +  35, 71, 19, 0 }, // spells button
 	{ PANEL_LEFT +  87, PANEL_TOP +  91, 33, 32, 1 }, // chat button
 	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, 1 }, // friendly fire button
+	// clang-format on
 };
 char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
 char *PanBtnStr[8] = {
