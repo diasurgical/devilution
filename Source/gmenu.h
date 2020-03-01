@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file gmenu.h
+ *
+ * Interface of the ingame navigation and interaction.
+ */
 #ifndef __GMENU_H__
 #define __GMENU_H__
 

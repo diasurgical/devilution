@@ -1,4 +1,8 @@
-// some global definitions, found in debug release
+/**
+ * @file defs.h
+ *
+ * Global definitions and Macros.
+ */
 
 #define GAME_NAME				"DIABLO"
 

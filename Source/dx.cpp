@@ -1,3 +1,8 @@
+/**
+ * @file dx.cpp
+ *
+ * Implementation of functions setting up the graphics pipeline.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

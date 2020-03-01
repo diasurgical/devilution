@@ -4,7 +4,8 @@ BOOL storeflag;
 int sgnCowMsg;
 int numtowners;
 DWORD sgdwCowClicks;
-BOOL bannerflag; // unused 0x6AAC28
+/** unused 0x6AAC28 */
+BOOL bannerflag;
 BOOL boyloadflag;
 BYTE *pCowCels;
 TownerStruct towner[16];

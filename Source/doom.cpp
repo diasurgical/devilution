@@ -1,3 +1,8 @@
+/**
+ * @file doom.cpp
+ *
+ * Implementation of the map of the stars quest.
+ */
 #include "all.h"
 
 int doom_quest_time;

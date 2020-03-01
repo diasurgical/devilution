@@ -1,3 +1,8 @@
+/**
+ * @file codec.cpp
+ *
+ * Implementation of save game encryption algorithm.
+ */
 #include "all.h"
 
 struct CodecSignature {

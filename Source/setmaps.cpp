@@ -54,6 +54,7 @@ BYTE SkelChamTrans3[36] = {
 	50, 43, 59, 51
 };
 
+/** Maps from quest level to quest level names. */
 char *quest_level_names[] = {
 	"",
 	"Skeleton King's Lair",

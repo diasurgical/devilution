@@ -1,3 +1,8 @@
+/**
+ * @file nthread.cpp
+ *
+ * Implementation of functions for managing game ticks.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

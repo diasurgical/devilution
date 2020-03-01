@@ -42,7 +42,7 @@ int PWVel[3][3] = {
 	{ 2048, 1024, 512 },
 	{ 2048, 1024, 512 }
 };
-// Total number of frames in walk animation.
+/** Total number of frames in walk animation. */
 int AnimLenFromClass[3] = {
 	8, 8, 8
 };

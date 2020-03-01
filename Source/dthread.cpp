@@ -1,3 +1,8 @@
+/**
+ * @file dthread.cpp
+ *
+ * Implementation of functions for updating game state from network commands.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

@@ -11,7 +11,9 @@ DWORD nNumberOfBytesToWrite;
 
 /* data */
 
+/** Has the log file not yet been created. */
 BOOL log_not_created = TRUE;
+/** Handle to the log file. */
 HANDLE log_file = INVALID_HANDLE_VALUE;
 
 void __cdecl log_flush(BOOL force_close)

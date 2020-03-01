@@ -1,3 +1,8 @@
+/**
+ * @file drlg_l4.cpp
+ *
+ * Implementation of the hell level generation algorithms.
+ */
 #include "all.h"
 
 int diabquad1x;

@@ -1,3 +1,8 @@
+/**
+ * @file diablo.cpp
+ *
+ * Implementation of the main game initialization functions.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
@@ -22,11 +27,13 @@ int DebugMonsters[10];
 BOOLEAN cineflag;
 int force_redraw;
 BOOL visiondebug;
-BOOL scrollflag; /* unused */
+/** unused */
+BOOL scrollflag;
 BOOL light4flag;
 BOOL leveldebug;
 BOOL monstdebug;
-BOOL trigdebug; /* unused */
+/** unused */
+BOOL trigdebug;
 int setseed;
 int debugmonsttypes;
 int PauseMode;
@@ -56,12 +63,14 @@ int framerate;
 int framestart;
 #endif
 BOOL FriendlyMode = TRUE;
+/** Default quick messages */
 char *spszMsgTbl[4] = {
 	"I need help! Come Here!",
 	"Follow me.",
 	"Here's something for you.",
 	"Now you DIE!"
 };
+/** INI files variable names for quick message keys */
 char *spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
 void FreeGameMem()
@@ -236,6 +245,13 @@ BOOL diablo_get_not_running()
 	return GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
+/**
+ * @brief Main entry point, check env, initialize systesm, play intros, start main menu, shut down
+ * @param hInstance A handle to the current instance of the application.
+ * @param hPrevInstance Always null
+ * @param lpCmdLine The command line for the application
+ * @param nCmdShow Initial window state
+ */
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HINSTANCE hInst;

@@ -1,3 +1,8 @@
+/**
+ * @file drlg_l3.cpp
+ *
+ * Implementation of the caves level generation algorithms.
+ */
 #ifndef SPAWN
 #include "all.h"
 

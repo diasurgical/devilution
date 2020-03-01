@@ -1,8 +1,15 @@
+/**
+ * @file appfat.cpp
+ *
+ * Implementation of error dialogs.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 char sz_error_buf[256];
+/** Set to true when a fatal error is encountered and the application should shut down. */
 BOOL terminating;
+/** Thread id of the last callee to FreeDlg(). */
 int cleanup_thread_id;
 
 // delete overloads the delete operator.
@@ -80,6 +87,12 @@ char *GetErrorStr(DWORD error_code)
 	return sz_error_buf;
 }
 
+/**
+ * @brief Generate a textual message for DirectDraw error codes
+ * @param hError DirectDraw error code
+ * @param pszBuffer Buffer for the error message
+ * @param dwMaxChars Length of pszBuffer
+ */
 void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
@@ -390,6 +403,12 @@ void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 	strncpy(pszBuffer, szError, dwMaxChars);
 }
 
+/**
+ * @brief Generate a textual message for DirectSound error codes
+ * @param hError DirectSound error code
+ * @param pszBuffer Buffer for the error message
+ * @param dwMaxChars Length of pszBuffer
+ */
 void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;

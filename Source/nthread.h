@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file nthread.h
+ *
+ * Interface of functions for managing game ticks.
+ */
 #ifndef __NTHREAD_H__
 #define __NTHREAD_H__
 

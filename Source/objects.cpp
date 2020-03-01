@@ -52,7 +52,7 @@ char shrinemax[NUM_SHRINETYPE] = {
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
 	16, 16, 16, 16, 16, 16
 };
-// 0 - sp+mp, 1 - sp only, 2 - mp only
+/** 0 - sp+mp, 1 - sp only, 2 - mp only */
 BYTE shrineavail[NUM_SHRINETYPE] = {
 	0, 0, 1, 1, 0, 0, 0, 0, 1, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
