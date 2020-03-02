@@ -1,3 +1,8 @@
+/**
+ * @file items.cpp
+ *
+ * Implementation of item functionality.
+ */
 #include "all.h"
 
 int itemactive[MAXITEMS];

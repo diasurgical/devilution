@@ -1,7 +1,7 @@
 /**
  * @file gamemenu.h
  *
- * Interface of the ingame menu functions.
+ * Interface of the in-game menu functions.
  */
 #ifndef __GAMEMENU_H__
 #define __GAMEMENU_H__

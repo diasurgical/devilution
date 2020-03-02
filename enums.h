@@ -1,3 +1,9 @@
+/**
+ * @file enums.h
+ *
+ * Various global enumerators.
+ */
+
 typedef enum item_quality {
 	ITEM_QUALITY_NORMAL = 0,
 	ITEM_QUALITY_MAGIC  = 1,

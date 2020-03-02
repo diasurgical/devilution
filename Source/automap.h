@@ -1,7 +1,7 @@
 /**
  * @file automap.h
  *
- * Interface of the ingame map overlay.
+ * Interface of the in-game map overlay.
  */
 #ifndef __AUTOMAP_H__
 #define __AUTOMAP_H__

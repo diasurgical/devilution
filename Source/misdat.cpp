@@ -1,3 +1,8 @@
+/**
+ * @file misdat.cpp
+ *
+ * Implementation of data related to missiles.
+ */
 #include "all.h"
 
 /** Data related to each missile ID. */

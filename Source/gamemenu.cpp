@@ -1,7 +1,7 @@
 /**
  * @file gamemenu.cpp
  *
- * Implementation of the ingame menu functions.
+ * Implementation of the in-game menu functions.
  */
 #include "all.h"
 

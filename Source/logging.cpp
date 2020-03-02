@@ -1,3 +1,8 @@
+/**
+ * @file logging.cpp
+ *
+ * Implementation of logging functionality.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
