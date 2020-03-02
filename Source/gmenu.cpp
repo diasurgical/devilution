@@ -1,7 +1,7 @@
 /**
  * @file gmenu.cpp
  *
- * Implementation of the ingame navigation and interaction.
+ * Implementation of the in-game navigation and interaction.
  */
 #include "all.h"
 

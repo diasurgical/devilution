@@ -1,3 +1,8 @@
+/**
+ * @file mpqapi.cpp
+ *
+ * Implementation of functions for creating and editing MPQ files.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

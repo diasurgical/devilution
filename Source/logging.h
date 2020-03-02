@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file logging.h
+ *
+ * Interface of logging functionality.
+ */
 #ifndef __LOGGING_H__
 #define __LOGGING_H__
 

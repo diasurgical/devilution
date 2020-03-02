@@ -1,3 +1,8 @@
+/**
+ * @file missiles.cpp
+ *
+ * Implementation of missile functionality.
+ */
 #include "all.h"
 
 int missileactive[MAXMISSILES];

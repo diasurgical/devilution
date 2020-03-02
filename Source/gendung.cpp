@@ -1,3 +1,8 @@
+/**
+ * @file gendung.cpp
+ *
+ * Implementation of general dungeon generation code.
+ */
 #include "all.h"
 
 WORD level_frame_types[MAXTILES];

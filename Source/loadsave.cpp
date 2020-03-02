@@ -1,3 +1,8 @@
+/**
+ * @file loadsave.cpp
+ *
+ * Implementation of save game functionality.
+ */
 #include "all.h"
 
 BYTE *tbuff;

@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file msg.h
+ *
+ * Interface of function for sending and reciving network messages.
+ */
 #ifndef __MSG_H__
 #define __MSG_H__
 

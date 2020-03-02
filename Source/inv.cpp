@@ -1,3 +1,8 @@
+/**
+ * @file inv.cpp
+ *
+ * Implementation of player inventory.
+ */
 #include "all.h"
 
 BOOL invflag;

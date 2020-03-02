@@ -1,3 +1,8 @@
+/**
+ * @file monstdat.cpp
+ *
+ * Implementation of all monster data.
+ */
 #include "all.h"
 
 MonsterData monsterdata[] = {

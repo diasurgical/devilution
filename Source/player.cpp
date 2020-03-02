@@ -267,7 +267,7 @@ void InitPlrGFXMem(int pnum)
 		if (GetPlrGFXSize("ST") > GetPlrGFXSize("AS")) {
 			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
 		} else {
-			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGION
+			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGEON
 		}
 	}
 	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
@@ -277,7 +277,7 @@ void InitPlrGFXMem(int pnum)
 		if (GetPlrGFXSize("WL") > GetPlrGFXSize("AW")) {
 			plr_wframe_size = GetPlrGFXSize("WL"); //TOWN
 		} else {
-			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGION
+			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGEON
 		}
 	}
 	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);

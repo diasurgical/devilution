@@ -1,3 +1,8 @@
+/**
+ * @file interfac.cpp
+ *
+ * Implementation of load screens.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
