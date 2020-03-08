@@ -11,14 +11,6 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-#define LOG_FSTREAM_CALLS 1
-
-#if LOG_FSTREAM_CALLS == 1
-#define FSTREAM_LOG_DEBUG(...) SDL_Log(__VA_ARGS__)
-#else
-#define FSTREAM_LOG_DEBUG(...) {}
-#endif
-
 // Amiga cannot seekp beyond EOF.
 // See https://github.com/bebbo/libnix/issues/30
 #ifndef __AMIGA__
@@ -139,8 +131,10 @@ private:
 			if (error_message == nullptr)
 				error_message = "";
 			SDL_Log(fmt_with_error.c_str(), args..., error_message);
-		} else if (LOG_FSTREAM_CALLS) {
+#ifdef _DEBUG
+		} else {
 			SDL_Log(fmt, args...);
+#endif
 		}
 		return !s_->fail();
 	}
@@ -170,15 +164,19 @@ struct Archive {
 	bool Open(const char *name)
 	{
 		Close();
-		FSTREAM_LOG_DEBUG("Opening %s", name);
+#ifdef _DEBUG
+		SDL_Log("Opening %s", name);
+#endif
 		exists = FileExists(name);
 		std::ios::openmode mode = std::ios::in | std::ios::out | std::ios::binary;
 		if (exists) {
-			if (GetFileSize(name, &size)) {
-				FSTREAM_LOG_DEBUG("GetFileSize(\"%s\") = %" PRIuMAX, name, size);
-			} else {
+			if (GetFileSize(name, &size) == 0) {
 				SDL_Log("GetFileSize(\"%s\") failed with \"%s\"", name, std::strerror(errno));
 				return false;
+#ifdef _DEBUG
+			} else {
+				SDL_Log("GetFileSize(\"%s\") = %" PRIuMAX, name, size);
+#endif
 			}
 		} else {
 			mode |= std::ios::trunc;
@@ -197,14 +195,18 @@ struct Archive {
 	{
 		if (!stream.IsOpen())
 			return true;
-		FSTREAM_LOG_DEBUG("Closing %s", name.c_str());
+#ifdef _DEBUG
+		SDL_Log("Closing %s", name.c_str());
+#endif
 
 		bool result = true;
 		if (modified && !(stream.seekp(0, std::ios::beg) && WriteHeaderAndTables()))
 			result = false;
 		stream.Close();
 		if (modified && result && size != 0) {
-			FSTREAM_LOG_DEBUG("ResizeFile(\"%s\", %" PRIuMAX ")", name.c_str(), size);
+#ifdef _DEBUG
+			SDL_Log("ResizeFile(\"%s\", %" PRIuMAX ")", name.c_str(), size);
+#endif
 			result = ResizeFile(name.c_str(), size);
 		}
 		name.clear();
