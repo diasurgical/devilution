@@ -16,6 +16,22 @@ Repo: https://github.com/qndel/Infernity
 
 # Ports
 
+## Nintendo 3DS
+
+Repo: https://github.com/MrHuu/devilutionX-3ds
+
+## PSP Vita
+
+Repo: https://github.com/gokuhs/devilutionX
+
+## Android
+
+Repo: https://github.com/diasurgical/devilutionX/pull/522
+
+## iOS
+
+Repo: https://github.com/MaxDesiatov/devilutionX/tree/iOS-arm64
+
 ## Raspberry Pi Sense HAT Renderer
 
 Repo: https://github.com/AJenbo/devilutionX/tree/SenseHAT
@@ -47,6 +63,18 @@ Repo: https://github.com/Manuel-K/devilutionX-QOL-patches
 * Run in town
 * Highlight items
 * Monster HP bar
+
+##  Add fix to allow all unique items to drop
+
+Repo: https://github.com/diasurgical/devilutionX/pull/540
+
+## 16 player support
+
+Repo: https://github.com/diasurgical/devilutionX/pull/551
+
+## Multiplayer support on RetroFW/OpenDingux
+
+Repo: https://github.com/diasurgical/devilutionX/pull/542
 
 ## QOL patches by [@majek](https://github.com/majek)
 
