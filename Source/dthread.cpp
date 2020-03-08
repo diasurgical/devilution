@@ -86,7 +86,7 @@ void dthread_start()
 	}
 }
 
-unsigned int __stdcall dthread_handler(void *)
+unsigned int __stdcall dthread_handler(void *data)
 {
 	char *error_buf;
 	TMegaPkt *pkt;
