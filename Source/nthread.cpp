@@ -173,7 +173,7 @@ void nthread_start(BOOL set_turn_upper_bit)
 	}
 }
 
-unsigned int __stdcall nthread_handler(void *)
+unsigned int __stdcall nthread_handler(void *data)
 {
 	int delta;
 	BOOL received;
