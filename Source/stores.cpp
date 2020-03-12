@@ -615,7 +615,7 @@ BOOL SmithSellOk(int i)
 		return FALSE;
 	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
 		return FALSE;
-	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+	if (plr[myplr].InvList[i]._itype == ITYPE_MEAT)
 		return FALSE;
 	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF)
 		return FALSE;
@@ -723,7 +723,7 @@ BOOL SmithRepairOk(int i)
 		return FALSE;
 	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
 		return FALSE;
-	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+	if (plr[myplr].InvList[i]._itype == ITYPE_MEAT)
 		return FALSE;
 	if (plr[myplr].InvList[i]._iDurability == plr[myplr].InvList[i]._iMaxDur)
 		return FALSE;
@@ -1379,7 +1379,7 @@ void S_StartTalk()
 #else
 	sn = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
 
@@ -1394,7 +1394,7 @@ void S_StartTalk()
 	sn2 = sn - 2;
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			AddSText(0, sn, 1, questlist[i]._qlstr, COL_WHITE, 1);
 			sn += la;
 		}
@@ -1773,8 +1773,8 @@ void S_SmithEnter()
 		talker = 0;
 		stextlhold = 10;
 		stextshold = STORE_SMITH;
-		gossipstart = QUEST_GRISWOLD2;
-		gossipend = QUEST_GRISWOLD13;
+		gossipstart = TEXT_GRISWOLD2;
+		gossipend = TEXT_GRISWOLD13;
 		StartStore(STORE_GOSSIP);
 		break;
 	case 12:
@@ -2167,8 +2167,8 @@ void S_WitchEnter()
 		stextlhold = 12;
 		talker = 6;
 		stextshold = STORE_WITCH;
-		gossipstart = QUEST_ADRIA2;
-		gossipend = QUEST_ADRIA13;
+		gossipstart = TEXT_ADRIA2;
+		gossipend = TEXT_ADRIA13;
 		StartStore(STORE_GOSSIP);
 		return;
 	case 14:
@@ -2321,8 +2321,8 @@ void S_BoyEnter()
 		talker = 8;
 		stextshold = STORE_BOY;
 		stextlhold = stextsel;
-		gossipstart = QUEST_WIRT2;
-		gossipend = QUEST_WIRT12;
+		gossipstart = TEXT_WIRT2;
+		gossipend = TEXT_WIRT12;
 		StartStore(STORE_GOSSIP);
 	} else {
 		stextflag = STORE_NONE;
@@ -2491,8 +2491,8 @@ void S_HealerEnter()
 		stextlhold = 12;
 		talker = 1;
 		stextshold = STORE_HEALER;
-		gossipstart = QUEST_PEPIN2;
-		gossipend = QUEST_PEPIN11;
+		gossipstart = TEXT_PEPIN2;
+		gossipend = TEXT_PEPIN11;
 		StartStore(STORE_GOSSIP);
 		break;
 	case 14:
@@ -2550,8 +2550,8 @@ void S_StoryEnter()
 		stextlhold = 12;
 		talker = 4;
 		stextshold = STORE_STORY;
-		gossipstart = QUEST_STORY2;
-		gossipend = QUEST_STORY11;
+		gossipstart = TEXT_STORY2;
+		gossipend = TEXT_STORY11;
 		StartStore(STORE_GOSSIP);
 		break;
 	case 14:
@@ -2595,7 +2595,7 @@ void S_TalkEnter()
 
 	sn = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
 	if (sn > 6) {
@@ -2614,7 +2614,7 @@ void S_TalkEnter()
 	}
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			if (sn == stextsel) {
 				InitQTextMsg(((DWORD *)&Qtalklist[talker])[i]);
 			}
@@ -2630,8 +2630,8 @@ void S_TavernEnter()
 		stextlhold = 12;
 		talker = 3;
 		stextshold = STORE_TAVERN;
-		gossipstart = QUEST_OGDEN2;
-		gossipend = QUEST_OGDEN10;
+		gossipstart = TEXT_OGDEN2;
+		gossipend = TEXT_OGDEN10;
 		StartStore(STORE_GOSSIP);
 		break;
 	case 18:
@@ -2647,8 +2647,8 @@ void S_BarmaidEnter()
 		stextlhold = 12;
 		talker = 7;
 		stextshold = STORE_BARMAID;
-		gossipstart = QUEST_GILLIAN2;
-		gossipend = QUEST_GILLIAN10;
+		gossipstart = TEXT_GILLIAN2;
+		gossipend = TEXT_GILLIAN10;
 		StartStore(STORE_GOSSIP);
 		break;
 	case 18:
@@ -2664,8 +2664,8 @@ void S_DrunkEnter()
 		stextlhold = 12;
 		talker = 5;
 		stextshold = STORE_DRUNK;
-		gossipstart = QUEST_FARNHAM2;
-		gossipend = QUEST_FARNHAM13;
+		gossipstart = TEXT_FARNHAM2;
+		gossipend = TEXT_FARNHAM13;
 		StartStore(STORE_GOSSIP);
 		break;
 	case 18:

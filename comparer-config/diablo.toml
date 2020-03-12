@@ -5243,7 +5243,7 @@ addr = 0x43BD19
 size = 0xD2
 
 [[func]]
-name = "msg_process_net_packets"
+name = "run_delta_info"
 addr = 0x43BDEB
 size = 0x22
 
@@ -5438,7 +5438,7 @@ addr = 0x43D064
 size = 0x39
 
 [[func]]
-name = "RemovePlrPortal"
+name = "delta_close_portal"
 addr = 0x43D09D
 size = 0x1F
 

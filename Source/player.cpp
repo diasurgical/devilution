@@ -3025,7 +3025,7 @@ void CheckNewPath(int pnum)
 
 					if (x < 2 && y < 2) {
 						ClrPlrPath(pnum);
-						if (monster[i].mtalkmsg && monster[i].mtalkmsg != QUEST_VILE14) {
+						if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 							TalktoMonster(i);
 						} else {
 							StartAttack(pnum, d);
@@ -3102,7 +3102,7 @@ void CheckNewPath(int pnum)
 			y = abs(plr[pnum].WorldY - monster[i]._mfuty);
 			if (x <= 1 && y <= 1) {
 				d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
-				if (monster[i].mtalkmsg && monster[i].mtalkmsg != QUEST_VILE14) {
+				if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 					TalktoMonster(i);
 				} else {
 					StartAttack(pnum, d);
@@ -3125,7 +3125,7 @@ void CheckNewPath(int pnum)
 		case ACTION_RATTACKMON:
 			i = plr[pnum].destParam1;
 			d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
-			if (monster[i].mtalkmsg && monster[i].mtalkmsg != QUEST_VILE14) {
+			if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 				TalktoMonster(i);
 			} else {
 				StartRangeAttack(pnum, d, monster[i]._mfutx, monster[i]._mfuty);
