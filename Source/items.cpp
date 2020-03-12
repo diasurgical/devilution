@@ -1963,7 +1963,7 @@ int CheckUnique(int i, int lvl, int uper, BOOL recreate)
 	if (!numu)
 		return -1;
 
-	random_(29, 10);
+	random_(29, 10); /// BUGFIX: unused, last unique in array always gets chosen
 	idata = 0;
 	while (numu > 0) {
 		if (uok[idata])

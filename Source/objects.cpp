@@ -1903,35 +1903,35 @@ void ObjL1Special(int x1, int y1, int x2, int y2)
 
 	for (i = y1; i <= y2; ++i) {
 		for (j = x1; j <= x2; ++j) {
-			dArch[j][i] = 0;
+			dSpecial[j][i] = 0;
 			if (dPiece[j][i] == 12)
-				dArch[j][i] = 1;
+				dSpecial[j][i] = 1;
 			if (dPiece[j][i] == 11)
-				dArch[j][i] = 2;
+				dSpecial[j][i] = 2;
 			if (dPiece[j][i] == 71)
-				dArch[j][i] = 1;
+				dSpecial[j][i] = 1;
 			if (dPiece[j][i] == 259)
-				dArch[j][i] = 5;
+				dSpecial[j][i] = 5;
 			if (dPiece[j][i] == 249)
-				dArch[j][i] = 2;
+				dSpecial[j][i] = 2;
 			if (dPiece[j][i] == 325)
-				dArch[j][i] = 2;
+				dSpecial[j][i] = 2;
 			if (dPiece[j][i] == 321)
-				dArch[j][i] = 1;
+				dSpecial[j][i] = 1;
 			if (dPiece[j][i] == 255)
-				dArch[j][i] = 4;
+				dSpecial[j][i] = 4;
 			if (dPiece[j][i] == 211)
-				dArch[j][i] = 1;
+				dSpecial[j][i] = 1;
 			if (dPiece[j][i] == 344)
-				dArch[j][i] = 2;
+				dSpecial[j][i] = 2;
 			if (dPiece[j][i] == 341)
-				dArch[j][i] = 1;
+				dSpecial[j][i] = 1;
 			if (dPiece[j][i] == 331)
-				dArch[j][i] = 2;
+				dSpecial[j][i] = 2;
 			if (dPiece[j][i] == 418)
-				dArch[j][i] = 1;
+				dSpecial[j][i] = 1;
 			if (dPiece[j][i] == 421)
-				dArch[j][i] = 2;
+				dSpecial[j][i] = 2;
 		}
 	}
 }
@@ -1942,32 +1942,32 @@ void ObjL2Special(int x1, int y1, int x2, int y2)
 
 	for (j = y1; j <= y2; j++) {
 		for (i = x1; i <= x2; i++) {
-			dArch[i][j] = 0;
+			dSpecial[i][j] = 0;
 			if (dPiece[i][j] == 541)
-				dArch[i][j] = 5;
+				dSpecial[i][j] = 5;
 			if (dPiece[i][j] == 178)
-				dArch[i][j] = 5;
+				dSpecial[i][j] = 5;
 			if (dPiece[i][j] == 551)
-				dArch[i][j] = 5;
+				dSpecial[i][j] = 5;
 			if (dPiece[i][j] == 542)
-				dArch[i][j] = 6;
+				dSpecial[i][j] = 6;
 			if (dPiece[i][j] == 553)
-				dArch[i][j] = 6;
+				dSpecial[i][j] = 6;
 			if (dPiece[i][j] == 13)
-				dArch[i][j] = 5;
+				dSpecial[i][j] = 5;
 			if (dPiece[i][j] == 17)
-				dArch[i][j] = 6;
+				dSpecial[i][j] = 6;
 		}
 	}
 	for (j = y1; j <= y2; j++) {
 		for (i = x1; i <= x2; i++) {
 			if (dPiece[i][j] == 132) {
-				dArch[i][j + 1] = 2;
-				dArch[i][j + 2] = 1;
+				dSpecial[i][j + 1] = 2;
+				dSpecial[i][j + 2] = 1;
 			}
 			if (dPiece[i][j] == 135 || dPiece[i][j] == 139) {
-				dArch[i + 1][j] = 3;
-				dArch[i + 2][j] = 4;
+				dSpecial[i + 1][j] = 3;
+				dSpecial[i + 2][j] = 4;
 			}
 		}
 	}
@@ -2043,7 +2043,7 @@ void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 		if (!deltaload)
 			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
 		ObjSetMicro(xp, yp, 395);
-		dArch[xp][yp] = 8;
+		dSpecial[xp][yp] = 8;
 		objects_set_door_piece(xp, yp - 1);
 		object[oi]._oAnimFrame += 2;
 		object[oi]._oPreFlag = TRUE;
@@ -2099,7 +2099,7 @@ void OperateL1LDoor(int pnum, int oi, BOOL sendflag)
 			ObjSetMicro(xp, yp, 408);
 		else
 			ObjSetMicro(xp, yp, 393);
-		dArch[xp][yp] = 7;
+		dSpecial[xp][yp] = 7;
 		objects_set_door_piece(xp - 1, yp);
 		object[oi]._oAnimFrame += 2;
 		object[oi]._oPreFlag = TRUE;
@@ -4191,12 +4191,12 @@ void SyncL1Doors(int i)
 			ObjSetMicro(x, y, 408);
 		else
 			ObjSetMicro(x, y, 393);
-		dArch[x][y] = 7;
+		dSpecial[x][y] = 7;
 		objects_set_door_piece(x - 1, y);
 		y--;
 	} else {
 		ObjSetMicro(x, y, 395);
-		dArch[x][y] = 8;
+		dSpecial[x][y] = 8;
 		objects_set_door_piece(x, y - 1);
 		x--;
 	}

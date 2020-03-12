@@ -966,7 +966,7 @@ void CheckEFlag(int pnum, BOOL flag)
 		bitflags |= pieces->mt[i];
 	}
 
-	if (bitflags | nSolidTable[dPiece[x][y]] | dArch[x][y]) {
+	if (bitflags | nSolidTable[dPiece[x][y]] | dSpecial[x][y]) {
 		plr[pnum]._peflag = 1;
 	} else {
 		plr[pnum]._peflag = 0;
@@ -985,7 +985,7 @@ void CheckEFlag(int pnum, BOOL flag)
 		bitflags |= pieces->mt[i];
 	}
 
-	if (bitflags | dArch[x][y]) {
+	if (bitflags | dSpecial[x][y]) {
 		return;
 	}
 
@@ -998,7 +998,7 @@ void CheckEFlag(int pnum, BOOL flag)
 		bitflags |= pieces->mt[i];
 	}
 
-	if (bitflags | dArch[x][y]) {
+	if (bitflags | dSpecial[x][y]) {
 		plr[pnum]._peflag = 2;
 	}
 }

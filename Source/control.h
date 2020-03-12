@@ -45,7 +45,7 @@ extern BOOL sbookflag;
 extern BOOL chrflag;
 extern BOOL drawbtnflag;
 extern BYTE *pSpellBkCel;
-extern char infostr[MAX_PATH];
+extern char infostr[256];
 extern int numpanbtns;
 extern BYTE *pStatusPanel;
 extern char panelstr[4][64];

@@ -488,8 +488,8 @@ void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int efl
 	if (dFlags[sx][sy] & BFLAG_MISSILE) {
 		DrawClippedMissile(sx, sy, dx, dy, 0, 8, 0);
 	}
-	if (dArch[sx][sy] != 0) {
-		town_special_lower(pBuff, dArch[sx][sy]);
+	if (dSpecial[sx][sy] != 0) {
+		town_special_lower(pBuff, dSpecial[sx][sy]);
 	}
 }
 
@@ -702,8 +702,8 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int row, int CelSkip,
 	if (dFlags[sx][sy] & BFLAG_MISSILE) {
 		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, 0);
 	}
-	if (dArch[sx][sy] != 0) {
-		town_special_lower(&pBuff[PitchTbl[16 * CelSkip]], dArch[sx][sy]);
+	if (dSpecial[sx][sy] != 0) {
+		town_special_lower(&pBuff[PitchTbl[16 * CelSkip]], dSpecial[sx][sy]);
 	}
 }
 
@@ -929,8 +929,8 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, 
 	if (dFlags[x][y] & BFLAG_MISSILE) {
 		DrawMissile(x, y, sx, sy, 0, CelCap, FALSE);
 	}
-	if (dArch[x][y] != 0) {
-		town_special_upper(pBuff, dArch[x][y]);
+	if (dSpecial[x][y] != 0) {
+		town_special_upper(pBuff, dSpecial[x][y]);
 	}
 }
 
@@ -1049,10 +1049,10 @@ void T_DrawGame(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 
-	scr_pix_width = SCREEN_WIDTH;
-	scr_pix_height = VIEWPORT_HEIGHT;
-	dword_5C2FF8 = SCREEN_WIDTH / 64;
-	dword_5C2FFC = VIEWPORT_HEIGHT / 32;
+	ViewDX = SCREEN_WIDTH;
+	ViewDY = VIEWPORT_HEIGHT;
+	ViewBX = SCREEN_WIDTH / 64;
+	ViewBY = VIEWPORT_HEIGHT / 32;
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 175;
@@ -1168,10 +1168,10 @@ void T_DrawZoom(int x, int y)
 	int i, sx, sy, chunks, blocks;
 	int wdt, nSrcOff, nDstOff;
 
-	scr_pix_width = ZOOM_WIDTH;
-	scr_pix_height = 192;
-	dword_5C2FF8 = ZOOM_WIDTH / 64;
-	dword_5C2FFC = 192 / 32;
+	ViewDX = ZOOM_WIDTH;
+	ViewDY = 192;
+	ViewBX = ZOOM_WIDTH / 64;
+	ViewBY = 192 / 32;
 
 	sx = ScrollInfo._sxoff + 64;
 	sy = ScrollInfo._syoff + 143;
@@ -1424,15 +1424,15 @@ void SetTownMicros()
 	}
 
 	if (zoomflag) {
-		scr_pix_width = SCREEN_WIDTH;
-		scr_pix_height = VIEWPORT_HEIGHT;
-		dword_5C2FF8 = SCREEN_WIDTH / 64;
-		dword_5C2FFC = VIEWPORT_HEIGHT / 32;
+		ViewDX = SCREEN_WIDTH;
+		ViewDY = VIEWPORT_HEIGHT;
+		ViewBX = SCREEN_WIDTH / 64;
+		ViewBY = VIEWPORT_HEIGHT / 32;
 	} else {
-		scr_pix_width = ZOOM_WIDTH;
-		scr_pix_height = ZOOM_HEIGHT;
-		dword_5C2FF8 = ZOOM_WIDTH / 64;
-		dword_5C2FFC = ZOOM_HEIGHT / 32;
+		ViewDX = ZOOM_WIDTH;
+		ViewDY = ZOOM_HEIGHT;
+		ViewBX = ZOOM_WIDTH / 64;
+		ViewBY = ZOOM_HEIGHT / 32;
 	}
 }
 
@@ -1673,40 +1673,40 @@ void CreateTown(int entry)
 	memset(dMonster, 0, sizeof(dMonster));
 	memset(dObject, 0, sizeof(dObject));
 	memset(dItem, 0, sizeof(dItem));
-	memset(dArch, 0, sizeof(dArch));
+	memset(dSpecial, 0, sizeof(dSpecial));
 
 	for (y = 0; y < MAXDUNY; y++) {
 		for (x = 0; x < MAXDUNX; x++) {
 			if (dPiece[x][y] == 360) {
-				dArch[x][y] = 1;
+				dSpecial[x][y] = 1;
 			} else if (dPiece[x][y] == 358) {
-				dArch[x][y] = 2;
+				dSpecial[x][y] = 2;
 			} else if (dPiece[x][y] == 129) {
-				dArch[x][y] = 6;
+				dSpecial[x][y] = 6;
 			} else if (dPiece[x][y] == 130) {
-				dArch[x][y] = 7;
+				dSpecial[x][y] = 7;
 			} else if (dPiece[x][y] == 128) {
-				dArch[x][y] = 8;
+				dSpecial[x][y] = 8;
 			} else if (dPiece[x][y] == 117) {
-				dArch[x][y] = 9;
+				dSpecial[x][y] = 9;
 			} else if (dPiece[x][y] == 157) {
-				dArch[x][y] = 10;
+				dSpecial[x][y] = 10;
 			} else if (dPiece[x][y] == 158) {
-				dArch[x][y] = 11;
+				dSpecial[x][y] = 11;
 			} else if (dPiece[x][y] == 156) {
-				dArch[x][y] = 12;
+				dSpecial[x][y] = 12;
 			} else if (dPiece[x][y] == 162) {
-				dArch[x][y] = 13;
+				dSpecial[x][y] = 13;
 			} else if (dPiece[x][y] == 160) {
-				dArch[x][y] = 14;
+				dSpecial[x][y] = 14;
 			} else if (dPiece[x][y] == 214) {
-				dArch[x][y] = 15;
+				dSpecial[x][y] = 15;
 			} else if (dPiece[x][y] == 212) {
-				dArch[x][y] = 16;
+				dSpecial[x][y] = 16;
 			} else if (dPiece[x][y] == 217) {
-				dArch[x][y] = 17;
+				dSpecial[x][y] = 17;
 			} else if (dPiece[x][y] == 216) {
-				dArch[x][y] = 18;
+				dSpecial[x][y] = 18;
 			}
 		}
 	}

@@ -517,7 +517,7 @@ void DRLG_Init_Globals()
 	memset(dObject, 0, sizeof(dObject));
 	memset(dItem, 0, sizeof(dItem));
 	memset(dMissile, 0, sizeof(dMissile));
-	memset(dArch, 0, sizeof(dArch));
+	memset(dSpecial, 0, sizeof(dSpecial));
 	if (!lightflag) {
 		if (light4flag)
 			c = 3;
@@ -566,7 +566,7 @@ static void DRLG_InitL1Vals()
 			} else {
 				continue;
 			}
-			dArch[i][j] = pc;
+			dSpecial[i][j] = pc;
 		}
 	}
 }

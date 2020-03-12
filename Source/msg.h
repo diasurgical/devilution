@@ -8,7 +8,7 @@
 
 extern BOOL deltaload;
 extern BYTE gbBufferMsgs;
-extern int pkt_counter;
+extern int dwRecCount;
 
 void msg_send_drop_pkt(int pnum, int reason);
 void msg_send_packet(int pnum, const void *packet, DWORD dwSize);

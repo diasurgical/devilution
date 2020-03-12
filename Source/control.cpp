@@ -51,7 +51,7 @@ BOOL sbookflag;
 BOOL chrflag;
 BOOL drawbtnflag;
 BYTE *pSpellBkCel;
-char infostr[MAX_PATH];
+char infostr[256];
 int numpanbtns;
 BYTE *pStatusPanel;
 char panelstr[4][64];

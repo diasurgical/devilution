@@ -857,7 +857,7 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 		}
 
 		j = 0;
-		for (try2 = 0; j < num && try2 < 100; xp += offset_x[random_(94, 8)], yp += offset_x[random_(94, 8)]) {
+		for (try2 = 0; j < num && try2 < 100; xp += offset_x[random_(94, 8)], yp += offset_x[random_(94, 8)]) { /// BUGFIX: `yp += offset_y`
 			if (!MonstPlace(xp, yp)
 			    || (dTransVal[xp][yp] != dTransVal[x1][y1])
 			    || (leaderf & 2) && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4))) {
@@ -1222,7 +1222,7 @@ void M_CheckEFlag(int i)
 		return;
 	}
 
-	if (f | dArch[x][y])
+	if (f | dSpecial[x][y])
 		monster[i]._meflag = TRUE;
 	else {
 		monster[i]._meflag = FALSE;

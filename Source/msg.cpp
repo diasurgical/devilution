@@ -22,7 +22,7 @@ static BOOLEAN sgbDeltaChanged;
 static BYTE sgbDeltaChunks;
 BOOL deltaload;
 BYTE gbBufferMsgs;
-int pkt_counter;
+int dwRecCount;
 
 void msg_send_drop_pkt(int pnum, int reason)
 {

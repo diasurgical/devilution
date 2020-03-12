@@ -51,11 +51,11 @@ BYTE *pDungeonCels;
 int SpeedFrameTbl[128][16];
 THEME_LOC themeLoc[MAXTHEMES];
 char dPlayer[MAXDUNX][MAXDUNY];
-int dword_5C2FF8;
-int dword_5C2FFC;
-int scr_pix_width;
-int scr_pix_height;
-char dArch[MAXDUNX][MAXDUNY];
+int ViewBX;
+int ViewBY;
+int ViewDX;
+int ViewDY;
+char dSpecial[MAXDUNX][MAXDUNY];
 /**
  * List of light blocking dPieces
  */
@@ -560,15 +560,15 @@ void SetDungeonMicros()
 	SetSpeedCels();
 
 	if (zoomflag) {
-		scr_pix_width = SCREEN_WIDTH;
-		scr_pix_height = VIEWPORT_HEIGHT;
-		dword_5C2FF8 = SCREEN_WIDTH / 64;
-		dword_5C2FFC = VIEWPORT_HEIGHT / 32;
+		ViewDX = SCREEN_WIDTH;
+		ViewDY = VIEWPORT_HEIGHT;
+		ViewBX = SCREEN_WIDTH / 64;
+		ViewBY = VIEWPORT_HEIGHT / 32;
 	} else {
-		scr_pix_width = ZOOM_WIDTH;
-		scr_pix_height = ZOOM_HEIGHT;
-		dword_5C2FF8 = ZOOM_WIDTH / 64;
-		dword_5C2FFC = ZOOM_HEIGHT / 32;
+		ViewDX = ZOOM_WIDTH;
+		ViewDY = ZOOM_HEIGHT;
+		ViewBX = ZOOM_WIDTH / 64;
+		ViewBY = ZOOM_HEIGHT / 32;
 	}
 }
 
