@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file control.cpp
+ *
+ * Implementation of the character and main control panels
+ */
+#include "all.h"
 
 BYTE sgbNextTalkSave;
 BYTE sgbTalkSavePos;
@@ -18,7 +23,8 @@ BOOL drawmanaflag;
 BOOL chrbtnactive;
 char sgszTalkMsg[MAX_SEND_STR_LEN];
 BYTE *pPanelText;
-int nGoldFrame; /** current frame # for the pentagram caret in gold input */
+/** current frame # for the pentagram caret in gold input */
+int nGoldFrame;
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 BYTE *pTalkBtns;
@@ -36,7 +42,8 @@ char tempstr[256];
 BOOLEAN whisper[MAX_PLRS];
 int sbooktab;
 int pSplType;
-int frame; /** current frame # for the pentagram caret in chat input */
+/** current frame # for the pentagram caret in chat input */
+int frame;
 int initialDropGoldIndex;
 BOOL talkflag;
 BYTE *pSBkIconCels;
@@ -178,6 +185,7 @@ char SpellITbl[MAX_SPELLS] = {
 	30,
 };
 int PanBtnPos[8][5] = {
+	// clang-format off
 	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, 1 }, // char button
 	{ PANEL_LEFT +   9, PANEL_TOP +  35, 71, 19, 0 }, // quests button
 	{ PANEL_LEFT +   9, PANEL_TOP +  75, 71, 19, 1 }, // map button
@@ -186,6 +194,7 @@ int PanBtnPos[8][5] = {
 	{ PANEL_LEFT + 560, PANEL_TOP +  35, 71, 19, 0 }, // spells button
 	{ PANEL_LEFT +  87, PANEL_TOP +  91, 33, 32, 1 }, // chat button
 	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, 1 }, // friendly fire button
+	// clang-format on
 };
 char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
 char *PanBtnStr[8] = {
@@ -216,8 +225,8 @@ int SpellPages[6][7] = {
 
 /**
  * Draw spell cell onto the back buffer.
- * @param xp Backbuffer coordinate
- * @param yp Backbuffer coordinate
+ * @param xp Back buffer coordinate
+ * @param yp Back buffer coordinate
  * @param Trans Pointer to the cel buffer.
  * @param nCel Index of the cel frame to draw. 0 based.
  * @param w Width of the frame.
@@ -614,12 +623,12 @@ void ToggleSpell(int slot)
 }
 
 /**
- * @brief Print letter to the backbuffer
- * @param nOffset Backbuffer offset
+ * @brief Print letter to the back buffer
+ * @param nOffset Back buffer offset
  * @param nCel Number of letter in Windows-1252
  * @param col text_color color value
  */
-void CPrintString(int nOffset, int nCel, char col)
+void PrintChar(int nOffset, int nCel, char col)
 {
 	/// ASSERT: assert(gpBuffer);
 
@@ -1006,8 +1015,8 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
  * @param pCelBuff Buffer of the empty flask cel.
  * @param min Top of the flask cel section to draw.
  * @param max Bottom of the flask cel section to draw.
- * @param sx X Backbuffer coordinate
- * @param sy Y Backbuffer coordinate
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
  */
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
@@ -1286,7 +1295,7 @@ void InitControlPan()
 	nGoldFrame = 1;
 }
 
-void ClearCtrlPan()
+void DrawCtrlPan()
 {
 	DrawPanelBox(0, sgbPlrTalkTbl + 16, PANEL_WIDTH, PANEL_HEIGHT, PANEL_X, PANEL_Y);
 	DrawInfoBox();
@@ -1296,7 +1305,7 @@ void ClearCtrlPan()
  * Draws the control panel buttons in their current state. If the button is in the default
  * state draw it from the panel cel(extract its sub-rect). Else draw it from the buttons cel.
  */
-void DrawCtrlPan()
+void DrawCtrlBtns()
 {
 	int i;
 
@@ -1435,15 +1444,14 @@ void DoAutoMap()
  */
 void CheckPanelInfo()
 {
-	int i, c, v, s;
+	int i, c, v, s, xend, yend;
 
 	panelflag = FALSE;
 	ClearPanel();
 	for (i = 0; i < numpanbtns; i++) {
-		if (MouseX >= PanBtnPos[i][0]
-		    && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]
-		    && MouseY >= PanBtnPos[i][1]
-		    && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+		xend = PanBtnPos[i][0] + PanBtnPos[i][2];
+		yend = PanBtnPos[i][1] + PanBtnPos[i][3];
+		if (MouseX >= PanBtnPos[i][0] && MouseX <= xend && MouseY >= PanBtnPos[i][1] && MouseY <= yend) {
 			if (i != 7) {
 				strcpy(infostr, PanBtnStr[i]);
 			} else {
@@ -1492,14 +1500,14 @@ void CheckPanelInfo()
 				AddPanelString(tempstr, TRUE);
 				s = 0;
 				for (i = 0; i < plr[myplr]._pNumInv; i++) {
-					if (plr[myplr].InvList[i]._itype != -1
+					if (plr[myplr].InvList[i]._itype != ITYPE_NONE
 					    && (plr[myplr].InvList[i]._iMiscId == IMISC_SCROLL || plr[myplr].InvList[i]._iMiscId == IMISC_SCROLLT)
 					    && plr[myplr].InvList[i]._iSpell == v) {
 						s++;
 					}
 				}
 				for (i = 0; i < MAXBELTITEMS; i++) {
-					if (plr[myplr].SpdList[i]._itype != -1
+					if (plr[myplr].SpdList[i]._itype != ITYPE_NONE
 					    && (plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLL || plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLLT)
 					    && plr[myplr].SpdList[i]._iSpell == v) {
 						s++;
@@ -1707,10 +1715,10 @@ void DrawInfoBox()
 		}
 	}
 	if (infostr[0] || pnumlines)
-		control_draw_info_str();
+		PrintInfo();
 }
 
-void control_draw_info_str()
+void PrintInfo()
 {
 	int yo, lo, i;
 
@@ -1718,18 +1726,18 @@ void control_draw_info_str()
 		yo = 0;
 		lo = 1;
 		if (infostr[0]) {
-			control_print_info_str(0, infostr, TRUE, pnumlines);
+			CPrintString(0, infostr, TRUE, pnumlines);
 			yo = 1;
 			lo = 0;
 		}
 
 		for (i = 0; i < pnumlines; i++) {
-			control_print_info_str(i + yo, panelstr[i], pstrjust[i], pnumlines - lo);
+			CPrintString(i + yo, panelstr[i], pstrjust[i], pnumlines - lo);
 		}
 	}
 }
 
-void control_print_info_str(int y, char *str, BOOL center, int lines)
+void CPrintString(int y, char *str, BOOL center, int lines)
 {
 	BYTE c;
 	char *tmp;
@@ -1754,7 +1762,7 @@ void control_print_info_str(int y, char *str, BOOL center, int lines)
 		lineOffset += fontkern[c] + 2;
 		if (c) {
 			if (lineOffset < 288) {
-				CPrintString(lineStart, c, infoclr);
+				PrintChar(lineStart, c, infoclr);
 			}
 		}
 		lineStart += fontkern[c] + 2;
@@ -1770,7 +1778,7 @@ void PrintGameStr(int x, int y, char *str, int color)
 		c = gbFontTransTbl[(BYTE)*str++];
 		c = fontframe[c];
 		if (c)
-			CPrintString(off, c, color);
+			PrintChar(off, c, color);
 		off += fontkern[c] + 1;
 	}
 }
@@ -2007,7 +2015,7 @@ void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 		line += fontkern[c] + 1;
 		if (c) {
 			if (line < widthOffset)
-				CPrintString(nOffset, c, col);
+				PrintChar(nOffset, c, col);
 		}
 		nOffset += fontkern[c] + 1;
 	}
@@ -2046,7 +2054,7 @@ void MY_PlrStringXY(int x, int y, int endX, char *pszStr, char col, int base)
 		line += fontkern[c] + base;
 		if (c) {
 			if (line < widthOffset)
-				CPrintString(nOffset, c, col);
+				PrintChar(nOffset, c, col);
 		}
 		nOffset += fontkern[c] + base;
 	}
@@ -2387,7 +2395,7 @@ void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 		line += fontkern[c] + 1;
 		if (c) {
 			if (line <= 222)
-				CPrintString(width, c, col);
+				PrintChar(width, c, col);
 		}
 		width += fontkern[c] + 1;
 	}
@@ -2607,7 +2615,7 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 			return msg;
 		msg++;
 		if (c) {
-			CPrintString(*nOffset, c, color);
+			PrintChar(*nOffset, c, color);
 		}
 		*nOffset += fontkern[c] + 1;
 	}

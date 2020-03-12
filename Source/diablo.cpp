@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file diablo.cpp
+ *
+ * Implementation of the main game initialization functions.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
@@ -22,11 +27,13 @@ int DebugMonsters[10];
 BOOLEAN cineflag;
 int force_redraw;
 BOOL visiondebug;
-BOOL scrollflag; /* unused */
+/** unused */
+BOOL scrollflag;
 BOOL light4flag;
 BOOL leveldebug;
 BOOL monstdebug;
-BOOL trigdebug; /* unused */
+/** unused */
+BOOL trigdebug;
 int setseed;
 int debugmonsttypes;
 int PauseMode;
@@ -56,12 +63,14 @@ int framerate;
 int framestart;
 #endif
 BOOL FriendlyMode = TRUE;
+/** Default quick messages */
 char *spszMsgTbl[4] = {
 	"I need help! Come Here!",
 	"Follow me.",
 	"Here's something for you.",
 	"Now you DIE!"
 };
+/** INI files variable names for quick message keys */
 char *spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
 void FreeGameMem()
@@ -130,7 +139,7 @@ void run_game_loop(unsigned int uMsg)
 	/// ASSERT: assert(ghMainWnd);
 	saveProc = SetWindowProc(GM_Game);
 	control_update_life_mana();
-	msg_process_net_packets();
+	run_delta_info();
 	gbRunGame = TRUE;
 	gbProcessPlayers = TRUE;
 	gbRunGameResult = TRUE;
@@ -236,6 +245,13 @@ BOOL diablo_get_not_running()
 	return GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
+/**
+ * @brief Main entry point, check env, initialize systesm, play intros, start main menu, shut down
+ * @param hInstance A handle to the current instance of the application.
+ * @param hPrevInstance Always null
+ * @param lpCmdLine The command line for the application
+ * @param nCmdShow Initial window state
+ */
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HINSTANCE hInst;
@@ -787,7 +803,7 @@ BOOL LeftMouseDown(int wParam)
 			} else if (stextflag) {
 				CheckStoreBtn();
 			} else if (MouseY < PANEL_TOP) {
-				if (!gmenu_exception() && !TryIconCurs()) {
+				if (!gmenu_is_active() && !TryIconCurs()) {
 					if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
 						QuestlogESC();
 					} else if (qtextflag) {
@@ -813,7 +829,7 @@ BOOL LeftMouseDown(int wParam)
 					}
 				}
 			} else {
-				if (!talkflag && !dropGoldFlag && !gmenu_exception())
+				if (!talkflag && !dropGoldFlag && !gmenu_is_active())
 					CheckInvScrn();
 				DoPanBtn();
 				if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
@@ -946,7 +962,7 @@ void LeftMouseUp()
 
 void RightMouseDown()
 {
-	if (!gmenu_exception() && sgnTimeoutCurs == CURSOR_NONE && PauseMode != 2 && !plr[myplr]._pInvincible) {
+	if (!gmenu_is_active() && sgnTimeoutCurs == CURSOR_NONE && PauseMode != 2 && !plr[myplr]._pInvincible) {
 		if (doomflag) {
 			doom_close();
 		} else if (!stextflag) {
@@ -959,7 +975,7 @@ void RightMouseDown()
 				if (pcurs == 1) {
 					if (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))
 						CheckPlrSpell();
-				} else if (pcurs > 1 && pcurs < 12) {
+				} else if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM) {
 					SetCursor_(CURSOR_HAND);
 				}
 			}
@@ -969,7 +985,7 @@ void RightMouseDown()
 
 BOOL PressSysKey(int wParam)
 {
-	if (gmenu_exception() || wParam != VK_F10)
+	if (gmenu_is_active() || wParam != VK_F10)
 		return FALSE;
 	diablo_hotkey_msg(1);
 	return TRUE;
@@ -1037,7 +1053,7 @@ void PressKey(int vkey)
 	if (vkey == VK_ESCAPE) {
 		if (!PressEscKey()) {
 			track_repeat_walk(FALSE);
-			gamemenu_previous();
+			gamemenu_on();
 		}
 		return;
 	}
@@ -1112,31 +1128,31 @@ void PressKey(int vkey)
 #endif
 	else if (vkey == VK_F5) {
 		if (spselflag) {
-			ToggleSpell(0);
+			SetSpeedSpell(0);
 			return;
 		}
-		SetSpeedSpell(0);
+		ToggleSpell(0);
 		return;
 	} else if (vkey == VK_F6) {
 		if (spselflag) {
-			ToggleSpell(1);
+			SetSpeedSpell(1);
 			return;
 		}
-		SetSpeedSpell(1);
+		ToggleSpell(1);
 		return;
 	} else if (vkey == VK_F7) {
 		if (spselflag) {
-			ToggleSpell(2);
+			SetSpeedSpell(2);
 			return;
 		}
-		SetSpeedSpell(2);
+		ToggleSpell(2);
 		return;
 	} else if (vkey == VK_F8) {
 		if (spselflag) {
-			ToggleSpell(3);
+			SetSpeedSpell(3);
 			return;
 		}
-		SetSpeedSpell(3);
+		ToggleSpell(3);
 		return;
 	} else if (vkey == VK_F9) {
 		diablo_hotkey_msg(0);
@@ -1225,7 +1241,7 @@ void diablo_pause_game()
 /* NOTE: `return` must be used instead of `break` to be bin exact as C++ */
 void PressChar(int vkey)
 {
-	if (gmenu_exception() || control_talk_last_key(vkey) || sgnTimeoutCurs != 0 || deathflag) {
+	if (gmenu_is_active() || control_talk_last_key(vkey) || sgnTimeoutCurs != 0 || deathflag) {
 		return;
 	}
 	if ((char)vkey == 'p' || (char)vkey == 'P') {
@@ -1339,43 +1355,43 @@ void PressChar(int vkey)
 		return;
 	case '!':
 	case '1':
-		if (plr[myplr].SpdList[0]._itype != -1 && plr[myplr].SpdList[0]._itype != 11) {
+		if (plr[myplr].SpdList[0]._itype != ITYPE_NONE && plr[myplr].SpdList[0]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST);
 		}
 		return;
 	case '@':
 	case '2':
-		if (plr[myplr].SpdList[1]._itype != -1 && plr[myplr].SpdList[1]._itype != 11) {
+		if (plr[myplr].SpdList[1]._itype != ITYPE_NONE && plr[myplr].SpdList[1]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 1);
 		}
 		return;
 	case '#':
 	case '3':
-		if (plr[myplr].SpdList[2]._itype != -1 && plr[myplr].SpdList[2]._itype != 11) {
+		if (plr[myplr].SpdList[2]._itype != ITYPE_NONE && plr[myplr].SpdList[2]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 2);
 		}
 		return;
 	case '$':
 	case '4':
-		if (plr[myplr].SpdList[3]._itype != -1 && plr[myplr].SpdList[3]._itype != 11) {
+		if (plr[myplr].SpdList[3]._itype != ITYPE_NONE && plr[myplr].SpdList[3]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 3);
 		}
 		return;
 	case '%':
 	case '5':
-		if (plr[myplr].SpdList[4]._itype != -1 && plr[myplr].SpdList[4]._itype != 11) {
+		if (plr[myplr].SpdList[4]._itype != ITYPE_NONE && plr[myplr].SpdList[4]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 4);
 		}
 		return;
 	case '^':
 	case '6':
-		if (plr[myplr].SpdList[5]._itype != -1 && plr[myplr].SpdList[5]._itype != 11) {
+		if (plr[myplr].SpdList[5]._itype != ITYPE_NONE && plr[myplr].SpdList[5]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 5);
 		}
 		return;
 	case '&':
 	case '7':
-		if (plr[myplr].SpdList[6]._itype != -1 && plr[myplr].SpdList[6]._itype != 11) {
+		if (plr[myplr].SpdList[6]._itype != ITYPE_NONE && plr[myplr].SpdList[6]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 6);
 		}
 		return;
@@ -1387,7 +1403,7 @@ void PressChar(int vkey)
 			return;
 		}
 #endif
-		if (plr[myplr].SpdList[7]._itype != -1 && plr[myplr].SpdList[7]._itype != 11) {
+		if (plr[myplr].SpdList[7]._itype != ITYPE_NONE && plr[myplr].SpdList[7]._itype != ITYPE_GOLD) {
 			UseInvItem(myplr, INVITEM_BELT_FIRST + 7);
 		}
 		return;
@@ -1799,7 +1815,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		;
 
 #ifndef SPAWN
-	if (setlevel && setlvlnum == SL_SKELKING && quests[QTYPE_KING]._qactive == 2)
+	if (setlevel && setlvlnum == SL_SKELKING && quests[Q_SKELKING]._qactive == QUEST_ACTIVE)
 		PlaySFX(USFX_SKING1);
 #endif
 }
@@ -1831,12 +1847,12 @@ void game_logic()
 	if (PauseMode == 1) {
 		PauseMode = 2;
 	}
-	if (gbMaxPlayers == 1 && gmenu_exception()) {
+	if (gbMaxPlayers == 1 && gmenu_is_active()) {
 		force_redraw |= 1;
 		return;
 	}
 
-	if (!gmenu_exception() && sgnTimeoutCurs == 0) {
+	if (!gmenu_is_active() && sgnTimeoutCurs == 0) {
 		CheckCursMove();
 		track_process();
 	}
@@ -1882,7 +1898,7 @@ void timeout_cursor(BOOL bTimeout)
 			SetCursor_(CURSOR_HOURGLASS);
 			force_redraw = 255;
 		}
-		scrollrt_draw_game_screen(1);
+		scrollrt_draw_game_screen(TRUE);
 	} else if (sgnTimeoutCurs) {
 		SetCursor_(sgnTimeoutCurs);
 		sgnTimeoutCurs = 0;

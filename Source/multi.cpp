@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file multi.cpp
+ *
+ * Implementation of functions for keeping multiplaye games in sync.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
@@ -272,7 +277,7 @@ void multi_player_left_msg(int pnum, int left)
 		RemovePlrFromMap(pnum);
 		RemovePortalMissile(pnum);
 		DeactivatePortal(pnum);
-		RemovePlrPortal(pnum);
+		delta_close_portal(pnum);
 		RemovePlrMissiles(pnum);
 		if (left) {
 			pszFmt = "Player '%s' just left the game";

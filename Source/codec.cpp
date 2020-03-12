@@ -1,11 +1,16 @@
-#include "diablo.h"
+/**
+ * @file codec.cpp
+ *
+ * Implementation of save game encryption algorithm.
+ */
+#include "all.h"
 
-struct CodecSignature {
+typedef struct CodecSignature {
 	DWORD checksum;
 	BYTE error;
 	BYTE last_chunk_size;
 	WORD unused;
-};
+} CodecSignature;
 
 int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 {

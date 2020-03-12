@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file items.cpp
+ *
+ * Implementation of item functionality.
+ */
+#include "all.h"
 
 int itemactive[MAXITEMS];
 BOOL uitemflag;
@@ -275,9 +280,9 @@ void InitItems()
 
 	if (!setlevel) {
 		s = GetRndSeed(); /* unused */
-		if (QuestStatus(QTYPE_INFRA))
+		if (QuestStatus(Q_ROCK))
 			SpawnRock();
-		if (QuestStatus(QTYPE_ANVIL))
+		if (QuestStatus(Q_ANVIL))
 			SpawnQuestItem(IDI_ANVIL, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
 		if (currlevel > 0 && currlevel < 16)
 			AddInitItems();
@@ -1870,7 +1875,7 @@ int RndUItem(int m)
 			okflag = FALSE;
 		if (AllItemsList[i].itype == ITYPE_GOLD)
 			okflag = FALSE;
-		if (AllItemsList[i].itype == ITYPE_0E)
+		if (AllItemsList[i].itype == ITYPE_MEAT)
 			okflag = FALSE;
 		if (AllItemsList[i].iMiscId == IMISC_BOOK)
 			okflag = TRUE;
@@ -2078,8 +2083,13 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 		if (item[ii]._iMagical != ITEM_QUALITY_UNIQUE)
 			ItemRndDur(ii);
 	} else {
-		if (item[ii]._iLoc != ILOC_UNEQUIPABLE)
-			GetUniqueItem(ii, iseed);
+		if (item[ii]._iLoc != ILOC_UNEQUIPABLE) {
+			//uid = CheckUnique(ii, iblvl, uper, recreate);
+			//if (uid != UITYPE_INVALID) {
+			//	GetUniqueItem(ii, uid);
+			//}
+			GetUniqueItem(ii, iseed); // BUG: the second argument to GetUniqueItem should be uid.
+		}
 	}
 	SetupItem(ii);
 }
@@ -2095,7 +2105,7 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 			return;
 		}
 		onlygood = 1;
-	} else if (quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 != QS_MUSHGIVEN) {
+	} else if (quests[Q_MUSHROOM]._qactive != QUEST_ACTIVE || quests[Q_MUSHROOM]._qvar1 != QS_MUSHGIVEN) {
 		idx = RndItem(m);
 		if (!idx)
 			return;
@@ -2108,7 +2118,7 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 		}
 	} else {
 		idx = IDI_BRAIN;
-		quests[QTYPE_BLKM]._qvar1 = QS_BRAINSPAWNED;
+		quests[Q_MUSHROOM]._qvar1 = QS_BRAINSPAWNED;
 	}
 
 	if (numitems < MAXITEMS) {
@@ -2942,7 +2952,7 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
 		k += fontkern[c] + 1;
 		if (c && k <= 257) {
-			CPrintString(off, c, col);
+			PrintChar(off, c, col);
 		}
 		off += fontkern[c] + 1;
 	}
@@ -3149,7 +3159,7 @@ void UseItem(int p, int Mid, int spl)
 
 	switch (Mid) {
 	case IMISC_HEAL:
-	case IMISC_HEAL_1C:
+	case IMISC_MEAT:
 		j = plr[p]._pMaxHP >> 8;
 		l = ((j >> 1) + random_(39, j)) << 6;
 		if (plr[p]._pClass == PC_WARRIOR)
@@ -3329,7 +3339,7 @@ BOOL SmithItemOk(int i)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_GOLD)
 		rv = FALSE;
-	if (AllItemsList[i].itype == ITYPE_0E)
+	if (AllItemsList[i].itype == ITYPE_MEAT)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_STAFF)
 		rv = FALSE;
@@ -3425,7 +3435,7 @@ BOOL PremiumItemOk(int i)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_GOLD)
 		rv = FALSE;
-	if (AllItemsList[i].itype == ITYPE_0E)
+	if (AllItemsList[i].itype == ITYPE_MEAT)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_STAFF)
 		rv = FALSE;

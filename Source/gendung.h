@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file gendung.h
+ *
+ * Interface of general dungeon generation code.
+ */
 #ifndef __GENDUNG_H__
 #define __GENDUNG_H__
 

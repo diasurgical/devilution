@@ -76,7 +76,7 @@ void __cdecl Connect_cpp_init();
 BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5);
 BOOL __stdcall UiSoundCallback(int a1, int type, int a3);
 BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
-BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
+BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
 BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, DWORD *a6, DWORD *a7);
 int __fastcall Connect_GetRankFromLevel(char *str);
 BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, int a4);
@@ -84,8 +84,8 @@ void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, cha
 BOOL __fastcall Connect_GetHeroInfoConc(const char *a1, _uiheroinfo *pInfo);
 void __fastcall Connect_MakeDescString(_uiheroinfo *a1, char *name, size_t size);
 void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc);
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc);
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type);
 void __fastcall Connect_CopyPlrDescStrings(char *str1, int size1, char *str2, int size2);
 
 BOOL __stdcall UiCopyProtError(int *pdwResult);
@@ -283,7 +283,7 @@ void __fastcall local_SetDiabloCursor(HWND hWnd);
 
 void __cdecl j_MainMenu_cpp_init();
 void __cdecl MainMenu_cpp_init();
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4);
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int attractTimeOut);
 LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall MainMenu_KillAndFreeMenu(HWND hWnd);
 void __fastcall MainMenu_SetMenuTimer(HWND hWnd);

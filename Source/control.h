@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file control.h
+ *
+ * Interface of the character and main control panels
+ */
 #ifndef __CONTROL_H__
 #define __CONTROL_H__
 
@@ -60,7 +64,7 @@ void DrawSpellList();
 void SetSpell();
 void SetSpeedSpell(int slot);
 void ToggleSpell(int slot);
-void CPrintString(int nOffset, int nCel, char col);
+void PrintChar(int nOffset, int nCel, char col);
 void AddPanelString(char *str, BOOL just);
 void ClearPanel();
 void DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
@@ -73,8 +77,8 @@ void DrawManaFlask();
 void control_update_life_mana();
 void UpdateManaFlask();
 void InitControlPan();
-void ClearCtrlPan();
 void DrawCtrlPan();
+void DrawCtrlBtns();
 void DoSpeedBook();
 void DoPanBtn();
 void control_set_button_down(int btn_id);
@@ -85,8 +89,8 @@ void CheckBtnUp();
 void FreeControlPan();
 BOOL control_WriteStringToBuffer(BYTE *str);
 void DrawInfoBox();
-void control_draw_info_str();
-void control_print_info_str(int y, char *str, BOOL center, int lines);
+void PrintInfo();
+void CPrintString(int y, char *str, BOOL center, int lines);
 void PrintGameStr(int x, int y, char *str, int color);
 void DrawChr();
 void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col);

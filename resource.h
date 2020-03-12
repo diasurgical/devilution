@@ -1,7 +1,10 @@
-//{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by Diablo.rc
-//
+/**
+ * @file resource.h
+ *
+ * Microsoft Developer Studio generated include file.
+ * Used by Diablo.rc
+ */
+
 #define IDI_ICON1                       101
 #define IDD_DIALOG1                     104 // DX
 #define IDD_DIALOG2                     105 // NOMEMORY
@@ -16,7 +19,7 @@
 #define IDD_DIALOG11                    114 // READONLY
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        103

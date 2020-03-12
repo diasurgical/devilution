@@ -1,7 +1,15 @@
-#include "diablo.h"
+/**
+ * @file gendung.cpp
+ *
+ * Implementation of general dungeon generation code.
+ */
+#include "all.h"
 
 WORD level_frame_types[MAXTILES];
 int themeCount;
+/**
+ * List of transparent dPieces
+ */
 BOOLEAN nTransTable[2049];
 //int dword_52D204;
 int dMonster[MAXDUNX][MAXDUNY];
@@ -23,6 +31,9 @@ int tile_defs[MAXTILES];
 BYTE *pMegaTiles;
 BYTE *pLevelPieces;
 int gnDifficulty;
+/**
+ * List of transparancy masks to use for dPieces
+ */
 char block_lvid[2049];
 //char byte_5B78EB;
 char dTransVal[MAXDUNX][MAXDUNY];
@@ -30,6 +41,9 @@ BOOLEAN nTrapTable[2049];
 BYTE leveltype;
 BYTE currlevel;
 BOOLEAN TransList[256];
+/**
+ * List of path blocking dPieces
+ */
 BOOLEAN nSolidTable[2049];
 int level_frame_count[MAXTILES];
 ScrollStruct ScrollInfo;
@@ -42,12 +56,18 @@ int ViewBY;
 int ViewDX;
 int ViewDY;
 char dSpecial[MAXDUNX][MAXDUNY];
+/**
+ * List of light blocking dPieces
+ */
 BOOLEAN nBlockTable[2049];
 BYTE *pSpecialCels;
 char dFlags[MAXDUNX][MAXDUNY];
 char dItem[MAXDUNX][MAXDUNY];
 BYTE setlvlnum;
 int level_frame_sizes[MAXTILES];
+/**
+ * List of missile blocking dPieces
+ */
 BOOLEAN nMissileTable[2049];
 BYTE *pSetPiece;
 char setlvltype;

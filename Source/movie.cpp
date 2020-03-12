@@ -1,7 +1,14 @@
-#include "diablo.h"
+/**
+ * @file movie.cpp
+ *
+ * Implementation of video playback.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** Should the movie continue playing. */
 BYTE movie_playing;
+/** Should the movie play in a loop. */
 BOOL loop_movie;
 
 void play_movie(char *pszMovie, BOOL user_can_close)

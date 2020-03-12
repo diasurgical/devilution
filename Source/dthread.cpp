@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file dthread.cpp
+ *
+ * Implementation of functions for updating game state from network commands.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 #ifdef __cplusplus
@@ -81,14 +86,14 @@ void dthread_start()
 	}
 }
 
-unsigned int __stdcall dthread_handler(void *)
+unsigned int __stdcall dthread_handler(void *data)
 {
 	char *error_buf;
 	TMegaPkt *pkt;
 	DWORD dwMilliseconds;
 
 	while (dthread_running) {
-		if (!sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, 0xFFFFFFFF) == -1) {
+		if (!sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, INFINITE) == -1) {
 			error_buf = TraceLastError();
 			app_fatal("dthread4:\n%s", error_buf);
 		}
@@ -135,7 +140,7 @@ void dthread_cleanup()
 	dthread_running = FALSE;
 	SetEvent(sghWorkToDoEvent);
 	if (sghThread != INVALID_HANDLE_VALUE && glpDThreadId != GetCurrentThreadId()) {
-		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
+		if (WaitForSingleObject(sghThread, INFINITE) == -1) {
 			error_buf = TraceLastError();
 			app_fatal("dthread3:\n(%s)", error_buf);
 		}

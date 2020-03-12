@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file missiles.cpp
+ *
+ * Implementation of missile functionality.
+ */
+#include "all.h"
 
 int missileactive[MAXMISSILES];
 int missileavail[MAXMISSILES];
@@ -9,7 +14,9 @@ ChainStruct chain[MAXMISSILES];
 BOOL MissilePreFlag;
 int numchains;
 
+/** Maps from direction to X-offset. */
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
+/** Maps from direction to Y-offset. */
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 
 void GetDamageAmt(int i, int *mind, int *maxd)
@@ -945,7 +952,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 {
 	int oi;
 
-	if (missile[i]._miAnimType != 4 && missile[i]._misource != -1) {
+	if (missile[i]._miAnimType != MFILE_FIREWAL && missile[i]._misource != -1) {
 		if (!missile[i]._micaster) {
 			if (dMonster[mx][my] > 0) {
 				if (MonsterMHit(
@@ -1016,7 +1023,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 		}
 	} else {
 		if (dMonster[mx][my] > 0) {
-			if (missile[i]._miAnimType == 4) {
+			if (missile[i]._miAnimType == MFILE_FIREWAL) {
 				if (MonsterMHit(
 				        missile[i]._misource,
 				        dMonster[mx][my] - 1,
@@ -2447,7 +2454,7 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 	missile[mi]._mispllvl = spllvl;
 	missile[mi]._mimfnum = midir;
 
-	if (missile[mi]._miAnimType == 255 || misfiledata[missile[mi]._miAnimType].mAnimFAmt < 8)
+	if (missile[mi]._miAnimType == MFILE_NONE || misfiledata[missile[mi]._miAnimType].mAnimFAmt < 8)
 		SetMissDir(mi, 0);
 	else
 		SetMissDir(mi, midir);

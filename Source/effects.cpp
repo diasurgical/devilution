@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file effects.cpp
+ *
+ * Implementation of functions for loading and playing sounds.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 int sfxdelay;
@@ -6,10 +11,17 @@ int sfxdnum;
 HANDLE sfx_stream;
 TSFX *sfx_data_cur;
 
+/**
+ * Monster sound type prefix
+ * a: Attack
+ * h: Hit
+ * d: Death
+ * s: Special
+ */
 const char MonstSndChar[] = { 'a', 'h', 'd', 's' };
 
 /* data */
-
+/** List of all sounds, except monsters and music */
 TSFX sgSFX[] = {
 	// clang-format off
 	// bFlags,                   pszName,                       pSnd

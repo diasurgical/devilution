@@ -1,11 +1,18 @@
-#include "diablo.h"
+/**
+ * @file mpqapi.cpp
+ *
+ * Implementation of functions for creating and editing MPQ files.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 DWORD sgdwMpqOffset;
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
+/** Has the savegame-file been modified in memory. */
 BOOL save_archive_modified;
 _BLOCKENTRY *sgpBlockTbl;
+/** Is the savegame-file currently open. */
 BOOLEAN save_archive_open;
 
 //note: 32872 = 32768 + 104 (sizeof(_FILEHEADER))

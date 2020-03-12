@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 
 /**
  * Used under building to avoid HOM and outside of level
@@ -1396,6 +1396,9 @@ void T_DrawView(int StartX, int StartY)
 	DrawManaFlask();
 }
 
+/**
+ * @brief Build tile columns
+ */
 void SetTownMicros()
 {
 	int i, x, y, lv;
@@ -1620,7 +1623,7 @@ void T_Pass3()
 	}
 #endif
 
-	if (quests[QTYPE_PW]._qactive != 3 && quests[QTYPE_PW]._qactive) {
+	if (quests[Q_PWATER]._qactive != QUEST_DONE && quests[Q_PWATER]._qactive) {
 		T_FillTile(P3Tiles, 60, 70, 342);
 	} else {
 		T_FillTile(P3Tiles, 60, 70, 71);
