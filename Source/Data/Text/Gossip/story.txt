@@ -1,0 +1,59 @@
+[TEXT_STORY1]
+"Hello, my friend. Stay awhile and listen... |"
+0
+5
+TSFX_STORY25
+
+[TEXT_STORY2]
+"While you are venturing deeper into the Labyrinth you may find tomes of great knowledge hidden there. \n \nRead them carefully for they can tell you things that even I cannot. |"
+1
+6
+TSFX_STORY26
+
+[TEXT_STORY3]
+"I know of many myths and legends that may contain answers to questions that may arise in your journeys into the Labyrinth. If you come across challenges and questions to which you seek knowledge, seek me out and I will tell you what I can. |"
+1
+5
+TSFX_STORY27
+
+[TEXT_STORY4]
+"Griswold - a man of great action and great courage. I bet he never told you about the time he went into the Labyrinth to save Wirt, did he? He knows his fair share of the dangers to be found there, but then again - so do you. He is a skilled craftsman, and if he claims to be able to help you in any way, you can count on his honesty and his skill. |"
+1
+5
+TSFX_STORY28
+
+[TEXT_STORY5]
+"Ogden has owned and run the Rising Sun Inn and Tavern for almost four years now. He purchased it just a few short months before everything here went to hell. He and his wife Garda do not have the money to leave as they invested all they had in making a life for themselves here. He is a good man with a deep sense of responsibility. |"
+1
+5
+TSFX_STORY29
+
+[TEXT_STORY6]
+"Poor Farnham. He is a disquieting reminder of the doomed assembly that entered into the Cathedral with Lazarus on that dark day. He escaped with his life, but his courage and much of his sanity were left in some dark pit. He finds comfort only at the bottom of his tankard nowadays, but there are occasional bits of truth buried within his constant ramblings. |"
+1
+5
+TSFX_STORY30
+
+[TEXT_STORY7]
+"The witch, Adria, is an anomaly here in Tristram. She arrived shortly after the Cathedral was desecrated while most everyone else was fleeing. She had a small hut constructed at the edge of town, seemingly overnight, and has access to many strange and arcane artifacts and tomes of knowledge that even I have never seen before. |"
+1
+5
+TSFX_STORY31
+
+[TEXT_STORY9]
+"The story of Wirt is a frightening and tragic one. He was taken from the arms of his mother and dragged into the labyrinth by the small, foul demons that wield wicked spears. There were many other children taken that day, including the son of King Leoric. The Knights of the palace went below, but never returned. The Blacksmith found the boy, but only after the foul beasts had begun to torture him for their sadistic pleasures. |"
+1
+5
+TSFX_STORY33
+
+[TEXT_STORY10]
+"Ah, Pepin. I count him as a true friend - perhaps the closest I have here. He is a bit addled at times, but never a more caring or considerate soul has existed. His knowledge and skills are equaled by few, and his door is always open. |"
+1
+5
+TSFX_STORY34
+
+[TEXT_STORY11]
+"Gillian is a fine woman. Much adored for her high spirits and her quick laugh, she holds a special place in my heart. She stays on at the tavern to support her elderly grandmother who is too sick to travel. I sometimes fear for her safety, but I know that any man in the village would rather die than see her harmed. |"
+1
+5
+TSFX_STORY35

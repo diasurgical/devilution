@@ -1,0 +1,65 @@
+[TEXT_WIRT1]
+"Pssst... over here... |"
+0
+5
+TSFX_PEGBOY32
+
+[TEXT_WIRT2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT11]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_WIRT12]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

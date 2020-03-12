@@ -1,0 +1,71 @@
+[TEXT_ADRIA1]
+"I sense a soul in search of answers... |"
+0
+5
+TSFX_WITCH38
+
+[TEXT_ADRIA2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA12]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ADRIA13]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

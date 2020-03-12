@@ -1,0 +1,59 @@
+[TEXT_ANVIL1]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ANVIL10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

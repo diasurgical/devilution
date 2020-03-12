@@ -425,7 +425,7 @@ void DrawSpell()
 
 	// BUGFIX: Move the next line into the if statement to avoid OOB (SPL_INVALID is -1)
 	tlvl = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[spl];
-	if (st == RSPLTYPE_SPELL && spl != SPL_INVALID) {
+	if (st == RSPLTYPE_SPELL && spl != -1) {
 		if (!CheckSpell(myplr, spl, RSPLTYPE_SPELL, TRUE))
 			st = RSPLTYPE_INVALID;
 		if (tlvl <= 0)
@@ -436,7 +436,7 @@ void DrawSpell()
 	if (plr[myplr]._pRSpell < 0)
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
-	if (spl != SPL_INVALID)
+	if (spl != -1)
 		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, SpellITbl[spl], 56);
 	else
 		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, 27, 56);
@@ -447,7 +447,7 @@ void DrawSpellList()
 	int i, j, x, y, c, s, t, v, lx, ly, trans;
 	unsigned __int64 mask, spl;
 
-	pSpell = SPL_INVALID;
+	pSpell = -1;
 	infostr[0] = '\0';
 	x = PANEL_X + 12 + 56 * 10;
 	y = PANEL_Y - 17;
@@ -570,7 +570,7 @@ void DrawSpellList()
 void SetSpell()
 {
 	spselflag = FALSE;
-	if (pSpell != SPL_INVALID) {
+	if (pSpell != -1) {
 		ClearPanel();
 		plr[myplr]._pRSpell = pSpell;
 		plr[myplr]._pRSplType = pSplType;
@@ -582,10 +582,10 @@ void SetSpeedSpell(int slot)
 {
 	int i;
 
-	if (pSpell != SPL_INVALID) {
+	if (pSpell != -1) {
 		for (i = 0; i < 4; ++i) {
 			if (plr[myplr]._pSplHotKey[i] == pSpell && plr[myplr]._pSplTHotKey[i] == pSplType)
-				plr[myplr]._pSplHotKey[i] = SPL_INVALID;
+				plr[myplr]._pSplHotKey[i] = -1;
 		}
 		plr[myplr]._pSplHotKey[slot] = pSpell;
 		plr[myplr]._pSplTHotKey[slot] = pSplType;
@@ -1338,7 +1338,7 @@ void DoSpeedBook()
 	yo = PANEL_Y - 17;
 	X = PANEL_LEFT + 12 + 56 * 10 + 56 / 2;
 	Y = PANEL_TOP - 17 - 56 / 2;
-	if (plr[myplr]._pRSpell != SPL_INVALID) {
+	if (plr[myplr]._pRSpell != -1) {
 		for (i = 0; i < 4; i++) {
 			switch (i) {
 			case RSPLTYPE_SKILL:
@@ -1477,7 +1477,7 @@ void CheckPanelInfo()
 		strcpy(tempstr, "Hotkey : 's'");
 		AddPanelString(tempstr, TRUE);
 		v = plr[myplr]._pRSpell;
-		if (v != SPL_INVALID) {
+		if (v != -1) {
 			switch (plr[myplr]._pRSplType) {
 			case RSPLTYPE_SKILL:
 				sprintf(tempstr, "%s Skill", spelldata[v].sSkillText);

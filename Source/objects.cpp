@@ -327,7 +327,7 @@ void InitRndBarrels()
 {
 	int numobjs; // number of groups of barrels to generate
 	int xp, yp;
-	_object_id o;
+	int o;
 	BOOL found;
 	int p; // regulates chance to stop placing barrels in current group
 	int dir;

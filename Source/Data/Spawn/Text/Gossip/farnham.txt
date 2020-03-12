@@ -1,0 +1,71 @@
+[TEXT_FARNHAM1]
+"Can't a fella drink in peace? |"
+0
+5
+TSFX_DRUNK27
+
+[TEXT_FARNHAM2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM11]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM12]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_FARNHAM13]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

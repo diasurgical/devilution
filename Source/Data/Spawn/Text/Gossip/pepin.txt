@@ -1,0 +1,59 @@
+[TEXT_PEPIN1]
+"What ails you, my friend? |"
+0
+5
+TSFX_HEALER37
+
+[TEXT_PEPIN2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_PEPIN11]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

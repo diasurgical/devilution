@@ -1,0 +1,59 @@
+[TEXT_INFRA1]
+"Griswold speaks of the Heaven Stone that was destined for the enclave located in the east. It was being taken there for further study. This stone glowed with an energy that somehow granted vision beyond that which a normal man could possess. I do not know what secrets it holds, my friend, but finding this stone would certainly prove most valuable. |"
+1
+5
+TSFX_STORY20
+
+[TEXT_INFRA2]
+"The caravan stopped here to take on some supplies for their journey to the east. I sold them quite an array of fresh fruits and some excellent sweetbreads that Garda has just finished baking. Shame what happened to them... |"
+1
+6
+TSFX_TAVERN18
+
+[TEXT_INFRA3]
+"I don't know what it is that they thought they could see with that rock, but I will say this. If rocks are falling from the sky, you had better be careful! |"
+1
+6
+TSFX_HEALER18
+
+[TEXT_INFRA4]
+"Well, a caravan of some very important people did stop here, but that was quite a while ago. They had strange accents and were starting on a long journey, as I recall. \n \nI don't see how you could hope to find anything that they would have been carrying. |"
+1
+6
+TSFX_BMAID18
+
+[TEXT_INFRA5]
+"Stay for a moment - I have a story you might find interesting. A caravan that was bound for the eastern kingdoms passed through here some time ago. It was supposedly carrying a piece of the heavens that had fallen to earth! The caravan was ambushed by cloaked riders just north of here along the roadway. I searched the wreckage for this sky rock, but it was nowhere to be found. If you should find it, I believe that I can fashion something useful from it. |"
+1
+5
+TSFX_SMITH24
+
+[TEXT_INFRA6]
+"I am still waiting for you to bring me that stone from the heavens. I know that I can make something powerful out of it. |"
+1
+6
+TSFX_SMITH25
+
+[TEXT_INFRA7]
+"Let me see that - aye... aye, it is as I believed. Give me a moment...\n \nAh, Here you are. I arranged pieces of the stone within a silver ring that my father left me. I hope it serves you well. |"
+1
+5
+TSFX_SMITH26
+
+[TEXT_INFRA8]
+"I used to have a nice ring; it was a really expensive one, with blue and green and red and silver. Don't remember what happened to it, though. I really miss that ring... |"
+1
+5
+TSFX_DRUNK19
+
+[TEXT_INFRA9]
+"The Heaven Stone is very powerful, and were it any but Griswold who bid you find it, I would prevent it. He will harness its powers and its use will be for the good of us all. |"
+1
+5
+TSFX_WITCH20
+
+[TEXT_INFRA10]
+"If anyone can make something out of that rock, Griswold can. He knows what he is doing, and as much as I try to steal his customers, I respect the quality of his work. |"
+1
+6
+TSFX_PEGBOY18

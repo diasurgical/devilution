@@ -1,0 +1,71 @@
+[TEXT_GRISWOLD1]
+"Well, what can I do for ya? |"
+0
+5
+TSFX_SMITH44
+
+[TEXT_GRISWOLD2]
+"If you're looking for a good weapon, let me show this to you. Take your basic blunt weapon, such as a mace. Works like a charm against most of those undying horrors down there, and there's nothing better to shatter skinny little skeletons! |"
+1
+5
+TSFX_SMITH45
+
+[TEXT_GRISWOLD3]
+"The axe? Aye, that's a good weapon, balanced against any foe. Look how it cleaves the air, and then imagine a nice fat demon head in its path. Keep in mind, however, that it is slow to swing - but talk about dealing a heavy blow! |"
+1
+5
+TSFX_SMITH46
+
+[TEXT_GRISWOLD4]
+"Look at that edge, that balance. A sword in the right hands, and against the right foe, is the master of all weapons. Its keen blade finds little to hack or pierce on the undead, but against a living, breathing enemy, a sword will better slice their flesh! |"
+1
+5
+TSFX_SMITH47
+
+[TEXT_GRISWOLD5]
+"Your weapons and armor will show the signs of your struggles against the Darkness. If you bring them to me, with a bit of work and a hot forge, I can restore them to top fighting form. |"
+1
+6
+TSFX_SMITH48
+
+[TEXT_GRISWOLD6]
+"While I have to practically smuggle in the metals and tools I need from caravans that skirt the edges of our damned town, that witch, Adria, always seems to get whatever she needs. If I knew even the smallest bit about how to harness magic as she did, I could make some truly incredible things. |"
+1
+5
+TSFX_SMITH49
+
+[TEXT_GRISWOLD7]
+"Gillian is a nice lass. Shame that her gammer is in such poor health or I would arrange to get both of them out of here on one of the trading caravans. |"
+1
+6
+TSFX_SMITH50
+
+[TEXT_GRISWOLD8]
+"Sometimes I think that Cain talks too much, but I guess that is his calling in life. If I could bend steel as well as he can bend your ear, I could make a suit of court plate good enough for an Emperor! |"
+1
+5
+TSFX_SMITH51
+
+[TEXT_GRISWOLD9]
+"I was with Farnham that night that Lazarus led us into Labyrinth. I never saw the Archbishop again, and I may not have survived if Farnham was not at my side. I fear that the attack left his soul as crippled as, well, another did my leg. I cannot fight this battle for him now, but I would if I could. |"
+1
+5
+TSFX_SMITH52
+
+[TEXT_GRISWOLD10]
+"A good man who puts the needs of others above his own. You won't find anyone left in Tristram - or anywhere else for that matter - who has a bad thing to say about the healer. |"
+1
+6
+TSFX_SMITH53
+
+[TEXT_GRISWOLD12]
+"That lad is going to get himself into serious trouble... or I guess I should say, again. I've tried to interest him in working here and learning an honest trade, but he prefers the high profits of dealing in goods of dubious origin. I cannot hold that against him after what happened to him, but I do wish he would at least be careful. |"
+1
+5
+TSFX_SMITH55
+
+[TEXT_GRISWOLD13]
+"The Innkeeper has little business and no real way of turning a profit. He manages to make ends meet by providing food and lodging for those who occasionally drift through the village, but they are as likely to sneak off into the night as they are to pay him. If it weren't for the stores of grains and dried meats he kept in his cellar, why, most of us would have starved during that first year when the entire countryside was overrun by demons. |"
+1
+5
+TSFX_SMITH56

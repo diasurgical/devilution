@@ -1,0 +1,59 @@
+[TEXT_BUTCH1]
+"It seems that the Archbishop Lazarus goaded many of the townsmen into venturing into the Labyrinth to find the King's missing son. He played upon their fears and whipped them into a frenzied mob. None of them were prepared for what lay within the cold earth... Lazarus abandoned them down there - left in the clutches of unspeakable horrors - to die. |"
+1
+5
+TSFX_STORY10
+
+[TEXT_BUTCH2]
+"Yes, Farnham has mumbled something about a hulking brute who wielded a fierce weapon. I believe he called him a butcher. |"
+1
+6
+TSFX_TAVERN8
+
+[TEXT_BUTCH3]
+"By the Light, I know of this vile demon. There were many that bore the scars of his wrath upon their bodies when the few survivors of the charge led by Lazarus crawled from the Cathedral. I don't know what he used to slice open his victims, but it could not have been of this world. It left wounds festering with disease and even I found them almost impossible to treat. Beware if you plan to battle this fiend... |"
+1
+5
+TSFX_HEALER8
+
+[TEXT_BUTCH4]
+"When Farnham said something about a butcher killing people, I immediately discounted it. But since you brought it up, maybe it is true. |"
+1
+6
+TSFX_BMAID8
+
+[TEXT_BUTCH5]
+"I saw what Farnham calls the Butcher as it swathed a path through the bodies of my friends. He swung a cleaver as large as an axe, hewing limbs and cutting down brave men where they stood. I was separated from the fray by a host of small screeching demons and somehow found the stairway leading out. I never saw that hideous beast again, but his blood-stained visage haunts me to this day. |"
+1
+5
+TSFX_SMITH10
+
+[TEXT_BUTCH6]
+"Big! Big cleaver killing all my friends. Couldn't stop him, had to run away, couldn't save them. Trapped in a room with so many bodies... so many friends... NOOOOOOOOOO! |"
+1
+5
+TSFX_DRUNK10
+
+[TEXT_BUTCH7]
+"The Butcher is a sadistic creature that delights in the torture and pain of others. You have seen his handiwork in the drunkard Farnham. His destruction will do much to ensure the safety of this village. |"
+1
+5
+TSFX_WITCH10
+
+[TEXT_BUTCH8]
+"I know more than you'd think about that grisly fiend. His little friends got a hold of me and managed to get my leg before Griswold pulled me out of that hole. \n \nI'll put it bluntly - kill him before he kills you and adds your corpse to his collection. |"
+1
+6
+TSFX_PEGBOY10
+
+[TEXT_BUTCH9]
+"Please, listen to me. The Archbishop Lazarus, he led us down here to find the lost prince. The bastard led us into a trap! Now everyone is dead...killed by a demon he called the Butcher. Avenge us! Find this Butcher and slay him so that our souls may finally rest... |"
+1
+5
+TSFX_WOUND
+
+[TEXT_BUTCH10]
+" |"
+1
+5
+USFX_CLEAVER

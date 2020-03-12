@@ -1,0 +1,71 @@
+[TEXT_GRISWOLD1]
+"Well, what can I do for ya? |"
+0
+5
+TSFX_SMITH44
+
+[TEXT_GRISWOLD2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD12]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GRISWOLD13]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

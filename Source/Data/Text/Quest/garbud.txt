@@ -1,0 +1,23 @@
+[TEXT_GARBUD1]
+"Pleeeease, no hurt. No Kill. Keep alive and next time good bring to you. |"
+1
+6
+USFX_GARBUD1
+
+[TEXT_GARBUD2]
+"Something for you I am making. Again, not kill Gharbad. Live and give good. \n \nYou take this as proof I keep word... |"
+1
+6
+USFX_GARBUD2
+
+[TEXT_GARBUD3]
+"Nothing yet! Almost done. \n \nVery powerful, very strong. Live! Live! \n \nNo pain and promise I keep! |"
+1
+6
+USFX_GARBUD3
+
+[TEXT_GARBUD4]
+"This too good for you. Very Powerful! You want - you take! |"
+1
+6
+USFX_GARBUD4

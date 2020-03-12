@@ -1,0 +1,23 @@
+[TEXT_GARBUD1]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GARBUD2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GARBUD3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GARBUD4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

@@ -1,0 +1,53 @@
+[TEXT_OGDEN1]
+"Greetings, good master. Welcome to the Tavern of the Rising Sun! |"
+0
+5
+TSFX_TAVERN36
+
+[TEXT_OGDEN2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_OGDEN10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

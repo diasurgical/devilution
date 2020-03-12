@@ -1,0 +1,65 @@
+[TEXT_VEIL1]
+"You claim to have spoken with Lachdanan? He was a great hero during his life. Lachdanan was an honorable and just man who served his King faithfully for years. But of course, you already know that.\n \nOf those who were caught within the grasp of the King's Curse, Lachdanan would be the least likely to submit to the darkness without a fight, so I suppose that your story could be true. If I were in your place, my friend, I would find a way to release him from his torture. |"
+1
+5
+TSFX_STORY13
+
+[TEXT_VEIL2]
+"You speak of a brave warrior long dead! I'll have no such talk of speaking with departed souls in my inn yard, thank you very much. |"
+1
+6
+TSFX_TAVERN11
+
+[TEXT_VEIL3]
+"A golden elixir, you say. I have never concocted a potion of that color before, so I can't tell you how it would effect you if you were to try to drink it. As your healer, I strongly advise that should you find such an elixir, do as Lachdanan asks and DO NOT try to use it. |"
+1
+5
+TSFX_HEALER11
+
+[TEXT_VEIL4]
+"I've never heard of a Lachdanan before. I'm sorry, but I don't think that I can be of much help to you. |"
+1
+7
+TSFX_BMAID11
+
+[TEXT_VEIL5]
+"If it is actually Lachdanan that you have met, then I would advise that you aid him. I dealt with him on several occasions and found him to be honest and loyal in nature. The curse that fell upon the followers of King Leoric would fall especially hard upon him. |"
+1
+5
+TSFX_SMITH13
+
+[TEXT_VEIL6]
+" Lachdanan is dead. Everybody knows that, and you can't fool me into thinking any other way. You can't talk to the dead. I know! |"
+1
+5
+TSFX_DRUNK13
+
+[TEXT_VEIL7]
+"You may meet people who are trapped within the Labyrinth, such as Lachdanan. \n \nI sense in him honor and great guilt. Aid him, and you aid all of Tristram. |"
+1
+6
+TSFX_WITCH13
+
+[TEXT_VEIL8]
+"Wait, let me guess. Cain was swallowed up in a gigantic fissure that opened beneath him. He was incinerated in a ball of hellfire, and can't answer your questions anymore. Oh, that isn't what happened? Then I guess you'll be buying something or you'll be on your way. |"
+1
+5
+TSFX_PEGBOY12
+
+[TEXT_VEIL9]
+"Please, don't kill me, just hear me out. I was once Captain of King Leoric's Knights, upholding the laws of this land with justice and honor. Then his dark Curse fell upon us for the role we played in his tragic death. As my fellow Knights succumbed to their twisted fate, I fled from the King's burial chamber, searching for some way to free myself from the Curse. I failed...\n \nI have heard of a Golden Elixir that could lift the Curse and allow my soul to rest, but I have been unable to find it. My strength now wanes, and with it the last of my humanity as well. Please aid me and find the Elixir. I will repay your efforts - I swear upon my honor. |"
+1
+3
+USFX_LACH1
+
+[TEXT_VEIL10]
+"You have not found the Golden Elixir. I fear that I am doomed for eternity. Please, keep trying... |"
+1
+6
+USFX_LACH2
+
+[TEXT_VEIL11]
+"You have saved my soul from damnation, and for that I am in your debt. If there is ever a way that I can repay you from beyond the grave I will find it, but for now - take my helm. On the journey I am about to take I will have little use for it. May it protect you against the dark powers below. Go with the Light, my friend... |"
+1
+4
+USFX_LACH3

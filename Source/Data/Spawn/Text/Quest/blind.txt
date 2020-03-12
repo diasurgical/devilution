@@ -1,0 +1,47 @@
+[TEXT_BLIND1]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLIND8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

@@ -1,0 +1,47 @@
+[TEXT_BONE1]
+"A book that speaks of a chamber of human bones? Well, a Chamber of Bone is mentioned in certain archaic writings that I studied in the libraries of the East. These tomes inferred that when the Lords of the underworld desired to protect great treasures, they would create domains where those who died in the attempt to steal that treasure would be forever bound to defend it. A twisted, but strangely fitting, end? |"
+1
+4
+TSFX_STORY7
+
+[TEXT_BONE2]
+"I am afraid that I don't know anything about that, good master. Cain has many books that may be of some help. |"
+1
+6
+TSFX_TAVERN5
+
+[TEXT_BONE3]
+"This sounds like a very dangerous place. If you venture there, please take great care. |"
+1
+6
+TSFX_HEALER5
+
+[TEXT_BONE4]
+"I am afraid that I haven't heard anything about that. Perhaps Cain the Storyteller could be of some help. |"
+1
+6
+TSFX_BMAID6
+
+[TEXT_BONE5]
+"I know nothing of this place, but you may try asking Cain. He talks about many things, and it would not surprise me if he had some answers to your question. |"
+1
+6
+TSFX_SMITH7
+
+[TEXT_BONE6]
+"Okay, so listen. There's this chamber of wood, see. And his wife, you know - her - tells the tree... cause you gotta wait. Then I says, that might work against him, but if you think I'm gonna PAY for this... you... uh... yeah. |"
+1
+5
+TSFX_DRUNK7
+
+[TEXT_BONE7]
+"You will become an eternal servant of the dark lords should you perish within this cursed domain. \n \nEnter the Chamber of Bone at your own peril. |"
+1
+6
+TSFX_WITCH7
+
+[TEXT_BONE8]
+"A vast and mysterious treasure, you say? Maybe I could be interested in picking up a few things from you... or better yet, don't you need some rare and expensive supplies to get you through this ordeal? |"
+1
+5
+TSFX_PEGBOY7

@@ -1,0 +1,77 @@
+[TEXT_MUSH1]
+"The witch Adria seeks a black mushroom? I know as much about Black Mushrooms as I do about Red Herrings. Perhaps Pepin the Healer could tell you more, but this is something that cannot be found in any of my stories or books. |"
+1
+5
+TSFX_STORY21
+
+[TEXT_MUSH2]
+"Let me just say this. Both Garda and I would never, EVER serve black mushrooms to our honored guests. If Adria wants some mushrooms in her stew, then that is her business, but I can't help you find any. Black mushrooms... disgusting! |"
+1
+5
+TSFX_TAVERN19
+
+[TEXT_MUSH3]
+"The witch told me that you were searching for the brain of a demon to assist me in creating my elixir. It should be of great value to the many who are injured by those foul beasts, if I can just unlock the secrets I suspect that its alchemy holds. If you can remove the brain of a demon when you kill it, I would be grateful if you could bring it to me. |"
+1
+5
+TSFX_HEALER26
+
+[TEXT_MUSH4]
+"Excellent, this is just what I had in mind. I was able to finish the elixir without this, but it can't hurt to have this to study. Would you please carry this to the witch? I believe that she is expecting it. |"
+1
+5
+TSFX_HEALER27
+
+[TEXT_MUSH5]
+"I think Ogden might have some mushrooms in the storage cellar. Why don't you ask him? |"
+1
+7
+TSFX_BMAID19
+
+[TEXT_MUSH6]
+"If Adria doesn't have one of these, you can bet that's a rare thing indeed. I can offer you no more help than that, but it sounds like... a huge, gargantuan, swollen, bloated mushroom! Well, good hunting, I suppose. |"
+1
+5
+TSFX_SMITH19
+
+[TEXT_MUSH7]
+"Ogden mixes a MEAN black mushroom, but I get sick if I drink that. Listen, listen... here's the secret - moderation is the key! |"
+1
+5
+TSFX_DRUNK20
+
+[TEXT_MUSH8]
+"What do we have here? Interesting, it looks like a book of reagents. Keep your eyes open for a black mushroom. It should be fairly large and easy to identify. If you find it, bring it to me, won't you? |"
+1
+5
+TSFX_WITCH22
+
+[TEXT_MUSH9]
+"It's a big, black mushroom that I need. Now run off and get it for me so that I can use it for a special concoction that I am working on. |"
+1
+6
+TSFX_WITCH23
+
+[TEXT_MUSH10]
+"Yes, this will be perfect for a brew that I am creating. By the way, the healer is looking for the brain of some demon or another so he can treat those who have been afflicted by their poisonous venom. I believe that he intends to make an elixir from it. If you help him find what he needs, please see if you can get a sample of the elixir for me. |"
+1
+5
+TSFX_WITCH24
+
+[TEXT_MUSH11]
+"Why have you brought that here? I have no need for a demon's brain at this time. I do need some of the elixir that the Healer is working on. He needs that grotesque organ that you are holding, and then bring me the elixir. Simple when you think about it, isn't it? |"
+1
+5
+TSFX_WITCH25
+
+[TEXT_MUSH12]
+"What? Now you bring me that elixir from the healer? I was able to finish my brew without it. Why don't you just keep it... |"
+1
+6
+TSFX_WITCH26
+
+[TEXT_MUSH13]
+"I don't have any mushrooms of any size or color for sale. How about something a bit more useful? |"
+1
+6
+TSFX_PEGBOY19

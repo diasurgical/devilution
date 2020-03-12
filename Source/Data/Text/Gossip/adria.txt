@@ -1,0 +1,71 @@
+[TEXT_ADRIA1]
+"I sense a soul in search of answers... |"
+0
+5
+TSFX_WITCH38
+
+[TEXT_ADRIA2]
+"Wisdom is earned, not given. If you discover a tome of knowledge, devour its words. Should you already have knowledge of the arcane mysteries scribed within a book, remember - that level of mastery can always increase. |"
+1
+5
+TSFX_WITCH39
+
+[TEXT_ADRIA3]
+"The greatest power is often the shortest lived. You may find ancient words of power written upon scrolls of parchment. The strength of these scrolls lies in the ability of either apprentice or adept to cast them with equal ability. Their weakness is that they must first be read aloud and can never be kept at the ready in your mind. Know also that these scrolls can be read but once, so use them with care. |"
+1
+5
+TSFX_WITCH40
+
+[TEXT_ADRIA4]
+"Though the heat of the sun is beyond measure, the mere flame of a candle is of greater danger. No energies, no matter how great, can be used without the proper focus. For many spells, ensorcelled Staves may be charged with magical energies many times over. I have the ability to restore their power - but know that nothing is done without a price. |"
+1
+5
+TSFX_WITCH41
+
+[TEXT_ADRIA5]
+"The sum of our knowledge is in the sum of its people. Should you find a book or scroll that you cannot decipher, do not hesitate to bring it to me. If I can make sense of it I will share what I find. |"
+1
+5
+TSFX_WITCH42
+
+[TEXT_ADRIA6]
+"To a man who only knows Iron, there is no greater magic than Steel. The blacksmith Griswold is more of a sorcerer than he knows. His ability to meld fire and metal is unequaled in this land. |"
+1
+5
+TSFX_WITCH43
+
+[TEXT_ADRIA7]
+"Corruption has the strength of deceit, but innocence holds the power of purity. The young woman Gillian has a pure heart, placing the needs of her matriarch over her own. She fears me, but it is only because she does not understand me. |"
+1
+5
+TSFX_WITCH44
+
+[TEXT_ADRIA8]
+"A chest opened in darkness holds no greater treasure than when it is opened in the light. The storyteller Cain is an enigma, but only to those who do not look. His knowledge of what lies beneath the cathedral is far greater than even he allows himself to realize. |"
+1
+5
+TSFX_WITCH45
+
+[TEXT_ADRIA9]
+"The higher you place your faith in one man, the farther it has to fall. Farnham has lost his soul, but not to any demon. It was lost when he saw his fellow townspeople betrayed by the Archbishop Lazarus. He has knowledge to be gleaned, but you must separate fact from fantasy. |"
+1
+5
+TSFX_WITCH46
+
+[TEXT_ADRIA10]
+"The hand, the heart and the mind can perform miracles when they are in perfect harmony. The healer Pepin sees into the body in a way that even I cannot. His ability to restore the sick and injured is magnified by his understanding of the creation of elixirs and potions. He is as great an ally as you have in Tristram. |"
+1
+5
+TSFX_WITCH47
+
+[TEXT_ADRIA12]
+"There is much about the future we cannot see, but when it comes it will be the children who wield it. The boy Wirt has a blackness upon his soul, but he poses no threat to the town or its people. His secretive dealings with the urchins and unspoken guilds of nearby towns gain him access to many devices that cannot be easily found in Tristram. While his methods may be reproachful, Wirt can provide assistance for your battle against the encroaching Darkness. |"
+1
+4
+TSFX_WITCH49
+
+[TEXT_ADRIA13]
+"Earthen walls and thatched canopy do not a home create. The innkeeper Ogden serves more of a purpose in this town than many understand. He provides shelter for Gillian and her matriarch, maintains what life Farnham has left to him, and provides an anchor for all who are left in the town to what Tristram once was. His tavern, and the simple pleasures that can still be found there, provide a glimpse of a life that the people here remember. It is that memory that continues to feed their hopes for your success. |"
+1
+4
+TSFX_WITCH50

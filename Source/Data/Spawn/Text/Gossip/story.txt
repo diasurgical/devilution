@@ -1,0 +1,59 @@
+[TEXT_STORY1]
+"Hello, my friend. Stay awhile and listen... |"
+0
+5
+TSFX_STORY25
+
+[TEXT_STORY2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_STORY11]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

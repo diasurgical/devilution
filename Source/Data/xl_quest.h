@@ -1,0 +1,18 @@
+enum {
+	Q_ROCK = 0,
+	Q_MUSHROOM = 1,
+	Q_GARBUD = 2,
+	Q_ZHAR = 3,
+	Q_VEIL = 4,
+	Q_DIABLO = 5,
+	Q_BUTCHER = 6,
+	Q_LTBANNER = 7,
+	Q_BLIND = 8,
+	Q_BLOOD = 9,
+	Q_ANVIL = 10,
+	Q_WARLORD = 11,
+	Q_SKELKING = 12,
+	Q_PWATER = 13,
+	Q_SCHAMB = 14,
+	Q_BETRAYER = 15,
+};

@@ -1,0 +1,11 @@
+[TEXT_ZHAR1]
+"What?! Why are you here? All these interruptions are enough to make one insane. Here, take this and leave me to my work. Trouble me no more! |"
+1
+6
+USFX_ZHAR1
+
+[TEXT_ZHAR2]
+"Arrrrgh! Your curiosity will be the death of you!!! |"
+1
+7
+USFX_ZHAR2

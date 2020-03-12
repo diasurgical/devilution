@@ -1,0 +1,47 @@
+[TEXT_BLOOD1]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOOD8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

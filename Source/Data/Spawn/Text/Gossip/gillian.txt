@@ -1,0 +1,53 @@
+[TEXT_GILLIAN1]
+"Good day! How may I serve you? |"
+0
+5
+TSFX_BMAID31
+
+[TEXT_GILLIAN2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_GILLIAN10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

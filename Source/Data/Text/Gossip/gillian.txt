@@ -1,0 +1,53 @@
+[TEXT_GILLIAN1]
+"Good day! How may I serve you? |"
+0
+5
+TSFX_BMAID31
+
+[TEXT_GILLIAN2]
+"My grandmother had a dream that you would come and talk to me. She has visions, you know and can see into the future. |"
+1
+6
+TSFX_BMAID32
+
+[TEXT_GILLIAN3]
+"The woman at the edge of town is a witch! She seems nice enough, and her name, Adria, is very pleasing to the ear, but I am very afraid of her. \n \nIt would take someone quite brave, like you, to see what she is doing out there. |"
+1
+6
+TSFX_BMAID33
+
+[TEXT_GILLIAN4]
+"Our Blacksmith is a point of pride to the people of Tristram. Not only is he a master craftsman who has won many contests within his guild, but he received praises from our King Leoric himself - may his soul rest in peace. Griswold is also a great hero; just ask Cain. |"
+1
+5
+TSFX_BMAID34
+
+[TEXT_GILLIAN5]
+"Cain has been the storyteller of Tristram for as long as I can remember. He knows so much, and can tell you just about anything about almost everything. |"
+1
+6
+TSFX_BMAID35
+
+[TEXT_GILLIAN6]
+"Farnham is a drunkard who fills his belly with ale and everyone else's ears with nonsense. \n \nI know that both Pepin and Ogden feel sympathy for him, but I get so frustrated watching him slip farther and farther into a befuddled stupor every night. |"
+1
+6
+TSFX_BMAID36
+
+[TEXT_GILLIAN7]
+"Pepin saved my grandmother's life, and I know that I can never repay him for that. His ability to heal any sickness is more powerful than the mightiest sword and more mysterious than any spell you can name. If you ever are in need of healing, Pepin can help you. |"
+1
+5
+TSFX_BMAID37
+
+[TEXT_GILLIAN9]
+"I grew up with Wirt's mother, Canace. Although she was only slightly hurt when those hideous creatures stole him, she never recovered. I think she died of a broken heart. Wirt has become a mean-spirited youngster, looking only to profit from the sweat of others. I know that he suffered and has seen horrors that I cannot even imagine, but some of that darkness hangs over him still. |"
+1
+5
+TSFX_BMAID39
+
+[TEXT_GILLIAN10]
+"Ogden and his wife have taken me and my grandmother into their home and have even let me earn a few gold pieces by working at the inn. I owe so much to them, and hope one day to leave this place and help them start a grand hotel in the east. |"
+1
+5
+TSFX_BMAID40

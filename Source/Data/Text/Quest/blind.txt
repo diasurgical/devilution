@@ -1,0 +1,47 @@
+[TEXT_BLIND1]
+"You recite an interesting rhyme written in a style that reminds me of other works. Let me think now - what was it?\n \n...Darkness shrouds the Hidden. Eyes glowing unseen with only the sounds of razor claws briefly scraping to torment those poor souls who have been made sightless for all eternity. The prison for those so damned is named the Halls of the Blind... |"
+1
+5
+TSFX_STORY12
+
+[TEXT_BLIND2]
+"I never much cared for poetry. Occasionally, I had cause to hire minstrels when the inn was doing well, but that seems like such a long time ago now. \n \nWhat? Oh, yes... uh, well, I suppose you could see what someone else knows. |"
+1
+6
+TSFX_TAVERN10
+
+[TEXT_BLIND3]
+"This does seem familiar, somehow. I seem to recall reading something very much like that poem while researching the history of demonic afflictions. It spoke of a place of great evil that... wait - you're not going there are you? |"
+1
+5
+TSFX_HEALER10
+
+[TEXT_BLIND4]
+"If you have questions about blindness, you should talk to Pepin. I know that he gave my grandmother a potion that helped clear her vision, so maybe he can help you, too. |"
+1
+6
+TSFX_BMAID10
+
+[TEXT_BLIND5]
+"I am afraid that I have neither heard nor seen a place that matches your vivid description, my friend. Perhaps Cain the Storyteller could be of some help. |"
+1
+6
+TSFX_SMITH12
+
+[TEXT_BLIND6]
+"Look here... that's pretty funny, huh? Get it? Blind - look here? |"
+1
+6
+TSFX_DRUNK12
+
+[TEXT_BLIND7]
+"This is a place of great anguish and terror, and so serves its master well. \n \nTread carefully or you may yourself be staying much longer than you had anticipated. |"
+1
+6
+TSFX_WITCH12
+
+[TEXT_BLIND8]
+"Lets see, am I selling you something? No. Are you giving me money to tell you about this? No. Are you now leaving and going to talk to the storyteller who lives for this kind of thing? Yes. |"
+1
+5
+TSFX_PEGBOY11

@@ -1,0 +1,59 @@
+[TEXT_POISON1]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON3]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON4]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON5]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON6]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON7]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON8]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON9]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_POISON10]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

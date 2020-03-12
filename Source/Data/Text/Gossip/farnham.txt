@@ -1,0 +1,71 @@
+[TEXT_FARNHAM1]
+"Can't a fella drink in peace? |"
+0
+5
+TSFX_DRUNK27
+
+[TEXT_FARNHAM2]
+"The gal who brings the drinks? Oh, yeah, what a pretty lady. So nice, too. |"
+1
+6
+TSFX_DRUNK28
+
+[TEXT_FARNHAM3]
+"Why don't that old crone do somethin' for a change. Sure, sure, she's got stuff, but you listen to me... she's unnatural. I ain't never seen her eat or drink - and you can't trust somebody who doesn't drink at least a little. |"
+1
+5
+TSFX_DRUNK29
+
+[TEXT_FARNHAM4]
+"Cain isn't what he says he is. Sure, sure, he talks a good story... some of 'em are real scary or funny... but I think he knows more than he knows he knows. |"
+1
+5
+TSFX_DRUNK30
+
+[TEXT_FARNHAM5]
+"Griswold? Good old Griswold. I love him like a brother! We fought together, you know, back when... we... Lazarus...  Lazarus... Lazarus!!! |"
+1
+5
+TSFX_DRUNK31
+
+[TEXT_FARNHAM6]
+"Hehehe, I like Pepin. He really tries, you know. Listen here, you should make sure you get to know him. Good fella like that with people always wantin' help. Hey, I guess that would be kinda like you, huh hero? I was a hero too... |"
+1
+5
+TSFX_DRUNK32
+
+[TEXT_FARNHAM8]
+"Wirt is a kid with more problems than even me, and I know all about problems. Listen here - that kid is gotta sweet deal, but he's been there, you know? Lost a leg! Gotta walk around on a piece of wood. So sad, so sad... |"
+1
+5
+TSFX_DRUNK34
+
+[TEXT_FARNHAM9]
+"Ogden is the best man in town. I don't think his wife likes me much, but as long as she keeps tappin' kegs, I'll like her just fine. Seems like I been spendin' more time with Ogden than most, but he's so good to me... |"
+1
+5
+TSFX_DRUNK35
+
+[TEXT_FARNHAM10]
+"I wanna tell ya sumthin', 'cause I know all about this stuff. It's my specialty. This here is the best... theeeee best! That other ale ain't no good since those stupid dogs... |"
+1
+5
+TSFX_DRUNK23
+
+[TEXT_FARNHAM11]
+"No one ever lis... listens to me. Somewhere - I ain't too sure - but somewhere under the church is a whole pile o' gold. Gleamin' and shinin' and just waitin' for someone to get it. |"
+1
+5
+TSFX_DRUNK24
+
+[TEXT_FARNHAM12]
+"I know you gots your own ideas, and I know you're not gonna believe this, but that weapon you got there - it just ain't no good against those big brutes! Oh, I don't care what Griswold says, they can't make anything like they used to in the old days... |"
+1
+5
+TSFX_DRUNK25
+
+[TEXT_FARNHAM13]
+"If I was you... and I ain't... but if I was, I'd sell all that stuff you got and get out of here. That boy out there... He's always got somethin good, but you gotta give him some gold or he won't even show you what he's got. |"
+1
+5
+TSFX_DRUNK26

@@ -1,0 +1,59 @@
+[TEXT_POISON1]
+"Hmm, I don't know what I can really tell you about this that will be of any help. The water that fills our wells comes from an underground spring. I have heard of a tunnel that leads to a great lake - perhaps they are one and the same. Unfortunately, I do not know what would cause our water supply to be tainted. |"
+1
+5
+TSFX_STORY4
+
+[TEXT_POISON2]
+"I have always tried to keep a large supply of foodstuffs and drink in our storage cellar, but with the entire town having no source of fresh water, even our stores will soon run dry. \n \nPlease, do what you can or I don't know what we will do. |"
+1
+6
+TSFX_TAVERN2
+
+[TEXT_POISON3]
+"I'm glad I caught up to you in time! Our wells have become brackish and stagnant and some of the townspeople have become ill drinking from them. Our reserves of fresh water are quickly running dry. I believe that there is a passage that leads to the springs that serve our town. Please find what has caused this calamity, or we all will surely perish. |"
+1
+5
+TSFX_HEALER20
+
+[TEXT_POISON4]
+"Please, you must hurry. Every hour that passes brings us closer to having no water to drink. \n \nWe cannot survive for long without your help. |"
+1
+6
+TSFX_HEALER21
+
+[TEXT_POISON5]
+"What's that you say - the mere presence of the demons had caused the water to become tainted? Oh, truly a great evil lurks beneath our town, but your perseverance and courage gives us hope. Please take this ring - perhaps it will aid you in the destruction of such vile creatures. |"
+1
+5
+TSFX_HEALER22
+
+[TEXT_POISON6]
+"My grandmother is very weak, and Garda says that we cannot drink the water from the wells. Please, can you do something to help us? |"
+1
+6
+TSFX_BMAID4
+
+[TEXT_POISON7]
+"Pepin has told you the truth. We will need fresh water badly, and soon. I have tried to clear one of the smaller wells, but it reeks of stagnant filth. It must be getting clogged at the source. |"
+1
+5
+TSFX_SMITH4
+
+[TEXT_POISON8]
+"You drink water? |"
+1
+8
+TSFX_DRUNK4
+
+[TEXT_POISON9]
+"The people of Tristram will die if you cannot restore fresh water to their wells. \n \nKnow this - demons are at the heart of this matter, but they remain ignorant of what they have spawned. |"
+1
+6
+TSFX_WITCH4
+
+[TEXT_POISON10]
+"For once, I'm with you. My business runs dry - so to speak - if I have no market to sell to. You better find out what is going on, and soon! |"
+1
+6
+TSFX_PEGBOY4

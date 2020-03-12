@@ -1,0 +1,11 @@
+[TEXT_ZHAR1]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_ZHAR2]
+"Nice try... "
+0
+0
+TSFX_TAVERN36

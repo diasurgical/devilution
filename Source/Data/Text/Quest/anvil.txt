@@ -1,0 +1,59 @@
+[TEXT_ANVIL1]
+"Griswold speaks of The Anvil of Fury - a legendary artifact long searched for, but never found. Crafted from the metallic bones of the Razor Pit demons, the Anvil of Fury was smelt around the skulls of the five most powerful magi of the underworld. Carved with runes of power and chaos, any weapon or armor forged upon this Anvil will be immersed into the realm of Chaos, imbedding it with magical properties. It is said that the unpredictable nature of Chaos makes it difficult to know what the outcome of this smithing will be... |"
+1
+4
+TSFX_STORY14
+
+[TEXT_ANVIL2]
+"Don't you think that Griswold would be a better person to ask about this? He's quite handy, you know. |"
+1
+7
+TSFX_TAVERN12
+
+[TEXT_ANVIL3]
+"If you had been looking for information on the Pestle of Curing or the Silver Chalice of Purification, I could have assisted you, my friend. However, in this matter, you would be better served to speak to either Griswold or Cain. |"
+1
+6
+TSFX_HEALER12
+
+[TEXT_ANVIL4]
+"Griswold's father used to tell some of us when we were growing up about a giant anvil that was used to make mighty weapons. He said that when a hammer was struck upon this anvil, the ground would shake with a great fury. Whenever the earth moves, I always remember that story. |"
+1
+5
+TSFX_BMAID12
+
+[TEXT_ANVIL5]
+"Greetings! It's always a pleasure to see one of my best customers! I know that you have been venturing deeper into the Labyrinth, and there is a story I was told that you may find worth the time to listen to...\n \nOne of the men who returned from the Labyrinth told me about a mystic anvil that he came across during his escape. His description reminded me of legends I had heard in my youth about the burning Hellforge where powerful weapons of magic are crafted. The legend had it that deep within the Hellforge rested the Anvil of Fury! This Anvil contained within it the very essence of the demonic underworld...\n \nIt is said that any weapon crafted upon the burning Anvil is imbued with great power. If this anvil is indeed the Anvil of Fury, I may be able to make you a weapon capable of defeating even the darkest lord of Hell! \n \nFind the Anvil for me, and I'll get to work! |"
+1
+5
+TSFX_SMITH21
+
+[TEXT_ANVIL6]
+"Nothing yet, eh? Well, keep searching. A weapon forged upon the Anvil could be your best hope, and I am sure that I can make you one of legendary proportions. |"
+1
+5
+TSFX_SMITH22
+
+[TEXT_ANVIL7]
+"I can hardly believe it! This is the Anvil of Fury - good work, my friend. Now we'll show those bastards that there are no weapons in Hell more deadly than those made by men! Take this and may Light protect you. |"
+1
+5
+TSFX_SMITH23
+
+[TEXT_ANVIL8]
+"Griswold can't sell his anvil. What will he do then? And I'd be angry too if someone took my anvil! |"
+1
+6
+TSFX_DRUNK14
+
+[TEXT_ANVIL9]
+"There are many artifacts within the Labyrinth that hold powers beyond the comprehension of mortals. Some of these hold fantastic power that can be used by either the Light or the Darkness. Securing the Anvil from below could shift the course of the Sin War towards the Light. |"
+1
+5
+TSFX_WITCH14
+
+[TEXT_ANVIL10]
+"If you were to find this artifact for Griswold, it could put a serious damper on my business here. Awwww, you'll never find it. |"
+1
+6
+TSFX_PEGBOY13

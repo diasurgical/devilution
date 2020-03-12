@@ -1,0 +1,47 @@
+[TEXT_BLOOD1]
+"The Gateway of Blood and the Halls of Fire are landmarks of mystic origin. Wherever this book you read from resides it is surely a place of great power.\n \nLegends speak of a pedestal that is carved from obsidian stone and has a pool of boiling blood atop its bone encrusted surface. There are also allusions to Stones of Blood that will open a door that guards an ancient treasure...\n \nThe nature of this treasure is shrouded in speculation, my friend, but it is said that the ancient hero Arkaine placed the holy armor Valor in a secret vault. Arkaine was the first mortal to turn the tide of the Sin War and chase the legions of darkness back to the Burning Hells.\n \nJust before Arkaine died, his armor was hidden away in a secret vault. It is said that when this holy armor is again needed, a hero will arise to don Valor once more. Perhaps you are that hero... |"
+1
+3
+TSFX_STORY15
+
+[TEXT_BLOOD2]
+"Every child hears the story of the warrior Arkaine and his mystic armor known as Valor. If you could find its resting place, you would be well protected against the evil in the Labyrinth. |"
+1
+6
+TSFX_TAVERN13
+
+[TEXT_BLOOD3]
+"Hmm... it sounds like something I should remember, but I've been so busy learning new cures and creating better elixirs that I must have forgotten. Sorry... |"
+1
+6
+TSFX_HEALER13
+
+[TEXT_BLOOD4]
+"The story of the magic armor called Valor is something I often heard the boys talk about. You had better ask one of the men in the village. |"
+1
+6
+TSFX_BMAID13
+
+[TEXT_BLOOD5]
+"The armor known as Valor could be what tips the scales in your favor. I will tell you that many have looked for it - including myself. Arkaine hid it well, my friend, and it will take more than a bit of luck to unlock the secrets that have kept it concealed oh, lo these many years. |"
+1
+5
+TSFX_SMITH14
+
+[TEXT_BLOOD6]
+"Zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz... |"
+1
+7
+TSFX_DRUNK15
+
+[TEXT_BLOOD7]
+"Should you find these Stones of Blood, use them carefully. \n \nThe way is fraught with danger and your only hope rests within your self trust. |"
+1
+6
+TSFX_WITCH15
+
+[TEXT_BLOOD8]
+"You intend to find the armor known as Valor? \n \nNo one has ever figured out where Arkaine stashed the stuff, and if my contacts couldn't find it, I seriously doubt you ever will either. |"
+1
+6
+TSFX_PEGBOY14

@@ -1,0 +1,59 @@
+[TEXT_PEPIN1]
+"What ails you, my friend? |"
+0
+5
+TSFX_HEALER37
+
+[TEXT_PEPIN2]
+"I have made a very interesting discovery. Unlike us, the creatures in the Labyrinth can heal themselves without the aid of potions or magic. If you hurt one of the monsters, make sure it is dead or it very well may regenerate itself. |"
+1
+5
+TSFX_HEALER38
+
+[TEXT_PEPIN3]
+"Before it was taken over by, well, whatever lurks below, the Cathedral was a place of great learning. There are many books to be found there. If you find any, you should read them all, for some may hold secrets to the workings of the Labyrinth. |"
+1
+5
+TSFX_HEALER39
+
+[TEXT_PEPIN4]
+"Griswold knows as much about the art of war as I do about the art of healing. He is a shrewd merchant, but his work is second to none. Oh, I suppose that may be because he is the only blacksmith left here. |"
+1
+5
+TSFX_HEALER40
+
+[TEXT_PEPIN5]
+"Cain is a true friend and a wise sage. He maintains a vast library and has an innate ability to discern the true nature of many things. If you ever have any questions, he is the person to go to. |"
+1
+5
+TSFX_HEALER41
+
+[TEXT_PEPIN6]
+"Even my skills have been unable to fully heal Farnham. Oh, I have been able to mend his body, but his mind and spirit are beyond anything I can do. |"
+1
+5
+TSFX_HEALER42
+
+[TEXT_PEPIN7]
+"While I use some limited forms of magic to create the potions and elixirs I store here, Adria is a true sorceress. She never seems to sleep, and she always has access to many mystic tomes and artifacts. I believe her hut may be much more than the hovel it appears to be, but I can never seem to get inside the place. |"
+1
+5
+TSFX_HEALER43
+
+[TEXT_PEPIN9]
+"Poor Wirt. I did all that was possible for the child, but I know he despises that wooden peg that I was forced to attach to his leg. His wounds were hideous. No one - and especially such a young child - should have to suffer the way he did. |"
+1
+5
+TSFX_HEALER45
+
+[TEXT_PEPIN10]
+"I really don't understand why Ogden stays here in Tristram. He suffers from a slight nervous condition, but he is an intelligent and industrious man who would do very well wherever he went. I suppose it may be the fear of the many murders that happen in the surrounding countryside, or perhaps the wishes of his wife that keep him and his family where they are. |"
+1
+5
+TSFX_HEALER46
+
+[TEXT_PEPIN11]
+"Ogden's barmaid is a sweet girl. Her grandmother is quite ill, and suffers from delusions. \n \nShe claims that they are visions, but I have no proof of that one way or the other. |"
+1
+6
+TSFX_HEALER47

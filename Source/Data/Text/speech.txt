@@ -1,0 +1,189 @@
+#include "Quest\king.txt"
+#include "Quest\banner.txt"
+#include "Quest\vile.txt"
+#include "Quest\poison.txt"
+#include "Quest\bone.txt"
+#include "Quest\butch.txt"
+#include "Quest\blind.txt"
+#include "Quest\veil.txt"
+#include "Quest\anvil.txt"
+#include "Quest\blood.txt"
+#include "Quest\warlrd.txt"
+#include "Quest\infra.txt"
+#include "Quest\mush.txt"
+#include "Quest\doom.txt"
+#include "Quest\garbud.txt"
+#include "Quest\zhar.txt"
+
+#include "Gossip\story.txt"
+#include "Gossip\ogden.txt"
+#include "Gossip\pepin.txt"
+#include "Gossip\gillian.txt"
+#include "Gossip\griswold.txt"
+#include "Gossip\farnham.txt"
+#include "Gossip\adria.txt"
+#include "Gossip\wirt.txt"
+
+
+//--------------------------------------------------
+//                      Player
+//--------------------------------------------------
+
+[TEXT_BONER]
+"Beyond the Hall of Heroes lies the Chamber of Bone. Eternal death awaits any who would seek to steal the treasures secured within this room. So speaks the Lord of Terror, and so it is written. |"
+1
+5
+PS_WARR1
+
+[TEXT_BLOODY]
+"...and so, locked beyond the Gateway of Blood and past the Hall of Fire, Valor awaits for the Hero of Light to awaken... |"
+1
+6
+PS_WARR10
+
+[TEXT_BLINDING]
+"I can see what you see not.\nVision milky then eyes rot.\nWhen you turn they will be gone,\nWhispering their hidden song.\nThen you see what cannot be,\nShadows move where light should be.\nOut of darkness, out of mind,\nCast down into the Halls of the Blind. |\n"
+1
+5
+PS_WARR11
+
+[TEXT_BLOODWAR]
+"The armories of Hell are home to the Warlord of Blood. In his wake lay the mutilated bodies of thousands. Angels and man alike have been cut down to fulfill his endless sacrifices to the Dark ones who scream for one thing - blood. |"
+1
+5
+PS_WARR12
+
+[TEXT_MBONER]
+"Beyond the Hall of Heroes lies the Chamber of Bone. Eternal death awaits any who would seek to steal the treasures secured within this room. So speaks the Lord of Terror, and so it is written. |"
+1
+5
+PS_MAGE1
+
+[TEXT_MBLOODY]
+"...and so, locked beyond the Gateway of Blood and past the Hall of Fire, Valor awaits for the Hero of Light to awaken... |"
+1
+6
+PS_MAGE10
+
+[TEXT_MBLINDING]
+"I can see what you see not.\nVision milky then eyes rot.\nWhen you turn they will be gone,\nWhispering their hidden song.\nThen you see what cannot be,\nShadows move where light should be.\nOut of darkness, out of mind,\nCast down into the Halls of the Blind. |\n"
+1
+4
+PS_MAGE11
+
+[TEXT_MBLOODWAR]
+"The armories of Hell are home to the Warlord of Blood. In his wake lay the mutilated bodies of thousands. Angels and man alike have been cut down to fulfill his endless sacrifices to the Dark ones who scream for one thing - blood. |"
+1
+5
+PS_MAGE12
+
+[TEXT_RBONER]
+"Beyond the Hall of Heroes lies the Chamber of Bone. Eternal death awaits any who would seek to steal the treasures secured within this room. So speaks the Lord of Terror, and so it is written. |"
+1
+5
+PS_ROGUE1
+
+[TEXT_RBLOODY]
+"...and so, locked beyond the Gateway of Blood and past the Hall of Fire, Valor awaits for the Hero of Light to awaken... |"
+1
+5
+PS_ROGUE10
+
+[TEXT_RBLINDING]
+"I can see what you see not.\nVision milky then eyes rot.\nWhen you turn they will be gone,\nWhispering their hidden song.\nThen you see what cannot be,\nShadows move where light should be.\nOut of darkness, out of mind,\nCast down into the Halls of the Blind. |\n"
+1
+5
+PS_ROGUE11
+
+[TEXT_RBLOODWAR]
+"The armories of Hell are home to the Warlord of Blood. In his wake lay the mutilated bodies of thousands. Angels and man alike have been cut down to fulfill his endless sacrifices to the Dark ones who scream for one thing - blood. |"
+1
+5
+PS_ROGUE12
+
+
+//--------------------------------------------------
+//                      Animal
+//--------------------------------------------------
+
+[TEXT_COW1]
+" |"
+0
+5
+TSFX_COW1
+
+[TEXT_COW2]
+" |"
+0
+5
+TSFX_COW2
+
+
+//--------------------------------------------------
+//                     Narrator
+//--------------------------------------------------
+
+[TEXT_BOOK11]
+"Take heed and bear witness to the truths that lie herein, for they are the last legacy of the Horadrim. There is a war that rages on even now, beyond the fields that we know - between the utopian kingdoms of the High Heavens and the chaotic pits of the Burning Hells. This war is known as the Great Conflict, and it has raged and burned longer than any of the stars in the sky. Neither side ever gains sway for long as the forces of Light and Darkness constantly vie for control over all creation. |"
+1
+5
+PS_NAR1
+
+[TEXT_BOOK12]
+"Take heed and bear witness to the truths that lie herein, for they are the last legacy of the Horadrim. When the Eternal Conflict between the High Heavens and the Burning Hells falls upon mortal soil, it is called the Sin War. Angels and Demons walk amongst humanity in disguise, fighting in secret, away from the prying eyes of mortals. Some daring, powerful mortals have even allied themselves with either side, and helped to dictate the course of the Sin War. |"
+1
+4
+PS_NAR2
+
+[TEXT_BOOK13]
+"Take heed and bear witness to the truths that lie herein, for they are the last legacy of the Horadrim. Nearly three hundred years ago, it came to be known that the Three Prime Evils of the Burning Hells had mysteriously come to our world. The Three Brothers ravaged the lands of the east for decades, while humanity was left trembling in their wake. Our Order - the Horadrim - was founded by a group of secretive magi to hunt down and capture the Three Evils once and for all.\n \nThe original Horadrim captured two of the Three within powerful artifacts known as Soulstones and buried them deep beneath the desolate eastern sands. The third Evil escaped capture and fled to the west with many of the Horadrim in pursuit. The Third Evil - known as Diablo, the Lord of Terror - was eventually captured, his essence set in a Soulstone and buried within this Labyrinth.\n \nBe warned that the soulstone must be kept from discovery by those not of the faith. If Diablo were to be released, he would seek a body that is easily controlled as he would be very weak - perhaps that of an old man or a child. |"
+1
+3
+PS_NAR3
+
+[TEXT_BOOK21]
+"So it came to be that there was a great revolution within the Burning Hells known as The Dark Exile. The Lesser Evils overthrew the Three Prime Evils and banished their spirit forms to the mortal realm. The demons Belial (the Lord of Lies) and Azmodan (the Lord of Sin) fought to claim rulership of Hell during the absence of the Three Brothers. All of Hell polarized between the factions of Belial and Azmodan while the forces of the High Heavens continually battered upon the very Gates of Hell. |"
+1
+4
+PS_NAR4
+
+[TEXT_BOOK22]
+"Many demons traveled to the mortal realm in search of the Three Brothers. These demons were followed to the mortal plane by Angels who hunted them throughout the vast cities of the East. The Angels allied themselves with a secretive Order of mortal magi named the Horadrim, who quickly became adept at hunting demons. They also made many dark enemies in the underworlds. |"
+1
+5
+PS_NAR5
+
+[TEXT_BOOK23]
+"So it came to be that the Three Prime Evils were banished in spirit form to the mortal realm and after sewing chaos across the East for decades, they were hunted down by the cursed Order of the mortal Horadrim. The Horadrim used artifacts called Soulstones to contain the essence of Mephisto, the Lord of Hatred and his brother Baal, the Lord of Destruction. The youngest brother - Diablo, the Lord of Terror - escaped to the west.\n \nEventually the Horadrim captured Diablo within a Soulstone as well, and buried him under an ancient, forgotten Cathedral. There, the Lord of Terror sleeps and awaits the time of his rebirth. Know ye that he will seek a body of youth and power to possess - one that is innocent and easily controlled. He will then arise to free his Brothers and once more fan the flames of the Sin War... |"
+1
+3
+PS_NAR6
+
+[TEXT_BOOK31]
+"All praises to Diablo - Lord of Terror and Survivor of The Dark Exile. When he awakened from his long slumber, my Lord and Master spoke to me of secrets that few mortals know. He told me the kingdoms of the High Heavens and the pits of the Burning Hells engage in an eternal war. He revealed the powers that have brought this discord to the realms of man. My lord has named the battle for this world and all who exist here the Sin War. |"
+1
+4
+PS_NAR7
+
+[TEXT_BOOK32]
+"Glory and Approbation to Diablo - Lord of Terror and Leader of the Three. My Lord spoke to me of his two Brothers, Mephisto and Baal, who were banished to this world long ago. My Lord wishes to bide his time and harness his awesome power so that he may free his captive brothers from their tombs beneath the sands of the east. Once my Lord releases his Brothers, the Sin War will once again know the fury of the Three. |"
+1
+4
+PS_NAR8
+
+[TEXT_BOOK33]
+"Hail and Sacrifice to Diablo - Lord of Terror and Destroyer of Souls. When I awoke my Master from his sleep, he attempted to possess a mortal's form. Diablo attempted to claim the body of King Leoric, but my Master was too weak from his imprisonment. My Lord required a simple and innocent anchor to this world, and so found the boy Albrecht to be perfect for the task. While the good King Leoric was left maddened by Diablo's unsuccessful possession, I kidnapped his son Albrecht and brought him before my Master. I now await Diablo's call and pray that I will be rewarded when he at last emerges as the Lord of this world. |"
+1
+3
+PS_NAR9
+
+
+//--------------------------------------------------
+//                   Introduction
+//--------------------------------------------------
+
+[TEXT_INTRO]
+"Thank goodness you've returned!\nMuch has changed since you lived here, my friend. All was peaceful until the dark riders came and destroyed our village. Many were cut down where they stood, and those who took up arms were slain or dragged away to become slaves - or worse. The church at the edge of town has been desecrated and is being used for dark rituals. The screams that echo in the night are inhuman, but some of our townsfolk may yet survive. Follow the path that lies between my tavern and the blacksmith shop to find the church and save who you can. \n \nPerhaps I can tell you more if we speak again. Good luck.|"
+1
+5
+TSFX_TAVERN0

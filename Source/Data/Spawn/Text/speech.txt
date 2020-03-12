@@ -1,0 +1,189 @@
+#include "Quest\king.txt"
+#include "Quest\banner.txt"
+#include "Quest\vile.txt"
+#include "Quest\poison.txt"
+#include "Quest\bone.txt"
+#include "Quest\butch.txt"
+#include "Quest\blind.txt"
+#include "Quest\veil.txt"
+#include "Quest\anvil.txt"
+#include "Quest\blood.txt"
+#include "Quest\warlrd.txt"
+#include "Quest\infra.txt"
+#include "Quest\mush.txt"
+#include "Quest\doom.txt"
+#include "Quest\garbud.txt"
+#include "Quest\zhar.txt"
+
+#include "Gossip\story.txt"
+#include "Gossip\ogden.txt"
+#include "Gossip\pepin.txt"
+#include "Gossip\gillian.txt"
+#include "Gossip\griswold.txt"
+#include "Gossip\farnham.txt"
+#include "Gossip\adria.txt"
+#include "Gossip\wirt.txt"
+
+
+//--------------------------------------------------
+//                      Player
+//--------------------------------------------------
+
+[TEXT_BONER]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOODY]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLINDING]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BLOODWAR]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_MBONER]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_MBLOODY]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_MBLINDING]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_MBLOODWAR]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_RBONER]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_RBLOODY]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_RBLINDING]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_RBLOODWAR]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+
+//--------------------------------------------------
+//                      Animal
+//--------------------------------------------------
+
+[TEXT_COW1]
+" |"
+0
+5
+TSFX_COW1
+
+[TEXT_COW2]
+" |"
+0
+5
+TSFX_COW2
+
+
+//--------------------------------------------------
+//                     Narrator
+//--------------------------------------------------
+
+[TEXT_BOOK11]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK12]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK13]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK21]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK22]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK23]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK31]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK32]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+[TEXT_BOOK33]
+"Nice try... "
+0
+0
+TSFX_TAVERN36
+
+
+//--------------------------------------------------
+//                   Introduction
+//--------------------------------------------------
+
+[TEXT_INTRO]
+"Thank goodness you've returned!\nMuch has changed since you lived here, my friend. All was peaceful until the dark riders came and destroyed our village. Many were cut down where they stood, and those who took up arms were slain or dragged away to become slaves - or worse. The church at the edge of town has been desecrated and is being used for dark rituals. The screams that echo in the night are inhuman, but some of our townsfolk may yet survive. Follow the path that lies between my tavern and the blacksmith shop to find the church and save who you can. \n \nPerhaps I can tell you more if we speak again. Good luck.|"
+1
+5
+TSFX_TAVERN0

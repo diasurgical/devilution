@@ -1,0 +1,53 @@
+[TEXT_WARLRD1]
+"I know of only one legend that speaks of such a warrior as you describe. His story is found within the ancient chronicles of the Sin War...\n \nStained by a thousand years of war, blood and death, the Warlord of Blood stands upon a mountain of his tattered victims. His dark blade screams a black curse to the living; a tortured invitation to any who would stand before this Executioner of Hell.\n \nIt is also written that although he was once a mortal who fought beside the Legion of Darkness during the Sin War, he lost his humanity to his insatiable hunger for blood. |"
+1
+5
+TSFX_STORY18
+
+[TEXT_WARLRD2]
+"I am afraid that I haven't heard anything about such a vicious warrior, good master. I hope that you do not have to fight him, for he sounds extremely dangerous. |"
+1
+6
+TSFX_TAVERN16
+
+[TEXT_WARLRD3]
+"Cain would be able to tell you much more about something like this than I would ever wish to know. |"
+1
+7
+TSFX_HEALER16
+
+[TEXT_WARLRD4]
+"If you are to battle such a fierce opponent, may Light be your guide and your defender. I will keep you in my thoughts. |"
+1
+6
+TSFX_BMAID16
+
+[TEXT_WARLRD5]
+"Dark and wicked legends surrounds the one Warlord of Blood. Be well prepared, my friend, for he shows no mercy or quarter. |"
+1
+6
+TSFX_SMITH17
+
+[TEXT_WARLRD6]
+"Always you gotta talk about Blood? What about flowers, and sunshine, and that pretty girl that brings the drinks. Listen here, friend - you're obsessive, you know that? |"
+1
+5
+TSFX_DRUNK17
+
+[TEXT_WARLRD7]
+"His prowess with the blade is awesome, and he has lived for thousands of years knowing only warfare. I am sorry... I can not see if you will defeat him. |"
+1
+5
+TSFX_WITCH18
+
+[TEXT_WARLRD8]
+"I haven't ever dealt with this Warlord you speak of, but he sounds like he's going through a lot of swords. Wouldn't mind supplying his armies... |"
+1
+6
+TSFX_PEGBOY17
+
+[TEXT_WARLRD9]
+"My blade sings for your blood, mortal, and by my dark masters it shall not be denied. |"
+0
+6
+USFX_WARLRD1

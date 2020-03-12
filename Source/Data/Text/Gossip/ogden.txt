@@ -1,0 +1,53 @@
+[TEXT_OGDEN1]
+"Greetings, good master. Welcome to the Tavern of the Rising Sun! |"
+0
+5
+TSFX_TAVERN36
+
+[TEXT_OGDEN2]
+"Many adventurers have graced the tables of my tavern, and ten times as many stories have been told over as much ale. The only thing that I ever heard any of them agree on was this old axiom. Perhaps it will help you. You can cut the flesh, but you must crush the bone. |"
+1
+5
+TSFX_TAVERN37
+
+[TEXT_OGDEN3]
+"Griswold the blacksmith is extremely knowledgeable about weapons and armor. If you ever need work done on your gear, he is definitely the man to see. |"
+1
+6
+TSFX_TAVERN38
+
+[TEXT_OGDEN4]
+"Farnham spends far too much time here, drowning his sorrows in cheap ale. I would make him leave, but he did suffer so during his time in the Labyrinth. |"
+1
+6
+TSFX_TAVERN39
+
+[TEXT_OGDEN5]
+"Adria is wise beyond her years, but I must admit - she frightens me a little. \n \nWell, no matter. If you ever have need to trade in items of sorcery, she maintains a strangely well-stocked hut just across the river. |"
+1
+6
+TSFX_TAVERN40
+
+[TEXT_OGDEN6]
+"If you want to know more about the history of our village, the storyteller Cain knows quite a bit about the past. |"
+1
+6
+TSFX_TAVERN41
+
+[TEXT_OGDEN8]
+"Wirt is a rapscallion and a little scoundrel. He was always getting into trouble, and it's no surprise what happened to him. \n \nHe probably went fooling about someplace that he shouldn't have been. I feel sorry for the boy, but I don't abide the company that he keeps. |"
+1
+6
+TSFX_TAVERN43
+
+[TEXT_OGDEN9]
+"Pepin is a good man - and certainly the most generous in the village. He is always attending to the needs of others, but trouble of some sort or another does seem to follow him wherever he goes... |"
+1
+6
+TSFX_TAVERN44
+
+[TEXT_OGDEN10]
+"Gillian, my Barmaid? If it were not for her sense of duty to her grand-dam, she would have fled from here long ago. \n \nGoodness knows I begged her to leave, telling her that I would watch after the old woman, but she is too sweet and caring to have done so. |"
+1
+6
+TSFX_TAVERN45

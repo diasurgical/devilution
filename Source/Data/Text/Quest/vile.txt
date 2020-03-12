@@ -1,0 +1,83 @@
+[TEXT_VILE1]
+"This does not bode well, for it confirms my darkest fears. While I did not allow myself to believe the ancient legends, I cannot deny them now. Perhaps the time has come to reveal who I am.\n \nMy true name is Deckard Cain the Elder, and I am the last descendant of an ancient Brotherhood that was dedicated to safeguarding the secrets of a timeless evil. An evil that quite obviously has now been released.\n \nThe Archbishop Lazarus, once King Leoric's most trusted advisor, led a party of simple townsfolk into the Labyrinth to find the King's missing son, Albrecht. Quite some time passed before they returned, and only a few of them escaped with their lives.\n \nCurse me for a fool! I should have suspected his veiled treachery then. It must have been Lazarus himself who kidnapped Albrecht and has since hidden him within the Labyrinth. I do not understand why the Archbishop turned to the darkness, or what his interest is in the child. unless he means to sacrifice him to his dark masters!\n \nThat must be what he has planned! The survivors of his 'rescue party' say that Lazarus was last seen running into the deepest bowels of the labyrinth. You must hurry and save the prince from the sacrificial blade of this demented fiend! |"
+1
+3
+TSFX_STORY36
+
+[TEXT_VILE2]
+"You must hurry and rescue Albrecht from the hands of Lazarus. The prince and the people of this kingdom are counting on you! |"
+1
+5
+TSFX_STORY37
+
+[TEXT_VILE3]
+"Your story is quite grim, my friend. Lazarus will surely burn in Hell for his horrific deed. The boy that you describe is not our prince, but I believe that Albrecht may yet be in danger. The symbol of power that you speak of must be a portal in the very heart of the labyrinth.\n \nKnow this, my friend - The evil that you move against is the dark Lord of Terror. He is known to mortal men as Diablo. It was he who was imprisoned within the Labyrinth many centuries ago and I fear that he seeks to once again sow chaos in the realm of mankind. You must venture through the portal and destroy Diablo before it is too late! |"
+1
+5
+TSFX_STORY38
+
+[TEXT_VILE4]
+"Lazarus was the Archbishop who led many of the townspeople into the labyrinth. I lost many good friends that day, and Lazarus never returned. I suppose he was killed along with most of the others. If you would do me a favor, good master - please do not talk to Farnham about that day. |"
+1
+6
+TSFX_TAVERN1
+
+[TEXT_VILE5]
+"|"
+1
+5
+TSFX_STORY38
+
+[TEXT_VILE6]
+"|"
+1
+5
+TSFX_STORY38
+
+[TEXT_VILE7]
+"I was shocked when I heard of what the townspeople were planning to do that night. I thought that of all people, Lazarus would have had more sense than that. He was an Archbishop, and always seemed to care so much for the townsfolk of Tristram. So many were injured, I could not save them all... |"
+1
+5
+TSFX_HEALER3
+
+[TEXT_VILE8]
+"I remember Lazarus as being a very kind and giving man. He spoke at my mother's funeral, and was supportive of my grandmother and myself in a very troubled time. I pray every night that somehow, he is still alive and safe. |"
+1
+5
+TSFX_BMAID3
+
+[TEXT_VILE9]
+"I was there when Lazarus led us into the labyrinth. He spoke of holy retribution, but when we started fighting those hellspawn, he did not so much as lift his mace against them. He just ran deeper into the dim, endless chambers that were filled with the servants of darkness! |"
+1
+5
+TSFX_SMITH3
+
+[TEXT_VILE10]
+"They stab, then bite, then they're all around you. Liar! LIAR! They're all dead! Dead! Do you hear me? They just keep falling and falling... their blood spilling out all over the floor... all his fault... |"
+1
+5
+TSFX_DRUNK3
+
+[TEXT_VILE11]
+"I did not know this Lazarus of whom you speak, but I do sense a great conflict within his being. He poses a great danger, and will stop at nothing to serve the powers of darkness which have claimed him as theirs. |"
+1
+5
+TSFX_WITCH3
+
+[TEXT_VILE12]
+"Yes, the righteous Lazarus, who was sooo effective against those monsters down there. Didn't help save my leg, did it? Look, I'll give you a free piece of advice. Ask Farnham, he was there. |"
+1
+5
+TSFX_PEGBOY3
+
+[TEXT_VILE13]
+"Abandon your foolish quest. All that awaits you is the wrath of my Master! You are too late to save the child. Now you will join him in Hell! |"
+0
+5
+USFX_LAZ1
+
+[TEXT_VILE14]
+" |"
+0
+5
+USFX_LAZ1

@@ -1,0 +1,65 @@
+[TEXT_WIRT1]
+"Pssst... over here... |"
+0
+5
+TSFX_PEGBOY32
+
+[TEXT_WIRT2]
+"Not everyone in Tristram has a use - or a market - for everything you will find in the labyrinth. Not even me, as hard as that is to believe. \n \nSometimes, only you will be able to find a purpose for some things. |"
+1
+6
+TSFX_PEGBOY33
+
+[TEXT_WIRT3]
+"Don't trust everything the drunk says. Too many ales have fogged his vision and his good sense. |"
+1
+6
+TSFX_PEGBOY34
+
+[TEXT_WIRT4]
+"In case you haven't noticed, I don't buy anything from Tristram. I am an importer of quality goods. If you want to peddle junk, you'll have to see Griswold, Pepin or that witch, Adria. I'm sure that they will snap up whatever you can bring them... |"
+1
+5
+TSFX_PEGBOY35
+
+[TEXT_WIRT5]
+"I guess I owe the blacksmith my life - what there is of it. Sure, Griswold offered me an apprenticeship at the smithy, and he is a nice enough guy, but I'll never get enough money to... well, let's just say that I have definite plans that require a large amount of gold. |"
+1
+5
+TSFX_PEGBOY36
+
+[TEXT_WIRT6]
+"If I were a few years older, I would shower her with whatever riches I could muster, and let me assure you I can get my hands on some very nice stuff. Gillian is a beautiful girl who should get out of Tristram as soon as it is safe. Hmmm... maybe I'll take her with me when I go... |"
+1
+5
+TSFX_PEGBOY37
+
+[TEXT_WIRT7]
+"Cain knows too much. He scares the life out of me - even more than that woman across the river. He keeps telling me about how lucky I am to be alive, and how my story is foretold in legend. I think he's off his crock. |"
+1
+5
+TSFX_PEGBOY38
+
+[TEXT_WIRT8]
+"Farnham - now there is a man with serious problems, and I know all about how serious problems can be. He trusted too much in the integrity of one man, and Lazarus led him into the very jaws of death. Oh, I know what it's like down there, so don't even start telling me about your plans to destroy the evil that dwells in that Labyrinth. Just watch your legs... |"
+1
+5
+TSFX_PEGBOY39
+
+[TEXT_WIRT9]
+"As long as you don't need anything reattached, old Pepin is as good as they come. \n \nIf I'd have had some of those potions he brews, I might still have my leg... |"
+1
+6
+TSFX_PEGBOY40
+
+[TEXT_WIRT11]
+"Adria truly bothers me. Sure, Cain is creepy in what he can tell you about the past, but that witch can see into your past. She always has some way to get whatever she needs, too. Adria gets her hands on more merchandise than I've seen pass through the gates of the King's Bazaar during High Festival. |"
+1
+5
+TSFX_PEGBOY42
+
+[TEXT_WIRT12]
+"Ogden is a fool for staying here. I could get him out of town for a very reasonable price, but he insists on trying to make a go of it with that stupid tavern. I guess at the least he gives Gillian a place to work, and his wife Garda does make a superb Shepherd's pie... |"
+1
+5
+TSFX_PEGBOY43

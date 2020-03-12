@@ -454,7 +454,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	// check if the current RSplType is a valid/allowed spell
 	if (plr[p]._pRSplType == RSPLTYPE_CHARGES
 	    && !(spl & ((unsigned __int64)1 << (plr[p]._pRSpell - 1)))) {
-		plr[p]._pRSpell = SPL_INVALID;
+		plr[p]._pRSpell = -1;
 		plr[p]._pRSplType = RSPLTYPE_INVALID;
 		force_redraw = 255;
 	}
@@ -628,7 +628,7 @@ void CalcPlrScrolls(int p)
 	}
 	if (plr[p]._pRSplType == RSPLTYPE_SCROLL) {
 		if (!(plr[p]._pScrlSpells & 1 << (plr[p]._pRSpell - 1))) {
-			plr[p]._pRSpell = SPL_INVALID;
+			plr[p]._pRSpell = -1;
 			plr[p]._pRSplType = RSPLTYPE_INVALID;
 			force_redraw = 255;
 		}

@@ -1,0 +1,71 @@
+[TEXT_BANNER1]
+"I see that this strange behavior puzzles you as well. I would surmise that since many demons fear the light of the sun and believe that it holds great power, it may be that the rising sun depicted on the sign you speak of has led them to believe that it too holds some arcane powers. Hmm, perhaps they are not all as smart as we had feared... |"
+1
+5
+TSFX_STORY2
+
+[TEXT_BANNER2]
+"Master, I have a strange experience to relate. I know that you have a great knowledge of those monstrosities that inhabit the labyrinth, and this is something that I cannot understand for the very life of me... I was awakened during the night by a scraping sound just outside of my tavern. When I looked out from my bedroom, I saw the shapes of small demon-like creatures in the inn yard. After a short time, they ran off, but not before stealing the sign to my inn. I don't know why the demons would steal my sign but leave my family in peace... 'tis strange, no? |"
+1
+5
+TSFX_TAVERN24
+
+[TEXT_BANNER3]
+"Oh, you didn't have to bring back my sign, but I suppose that it does save me the expense of having another one made. Well, let me see, what could I give you as a fee for finding it? Hmmm, what have we here... ah, yes! This cap was left in one of the rooms by a magician who stayed here some time ago. Perhaps it may be of some value to you. |"
+1
+5
+TSFX_TAVERN25
+
+[TEXT_BANNER4]
+"My goodness, demons running about the village at night, pillaging our homes - is nothing sacred? I hope that Ogden and Garda are all right. I suppose that they would come to see me if they were hurt... |"
+1
+5
+TSFX_HEALER2
+
+[TEXT_BANNER5]
+"Oh my! Is that where the sign went? My Grandmother and I must have slept right through the whole thing. Thank the Light that those monsters didn't attack the inn. |"
+1
+6
+TSFX_BMAID2
+
+[TEXT_BANNER6]
+"Demons stole Ogden's sign, you say? That doesn't sound much like the atrocities I've heard of - or seen. \n \nDemons are concerned with ripping out your heart, not your signpost. |"
+1
+6
+TSFX_SMITH2
+
+[TEXT_BANNER7]
+"You know what I think? Somebody took that sign, and they gonna want lots of money for it. If I was Ogden... and I'm not, but if I was... I'd just buy a new sign with some pretty drawing on it. Maybe a nice mug of ale or a piece of cheese... |"
+1
+5
+TSFX_DRUNK2
+
+[TEXT_BANNER8]
+"No mortal can truly understand the mind of the demon. \n \nNever let their erratic actions confuse you, as that too may be their plan. |"
+1
+6
+TSFX_WITCH2
+
+[TEXT_BANNER9]
+"What - is he saying I took that? I suppose that Griswold is on his side, too. \n \nLook, I got over simple sign stealing months ago. You can't turn a profit on a piece of wood. |"
+1
+6
+TSFX_PEGBOY2
+
+[TEXT_BANNER10]
+"Hey - You that one that kill all! You get me Magic Banner or we attack! You no leave with life! You kill big uglies and give back Magic. Go past corner and door, find uglies. You give, you go! |"
+1
+5
+USFX_SNOT1
+
+[TEXT_BANNER11]
+"You kill uglies, get banner. You bring to me, or else... |"
+1
+6
+USFX_SNOT2
+
+[TEXT_BANNER12]
+"You give! Yes, good! Go now, we strong. We kill all with big Magic! |"
+1
+6
+USFX_SNOT3

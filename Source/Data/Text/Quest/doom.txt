@@ -1,0 +1,59 @@
+[TEXT_DOOM1]
+"So, the legend of the Map is real. Even I never truly believed any of it! I suppose it is time that I told you the truth about who I am, my friend. You see, I am not all that I seem...\n \nMy true name is Deckard Cain the Elder, and I am the last descendant of an ancient Brotherhood that was dedicated to keeping and safeguarding the secrets of a timeless evil. An evil that quite obviously has now been released...\n \nThe evil that you move against is the dark Lord of Terror - known to mortal men as Diablo. It was he who was imprisoned within the Labyrinth many centuries ago. The Map that you hold now was created ages ago to mark the time when Diablo would rise again from his imprisonment. When the two stars on that map align, Diablo will be at the height of his power. He will be all but invincible...\n \nYou are now in a race against time, my friend! Find Diablo and destroy him before the stars align, for we may never have a chance to rid the world of his evil again! |"
+1
+2
+TSFX_STORY22
+
+[TEXT_DOOM2]
+"Our time is running short! I sense his dark power building and only you can stop him from attaining his full might. |"
+1
+6
+TSFX_STORY23
+
+[TEXT_DOOM3]
+"I am sure that you tried your best, but I fear that even your strength and will may not be enough. Diablo is now at the height of his earthly power, and you will need all your courage and strength to defeat him. May the Light protect and guide you, my friend. I will help in any way that I am able. |"
+1
+5
+TSFX_STORY24
+
+[TEXT_DOOM4]
+"If the witch can't help you and suggests you see Cain, what makes you think that I would know anything? It sounds like this is a very serious matter. You should hurry along and see the storyteller as Adria suggests. |"
+1
+6
+TSFX_TAVERN20
+
+[TEXT_DOOM5]
+"I can't make much of the writing on this map, but perhaps Adria or Cain could help you decipher what this refers to. \n \nI can see that it is a map of the stars in our sky, but any more than that is beyond my talents. |"
+1
+6
+TSFX_HEALER19
+
+[TEXT_DOOM6]
+"The best person to ask about that sort of thing would be our storyteller. \n \nCain is very knowledgeable about ancient writings, and that is easily the oldest looking piece of paper that I have ever seen. |"
+1
+6
+TSFX_BMAID20
+
+[TEXT_DOOM7]
+"I have never seen a map of this sort before. Where'd you get it? Although I have no idea how to read this, Cain or Adria may be able to provide the answers that you seek. |"
+1
+6
+TSFX_SMITH20
+
+[TEXT_DOOM8]
+"Listen here, come close. I don't know if you know what I know, but you have really got somethin' here. That's a map. |"
+1
+5
+TSFX_DRUNK21
+
+[TEXT_DOOM9]
+"Oh, I'm afraid this does not bode well at all. This map of the stars portends great disaster, but its secrets are not mine to tell. The time has come for you to have a very serious conversation with the Storyteller... |"
+1
+5
+TSFX_WITCH21
+
+[TEXT_DOOM10]
+"I've been looking for a map, but that certainly isn't it. You should show that to Adria - she can probably tell you what it is. I'll say one thing; it looks old, and old usually means valuable. |"
+1
+5
+TSFX_PEGBOY20

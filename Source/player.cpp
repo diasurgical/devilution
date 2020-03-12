@@ -835,9 +835,9 @@ void InitPlayer(int pnum, BOOL FirstTime)
 	ClearPlrRVars(&plr[pnum]);
 
 	if (FirstTime) {
-		plr[pnum]._pRSpell = SPL_INVALID;
-		plr[pnum]._pSBkSpell = SPL_INVALID;
-		plr[pnum]._pSpell = SPL_INVALID;
+		plr[pnum]._pRSpell = -1;
+		plr[pnum]._pSBkSpell = -1;
+		plr[pnum]._pSpell = -1;
 		plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 		plr[pnum]._pSplType = RSPLTYPE_INVALID;
 		if ((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_BOW) {
@@ -921,7 +921,7 @@ void InitPlayer(int pnum, BOOL FirstTime)
 		}
 	}
 	if (debug_mode_key_inverted_v && FirstTime) {
-		plr[pnum]._pMemSpells = SPL_INVALID;
+		plr[pnum]._pMemSpells = -1;
 	}
 #endif
 
@@ -2840,7 +2840,7 @@ BOOL PM_DoSpell(int pnum)
 			if (plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
 				if (!(plr[pnum]._pScrlSpells
 				        & (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))) {
-					plr[pnum]._pRSpell = SPL_INVALID;
+					plr[pnum]._pRSpell = -1;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 					force_redraw = 255;
 				}
@@ -2849,7 +2849,7 @@ BOOL PM_DoSpell(int pnum)
 			if (plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
 				if (!(plr[pnum]._pISpells
 				        & (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))) {
-					plr[pnum]._pRSpell = SPL_INVALID;
+					plr[pnum]._pRSpell = -1;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 					force_redraw = 255;
 				}
@@ -3637,7 +3637,7 @@ void CheckPlrSpell()
 	}
 
 	rspell = plr[myplr]._pRSpell;
-	if (rspell == SPL_INVALID) {
+	if (rspell == -1) {
 		if (plr[myplr]._pClass == PC_WARRIOR) {
 			PlaySFX(PS_WARR34);
 #ifndef SPAWN
