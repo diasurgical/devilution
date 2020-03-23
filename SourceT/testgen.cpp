@@ -7,8 +7,7 @@ void write_file(char *path, void *buf, int size);
 
 // drlg_l1.cpp
 
-void gen_drlg_l1_tests(void)
-{
+void gen_drlg_l1_tests(void) {
 	printf("gen_drlg_l1_tests\n");
 
 	typedef struct {
@@ -19,44 +18,58 @@ void gen_drlg_l1_tests(void)
 		BYTE dtype;
 		BYTE quest_id;
 		DWORD seed;
+		BYTE setlvl;
 	} Golden;
 
 	// Golden test cases.
 	Golden golden[] = {
 		{
-		    "Cathedral",     // dungeon_name
-		    1,               // dlvl
-		    DTYPE_CATHEDRAL, // dtype
-		    QTYPE_INVALID,   // quest_id
-		    123,             // seed
+			"Cathedral",     // dungeon_name
+			1,               // dlvl
+			DTYPE_CATHEDRAL, // dtype
+			QTYPE_INVALID,   // quest_id
+			123,             // seed
+			0,               // setlvl
 		},
 		{
-		    "Cathedral (fix corners)", // dungeon_name
-		    1,                         // dlvl
-		    DTYPE_CATHEDRAL,           // dtype
-		    QTYPE_INVALID,             // quest_id
-		    35,                        // seed
+			"Cathedral (fix corners)", // dungeon_name
+			1,                         // dlvl
+			DTYPE_CATHEDRAL,           // dtype
+			QTYPE_INVALID,             // quest_id
+			35,                        // seed
+			0,                         // setlvl
 		},
 		{
-		    "The Butcher",                 // dungeon_name
-		    questlist[QTYPE_BUTCH]._qdlvl, // dlvl
-		    DTYPE_CATHEDRAL,               // dtype
-		    QTYPE_BUTCH,                   // quest_id
-		    123,                           // seed
+			"The Butcher",                 // dungeon_name
+			questlist[QTYPE_BUTCH]._qdlvl, // dlvl
+			DTYPE_CATHEDRAL,               // dtype
+			QTYPE_BUTCH,                   // quest_id
+			123,                           // seed
+			0,                             // setlvl
 		},
 		{
-		    "Poisoned Water Supply",    // dungeon_name
-		    questlist[QTYPE_PW]._qdlvl, // dlvl
-		    DTYPE_CATHEDRAL,            // dtype
-		    QTYPE_PW,                   // quest_id
-		    123,                        // seed
+			"Poisoned Water Supply",    // dungeon_name
+			questlist[QTYPE_PW]._qdlvl, // dlvl
+			DTYPE_CATHEDRAL,            // dtype
+			QTYPE_PW,                   // quest_id
+			123,                        // seed
+			0,                          // setlvl
 		},
 		{
-		    "Ogden's Sign",              // dungeon_name
-		    questlist[QTYPE_BOL]._qdlvl, // dlvl
-		    DTYPE_CATHEDRAL,             // dtype
-		    QTYPE_BOL,                   // quest_id
-		    123,                         // seed
+			"Ogden's Sign",              // dungeon_name
+			questlist[QTYPE_BOL]._qdlvl, // dlvl
+			DTYPE_CATHEDRAL,             // dtype
+			QTYPE_BOL,                   // quest_id
+			123,                         // seed
+			0,                           // setlvl
+		},
+		{
+			"Skeleton King's Lair",       // dungeon_name
+			questlist[QTYPE_KING]._qdlvl, // dlvl
+			DTYPE_CATHEDRAL,              // dtype
+			QTYPE_KING,                   // quest_id
+			123,                          // seed
+			SL_SKELKING,                  // setlvl
 		},
 	};
 
@@ -99,7 +112,12 @@ void gen_drlg_l1_tests(void)
 			quests[quest_id]._qactive = false;
 		}
 		//*gendung.IsQuestLevel = false;
-		setlevel = false;
+		if (g.setlvl != 0) {
+			setlevel = true;
+			setlvlnum = g.setlvl;
+		} else {
+			setlevel = false;
+		}
 		//if g.questID != quests.Invalid {
 		//	quests.Quests[g.questID].Active = true;
 		//	quests.Quests[g.questID].DLvl = g.dlvl;
@@ -120,31 +138,33 @@ void gen_drlg_l1_tests(void)
 		//write_file(output_path, pdungeon, sizeof(pdungeon));
 
 		// Dump tiles.
-		sprintf(output_path, "testdata/tiles_dlvl=%d,quest_id=%d,seed=%d.bin", g.dlvl, g.quest_id, g.seed);
+		sprintf(output_path, "testdata/dlvl=%d,quest_id=%d,seed=%d,setlvl=%d_tiles.bin", g.dlvl, g.quest_id, g.seed, g.setlvl);
+		printf("creating '%s'\n", output_path);
 		write_file(output_path, dungeon, sizeof(dungeon));
 
 		// Dungeon dungeon pieces.
-		sprintf(output_path, "testdata/dpieces_dlvl=%d,quest_id=%d,seed=%d.bin", g.dlvl, g.quest_id, g.seed);
+		sprintf(output_path, "testdata/dlvl=%d,quest_id=%d,seed=%d,setlvl=%d_dpieces.bin", g.dlvl, g.quest_id, g.seed, g.setlvl);
+		printf("creating '%s'\n", output_path);
 		write_file(output_path, dPiece, sizeof(dPiece));
 
 		// Dungeon arches.
-		sprintf(output_path, "testdata/arches_dlvl=%d,quest_id=%d,seed=%d.bin", g.dlvl, g.quest_id, g.seed);
+		sprintf(output_path, "testdata/dlvl=%d,quest_id=%d,seed=%d,setlvl=%d_arches.bin", g.dlvl, g.quest_id, g.seed, g.setlvl);
+		printf("creating '%s'\n", output_path);
 		write_file(output_path, dArch, sizeof(dArch));
 
 		// Dungeon transparency.
-		sprintf(output_path, "testdata/transparency_dlvl=%d,quest_id=%d,seed=%d.bin", g.dlvl, g.quest_id, g.seed);
+		sprintf(output_path, "testdata/dlvl=%d,quest_id=%d,seed=%d,setlvl=%d_transparency.bin", g.dlvl, g.quest_id, g.seed, g.setlvl);
+		printf("creating '%s'\n", output_path);
 		write_file(output_path, dTransVal, sizeof(dTransVal));
 	}
 }
 
-void testgen()
-{
+void testgen() {
 	printf("testgen\n");
 	gen_drlg_l1_tests();
 }
 
-void write_file(char *path, void *buf, int size)
-{
+void write_file(char *path, void *buf, int size) {
 	FILE *f = fopen(path, "wb");
 	if (f == NULL) {
 		fprintf(stderr, "unable to create file %s", path);
