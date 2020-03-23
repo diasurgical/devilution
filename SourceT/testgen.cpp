@@ -34,6 +34,14 @@ void gen_drlg_l1_tests(void) {
 			0,               // setlvl
 		},
 		{
+			"Cathedral (broken seed)",// dungeon_name
+			1,                        // dlvl
+			DTYPE_CATHEDRAL,          // dtype
+			Q_INVALID,                // quest_id
+			7281,                     // seed
+			0,                        // setlvl
+		},
+		{
 			"Cathedral (fix corners)", // dungeon_name
 			1,                         // dlvl
 			DTYPE_CATHEDRAL,           // dtype
