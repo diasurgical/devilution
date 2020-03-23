@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "diablo.h"
+#include "all.h"
 
 void write_file(char *path, void *buf, int size);
 
 // drlg_l1.cpp
+
+#define Q_INVALID -1
 
 void gen_drlg_l1_tests(void) {
 	printf("gen_drlg_l1_tests\n");
@@ -27,7 +29,7 @@ void gen_drlg_l1_tests(void) {
 			"Cathedral",     // dungeon_name
 			1,               // dlvl
 			DTYPE_CATHEDRAL, // dtype
-			QTYPE_INVALID,   // quest_id
+			Q_INVALID,       // quest_id
 			123,             // seed
 			0,               // setlvl
 		},
@@ -35,39 +37,39 @@ void gen_drlg_l1_tests(void) {
 			"Cathedral (fix corners)", // dungeon_name
 			1,                         // dlvl
 			DTYPE_CATHEDRAL,           // dtype
-			QTYPE_INVALID,             // quest_id
+			Q_INVALID,                 // quest_id
 			35,                        // seed
 			0,                         // setlvl
 		},
 		{
 			"The Butcher",                 // dungeon_name
-			questlist[QTYPE_BUTCH]._qdlvl, // dlvl
+			questlist[Q_BUTCHER]._qdlvl,   // dlvl
 			DTYPE_CATHEDRAL,               // dtype
-			QTYPE_BUTCH,                   // quest_id
+			Q_BUTCHER,                     // quest_id
 			123,                           // seed
 			0,                             // setlvl
 		},
 		{
 			"Poisoned Water Supply",    // dungeon_name
-			questlist[QTYPE_PW]._qdlvl, // dlvl
+			questlist[Q_PWATER]._qdlvl, // dlvl
 			DTYPE_CATHEDRAL,            // dtype
-			QTYPE_PW,                   // quest_id
+			Q_PWATER,                   // quest_id
 			123,                        // seed
 			0,                          // setlvl
 		},
 		{
-			"Ogden's Sign",              // dungeon_name
-			questlist[QTYPE_BOL]._qdlvl, // dlvl
-			DTYPE_CATHEDRAL,             // dtype
-			QTYPE_BOL,                   // quest_id
-			123,                         // seed
-			0,                           // setlvl
+			"Ogden's Sign",               // dungeon_name
+			questlist[Q_LTBANNER]._qdlvl, // dlvl
+			DTYPE_CATHEDRAL,              // dtype
+			Q_LTBANNER,                   // quest_id
+			123,                          // seed
+			0,                            // setlvl
 		},
 		{
 			"Skeleton King's Lair",       // dungeon_name
-			questlist[QTYPE_KING]._qdlvl, // dlvl
+			questlist[Q_SKELKING]._qdlvl, // dlvl
 			DTYPE_CATHEDRAL,              // dtype
-			QTYPE_KING,                   // quest_id
+			Q_SKELKING,                   // quest_id
 			123,                          // seed
 			SL_SKELKING,                  // setlvl
 		},
@@ -92,7 +94,7 @@ void gen_drlg_l1_tests(void) {
 		memset(pdungeon, 0, sizeof(pdungeon));
 		memset(dungeon, 0, sizeof(dungeon));
 		memset(dPiece, 0, sizeof(dPiece));
-		memset(dArch, 0, sizeof(dArch));
+		memset(dSpecial, 0, sizeof(dSpecial));
 		memset(dTransVal, 0, sizeof(dTransVal));
 
 		//*gendung.DType = g.dtype;
@@ -122,7 +124,7 @@ void gen_drlg_l1_tests(void) {
 		//	quests.Quests[g.questID].Active = true;
 		//	quests.Quests[g.questID].DLvl = g.dlvl;
 		//}
-		if (g.quest_id != QTYPE_INVALID) {
+		if (g.quest_id != Q_INVALID) {
 			quests[g.quest_id]._qlevel  = g.dlvl;
 			quests[g.quest_id]._qactive = true;
 		}
@@ -150,7 +152,7 @@ void gen_drlg_l1_tests(void) {
 		// Dungeon arches.
 		sprintf(output_path, "testdata/dlvl=%d,quest_id=%d,seed=%d,setlvl=%d_arches.bin", g.dlvl, g.quest_id, g.seed, g.setlvl);
 		printf("creating '%s'\n", output_path);
-		write_file(output_path, dArch, sizeof(dArch));
+		write_file(output_path, dSpecial, sizeof(dSpecial));
 
 		// Dungeon transparency.
 		sprintf(output_path, "testdata/dlvl=%d,quest_id=%d,seed=%d,setlvl=%d_transparency.bin", g.dlvl, g.quest_id, g.seed, g.setlvl);
