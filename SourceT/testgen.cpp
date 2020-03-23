@@ -119,6 +119,7 @@ void gen_drlg_l1_tests(void) {
 			setlvlnum = g.setlvl;
 		} else {
 			setlevel = false;
+			setlvlnum = 0; // none
 		}
 		//if g.questID != quests.Invalid {
 		//	quests.Quests[g.questID].Active = true;
