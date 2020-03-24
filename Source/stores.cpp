@@ -242,7 +242,7 @@ void DrawSLine(int y)
 #endif
 }
 
-void DrawSArrows(int y1, int y2)
+void DrawSSlider(int y1, int y2)
 {
 	int yd1, yd2, yd3;
 
@@ -1583,7 +1583,7 @@ void DrawSText()
 	}
 
 	if (stextscrl)
-		DrawSArrows(4, 20);
+		DrawSSlider(4, 20);
 
 	InStoreFlag = (InStoreFlag & 7) + 1;
 }
@@ -1593,7 +1593,7 @@ void STextESC()
 	if (qtextflag) {
 		qtextflag = FALSE;
 		if (leveltype == DTYPE_TOWN)
-			sfx_stop();
+			stream_stop();
 	} else {
 		switch (stextflag) {
 		case STORE_SMITH:
@@ -2679,7 +2679,7 @@ void STextEnter()
 	if (qtextflag) {
 		qtextflag = FALSE;
 		if (leveltype == DTYPE_TOWN)
-			sfx_stop();
+			stream_stop();
 	} else {
 		PlaySFX(IS_TITLSLCT);
 		switch (stextflag) {
@@ -2763,7 +2763,7 @@ void CheckStoreBtn()
 	if (qtextflag) {
 		qtextflag = FALSE;
 		if (leveltype == DTYPE_TOWN)
-			sfx_stop();
+			stream_stop();
 	} else if (stextsel != -1 && MouseY >= 32 && MouseY <= 320) {
 		if (!stextsize) {
 			if (MouseX < 344 + PANEL_LEFT || MouseX > 616 + PANEL_LEFT)

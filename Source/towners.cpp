@@ -418,7 +418,7 @@ void TownCtrlMsg(int i)
 			towner[i]._tbtcnt = 0;
 		if (!towner[i]._tbtcnt) {
 			qtextflag = FALSE;
-			sfx_stop();
+			stream_stop();
 		}
 	}
 }
