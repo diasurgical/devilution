@@ -1628,7 +1628,7 @@ addr = 0x4158B9
 size = 0x29
 
 [[func]]
-name = "sfx_stop"
+name = "stream_stop"
 addr = 0x4158E2
 size = 0x29
 
@@ -1638,7 +1638,7 @@ addr = 0x41590B
 size = 0xD0
 
 [[func]]
-name = "FreeEffects"
+name = "FreeMonsterSnd"
 addr = 0x4159DB
 size = 0x6A
 
@@ -1678,12 +1678,12 @@ addr = 0x415D01
 size = 0x38
 
 [[func]]
-name = "FreeMonsterSnd"
+name = "sound_stop"
 addr = 0x415D39
 size = 0x61
 
 [[func]]
-name = "sound_stop"
+name = "sfx_stop"
 addr = 0x415D9A
 size = 0x20
 
@@ -1693,7 +1693,7 @@ addr = 0x415DBA
 size = 0x16
 
 [[func]]
-name = "effects_update"
+name = "stream_update"
 addr = 0x415DD0
 size = 0x2F
 
@@ -1703,7 +1703,7 @@ addr = 0x415DFF
 size = 0x2B
 
 [[func]]
-name = "stream_update"
+name = "sound_init"
 addr = 0x415E2A
 size = 0x4D
 
@@ -1713,7 +1713,7 @@ addr = 0x415E77
 size = 0x61
 
 [[func]]
-name = "sound_init"
+name = "ui_sound_init"
 addr = 0x415ED8
 size = 0x7
 
@@ -8153,7 +8153,7 @@ addr = 0x45708B
 size = 0xA0
 
 [[func]]
-name = "sound_load_volume"
+name = "snd_get_volume"
 addr = 0x45712B
 size = 0x51
 
@@ -8173,7 +8173,7 @@ addr = 0x4572FF
 size = 0x59
 
 [[func]]
-name = "sound_store_volume"
+name = "snd_set_volume"
 addr = 0x457358
 size = 0xF
 
@@ -8268,7 +8268,7 @@ addr = 0x457DE2
 size = 0x80
 
 [[func]]
-name = "DrawSArrows"
+name = "DrawSSlider"
 addr = 0x457E62
 size = 0xF0
 

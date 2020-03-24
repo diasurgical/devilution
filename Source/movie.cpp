@@ -25,7 +25,7 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	UpdateWindow(ghMainWnd);
 	movie_playing = TRUE;
 	sound_disable_music(TRUE);
-	sfx_stop();
+	stream_stop();
 	effects_play_sound("Sfx\\Misc\\blank.wav");
 
 	SVidPlayBegin(pszMovie, 0, 0, 0, 0, loop_movie ? 0x100C0808 : 0x10280808, &video_stream);

@@ -1988,7 +1988,7 @@ void InitLevelChange(int pnum)
 	RemovePlrMissiles(pnum);
 	if (pnum == myplr && qtextflag) {
 		qtextflag = FALSE;
-		sfx_stop();
+		stream_stop();
 	}
 
 	RemovePlrFromMap(pnum);

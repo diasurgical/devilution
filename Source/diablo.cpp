@@ -86,7 +86,7 @@ void FreeGameMem()
 	FreeMissiles();
 	FreeMonsters();
 	FreeObjectGFX();
-	FreeEffects();
+	FreeMonsterSnd();
 	FreeTownerGFX();
 }
 
@@ -286,7 +286,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		diablo_init_screen();
 		diablo_parse_flags(lpCmdLine);
 		init_create_window(nCmdShow);
-		sound_init();
+		ui_sound_init();
 		UiInitialize();
 #ifdef SPAWN
 		UiSetSpawned(TRUE);
@@ -619,7 +619,7 @@ BOOL PressEscKey()
 
 	if (qtextflag) {
 		qtextflag = FALSE;
-		sfx_stop();
+		stream_stop();
 		rv = TRUE;
 	} else if (stextflag) {
 		STextESC();
@@ -772,7 +772,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			pfile_write_hero();
 		nthread_ignore_mutex(TRUE);
 		PaletteFadeOut(8);
-		FreeMonsterSnd();
+		sound_stop();
 		music_stop();
 		track_repeat_walk(FALSE);
 		sgbMouseDown = 0;
@@ -808,7 +808,7 @@ BOOL LeftMouseDown(int wParam)
 						QuestlogESC();
 					} else if (qtextflag) {
 						qtextflag = FALSE;
-						sfx_stop();
+						stream_stop();
 					} else if (chrflag && MouseX < 320) {
 						CheckChrBtns();
 					} else if (invflag && MouseX > RIGHT_PANEL) {
@@ -1092,7 +1092,7 @@ void PressKey(int vkey)
 			spselflag = FALSE;
 			if (qtextflag && leveltype == DTYPE_TOWN) {
 				qtextflag = FALSE;
-				sfx_stop();
+				stream_stop();
 			}
 			questlog = FALSE;
 			automapflag = FALSE;
@@ -1214,7 +1214,7 @@ void PressKey(int vkey)
 		spselflag = FALSE;
 		if (qtextflag && leveltype == DTYPE_TOWN) {
 			qtextflag = FALSE;
-			sfx_stop();
+			stream_stop();
 		}
 		questlog = FALSE;
 		automapflag = FALSE;
@@ -1231,7 +1231,7 @@ void diablo_pause_game()
 			PauseMode = 0;
 		} else {
 			PauseMode = 2;
-			FreeMonsterSnd();
+			sound_stop();
 			track_repeat_walk(FALSE);
 		}
 		force_redraw = 255;
