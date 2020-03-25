@@ -1,0 +1,29 @@
+#TILES_BIN_NAME=dlvl=3,quest_id=12,seed=123,setlvl=0_tiles.bin
+#TILES_BIN_PATH=testdata/${TILES_BIN_NAME}
+#DUN_NAME=${TILES_BIN_NAME/.bin/.bin.dun}
+#DUN_FROM=testdata/${DUN_NAME}
+#DUN_TO=testdata/levels/l1data/${DUN_NAME}
+
+TILES_BIN=$(wildcard testdata/*_tiles.bin)
+DUN_FROM=$(TILES_BIN:.bin=.bin.dun)
+DUN_TO=$(subst testdata/,testdata/levels/l1data/,$(DUN_FROM))
+
+all: $(DUN_TO) _dump_/_tilesets_
+
+testdata/%.bin.dun: testdata/%.bin
+	./cmd/viewdun/viewdun $<
+
+testdata/levels/l1data/%.bin.dun: testdata/%.bin.dun
+	mkdir -p testdata/levels/l1data
+	mv $< $@
+	dun_dump -tilesets=false $@
+
+_dump_/_tilesets_:
+	@echo "This step creates the tilesets and parses a dummy DUN file. It is expected to fail as the dummy file does not exist."
+	dun_dump -tilesets=true dummy
+
+clean:
+	$(RM) -v $(DUN_TO)
+	$(RM) -v $(DUN_FROM)
+	$(RM) -r -v _dump_/_tilesets_
+	$(RM) -r -v _dump_/_dungeons_
