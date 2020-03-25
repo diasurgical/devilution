@@ -120,7 +120,7 @@ void gen_drlg_l1_tests(void) {
 			1,                        // dlvl
 			DTYPE_CATHEDRAL,          // dtype
 			Q_INVALID,                // quest_id
-			15236,                     // seed
+			15236,                    // seed
 			SL_NONE,                  // setlvl
 		},
 	};
