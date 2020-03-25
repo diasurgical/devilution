@@ -84,44 +84,53 @@ void gen_drlg_l1_tests(void) {
 		},
 		// Broken seeds.
 		{
-			"Cathedral (broken seed)",// dungeon_name
-			1,                        // dlvl
-			DTYPE_CATHEDRAL,          // dtype
-			Q_INVALID,                // quest_id
-			2588,                     // seed
-			SL_NONE,                  // setlvl
+			"Cathedral (broken seed)", // dungeon_name
+			1,                         // dlvl
+			DTYPE_CATHEDRAL,           // dtype
+			Q_INVALID,                 // quest_id
+			2588,                      // seed
+			SL_NONE,                   // setlvl
 		},
 		{
-			"Cathedral (broken seed)",// dungeon_name
-			1,                        // dlvl
-			DTYPE_CATHEDRAL,          // dtype
-			Q_INVALID,                // quest_id
-			4743,                     // seed
-			SL_NONE,                  // setlvl
+			"Cathedral (broken seed)", // dungeon_name
+			1,                         // dlvl
+			DTYPE_CATHEDRAL,           // dtype
+			Q_INVALID,                 // quest_id
+			4743,                      // seed
+			SL_NONE,                   // setlvl
 		},
 		{
-			"Cathedral (broken seed)",// dungeon_name
-			1,                        // dlvl
-			DTYPE_CATHEDRAL,          // dtype
-			Q_INVALID,                // quest_id
-			7281,                     // seed
-			SL_NONE,                  // setlvl
+			"Cathedral (broken seed)", // dungeon_name
+			1,                         // dlvl
+			DTYPE_CATHEDRAL,           // dtype
+			Q_INVALID,                 // quest_id
+			7281,                      // seed
+			SL_NONE,                   // setlvl
 		},
 		{
-			"Cathedral (broken seed)",// dungeon_name
-			1,                        // dlvl
-			DTYPE_CATHEDRAL,          // dtype
-			Q_INVALID,                // quest_id
-			9345,                     // seed
-			SL_NONE,                  // setlvl
+			"Cathedral (broken seed)", // dungeon_name
+			1,                         // dlvl
+			DTYPE_CATHEDRAL,           // dtype
+			Q_INVALID,                 // quest_id
+			9345,                      // seed
+			SL_NONE,                   // setlvl
 		},
 		{
-			"Cathedral (broken seed)",// dungeon_name
-			1,                        // dlvl
-			DTYPE_CATHEDRAL,          // dtype
-			Q_INVALID,                // quest_id
-			15236,                    // seed
-			SL_NONE,                  // setlvl
+			"Cathedral (broken seed)", // dungeon_name
+			1,                         // dlvl
+			DTYPE_CATHEDRAL,           // dtype
+			Q_INVALID,                 // quest_id
+			15236,                     // seed
+			SL_NONE,                   // setlvl
+		},
+		// extra
+		{
+			"Cathedral (666)", // dungeon_name
+			1,                 // dlvl
+			DTYPE_CATHEDRAL,   // dtype
+			Q_INVALID,         // quest_id
+			1666,              // seed
+			SL_NONE,           // setlvl
 		},
 	};
 
