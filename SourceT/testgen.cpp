@@ -7,6 +7,7 @@ void write_file(char *path, void *buf, int size);
 
 // drlg_l1.cpp
 
+#define SL_NONE 0
 #define Q_INVALID -1
 
 void gen_drlg_l1_tests(void) {
@@ -31,7 +32,7 @@ void gen_drlg_l1_tests(void) {
 			DTYPE_CATHEDRAL, // dtype
 			Q_INVALID,       // quest_id
 			123,             // seed
-			0,               // setlvl
+			SL_NONE,         // setlvl
 		},
 		{
 			"Cathedral (broken seed)",// dungeon_name
@@ -39,7 +40,7 @@ void gen_drlg_l1_tests(void) {
 			DTYPE_CATHEDRAL,          // dtype
 			Q_INVALID,                // quest_id
 			7281,                     // seed
-			0,                        // setlvl
+			SL_NONE,                  // setlvl
 		},
 		{
 			"Cathedral (fix corners)", // dungeon_name
@@ -47,7 +48,7 @@ void gen_drlg_l1_tests(void) {
 			DTYPE_CATHEDRAL,           // dtype
 			Q_INVALID,                 // quest_id
 			35,                        // seed
-			0,                         // setlvl
+			SL_NONE,                   // setlvl
 		},
 		{
 			"The Butcher",                 // dungeon_name
@@ -55,7 +56,7 @@ void gen_drlg_l1_tests(void) {
 			DTYPE_CATHEDRAL,               // dtype
 			Q_BUTCHER,                     // quest_id
 			123,                           // seed
-			0,                             // setlvl
+			SL_NONE,                       // setlvl
 		},
 		{
 			"Poisoned Water Supply",    // dungeon_name
@@ -63,7 +64,7 @@ void gen_drlg_l1_tests(void) {
 			DTYPE_CATHEDRAL,            // dtype
 			Q_PWATER,                   // quest_id
 			123,                        // seed
-			0,                          // setlvl
+			SL_NONE,                    // setlvl
 		},
 		{
 			"Ogden's Sign",               // dungeon_name
@@ -71,7 +72,15 @@ void gen_drlg_l1_tests(void) {
 			DTYPE_CATHEDRAL,              // dtype
 			Q_LTBANNER,                   // quest_id
 			123,                          // seed
-			0,                            // setlvl
+			SL_NONE,                      // setlvl
+		},
+		{
+			"Skeleton King's Lair (entrance)", // dungeon_name
+			questlist[Q_SKELKING]._qdlvl,      // dlvl
+			DTYPE_CATHEDRAL,                   // dtype
+			Q_SKELKING,                        // quest_id
+			123,                               // seed
+			SL_NONE,                           // setlvl
 		},
 		{
 			"Skeleton King's Lair",       // dungeon_name
