@@ -130,14 +130,16 @@ void gen_drlg_l1_tests(void) {
 			quests[quest_id]._qtype   = quest_id;
 			quests[quest_id]._qactive = false;
 		}
+
 		//*gendung.IsQuestLevel = false;
-		if (g.setlvl != 0) {
+		if (g.setlvl != SL_NONE) {
 			setlevel = true;
 			setlvlnum = g.setlvl;
 		} else {
 			setlevel = false;
-			setlvlnum = 0; // none
+			setlvlnum = SL_NONE;
 		}
+
 		//if g.questID != quests.Invalid {
 		//	quests.Quests[g.questID].Active = true;
 		//	quests.Quests[g.questID].DLvl = g.dlvl;
@@ -150,7 +152,11 @@ void gen_drlg_l1_tests(void) {
 		// Generate dungeon based on the given seed.
 		//l1.CreateDungeon(g.seed, 0);
 
-		CreateL5Dungeon(g.seed, in_entry);
+		if (g.setlvl != SL_NONE) {
+			LoadSetMap();
+		} else {
+			CreateL5Dungeon(g.seed, in_entry);
+		}
 
 		// Dump pre-dungeon tiles.
 		char output_path[MAX_PATH];
