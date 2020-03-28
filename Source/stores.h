@@ -12,7 +12,7 @@ extern BYTE *pSTextBoxCels;
 extern int premiumlevel;
 extern int talker;
 extern STextStruct stext[24];
-extern BOOLEAN stextsize;
+extern char stextsize;
 extern int stextsmax;
 extern int InStoreFlag;
 extern ItemStruct storehold[48];
