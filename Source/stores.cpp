@@ -1324,6 +1324,10 @@ void S_StartSIdentify()
 	}
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+#ifdef HELLFIRE
+		if (storenumh >= 48)
+			break;
+#endif
 		if (IdItemOk(&plr[myplr].InvList[i])) {
 			idok = TRUE;
 			AddStoreHoldId(plr[myplr].InvList[i], i);
