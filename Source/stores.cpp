@@ -10,7 +10,8 @@ BYTE *pSTextBoxCels;
 int premiumlevel;
 int talker;
 STextStruct stext[24];
-BOOLEAN stextsize;
+char stextsize;
+
 int stextsmax;
 int InStoreFlag; /** current frame # for the pentagram selector */
 ItemStruct storehold[48];
