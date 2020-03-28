@@ -2408,11 +2408,19 @@ void S_BBuyEnter()
 		stextshold = STORE_BBOY;
 		stextvhold = stextsval;
 		stextlhold = 10;
+#ifdef HELLFIRE
+		if (plr[myplr]._pGold < boyitem._iIvalue - (boyitem._iIvalue >> 2)) {
+#else
 		if (plr[myplr]._pGold < boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
+#endif
 			StartStore(STORE_NOMONEY);
 		} else {
 			plr[myplr].HoldItem = boyitem;
+#ifdef HELLFIRE
+			plr[myplr].HoldItem._iIvalue -= plr[myplr].HoldItem._iIvalue >> 2;
+#else
 			plr[myplr].HoldItem._iIvalue += plr[myplr].HoldItem._iIvalue >> 1;
+#endif
 			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = FALSE;
 			for (i = 0; i < 40 && !done; i++) {
