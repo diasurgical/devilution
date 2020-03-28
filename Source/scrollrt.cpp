@@ -139,7 +139,7 @@ static void scrollrt_draw_cursor_item()
 
 	/// ASSERT: assert(! sgdwCursWdt);
 
-	if (pcurs <= 0 || cursW == 0 || cursH == 0) {
+	if (pcurs <= CURSOR_NONE || cursW == 0 || cursH == 0) {
 		return;
 	}
 
