@@ -5,6 +5,7 @@
  */
 #include "all.h"
 
+/** Contains the game menu items of the single player menu. */
 TMenuItem sgSingleMenu[6] = {
 	// clang-format off
 	//   dwFlags, pszStr,        fnMenu
@@ -16,6 +17,7 @@ TMenuItem sgSingleMenu[6] = {
 	{ GMENU_ENABLED, NULL, NULL }
 	// clang-format on
 };
+/** Contains the game menu items of the multi player menu. */
 TMenuItem sgMultiMenu[5] = {
 	// clang-format off
 	//   dwFlags, pszStr,            fnMenu
@@ -37,8 +39,11 @@ TMenuItem sgOptionsMenu[6] = {
 	{ GMENU_ENABLED               , NULL,            NULL                    }
 	// clang-format on
 };
+/** Specifies the menu names for music enabled and disabled. */
 char *music_toggle_names[] = { "Music", "Music Disabled" };
+/** Specifies the menu names for sound enabled and disabled. */
 char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
+/** Specifies the menu names for colour cycling disabled and enabled. */
 char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 
 void gamemenu_on()

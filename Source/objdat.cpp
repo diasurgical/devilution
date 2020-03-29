@@ -1,5 +1,6 @@
 #include "all.h"
 
+/** Maps from dun_object_id to object_id. */
 int ObjTypeConv[113] = {
 	0,
 	4,
@@ -116,6 +117,7 @@ int ObjTypeConv[113] = {
 	94
 };
 
+/** Contains the data related to each object ID. */
 ObjDataStruct AllObjects[99] = {
 	// clang-format off
 	// oload, ofindex,   ominlvl, omaxlvl, olvltype, otheme,              oquest, oAnimFlag, oAnimDelay, oAnimLen, oAnimWidth, oSolidFlag, oMissFlag, oLightFlag, oBreak, oSelFlag, oTrapFlag
@@ -221,8 +223,8 @@ ObjDataStruct AllObjects[99] = {
 	// clang-format on
 };
 
-// might be const
-char *ObjMasterLoadList[56] = {
+/** Maps from object_graphic_id to object CEL name. */
+char *ObjMasterLoadList[56] = { // might be const
 	"L1Braz",
 	"L1Doors",
 	"Lever",
