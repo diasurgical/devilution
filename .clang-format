@@ -1,11 +1,9 @@
-{
-	BasedOnStyle: webkit,
-	AlignTrailingComments: true,
-	AllowShortBlocksOnASingleLine: true,
-	AllowShortFunctionsOnASingleLine: None,
-	PointerAlignment: Right,
-	AlignConsecutiveAssignments: true,
-	TabWidth: 4,
-	UseTab: ForIndentation,
-	SortIncludes: false,
-}
+BasedOnStyle: webkit
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: true
+AllowShortFunctionsOnASingleLine: None
+PointerAlignment: Right
+AlignConsecutiveAssignments: true
+TabWidth: 4
+UseTab: ForIndentation
+SortIncludes: false
