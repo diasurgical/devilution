@@ -63,6 +63,7 @@ BOOL panbtndown;
 BYTE *pTalkPanel;
 BOOL spselflag;
 
+/** Maps from font index to smaltext.cel frame number. */
 const BYTE fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -73,6 +74,12 @@ const BYTE fontframe[128] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 40, 66, 41, 67, 0
 };
+
+/**
+ * Maps from smaltext.cel frame number to character width. Note, the
+ * character width may be distinct from the frame width, which is 13 for every
+ * smaltext.cel frame.
+ */
 const BYTE fontkern[68] = {
 	8, 10, 7, 9, 8, 7, 6, 8, 8, 3,
 	3, 8, 6, 11, 9, 10, 6, 9, 9, 6,
@@ -83,36 +90,36 @@ const BYTE fontkern[68] = {
 	4, 4, 9, 6, 6, 12, 3, 7
 };
 /**
- * Line height for info box when displaying 1, 2, 3, 4 and 5 lines respectivly
+ * Line start position for info box text when displaying 1, 2, 3, 4 and 5 lines respectivly
  */
 const int lineOffsets[5][5] = {
 	{
 	    SCREENXY(177, 434),
-	    BUFFER_WIDTH * 32,
-	    BUFFER_WIDTH * 32,
-	    BUFFER_WIDTH * 32,
-	    BUFFER_WIDTH * 32 + 180,
+	    SCREENXY(-64, -128),
+	    SCREENXY(-64, -128),
+	    SCREENXY(-64, -128),
+	    SCREENXY(116, -128),
 	},
 	{
 	    SCREENXY(177, 422),
 	    SCREENXY(177, 446),
-	    BUFFER_WIDTH * 32,
-	    BUFFER_WIDTH * 32,
-	    BUFFER_WIDTH * 32,
+	    SCREENXY(-64, -128),
+	    SCREENXY(-64, -128),
+	    SCREENXY(-64, -128),
 	},
 	{
 	    SCREENXY(177, 416),
 	    SCREENXY(177, 434),
 	    SCREENXY(177, 452),
-	    BUFFER_WIDTH * 32,
-	    BUFFER_WIDTH * 32,
+	    SCREENXY(-64, -128),
+	    SCREENXY(-64, -128),
 	},
 	{
 	    SCREENXY(177, 412),
 	    SCREENXY(177, 427),
 	    SCREENXY(177, 441),
 	    SCREENXY(177, 456),
-	    BUFFER_WIDTH * 32,
+	    SCREENXY(-64, -128),
 	},
 	{
 	    SCREENXY(177, 410),
@@ -122,6 +129,12 @@ const int lineOffsets[5][5] = {
 	    SCREENXY(177, 457),
 	}
 };
+
+/**
+ * Maps ASCII character code to font index, as used by the
+ * small, medium and large sized fonts; which corresponds to smaltext.cel,
+ * medtexts.cel and bigtgold.cel respectively.
+ */
 const BYTE gbFontTransTbl[256] = {
 	// clang-format off
 	'\0', 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
@@ -145,6 +158,7 @@ const BYTE gbFontTransTbl[256] = {
 
 /* data */
 
+/** Maps from spell_id to spelicon.cel frame number. */
 char SpellITbl[MAX_SPELLS] = {
 	1,
 	1,
@@ -184,6 +198,7 @@ char SpellITbl[MAX_SPELLS] = {
 	36,
 	30,
 };
+/** Maps from panel_button_id to the position and dimensions of a panel button. */
 int PanBtnPos[8][5] = {
 	// clang-format off
 	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, 1 }, // char button
@@ -196,7 +211,9 @@ int PanBtnPos[8][5] = {
 	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, 1 }, // friendly fire button
 	// clang-format on
 };
+/** Maps from panel_button_id to hotkey name. */
 char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
+/** Maps from panel_button_id to panel button description. */
 char *PanBtnStr[8] = {
 	"Character Information",
 	"Quests log",
@@ -207,6 +224,7 @@ char *PanBtnStr[8] = {
 	"Send Message",
 	"Player Attack"
 };
+/** Maps from attribute_id to the rectangle on screen used for attribute increment buttons. */
 RECT32 ChrBtnsRect[4] = {
 	{ 137, 138, 41, 22 },
 	{ 137, 166, 41, 22 },
@@ -214,6 +232,7 @@ RECT32 ChrBtnsRect[4] = {
 	{ 137, 223, 41, 22 }
 };
 
+/** Maps from spellbook page number and position to spell_id. */
 int SpellPages[6][7] = {
 	{ SPL_NULL, SPL_FIREBOLT, SPL_CBOLT, SPL_HBOLT, SPL_HEAL, SPL_HEALOTHER, SPL_FLAME },
 	{ SPL_RESURRECT, SPL_FIREWALL, SPL_TELEKINESIS, SPL_LIGHTNING, SPL_TOWN, SPL_FLASH, SPL_STONE },

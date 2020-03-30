@@ -8,7 +8,9 @@
 
 int sfxdelay;
 int sfxdnum;
+/** A handle to the current sound effect playing. */
 HANDLE sghStream;
+/** Specifies the sound file and the playback state of the current sound effect. */
 TSFX *sgpStreamSFX;
 
 /**

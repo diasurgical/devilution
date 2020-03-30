@@ -2,6 +2,7 @@
 
 /* todo: move text out of struct */
 
+/** Contains the data related to each speech ID. */
 const TextDataStruct alltext[] = {
 #ifdef SPAWN
 	{ "Nice try... ", 0, 0, TSFX_TAVERN36 },

@@ -43,6 +43,10 @@ int color_cycle_timer;
 
 /* rdata */
 
+/**
+ * Specifies whether to give the game exclusive access to the
+ * screen, as needed for efficient rendering in fullscreen mode.
+ */
 BOOL fullscreen = TRUE;
 #ifdef _DEBUG
 int showintrodebug = 1;
@@ -62,6 +66,7 @@ int frameend;
 int framerate;
 int framestart;
 #endif
+/** Specifies whether players are in non-PvP mode. */
 BOOL FriendlyMode = TRUE;
 /** Default quick messages */
 char *spszMsgTbl[4] = {
@@ -1238,7 +1243,9 @@ void diablo_pause_game()
 	}
 }
 
-/* NOTE: `return` must be used instead of `break` to be bin exact as C++ */
+/**
+ * @internal `return` must be used instead of `break` to be bin exact as C++
+ */
 void PressChar(int vkey)
 {
 	if (gmenu_is_active() || control_talk_last_key(vkey) || sgnTimeoutCurs != 0 || deathflag) {
