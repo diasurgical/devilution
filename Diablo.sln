@@ -12,8 +12,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiabloUI", "DiabloUI\Diablo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Storm", "3rdParty\Storm\Source\Storm.vcxproj", "{B28F69CE-15A1-424D-BBB5-2727258D675B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PKWare", "3rdParty\PKWare\PKWare.vcxproj", "{C7F9F3B4-2F7C-4672-9586-94D8BA0950B6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
