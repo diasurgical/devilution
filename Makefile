@@ -1,9 +1,11 @@
 # mingw32 and mingw64 have different executables
 ifdef MINGW32
+	CC=mingw32-gcc
 	CXX=mingw32-g++
 	DLLTOOL=dlltool
 	WINDRES=windres
 else
+	CC=i686-w64-mingw32-gcc
 	CXX=i686-w64-mingw32-g++
 	DLLTOOL=i686-w64-mingw32-dlltool
 	WINDRES=i686-w64-mingw32-windres
@@ -14,6 +16,7 @@ endif
 #     static_cast<NEW_TYPE>(reinterpret_cast<uintptr_t>(ptr))
 # instead of
 #     (NEW_TYPE)(ptr)
+CFLAGS=
 CXXFLAGS=-fpermissive -Wno-write-strings
 CPPFLAGS=-MMD -MF $*.d
 LDLIBS=-lgdi32 -lversion -ldiabloui -lstorm
