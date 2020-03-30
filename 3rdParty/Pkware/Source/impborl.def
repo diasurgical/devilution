@@ -1,0 +1,6 @@
+NAME IMPLODEI
+
+EXPORTS
+	_implode
+	_explode
+   _crc32

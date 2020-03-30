@@ -80,7 +80,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\Source/WinRel\Diablo.exe</OutputFile>
-      <AdditionalDependencies>3rdParty/Storm/Source/WinRel/Storm.lib;3rdParty/PKWare/WinRel/PKWare.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3rdParty/Storm/Source/WinRel/Storm.lib;3rdParty/Pkware/implode.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -120,7 +120,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>.\Source/WinDebug\Diablo.exe</OutputFile>
-      <AdditionalDependencies>DiabloUI/WinDebug/DiabloUI.lib;3rdParty/Storm/Source/WinDebug/Storm.lib;3rdParty/PKWare/WinDebug/PKWare.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DiabloUI/WinDebug/DiabloUI.lib;3rdParty/Storm/Source/WinDebug/Storm.lib;3rdParty/Pkware/implode.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DataExecutionPrevention>false</DataExecutionPrevention>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>

@@ -28,8 +28,8 @@ debug: devilution.exe
 DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp, $(wildcard Source/*.cpp)))
 OBJS=$(DIABLO_SRC:.cpp=.o)
 
-PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
-PKWARE_OBJS=$(PKWARE_SRC:.cpp=.o)
+PKWARE_SRC=$(wildcard 3rdParty/Pkware/Source/*.c)
+PKWARE_OBJS=$(PKWARE_SRC:.c=.o)
 
 devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)

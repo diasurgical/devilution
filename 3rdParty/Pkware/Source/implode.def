@@ -1,0 +1,6 @@
+NAME IMPLODE.DLL
+
+EXPORTS
+   implode
+   explode
+   crc32
