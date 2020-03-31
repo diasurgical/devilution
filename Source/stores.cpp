@@ -1179,7 +1179,11 @@ void S_StartBBoy()
 	else
 		AddSText(20, 10, 0, boyitem._iName, iclr, 1);
 
+#ifdef HELLFIRE
+	AddSTextVal(10, boyitem._iIvalue - (boyitem._iIvalue >> 2));
+#else
 	AddSTextVal(10, boyitem._iIvalue + (boyitem._iIvalue >> 1));
+#endif
 	PrintStoreItem(&boyitem, 11, iclr);
 	AddSText(0, 22, 1, "Leave", COL_WHITE, 1);
 	OffsetSTextY(22, 6);
