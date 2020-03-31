@@ -1057,13 +1057,21 @@ void S_StartWRecharge()
 		storehold[i]._itype = ITYPE_NONE;
 	}
 
+#ifdef HELLFIRE
+	if ((plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF || plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_UNIQUE)
+#else
 	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF
+#endif
 	    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges != plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxCharges) {
 		rechargeok = TRUE;
 		AddStoreHoldRecharge(plr[myplr].InvBody[INVLOC_HAND_LEFT], -1);
 	}
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+#ifdef HELLFIRE
+		if (storenumh >= 48)
+			break;
+#endif
 		if (WitchRechargeOk(i)) {
 			rechargeok = TRUE;
 			AddStoreHoldRecharge(plr[myplr].InvList[i], i);
