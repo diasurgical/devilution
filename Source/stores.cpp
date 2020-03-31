@@ -957,6 +957,10 @@ void S_StartWSell()
 		storehold[i]._itype = ITYPE_NONE;
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+#ifdef HELLFIRE
+		if (storenumh >= 48)
+			break;
+#endif
 		if (WitchSellOk(i)) {
 			sellok = TRUE;
 			storehold[storenumh] = plr[myplr].InvList[i];
@@ -973,6 +977,10 @@ void S_StartWSell()
 	}
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
+#ifdef HELLFIRE
+		if (storenumh >= 48)
+			break;
+#endif
 		if (plr[myplr].SpdList[i]._itype != ITYPE_NONE && WitchSellOk(-(i + 1))) {
 			sellok = TRUE;
 			storehold[storenumh] = plr[myplr].SpdList[i];
