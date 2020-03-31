@@ -689,6 +689,10 @@ void S_StartSSell()
 		storehold[i]._itype = ITYPE_NONE;
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+#ifdef HELLFIRE
+		if (storenumh >= 48)
+			break;
+#endif
 		if (SmithSellOk(i)) {
 			sellok = TRUE;
 			storehold[storenumh] = plr[myplr].InvList[i];
@@ -703,6 +707,26 @@ void S_StartSSell()
 			storehidx[storenumh++] = i;
 		}
 	}
+#ifdef HELLFIRE
+
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		if (storenumh >= 48)
+			break;
+		if (SmithSellOk(-(i + 1))) {
+			storehold[storenumh] = plr[myplr].SpdList[i];
+			sellok = TRUE;
+
+			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
+				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
+
+			if (!(storehold[storenumh]._ivalue >>= 2))
+				storehold[storenumh]._ivalue = 1;
+
+			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
+			storehidx[storenumh++] = -(i + 1);
+		}
+	}
+#endif
 
 	if (!sellok) {
 		stextscrl = FALSE;
