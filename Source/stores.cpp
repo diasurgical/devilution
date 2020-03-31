@@ -1187,15 +1187,28 @@ void S_StartBBoy()
 
 void S_StartHealer()
 {
+#ifdef HELLFIRE
+	if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP) {
+		PlaySFX(IS_CAST8);
+	}
+	plr[myplr]._pHitPoints = plr[myplr]._pMaxHP;
+	plr[myplr]._pHPBase = plr[myplr]._pMaxHPBase;
+	drawhpflag = TRUE;
+#endif
 	stextsize = 0;
 	stextscrl = FALSE;
 	AddSText(0, 1, 1, "Welcome to the", COL_GOLD, 0);
 	AddSText(0, 3, 1, "Healer's home", COL_GOLD, 0);
 	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
 	AddSText(0, 12, 1, "Talk to Pepin", COL_BLUE, 1);
+#ifdef HELLFIRE
+	AddSText(0, 14, 1, "Buy items", COL_WHITE, 1);
+	AddSText(0, 16, 1, "Leave Healer's home", COL_WHITE, 1);
+#else
 	AddSText(0, 14, 1, "Receive healing", COL_WHITE, 1);
 	AddSText(0, 16, 1, "Buy items", COL_WHITE, 1);
 	AddSText(0, 18, 1, "Leave Healer's home", COL_WHITE, 1);
+#endif
 	AddSLine(5);
 	storenumh = 20;
 }
