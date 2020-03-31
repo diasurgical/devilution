@@ -769,6 +769,10 @@ void S_StartSRepair()
 		AddStoreHoldRepair(&plr[myplr].InvBody[INVLOC_HAND_RIGHT], -4);
 	}
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+#ifdef HELLFIRE
+		if (storenumh >= 48)
+			break;
+#endif
 		if (SmithRepairOk(i)) {
 			repairok = TRUE;
 			AddStoreHoldRepair(&plr[myplr].InvList[i], i);
