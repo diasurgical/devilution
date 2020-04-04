@@ -6,9 +6,7 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-#ifdef __cplusplus
 static CCritSect sgMemCrit;
-#endif
 unsigned int glpDThreadId;
 TMegaPkt *sgpInfoHead; /* may not be right struct */
 BOOLEAN dthread_running;
@@ -21,16 +19,12 @@ void dthread_remove_player(int pnum)
 {
 	TMegaPkt *pkt;
 
-#ifdef __cplusplus
 	sgMemCrit.Enter();
-#endif
 	for (pkt = sgpInfoHead; pkt; pkt = pkt->pNext) {
 		if (pkt->dwSpaceLeft == pnum)
 			pkt->dwSpaceLeft = MAX_PLRS;
 	}
-#ifdef __cplusplus
 	sgMemCrit.Leave();
-#endif
 }
 
 void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
@@ -48,9 +42,7 @@ void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 	pkt->data[0] = cmd;
 	*(DWORD *)&pkt->data[4] = dwLen;
 	memcpy(&pkt->data[8], pbSrc, dwLen);
-#ifdef __cplusplus
 	sgMemCrit.Enter();
-#endif
 	p = (TMegaPkt *)&sgpInfoHead;
 	while (p->pNext) {
 		p = p->pNext;
@@ -58,9 +50,7 @@ void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 	p->pNext = pkt;
 
 	SetEvent(sghWorkToDoEvent);
-#ifdef __cplusplus
 	sgMemCrit.Leave();
-#endif
 }
 
 void dthread_start()
@@ -98,17 +88,13 @@ unsigned int __stdcall dthread_handler(void *data)
 			app_fatal("dthread4:\n%s", error_buf);
 		}
 
-#ifdef __cplusplus
 		sgMemCrit.Enter();
-#endif
 		pkt = sgpInfoHead;
 		if (sgpInfoHead)
 			sgpInfoHead = sgpInfoHead->pNext;
 		else
 			ResetEvent(sghWorkToDoEvent);
-#ifdef __cplusplus
 		sgMemCrit.Leave();
-#endif
 
 		if (pkt) {
 			if (pkt->dwSpaceLeft != MAX_PLRS)

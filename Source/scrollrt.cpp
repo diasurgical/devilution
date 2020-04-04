@@ -2584,17 +2584,10 @@ static void DrawFPS()
 		if (framerate > 99)
 			framerate = 99;
 		wsprintf(String, "%2d", framerate);
-#ifdef __cplusplus
 		if (!lpDDSPrimary->GetDC(&hdc)) {
 			TextOut(hdc, 0, 400, String, strlen(String));
 			lpDDSPrimary->ReleaseDC(hdc);
 		}
-#else
-		if (!lpDDSPrimary->lpVtbl->GetDC(lpDDSPrimary, &hdc)) {
-			TextOut(hdc, 0, 400, String, strlen(String));
-			lpDDSPrimary->lpVtbl->ReleaseDC(lpDDSPrimary, hdc);
-		}
-#endif
 	}
 }
 #endif
