@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file gendung.cpp
+ *
+ * Implementation of general dungeon generation code.
+ */
+#include "all.h"
 
 BYTE dungeon[DMAXX][DMAXY];
 BYTE pdungeon[DMAXX][DMAXY];
@@ -15,15 +20,30 @@ BYTE *pLevelPieces;
 BYTE *pDungeonCels;
 BYTE *pSpeedCels;
 int SpeedFrameTbl[128][16];
+/**
+ * List of transparancy masks to use for dPieces
+ */
 char block_lvid[2049];
 int level_frame_count[MAXTILES];
 int tile_defs[MAXTILES];
 WORD level_frame_types[MAXTILES];
 int level_frame_sizes[MAXTILES];
 int nlevel_frames;
+/**
+ * List of light blocking dPieces
+ */
 BOOLEAN nBlockTable[2049];
+/**
+ * List of path blocking dPieces
+ */
 BOOLEAN nSolidTable[2049];
+/**
+ * List of transparent dPieces
+ */
 BOOLEAN nTransTable[2049];
+/**
+ * List of missile blocking dPieces
+ */
 BOOLEAN nMissileTable[2049];
 BOOLEAN nTrapTable[2049];
 int dminx;
@@ -38,10 +58,10 @@ BYTE setlvlnum;
 char setlvltype;
 int ViewX;
 int ViewY;
-int scr_pix_width;
-int scr_pix_height;
-int dword_5C2FF8;
-int dword_5C2FFC;
+int ViewBX;
+int ViewBY;
+int ViewDX;
+int ViewDY;
 ScrollStruct ScrollInfo;
 int LvlViewX;
 int LvlViewY;
@@ -61,7 +81,7 @@ char dDead[MAXDUNX][MAXDUNY];
 char dObject[MAXDUNX][MAXDUNY];
 char dItem[MAXDUNX][MAXDUNY];
 char dMissile[MAXDUNX][MAXDUNY];
-char dArch[MAXDUNX][MAXDUNY];
+char dSpecial[MAXDUNX][MAXDUNY];
 int themeCount;
 THEME_LOC themeLoc[MAXTHEMES];
 
@@ -556,15 +576,15 @@ void SetDungeonMicros()
 	SetSpeedCels();
 
 	if (zoomflag) {
-		scr_pix_width = SCREEN_WIDTH;
-		scr_pix_height = VIEWPORT_HEIGHT;
-		dword_5C2FF8 = SCREEN_WIDTH / 64;
-		dword_5C2FFC = VIEWPORT_HEIGHT / 32;
+		ViewDX = SCREEN_WIDTH;
+		ViewDY = VIEWPORT_HEIGHT;
+		ViewBX = SCREEN_WIDTH / 64;
+		ViewBY = VIEWPORT_HEIGHT / 32;
 	} else {
-		scr_pix_width = ZOOM_WIDTH;
-		scr_pix_height = ZOOM_HEIGHT;
-		dword_5C2FF8 = ZOOM_WIDTH / 64;
-		dword_5C2FFC = ZOOM_HEIGHT / 32;
+		ViewDX = ZOOM_WIDTH;
+		ViewDY = ZOOM_HEIGHT;
+		ViewBX = ZOOM_WIDTH / 64;
+		ViewBY = ZOOM_HEIGHT / 32;
 	}
 }
 
@@ -959,10 +979,10 @@ BOOL SkipThemeRoom(int x, int y)
 	for (i = 0; i < themeCount; i++) {
 		if (x >= themeLoc[i].x - 2 && x <= themeLoc[i].x + themeLoc[i].width + 2
 		    && y >= themeLoc[i].y - 2 && y <= themeLoc[i].y + themeLoc[i].height + 2)
-			return 0;
+			return FALSE;
 	}
 
-	return 1;
+	return TRUE;
 }
 
 void InitLevels()

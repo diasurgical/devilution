@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 PALETTEENTRY logical_palette[256];

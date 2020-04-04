@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file items.cpp
+ *
+ * Implementation of item functionality.
+ */
+#include "all.h"
 #ifdef HELLFIRE
 #include "../3rdParty/Storm/Source/storm.h"
 #endif
@@ -581,14 +586,14 @@ void InitItems()
 
 	GetItemAttrs(0, IDI_GOLD, 1);
 	golditem = item[0];
-	golditem._iStatFlag = 1;
+	golditem._iStatFlag = TRUE;
 	numitems = 0;
 
 	for (i = 0; i < MAXITEMS; i++) {
 		item[i]._itype = ITYPE_MISC;
 		item[i]._ix = 0;
 		item[i]._iy = 0;
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 0;
 		item[i]._iIdentified = FALSE;
 		item[i]._iPostDraw = FALSE;
@@ -601,9 +606,9 @@ void InitItems()
 
 	if (!setlevel) {
 		s = GetRndSeed(); /* unused */
-		if (QuestStatus(QTYPE_INFRA))
+		if (QuestStatus(Q_ROCK))
 			SpawnRock();
-		if (QuestStatus(QTYPE_ANVIL))
+		if (QuestStatus(Q_ANVIL))
 			SpawnQuestItem(IDI_ANVIL, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
 #ifdef HELLFIRE
 		if (UseCowFarmer && currlevel == 20)
@@ -638,7 +643,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	int btohit = 0; // bonus chance to hit
 	int bac = 0;    // bonus accuracy
 
-	int iflgs = 0; // item_special_effect flags
+	int iflgs = ISPL_NONE; // item_special_effect flags
 
 	int sadd = 0; // added strength
 	int madd = 0; // added magic
@@ -1607,7 +1612,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 
 #ifndef HELLFIRE
 	if (!random_(17, 4)) {
-		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
+		GetItemPower(i, lvl >> 1, lvl, PLT_STAFF, onlygood);
 	} else
 #endif
 	{
@@ -2219,19 +2224,19 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood)
 		case ITYPE_SWORD:
 		case ITYPE_AXE:
 		case ITYPE_MACE:
-			GetItemPower(i, minlvl, maxlvl, 0x1000, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_WEAP, onlygood);
 			break;
 		case ITYPE_BOW:
-			GetItemPower(i, minlvl, maxlvl, 0x10, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_BOW, onlygood);
 			break;
 		case ITYPE_SHIELD:
-			GetItemPower(i, minlvl, maxlvl, 0x10000, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_SHLD, onlygood);
 			break;
 		case ITYPE_LARMOR:
 		case ITYPE_HELM:
 		case ITYPE_MARMOR:
 		case ITYPE_HARMOR:
-			GetItemPower(i, minlvl, maxlvl, 0x100000, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_ARMO, onlygood);
 			break;
 		case ITYPE_STAFF:
 #ifdef HELLFIRE
@@ -2245,7 +2250,7 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood)
 			break;
 		case ITYPE_RING:
 		case ITYPE_AMULET:
-			GetItemPower(i, minlvl, maxlvl, 1, onlygood);
+			GetItemPower(i, minlvl, maxlvl, PLT_MISC, onlygood);
 			break;
 		}
 	}
@@ -2342,7 +2347,7 @@ int RndUItem(int m)
 			okflag = FALSE;
 		if (AllItemsList[i].itype == ITYPE_GOLD)
 			okflag = FALSE;
-		if (AllItemsList[i].itype == ITYPE_0E)
+		if (AllItemsList[i].itype == ITYPE_MEAT)
 			okflag = FALSE;
 		if (AllItemsList[i].iMiscId == IMISC_BOOK)
 			okflag = TRUE;
@@ -2453,7 +2458,7 @@ int CheckUnique(int i, int lvl, int uper, BOOL recreate)
 	if (!numu)
 		return -1;
 
-	random_(29, 10);
+	random_(29, 10); /// BUGFIX: unused, last unique in array always gets chosen
 	idata = 0;
 	while (numu > 0) {
 		if (uok[idata])
@@ -2584,8 +2589,13 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 		if (item[ii]._iMagical != ITEM_QUALITY_UNIQUE)
 			ItemRndDur(ii);
 	} else {
-		if (item[ii]._iLoc != ILOC_UNEQUIPABLE)
-			GetUniqueItem(ii, iseed);
+		if (item[ii]._iLoc != ILOC_UNEQUIPABLE) {
+			//uid = CheckUnique(ii, iblvl, uper, recreate);
+			//if (uid != UITYPE_INVALID) {
+			//	GetUniqueItem(ii, uid);
+			//}
+			GetUniqueItem(ii, iseed); // BUG: the second argument to GetUniqueItem should be uid.
+		}
 	}
 	SetupItem(ii);
 }
@@ -2601,7 +2611,7 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 			return;
 		}
 		onlygood = 1;
-	} else if (quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 != QS_MUSHGIVEN) {
+	} else if (quests[Q_MUSHROOM]._qactive != QUEST_ACTIVE || quests[Q_MUSHROOM]._qvar1 != QS_MUSHGIVEN) {
 		idx = RndItem(m);
 		if (!idx)
 			return;
@@ -2614,7 +2624,7 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 		}
 	} else {
 		idx = IDI_BRAIN;
-		quests[QTYPE_BLKM]._qvar1 = QS_BRAINSPAWNED;
+		quests[Q_MUSHROOM]._qvar1 = QS_BRAINSPAWNED;
 	}
 
 	if (numitems < MAXITEMS) {
@@ -3939,7 +3949,7 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
 		k += fontkern[c] + 1;
 		if (c && k <= 257) {
-			CPrintString(off, c, col);
+			PrintChar(off, c, col);
 		}
 		off += fontkern[c] + 1;
 	}
@@ -4203,7 +4213,7 @@ void UseItem(int p, int Mid, int spl)
 
 	switch (Mid) {
 	case IMISC_HEAL:
-	case IMISC_HEAL_1C:
+	case IMISC_MEAT:
 		j = plr[p]._pMaxHP >> 8;
 		l = ((j >> 1) + random_(39, j)) << 6;
 		if (plr[p]._pClass == PC_WARRIOR)
@@ -4441,7 +4451,7 @@ BOOL SmithItemOk(int i)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_GOLD)
 		rv = FALSE;
-	if (AllItemsList[i].itype == ITYPE_0E)
+	if (AllItemsList[i].itype == ITYPE_MEAT)
 		rv = FALSE;
 #ifdef HELLFIRE
 	if (AllItemsList[i].itype == ITYPE_STAFF && AllItemsList[i].iSpell)
@@ -4553,7 +4563,7 @@ BOOL PremiumItemOk(int i)
 
 	rv = TRUE;
 #ifdef HELLFIRE
-	if (AllItemsList[i].itype == ITYPE_MISC || AllItemsList[i].itype == ITYPE_GOLD || AllItemsList[i].itype == ITYPE_0E)
+	if (AllItemsList[i].itype == ITYPE_MISC || AllItemsList[i].itype == ITYPE_GOLD || AllItemsList[i].itype == ITYPE_MEAT)
 		rv = FALSE;
 
 	if (gbMaxPlayers != 1) {
@@ -4565,7 +4575,7 @@ BOOL PremiumItemOk(int i)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_GOLD)
 		rv = FALSE;
-	if (AllItemsList[i].itype == ITYPE_0E)
+	if (AllItemsList[i].itype == ITYPE_MEAT)
 		rv = FALSE;
 	if (AllItemsList[i].itype == ITYPE_STAFF)
 		rv = FALSE;
@@ -4773,15 +4783,15 @@ void SpawnWitch(int lvl)
 	GetItemAttrs(0, IDI_MANA, 1);
 	witchitem[0] = item[0];
 	witchitem[0]._iCreateInfo = lvl;
-	witchitem[0]._iStatFlag = 1;
+	witchitem[0]._iStatFlag = TRUE;
 	GetItemAttrs(0, IDI_FULLMANA, 1);
 	witchitem[1] = item[0];
 	witchitem[1]._iCreateInfo = lvl;
-	witchitem[1]._iStatFlag = 1;
+	witchitem[1]._iStatFlag = TRUE;
 	GetItemAttrs(0, IDI_PORTAL, 1);
 	witchitem[2] = item[0];
 	witchitem[2]._iCreateInfo = lvl;
-	witchitem[2]._iStatFlag = 1;
+	witchitem[2]._iStatFlag = TRUE;
 	iCnt = random_(51, 8) + 10;
 
 	for (i = 3; i < iCnt; i++) {

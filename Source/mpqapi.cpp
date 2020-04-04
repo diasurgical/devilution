@@ -1,11 +1,18 @@
-#include "diablo.h"
+/**
+ * @file mpqapi.cpp
+ *
+ * Implementation of functions for creating and editing MPQ files.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 DWORD sgdwMpqOffset;
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
+/** Has the savegame-file been modified in memory. */
 BOOL save_archive_modified;
 _BLOCKENTRY *sgpBlockTbl;
+/** Is the savegame-file currently open. */
 BOOLEAN save_archive_open;
 
 //note: 32872 = 32768 + 104 (sizeof(_FILEHEADER))
@@ -202,7 +209,7 @@ _BLOCKENTRY *mpqapi_new_block(int *block_index)
 		blockEntry++;
 		if (i >= 2048) {
 			app_fatal("Out of free block entries");
-			return 0;
+			return NULL;
 		}
 	}
 	if (block_index)
@@ -593,9 +600,9 @@ BOOL WriteMPQHeader()
 	fhdr.blockcount = 2048;
 
 	if (SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1)
-		return 0;
+		return FALSE;
 	if (!WriteFile(sghArchive, &fhdr, sizeof(fhdr), &NumberOfBytesWritten, 0))
-		return 0;
+		return FALSE;
 
 	return NumberOfBytesWritten == 104;
 }

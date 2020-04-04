@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 #ifndef HELLFIRE
@@ -6,7 +6,7 @@ static
 #endif
 void PackItem(PkItemStruct *id, ItemStruct *is)
 {
-	if (is->_itype == -1) {
+	if (is->_itype == ITYPE_NONE) {
 		id->idx = 0xFFFF;
 	} else {
 		id->idx = is->IDidx;
@@ -116,15 +116,21 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 #endif
 }
 
-// Note: last slot of item[MAXITEMS+1] used as temporary buffer
-// find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
+/**
+ * Expand a PkItemStruct in to a ItemStruct
+ *
+ * Note: last slot of item[MAXITEMS+1] used as temporary buffer
+ * find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
+ * @param is The source packed item
+ * @param id The distination item
+ */
 #ifndef HELLFIRE
 static
 #endif
 void UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	if (is->idx == 0xFFFF) {
-		id->_itype = -1;
+		id->_itype = ITYPE_NONE;
 	} else {
 		if (is->idx == IDI_EAR) {
 			RecreateEar(
@@ -250,7 +256,7 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 
 	if (pnum == myplr) {
 		for (i = 0; i < 20; i++)
-			witchitem[i]._itype = -1;
+			witchitem[i]._itype = ITYPE_NONE;
 	}
 
 	CalcPlrInv(pnum, FALSE);

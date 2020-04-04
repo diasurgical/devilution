@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file missiles.cpp
+ *
+ * Implementation of missile functionality.
+ */
+#include "all.h"
 
 int missileactive[MAXMISSILES];
 int missileavail[MAXMISSILES];
@@ -9,7 +14,9 @@ ChainStruct chain[MAXMISSILES];
 BOOL MissilePreFlag;
 int numchains;
 
+/** Maps from direction to X-offset. */
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
+/** Maps from direction to Y-offset. */
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 #ifdef HELLFIRE
 int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
@@ -664,10 +671,10 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 		return ret;
 #ifdef _DEBUG
 	if (hit >= hper && !debug_mode_key_inverted_v && !debug_mode_dollar_sign)
-		return 0;
+		return FALSE;
 #else
 	if (hit >= hper)
-		return 0;
+		return FALSE;
 #endif
 	if (t == MIS_BONESPIRIT) {
 		dam = monster[m]._mhitpoints / 3 >> 6;
@@ -999,7 +1006,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 {
 	int oi;
 
-	if (missile[i]._miAnimType != 4 && missile[i]._misource != -1) {
+	if (missile[i]._miAnimType != MFILE_FIREWAL && missile[i]._misource != -1) {
 		if (!missile[i]._micaster) {
 			if (dMonster[mx][my] > 0) {
 				if (MonsterMHit(
@@ -1016,7 +1023,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				}
 			} else {
 				if (dMonster[mx][my] < 0
-				    && monster[-(dMonster[mx][my] + 1)]._mmode == 15
+				    && monster[-(dMonster[mx][my] + 1)]._mmode == MM_STONE
 				    && MonsterMHit(
 				        missile[i]._misource,
 				        -(dMonster[mx][my] + 1),
@@ -1070,7 +1077,7 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 		}
 	} else {
 		if (dMonster[mx][my] > 0) {
-			if (missile[i]._miAnimType == 4) {
+			if (missile[i]._miAnimType == MFILE_FIREWAL) {
 				if (MonsterMHit(
 				        missile[i]._misource,
 				        dMonster[mx][my] - 1,
@@ -1177,12 +1184,13 @@ void InitMissileGFX()
 void FreeMissileGFX(int mi)
 {
 	int i;
-	DWORD *pFrameTable;
+	DWORD *p;
 
 	if (misfiledata[mi].mFlags & MFLAG_ALLOW_SPECIAL) {
 		if (misfiledata[mi].mAnimData[0]) {
-			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[0];
-			mem_free_dbg(&pFrameTable[-misfiledata[mi].mAnimFAmt]); // TODO find a cleaner way to access the offeset
+			p = (DWORD *)misfiledata[mi].mAnimData[0];
+			p -= misfiledata[mi].mAnimFAmt;
+			MemFreeDbg(p);
 			misfiledata[mi].mAnimData[0] = NULL;
 		}
 		return;
@@ -1190,9 +1198,7 @@ void FreeMissileGFX(int mi)
 
 	for (i = 0; i < misfiledata[mi].mAnimFAmt; i++) {
 		if (misfiledata[mi].mAnimData[i]) {
-			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[i];
-			misfiledata[mi].mAnimData[i] = NULL;
-			mem_free_dbg(pFrameTable);
+			MemFreeDbg(misfiledata[mi].mAnimData[i]);
 		}
 	}
 }
@@ -1972,31 +1978,6 @@ void missiles_hbolt_arrow(int mi, int sx, int sy, int dx, int dy, int midir, cha
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
-}
-
-void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
-{
-	int lvl;
-
-	if (id == -1 || plr[id]._pSpellFlags & 6 || plr[id]._pHitPoints <= plr[id]._pLevel << 6) {
-		missile[mi]._miDelFlag = TRUE;
-	} else {
-		int blodboilSFX[NUM_CLASSES] = { PS_WARR70, PS_ROGUE70, PS_MAGE70, PS_MAGE70, PS_ROGUE70, PS_WARR70 }; // BUGFIX: change second PS_MAGE70 to PS_MONK70?
-		UseMana(id, 22);
-		missile[mi]._miVar1 = id;
-		int tmp = 3 * plr[id]._pLevel;
-		tmp <<= 7;
-		plr[id]._pSpellFlags |= 2u;
-		missile[mi]._miVar2 = tmp;
-		if (2 * (id > 0))
-			lvl = plr[id]._pLevel;
-		else
-			lvl = 1;
-		missile[mi]._mirange = lvl + 10 * missile[mi]._mispllvl + 245;
-		CalcPlrItemVals(id, TRUE);
-		force_redraw = 255;
-		PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id].WorldX, plr[id].WorldY);
-	}
 }
 #endif
 
@@ -3085,6 +3066,35 @@ void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 	missile[mi]._mirange = 1;
 }
 
+void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
+{
+#ifdef HELLFIRE
+	int lvl;
+
+	if (id == -1 || plr[id]._pSpellFlags & 6 || plr[id]._pHitPoints <= plr[id]._pLevel << 6) {
+		missile[mi]._miDelFlag = TRUE;
+	} else {
+		int blodboilSFX[NUM_CLASSES] = { PS_WARR70, PS_ROGUE70, PS_MAGE70, PS_MAGE70, PS_ROGUE70, PS_WARR70 }; // BUGFIX: change second PS_MAGE70 to PS_MONK70?
+		UseMana(id, 22);
+		missile[mi]._miVar1 = id;
+		int tmp = 3 * plr[id]._pLevel;
+		tmp <<= 7;
+		plr[id]._pSpellFlags |= 2u;
+		missile[mi]._miVar2 = tmp;
+		if (2 * (id > 0))
+			lvl = plr[id]._pLevel;
+		else
+			lvl = 1;
+		missile[mi]._mirange = lvl + 10 * missile[mi]._mispllvl + 245;
+		CalcPlrItemVals(id, TRUE);
+		force_redraw = 255;
+		PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id].WorldX, plr[id].WorldY);
+	}
+#else
+	missile[mi]._miDelFlag = 1;
+#endif
+}
+
 void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
@@ -3363,7 +3373,7 @@ int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micas
 	missile[mi]._mispllvl = spllvl;
 	missile[mi]._mimfnum = midir;
 
-	if (missile[mi]._miAnimType == 255 || misfiledata[missile[mi]._miAnimType].mAnimFAmt < 8)
+	if (missile[mi]._miAnimType == MFILE_NONE || misfiledata[missile[mi]._miAnimType].mAnimFAmt < 8)
 		SetMissDir(mi, 0);
 	else
 		SetMissDir(mi, midir);
@@ -4982,17 +4992,18 @@ void MI_Stone(int i)
 	}
 	if (monster[m]._mmode != MM_STONE) {
 		missile[i]._miDelFlag = TRUE;
-	} else {
-		if (!missile[i]._mirange) {
-			missile[i]._miDelFlag = TRUE;
-			if (monster[m]._mhitpoints > 0)
-				monster[m]._mmode = missile[i]._miVar1;
-			else
-				AddDead(monster[m]._mx, monster[m]._my, stonendx, (direction)monster[m]._mdir);
-		}
-		if (missile[i]._miAnimType == MFILE_SHATTER1)
-			PutMissile(i);
+		return;
 	}
+
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		if (monster[m]._mhitpoints > 0)
+			monster[m]._mmode = missile[i]._miVar1;
+		else
+			AddDead(monster[m]._mx, monster[m]._my, stonendx, (direction)monster[m]._mdir);
+	}
+	if (missile[i]._miAnimType == MFILE_SHATTER1)
+		PutMissile(i);
 }
 
 void MI_Boom(int i)

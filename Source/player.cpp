@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 int plr_lframe_size;
@@ -65,7 +65,7 @@ int PWVel[3][3] = {
 	{ 2048, 1024, 512 },
 	{ 2048, 1024, 512 }
 };
-// Total number of frames in walk animation.
+/** Total number of frames in walk animation. */
 int AnimLenFromClass[3] = {
 	8, 8, 8
 };
@@ -310,7 +310,7 @@ void InitPlrGFXMem(int pnum)
 		if (GetPlrGFXSize("ST") > GetPlrGFXSize("AS")) {
 			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
 		} else {
-			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGION
+			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGEON
 		}
 	}
 	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
@@ -320,7 +320,7 @@ void InitPlrGFXMem(int pnum)
 		if (GetPlrGFXSize("WL") > GetPlrGFXSize("AW")) {
 			plr_wframe_size = GetPlrGFXSize("WL"); //TOWN
 		} else {
-			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGION
+			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGEON
 		}
 	}
 	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);
@@ -1107,7 +1107,7 @@ void CheckEFlag(int pnum, BOOL flag)
 		bitflags |= pieces->mt[i];
 	}
 
-	if (bitflags | nSolidTable[dPiece[x][y]] | dArch[x][y]) {
+	if (bitflags | nSolidTable[dPiece[x][y]] | dSpecial[x][y]) {
 		plr[pnum]._peflag = 1;
 	} else {
 		plr[pnum]._peflag = 0;
@@ -1126,7 +1126,7 @@ void CheckEFlag(int pnum, BOOL flag)
 		bitflags |= pieces->mt[i];
 	}
 
-	if (bitflags | dArch[x][y]) {
+	if (bitflags | dSpecial[x][y]) {
 		return;
 	}
 
@@ -1139,7 +1139,7 @@ void CheckEFlag(int pnum, BOOL flag)
 		bitflags |= pieces->mt[i];
 	}
 
-	if (bitflags | dArch[x][y]) {
+	if (bitflags | dSpecial[x][y]) {
 		plr[pnum]._peflag = 2;
 	}
 }
@@ -2200,7 +2200,7 @@ void InitLevelChange(int pnum)
 	RemovePlrMissiles(pnum);
 	if (pnum == myplr && qtextflag) {
 		qtextflag = FALSE;
-		sfx_stop();
+		stream_stop();
 	}
 
 	RemovePlrFromMap(pnum);
@@ -3281,7 +3281,7 @@ BOOL PM_DoDeath(int pnum)
 			if (deathdelay == 1) {
 				deathflag = TRUE;
 				if (gbMaxPlayers == 1) {
-					gamemenu_previous();
+					gamemenu_on();
 				}
 			}
 		}
@@ -3338,7 +3338,7 @@ void CheckNewPath(int pnum)
 
 					if (x < 2 && y < 2) {
 						ClrPlrPath(pnum);
-						if (monster[i].mtalkmsg && monster[i].mtalkmsg != QUEST_VILE14) {
+						if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 							TalktoMonster(i);
 						} else {
 							StartAttack(pnum, d);
@@ -3385,11 +3385,11 @@ void CheckNewPath(int pnum)
 				break;
 			}
 
-			for (i = 1; i < 25; i++) {
+			for (i = 1; i < MAX_PATH_LENGTH; i++) {
 				plr[pnum].walkpath[i - 1] = plr[pnum].walkpath[i];
 			}
 
-			plr[pnum].walkpath[24] = WALK_NONE;
+			plr[pnum].walkpath[MAX_PATH_LENGTH - 1] = WALK_NONE;
 
 			if (plr[pnum]._pmode == PM_STAND) {
 				StartStand(pnum, plr[pnum]._pdir);
@@ -3415,7 +3415,7 @@ void CheckNewPath(int pnum)
 			y = abs(plr[pnum].WorldY - monster[i]._mfuty);
 			if (x <= 1 && y <= 1) {
 				d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
-				if (monster[i].mtalkmsg && monster[i].mtalkmsg != QUEST_VILE14) {
+				if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 					TalktoMonster(i);
 				} else {
 					StartAttack(pnum, d);
@@ -3438,7 +3438,7 @@ void CheckNewPath(int pnum)
 		case ACTION_RATTACKMON:
 			i = plr[pnum].destParam1;
 			d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
-			if (monster[i].mtalkmsg && monster[i].mtalkmsg != QUEST_VILE14) {
+			if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 				TalktoMonster(i);
 			} else {
 				StartRangeAttack(pnum, d, monster[i]._mfutx, monster[i]._mfuty);
@@ -4595,9 +4595,9 @@ void PlayDungMsgs()
 	} else if (currlevel == 17 && !plr[myplr]._pLvlVisited[17] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs2 & 1)) {
 		sfxdelay = 10;
 		sfxdnum = USFX_DEFILER1;
-		quests[QTYPE_DEFILER]._qactive = 2;
-		quests[QTYPE_DEFILER]._qlog = 1;
-		quests[QTYPE_DEFILER]._qmsg = 286;
+		quests[Q_DEFILER]._qactive = 2;
+		quests[Q_DEFILER]._qlog = 1;
+		quests[Q_DEFILER]._qmsg = 286;
 		plr[myplr].pDungMsgs2 |= 1;
 	} else if (currlevel == 19 && !plr[myplr]._pLvlVisited[19] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs2 & 4)) {
 		sfxdelay = 10;

@@ -1,8 +1,13 @@
-#include "diablo.h"
+/**
+ * @file help.cpp
+ *
+ * Implementation of the in-game help text.
+ */
+#include "all.h"
 
 int help_select_line;
 int dword_634494;
-int helpflag;
+BOOL helpflag;
 int displayinghelp[22]; /* check, does nothing? */
 int HelpTop;
 
@@ -437,7 +442,7 @@ const char gszHelpText[] = {
 
 void InitHelp()
 {
-	helpflag = 0;
+	helpflag = FALSE;
 	dword_634494 = 0;
 	displayinghelp[0] = 0;
 }
@@ -545,7 +550,7 @@ void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 		width += fontkern[c] + 1;
 		if (c) {
 			if (width <= 577)
-				CPrintString(off, c, color);
+				PrintChar(off, c, color);
 		}
 		off += fontkern[c] + 1;
 	}
@@ -554,7 +559,7 @@ void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 void DisplayHelp()
 {
 	help_select_line = 0;
-	helpflag = 1;
+	helpflag = TRUE;
 	HelpTop = 5000;
 }
 

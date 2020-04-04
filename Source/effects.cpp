@@ -1,15 +1,29 @@
-#include "diablo.h"
+/**
+ * @file effects.cpp
+ *
+ * Implementation of functions for loading and playing sounds.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 int sfxdelay;
 int sfxdnum;
-HANDLE sfx_stream;
-TSFX *sfx_data_cur;
+/** A handle to the current sound effect playing. */
+HANDLE sghStream;
+/** Specifies the sound file and the playback state of the current sound effect. */
+TSFX *sgpStreamSFX;
 
+/**
+ * Monster sound type prefix
+ * a: Attack
+ * h: Hit
+ * d: Death
+ * s: Special
+ */
 const char MonstSndChar[] = { 'a', 'h', 'd', 's' };
 
 /* data */
-
+/** List of all sounds, except monsters and music */
 TSFX sgSFX[] = {
 	// clang-format off
 	// bFlags,                   pszName,                       pSnd
@@ -1087,18 +1101,18 @@ BOOL effect_is_playing(int nSFX)
 		return snd_playing(sfx->pSnd);
 
 	if (sfx->bFlags & SFX_STREAM)
-		return sfx == sfx_data_cur;
+		return sfx == sgpStreamSFX;
 
 	return FALSE;
 }
 
-void sfx_stop()
+void stream_stop()
 {
-	if (sfx_stream) {
-		SFileDdaEnd(sfx_stream);
-		SFileCloseFile(sfx_stream);
-		sfx_stream = NULL;
-		sfx_data_cur = NULL;
+	if (sghStream) {
+		SFileDdaEnd(sghStream);
+		SFileCloseFile(sghStream);
+		sghStream = NULL;
+		sgpStreamSFX = NULL;
 	}
 }
 
@@ -1129,7 +1143,7 @@ void InitMonsterSND(int monst)
 	}
 }
 
-void FreeEffects()
+void FreeMonsterSnd()
 {
 	int mtype, i, j, k;
 	char *file;
@@ -1248,7 +1262,7 @@ void stream_play(TSFX *pSFX, int lVolume, int lPan)
 
 	/// ASSERT: assert(pSFX);
 	/// ASSERT: assert(pSFX->bFlags & sfx_STREAM);
-	sfx_stop();
+	stream_stop();
 	lVolume += sound_get_or_set_sound_volume(1);
 	if (lVolume >= VOLUME_MIN) {
 		if (lVolume > VOLUME_MAX)
@@ -1256,17 +1270,17 @@ void stream_play(TSFX *pSFX, int lVolume, int lPan)
 #ifdef _DEBUG
 		SFileEnableDirectAccess(FALSE);
 #endif
-		success = SFileOpenFile(pSFX->pszName, &sfx_stream);
+		success = SFileOpenFile(pSFX->pszName, &sghStream);
 #ifdef _DEBUG
 		SFileEnableDirectAccess(TRUE);
 #endif
 		if (!success) {
-			sfx_stream = 0;
+			sghStream = 0;
 		} else {
-			if (!SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, lVolume, lPan, 0))
-				sfx_stop();
+			if (!SFileDdaBeginEx(sghStream, 0x40000, 0, 0, lVolume, lPan, 0))
+				stream_stop();
 			else
-				sfx_data_cur = pSFX;
+				sgpStreamSFX = pSFX;
 		}
 	}
 }
@@ -1327,13 +1341,13 @@ void PlaySfxLoc(int psfx, int x, int y)
 	PlaySFX_priv(&sgSFX[psfx], TRUE, x, y);
 }
 
-void FreeMonsterSnd()
+void sound_stop()
 {
 	int i, j, k;
 
 	snd_update(TRUE);
+	stream_stop();
 	sfx_stop();
-	sound_stop();
 
 	for (i = 0; i < nummtypes; i++) {
 		for (j = 0; j < 4; j++) {
@@ -1344,7 +1358,7 @@ void FreeMonsterSnd()
 	}
 }
 
-void sound_stop()
+void sfx_stop()
 {
 	int i;
 	TSFX *snd;
@@ -1364,15 +1378,15 @@ void sound_update()
 	}
 
 	snd_update(FALSE);
-	effects_update();
+	stream_update();
 }
 
-void effects_update()
+void stream_update()
 {
 	DWORD current, end;
 
-	if (sfx_stream != NULL && SFileDdaGetPos(sfx_stream, &current, &end) && current >= end) {
-		sfx_stop();
+	if (sghStream != NULL && SFileDdaGetPos(sghStream, &current, &end) && current >= end) {
+		stream_stop();
 	}
 }
 
@@ -1380,7 +1394,7 @@ void effects_cleanup_sfx()
 {
 	DWORD i;
 
-	FreeMonsterSnd();
+	sound_stop();
 
 	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
 		if (sgSFX[i].pSnd) {
@@ -1390,7 +1404,7 @@ void effects_cleanup_sfx()
 	}
 }
 
-void stream_update()
+void sound_init()
 {
 	BYTE mask = 0;
 	if (gbMaxPlayers > 1) {
@@ -1460,7 +1474,7 @@ void priv_sound_init(BYTE bLoadMask)
 	}
 }
 
-void sound_init()
+void ui_sound_init()
 {
 	priv_sound_init(SFX_UI);
 }

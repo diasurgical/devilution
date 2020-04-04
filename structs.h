@@ -1,3 +1,9 @@
+/**
+ * @file structs.h
+ *
+ * Various global structures.
+ */
+
 //////////////////////////////////////////////////
 // control
 //////////////////////////////////////////////////
@@ -102,7 +108,7 @@ typedef struct ItemStruct {
 	int _iAnimFrame;
 	int _iAnimWidth;
 	int _iAnimWidth2; // width 2?
-	BOOL _iDelFlag; // set when item is flagged for deletion, deprecated in 1.02
+	BOOL _iDelFlag;   // set when item is flagged for deletion, deprecated in 1.02
 	char _iSelFlag;
 	BOOL _iPostDraw;
 	BOOL _iIdentified;
@@ -174,7 +180,7 @@ typedef struct ItemStruct {
 
 typedef struct PlayerStruct {
 	int _pmode;
-	char walkpath[25];
+	char walkpath[MAX_PATH_LENGTH];
 	BOOLEAN plractive;
 	int destAction;
 	int destParam1;
@@ -384,8 +390,8 @@ typedef struct TextDataStruct {
 
 typedef struct MissileData {
 	unsigned char mName;
-	void(* mAddProc)(int, int, int, int, int, int, char, int, int);
-	void(* mProc)(int);
+	void (*mAddProc)(int, int, int, int, int, int, char, int, int);
+	void (*mProc)(int);
 	BOOL mDraw;
 	unsigned char mType;
 	unsigned char mResist;
@@ -1057,7 +1063,7 @@ typedef struct QuestData {
 typedef struct TMenuItem {
 	DWORD dwFlags;
 	char *pszStr;
-	void(* fnMenu)(BOOL); /* fix, should have one arg */
+	void (*fnMenu)(BOOL); /* fix, should have one arg */
 } TMenuItem;
 
 // TPDEF PTR FCN VOID TMenuUpdateFcn
@@ -1120,7 +1126,7 @@ typedef struct TownerStruct {
 	int _teflag;
 	int _tbtcnt;
 	int _tSelFlag;
-	int _tMsgSaid;
+	BOOL _tMsgSaid;
 	TNQ qsts[MAXQUESTS];
 	int _tSeed;
 	int _tVar1;
@@ -1379,21 +1385,21 @@ typedef struct _SNETUIDATA {
 	int size;
 	int uiflags;
 	HWND parentwindow;
-	void(* artcallback)();
-	void(* authcallback)();
-	void(* createcallback)();
-	void(* drawdesccallback)();
-	void(* selectedcallback)();
-	void(* messageboxcallback)();
-	void(* soundcallback)();
-	void(* statuscallback)();
-	void(* getdatacallback)();
-	void(* categorycallback)();
-	void(* categorylistcallback)();
-	void(* newaccountcallback)();
-	void(* profilecallback)();
+	void (*artcallback)();
+	void (*authcallback)();
+	void (*createcallback)();
+	void (*drawdesccallback)();
+	void (*selectedcallback)();
+	void (*messageboxcallback)();
+	void (*soundcallback)();
+	void (*statuscallback)();
+	void (*getdatacallback)();
+	void (*categorycallback)();
+	void (*categorylistcallback)();
+	void (*newaccountcallback)();
+	void (*profilecallback)();
 	const char **profilefields;
-	void(* profilebitmapcallback)();
+	void (*profilebitmapcallback)();
 	int(__stdcall *selectnamecallback)(
 	    const struct _SNETPROGRAMDATA *,
 	    const struct _SNETPLAYERDATA *,
@@ -1403,8 +1409,8 @@ typedef struct _SNETUIDATA {
 	    char *, DWORD,  /* character name will be copied here */
 	    char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
 	    BOOL *          /* new character? - unsure about this */
-	    );
-	void(* changenamecallback)();
+	);
+	void (*changenamecallback)();
 } _SNETUIDATA;
 
 typedef struct _SNETVERSIONDATA {

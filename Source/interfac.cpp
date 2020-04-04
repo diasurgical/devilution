@@ -1,11 +1,18 @@
-#include "diablo.h"
+/**
+ * @file interfac.cpp
+ *
+ * Implementation of load screens.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 void *sgpBackCel;
 int sgdwProgress;
 int progress_id;
 
+/** The colour used for the progress bar as an index into the palette. */
 const BYTE BarColor[3] = { 138, 43, 254 };
+/** The screen position of the top left corner of the progress bar. */
 const int BarPos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
 void interface_msg_pump()
@@ -47,7 +54,7 @@ void DrawCutscene()
 
 	unlock_buf(1);
 	force_redraw = 255;
-	scrollrt_draw_game_screen(0);
+	scrollrt_draw_game_screen(FALSE);
 }
 
 void DrawProgress(int screen_x, int screen_y, int progress_id)
@@ -80,7 +87,7 @@ void ShowProgress(unsigned int uMsg)
 	DrawCutscene();
 	PaletteFadeIn(8);
 	IncProgress();
-	stream_update();
+	sound_init();
 	IncProgress();
 
 	switch (uMsg) {

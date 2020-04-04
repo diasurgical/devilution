@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file mainmenu.cpp
+ *
+ * Implementation of functions for interacting with the main menu.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
@@ -6,6 +11,7 @@ char gszHero[16];
 
 /* data */
 
+/** The active music track id for the main menu. */
 int menu_music_track_id = TMUSIC_INTRO;
 
 void mainmenu_refresh_music()

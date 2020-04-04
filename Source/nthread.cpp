@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file nthread.cpp
+ *
+ * Implementation of functions for managing game ticks.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 BYTE sgbNetUpdateRate;
@@ -91,7 +96,7 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 		sgbTicsOutOfSync = FALSE;
 		sgbSyncCountdown = 1;
 		sgbPacketCountdown = 1;
-		return 0;
+		return FALSE;
 	} else {
 		if (!sgbTicsOutOfSync) {
 			sgbTicsOutOfSync = TRUE;
@@ -168,7 +173,7 @@ void nthread_start(BOOL set_turn_upper_bit)
 	}
 }
 
-unsigned int __stdcall nthread_handler(void *)
+unsigned int __stdcall nthread_handler(void *data)
 {
 	int delta;
 	BOOL received;
@@ -211,7 +216,7 @@ void nthread_cleanup()
 		if (!sgbThreadIsRunning)
 			sgMemCrit.Leave();
 #endif
-		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
+		if (WaitForSingleObject(sghThread, INFINITE) == -1) {
 			app_fatal("nthread3:\n(%s)", TraceLastError());
 		}
 		CloseHandle(sghThread);

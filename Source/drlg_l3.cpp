@@ -1,5 +1,10 @@
+/**
+ * @file drlg_l3.cpp
+ *
+ * Implementation of the caves level generation algorithms.
+ */
 #ifndef SPAWN
-#include "diablo.h"
+#include "all.h"
 
 BOOLEAN lavapool;
 int abyssx;
@@ -1622,7 +1627,7 @@ static void DRLG_L3(int entry)
 				DRLG_L3CreateBlock(x2, y1, 2, 1);
 				DRLG_L3CreateBlock(x1, y2, 2, 2);
 				DRLG_L3CreateBlock(x1, y1, 2, 3);
-				if (QuestStatus(QTYPE_ANVIL)) {
+				if (QuestStatus(Q_ANVIL)) {
 					x1 = random_(0, 10) + 10;
 					y1 = random_(0, 10) + 10;
 					x2 = x1 + 12;
@@ -1732,7 +1737,7 @@ static void DRLG_L3(int entry)
 					}
 				}
 			}
-			if (!genok && QuestStatus(QTYPE_ANVIL)) {
+			if (!genok && QuestStatus(Q_ANVIL)) {
 				genok = DRLG_L3Anvil();
 			}
 		} while (genok == TRUE);
@@ -1792,7 +1797,7 @@ static void DRLG_L3(int entry)
 #endif
 		DRLG_L3River();
 
-	if (QuestStatus(QTYPE_ANVIL)) {
+	if (QuestStatus(Q_ANVIL)) {
 		dungeon[setpc_x + 7][setpc_y + 5] = 7;
 		dungeon[setpc_x + 8][setpc_y + 5] = 7;
 		dungeon[setpc_x + 9][setpc_y + 5] = 7;

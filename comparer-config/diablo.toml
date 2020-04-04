@@ -153,7 +153,7 @@ addr = 0x401FBD
 size = 0x276
 
 [[func]]
-name = "DrawAutomapType"
+name = "DrawAutomapTile"
 addr = 0x402233
 size = 0x745
 
@@ -168,7 +168,7 @@ addr = 0x402D83
 size = 0xC7
 
 [[func]]
-name = "DrawAutomapGame"
+name = "DrawAutomapText"
 addr = 0x402E4A
 size = 0xDD
 
@@ -273,7 +273,7 @@ addr = 0x404017
 size = 0xC3
 
 [[func]]
-name = "CPrintString"
+name = "PrintChar"
 addr = 0x4040DA
 size = 0x13E
 
@@ -333,12 +333,12 @@ addr = 0x404616
 size = 0x31E
 
 [[func]]
-name = "ClearCtrlPan"
+name = "DrawCtrlPan"
 addr = 0x404934
 size = 0x25
 
 [[func]]
-name = "DrawCtrlPan"
+name = "DrawCtrlBtns"
 addr = 0x404959
 size = 0xB1
 
@@ -393,12 +393,12 @@ addr = 0x4052C8
 size = 0x289
 
 [[func]]
-name = "control_draw_info_str"
+name = "PrintInfo"
 addr = 0x405551
 size = 0x6B
 
 [[func]]
-name = "control_print_info_str"
+name = "CPrintString"
 addr = 0x4055BC
 size = 0xC5
 
@@ -1628,7 +1628,7 @@ addr = 0x4158B9
 size = 0x29
 
 [[func]]
-name = "sfx_stop"
+name = "stream_stop"
 addr = 0x4158E2
 size = 0x29
 
@@ -1638,7 +1638,7 @@ addr = 0x41590B
 size = 0xD0
 
 [[func]]
-name = "FreeEffects"
+name = "FreeMonsterSnd"
 addr = 0x4159DB
 size = 0x6A
 
@@ -1678,12 +1678,12 @@ addr = 0x415D01
 size = 0x38
 
 [[func]]
-name = "FreeMonsterSnd"
+name = "sound_stop"
 addr = 0x415D39
 size = 0x61
 
 [[func]]
-name = "sound_stop"
+name = "sfx_stop"
 addr = 0x415D9A
 size = 0x20
 
@@ -1693,7 +1693,7 @@ addr = 0x415DBA
 size = 0x16
 
 [[func]]
-name = "effects_update"
+name = "stream_update"
 addr = 0x415DD0
 size = 0x2F
 
@@ -1703,7 +1703,7 @@ addr = 0x415DFF
 size = 0x2B
 
 [[func]]
-name = "stream_update"
+name = "sound_init"
 addr = 0x415E2A
 size = 0x4D
 
@@ -1713,7 +1713,7 @@ addr = 0x415E77
 size = 0x61
 
 [[func]]
-name = "sound_init"
+name = "ui_sound_init"
 addr = 0x415ED8
 size = 0x7
 
@@ -2078,17 +2078,17 @@ addr = 0x418860
 size = 0x6
 
 [[func]]
-name = "gamemenu_previous"
+name = "gamemenu_on"
 addr = 0x418866
 size = 0x29
 
 [[func]]
-name = "gamemenu_enable_single"
+name = "gamemenu_update_single"
 addr = 0x41888F
 size = 0x39
 
 [[func]]
-name = "gamemenu_enable_multi"
+name = "gamemenu_update_multi"
 addr = 0x4188C8
 size = 0x10
 
@@ -2103,7 +2103,7 @@ addr = 0x4188E1
 size = 0x13
 
 [[func]]
-name = "j_gamemenu_previous"
+name = "gamemenu_previous"
 addr = 0x4188F4
 size = 0x5
 
@@ -2323,12 +2323,12 @@ addr = 0x419F70
 size = 0x78
 
 [[func]]
-name = "gmenu_exception"
+name = "gmenu_is_active"
 addr = 0x419FE8
 size = 0xC
 
 [[func]]
-name = "gmenu_call_proc"
+name = "gmenu_set_items"
 addr = 0x419FF4
 size = 0x5A
 
@@ -2373,7 +2373,7 @@ addr = 0x41A37A
 size = 0x58
 
 [[func]]
-name = "gmenu_valid_mouse_pos"
+name = "gmenu_get_mouse_slider"
 addr = 0x41A3D2
 size = 0x2F
 
@@ -5243,7 +5243,7 @@ addr = 0x43BD19
 size = 0xD2
 
 [[func]]
-name = "msg_process_net_packets"
+name = "run_delta_info"
 addr = 0x43BDEB
 size = 0x22
 
@@ -5438,7 +5438,7 @@ addr = 0x43D064
 size = 0x39
 
 [[func]]
-name = "RemovePlrPortal"
+name = "delta_close_portal"
 addr = 0x43D09D
 size = 0x1F
 
@@ -8153,7 +8153,7 @@ addr = 0x45708B
 size = 0xA0
 
 [[func]]
-name = "sound_load_volume"
+name = "snd_get_volume"
 addr = 0x45712B
 size = 0x51
 
@@ -8173,7 +8173,7 @@ addr = 0x4572FF
 size = 0x59
 
 [[func]]
-name = "sound_store_volume"
+name = "snd_set_volume"
 addr = 0x457358
 size = 0xF
 
@@ -8268,7 +8268,7 @@ addr = 0x457DE2
 size = 0x80
 
 [[func]]
-name = "DrawSArrows"
+name = "DrawSSlider"
 addr = 0x457E62
 size = 0xF0
 

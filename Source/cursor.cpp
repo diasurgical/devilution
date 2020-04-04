@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file cursor.cpp
+ *
+ * Implementation of cursor tracking functionality.
+ */
+#include "all.h"
 
 int cursW;
 int cursH;
@@ -10,7 +15,7 @@ BYTE *pCursCels;
 BYTE *pCursCels2;
 #endif
 
-// inv_item value
+/** inv_item value */
 char pcursinvitem;
 int icursW;
 int icursH;
@@ -23,6 +28,7 @@ int pcurstemp;
 int pcurs;
 
 /* rdata */
+/** Maps from objcurs.cel frame number to frame width. */
 const int InvItemWidth[] = {
 	// Cursors
 	0, 33, 32, 32, 32, 32, 32, 32, 32, 32, 32, 23,
@@ -54,6 +60,7 @@ const int InvItemWidth[] = {
 #endif
 };
 
+/** Maps from objcurs.cel frame number to frame height. */
 const int InvItemHeight[] = {
 	// Cursors
 	0, 29, 32, 32, 32, 32, 32, 32, 32, 32, 32, 35,
@@ -231,7 +238,7 @@ void CheckCursMove()
 	fx -= (plr[myplr]._pVar6 + plr[myplr]._pxvel) >> 8;
 	fy -= (plr[myplr]._pVar7 + plr[myplr]._pyvel) >> 8;
 
-	if (ScrollInfo._sdir != 0) {
+	if (ScrollInfo._sdir != SDIR_NONE) {
 		sx -= fx;
 		sy -= fy;
 	}

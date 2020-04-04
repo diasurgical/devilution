@@ -1,7 +1,14 @@
-#include "diablo.h"
+/**
+ * @file movie.cpp
+ *
+ * Implementation of video playback.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** Should the movie continue playing. */
 BYTE movie_playing;
+/** Should the movie play in a loop. */
 BOOL loop_movie;
 
 void play_movie(char *pszMovie, BOOL user_can_close)
@@ -18,7 +25,7 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	UpdateWindow(ghMainWnd);
 	movie_playing = TRUE;
 	sound_disable_music(TRUE);
-	sfx_stop();
+	stream_stop();
 	effects_play_sound("Sfx\\Misc\\blank.wav");
 
 	SVidPlayBegin(pszMovie, 0, 0, 0, 0, loop_movie ? 0x100C0808 : 0x10280808, &video_stream);

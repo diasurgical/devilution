@@ -373,3 +373,4 @@ ASALocalRun/
 *.pubxml.user
 
 # End of https://www.gitignore.io/api/visualstudio
+/docs/html/

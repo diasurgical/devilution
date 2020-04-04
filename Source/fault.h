@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file fault.h
+ *
+ * Interface of exception logging functionality.
+ */
 #ifndef __FAULT_H__
 #define __FAULT_H__
 

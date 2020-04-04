@@ -1,10 +1,16 @@
-#include "diablo.h"
+/**
+ * @file error.cpp
+ *
+ * Implementation of in-game message functions.
+ */
+#include "all.h"
 
 char msgtable[MAX_SEND_STR_LEN];
 char msgdelay;
 char msgflag;
 char msgcnt;
 
+/** Maps from error_id to error message. */
 char *MsgStrings[] = {
 	"",
 	"No automap available in town",
@@ -140,7 +146,7 @@ void DrawDiabloMsg()
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
 		if (c != '\0') {
-			CPrintString(off, c, COL_GOLD);
+			PrintChar(off, c, COL_GOLD);
 		}
 		off += fontkern[c] + 1;
 	}

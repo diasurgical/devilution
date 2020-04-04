@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file logging.cpp
+ *
+ * Implementation of logging functionality.
+ */
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 #ifdef __cplusplus
@@ -11,7 +16,9 @@ DWORD nNumberOfBytesToWrite;
 
 /* data */
 
-BOOL log_not_created = 1;
+/** Has the log file not yet been created. */
+BOOL log_not_created = TRUE;
+/** Handle to the log file. */
 HANDLE log_file = INVALID_HANDLE_VALUE;
 
 void __cdecl log_flush(BOOL force_close)

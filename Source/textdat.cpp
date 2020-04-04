@@ -1,7 +1,8 @@
-#include "diablo.h"
+#include "all.h"
 
 /* todo: move text out of struct */
 
+/** Contains the data related to each speech ID. */
 const TextDataStruct alltext[] = {
 #ifdef SPAWN
 	{ "Nice try... ", 0, 0, TSFX_TAVERN36 },
@@ -918,4 +919,5 @@ const TextDataStruct alltext[] = {
 	{ "Efficio Obitus Ut Inimicus. |", 1, 5, PS_ROGUE56 },
 #endif
 };
-const DWORD gdwAllTextEntries = 259; /* unused */
+/** unused */
+const DWORD gdwAllTextEntries = 259;

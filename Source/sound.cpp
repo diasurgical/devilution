@@ -1,4 +1,4 @@
-#include "diablo.h"
+#include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
 LPDIRECTSOUNDBUFFER DSBs[8];
@@ -7,7 +7,7 @@ BOOLEAN gbSndInited;
 int sglMusicVolume;
 int sglSoundVolume;
 HMODULE hDsound_dll;
-HANDLE sgpMusicTrack;
+HANDLE sghMusic;
 LPDIRECTSOUNDBUFFER sglpDSB;
 
 /* data */
@@ -310,10 +310,10 @@ void sound_file_cleanup(TSnd *sound_file)
 void snd_init(HWND hWnd)
 {
 	int error_code;
-	sound_load_volume("Sound Volume", &sglSoundVolume);
+	snd_get_volume("Sound Volume", &sglSoundVolume);
 	gbSoundOn = sglSoundVolume > VOLUME_MIN;
 
-	sound_load_volume("Music Volume", &sglMusicVolume);
+	snd_get_volume("Music Volume", &sglMusicVolume);
 	gbMusicOn = sglMusicVolume > VOLUME_MIN;
 
 	error_code = sound_DirectSoundCreate(NULL, &sglpDS, NULL);
@@ -333,7 +333,7 @@ void snd_init(HWND hWnd)
 	gbSndInited = sglpDS != NULL;
 }
 
-void sound_load_volume(char *value_name, int *value)
+void snd_get_volume(char *value_name, int *value)
 {
 	int v = *value;
 	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
@@ -437,22 +437,22 @@ void sound_cleanup()
 
 	if (gbSndInited) {
 		gbSndInited = FALSE;
-		sound_store_volume("Sound Volume", sglSoundVolume);
-		sound_store_volume("Music Volume", sglMusicVolume);
+		snd_set_volume("Sound Volume", sglSoundVolume);
+		snd_set_volume("Music Volume", sglMusicVolume);
 	}
 }
 
-void sound_store_volume(char *key, int value)
+void snd_set_volume(char *key, int value)
 {
 	SRegSaveValue(APP_NAME, key, 0, value);
 }
 
 void music_stop()
 {
-	if (sgpMusicTrack) {
-		SFileDdaEnd(sgpMusicTrack);
-		SFileCloseFile(sgpMusicTrack);
-		sgpMusicTrack = NULL;
+	if (sghMusic) {
+		SFileDdaEnd(sghMusic);
+		SFileCloseFile(sghMusic);
+		sghMusic = NULL;
 		sgnMusicTrack = NUM_MUSIC;
 	}
 }
@@ -467,15 +467,15 @@ void music_start(int nTrack)
 #ifdef _DEBUG
 		SFileEnableDirectAccess(FALSE);
 #endif
-		success = SFileOpenFile(sgszMusicTracks[nTrack], &sgpMusicTrack);
+		success = SFileOpenFile(sgszMusicTracks[nTrack], &sghMusic);
 #ifdef _DEBUG
 		SFileEnableDirectAccess(TRUE);
 #endif
-		sound_create_primary_buffer(sgpMusicTrack);
+		sound_create_primary_buffer(sghMusic);
 		if (!success) {
-			sgpMusicTrack = NULL;
+			sghMusic = NULL;
 		} else {
-			SFileDdaBeginEx(sgpMusicTrack, 0x40000, 0x40000, 0, sglMusicVolume, 0, 0);
+			SFileDdaBeginEx(sghMusic, 0x40000, 0x40000, 0, sglMusicVolume, 0, 0);
 			sgnMusicTrack = nTrack;
 		}
 	}
@@ -497,8 +497,8 @@ int sound_get_or_set_music_volume(int volume)
 
 	sglMusicVolume = volume;
 
-	if (sgpMusicTrack)
-		SFileDdaSetVolume(sgpMusicTrack, volume, 0);
+	if (sghMusic)
+		SFileDdaSetVolume(sghMusic, volume, 0);
 
 	return sglMusicVolume;
 }

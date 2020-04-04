@@ -1,4 +1,8 @@
-//HEADER_GOES_HERE
+/**
+ * @file multi.h
+ *
+ * Interface of functions for keeping multiplaye games in sync.
+ */
 #ifndef __MULTI_H__
 #define __MULTI_H__
 
@@ -9,7 +13,7 @@ extern PkPlayerStruct netplr[MAX_PLRS];
 extern BOOL gbShouldValidatePackage;
 extern BYTE gbActivePlayers;
 extern BOOLEAN gbGameDestroyed;
-extern BOOLEAN gbGameUninitialized;
+extern BOOLEAN gbSelectProvider;
 extern BYTE gbMaxPlayers;
 extern char szPlayerName[128];
 extern BYTE gbDeltaSender;

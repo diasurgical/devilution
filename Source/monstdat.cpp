@@ -1,4 +1,9 @@
-#include "diablo.h"
+/**
+ * @file monstdat.cpp
+ *
+ * Implementation of all monster data.
+ */
+#include "all.h"
 
 MonsterData monsterdata[] = {
 	// clang-format off
@@ -365,16 +370,16 @@ BYTE MonstAvailTbl[] = {
 
 UniqMonstStruct UniqMonst[] = {
 	// clang-format off
-	// mtype,       mName,                      mTrnName, mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
-	{  MT_NGOATMC,  "Gharbad the Weak",         "BSDB",        4,    120, AI_GARBUD,   3,          8,         16,                              IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, QUEST_GARBUD1  },
+	// mtype,       mName,                      mTrnName,    mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
+	{  MT_NGOATMC,  "Gharbad the Weak",         "BSDB",        4,    120, AI_GARBUD,   3,          8,         16,                              IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, TEXT_GARBUD1   },
 	{  MT_SKING,    "Skeleton King",            "GENRL",       0,    240, AI_SKELKING, 3,          6,         16, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,        1,        0,        0, 0              },
-	{  MT_COUNSLR,  "Zhar the Mad",             "GENERAL",     8,    360, AI_ZHAR,     3,         16,         40, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING                ,        0,        0,        0, QUEST_ZHAR1    },
-	{  MT_BFALLSP,  "Snotspill",                "BNG",         4,    220, AI_SNOTSPIL, 3,         10,         18,                              RESIST_LIGHTNING                ,        0,        0,        0, QUEST_BANNER10 },
-	{  MT_ADVOCATE, "Arch-Bishop Lazarus",      "GENERAL",     0,    600, AI_LAZURUS,  3,         30,         50, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,        0,        0,        0, QUEST_VILE13   },
-	{  MT_HLSPWN,   "Red Vex",                  "REDV",        0,    400, AI_LAZHELP,  3,         30,         50, IMUNE_MAGIC  | RESIST_FIRE |                    IMUNE_NULL_40,        0,        0,        0, QUEST_VILE13   },
-	{  MT_HLSPWN,   "BlackJade",                "BLKJD",       0,    400, AI_LAZHELP,  3,         30,         50, IMUNE_MAGIC  |               RESIST_LIGHTNING | IMUNE_NULL_40,        0,        0,        0, QUEST_VILE13   },
-	{  MT_RBLACK,   "Lachdanan",                "BHKA",       14,    500, AI_LACHDAN,  3,          0,          0, 0                                                            ,        0,        0,        0, QUEST_VEIL9    },
-	{  MT_BTBLACK,  "Warlord of Blood",         "GENERAL",    13,    850, AI_WARLORD,  3,         35,         50, IMUNE_MAGIC  | IMUNE_FIRE  | IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, QUEST_WARLRD9  },
+	{  MT_COUNSLR,  "Zhar the Mad",             "GENERAL",     8,    360, AI_ZHAR,     3,         16,         40, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING                ,        0,        0,        0, TEXT_ZHAR1     },
+	{  MT_BFALLSP,  "Snotspill",                "BNG",         4,    220, AI_SNOTSPIL, 3,         10,         18,                              RESIST_LIGHTNING                ,        0,        0,        0, TEXT_BANNER10  },
+	{  MT_ADVOCATE, "Arch-Bishop Lazarus",      "GENERAL",     0,    600, AI_LAZURUS,  3,         30,         50, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,        0,        0,        0, TEXT_VILE13    },
+	{  MT_HLSPWN,   "Red Vex",                  "REDV",        0,    400, AI_LAZHELP,  3,         30,         50, IMUNE_MAGIC  | RESIST_FIRE |                    IMUNE_NULL_40,        0,        0,        0, TEXT_VILE13    },
+	{  MT_HLSPWN,   "BlackJade",                "BLKJD",       0,    400, AI_LAZHELP,  3,         30,         50, IMUNE_MAGIC  |               RESIST_LIGHTNING | IMUNE_NULL_40,        0,        0,        0, TEXT_VILE13    },
+	{  MT_RBLACK,   "Lachdanan",                "BHKA",       14,    500, AI_LACHDAN,  3,          0,          0, 0                                                            ,        0,        0,        0, TEXT_VEIL9     },
+	{  MT_BTBLACK,  "Warlord of Blood",         "GENERAL",    13,    850, AI_WARLORD,  3,         35,         50, IMUNE_MAGIC  | IMUNE_FIRE  | IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, TEXT_WARLRD9   },
 	{  MT_CLEAVER,  "The Butcher",              "GENRL",       0,    220, AI_CLEAVER,  3,          6,         12,                RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,        0,        0,        0, 0              },
 #ifdef HELLFIRE
 	{  MT_HORKDMN,  "Hork Demon",               "GENRL",      19,    300, AI_HORKDMN,  3,         20,         35,                              RESIST_LIGHTNING                ,        0,        0,        0, 0              },
@@ -382,9 +387,9 @@ UniqMonstStruct UniqMonst[] = {
 	{  MT_NAKRUL,   "Na-Krul",                  "GENRL",       0,   1332, AI_SKELSD,   3,         40,         50, IMUNE_MAGIC  | IMUNE_FIRE  | IMUNE_LIGHTNING  | IMUNE_NULL_40,        3,        0,        0, 0              },
 #endif
 	{  MT_TSKELAX,  "Bonehead Keenaxe",         "BHKA",        2,     91, AI_SKELSD,   2,          4,         10, IMUNE_MAGIC  |                                  IMUNE_NULL_40,        7,      100,        0, 0              },
-	{  MT_RFALLSD,  "Bladeskin the Slasher",    "BSTS",        2,     51, AI_FALLEN,   0,          6,         18,                 RESIST_FIRE                                  ,       11,       45,        0, 0              },
-	{  MT_NZOMBIE,  "Soulpus",                  "GENERAL",     2,    133, AI_ZOMBIE,   0,          4,          8,                 RESIST_FIRE | RESIST_LIGHTNING               ,        0,        0,        0, 0              },
-	{  MT_RFALLSP,  "Pukerat the Unclean",      "PTU",         2,     77, AI_FALLEN,   3,          1,          5,                 RESIST_FIRE                                  ,        0,        0,        0, 0              },
+	{  MT_RFALLSD,  "Bladeskin the Slasher",    "BSTS",        2,     51, AI_FALLEN,   0,          6,         18,                RESIST_FIRE                                   ,       11,       45,        0, 0              },
+	{  MT_NZOMBIE,  "Soulpus",                  "GENERAL",     2,    133, AI_ZOMBIE,   0,          4,          8,                RESIST_FIRE | RESIST_LIGHTNING                ,        0,        0,        0, 0              },
+	{  MT_RFALLSP,  "Pukerat the Unclean",      "PTU",         2,     77, AI_FALLEN,   3,          1,          5,                RESIST_FIRE                                   ,        0,        0,        0, 0              },
 	{  MT_WSKELAX,  "Boneripper",               "BR",          2,     54, AI_BAT,      0,          6,         15, IMUNE_MAGIC  | IMUNE_FIRE  |                    IMUNE_NULL_40,        3,        0,        0, 0              },
 	{  MT_NZOMBIE,  "Rotfeast the Hungry",      "ETH",         2,     85, AI_SKELSD,   3,          4,         12, IMUNE_MAGIC  |                                  IMUNE_NULL_40,        3,        0,        0, 0              },
 	{  MT_DFALLSD,  "Gutshank the Quick",       "GTQ",         3,     66, AI_BAT,      2,          6,         16,                RESIST_FIRE                                   ,        3,        0,        0, 0              },
@@ -419,7 +424,7 @@ UniqMonstStruct UniqMonst[] = {
 	{  MT_GARGOYLE, "Nightwing the Cold",       "GENERAL",     7,    342, AI_BAT,      1,         18,         26, IMUNE_MAGIC  |               RESIST_LIGHTNING | IMUNE_NULL_40,        3,        0,        0, 0              },
 	{  MT_GGOATBW,  "Gorestone",                "GENERAL",     7,    303, AI_GOATBOW,  1,         15,         28,                              RESIST_LIGHTNING | IMUNE_NULL_40,        7,       70,        0, 0              },
 	{  MT_BMAGMA,   "Bronzefist Firestone",     "GENERAL",     8,    360, AI_MAGMA,    0,         30,         36, IMUNE_MAGIC  | RESIST_FIRE                                   ,        3,        0,        0, 0              },
-	{  MT_INCIN,    "Wrathfire the Doomed",     "WFTD",        8,    270, AI_SKELSD,   2,         20,         30, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING                ,        3,        0,        0, 0              },
+	{  MT_INCIN,    "Wrathfire the Doomed",     "WFTD",        8,    270, AI_SKELSD,   2,         20,         30, IMUNE_MAGIC  | RESIST_FIRE |  RESIST_LIGHTNING               ,        3,        0,        0, 0              },
 	{  MT_NMAGMA,   "Firewound the Grim",       "BHKA",        8,    303, AI_MAGMA,    0,         18,         22, IMUNE_MAGIC  | RESIST_FIRE                                   ,        3,        0,        0, 0              },
 	{  MT_MUDMAN,   "Baron Sludge",             "BSM",         8,    315, AI_SNEAK,    3,         25,         34, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,       11,       75,        0, 0              },
 	{  MT_GGOATMC,  "Blighthorn Steelmace",     "BHSM",        7,    250, AI_RHINO,    0,         20,         28,                              RESIST_LIGHTNING                ,       11,       45,        0, 0              },

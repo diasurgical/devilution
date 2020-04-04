@@ -1,4 +1,10 @@
-//HEADER_GOES_HERE
+/**
+ * @file msgcmd.h
+ *
+ * Interface for sending commands to Battle.net.
+ *
+ * See http://classic.battle.net/info/commands.shtml for a list of commands.
+ */
 #ifndef __MSGCMD_H__
 #define __MSGCMD_H__
 
