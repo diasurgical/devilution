@@ -254,7 +254,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 {
 	BYTE *dst, *tbl, *end;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	dst = &gpBuffer[xp + PitchTbl[yp]];
 	tbl = SplTransTbl;
@@ -649,7 +649,7 @@ void ToggleSpell(int slot)
  */
 void PrintChar(int nOffset, int nCel, char col)
 {
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -956,7 +956,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 {
 	int nSrcOff, nDstOff;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	nSrcOff = x + PANEL_WIDTH * y;
 	nDstOff = sx + BUFFER_WIDTH * sy;
@@ -1041,7 +1041,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
 	int nSrcOff, nDstOff, w;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	nSrcOff = 88 * min;
 	nDstOff = sx + BUFFER_WIDTH * sy;
@@ -2234,7 +2234,7 @@ void RedBack()
 
 	idx = light4flag ? 1536 : 4608;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	if (leveltype != DTYPE_HELL) {

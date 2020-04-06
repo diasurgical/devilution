@@ -141,7 +141,7 @@ void run_game_loop(unsigned int uMsg)
 
 	nthread_ignore_mutex(TRUE);
 	start_game(uMsg);
-	/// ASSERT: assert(ghMainWnd);
+	assert(ghMainWnd);
 	saveProc = SetWindowProc(GM_Game);
 	control_update_life_mana();
 	run_delta_info();
@@ -197,7 +197,7 @@ void run_game_loop(unsigned int uMsg)
 	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);
 	saveProc = SetWindowProc(saveProc);
-	/// ASSERT: assert(saveProc == GM_Game);
+	assert(saveProc == GM_Game);
 	free_game();
 
 	if (cineflag) {
@@ -213,7 +213,7 @@ void start_game(unsigned int uMsg)
 	InitCursor();
 	InitLightTable();
 	LoadDebugGFX();
-	/// ASSERT: assert(ghMainWnd);
+	assert(ghMainWnd);
 	music_stop();
 	ShowProgress(uMsg);
 	gmenu_init_menu();
