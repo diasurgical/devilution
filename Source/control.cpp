@@ -1819,7 +1819,7 @@ void DrawChr()
 		ADD_PlrStringXY(168, 32, 299, "Warrior", COL_WHITE);
 #ifndef SPAWN
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
-		ADD_PlrStringXY(168, 32, 299, "Rogue", COL_WHITE); /* should use ClassStrTbl ? */
+		ADD_PlrStringXY(168, 32, 299, "Rogue", COL_WHITE);
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		ADD_PlrStringXY(168, 32, 299, "Sorceror", COL_WHITE);
 #endif
@@ -1893,7 +1893,7 @@ void DrawChr()
 		MY_PlrStringXY(258, 239, 301, chrstr, col, 0);
 
 	col = plr[myplr]._pMagResist == 0 ? COL_WHITE : COL_BLUE;
-	if (plr[myplr]._pMagResist < 75) {
+	if (plr[myplr]._pMagResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pMagResist);
 	} else {
 		col = COL_GOLD;
@@ -1902,7 +1902,7 @@ void DrawChr()
 	ADD_PlrStringXY(257, 276, 300, chrstr, col);
 
 	col = plr[myplr]._pFireResist == 0 ? COL_WHITE : COL_BLUE;
-	if (plr[myplr]._pFireResist < 75) {
+	if (plr[myplr]._pFireResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pFireResist);
 	} else {
 		col = COL_GOLD;
@@ -1911,7 +1911,7 @@ void DrawChr()
 	ADD_PlrStringXY(257, 304, 300, chrstr, col);
 
 	col = plr[myplr]._pLghtResist == 0 ? COL_WHITE : COL_BLUE;
-	if (plr[myplr]._pLghtResist < 75) {
+	if (plr[myplr]._pLghtResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pLghtResist);
 	} else {
 		col = COL_GOLD;
@@ -2186,7 +2186,7 @@ void DrawDurIcon()
 	int x1, x2, x3, x4;
 
 	if (!chrflag && !questlog || !invflag && !sbookflag) {
-		x1 = 592 + PANEL_X;
+		x1 = 272 + RIGHT_PANEL_X;
 		if (invflag || sbookflag)
 			x1 = 272 + PANEL_X;
 		p = &plr[myplr];
