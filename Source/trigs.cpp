@@ -95,7 +95,7 @@ void InitTownTriggers()
 
 void InitL1Triggers()
 {
-	int j, i;
+	int i, j;
 
 	numtrigs = 0;
 	for (j = 0; j < MAXDUNY; j++) {
@@ -528,7 +528,7 @@ BOOL ForceL4Trig()
 
 void Freeupstairs()
 {
-	int i, tx, ty, yy, xx;
+	int i, tx, ty, xx, yy;
 
 	for (i = 0; i < numtrigs; i++) {
 		tx = trigs[i]._tx;
