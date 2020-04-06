@@ -977,7 +977,7 @@ void RightMouseDown()
 			    || (!sbookflag || MouseX <= RIGHT_PANEL)
 			        && !TryIconCurs()
 			        && (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))) {
-				if (pcurs == 1) {
+				if (pcurs == CURSOR_HAND) {
 					if (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))
 						CheckPlrSpell();
 				} else if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM) {

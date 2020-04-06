@@ -11,8 +11,8 @@ BYTE *pDurIcons;
 BYTE *pChrButtons;
 BOOL drawhpflag;
 BOOL dropGoldFlag;
-int panbtn[8];
-int chrbtn[4];
+BOOL panbtn[8];
+BOOL chrbtn[4];
 BYTE *pMultiBtns;
 BYTE *pPanelButtons;
 BYTE *pChrPanel;
@@ -1278,7 +1278,7 @@ void InitControlPan()
 	lvlbtndown = FALSE;
 	pPanelButtons = LoadFileInMem("CtrlPan\\Panel8bu.CEL", NULL);
 	for (i = 0; i < sizeof(panbtn) / sizeof(panbtn[0]); i++)
-		panbtn[i] = 0;
+		panbtn[i] = FALSE;
 	panbtndown = FALSE;
 	if (gbMaxPlayers == 1)
 		numpanbtns = 6;
@@ -1286,7 +1286,7 @@ void InitControlPan()
 		numpanbtns = 8;
 	pChrButtons = LoadFileInMem("Data\\CharBut.CEL", NULL);
 	for (i = 0; i < sizeof(chrbtn) / sizeof(chrbtn[0]); i++)
-		chrbtn[i] = 0;
+		chrbtn[i] = FALSE;
 	chrbtnactive = FALSE;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", NULL);
 	strcpy(infostr, "");
@@ -2138,7 +2138,7 @@ void CheckChrBtns()
 			    && MouseX <= ChrBtnsRect[i].x + ChrBtnsRect[i].w
 			    && MouseY >= ChrBtnsRect[i].y
 			    && MouseY <= ChrBtnsRect[i].y + ChrBtnsRect[i].h) {
-				chrbtn[i] = 1;
+				chrbtn[i] = TRUE;
 				chrbtnactive = TRUE;
 			}
 		}
@@ -2152,7 +2152,7 @@ void ReleaseChrBtns()
 	chrbtnactive = FALSE;
 	for (i = 0; i < 4; ++i) {
 		if (chrbtn[i]) {
-			chrbtn[i] = 0;
+			chrbtn[i] = FALSE;
 			if (MouseX >= ChrBtnsRect[i].x
 			    && MouseX <= ChrBtnsRect[i].x + ChrBtnsRect[i].w
 			    && MouseY >= ChrBtnsRect[i].y

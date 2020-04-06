@@ -2128,7 +2128,7 @@ BOOL UseInvItem(int pnum, int cii)
 
 	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr)
 		return TRUE;
-	if (pcurs != 1)
+	if (pcurs != CURSOR_HAND)
 		return TRUE;
 	if (stextflag)
 		return TRUE;

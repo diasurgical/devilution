@@ -1526,7 +1526,7 @@ typedef struct STextStruct {
 	BOOL _sjust;
 	char _sclr;
 	int _sline;
-	int _ssel;
+	BOOL _ssel;
 	int _sval;
 } STextStruct;
 
