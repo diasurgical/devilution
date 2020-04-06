@@ -35,7 +35,7 @@ static BOOL CaptureHdr(HANDLE hFile, short width, short height)
 static BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	DWORD NumberOfBytesWritten;
-	BYTE pcx_palette[769];
+	BYTE pcx_palette[1 + 256 * 3];
 	int i;
 
 	pcx_palette[0] = 12;
