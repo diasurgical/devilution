@@ -1,7 +1,7 @@
 #include "all.h"
 
 /** Data related to each spell ID. */
-SpellData spelldata[MAX_SPELLS] = {
+SpellData spelldata[] = {
 	// clang-format off
 	// sName,    sManaCost, sType,           sNameText,         sSkillText, sBookLvl, sStaffLvl, sTargeted, sTownSpell, sMinInt, sSFX,     sMissiles[3],                      sManaAdj, sMinMana, sStaffMin, sStaffMax, sBookCost, sStaffCost
 	{ SPL_NULL,          0, 0,               NULL,              NULL,              0,         0, FALSE,     FALSE,            0, 0,        { 0,               0,          0 },       0,        0,        40,        80,         0,          0 },

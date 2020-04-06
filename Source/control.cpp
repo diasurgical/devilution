@@ -35,7 +35,7 @@ BOOL talkbtndown[3];
 int pSpell;
 BYTE *pManaBuff;
 char infoclr;
-int sgbPlrTalkTbl; // should be char [4]
+int sgbPlrTalkTbl;
 BYTE *pGBoxBuff;
 BYTE *pSBkBtnCel;
 char tempstr[256];
@@ -152,7 +152,7 @@ const BYTE gbFontTransTbl[256] = {
 	'A',  'A',  'A',  'A',  'A',  'A',  'A',  'C',  'E',  'E',  'E',  'E',  'I',  'I',  'I',  'I',
 	'D',  'N',  'O',  'O',  'O',  'O',  'O',  'X',  '0',  'U',  'U',  'U',  'U',  'Y',  'b',  'B',
 	'a',  'a',  'a',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'e',  'i',  'i',  'i',  'i',
-	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y'
+	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y',
 	// clang-format on
 };
 
