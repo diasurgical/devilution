@@ -41,33 +41,31 @@ void TriggerBreak()
 LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 {
 	if (pExc->ExceptionRecord == NULL) {
-		return 0;
+		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	if (pExc->ExceptionRecord->ExceptionCode != EXCEPTION_BREAKPOINT) {
-		return 0;
+		return EXCEPTION_CONTINUE_SEARCH;
 	}
 
 	if (((BYTE *)pExc->ContextRecord->Eip)[0] == 0xCC) { // int 3
 		pExc->ContextRecord->Eip++;
 	}
 
-	return -1;
+	return EXCEPTION_CONTINUE_EXECUTION;
 }
 #endif
 
 char *GetErrorStr(DWORD error_code)
 {
-	DWORD upper_code;
 	int size;
 	char *chr;
 
-	upper_code = (error_code >> 16) & 0x1FFF;
-	if (upper_code == 0x0878) {
-		TraceErrorDS(error_code, sz_error_buf, 256);
-	} else if (upper_code == 0x0876) {
-		TraceErrorDD(error_code, sz_error_buf, 256);
-	} else if (!SErrGetErrorStr(error_code, sz_error_buf, 256)
-	    && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, 0x400, sz_error_buf, 0x100, NULL)) {
+	if (HRESULT_FACILITY(error_code) == _FACDS) {
+		TraceErrorDS(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]));
+	} else if (HRESULT_FACILITY(error_code) == _FACDD) {
+		TraceErrorDD(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]));
+	} else if (!SErrGetErrorStr(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]))
+	    && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]), NULL)) {
 		wsprintf(sz_error_buf, "unknown error 0x%08x", error_code);
 	}
 
@@ -559,7 +557,7 @@ void center_window(HWND hDlg)
 {
 	LONG w, h;
 	int screenW, screenH;
-	struct tagRECT Rect;
+	tagRECT Rect;
 	HDC hdc;
 
 	GetWindowRect(hDlg, &Rect);
@@ -600,10 +598,10 @@ BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM text)
 		TextDlg(hDlg, (char *)text);
 		break;
 	case WM_COMMAND:
-		if (wParam == 1) {
-			EndDialog(hDlg, 1);
-		} else if (wParam == 2) {
-			EndDialog(hDlg, 0);
+		if (wParam == IDOK) {
+			EndDialog(hDlg, TRUE);
+		} else if (wParam == IDCANCEL) {
+			EndDialog(hDlg, FALSE);
 		}
 		break;
 	default:
@@ -669,7 +667,7 @@ BOOL InsertCDDlg()
 
 	ShowCursor(FALSE);
 
-	return nResult == 1;
+	return nResult == IDOK;
 }
 
 void DirErrorDlg(char *error)
