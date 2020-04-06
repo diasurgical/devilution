@@ -218,7 +218,7 @@ void start_game(unsigned int uMsg)
 	ShowProgress(uMsg);
 	gmenu_init_menu();
 	InitLevelCursor();
-	sgnTimeoutCurs = 0;
+	sgnTimeoutCurs = CURSOR_NONE;
 	sgbMouseDown = 0;
 	track_repeat_walk(FALSE);
 }

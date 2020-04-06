@@ -22,7 +22,7 @@ void track_process()
 			sgdwLastWalk = tick;
 			NetSendCmdLoc(TRUE, CMD_WALKXY, cursmx, cursmy);
 			if (!sgbIsScrolling)
-				sgbIsScrolling = 1;
+				sgbIsScrolling = TRUE;
 		}
 	}
 }
@@ -38,7 +38,7 @@ void track_repeat_walk(BOOL rep)
 		sgdwLastWalk = GetTickCount() - 50;
 		NetSendCmdLoc(TRUE, CMD_WALKXY, cursmx, cursmy);
 	} else if (sgbIsScrolling) {
-		sgbIsScrolling = 0;
+		sgbIsScrolling = FALSE;
 	}
 }
 
