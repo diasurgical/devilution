@@ -38,7 +38,7 @@ void tmsg_add(BYTE *pbMsg, BYTE bLen)
 
 void tmsg_start()
 {
-	/// ASSERT: assert(! sgpTimedMsgHead);
+	assert(! sgpTimedMsgHead);
 }
 
 void *tmsg_cleanup()

@@ -394,7 +394,7 @@ void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 		break;
 	default: {
 		const char szUnknown[] = "DDERR unknown 0x%x";
-		/// ASSERT: assert(dwMaxChars >= sizeof(szUnknown) + 10);
+		assert(dwMaxChars >= sizeof(szUnknown) + 10);
 		sprintf(pszBuffer, szUnknown, hError);
 		return;
 	}
@@ -455,7 +455,7 @@ void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 		break;
 	default: {
 		const char szUnknown[] = "DSERR unknown 0x%x";
-		/// ASSERT: assert(dwMaxChars >= sizeof(szUnknown) + 10);
+		assert(dwMaxChars >= sizeof(szUnknown) + 10);
 		sprintf(pszBuffer, szUnknown, hError);
 		return;
 	}

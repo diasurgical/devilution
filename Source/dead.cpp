@@ -69,7 +69,7 @@ void InitDead()
 		}
 	}
 
-	/// ASSERT: assert(nd <= MAXDEAD);
+	assert(nd <= MAXDEAD);
 }
 
 void AddDead(int dx, int dy, char dv, int ddir)
