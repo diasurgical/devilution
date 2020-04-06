@@ -219,7 +219,7 @@ ObjDataStruct AllObjects[99] = {
 	{      2, OFILE_LZSTAND,   0,       0, DTYPE_TOWN,      THEME_NONE,              Q_BETRAYER,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
 	{      1, OFILE_DECAP,     9,       9, DTYPE_CAVES,     THEME_NONE,              -1,                 0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
 	{      2, OFILE_CHEST3,    0,       0, DTYPE_TOWN,      THEME_NONE,              -1,                 0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{     -1, 0,               0,       0, DTYPE_NONE,      THEME_NONE,              -1,                 0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     }
+	{     -1, 0,               0,       0, -1,              THEME_NONE,              -1,                 0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     }
 	// clang-format on
 };
 

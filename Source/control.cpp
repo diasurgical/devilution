@@ -11,8 +11,8 @@ BYTE *pDurIcons;
 BYTE *pChrButtons;
 BOOL drawhpflag;
 BOOL dropGoldFlag;
-int panbtn[8];
-int chrbtn[4];
+BOOL panbtn[8];
+BOOL chrbtn[4];
 BYTE *pMultiBtns;
 BYTE *pPanelButtons;
 BYTE *pChrPanel;
@@ -1345,7 +1345,7 @@ void InitControlPan()
 	lvlbtndown = FALSE;
 	pPanelButtons = LoadFileInMem("CtrlPan\\Panel8bu.CEL", NULL);
 	for (i = 0; i < sizeof(panbtn) / sizeof(panbtn[0]); i++)
-		panbtn[i] = 0;
+		panbtn[i] = FALSE;
 	panbtndown = FALSE;
 	if (gbMaxPlayers == 1)
 		numpanbtns = 6;
@@ -1353,7 +1353,7 @@ void InitControlPan()
 		numpanbtns = 8;
 	pChrButtons = LoadFileInMem("Data\\CharBut.CEL", NULL);
 	for (i = 0; i < sizeof(chrbtn) / sizeof(chrbtn[0]); i++)
-		chrbtn[i] = 0;
+		chrbtn[i] = FALSE;
 	chrbtnactive = FALSE;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", NULL);
 	strcpy(infostr, "");
@@ -1411,7 +1411,7 @@ void DrawCtrlBtns()
 		if (!panbtn[i])
 			DrawPanelBox(PanBtnPos[i][0] - PANEL_LEFT, PanBtnPos[i][1] - (PANEL_TOP - 16), 71, 20, PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y);
 		else
-			CelDraw(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + (PANEL_Y - 334), pPanelButtons, i + 1, 71);
+			CelDraw(PanBtnPos[i][0] + SCREEN_X, PanBtnPos[i][1] + SCREEN_Y + 18, pPanelButtons, i + 1, 71);
 	}
 	if (numpanbtns == 8) {
 		CelDraw(87 + PANEL_X, 122 + PANEL_Y, pMultiBtns, panbtn[6] + 1, 33);
@@ -2217,7 +2217,7 @@ void CheckChrBtns()
 			    && MouseX <= ChrBtnsRect[i].x + ChrBtnsRect[i].w
 			    && MouseY >= ChrBtnsRect[i].y
 			    && MouseY <= ChrBtnsRect[i].y + ChrBtnsRect[i].h) {
-				chrbtn[i] = 1;
+				chrbtn[i] = TRUE;
 				chrbtnactive = TRUE;
 			}
 		}
@@ -2231,7 +2231,7 @@ void ReleaseChrBtns()
 	chrbtnactive = FALSE;
 	for (i = 0; i < 4; ++i) {
 		if (chrbtn[i]) {
-			chrbtn[i] = 0;
+			chrbtn[i] = FALSE;
 			if (MouseX >= ChrBtnsRect[i].x
 			    && MouseX <= ChrBtnsRect[i].x + ChrBtnsRect[i].w
 			    && MouseY >= ChrBtnsRect[i].y
