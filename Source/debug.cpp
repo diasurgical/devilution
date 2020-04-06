@@ -9,9 +9,10 @@
 BOOL update_seed_check = FALSE;
 #endif
 
+#define DEBUGSEEDS 4096
 int seed_index;
-int level_seeds[NUMLEVELS];
-int seed_table[4096];
+int level_seeds[NUMLEVELS + 1];
+int seed_table[DEBUGSEEDS];
 
 BYTE *pSquareCel;
 char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
@@ -33,7 +34,7 @@ void init_seed_desync()
 {
 	int i;
 
-	for (i = 0; i < 4096; i++) {
+	for (i = 0; i < DEBUGSEEDS; i++) {
 		seed_table[i] = -1;
 	}
 
@@ -66,7 +67,7 @@ void seed_desync_index_set()
 
 void seed_desync_check(int seed)
 {
-	if (!update_seed_check || seed_index == 4096 || currlevel == 0) {
+	if (!update_seed_check || seed_index == DEBUGSEEDS || currlevel == 0) {
 		return;
 	}
 
