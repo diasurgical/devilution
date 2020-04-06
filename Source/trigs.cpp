@@ -647,7 +647,7 @@ void CheckTriggers()
 	BOOL abort;
 	char abortflag;
 
-	if (plr[myplr]._pmode)
+	if (plr[myplr]._pmode != PM_STAND)
 		return;
 
 	for (i = 0; i < numtrigs; i++) {

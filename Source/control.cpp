@@ -454,7 +454,7 @@ void DrawSpell()
 		if (tlvl <= 0)
 			st = RSPLTYPE_INVALID;
 	}
-	if (!currlevel && st != RSPLTYPE_INVALID && !spelldata[spl].sTownSpell)
+	if (currlevel == 0 && st != RSPLTYPE_INVALID && !spelldata[spl].sTownSpell)
 		st = RSPLTYPE_INVALID;
 	if (plr[myplr]._pRSpell < 0)
 		st = RSPLTYPE_INVALID;
@@ -1167,7 +1167,7 @@ void UpdateLifeFlask()
 		filled = 0;
 	if (filled != 69)
 		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 96 + PANEL_X, PANEL_Y);
-	if (filled)
+	if (filled != 0)
 		DrawPanelBox(96, 85 - filled, 88, filled, 96 + PANEL_X, PANEL_Y + 69 - filled);
 }
 
@@ -1228,7 +1228,7 @@ void UpdateManaFlask()
 		filled = 69;
 	if (filled != 69)
 		SetFlaskHeight(pManaBuff, 16, 85 - filled, 96 + PANEL_X + 368, PANEL_Y);
-	if (filled)
+	if (filled != 0)
 		DrawPanelBox(96 + 368, 85 - filled, 88, filled, 96 + PANEL_X + 368, PANEL_Y + 69 - filled);
 
 	DrawSpell();
@@ -1451,7 +1451,7 @@ void control_check_btn_press()
 
 void DoAutoMap()
 {
-	if (currlevel || gbMaxPlayers != 1) {
+	if (currlevel != 0 || gbMaxPlayers != 1) {
 		if (!automapflag)
 			StartAutomap();
 		else
@@ -1483,7 +1483,7 @@ void CheckPanelInfo()
 				else
 					strcpy(infostr, "Player attack");
 			}
-			if (PanBtnHotKey[i]) {
+			if (PanBtnHotKey[i] != NULL) {
 				sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[i]);
 				AddPanelString(tempstr, TRUE);
 			}
@@ -1512,7 +1512,7 @@ void CheckPanelInfo()
 				c = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v];
 				if (c < 0)
 					c = 0;
-				if (!c)
+				if (c == 0)
 					sprintf(tempstr, "Spell Level 0 - Unusable");
 				else
 					sprintf(tempstr, "Spell Level %i", c);
@@ -1717,7 +1717,7 @@ void DrawInfoBox()
 				infoclr = COL_WHITE;
 				strcpy(infostr, monster[pcursmonst].mName);
 				ClearPanel();
-				if (monster[pcursmonst]._uniqtype) {
+				if (monster[pcursmonst]._uniqtype != 0) {
 					infoclr = COL_GOLD;
 					PrintUniqueHistory();
 				} else {
@@ -1737,7 +1737,7 @@ void DrawInfoBox()
 			AddPanelString(tempstr, TRUE);
 		}
 	}
-	if (infostr[0] || pnumlines)
+	if (infostr[0] != '\0' || pnumlines != 0)
 		PrintInfo();
 }
 
@@ -1748,7 +1748,7 @@ void PrintInfo()
 	if (!talkflag) {
 		yo = 0;
 		lo = 1;
-		if (infostr[0]) {
+		if (infostr[0] != '\0') {
 			CPrintString(0, infostr, TRUE, pnumlines);
 			yo = 1;
 			lo = 0;

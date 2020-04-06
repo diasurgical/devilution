@@ -24,7 +24,7 @@ void InitDead()
 	nd = 0;
 
 	for (i = 0; i < nummtypes; i++) {
-		if (!mtypes[Monsters[i].mtype]) {
+		if (mtypes[Monsters[i].mtype] == 0) {
 			for (d = 0; d < 8; d++)
 				dead[nd]._deadData[d] = Monsters[i].Anims[MA_DEATH].Data[d];
 			dead[nd]._deadFrame = Monsters[i].Anims[MA_DEATH].Frames;
@@ -57,7 +57,7 @@ void InitDead()
 
 	for (i = 0; i < nummonsters; i++) {
 		mi = monstactive[i];
-		if (monster[mi]._uniqtype) {
+		if (monster[mi]._uniqtype != 0) {
 			for (d = 0; d < 8; d++)
 				dead[nd]._deadData[d] = monster[mi].MType->Anims[MA_DEATH].Data[d];
 			dead[nd]._deadFrame = monster[mi].MType->Anims[MA_DEATH].Frames;
@@ -85,7 +85,7 @@ void SetDead()
 
 	for (i = 0; i < nummonsters; i++) {
 		mi = monstactive[i];
-		if (monster[mi]._uniqtype) {
+		if (monster[mi]._uniqtype != 0) {
 			for (dx = 0; dx < MAXDUNX; dx++) {
 				for (dy = 0; dy < MAXDUNY; dy++) {
 					if ((dDead[dx][dy] & 0x1F) == monster[mi]._udeadval)
