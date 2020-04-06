@@ -41,7 +41,7 @@ void tmsg_start()
 	assert(! sgpTimedMsgHead);
 }
 
-void *tmsg_cleanup()
+void tmsg_cleanup()
 {
 	TMsg *next;
 
@@ -50,5 +50,4 @@ void *tmsg_cleanup()
 		MemFreeDbg(sgpTimedMsgHead);
 		sgpTimedMsgHead = next;
 	}
-	return sgpTimedMsgHead;
 }
