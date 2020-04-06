@@ -573,6 +573,26 @@ void center_window(HWND hDlg)
 	}
 }
 
+static BOOL CALLBACK FuncDlg(HWND hDlg, UINT uMsg,WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg) {
+	case WM_INITDIALOG:
+		TextDlg(hDlg, (char *)lParam);
+		break;
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK) {
+			EndDialog(hDlg, TRUE);
+		} else if (LOWORD(wParam) == IDCANCEL) {
+			EndDialog(hDlg, FALSE);
+		}
+		break;
+	default:
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
 void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	char *size;
@@ -591,27 +611,7 @@ void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line
 	app_fatal(NULL);
 }
 
-BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM text)
-{
-	switch (uMsg) {
-	case WM_INITDIALOG:
-		TextDlg(hDlg, (char *)text);
-		break;
-	case WM_COMMAND:
-		if (wParam == IDOK) {
-			EndDialog(hDlg, TRUE);
-		} else if (wParam == IDCANCEL) {
-			EndDialog(hDlg, FALSE);
-		}
-		break;
-	default:
-		return FALSE;
-	}
-
-	return TRUE;
-}
-
-void TextDlg(HWND hDlg, char *text)
+static void TextDlg(HWND hDlg, char *text)
 {
 	center_window(hDlg);
 
