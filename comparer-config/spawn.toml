@@ -1373,7 +1373,7 @@ addr = 0x40F39C
 size = 0x1F
 
 [[func]]
-name = "random"
+name = "random_"
 addr = 0x40F3BB
 size = 0x22
 

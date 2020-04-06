@@ -160,7 +160,7 @@ void run_game_loop(unsigned int uMsg)
 
 	nthread_ignore_mutex(TRUE);
 	start_game(uMsg);
-	/// ASSERT: assert(ghMainWnd);
+	assert(ghMainWnd);
 	saveProc = SetWindowProc(GM_Game);
 	control_update_life_mana();
 	run_delta_info();
@@ -218,7 +218,7 @@ void run_game_loop(unsigned int uMsg)
 	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);
 	saveProc = SetWindowProc(saveProc);
-	/// ASSERT: assert(saveProc == GM_Game);
+	assert(saveProc == GM_Game);
 	free_game();
 
 	if (cineflag) {
@@ -234,12 +234,12 @@ void start_game(unsigned int uMsg)
 	InitCursor();
 	InitLightTable();
 	LoadDebugGFX();
-	/// ASSERT: assert(ghMainWnd);
+	assert(ghMainWnd);
 	music_stop();
 	ShowProgress(uMsg);
 	gmenu_init_menu();
 	InitLevelCursor();
-	sgnTimeoutCurs = 0;
+	sgnTimeoutCurs = CURSOR_NONE;
 	sgbMouseDown = 0;
 	track_repeat_walk(FALSE);
 }
@@ -827,13 +827,13 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_MOUSEMOVE:
-		MouseX = LOWORD(lParam);
-		MouseY = HIWORD(lParam);
+		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
+		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
 		gmenu_on_mouse_move();
 		return 0;
 	case WM_LBUTTONDOWN:
-		MouseX = LOWORD(lParam);
-		MouseY = HIWORD(lParam);
+		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
+		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
 		if (sgbMouseDown == 0) {
 			sgbMouseDown = 1;
 			SetCapture(hWnd);
@@ -841,8 +841,8 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_LBUTTONUP:
-		MouseX = LOWORD(lParam);
-		MouseY = HIWORD(lParam);
+		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
+		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
 		if (sgbMouseDown == 1) {
 			sgbMouseDown = 0;
 			LeftMouseUp();
@@ -851,8 +851,8 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_RBUTTONDOWN:
-		MouseX = LOWORD(lParam);
-		MouseY = HIWORD(lParam);
+		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
+		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
 		if (sgbMouseDown == 0) {
 			sgbMouseDown = 2;
 			SetCapture(hWnd);
@@ -860,8 +860,8 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		return 0;
 	case WM_RBUTTONUP:
-		MouseX = LOWORD(lParam);
-		MouseY = HIWORD(lParam);
+		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
+		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
 		if (sgbMouseDown == 2) {
 			sgbMouseDown = 0;
 			ReleaseCapture();
@@ -1397,7 +1397,7 @@ void PressChar(int vkey)
 	case 'i':
 		if (!stextflag) {
 			sbookflag = FALSE;
-			invflag = invflag == 0;
+			invflag = !invflag;
 			if (!invflag || chrflag) {
 				if (MouseX < 480 && MouseY < PANEL_TOP) {
 					SetCursorPos(MouseX + 160, MouseY);

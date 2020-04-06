@@ -87,7 +87,7 @@ void gmenu_init_menu()
 #ifdef HELLFIRE
 	LogoAnim_frame = 1;
 #endif
-	sgpCurrentMenu = 0;
+	sgpCurrentMenu = NULL;
 	sgpCurrItem = 0;
 	dword_63447C = 0;
 	sgCurrentMenuIdx = 0;
@@ -105,7 +105,7 @@ void gmenu_init_menu()
 
 BOOL gmenu_is_active()
 {
-	return sgpCurrentMenu != 0;
+	return sgpCurrentMenu != NULL;
 }
 
 void gmenu_set_items(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))

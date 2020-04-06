@@ -28,14 +28,14 @@ int nGoldFrame;
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 BYTE *pTalkBtns;
-int pstrjust[4];
+BOOL pstrjust[4];
 int pnumlines;
 BOOL pinfoflag;
 BOOL talkbtndown[3];
 int pSpell;
 BYTE *pManaBuff;
 char infoclr;
-int sgbPlrTalkTbl; // should be char [4]
+int sgbPlrTalkTbl;
 BYTE *pGBoxBuff;
 BYTE *pSBkBtnCel;
 char tempstr[256];
@@ -152,7 +152,7 @@ const BYTE gbFontTransTbl[256] = {
 	'A',  'A',  'A',  'A',  'A',  'A',  'A',  'C',  'E',  'E',  'E',  'E',  'I',  'I',  'I',  'I',
 	'D',  'N',  'O',  'O',  'O',  'O',  'O',  'X',  '0',  'U',  'U',  'U',  'U',  'Y',  'b',  'B',
 	'a',  'a',  'a',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'e',  'i',  'i',  'i',  'i',
-	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y'
+	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y',
 	// clang-format on
 };
 
@@ -222,14 +222,14 @@ char SpellITbl[MAX_SPELLS] = {
 /** Maps from panel_button_id to the position and dimensions of a panel button. */
 int PanBtnPos[8][5] = {
 	// clang-format off
-	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, 1 }, // char button
-	{ PANEL_LEFT +   9, PANEL_TOP +  35, 71, 19, 0 }, // quests button
-	{ PANEL_LEFT +   9, PANEL_TOP +  75, 71, 19, 1 }, // map button
-	{ PANEL_LEFT +   9, PANEL_TOP + 101, 71, 19, 0 }, // menu button
-	{ PANEL_LEFT + 560, PANEL_TOP +   9, 71, 19, 1 }, // inv button
-	{ PANEL_LEFT + 560, PANEL_TOP +  35, 71, 19, 0 }, // spells button
-	{ PANEL_LEFT +  87, PANEL_TOP +  91, 33, 32, 1 }, // chat button
-	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, 1 }, // friendly fire button
+	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, TRUE  }, // char button
+	{ PANEL_LEFT +   9, PANEL_TOP +  35, 71, 19, FALSE }, // quests button
+	{ PANEL_LEFT +   9, PANEL_TOP +  75, 71, 19, TRUE  }, // map button
+	{ PANEL_LEFT +   9, PANEL_TOP + 101, 71, 19, FALSE }, // menu button
+	{ PANEL_LEFT + 560, PANEL_TOP +   9, 71, 19, TRUE  }, // inv button
+	{ PANEL_LEFT + 560, PANEL_TOP +  35, 71, 19, FALSE }, // spells button
+	{ PANEL_LEFT +  87, PANEL_TOP +  91, 33, 32, TRUE  }, // chat button
+	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, TRUE  }, // friendly fire button
 	// clang-format on
 };
 /** Maps from panel_button_id to hotkey name. */
@@ -267,6 +267,14 @@ int SpellPages[6][7] = {
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
+#define SPLICONLENGTH 56
+#define SPLROWICONLS 10
+#ifdef HELLFIRE
+#define SPLICONLAST 52
+#else
+#define SPLICONLAST 43
+#endif
+
 /**
  * Draw spell cell onto the back buffer.
  * @param xp Back buffer coordinate
@@ -279,10 +287,10 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 {
 	BYTE *dst, *tbl, *end;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	dst = &gpBuffer[xp + PitchTbl[yp]];
-	tbl = SplTransTbl;
+	tbl = &SplTransTbl[0];
 
 #ifdef USE_ASM
 	__asm {
@@ -475,7 +483,7 @@ void DrawSpell()
 		if (tlvl <= 0)
 			st = RSPLTYPE_INVALID;
 	}
-	if (!currlevel && st != RSPLTYPE_INVALID && !spelldata[spl].sTownSpell)
+	if (currlevel == 0 && st != RSPLTYPE_INVALID && !spelldata[spl].sTownSpell)
 		st = RSPLTYPE_INVALID;
 	if (plr[myplr]._pRSpell < 0)
 		st = RSPLTYPE_INVALID;
@@ -493,40 +501,28 @@ void DrawSpellList()
 
 	pSpell = SPL_INVALID;
 	infostr[0] = '\0';
-	x = PANEL_X + 12 + 56 * 10;
+	x = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
 	y = PANEL_Y - 17;
 	ClearPanel();
 	for (i = 0; i < 4; i++) {
 		switch ((spell_type)i) {
 		case RSPLTYPE_SKILL:
 			SetSpellTrans(RSPLTYPE_SKILL);
-			c = 46;
-#ifdef HELLFIRE
-			c += 9;
-#endif
+			c = SPLICONLAST + 3;
 			mask = plr[myplr]._pAblSpells;
 			break;
 		case RSPLTYPE_SPELL:
-			c = 47;
-#ifdef HELLFIRE
-			c += 9;
-#endif
+			c = SPLICONLAST + 4;
 			mask = plr[myplr]._pMemSpells;
 			break;
 		case RSPLTYPE_SCROLL:
 			SetSpellTrans(RSPLTYPE_SCROLL);
-			c = 44;
-#ifdef HELLFIRE
-			c += 9;
-#endif
+			c = SPLICONLAST + 1;
 			mask = plr[myplr]._pScrlSpells;
 			break;
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
-			c = 45;
-#ifdef HELLFIRE
-			c += 9;
-#endif
+			c = SPLICONLAST + 2;
 			mask = plr[myplr]._pISpells;
 			break;
 		}
@@ -545,17 +541,17 @@ void DrawSpellList()
 			}
 			if (currlevel == 0 && !spelldata[j].sTownSpell)
 				SetSpellTrans(RSPLTYPE_INVALID);
-			DrawSpellCel(x, y, pSpellCels, SpellITbl[j], 56);
+			DrawSpellCel(x, y, pSpellCels, SpellITbl[j], SPLICONLENGTH);
 			lx = x - BORDER_LEFT;
-			ly = y - BORDER_TOP - 56;
-			if (MouseX >= lx && MouseX < lx + 56 && MouseY >= ly && MouseY < ly + 56) {
+			ly = y - BORDER_TOP - SPLICONLENGTH;
+			if (MouseX >= lx && MouseX < lx + SPLICONLENGTH && MouseY >= ly && MouseY < ly + SPLICONLENGTH) {
 				pSpell = j;
 				pSplType = i;
 #ifdef HELLFIRE
 				if (plr[myplr]._pClass == PC_MONK && j == SPL_SEARCH)
 					i = RSPLTYPE_SKILL;
 #endif
-				DrawSpellCel(x, y, pSpellCels, c, 56);
+				DrawSpellCel(x, y, pSpellCels, c, SPLICONLENGTH);
 				switch (i) {
 				case RSPLTYPE_SKILL:
 					sprintf(infostr, "%s Skill", spelldata[pSpell].sSkillText);
@@ -606,23 +602,23 @@ void DrawSpellList()
 				}
 				for (t = 0; t < 4; t++) {
 					if (plr[myplr]._pSplHotKey[t] == pSpell && plr[myplr]._pSplTHotKey[t] == pSplType) {
-						DrawSpellCel(x, y, pSpellCels, t + 48, 56);
+						DrawSpellCel(x, y, pSpellCels, t + SPLICONLAST + 5, SPLICONLENGTH);
 						sprintf(tempstr, "Spell Hot Key #F%i", t + 5);
 						AddPanelString(tempstr, TRUE);
 					}
 				}
 			}
-			x -= 56;
-			if (x == PANEL_X + 12 - 56) {
-				y -= 56;
-				x = PANEL_X + 12 + 56 * 10;
+			x -= SPLICONLENGTH;
+			if (x == PANEL_X + 12 - SPLICONLENGTH) {
+				x = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+				y -= SPLICONLENGTH;
 			}
 		}
-		if (mask != 0 && x != PANEL_X + 12 + 56 * 10)
-			x -= 56;
-		if (x == PANEL_X + 12 - 56) {
-			y -= 56;
-			x = PANEL_X + 12 + 56 * 10;
+		if (mask != 0 && x != PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS)
+			x -= SPLICONLENGTH;
+		if (x == PANEL_X + 12 - SPLICONLENGTH) {
+			x = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+			y -= SPLICONLENGTH;
 		}
 	}
 }
@@ -690,7 +686,7 @@ void ToggleSpell(int slot)
  */
 void PrintChar(int nOffset, int nCel, char col)
 {
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -997,7 +993,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 {
 	int nSrcOff, nDstOff;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	nSrcOff = x + PANEL_WIDTH * y;
 	nDstOff = sx + BUFFER_WIDTH * sy;
@@ -1082,7 +1078,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
 	int nSrcOff, nDstOff, w;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	nSrcOff = 88 * min;
 	nDstOff = sx + BUFFER_WIDTH * sy;
@@ -1232,7 +1228,7 @@ void UpdateLifeFlask()
 #endif
 	if (filled != 69)
 		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 96 + PANEL_X, PANEL_Y);
-	if (filled)
+	if (filled != 0)
 		DrawPanelBox(96, 85 - filled, 88, filled, 96 + PANEL_X, PANEL_Y + 69 - filled);
 }
 
@@ -1295,7 +1291,7 @@ void UpdateManaFlask()
 		filled = 69;
 	if (filled != 69)
 		SetFlaskHeight(pManaBuff, 16, 85 - filled, 96 + PANEL_X + 368, PANEL_Y);
-	if (filled)
+	if (filled != 0)
 		DrawPanelBox(96 + 368, 85 - filled, 88, filled, 96 + PANEL_X + 368, PANEL_Y + 69 - filled);
 
 	DrawSpell();
@@ -1436,10 +1432,10 @@ void DoSpeedBook()
 	int xo, yo, X, Y, i, j;
 
 	spselflag = TRUE;
-	xo = PANEL_X + 12 + 56 * 10;
+	xo = PANEL_X + 12 + SPLICONLENGTH * 10;
 	yo = PANEL_Y - 17;
-	X = PANEL_LEFT + 12 + 56 * 10 + 56 / 2;
-	Y = PANEL_TOP - 17 - 56 / 2;
+	X = xo - (BORDER_LEFT - SPLICONLENGTH / 2);
+	Y = yo - (BORDER_TOP + SPLICONLENGTH / 2);
 	if (plr[myplr]._pRSpell != SPL_INVALID) {
 		for (i = 0; i < 4; i++) {
 			switch (i) {
@@ -1460,22 +1456,22 @@ void DoSpeedBook()
 			for (j = 1; j < MAX_SPELLS; j++) {
 				if (spell & spells) {
 					if (j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType) {
-						X = xo - (BORDER_LEFT - 56 / 2);
-						Y = yo - (BORDER_TOP + 56 / 2);
+						X = xo - (BORDER_LEFT - SPLICONLENGTH / 2);
+						Y = yo - (BORDER_TOP + SPLICONLENGTH / 2);
 					}
-					xo -= 56;
-					if (xo == PANEL_X + 12 - 56) {
-						xo = PANEL_X + 12 + 56 * 10;
-						yo -= 56;
+					xo -= SPLICONLENGTH;
+					if (xo == PANEL_X + 12 - SPLICONLENGTH) {
+						xo = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+						yo -= SPLICONLENGTH;
 					}
 				}
 				spell <<= (__int64)1;
 			}
-			if (spells && xo != PANEL_X + 12 + 56 * 10)
-				xo -= 56;
-			if (xo == PANEL_X + 12 - 56) {
-				xo = PANEL_X + 12 + 56 * 10;
-				yo -= 56;
+			if (spells && xo != PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS)
+				xo -= SPLICONLENGTH;
+			if (xo == PANEL_X + 12 - SPLICONLENGTH) {
+				xo = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+				yo -= SPLICONLENGTH;
 			}
 		}
 	}
@@ -1493,7 +1489,7 @@ void DoPanBtn()
 	for (i = 0; i < numpanbtns; i++) {
 		if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
 			if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
-				panbtn[i] = 1;
+				panbtn[i] = TRUE;
 				drawbtnflag = TRUE;
 				panbtndown = TRUE;
 			}
@@ -1507,7 +1503,7 @@ void DoPanBtn()
 
 void control_set_button_down(int btn_id)
 {
-	panbtn[btn_id] = 1;
+	panbtn[btn_id] = TRUE;
 	drawbtnflag = TRUE;
 	panbtndown = TRUE;
 }
@@ -1530,7 +1526,7 @@ void control_check_btn_press()
 
 void DoAutoMap()
 {
-	if (currlevel || gbMaxPlayers != 1) {
+	if (currlevel != 0 || gbMaxPlayers != 1) {
 		if (!automapflag)
 			StartAutomap();
 		else
@@ -1562,7 +1558,7 @@ void CheckPanelInfo()
 				else
 					strcpy(infostr, "Player attack");
 			}
-			if (PanBtnHotKey[i]) {
+			if (PanBtnHotKey[i] != NULL) {
 				sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[i]);
 				AddPanelString(tempstr, TRUE);
 			}
@@ -1591,7 +1587,7 @@ void CheckPanelInfo()
 				c = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v];
 				if (c < 0)
 					c = 0;
-				if (!c)
+				if (c == 0)
 					sprintf(tempstr, "Spell Level 0 - Unusable");
 				else
 					sprintf(tempstr, "Spell Level %i", c);
@@ -1644,9 +1640,9 @@ void CheckPanelInfo()
 void CheckBtnUp()
 {
 	int i;
-	char gamemenuOff;
+	BOOLEAN gamemenuOff;
 
-	gamemenuOff = 1;
+	gamemenuOff = TRUE;
 	drawbtnflag = TRUE;
 	panbtndown = FALSE;
 
@@ -1655,7 +1651,7 @@ void CheckBtnUp()
 			continue;
 		}
 
-		panbtn[i] = 0;
+		panbtn[i] = FALSE;
 
 		if (MouseX < PanBtnPos[i][0]
 		    || MouseX > PanBtnPos[i][0] + PanBtnPos[i][2]
@@ -1682,11 +1678,11 @@ void CheckBtnUp()
 		case PANBTN_MAINMENU:
 			qtextflag = FALSE;
 			gamemenu_handle_previous();
-			gamemenuOff = 0;
+			gamemenuOff = FALSE;
 			break;
 		case PANBTN_INVENTORY:
 			sbookflag = FALSE;
-			invflag = invflag == 0;
+			invflag = !invflag;
 			if (dropGoldFlag) {
 				dropGoldFlag = FALSE;
 				dropGoldValue = 0;
@@ -1707,7 +1703,7 @@ void CheckBtnUp()
 				control_type_message();
 			break;
 		case PANBTN_FRIENDLY:
-			FriendlyMode = FriendlyMode == 0;
+			FriendlyMode = !FriendlyMode;
 			break;
 		}
 	}
@@ -1771,7 +1767,7 @@ void DrawInfoBox()
 	} else if (pcurs >= CURSOR_FIRSTITEM) {
 		if (plr[myplr].HoldItem._itype == ITYPE_GOLD) {
 			nGold = plr[myplr].HoldItem._ivalue;
-			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(plr[myplr].HoldItem._ivalue));
+			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(nGold));
 		} else if (!plr[myplr].HoldItem._iStatFlag) {
 			ClearPanel();
 			AddPanelString("Requirements not met", TRUE);
@@ -1796,7 +1792,7 @@ void DrawInfoBox()
 				infoclr = COL_WHITE;
 				strcpy(infostr, monster[pcursmonst].mName);
 				ClearPanel();
-				if (monster[pcursmonst]._uniqtype) {
+				if (monster[pcursmonst]._uniqtype != 0) {
 					infoclr = COL_GOLD;
 					PrintUniqueHistory();
 				} else {
@@ -1820,7 +1816,7 @@ void DrawInfoBox()
 			AddPanelString(tempstr, TRUE);
 		}
 	}
-	if (infostr[0] || pnumlines)
+	if (infostr[0] != '\0' || pnumlines != 0)
 		PrintInfo();
 }
 
@@ -1831,7 +1827,7 @@ void PrintInfo()
 	if (!talkflag) {
 		yo = 0;
 		lo = 1;
-		if (infostr[0]) {
+		if (infostr[0] != '\0') {
 			CPrintString(0, infostr, TRUE, pnumlines);
 			yo = 1;
 			lo = 0;
@@ -1902,7 +1898,7 @@ void DrawChr()
 		ADD_PlrStringXY(168, 32, 299, "Warrior", COL_WHITE);
 #ifndef SPAWN
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
-		ADD_PlrStringXY(168, 32, 299, "Rogue", COL_WHITE); /* should use ClassStrTbl ? */
+		ADD_PlrStringXY(168, 32, 299, "Rogue", COL_WHITE);
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		ADD_PlrStringXY(168, 32, 299, "Sorceror", COL_WHITE);
 #endif
@@ -1976,7 +1972,7 @@ void DrawChr()
 		MY_PlrStringXY(258, 239, 301, chrstr, col, 0);
 
 	col = plr[myplr]._pMagResist == 0 ? COL_WHITE : COL_BLUE;
-	if (plr[myplr]._pMagResist < 75) {
+	if (plr[myplr]._pMagResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pMagResist);
 	} else {
 		col = COL_GOLD;
@@ -1985,7 +1981,7 @@ void DrawChr()
 	ADD_PlrStringXY(257, 276, 300, chrstr, col);
 
 	col = plr[myplr]._pFireResist == 0 ? COL_WHITE : COL_BLUE;
-	if (plr[myplr]._pFireResist < 75) {
+	if (plr[myplr]._pFireResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pFireResist);
 	} else {
 		col = COL_GOLD;
@@ -1994,7 +1990,7 @@ void DrawChr()
 	ADD_PlrStringXY(257, 304, 300, chrstr, col);
 
 	col = plr[myplr]._pLghtResist == 0 ? COL_WHITE : COL_BLUE;
-	if (plr[myplr]._pLghtResist < 75) {
+	if (plr[myplr]._pLghtResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pLghtResist);
 	} else {
 		col = COL_GOLD;
@@ -2269,7 +2265,7 @@ void DrawDurIcon()
 	int x1, x2, x3, x4;
 
 	if (!chrflag && !questlog || !invflag && !sbookflag) {
-		x1 = 592 + PANEL_X;
+		x1 = 272 + RIGHT_PANEL_X;
 		if (invflag || sbookflag)
 			x1 = 272 + PANEL_X;
 		p = &plr[myplr];
@@ -2321,7 +2317,7 @@ void RedBack()
 
 	idx = light4flag ? 1536 : 4608;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	if (leveltype != DTYPE_HELL) {
@@ -2450,11 +2446,7 @@ void DrawSpellBook()
 			DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, SpellITbl[sn], 37);
 			if (sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
-#ifdef HELLFIRE
-				DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, 52, 37);
-#else
-				DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, 43, 37);
-#endif
+				DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, SPLICONLAST, 37);
 			}
 			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
 			switch (GetSBookTrans(sn, FALSE)) {

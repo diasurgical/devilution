@@ -24,9 +24,7 @@ int orgseed;
 int sgnWidth;
 /** Current game seed */
 int sglGameSeed;
-#ifdef __cplusplus
 static CCritSect sgMemCrit;
-#endif
 int SeedCount;
 BOOL gbNotInView; // valid - if x/y are in bounds
 
@@ -2599,13 +2597,9 @@ BYTE *DiabloAllocPtr(DWORD dwBytes)
 {
 	BYTE *buf;
 
-#ifdef __cplusplus
 	sgMemCrit.Enter();
-#endif
 	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
-#ifdef __cplusplus
 	sgMemCrit.Leave();
-#endif
 
 	if (buf == NULL) {
 		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
@@ -2621,13 +2615,9 @@ BYTE *DiabloAllocPtr(DWORD dwBytes)
 void mem_free_dbg(void *p)
 {
 	if (p) {
-#ifdef __cplusplus
 		sgMemCrit.Enter();
-#endif
 		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
-#ifdef __cplusplus
 		sgMemCrit.Leave();
-#endif
 	}
 }
 

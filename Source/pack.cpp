@@ -70,8 +70,8 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	for (i = 0; i < MAX_SPELLS; i++)
 		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
 
-	pki = pPack->InvBody;
-	pi = pPlayer->InvBody;
+	pki = &pPack->InvBody[0];
+	pi = &pPlayer->InvBody[0];
 
 	for (i = 0; i < NUM_INVLOC; i++) {
 		PackItem(pki, pi);
@@ -79,8 +79,8 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 		pi++;
 	}
 
-	pki = pPack->InvList;
-	pi = pPlayer->InvList;
+	pki = &pPack->InvList[0];
+	pi = &pPlayer->InvList[0];
 
 	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 		PackItem(pki, pi);
@@ -92,8 +92,8 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 		pPack->InvGrid[i] = pPlayer->InvGrid[i];
 
 	pPack->_pNumInv = pPlayer->_pNumInv;
-	pki = pPack->SpdList;
-	pi = pPlayer->SpdList;
+	pki = &pPack->SpdList[0];
+	pi = &pPlayer->SpdList[0];
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
 		PackItem(pki, pi);
@@ -221,8 +221,8 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	for (i = 0; i < MAX_SPELLS; i++)
 		pPlayer->_pSplLvl[i] = pPack->pSplLvl[i];
 
-	pki = pPack->InvBody;
-	pi = pPlayer->InvBody;
+	pki = &pPack->InvBody[0];
+	pi = &pPlayer->InvBody[0];
 
 	for (i = 0; i < NUM_INVLOC; i++) {
 		UnPackItem(pki, pi);
@@ -230,8 +230,8 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 		pi++;
 	}
 
-	pki = pPack->InvList;
-	pi = pPlayer->InvList;
+	pki = &pPack->InvList[0];
+	pi = &pPlayer->InvList[0];
 
 	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 		UnPackItem(pki, pi);
@@ -245,8 +245,8 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->_pNumInv = pPack->_pNumInv;
 	VerifyGoldSeeds(pPlayer);
 
-	pki = pPack->SpdList;
-	pi = pPlayer->SpdList;
+	pki = &pPack->SpdList[0];
+	pi = &pPlayer->SpdList[0];
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
 		UnPackItem(pki, pi);

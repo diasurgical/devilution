@@ -38,10 +38,10 @@ void tmsg_add(BYTE *pbMsg, BYTE bLen)
 
 void tmsg_start()
 {
-	/// ASSERT: assert(! sgpTimedMsgHead);
+	assert(! sgpTimedMsgHead);
 }
 
-void *tmsg_cleanup()
+void tmsg_cleanup()
 {
 	TMsg *next;
 
@@ -50,5 +50,4 @@ void *tmsg_cleanup()
 		MemFreeDbg(sgpTimedMsgHead);
 		sgpTimedMsgHead = next;
 	}
-	return sgpTimedMsgHead;
 }

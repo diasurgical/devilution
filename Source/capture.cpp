@@ -35,7 +35,7 @@ static BOOL CaptureHdr(HANDLE hFile, short width, short height)
 static BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	DWORD NumberOfBytesWritten;
-	BYTE pcx_palette[769];
+	BYTE pcx_palette[1 + 256 * 3];
 	int i;
 
 	pcx_palette[0] = 12;
@@ -45,7 +45,7 @@ static BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 		pcx_palette[1 + 3 * i + 2] = palette[i].peBlue;
 	}
 
-	return WriteFile(hFile, pcx_palette, 769, &NumberOfBytesWritten, 0) && NumberOfBytesWritten == 769;
+	return WriteFile(hFile, pcx_palette, sizeof(pcx_palette), &NumberOfBytesWritten, NULL) && NumberOfBytesWritten == sizeof(pcx_palette);
 }
 
 static BYTE *CaptureEnc(BYTE *src, BYTE *dst, int width)
@@ -93,7 +93,7 @@ static BOOL CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE 
 		pBufferEnd = CaptureEnc(pixels, pBuffer, width);
 		pixels += stride;
 		writeSize = pBufferEnd - pBuffer;
-		if (!(WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, 0) && lpNumBytes == writeSize)) {
+		if (!(WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, NULL) && lpNumBytes == writeSize)) {
 			return FALSE;
 		}
 	}
@@ -141,11 +141,7 @@ static void RedPalette(PALETTEENTRY *pal)
 		red[i].peFlags = 0;
 	}
 
-#ifdef __cplusplus
 	lpDDPalette->SetEntries(0, 0, 256, red);
-#else
-	lpDDPalette->lpVtbl->SetEntries(lpDDPalette, 0, 0, 256, red);
-#endif
 }
 
 void CaptureScreen()
@@ -158,11 +154,7 @@ void CaptureScreen()
 	hObject = CaptureFile(FileName);
 	if (hObject != INVALID_HANDLE_VALUE) {
 		DrawAndBlit();
-#ifdef __cplusplus
 		lpDDPalette->GetEntries(0, 0, 256, palette);
-#else
-		lpDDPalette->lpVtbl->GetEntries(lpDDPalette, 0, 0, 256, palette);
-#endif
 		RedPalette(palette);
 
 		lock_buf(2);
@@ -180,10 +172,6 @@ void CaptureScreen()
 			DeleteFile(FileName);
 
 		Sleep(300);
-#ifdef __cplusplus
 		lpDDPalette->SetEntries(0, 0, 256, palette);
-#else
-		lpDDPalette->lpVtbl->SetEntries(lpDDPalette, 0, 0, 256, palette);
-#endif
 	}
 }
