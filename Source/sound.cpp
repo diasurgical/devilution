@@ -220,11 +220,10 @@ void sound_CreateSoundBuffer(TSnd *sound_file)
 	HRESULT error_code;
 	memset(&DSB, 0, sizeof(DSBUFFERDESC));
 
-	DSB.dwBufferBytes = sound_file->chunk.dwSize;
-	DSB.lpwfxFormat = &sound_file->fmt;
 	DSB.dwSize = sizeof(DSBUFFERDESC);
 	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
-
+	DSB.dwBufferBytes = sound_file->chunk.dwSize;
+	DSB.lpwfxFormat = &sound_file->fmt;
 	error_code = sglpDS->CreateSoundBuffer(&DSB, &sound_file->DSB, NULL);
 	if (error_code != ERROR_SUCCESS)
 		DSErrMsg(error_code, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");

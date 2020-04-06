@@ -12,11 +12,8 @@ int stonendx;
 
 void InitDead()
 {
+	int i, d, nd, mi;
 	int mtypes[MAXMONSTERS];
-	int i;
-	int nd;
-	int mi;
-	int d;
 
 	for (i = 0; i < MAXMONSTERS; i++)
 		mtypes[i] = 0;
@@ -79,8 +76,7 @@ void AddDead(int dx, int dy, char dv, int ddir)
 
 void SetDead()
 {
-	int mi;
-	int i;
+	int i, mi;
 	int dx, dy;
 
 	for (i = 0; i < nummonsters; i++) {
