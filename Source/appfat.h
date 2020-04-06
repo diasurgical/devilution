@@ -29,7 +29,6 @@ void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path);
 void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path);
 void center_window(HWND hDlg);
 void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr);
-BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM text);
 void TextDlg(HWND hDlg, char *text);
 void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr);
 void FileErrDlg(const char *error);
