@@ -261,7 +261,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 	assert(gpBuffer);
 
 	dst = &gpBuffer[xp + PitchTbl[yp]];
-	tbl = SplTransTbl;
+	tbl = &SplTransTbl[0];
 
 #ifdef USE_ASM
 	__asm {
