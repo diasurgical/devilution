@@ -190,7 +190,7 @@ TSnd *sound_file_load(char *path)
 	pSnd = (TSnd *)DiabloAllocPtr(sizeof(TSnd));
 	memset(pSnd, 0, sizeof(TSnd));
 	pSnd->sound_path = path;
-	pSnd->start_tc = GetTickCount() - 81;
+	pSnd->start_tc = GetTickCount() - 80 - 1;
 
 	wave_file = LoadWaveFile(file, &pSnd->fmt, &pSnd->chunk);
 	if (!wave_file)

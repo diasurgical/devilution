@@ -59,7 +59,7 @@ void InitTownTriggers()
 		numtrigs = 4;
 	} else {
 #endif
-		for (i = 0; i < 3; i++) {
+		for (i = 0; i < MAX_PLRS - 1; i++) {
 			townwarps[i] = FALSE;
 		}
 #ifndef SPAWN
