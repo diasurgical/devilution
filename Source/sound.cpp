@@ -161,7 +161,7 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	rv = FALSE;
 
 	WOpenFile(sound_file->sound_path, &file, FALSE);
-	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, 0);
+	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, FILE_BEGIN);
 
 	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
 		WReadFile(file, buf1, size1);
