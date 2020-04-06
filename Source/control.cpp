@@ -242,6 +242,10 @@ int SpellPages[6][7] = {
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
+#define SPLICONLENGTH 56
+#define SPLROWICONLS 10
+#define SPLICONLAST 43
+
 /**
  * Draw spell cell onto the back buffer.
  * @param xp Back buffer coordinate
@@ -456,9 +460,9 @@ void DrawSpell()
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
 	if (spl != SPL_INVALID)
-		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, SpellITbl[spl], 56);
+		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, SpellITbl[spl], SPLICONLENGTH);
 	else
-		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, 27, 56);
+		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, 27, SPLICONLENGTH);
 }
 
 void DrawSpellList()
@@ -468,28 +472,28 @@ void DrawSpellList()
 
 	pSpell = SPL_INVALID;
 	infostr[0] = '\0';
-	x = PANEL_X + 12 + 56 * 10;
+	x = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
 	y = PANEL_Y - 17;
 	ClearPanel();
 	for (i = 0; i < 4; i++) {
 		switch ((spell_type)i) {
 		case RSPLTYPE_SKILL:
 			SetSpellTrans(RSPLTYPE_SKILL);
-			c = 46;
+			c = SPLICONLAST + 3;
 			mask = plr[myplr]._pAblSpells;
 			break;
 		case RSPLTYPE_SPELL:
-			c = 47;
+			c = SPLICONLAST + 4;
 			mask = plr[myplr]._pMemSpells;
 			break;
 		case RSPLTYPE_SCROLL:
 			SetSpellTrans(RSPLTYPE_SCROLL);
-			c = 44;
+			c = SPLICONLAST + 1;
 			mask = plr[myplr]._pScrlSpells;
 			break;
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
-			c = 45;
+			c = SPLICONLAST + 2;
 			mask = plr[myplr]._pISpells;
 			break;
 		}
@@ -508,13 +512,13 @@ void DrawSpellList()
 			}
 			if (currlevel == 0 && !spelldata[j].sTownSpell)
 				SetSpellTrans(RSPLTYPE_INVALID);
-			DrawSpellCel(x, y, pSpellCels, SpellITbl[j], 56);
+			DrawSpellCel(x, y, pSpellCels, SpellITbl[j], SPLICONLENGTH);
 			lx = x - BORDER_LEFT;
-			ly = y - BORDER_TOP - 56;
-			if (MouseX >= lx && MouseX < lx + 56 && MouseY >= ly && MouseY < ly + 56) {
+			ly = y - BORDER_TOP - SPLICONLENGTH;
+			if (MouseX >= lx && MouseX < lx + SPLICONLENGTH && MouseY >= ly && MouseY < ly + SPLICONLENGTH) {
 				pSpell = j;
 				pSplType = i;
-				DrawSpellCel(x, y, pSpellCels, c, 56);
+				DrawSpellCel(x, y, pSpellCels, c, SPLICONLENGTH);
 				switch (i) {
 				case RSPLTYPE_SKILL:
 					sprintf(infostr, "%s Skill", spelldata[pSpell].sSkillText);
@@ -565,23 +569,23 @@ void DrawSpellList()
 				}
 				for (t = 0; t < 4; t++) {
 					if (plr[myplr]._pSplHotKey[t] == pSpell && plr[myplr]._pSplTHotKey[t] == pSplType) {
-						DrawSpellCel(x, y, pSpellCels, t + 48, 56);
+						DrawSpellCel(x, y, pSpellCels, t + SPLICONLAST + 5, SPLICONLENGTH);
 						sprintf(tempstr, "Spell Hot Key #F%i", t + 5);
 						AddPanelString(tempstr, TRUE);
 					}
 				}
 			}
-			x -= 56;
-			if (x == PANEL_X + 12 - 56) {
-				y -= 56;
-				x = PANEL_X + 12 + 56 * 10;
+			x -= SPLICONLENGTH;
+			if (x == PANEL_X + 12 - SPLICONLENGTH) {
+				x = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+				y -= SPLICONLENGTH;
 			}
 		}
-		if (mask != 0 && x != PANEL_X + 12 + 56 * 10)
-			x -= 56;
-		if (x == PANEL_X + 12 - 56) {
-			y -= 56;
-			x = PANEL_X + 12 + 56 * 10;
+		if (mask != 0 && x != PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS)
+			x -= SPLICONLENGTH;
+		if (x == PANEL_X + 12 - SPLICONLENGTH) {
+			x = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+			y -= SPLICONLENGTH;
 		}
 	}
 }
@@ -1353,10 +1357,10 @@ void DoSpeedBook()
 	int xo, yo, X, Y, i, j;
 
 	spselflag = TRUE;
-	xo = PANEL_X + 12 + 56 * 10;
+	xo = PANEL_X + 12 + SPLICONLENGTH * 10;
 	yo = PANEL_Y - 17;
-	X = PANEL_LEFT + 12 + 56 * 10 + 56 / 2;
-	Y = PANEL_TOP - 17 - 56 / 2;
+	X = xo - (BORDER_LEFT - SPLICONLENGTH / 2);
+	Y = yo - (BORDER_TOP + SPLICONLENGTH / 2);
 	if (plr[myplr]._pRSpell != SPL_INVALID) {
 		for (i = 0; i < 4; i++) {
 			switch (i) {
@@ -1377,22 +1381,22 @@ void DoSpeedBook()
 			for (j = 1; j < MAX_SPELLS; j++) {
 				if (spell & spells) {
 					if (j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType) {
-						X = xo - (BORDER_LEFT - 56 / 2);
-						Y = yo - (BORDER_TOP + 56 / 2);
+						X = xo - (BORDER_LEFT - SPLICONLENGTH / 2);
+						Y = yo - (BORDER_TOP + SPLICONLENGTH / 2);
 					}
-					xo -= 56;
-					if (xo == PANEL_X + 12 - 56) {
-						xo = PANEL_X + 12 + 56 * 10;
-						yo -= 56;
+					xo -= SPLICONLENGTH;
+					if (xo == PANEL_X + 12 - SPLICONLENGTH) {
+						xo = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+						yo -= SPLICONLENGTH;
 					}
 				}
 				spell <<= (__int64)1;
 			}
-			if (spells && xo != PANEL_X + 12 + 56 * 10)
-				xo -= 56;
-			if (xo == PANEL_X + 12 - 56) {
-				xo = PANEL_X + 12 + 56 * 10;
-				yo -= 56;
+			if (spells && xo != PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS)
+				xo -= SPLICONLENGTH;
+			if (xo == PANEL_X + 12 - SPLICONLENGTH) {
+				xo = PANEL_X + 12 + SPLICONLENGTH * SPLROWICONLS;
+				yo -= SPLICONLENGTH;
 			}
 		}
 	}
@@ -1688,7 +1692,7 @@ void DrawInfoBox()
 	} else if (pcurs >= CURSOR_FIRSTITEM) {
 		if (plr[myplr].HoldItem._itype == ITYPE_GOLD) {
 			nGold = plr[myplr].HoldItem._ivalue;
-			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(plr[myplr].HoldItem._ivalue));
+			sprintf(infostr, "%i gold %s", nGold, get_pieces_str(nGold));
 		} else if (!plr[myplr].HoldItem._iStatFlag) {
 			ClearPanel();
 			AddPanelString("Requirements not met", TRUE);
@@ -2350,7 +2354,7 @@ void DrawSpellBook()
 			DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, SpellITbl[sn], 37);
 			if (sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
-				DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, 43, 37);
+				DrawSpellCel(RIGHT_PANEL + 75, yp, pSBkIconCels, SPLICONLAST, 37);
 			}
 			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
 			switch (GetSBookTrans(sn, FALSE)) {
