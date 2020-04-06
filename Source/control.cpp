@@ -201,14 +201,14 @@ char SpellITbl[MAX_SPELLS] = {
 /** Maps from panel_button_id to the position and dimensions of a panel button. */
 int PanBtnPos[8][5] = {
 	// clang-format off
-	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, 1 }, // char button
-	{ PANEL_LEFT +   9, PANEL_TOP +  35, 71, 19, 0 }, // quests button
-	{ PANEL_LEFT +   9, PANEL_TOP +  75, 71, 19, 1 }, // map button
-	{ PANEL_LEFT +   9, PANEL_TOP + 101, 71, 19, 0 }, // menu button
-	{ PANEL_LEFT + 560, PANEL_TOP +   9, 71, 19, 1 }, // inv button
-	{ PANEL_LEFT + 560, PANEL_TOP +  35, 71, 19, 0 }, // spells button
-	{ PANEL_LEFT +  87, PANEL_TOP +  91, 33, 32, 1 }, // chat button
-	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, 1 }, // friendly fire button
+	{ PANEL_LEFT +   9, PANEL_TOP +   9, 71, 19, TRUE  }, // char button
+	{ PANEL_LEFT +   9, PANEL_TOP +  35, 71, 19, FALSE }, // quests button
+	{ PANEL_LEFT +   9, PANEL_TOP +  75, 71, 19, TRUE  }, // map button
+	{ PANEL_LEFT +   9, PANEL_TOP + 101, 71, 19, FALSE }, // menu button
+	{ PANEL_LEFT + 560, PANEL_TOP +   9, 71, 19, TRUE  }, // inv button
+	{ PANEL_LEFT + 560, PANEL_TOP +  35, 71, 19, FALSE }, // spells button
+	{ PANEL_LEFT +  87, PANEL_TOP +  91, 33, 32, TRUE  }, // chat button
+	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, TRUE  }, // friendly fire button
 	// clang-format on
 };
 /** Maps from panel_button_id to hotkey name. */
@@ -1414,7 +1414,7 @@ void DoPanBtn()
 	for (i = 0; i < numpanbtns; i++) {
 		if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
 			if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
-				panbtn[i] = 1;
+				panbtn[i] = TRUE;
 				drawbtnflag = TRUE;
 				panbtndown = TRUE;
 			}
@@ -1428,7 +1428,7 @@ void DoPanBtn()
 
 void control_set_button_down(int btn_id)
 {
-	panbtn[btn_id] = 1;
+	panbtn[btn_id] = TRUE;
 	drawbtnflag = TRUE;
 	panbtndown = TRUE;
 }
@@ -1565,9 +1565,9 @@ void CheckPanelInfo()
 void CheckBtnUp()
 {
 	int i;
-	char gamemenuOff;
+	BOOLEAN gamemenuOff;
 
-	gamemenuOff = 1;
+	gamemenuOff = TRUE;
 	drawbtnflag = TRUE;
 	panbtndown = FALSE;
 
@@ -1576,7 +1576,7 @@ void CheckBtnUp()
 			continue;
 		}
 
-		panbtn[i] = 0;
+		panbtn[i] = FALSE;
 
 		if (MouseX < PanBtnPos[i][0]
 		    || MouseX > PanBtnPos[i][0] + PanBtnPos[i][2]
@@ -1603,7 +1603,7 @@ void CheckBtnUp()
 		case PANBTN_MAINMENU:
 			qtextflag = FALSE;
 			gamemenu_handle_previous();
-			gamemenuOff = 0;
+			gamemenuOff = FALSE;
 			break;
 		case PANBTN_INVENTORY:
 			sbookflag = FALSE;
