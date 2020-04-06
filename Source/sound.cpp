@@ -88,7 +88,7 @@ void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 	}
 
 	DSB = pSnd->DSB;
-	if (!DSB) {
+	if (DSB == NULL) {
 		return;
 	}
 
@@ -287,7 +287,7 @@ void sound_create_primary_buffer(HANDLE music_track)
 	DSBUFFERDESC dsbuf;
 	WAVEFORMATEX format;
 
-	if (!music_track) {
+	if (music_track == NULL) {
 		memset(&dsbuf, 0, sizeof(DSBUFFERDESC));
 		dsbuf.dwSize = sizeof(DSBUFFERDESC);
 		dsbuf.dwFlags = DSBCAPS_PRIMARYBUFFER;

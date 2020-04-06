@@ -86,9 +86,9 @@ void CheckDungeonClear()
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			if (dMonster[i][j])
+			if (dMonster[i][j] != 0)
 				app_fatal("Monsters not cleared");
-			if (dPlayer[i][j])
+			if (dPlayer[i][j] != 0)
 				app_fatal("Players not cleared");
 
 			dMonsDbg[currlevel][i][j] = dFlags[i][j] & BFLAG_VISIBLE;
@@ -264,7 +264,7 @@ void GetDebugMonster()
 	mi1 = pcursmonst;
 	if (mi1 == -1) {
 		mi2 = dMonster[cursmx][cursmy];
-		if (mi2) {
+		if (mi2 != 0) {
 			mi1 = mi2 - 1;
 			if (mi2 <= 0)
 				mi1 = -1 - mi2;
@@ -279,7 +279,8 @@ void NextDebugMonster()
 {
 	char dstr[128];
 
-	if (dbgmon++ == MAXMONSTERS)
+	dbgmon++;
+	if (dbgmon == MAXMONSTERS)
 		dbgmon = 0;
 
 	sprintf(dstr, "Current debug monster = %i", dbgmon);
