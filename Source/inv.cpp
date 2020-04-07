@@ -2013,7 +2013,7 @@ void InvGetItem(int pnum, int ii)
 
 	if (dItem[item[ii]._ix][item[ii]._iy]) {
 		if (myplr == pnum && pcurs >= CURSOR_FIRSTITEM)
-			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr].WorldX, plr[myplr].WorldY);
+			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr]._px, plr[myplr]._py);
 #ifdef HELLFIRE
 		if (item[ii]._iUid != 0)
 #endif
@@ -2341,22 +2341,22 @@ BOOL TryInvPut()
 	if (numitems >= 127)
 		return FALSE;
 
-	dir = GetDirection(plr[myplr].WorldX, plr[myplr].WorldY, cursmx, cursmy);
-	if (CanPut(plr[myplr].WorldX + offset_x[dir], plr[myplr].WorldY + offset_y[dir])) {
+	dir = GetDirection(plr[myplr]._px, plr[myplr]._py, cursmx, cursmy);
+	if (CanPut(plr[myplr]._px + offset_x[dir], plr[myplr]._py + offset_y[dir])) {
 		return TRUE;
 	}
 
 	dir = (dir - 1) & 7;
-	if (CanPut(plr[myplr].WorldX + offset_x[dir], plr[myplr].WorldY + offset_y[dir])) {
+	if (CanPut(plr[myplr]._px + offset_x[dir], plr[myplr]._py + offset_y[dir])) {
 		return TRUE;
 	}
 
 	dir = (dir + 2) & 7;
-	if (CanPut(plr[myplr].WorldX + offset_x[dir], plr[myplr].WorldY + offset_y[dir])) {
+	if (CanPut(plr[myplr]._px + offset_x[dir], plr[myplr]._py + offset_y[dir])) {
 		return TRUE;
 	}
 
-	return CanPut(plr[myplr].WorldX, plr[myplr].WorldY);
+	return CanPut(plr[myplr]._px, plr[myplr]._py);
 }
 
 void DrawInvMsg(char *msg)
@@ -2386,28 +2386,28 @@ int InvPutItem(int pnum, int x, int y)
 		SyncGetItem(x, y, plr[pnum].HoldItem.IDidx, plr[pnum].HoldItem._iCreateInfo, plr[pnum].HoldItem._iSeed);
 	}
 
-	d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, x, y);
-	xx = x - plr[pnum].WorldX;
-	yy = y - plr[pnum].WorldY;
+	d = GetDirection(plr[pnum]._px, plr[pnum]._py, x, y);
+	xx = x - plr[pnum]._px;
+	yy = y - plr[pnum]._py;
 	if (abs(xx) > 1 || abs(yy) > 1) {
-		x = plr[pnum].WorldX + offset_x[d];
-		y = plr[pnum].WorldY + offset_y[d];
+		x = plr[pnum]._px + offset_x[d];
+		y = plr[pnum]._py + offset_y[d];
 	}
 	if (!CanPut(x, y)) {
 		d = (d - 1) & 7;
-		x = plr[pnum].WorldX + offset_x[d];
-		y = plr[pnum].WorldY + offset_y[d];
+		x = plr[pnum]._px + offset_x[d];
+		y = plr[pnum]._py + offset_y[d];
 		if (!CanPut(x, y)) {
 			d = (d + 2) & 7;
-			x = plr[pnum].WorldX + offset_x[d];
-			y = plr[pnum].WorldY + offset_y[d];
+			x = plr[pnum]._px + offset_x[d];
+			y = plr[pnum]._py + offset_y[d];
 			if (!CanPut(x, y)) {
 				done = FALSE;
 				for (l = 1; l < 50 && !done; l++) {
 					for (j = -l; j <= l && !done; j++) {
-						yp = j + plr[pnum].WorldY;
+						yp = j + plr[pnum]._py;
 						for (i = -l; i <= l && !done; i++) {
-							xp = i + plr[pnum].WorldX;
+							xp = i + plr[pnum]._px;
 							if (CanPut(xp, yp)) {
 								done = TRUE;
 								x = xp;
@@ -2427,7 +2427,7 @@ int InvPutItem(int pnum, int x, int y)
 		yp = cursmy;
 		xp = cursmx;
 		if (plr[pnum].HoldItem._iCurs == ICURS_RUNE_BOMB && xp >= 79 && xp <= 82 && yp >= 61 && yp <= 64) {
-			NetSendCmdLocParam2(0, CMD_OPENHIVE, plr[pnum].WorldX, plr[pnum].WorldY, xx, yy);
+			NetSendCmdLocParam2(0, CMD_OPENHIVE, plr[pnum]._px, plr[pnum]._py, xx, yy);
 			quests[Q_FARMER]._qactive = 3;
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, Q_FARMER);
@@ -2491,28 +2491,28 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 		SyncGetItem(x, y, idx, icreateinfo, iseed);
 	}
 
-	d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, x, y);
-	xx = x - plr[pnum].WorldX;
-	yy = y - plr[pnum].WorldY;
+	d = GetDirection(plr[pnum]._px, plr[pnum]._py, x, y);
+	xx = x - plr[pnum]._px;
+	yy = y - plr[pnum]._py;
 	if (abs(xx) > 1 || abs(yy) > 1) {
-		x = plr[pnum].WorldX + offset_x[d];
-		y = plr[pnum].WorldY + offset_y[d];
+		x = plr[pnum]._px + offset_x[d];
+		y = plr[pnum]._py + offset_y[d];
 	}
 	if (!CanPut(x, y)) {
 		d = (d - 1) & 7;
-		x = plr[pnum].WorldX + offset_x[d];
-		y = plr[pnum].WorldY + offset_y[d];
+		x = plr[pnum]._px + offset_x[d];
+		y = plr[pnum]._py + offset_y[d];
 		if (!CanPut(x, y)) {
 			d = (d + 2) & 7;
-			x = plr[pnum].WorldX + offset_x[d];
-			y = plr[pnum].WorldY + offset_y[d];
+			x = plr[pnum]._px + offset_x[d];
+			y = plr[pnum]._py + offset_y[d];
 			if (!CanPut(x, y)) {
 				done = FALSE;
 				for (l = 1; l < 50 && !done; l++) {
 					for (j = -l; j <= l && !done; j++) {
-						yp = j + plr[pnum].WorldY;
+						yp = j + plr[pnum]._py;
 						for (i = -l; i <= l && !done; i++) {
-							xp = i + plr[pnum].WorldX;
+							xp = i + plr[pnum]._px;
 							if (CanPut(xp, yp)) {
 								done = TRUE;
 								x = xp;
