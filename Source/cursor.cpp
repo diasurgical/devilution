@@ -488,7 +488,7 @@ void CheckCursMove()
 		}
 		if (dFlags[mx][my] & BFLAG_DEAD_PLAYER) {
 			for (i = 0; i < MAX_PLRS; i++) {
-				if (plr[i].WorldX == mx && plr[i].WorldY == my && i != myplr) {
+				if (plr[i]._px == mx && plr[i]._py == my && i != myplr) {
 					cursmx = mx;
 					cursmy = my;
 					pcursplr = i;
@@ -500,7 +500,7 @@ void CheckCursMove()
 				for (yy = -1; yy < 2; yy++) {
 					if (dFlags[mx + xx][my + yy] & BFLAG_DEAD_PLAYER) {
 						for (i = 0; i < MAX_PLRS; i++) {
-							if (plr[i].WorldX == mx + xx && plr[i].WorldY == my + yy && i != myplr) {
+							if (plr[i]._px == mx + xx && plr[i]._py == my + yy && i != myplr) {
 								cursmx = mx + xx;
 								cursmy = my + yy;
 								pcursplr = i;

@@ -412,8 +412,8 @@ void TownCtrlMsg(int i)
 
 	if (towner[i]._tbtcnt) {
 		p = towner[i]._tVar1;
-		dx = abs(towner[i]._tx - plr[p].WorldX);
-		dy = abs(towner[i]._ty - plr[p].WorldY);
+		dx = abs(towner[i]._tx - plr[p]._px);
+		dy = abs(towner[i]._ty - plr[p]._py);
 		if (dx >= 2 || dy >= 2)
 			towner[i]._tbtcnt = 0;
 		if (!towner[i]._tbtcnt) {
@@ -599,8 +599,8 @@ void TalkToTowner(int p, int t)
 	rv2 = random_(6, 4); /* unused */
 	rv3 = random_(6, 5); /* unused */
 
-	dx = abs(plr[p].WorldX - towner[t]._tx);
-	dy = abs(plr[p].WorldY - towner[t]._ty);
+	dx = abs(plr[p]._px - towner[t]._tx);
+	dy = abs(plr[p]._py - towner[t]._ty);
 #ifdef _DEBUG
 	if (!debug_mode_key_d && (dx >= 2 || dy >= 2)) {
 		return;
@@ -949,7 +949,7 @@ void CowSFX(int pnum)
 		}
 #else
 		if (sgdwCowClicks >= 8) {
-			PlaySfxLoc(TSFX_COW1, plr[pnum].WorldX, plr[pnum].WorldY + 5);
+			PlaySfxLoc(TSFX_COW1, plr[pnum]._px, plr[pnum]._py + 5);
 			sgdwCowClicks = 4;
 			CowPlaying = snSFX[sgnCowMsg][plr[pnum]._pClass]; /* snSFX is local */
 			sgnCowMsg++;
@@ -959,6 +959,6 @@ void CowSFX(int pnum)
 			CowPlaying = sgdwCowClicks == 4 ? TSFX_COW2 : TSFX_COW1;
 		}
 #endif
-		PlaySfxLoc(CowPlaying, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(CowPlaying, plr[pnum]._px, plr[pnum]._py);
 	}
 }

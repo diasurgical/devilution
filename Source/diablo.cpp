@@ -860,7 +860,7 @@ BOOL LeftMouseCmd(BOOL bShift)
 		if (pcursitem == -1 && pcursmonst == -1 && pcursplr == -1)
 			return TRUE;
 	} else {
-		bNear = abs(plr[myplr].WorldX - cursmx) < 2 && abs(plr[myplr].WorldY - cursmy) < 2;
+		bNear = abs(plr[myplr]._px - cursmx) < 2 && abs(plr[myplr]._py - cursmy) < 2;
 		if (pcursitem != -1 && pcurs == CURSOR_HAND && !bShift) {
 			NetSendCmdLocParam1(TRUE, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
 		} else if (pcursobj != -1 && (!bShift || bNear && object[pcursobj]._oBreak == 1)) {
@@ -1491,7 +1491,7 @@ void PressChar(int vkey)
 	case 'T':
 	case 't':
 		if (debug_mode_key_inverted_v) {
-			sprintf(tempstr, "PX = %i  PY = %i", plr[myplr].WorldX, plr[myplr].WorldY);
+			sprintf(tempstr, "PX = %i  PY = %i", plr[myplr]._px, plr[myplr]._py);
 			NetSendCmdString(1 << myplr, tempstr);
 			sprintf(tempstr, "CX = %i  CY = %i  DP = %i", cursmx, cursmy, dungeon[cursmx][cursmy]);
 			NetSendCmdString(1 << myplr, tempstr);
@@ -1791,11 +1791,11 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		if (plr[i].plractive && plr[i].plrlevel == currlevel && (!plr[i]._pLvlChanging || i == myplr)) {
 			if (plr[i]._pHitPoints > 0) {
 				if (gbMaxPlayers == 1)
-					dPlayer[plr[i].WorldX][plr[i].WorldY] = i + 1;
+					dPlayer[plr[i]._px][plr[i]._py] = i + 1;
 				else
 					SyncInitPlrPos(i);
 			} else {
-				dFlags[plr[i].WorldX][plr[i].WorldY] |= BFLAG_DEAD_PLAYER;
+				dFlags[plr[i]._px][plr[i]._py] |= BFLAG_DEAD_PLAYER;
 			}
 		}
 	}

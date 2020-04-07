@@ -185,10 +185,10 @@ typedef struct PlayerStruct {
 	int destParam3;
 	int destParam4;
 	int plrlevel;
-	int WorldX;
-	int WorldY;
 	int _px;
 	int _py;
+	int _pfutx;
+	int _pfuty;
 	int _ptargx;
 	int _ptargy;
 	int _pownerx;

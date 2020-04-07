@@ -1016,8 +1016,8 @@ BOOL calc_snd_position(int x, int y, int *plVolume, int *plPan)
 {
 	int pan, volume;
 
-	x -= plr[myplr].WorldX;
-	y -= plr[myplr].WorldY;
+	x -= plr[myplr]._px;
+	y -= plr[myplr]._py;
 
 	pan = (x - y) << 8;
 	*plPan = pan;

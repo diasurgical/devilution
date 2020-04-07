@@ -876,31 +876,31 @@ void InitPlayer(int pnum, BOOL FirstTime)
 
 		if (pnum == myplr) {
 			if (!FirstTime || currlevel != 0) {
-				plr[pnum].WorldX = ViewX;
-				plr[pnum].WorldY = ViewY;
+				plr[pnum]._px = ViewX;
+				plr[pnum]._py = ViewY;
 			}
-			plr[pnum]._ptargx = plr[pnum].WorldX;
-			plr[pnum]._ptargy = plr[pnum].WorldY;
+			plr[pnum]._ptargx = plr[pnum]._px;
+			plr[pnum]._ptargy = plr[pnum]._py;
 		} else {
-			plr[pnum]._ptargx = plr[pnum].WorldX;
-			plr[pnum]._ptargy = plr[pnum].WorldY;
-			for (i = 0; i < 8 && !PosOkPlayer(pnum, plrxoff2[i] + plr[pnum].WorldX, plryoff2[i] + plr[pnum].WorldY); i++)
+			plr[pnum]._ptargx = plr[pnum]._px;
+			plr[pnum]._ptargy = plr[pnum]._py;
+			for (i = 0; i < 8 && !PosOkPlayer(pnum, plrxoff2[i] + plr[pnum]._px, plryoff2[i] + plr[pnum]._py); i++)
 				;
-			plr[pnum].WorldX += plrxoff2[i];
-			plr[pnum].WorldY += plryoff2[i];
+			plr[pnum]._px += plrxoff2[i];
+			plr[pnum]._py += plryoff2[i];
 		}
 
-		plr[pnum]._px = plr[pnum].WorldX;
-		plr[pnum]._py = plr[pnum].WorldY;
+		plr[pnum]._pfutx = plr[pnum]._px;
+		plr[pnum]._pfuty = plr[pnum]._py;
 		plr[pnum].walkpath[0] = WALK_NONE;
 		plr[pnum].destAction = ACTION_NONE;
 
 		if (pnum == myplr) {
-			plr[pnum]._plid = AddLight(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum]._pLightRad);
+			plr[pnum]._plid = AddLight(plr[pnum]._px, plr[pnum]._py, plr[pnum]._pLightRad);
 		} else {
 			plr[pnum]._plid = -1;
 		}
-		plr[pnum]._pvid = AddVision(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum]._pLightRad, pnum == myplr);
+		plr[pnum]._pvid = AddVision(plr[pnum]._px, plr[pnum]._py, plr[pnum]._pLightRad, pnum == myplr);
 	}
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
@@ -943,8 +943,8 @@ void InitMultiView()
 		app_fatal("InitPlayer: illegal player %d", myplr);
 	}
 
-	ViewX = plr[myplr].WorldX;
-	ViewY = plr[myplr].WorldY;
+	ViewX = plr[myplr]._px;
+	ViewY = plr[myplr]._py;
 }
 
 void CheckEFlag(int pnum, BOOL flag)
@@ -957,8 +957,8 @@ void CheckEFlag(int pnum, BOOL flag)
 		app_fatal("InitPlayer: illegal player %d", pnum);
 	}
 
-	x = plr[pnum].WorldX - 1;
-	y = plr[pnum].WorldY + 1;
+	x = plr[pnum]._px - 1;
+	y = plr[pnum]._py + 1;
 	bitflags = 0;
 	pieces = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
@@ -976,8 +976,8 @@ void CheckEFlag(int pnum, BOOL flag)
 		return;
 	}
 
-	x = plr[pnum].WorldX;
-	y = plr[pnum].WorldY + 2;
+	x = plr[pnum]._px;
+	y = plr[pnum]._py + 2;
 	bitflags = 0;
 	pieces = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
@@ -989,8 +989,8 @@ void CheckEFlag(int pnum, BOOL flag)
 		return;
 	}
 
-	x = plr[pnum].WorldX - 2;
-	y = plr[pnum].WorldY + 1;
+	x = plr[pnum]._px - 2;
+	y = plr[pnum]._py + 1;
 	bitflags = 0;
 	pieces = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
@@ -1021,8 +1021,8 @@ BOOL PlrDirOK(int pnum, int dir)
 		app_fatal("PlrDirOK: illegal player %d", pnum);
 	}
 
-	px = plr[pnum].WorldX + offset_x[dir];
-	py = plr[pnum].WorldY + offset_y[dir];
+	px = plr[pnum]._px + offset_x[dir];
+	py = plr[pnum]._py + offset_y[dir];
 
 	if (px < 0 || !dPiece[px][py] || !PosOkPlayer(pnum, px, py)) {
 		return FALSE;
@@ -1074,8 +1074,8 @@ void SetPlayerOld(int pnum)
 		app_fatal("SetPlayerOld: illegal player %d", pnum);
 	}
 
-	plr[pnum]._poldx = plr[pnum].WorldX;
-	plr[pnum]._poldy = plr[pnum].WorldY;
+	plr[pnum]._poldx = plr[pnum]._px;
+	plr[pnum]._poldy = plr[pnum]._py;
 }
 
 void FixPlayerLocation(int pnum, int bDir)
@@ -1084,10 +1084,10 @@ void FixPlayerLocation(int pnum, int bDir)
 		app_fatal("FixPlayerLocation: illegal player %d", pnum);
 	}
 
-	plr[pnum]._px = plr[pnum].WorldX;
-	plr[pnum]._py = plr[pnum].WorldY;
-	plr[pnum]._ptargx = plr[pnum].WorldX;
-	plr[pnum]._ptargy = plr[pnum].WorldY;
+	plr[pnum]._pfutx = plr[pnum]._px;
+	plr[pnum]._pfuty = plr[pnum]._py;
+	plr[pnum]._ptargx = plr[pnum]._px;
+	plr[pnum]._ptargy = plr[pnum]._py;
 	plr[pnum]._pxoff = 0;
 	plr[pnum]._pyoff = 0;
 	CheckEFlag(pnum, FALSE);
@@ -1096,8 +1096,8 @@ void FixPlayerLocation(int pnum, int bDir)
 		ScrollInfo._sxoff = 0;
 		ScrollInfo._syoff = 0;
 		ScrollInfo._sdir = SDIR_NONE;
-		ViewX = plr[pnum].WorldX;
-		ViewY = plr[pnum].WorldY;
+		ViewX = plr[pnum]._px;
+		ViewY = plr[pnum]._py;
 	}
 }
 
@@ -1116,7 +1116,7 @@ void StartStand(int pnum, int dir)
 		plr[pnum]._pmode = PM_STAND;
 		FixPlayerLocation(pnum, dir);
 		FixPlrWalkTags(pnum);
-		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+		dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
 		SetPlayerOld(pnum);
 	} else {
 		SyncPlrKill(pnum, -1);
@@ -1130,8 +1130,8 @@ void StartWalkStand(int pnum)
 	}
 
 	plr[pnum]._pmode = PM_STAND;
-	plr[pnum]._px = plr[pnum].WorldX;
-	plr[pnum]._py = plr[pnum].WorldY;
+	plr[pnum]._pfutx = plr[pnum]._px;
+	plr[pnum]._pfuty = plr[pnum]._py;
 	plr[pnum]._pxoff = 0;
 	plr[pnum]._pyoff = 0;
 
@@ -1141,8 +1141,8 @@ void StartWalkStand(int pnum)
 		ScrollInfo._sxoff = 0;
 		ScrollInfo._syoff = 0;
 		ScrollInfo._sdir = SDIR_NONE;
-		ViewX = plr[pnum].WorldX;
-		ViewY = plr[pnum].WorldY;
+		ViewX = plr[pnum]._px;
+		ViewY = plr[pnum]._py;
 	}
 }
 
@@ -1227,19 +1227,19 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 
 	SetPlayerOld(pnum);
 
-	px = xadd + plr[pnum].WorldX;
-	py = yadd + plr[pnum].WorldY;
+	px = xadd + plr[pnum]._px;
+	py = yadd + plr[pnum]._py;
 
 	if (!PlrDirOK(pnum, EndDir)) {
 		return;
 	}
 
-	plr[pnum]._px = px;
-	plr[pnum]._py = py;
+	plr[pnum]._pfutx = px;
+	plr[pnum]._pfuty = py;
 
 	if (pnum == myplr) {
-		ScrollInfo._sdx = plr[pnum].WorldX - ViewX;
-		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
+		ScrollInfo._sdx = plr[pnum]._px - ViewX;
+		ScrollInfo._sdy = plr[pnum]._py - ViewY;
 	}
 
 	dPlayer[px][py] = -(pnum + 1);
@@ -1296,31 +1296,31 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	}
 
 	SetPlayerOld(pnum);
-	px = xadd + plr[pnum].WorldX;
-	py = yadd + plr[pnum].WorldY;
+	px = xadd + plr[pnum]._px;
+	py = yadd + plr[pnum]._py;
 
 	if (!PlrDirOK(pnum, EndDir)) {
 		return;
 	}
 
-	plr[pnum]._px = px;
-	plr[pnum]._py = py;
+	plr[pnum]._pfutx = px;
+	plr[pnum]._pfuty = py;
 
 	if (pnum == myplr) {
-		ScrollInfo._sdx = plr[pnum].WorldX - ViewX;
-		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
+		ScrollInfo._sdx = plr[pnum]._px - ViewX;
+		ScrollInfo._sdy = plr[pnum]._py - ViewY;
 	}
 
-	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = -1 - pnum;
-	plr[pnum]._pVar1 = plr[pnum].WorldX;
-	plr[pnum]._pVar2 = plr[pnum].WorldY;
-	plr[pnum].WorldX = px;
-	plr[pnum].WorldY = py;
-	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+	dPlayer[plr[pnum]._px][plr[pnum]._py] = -1 - pnum;
+	plr[pnum]._pVar1 = plr[pnum]._px;
+	plr[pnum]._pVar2 = plr[pnum]._py;
+	plr[pnum]._px = px;
+	plr[pnum]._py = py;
+	dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
 	plr[pnum]._pxoff = xoff;
 	plr[pnum]._pyoff = yoff;
 
-	ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
+	ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
 	PM_ChangeLightOff(pnum);
 
 	plr[pnum]._pmode = PM_WALK2;
@@ -1375,24 +1375,24 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	}
 
 	SetPlayerOld(pnum);
-	px = xadd + plr[pnum].WorldX;
-	py = yadd + plr[pnum].WorldY;
-	x = mapx + plr[pnum].WorldX;
-	y = mapy + plr[pnum].WorldY;
+	px = xadd + plr[pnum]._px;
+	py = yadd + plr[pnum]._py;
+	x = mapx + plr[pnum]._px;
+	y = mapy + plr[pnum]._py;
 
 	if (!PlrDirOK(pnum, EndDir)) {
 		return;
 	}
 
-	plr[pnum]._px = px;
-	plr[pnum]._py = py;
+	plr[pnum]._pfutx = px;
+	plr[pnum]._pfuty = py;
 
 	if (pnum == myplr) {
-		ScrollInfo._sdx = plr[pnum].WorldX - ViewX;
-		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
+		ScrollInfo._sdx = plr[pnum]._px - ViewX;
+		ScrollInfo._sdy = plr[pnum]._py - ViewY;
 	}
 
-	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = -1 - pnum;
+	dPlayer[plr[pnum]._px][plr[pnum]._py] = -1 - pnum;
 	dPlayer[px][py] = -1 - pnum;
 	plr[pnum]._pVar4 = x;
 	plr[pnum]._pVar5 = y;
@@ -1496,7 +1496,7 @@ void StartPlrBlock(int pnum, int dir)
 		return;
 	}
 
-	PlaySfxLoc(IS_ISWORD, plr[pnum].WorldX, plr[pnum].WorldY);
+	PlaySfxLoc(IS_ISWORD, plr[pnum]._px, plr[pnum]._py);
 
 	if (!(plr[pnum]._pGFXLoad & PFILE_BLOCK)) {
 		LoadPlrGFX(pnum, PFILE_BLOCK);
@@ -1541,7 +1541,7 @@ void StartSpell(int pnum, int d, int cx, int cy)
 		}
 	}
 
-	PlaySfxLoc(spelldata[plr[pnum]._pSpell].sSFX, plr[pnum].WorldX, plr[pnum].WorldY);
+	PlaySfxLoc(spelldata[plr[pnum]._pSpell].sSFX, plr[pnum]._px, plr[pnum]._py);
 
 	plr[pnum]._pmode = PM_SPELL;
 
@@ -1615,12 +1615,12 @@ void StartPlrHit(int pnum, int dam, BOOL forcehit)
 	}
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
-		PlaySfxLoc(PS_WARR69, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_WARR69, plr[pnum]._px, plr[pnum]._py);
 #ifndef SPAWN
 	} else if (plr[pnum]._pClass == PC_ROGUE) {
-		PlaySfxLoc(PS_ROGUE69, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_ROGUE69, plr[pnum]._px, plr[pnum]._py);
 	} else if (plr[pnum]._pClass == PC_SORCERER) {
-		PlaySfxLoc(PS_MAGE69, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_MAGE69, plr[pnum]._px, plr[pnum]._py);
 #endif
 	}
 
@@ -1637,7 +1637,7 @@ void StartPlrHit(int pnum, int dam, BOOL forcehit)
 		FixPlayerLocation(pnum, pd);
 		plr[pnum]._pVar8 = 1;
 		FixPlrWalkTags(pnum);
-		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+		dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
 		SetPlayerOld(pnum);
 	}
 }
@@ -1690,12 +1690,12 @@ void StartPlayerKill(int pnum, int earflag)
 	}
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
-		PlaySfxLoc(PS_DEAD, plr[pnum].WorldX, plr[pnum].WorldY); // BUGFIX: should use `PS_WARR71` like other classes
+		PlaySfxLoc(PS_DEAD, p->_px, p->_py); // BUGFIX: should use `PS_WARR71` like other classes
 #ifndef SPAWN
 	} else if (plr[pnum]._pClass == PC_ROGUE) {
-		PlaySfxLoc(PS_ROGUE71, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_ROGUE71, p->_px, p->_py);
 	} else if (plr[pnum]._pClass == PC_SORCERER) {
-		PlaySfxLoc(PS_MAGE71, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_MAGE71, p->_px, p->_py);
 #endif
 	}
 
@@ -1728,7 +1728,7 @@ void StartPlayerKill(int pnum, int earflag)
 	if (plr[pnum].plrlevel == currlevel) {
 		FixPlayerLocation(pnum, plr[pnum]._pdir);
 		RemovePlrFromMap(pnum);
-		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
+		dFlags[p->_px][p->_py] |= BFLAG_DEAD_PLAYER;
 		SetPlayerOld(pnum);
 
 		if (pnum == myplr) {
@@ -1792,8 +1792,8 @@ void PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
 		app_fatal("PlrDeadItem: illegal player %d", pnum);
 	}
 
-	x = xx + plr[pnum].WorldX;
-	y = yy + plr[pnum].WorldY;
+	x = xx + plr[pnum]._px;
+	y = yy + plr[pnum]._py;
 	if ((xx || yy) && ItemSpaceOk(x, y)) {
 		RespawnDeadItem(itm, x, y);
 		plr[pnum].HoldItem = *itm;
@@ -1803,9 +1803,9 @@ void PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
 
 	for (k = 1; k < 50; k++) {
 		for (j = -k; j <= k; j++) {
-			y = j + plr[pnum].WorldY;
+			y = j + plr[pnum]._py;
 			for (i = -k; i <= k; i++) {
-				x = i + plr[pnum].WorldX;
+				x = i + plr[pnum]._px;
 				if (ItemSpaceOk(x, y)) {
 					RespawnDeadItem(itm, x, y);
 					plr[pnum].HoldItem = *itm;
@@ -1994,7 +1994,7 @@ void InitLevelChange(int pnum)
 	RemovePlrFromMap(pnum);
 	SetPlayerOld(pnum);
 	if (pnum == myplr) {
-		dPlayer[plr[myplr].WorldX][plr[myplr].WorldY] = myplr + 1;
+		dPlayer[plr[myplr]._px][plr[myplr]._py] = myplr + 1;
 	} else {
 		plr[pnum]._pLvlVisited[plr[pnum].plrlevel] = TRUE;
 	}
@@ -2108,7 +2108,7 @@ BOOL PM_DoWalk(int pnum)
 	if (plr[pnum]._pAnimFrame == 3
 	    || (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
 	    || (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)) {
-		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_WALK1, plr[pnum]._px, plr[pnum]._py);
 	}
 
 	anim_len = 8;
@@ -2117,19 +2117,19 @@ BOOL PM_DoWalk(int pnum)
 	}
 
 	if (plr[pnum]._pVar8 == anim_len) {
-		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
-		plr[pnum].WorldX += plr[pnum]._pVar1;
-		plr[pnum].WorldY += plr[pnum]._pVar2;
-		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+		dPlayer[plr[pnum]._px][plr[pnum]._py] = 0;
+		plr[pnum]._px += plr[pnum]._pVar1;
+		plr[pnum]._py += plr[pnum]._pVar2;
+		dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
 
 		if (leveltype != DTYPE_TOWN) {
-			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
-			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
+			ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
+			ChangeVisionXY(plr[pnum]._pvid, plr[pnum]._px, plr[pnum]._py);
 		}
 
 		if (pnum == myplr && ScrollInfo._sdir) {
-			ViewX = plr[pnum].WorldX - ScrollInfo._sdx;
-			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
+			ViewX = plr[pnum]._px - ScrollInfo._sdx;
+			ViewY = plr[pnum]._py - ScrollInfo._sdy;
 		}
 
 		if (plr[pnum].walkpath[0] != WALK_NONE) {
@@ -2162,7 +2162,7 @@ BOOL PM_DoWalk2(int pnum)
 	if (plr[pnum]._pAnimFrame == 3
 	    || (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
 	    || (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)) {
-		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_WALK1, plr[pnum]._px, plr[pnum]._py);
 	}
 
 	anim_len = 8;
@@ -2174,13 +2174,13 @@ BOOL PM_DoWalk2(int pnum)
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = 0;
 
 		if (leveltype != DTYPE_TOWN) {
-			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
-			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
+			ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
+			ChangeVisionXY(plr[pnum]._pvid, plr[pnum]._px, plr[pnum]._py);
 		}
 
 		if (pnum == myplr && ScrollInfo._sdir) {
-			ViewX = plr[pnum].WorldX - ScrollInfo._sdx;
-			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
+			ViewX = plr[pnum]._px - ScrollInfo._sdx;
+			ViewY = plr[pnum]._py - ScrollInfo._sdy;
 		}
 
 		if (plr[pnum].walkpath[0] != WALK_NONE) {
@@ -2213,7 +2213,7 @@ BOOL PM_DoWalk3(int pnum)
 	if (plr[pnum]._pAnimFrame == 3
 	    || (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
 	    || (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)) {
-		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_WALK1, plr[pnum]._px, plr[pnum]._py);
 	}
 
 	anim_len = 8;
@@ -2222,20 +2222,20 @@ BOOL PM_DoWalk3(int pnum)
 	}
 
 	if (plr[pnum]._pVar8 == anim_len) {
-		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
+		dPlayer[plr[pnum]._px][plr[pnum]._py] = 0;
 		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~BFLAG_PLAYERLR;
-		plr[pnum].WorldX = plr[pnum]._pVar1;
-		plr[pnum].WorldY = plr[pnum]._pVar2;
-		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+		plr[pnum]._px = plr[pnum]._pVar1;
+		plr[pnum]._py = plr[pnum]._pVar2;
+		dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
 
 		if (leveltype != DTYPE_TOWN) {
-			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
-			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
+			ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
+			ChangeVisionXY(plr[pnum]._pvid, plr[pnum]._px, plr[pnum]._py);
 		}
 
 		if (pnum == myplr && ScrollInfo._sdir) {
-			ViewX = plr[pnum].WorldX - ScrollInfo._sdx;
-			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
+			ViewX = plr[pnum]._px - ScrollInfo._sdx;
+			ViewY = plr[pnum]._py - ScrollInfo._sdy;
 		}
 
 		if (plr[pnum].walkpath[0] != WALK_NONE) {
@@ -2563,7 +2563,7 @@ BOOL PlrHitPlr(int pnum, char p)
 
 	if (hit < hper) {
 		if (blk < blkper) {
-			dir = GetDirection(plr[p].WorldX, plr[p].WorldY, plr[pnum].WorldX, plr[pnum].WorldY);
+			dir = GetDirection(plr[p]._px, plr[p]._py, plr[pnum]._px, plr[pnum]._py);
 			StartPlrBlock(p, dir);
 		} else {
 			mind = plr[pnum]._pIMinDam;
@@ -2643,13 +2643,13 @@ BOOL PM_DoAttack(int pnum)
 		plr[pnum]._pAnimFrame += 2;
 	}
 	if (plr[pnum]._pAnimFrame == plr[pnum]._pAFNum - 1) {
-		PlaySfxLoc(PS_SWING, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_SWING, plr[pnum]._px, plr[pnum]._py);
 	}
 
 	if (plr[pnum]._pAnimFrame == plr[pnum]._pAFNum) {
 		dir = plr[pnum]._pdir;
-		dx = plr[pnum].WorldX + offset_x[dir];
-		dy = plr[pnum].WorldY + offset_y[dir];
+		dx = plr[pnum]._px + offset_x[dir];
+		dy = plr[pnum]._py + offset_y[dir];
 
 		if (dMonster[dx][dy]) {
 			if (dMonster[dx][dy] > 0) {
@@ -2732,8 +2732,8 @@ BOOL PM_DoRangeAttack(int pnum)
 			mistype = MIS_LARROW;
 		}
 		AddMissile(
-		    plr[pnum].WorldX,
-		    plr[pnum].WorldY,
+		    plr[pnum]._px,
+		    plr[pnum]._py,
 		    plr[pnum]._pVar1,
 		    plr[pnum]._pVar2,
 		    plr[pnum]._pdir,
@@ -2743,7 +2743,7 @@ BOOL PM_DoRangeAttack(int pnum)
 		    4,
 		    0);
 
-		PlaySfxLoc(PS_BFIRE, plr[pnum].WorldX, plr[pnum].WorldY);
+		PlaySfxLoc(PS_BFIRE, plr[pnum]._px, plr[pnum]._py);
 
 		if (WeaponDur(pnum, 40)) {
 			StartStand(pnum, plr[pnum]._pdir);
@@ -2829,8 +2829,8 @@ BOOL PM_DoSpell(int pnum)
 		CastSpell(
 		    pnum,
 		    plr[pnum]._pSpell,
-		    plr[pnum].WorldX,
-		    plr[pnum].WorldY,
+		    plr[pnum]._px,
+		    plr[pnum]._py,
 		    plr[pnum]._pVar1,
 		    plr[pnum]._pVar2,
 		    0,
@@ -2975,7 +2975,7 @@ BOOL PM_DoDeath(int pnum)
 
 		plr[pnum]._pAnimDelay = 10000;
 		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
-		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= BFLAG_DEAD_PLAYER;
+		dFlags[plr[pnum]._px][plr[pnum]._py] |= BFLAG_DEAD_PLAYER;
 	}
 
 	if (plr[pnum]._pVar8 < 100) {
@@ -3004,7 +3004,7 @@ void CheckNewPath(int pnum)
 	}
 
 	if (plr[pnum].destAction == ACTION_ATTACKPLR) {
-		MakePlrPath(pnum, plr[plr[pnum].destParam1]._px, plr[plr[pnum].destParam1]._py, FALSE);
+		MakePlrPath(pnum, plr[plr[pnum].destParam1]._pfutx, plr[plr[pnum].destParam1]._pfuty, FALSE);
 	}
 
 	if (plr[pnum].walkpath[0] != WALK_NONE) {
@@ -3014,13 +3014,13 @@ void CheckNewPath(int pnum)
 					i = plr[pnum].destParam1;
 
 					if (plr[pnum].destAction == ACTION_ATTACKMON) {
-						x = abs(plr[pnum]._px - monster[i]._mfutx);
-						y = abs(plr[pnum]._py - monster[i]._mfuty);
-						d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
+						x = abs(plr[pnum]._pfutx - monster[i]._mfutx);
+						y = abs(plr[pnum]._pfuty - monster[i]._mfuty);
+						d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, monster[i]._mfutx, monster[i]._mfuty);
 					} else {
-						x = abs(plr[pnum]._px - plr[i]._px);
-						y = abs(plr[pnum]._py - plr[i]._py);
-						d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._px, plr[i]._py);
+						x = abs(plr[pnum]._pfutx - plr[i]._pfutx);
+						y = abs(plr[pnum]._pfuty - plr[i]._pfuty);
+						d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, plr[i]._pfutx, plr[i]._pfuty);
 					}
 
 					if (x < 2 && y < 2) {
@@ -3093,15 +3093,15 @@ void CheckNewPath(int pnum)
 	if (plr[pnum]._pmode == PM_STAND) {
 		switch (plr[pnum].destAction) {
 		case ACTION_ATTACK:
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum].destParam1, plr[pnum].destParam2);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[pnum].destParam1, plr[pnum].destParam2);
 			StartAttack(pnum, d);
 			break;
 		case ACTION_ATTACKMON:
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - monster[i]._mfutx);
-			y = abs(plr[pnum].WorldY - monster[i]._mfuty);
+			x = abs(plr[pnum]._px - monster[i]._mfutx);
+			y = abs(plr[pnum]._py - monster[i]._mfuty);
 			if (x <= 1 && y <= 1) {
-				d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
+				d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, monster[i]._mfutx, monster[i]._mfuty);
 				if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 					TalktoMonster(i);
 				} else {
@@ -3111,20 +3111,20 @@ void CheckNewPath(int pnum)
 			break;
 		case ACTION_ATTACKPLR:
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - plr[i]._px);
-			y = abs(plr[pnum].WorldY - plr[i]._py);
+			x = abs(plr[pnum]._px - plr[i]._pfutx);
+			y = abs(plr[pnum]._py - plr[i]._pfuty);
 			if (x <= 1 && y <= 1) {
-				d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._px, plr[i]._py);
+				d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, plr[i]._pfutx, plr[i]._pfuty);
 				StartAttack(pnum, d);
 			}
 			break;
 		case ACTION_RATTACK:
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum].destParam1, plr[pnum].destParam2);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[pnum].destParam1, plr[pnum].destParam2);
 			StartRangeAttack(pnum, d, plr[pnum].destParam1, plr[pnum].destParam2);
 			break;
 		case ACTION_RATTACKMON:
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
+			d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, monster[i]._mfutx, monster[i]._mfuty);
 			if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 				TalktoMonster(i);
 			} else {
@@ -3133,11 +3133,11 @@ void CheckNewPath(int pnum)
 			break;
 		case ACTION_RATTACKPLR:
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._px, plr[i]._py);
-			StartRangeAttack(pnum, d, plr[i]._px, plr[i]._py);
+			d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, plr[i]._pfutx, plr[i]._pfuty);
+			StartRangeAttack(pnum, d, plr[i]._pfutx, plr[i]._pfuty);
 			break;
 		case ACTION_SPELL:
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum].destParam1, plr[pnum].destParam2);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[pnum].destParam1, plr[pnum].destParam2);
 			StartSpell(pnum, d, plr[pnum].destParam1, plr[pnum].destParam2);
 			plr[pnum]._pVar4 = plr[pnum].destParam3;
 			break;
@@ -3148,26 +3148,26 @@ void CheckNewPath(int pnum)
 			break;
 		case ACTION_SPELLMON:
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, monster[i]._mfutx, monster[i]._mfuty);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
 			StartSpell(pnum, d, monster[i]._mfutx, monster[i]._mfuty);
 			plr[pnum]._pVar4 = plr[pnum].destParam2;
 			break;
 		case ACTION_SPELLPLR:
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[i]._px, plr[i]._py);
-			StartSpell(pnum, d, plr[i]._px, plr[i]._py);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._pfutx, plr[i]._pfuty);
+			StartSpell(pnum, d, plr[i]._pfutx, plr[i]._pfuty);
 			plr[pnum]._pVar4 = plr[pnum].destParam2;
 			break;
 		case ACTION_OPERATE:
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - object[i]._ox);
-			y = abs(plr[pnum].WorldY - object[i]._oy);
+			x = abs(plr[pnum]._px - object[i]._ox);
+			y = abs(plr[pnum]._py - object[i]._oy);
 			if (y > 1 && dObject[object[i]._ox][object[i]._oy - 1] == -1 - i) {
-				y = abs(plr[pnum].WorldY - object[i]._oy + 1);
+				y = abs(plr[pnum]._py - object[i]._oy + 1);
 			}
 			if (x <= 1 && y <= 1) {
 				if (object[i]._oBreak == 1) {
-					d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, object[i]._ox, object[i]._oy);
+					d = GetDirection(plr[pnum]._px, plr[pnum]._py, object[i]._ox, object[i]._oy);
 					StartAttack(pnum, d);
 				} else {
 					OperateObject(pnum, i, FALSE);
@@ -3176,14 +3176,14 @@ void CheckNewPath(int pnum)
 			break;
 		case ACTION_DISARM:
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - object[i]._ox);
-			y = abs(plr[pnum].WorldY - object[i]._oy);
+			x = abs(plr[pnum]._px - object[i]._ox);
+			y = abs(plr[pnum]._py - object[i]._oy);
 			if (y > 1 && dObject[object[i]._ox][object[i]._oy - 1] == -1 - i) {
-				y = abs(plr[pnum].WorldY - object[i]._oy + 1);
+				y = abs(plr[pnum]._py - object[i]._oy + 1);
 			}
 			if (x <= 1 && y <= 1) {
 				if (object[i]._oBreak == 1) {
-					d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, object[i]._ox, object[i]._oy);
+					d = GetDirection(plr[pnum]._px, plr[pnum]._py, object[i]._ox, object[i]._oy);
 					StartAttack(pnum, d);
 				} else {
 					TryDisarm(pnum, i);
@@ -3200,8 +3200,8 @@ void CheckNewPath(int pnum)
 		case ACTION_PICKUPITEM:
 			if (pnum == myplr) {
 				i = plr[pnum].destParam1;
-				x = abs(plr[pnum].WorldX - item[i]._ix);
-				y = abs(plr[pnum].WorldY - item[i]._iy);
+				x = abs(plr[pnum]._px - item[i]._ix);
+				y = abs(plr[pnum]._py - item[i]._iy);
 				if (x <= 1 && y <= 1 && pcurs == CURSOR_HAND && !item[i]._iRequest) {
 					NetSendCmdGItem(TRUE, CMD_REQUESTGITEM, myplr, myplr, i);
 					item[i]._iRequest = TRUE;
@@ -3211,8 +3211,8 @@ void CheckNewPath(int pnum)
 		case ACTION_PICKUPAITEM:
 			if (pnum == myplr) {
 				i = plr[pnum].destParam1;
-				x = abs(plr[pnum].WorldX - item[i]._ix);
-				y = abs(plr[pnum].WorldY - item[i]._iy);
+				x = abs(plr[pnum]._px - item[i]._ix);
+				y = abs(plr[pnum]._py - item[i]._iy);
 				if (x <= 1 && y <= 1 && pcurs == CURSOR_HAND) {
 					NetSendCmdGItem(TRUE, CMD_REQUESTAGITEM, myplr, myplr, i);
 				}
@@ -3233,37 +3233,37 @@ void CheckNewPath(int pnum)
 
 	if (plr[pnum]._pmode == PM_ATTACK && plr[pnum]._pAnimFrame > plr[myplr]._pAFNum) {
 		if (plr[pnum].destAction == ACTION_ATTACK) {
-			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[pnum].destParam1, plr[pnum].destParam2);
+			d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, plr[pnum].destParam1, plr[pnum].destParam2);
 			StartAttack(pnum, d);
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_ATTACKMON) {
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - monster[i]._mfutx);
-			y = abs(plr[pnum].WorldY - monster[i]._mfuty);
+			x = abs(plr[pnum]._px - monster[i]._mfutx);
+			y = abs(plr[pnum]._py - monster[i]._mfuty);
 			if (x <= 1 && y <= 1) {
-				d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
+				d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, monster[i]._mfutx, monster[i]._mfuty);
 				StartAttack(pnum, d);
 			}
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_ATTACKPLR) {
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - plr[i]._px);
-			y = abs(plr[pnum].WorldY - plr[i]._py);
+			x = abs(plr[pnum]._px - plr[i]._pfutx);
+			y = abs(plr[pnum]._py - plr[i]._pfuty);
 			if (x <= 1 && y <= 1) {
-				d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._px, plr[i]._py);
+				d = GetDirection(plr[pnum]._pfutx, plr[pnum]._pfuty, plr[i]._pfutx, plr[i]._pfuty);
 				StartAttack(pnum, d);
 			}
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_OPERATE) {
 			i = plr[pnum].destParam1;
-			x = abs(plr[pnum].WorldX - object[i]._ox);
-			y = abs(plr[pnum].WorldY - object[i]._oy);
+			x = abs(plr[pnum]._px - object[i]._ox);
+			y = abs(plr[pnum]._py - object[i]._oy);
 			if (y > 1 && dObject[object[i]._ox][object[i]._oy - 1] == -1 - i) {
-				y = abs(plr[pnum].WorldY - object[i]._oy + 1);
+				y = abs(plr[pnum]._py - object[i]._oy + 1);
 			}
 			if (x <= 1 && y <= 1) {
 				if (object[i]._oBreak == 1) {
-					d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, object[i]._ox, object[i]._oy);
+					d = GetDirection(plr[pnum]._px, plr[pnum]._py, object[i]._ox, object[i]._oy);
 					StartAttack(pnum, d);
 				} else {
 					OperateObject(pnum, i, FALSE);
@@ -3274,36 +3274,36 @@ void CheckNewPath(int pnum)
 
 	if (plr[pnum]._pmode == PM_RATTACK && plr[pnum]._pAnimFrame > plr[myplr]._pAFNum) {
 		if (plr[pnum].destAction == ACTION_RATTACK) {
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum].destParam1, plr[pnum].destParam2);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[pnum].destParam1, plr[pnum].destParam2);
 			StartRangeAttack(pnum, d, plr[pnum].destParam1, plr[pnum].destParam2);
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_RATTACKMON) {
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, monster[i]._mfutx, monster[i]._mfuty);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
 			StartRangeAttack(pnum, d, monster[i]._mfutx, monster[i]._mfuty);
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_RATTACKPLR) {
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[i]._px, plr[i]._py);
-			StartRangeAttack(pnum, d, plr[i]._px, plr[i]._py);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._pfutx, plr[i]._pfuty);
+			StartRangeAttack(pnum, d, plr[i]._pfutx, plr[i]._pfuty);
 			plr[pnum].destAction = ACTION_NONE;
 		}
 	}
 
 	if (plr[pnum]._pmode == PM_SPELL && plr[pnum]._pAnimFrame > plr[pnum]._pSFNum) {
 		if (plr[pnum].destAction == ACTION_SPELL) {
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum].destParam1, plr[pnum].destParam2);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[pnum].destParam1, plr[pnum].destParam2);
 			StartSpell(pnum, d, plr[pnum].destParam1, plr[pnum].destParam2);
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_SPELLMON) {
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, monster[i]._mfutx, monster[i]._mfuty);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mfutx, monster[i]._mfuty);
 			StartSpell(pnum, d, monster[i]._mfutx, monster[i]._mfuty);
 			plr[pnum].destAction = ACTION_NONE;
 		} else if (plr[pnum].destAction == ACTION_SPELLPLR) {
 			i = plr[pnum].destParam1;
-			d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, plr[i]._px, plr[i]._py);
-			StartSpell(pnum, d, plr[i]._px, plr[i]._py);
+			d = GetDirection(plr[pnum]._px, plr[pnum]._py, plr[i]._pfutx, plr[i]._pfuty);
+			StartSpell(pnum, d, plr[i]._pfutx, plr[i]._pfuty);
 			plr[pnum].destAction = ACTION_NONE;
 		}
 	}
@@ -3577,11 +3577,11 @@ void MakePlrPath(int pnum, int xx, int yy, BOOL endspace)
 
 	plr[pnum]._ptargx = xx;
 	plr[pnum]._ptargy = yy;
-	if (plr[pnum]._px == xx && plr[pnum]._py == yy) {
+	if (plr[pnum]._pfutx == xx && plr[pnum]._pfuty == yy) {
 		return;
 	}
 
-	path = FindPath(PosOkPlayer, pnum, plr[pnum]._px, plr[pnum]._py, xx, yy, plr[pnum].walkpath);
+	path = FindPath(PosOkPlayer, pnum, plr[pnum]._pfutx, plr[pnum]._pfuty, xx, yy, plr[pnum].walkpath);
 	if (!path) {
 		return;
 	}
@@ -3690,7 +3690,7 @@ void CheckPlrSpell()
 
 	if (addflag) {
 		if (plr[myplr]._pRSpell == SPL_FIREWALL) {
-			sd = GetDirection(plr[myplr].WorldX, plr[myplr].WorldY, cursmx, cursmy);
+			sd = GetDirection(plr[myplr]._px, plr[myplr]._py, cursmx, cursmy);
 			sl = GetSpellLevel(myplr, plr[myplr]._pRSpell);
 			NetSendCmdLocParam3(TRUE, CMD_SPELLXYD, cursmx, cursmy, plr[myplr]._pRSpell, sd, sl);
 		} else if (pcursmonst != -1) {
@@ -3782,16 +3782,16 @@ void SyncInitPlrPos(int pnum)
 	DWORD i;
 	BOOL posOk;
 
-	plr[pnum]._ptargx = plr[pnum].WorldX;
-	plr[pnum]._ptargy = plr[pnum].WorldY;
+	plr[pnum]._ptargx = plr[pnum]._px;
+	plr[pnum]._ptargy = plr[pnum]._py;
 
 	if (gbMaxPlayers == 1 || plr[pnum].plrlevel != currlevel) {
 		return;
 	}
 
 	for (i = 0; i < 8; i++) {
-		x = plr[pnum].WorldX + plrxoff2[i];
-		y = plr[pnum].WorldY + plryoff2[i];
+		x = plr[pnum]._px + plrxoff2[i];
+		y = plr[pnum]._py + plryoff2[i];
 		if (PosOkPlayer(pnum, x, y)) {
 			break;
 		}
@@ -3801,9 +3801,9 @@ void SyncInitPlrPos(int pnum)
 		posOk = FALSE;
 		for (range = 1; range < 50 && !posOk; range++) {
 			for (yy = -range; yy <= range && !posOk; yy++) {
-				y = yy + plr[pnum].WorldY;
+				y = yy + plr[pnum]._py;
 				for (xx = -range; xx <= range && !posOk; xx++) {
-					x = xx + plr[pnum].WorldX;
+					x = xx + plr[pnum]._px;
 					if (PosOkPlayer(pnum, x, y) && !PosOkPortal(currlevel, x, y)) {
 						posOk = TRUE;
 					}
@@ -3812,13 +3812,13 @@ void SyncInitPlrPos(int pnum)
 		}
 	}
 
-	plr[pnum].WorldX = x;
-	plr[pnum].WorldY = y;
+	plr[pnum]._px = x;
+	plr[pnum]._py = y;
 	dPlayer[x][y] = pnum + 1;
 
 	if (pnum == myplr) {
-		plr[pnum]._px = x;
-		plr[pnum]._py = y;
+		plr[pnum]._pfutx = x;
+		plr[pnum]._pfuty = y;
 		plr[pnum]._ptargx = x;
 		plr[pnum]._ptargy = y;
 		ViewX = x;

@@ -445,15 +445,15 @@ void DrawAutomapPlr()
 	int x, y;
 
 	if (plr[myplr]._pmode == PM_WALK3) {
-		x = plr[myplr]._px;
-		y = plr[myplr]._py;
+		x = plr[myplr]._pfutx;
+		y = plr[myplr]._pfuty;
 		if (plr[myplr]._pdir == DIR_W)
 			x++;
 		else
 			y++;
 	} else {
-		x = plr[myplr].WorldX;
-		y = plr[myplr].WorldY;
+		x = plr[myplr]._px;
+		y = plr[myplr]._py;
 	}
 	px = x - 2 * AutoMapXOfs - ViewX;
 	py = y - 2 * AutoMapYOfs - ViewY;

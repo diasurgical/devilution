@@ -983,7 +983,7 @@ void ToggleLighting_2()
 		memset(dLight, lightmax, sizeof(dLight));
 		for (i = 0; i < MAX_PLRS; i++) {
 			if (plr[i].plractive && plr[i].plrlevel == currlevel) {
-				DoLighting(plr[i].WorldX, plr[i].WorldY, plr[i]._pLightRad, -1);
+				DoLighting(plr[i]._px, plr[i]._py, plr[i]._pLightRad, -1);
 			}
 		}
 	}
@@ -1001,7 +1001,7 @@ void ToggleLighting()
 		memcpy(dLight, dPreLight, sizeof(dLight));
 		for (i = 0; i < MAX_PLRS; i++) {
 			if (plr[i].plractive && plr[i].plrlevel == currlevel) {
-				DoLighting(plr[i].WorldX, plr[i].WorldY, plr[i]._pLightRad, -1);
+				DoLighting(plr[i]._px, plr[i]._py, plr[i]._pLightRad, -1);
 			}
 		}
 	}
