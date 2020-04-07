@@ -1094,6 +1094,12 @@ TSFX sgSFX[] = {
 	// clang-format on
 };
 
+#ifdef HELLFIRE
+#define PLRSFXS (SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR | SFX_MONK)
+#else
+#define PLRSFXS (SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR)
+#end
+
 BOOL effect_is_playing(int nSFX)
 {
 	TSFX *sfx = &sgSFX[nSFX];
@@ -1408,10 +1414,7 @@ void sound_init()
 {
 	BYTE mask = 0;
 	if (gbMaxPlayers > 1) {
-		mask = SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR;
-#ifdef HELLFIRE
-		mask |= SFX_MONK;
-#endif
+		mask = PLRSFXS;
 	} else if (plr[myplr]._pClass == PC_WARRIOR) {
 		mask = SFX_WARRIOR;
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
@@ -1442,11 +1445,7 @@ void priv_sound_init(BYTE bLoadMask)
 		return;
 	}
 
-#ifdef HELLFIRE
-	pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR | SFX_MONK);
-#else
-	pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
-#endif
+	pc = bLoadMask & (PLRSFXS);
 	bLoadMask ^= pc;
 
 	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
@@ -1462,11 +1461,7 @@ void priv_sound_init(BYTE bLoadMask)
 			continue;
 		}
 
-#ifdef HELLFIRE
-		if (sgSFX[i].bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR | SFX_MONK) && !(sgSFX[i].bFlags & pc)) {
-#else
-		if (sgSFX[i].bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(sgSFX[i].bFlags & pc)) {
-#endif
+		if (sgSFX[i].bFlags & PLRSFXS && !(sgSFX[i].bFlags & pc)) {
 			continue;
 		}
 
