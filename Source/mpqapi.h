@@ -6,7 +6,7 @@
 #ifndef __MPQAPI_H__
 #define __MPQAPI_H__
 
-extern char mpq_buf[4096];
+extern BYTE mpq_buf[4096];
 extern BOOL save_archive_modified;
 extern BOOLEAN save_archive_open;
 

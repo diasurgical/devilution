@@ -62,7 +62,7 @@ void engine_debug_trap(BOOL show_cursor);
 BYTE *DiabloAllocPtr(DWORD dwBytes);
 void mem_free_dbg(void *p);
 BYTE *LoadFileInMem(char *pszName, DWORD *pdwFileLen);
-DWORD LoadFileWithMem(const char *pszName, void *p);
+DWORD LoadFileWithMem(const char *pszName, BYTE *p);
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel);
 void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap);
 void Cl2Blit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth);

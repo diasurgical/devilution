@@ -7,7 +7,7 @@
 #include "../3rdParty/Storm/Source/storm.h"
 
 DWORD sgdwMpqOffset;
-char mpq_buf[4096];
+BYTE mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
 /** Has the savegame-file been modified in memory. */
 BOOL save_archive_modified;
@@ -466,7 +466,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 			if (!ReadFile(sghArchive, sgpBlockTbl, 0x8000, &dwTemp, NULL))
 				goto on_error;
 			key = Hash("(block table)", 3);
-			Decrypt(sgpBlockTbl, 0x8000, key);
+			Decrypt((DWORD *)sgpBlockTbl, 0x8000, key);
 		}
 		sgpHashTbl = (_HASHENTRY *)DiabloAllocPtr(0x8000);
 		memset(sgpHashTbl, 255, 0x8000);
@@ -476,7 +476,7 @@ BOOL OpenMPQ(const char *pszArchive, BOOL hidden, DWORD dwChar)
 			if (!ReadFile(sghArchive, sgpHashTbl, 0x8000, &dwTemp, NULL))
 				goto on_error;
 			key = Hash("(hash table)", 3);
-			Decrypt(sgpHashTbl, 0x8000, key);
+			Decrypt((DWORD *)sgpHashTbl, 0x8000, key);
 		}
 		return TRUE;
 	}
@@ -615,9 +615,9 @@ BOOL mpqapi_write_block_table()
 	if (SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1)
 		return FALSE;
 
-	Encrypt(sgpBlockTbl, 0x8000, Hash("(block table)", 3));
+	Encrypt((DWORD *)sgpBlockTbl, 0x8000, Hash("(block table)", 3));
 	success = WriteFile(sghArchive, sgpBlockTbl, 0x8000, &NumberOfBytesWritten, 0);
-	Decrypt(sgpBlockTbl, 0x8000, Hash("(block table)", 3));
+	Decrypt((DWORD *)sgpBlockTbl, 0x8000, Hash("(block table)", 3));
 	return success && NumberOfBytesWritten == 0x8000;
 }
 
@@ -629,9 +629,9 @@ BOOL mpqapi_write_hash_table()
 	if (SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1)
 		return FALSE;
 
-	Encrypt(sgpHashTbl, 0x8000, Hash("(hash table)", 3));
+	Encrypt((DWORD *)sgpHashTbl, 0x8000, Hash("(hash table)", 3));
 	success = WriteFile(sghArchive, sgpHashTbl, 0x8000, &NumberOfBytesWritten, 0);
-	Decrypt(sgpHashTbl, 0x8000, Hash("(hash table)", 3));
+	Decrypt((DWORD *)sgpHashTbl, 0x8000, Hash("(hash table)", 3));
 	return success && NumberOfBytesWritten == 0x8000;
 }
 

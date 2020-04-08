@@ -2656,7 +2656,7 @@ BYTE *LoadFileInMem(char *pszName, DWORD *pdwFileLen)
  * @param p Target buffer
  * @return Size of file
  */
-DWORD LoadFileWithMem(const char *pszName, void *p)
+DWORD LoadFileWithMem(const char *pszName, BYTE *p)
 {
 	DWORD dwFileLen;
 	HANDLE hsFile;

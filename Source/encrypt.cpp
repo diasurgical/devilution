@@ -8,12 +8,10 @@
 
 DWORD hashtable[1280];
 
-void Decrypt(void *block, DWORD size, DWORD key)
+void Decrypt(DWORD *castBlock, DWORD size, DWORD key)
 {
-	DWORD *castBlock;
 	DWORD seed, i;
 
-	castBlock = (DWORD *)block;
 	seed = 0xEEEEEEEE;
 	for (i = 0; i < (size >> 2); i++) {
 		seed += hashtable[0x400 + (key & 0xFF)];
@@ -24,12 +22,10 @@ void Decrypt(void *block, DWORD size, DWORD key)
 	}
 }
 
-void Encrypt(void *block, DWORD size, DWORD key)
+void Encrypt(DWORD *castBlock, DWORD size, DWORD key)
 {
-	DWORD *castBlock;
 	DWORD seed, i, ch;
 
-	castBlock = (DWORD *)block;
 	seed = 0xEEEEEEEE;
 	for (i = 0; i < (size >> 2); i++) {
 		ch = *castBlock;
@@ -74,14 +70,13 @@ void InitHash()
 	}
 }
 
-int PkwareCompress(void *buf, int size)
+int PkwareCompress(BYTE *srcData, int size)
 {
-	BYTE *srcData, *destData;
+	BYTE *destData;
 	char *ptr;
 	unsigned int destSize, type, dsize;
 	TDataInfo param;
 
-	srcData = (BYTE *)buf;
 	ptr = (char *)DiabloAllocPtr(CMP_BUFFER_SIZE);
 
 	destSize = 2 * size;
@@ -140,14 +135,13 @@ void __cdecl PkwareBufferWrite(char *buf, unsigned int *size, void *param)
 	pInfo->destOffset += *size;
 }
 
-void PkwareDecompress(void *param, int recv_size, int dwMaxBytes)
+void PkwareDecompress(BYTE *pbInBuff, int recv_size, int dwMaxBytes)
 {
 	char *ptr;
-	BYTE *pbInBuff, *pbOutBuff;
+	BYTE *pbOutBuff;
 	TDataInfo info;
 
 	ptr = (char *)DiabloAllocPtr(CMP_BUFFER_SIZE);
-	pbInBuff = (BYTE *)param;
 	pbOutBuff = DiabloAllocPtr(dwMaxBytes);
 
 	info.srcData = pbInBuff;
