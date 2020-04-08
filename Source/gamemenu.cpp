@@ -15,12 +15,16 @@ BOOL jogging_opt = TRUE;
 TMenuItem sgSingleMenu[] = {
 // clang-format off
 //	  dwFlags,       pszStr,         fnMenu
-	{ GMENU_ENABLED, "Save Game",    &gamemenu_save_game  },
-	{ GMENU_ENABLED, "Options",      &gamemenu_options    },
-	{ GMENU_ENABLED, "New Game",     &gamemenu_new_game   },
-	{ GMENU_ENABLED, "Load Game",    &gamemenu_load_game  },
-	{ GMENU_ENABLED, "Quit Diablo",  &gamemenu_quit_game  },
-	{ GMENU_ENABLED, NULL,           NULL }
+	{ GMENU_ENABLED, "Save Game",     &gamemenu_save_game  },
+	{ GMENU_ENABLED, "Options",       &gamemenu_options    },
+	{ GMENU_ENABLED, "New Game",      &gamemenu_new_game   },
+	{ GMENU_ENABLED, "Load Game",     &gamemenu_load_game  },
+#ifndef HELLFIRE
+	{ GMENU_ENABLED, "Quit Diablo",   &gamemenu_quit_game  },
+#else
+	{ GMENU_ENABLED, "Quit Hellfire", &gamemenu_quit_game  },
+#endif
+	{ GMENU_ENABLED, NULL,            NULL }
 // clang-format on
 };
 /** Contains the game menu items of the multi player menu. */
@@ -30,7 +34,11 @@ TMenuItem sgMultiMenu[] = {
 	{ GMENU_ENABLED, "Options",         &gamemenu_options      },
 	{ GMENU_ENABLED, "New Game",        &gamemenu_new_game     },
 	{ GMENU_ENABLED, "Restart In Town", &gamemenu_restart_town },
+#ifndef HELLFIRE
 	{ GMENU_ENABLED, "Quit Diablo",     &gamemenu_quit_game    },
+#else
+	{ GMENU_ENABLED, "Quit Hellfire",   &gamemenu_quit_game    },
+#endif
 	{ GMENU_ENABLED, NULL,              NULL                   },
 // clang-format on
 };
@@ -43,7 +51,7 @@ TMenuItem sgOptionsMenu[] = {
 #ifndef HELLFIRE
 	{ GMENU_ENABLED               , NULL,            &gamemenu_color_cycling },
 #else
-	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_loadjog },
+	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_loadjog       },
 #endif
 	{ GMENU_ENABLED               , "Previous Menu", &gamemenu_previous      },
 	{ GMENU_ENABLED               , NULL,            NULL                    },
