@@ -99,9 +99,9 @@ void dx_init(HWND hWnd)
 	BOOL bSuccess;
 	GUID *lpGUID;
 
-	/// ASSERT: assert(! gpBuffer);
-	/// ASSERT: assert(! sgdwLockCount);
-	/// ASSERT: assert(! sgpBackBuf);
+	assert(! gpBuffer);
+	assert(! sgdwLockCount);
+	assert(! sgpBackBuf);
 
 	SetFocus(hWnd);
 	ShowWindow(hWnd, SW_SHOWNORMAL);
@@ -157,7 +157,7 @@ void dx_init(HWND hWnd)
 	GdiSetBatchLimit(1);
 	dx_create_back_buffer();
 	bSuccess = SDrawManualInitialize(hWnd, lpDDInterface, lpDDSPrimary, NULL, NULL, lpDDSBackBuf, lpDDPalette, NULL);
-	/// ASSERT: assert(bSuccess);
+	assert(bSuccess);
 }
 
 static void lock_buf_priv()

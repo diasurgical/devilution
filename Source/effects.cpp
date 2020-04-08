@@ -1082,8 +1082,8 @@ void stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
 	BOOL success;
 
-	/// ASSERT: assert(pSFX);
-	/// ASSERT: assert(pSFX->bFlags & sfx_STREAM);
+	assert(pSFX);
+	assert(pSFX->bFlags & sfx_STREAM);
 	stream_stop();
 	lVolume += sound_get_or_set_sound_volume(1);
 	if (lVolume >= VOLUME_MIN) {

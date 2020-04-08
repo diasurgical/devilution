@@ -2751,7 +2751,7 @@ void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, 
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -2942,12 +2942,12 @@ void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -3161,12 +3161,12 @@ void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -3377,12 +3377,12 @@ void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelS
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -3427,12 +3427,12 @@ void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSk
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -3636,12 +3636,12 @@ void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -3868,12 +3868,12 @@ void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)
@@ -4097,12 +4097,12 @@ void Cl2DrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (pCelBuff == NULL)
 		return;
-	/// ASSERT: assert(nCel > 0);
+	assert(nCel > 0);
 	if (nCel <= 0)
 		return;
 
 	pFrameTable = (DWORD *)pCelBuff;
-	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+	assert(nCel <= (int)pFrameTable[0]);
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
 	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
 	if (!nDataStart)

@@ -109,7 +109,7 @@ void DrawDiabloMsg()
 		sy += 12;
 	}
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #define TRANS_RECT_X (PANEL_LEFT + 104)
 #define TRANS_RECT_Y (DIALOG_TOP - 8)

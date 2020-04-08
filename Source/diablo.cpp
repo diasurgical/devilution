@@ -858,7 +858,7 @@ BOOL LeftMouseCmd(BOOL bShift)
 {
 	BOOL bNear;
 
-	/// ASSERT: assert(MouseY < 352); // PANEL_TOP
+	assert(MouseY < PANEL_TOP); // 352
 
 	if (leveltype == DTYPE_TOWN) {
 		if (pcursitem != -1 && pcurs == CURSOR_HAND)
@@ -1023,7 +1023,7 @@ void diablo_hotkey_msg(DWORD dwMsg)
 	}
 
 	strcat(szFileName, "\\Diablo.ini");
-	/// ASSERT: assert(dwMsg < sizeof(spszMsgTbl) / sizeof(spszMsgTbl[0]));
+	assert(dwMsg < sizeof(spszMsgTbl) / sizeof(spszMsgTbl[0]));
 	GetPrivateProfileString("NetMsg", spszMsgHotKeyTbl[dwMsg], spszMsgTbl[dwMsg], szMsg, sizeof(szMsg), szFileName);
 	NetSendCmdString(-1, szMsg);
 }
@@ -1521,7 +1521,7 @@ void PressChar(int vkey)
 
 void LoadLvlGFX()
 {
-	/// ASSERT: assert(! pDungeonCels);
+	assert(! pDungeonCels);
 
 	switch (leveltype) {
 	case DTYPE_TOWN:
@@ -1564,7 +1564,7 @@ void LoadLvlGFX()
 
 void LoadAllGFX()
 {
-	/// ASSERT: assert(! pSpeedCels);
+	assert(! pSpeedCels);
 	pSpeedCels = DiabloAllocPtr(0x100000);
 	IncProgress();
 	IncProgress();
@@ -1756,7 +1756,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 			ResyncMPQuests();
 #ifndef SPAWN
 	} else {
-		/// ASSERT: assert(! pSpeedCels);
+		assert(! pSpeedCels);
 		pSpeedCels = DiabloAllocPtr(0x100000);
 		LoadSetMap();
 		IncProgress();
