@@ -585,7 +585,7 @@ void diablo_reload_process(HINSTANCE hInstance)
 		ExitProcess(0);
 	}
 
-	if (InterlockedIncrement(plMap) == 0) {
+	if (InterlockedIncrement(&plMap[0]) == 0) {
 		plMap[1] = GetCurrentProcessId();
 	} else {
 		hPrev = GetForegroundWindow();
@@ -832,7 +832,7 @@ BOOL LeftMouseDown(int wParam)
 							SetCursor_(CURSOR_HAND);
 						}
 					} else {
-						if (plr[myplr]._pStatPts && !spselflag)
+						if (plr[myplr]._pStatPts != 0 && !spselflag)
 							CheckLvlBtn();
 						if (!lvlbtndown)
 							return LeftMouseCmd(wParam == MK_SHIFT + MK_LBUTTON);

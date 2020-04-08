@@ -364,7 +364,7 @@ void MakeSpeedCels()
 	if (total_frames > 128)
 		total_frames = 128;
 
-	frameidx = 0; /* move into loop ? */
+	frameidx = 0;
 
 	if (light4flag)
 		blk_cnt = 3;
@@ -483,7 +483,7 @@ void MakeSpeedCels()
 
 	for (y = 0; y < MAXDUNY; y++) {
 		for (x = 0; x < MAXDUNX; x++) {
-			if (dPiece[x][y]) {
+			if (dPiece[x][y] != 0) {
 				pMap = &dpiece_defs_map_2[x][y];
 				for (i = 0; i < blocks; i++) {
 					if (pMap->mt[i]) {
@@ -539,7 +539,7 @@ void SetDungeonMicros()
 		for (x = 0; x < MAXDUNX; x++) {
 			lv = dPiece[x][y];
 			pMap = &dpiece_defs_map_2[x][y];
-			if (lv) {
+			if (lv != 0) {
 				lv--;
 				if (leveltype != DTYPE_HELL)
 					pPiece = (WORD *)&pLevelPieces[20 * lv];
@@ -616,7 +616,7 @@ void DRLG_CopyTrans(int sx, int sy, int dx, int dy)
 void DRLG_ListTrans(int num, BYTE *List)
 {
 	int i;
-	BYTE x1, x2, y1, y2;
+	BYTE x1, y1, x2, y2;
 
 	for (i = 0; i < num; i++) {
 		x1 = *List++;
@@ -630,7 +630,7 @@ void DRLG_ListTrans(int num, BYTE *List)
 void DRLG_AreaTrans(int num, BYTE *List)
 {
 	int i;
-	BYTE x1, x2, y1, y2;
+	BYTE x1, y1, x2, y2;
 
 	for (i = 0; i < num; i++) {
 		x1 = *List++;

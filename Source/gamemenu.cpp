@@ -72,7 +72,7 @@ void gamemenu_update_single(TMenuItem *pMenuItems)
 	if (plr[myplr]._pmode != PM_DEATH && !deathflag)
 		enable = TRUE;
 
-	gmenu_enable(sgSingleMenu, enable);
+	gmenu_enable(&sgSingleMenu[0], enable);
 }
 
 void gamemenu_update_multi(TMenuItem *pMenuItems)
@@ -229,14 +229,14 @@ void gamemenu_music_volume(BOOL bActivate)
 		music_start(leveltype);
 	}
     } else {
-	volume = gamemenu_slider_music_sound(sgOptionsMenu);
-	sound_get_or_set_music_volume(volume);
+        volume = gamemenu_slider_music_sound(&sgOptionsMenu[0]);
+        sound_get_or_set_music_volume(volume);
 
-	if (volume == VOLUME_MIN) {
-		if (gbMusicOn) {
-			gbMusicOn = FALSE;
-			music_stop();
-		}
+        if (volume == VOLUME_MIN) {
+            if (gbMusicOn) {
+                gbMusicOn = FALSE;
+                music_stop();
+            }
         } else if (!gbMusicOn) {
 	gbMusicOn = TRUE;
 	music_start(leveltype);

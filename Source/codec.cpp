@@ -136,7 +136,7 @@ void codec_encode(BYTE *pbSrcDst, DWORD size, int size_64, char *pszPassword)
 	sig = (CodecSignature *)pbSrcDst;
 	sig->error = 0;
 	sig->unused = 0;
-	sig->checksum = *(DWORD *)tmp;
+	sig->checksum = *(DWORD *)&tmp[0];
 	sig->last_chunk_size = last_chunk;
 	SHA1Clear();
 }

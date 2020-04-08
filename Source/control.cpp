@@ -2515,7 +2515,7 @@ void control_drop_gold(char vkey)
 		input[strlen(input) - 1] = '\0';
 		dropGoldValue = atoi(input);
 	} else if (vkey - '0' >= 0 && vkey - '0' <= 9) {
-		if (dropGoldValue || atoi(input) <= initialDropGoldValue) {
+		if (dropGoldValue != 0 || atoi(input) <= initialDropGoldValue) {
 			input[strlen(input)] = vkey;
 			if (atoi(input) > initialDropGoldValue)
 				return;
@@ -2643,7 +2643,7 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 		if (width > 514 + PANEL_LEFT)
 			return msg;
 		msg++;
-		if (c) {
+		if (c != 0) {
 			PrintChar(*nOffset, c, color);
 		}
 		*nOffset += fontkern[c] + 1;
@@ -2795,7 +2795,7 @@ void control_press_enter()
 	int i;
 	BYTE talk_save;
 
-	if (sgszTalkMsg[0]) {
+	if (sgszTalkMsg[0] != 0) {
 		control_reset_talk_msg(sgszTalkMsg);
 		for (i = 0; i < 8; i++) {
 			if (!strcmp(sgszTalkSave[i], sgszTalkMsg))
