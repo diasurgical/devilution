@@ -347,19 +347,22 @@ void diablo_parse_flags(char *args)
 		while (isspace(*args)) {
 			args++;
 		}
-		if (_strnicmp("dd_emulate", args, strlen("dd_emulate")) == 0) {
+		static char de[] = "dd_emulate";
+		if (_strnicmp(de, args, strlen(de)) == 0) {
 			gbEmulate = TRUE;
-			args += strlen("dd_emulate");
+			args += strlen(de);
 			continue;
 		}
-		if (_strnicmp("dd_backbuf", args, strlen("dd_backbuf")) == 0) {
+		static char db[] = "dd_backbuf";
+		if (_strnicmp(db, args, strlen(db)) == 0) {
 			gbBackBuf = TRUE;
-			args += strlen("dd_backbuf");
+			args += strlen(db);
 			continue;
 		}
-		if (_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
+		static char ds[] = "ds_noduplicates";
+		if (_strnicmp(ds, args, strlen(ds)) == 0) {
 			gbDupSounds = FALSE;
-			args += strlen("ds_noduplicates");
+			args += strlen(ds);
 			continue;
 		}
 			c = tolower(*args);
