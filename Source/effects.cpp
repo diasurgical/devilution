@@ -1098,7 +1098,7 @@ TSFX sgSFX[] = {
 #define PLRSFXS (SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR | SFX_MONK)
 #else
 #define PLRSFXS (SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR)
-#end
+#endif
 
 BOOL effect_is_playing(int nSFX)
 {

@@ -2788,6 +2788,7 @@ void control_release_talk_btn()
 	}
 }
 
+#ifndef HELLFIRE
 void control_reset_talk_msg(char *msg)
 {
 	int i, pmask;
@@ -2798,11 +2799,10 @@ void control_reset_talk_msg(char *msg)
 			pmask |= 1 << i;
 	}
 
-#ifndef HELLFIRE
 	if (!msgcmd_add_server_cmd_W(sgszTalkMsg))
-#endif
 		NetSendCmdString(pmask, sgszTalkMsg);
 }
+#endif
 
 void control_type_message()
 {
