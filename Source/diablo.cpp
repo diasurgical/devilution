@@ -832,7 +832,7 @@ BOOL LeftMouseDown(int wParam)
 					} else if (pcurs >= CURSOR_FIRSTITEM) {
 						if (TryInvPut()) {
 							NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-							SetCursor_(CURSOR_HAND);
+							NewCursor(CURSOR_HAND);
 						}
 					} else {
 						if (plr[myplr]._pStatPts != 0 && !spselflag)
@@ -846,7 +846,7 @@ BOOL LeftMouseDown(int wParam)
 					CheckInvScrn();
 				DoPanBtn();
 				if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
-					SetCursor_(CURSOR_HAND);
+					NewCursor(CURSOR_HAND);
 			}
 		}
 	}
@@ -924,21 +924,21 @@ BOOL TryIconCurs()
 		if (pcursinvitem != -1) {
 			CheckIdentify(myplr, pcursinvitem);
 		} else {
-			SetCursor_(CURSOR_HAND);
+			NewCursor(CURSOR_HAND);
 		}
 		return TRUE;
 	} else if (pcurs == CURSOR_REPAIR) {
 		if (pcursinvitem != -1) {
 			DoRepair(myplr, pcursinvitem);
 		} else {
-			SetCursor_(CURSOR_HAND);
+			NewCursor(CURSOR_HAND);
 		}
 		return TRUE;
 	} else if (pcurs == CURSOR_RECHARGE) {
 		if (pcursinvitem != -1) {
 			DoRecharge(myplr, pcursinvitem);
 		} else {
-			SetCursor_(CURSOR_HAND);
+			NewCursor(CURSOR_HAND);
 		}
 		return TRUE;
 	} else if (pcurs == CURSOR_TELEPORT) {
@@ -949,10 +949,10 @@ BOOL TryIconCurs()
 		} else {
 			NetSendCmdLocParam2(TRUE, CMD_TSPELLXY, cursmx, cursmy, plr[myplr]._pTSpell, GetSpellLevel(myplr, plr[myplr]._pTSpell));
 		}
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 		return TRUE;
 	} else if (pcurs == CURSOR_DISARM && pcursobj == -1) {
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 		return TRUE;
 	}
 
@@ -989,7 +989,7 @@ void RightMouseDown()
 					if (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))
 						CheckPlrSpell();
 				} else if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM) {
-					SetCursor_(CURSOR_HAND);
+					NewCursor(CURSOR_HAND);
 				}
 			}
 		}
@@ -1910,7 +1910,7 @@ void timeout_cursor(BOOL bTimeout)
 			ClearPanel();
 			AddPanelString("-- Network timeout --", TRUE);
 			AddPanelString("-- Waiting for players --", TRUE);
-			SetCursor_(CURSOR_HOURGLASS);
+			NewCursor(CURSOR_HOURGLASS);
 			force_redraw = 255;
 		}
 		scrollrt_draw_game_screen(TRUE);
