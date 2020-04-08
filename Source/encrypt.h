@@ -6,7 +6,7 @@
 #ifndef __ENCRYPT_H__
 #define __ENCRYPT_H__
 
-extern DWORD hashtable[1280];
+extern DWORD hashtable[5][256];
 
 void Decrypt(DWORD *castBlock, DWORD size, DWORD key);
 void Encrypt(DWORD *castBlock, DWORD size, DWORD key);

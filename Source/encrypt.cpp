@@ -6,7 +6,7 @@
 #include "all.h"
 #include "../3rdParty/PKWare/pkware.h"
 
-DWORD hashtable[1280];
+DWORD hashtable[5][256];
 
 void Decrypt(DWORD *castBlock, DWORD size, DWORD key)
 {
@@ -14,7 +14,7 @@ void Decrypt(DWORD *castBlock, DWORD size, DWORD key)
 
 	seed = 0xEEEEEEEE;
 	for (i = 0; i < (size >> 2); i++) {
-		seed += hashtable[0x400 + (key & 0xFF)];
+		seed += hashtable[4][(key & 0xFF)];
 		*castBlock ^= seed + key;
 		seed += *castBlock + (seed << 5) + 3;
 		key = ((~key << 0x15) + 0x11111111) | (key >> 0x0B);
@@ -29,7 +29,7 @@ void Encrypt(DWORD *castBlock, DWORD size, DWORD key)
 	seed = 0xEEEEEEEE;
 	for (i = 0; i < (size >> 2); i++) {
 		ch = *castBlock;
-		seed += hashtable[0x400 + (key & 0xFF)];
+		seed += hashtable[4][(key & 0xFF)];
 		*castBlock ^= seed + key;
 		seed += ch + (seed << 5) + 3;
 		key = ((~key << 0x15) + 0x11111111) | (key >> 0x0B);
@@ -47,7 +47,7 @@ DWORD Hash(const char *s, int type)
 	while (s != NULL && *s) {
 		ch = *s++;
 		ch = toupper(ch);
-		seed1 = hashtable[(type << 8) + ch] ^ (seed1 + seed2);
+		seed1 = hashtable[type][ch] ^ (seed1 + seed2);
 		seed2 += ch + seed1 + (seed2 << 5) + 3;
 	}
 	return seed1;
@@ -65,7 +65,7 @@ void InitHash()
 			seed = (125 * seed + 3) % 0x2AAAAB;
 			ch = (seed & 0xFFFF);
 			seed = (125 * seed + 3) % 0x2AAAAB;
-			hashtable[i + j * 256] = ch << 16 | (seed & 0xFFFF);
+			hashtable[i][j] = ch << 16 | (seed & 0xFFFF);
 		}
 	}
 }
