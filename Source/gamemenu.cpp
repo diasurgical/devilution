@@ -6,7 +6,7 @@
 #include "all.h"
 
 /** Contains the game menu items of the single player menu. */
-TMenuItem sgSingleMenu[6] = {
+TMenuItem sgSingleMenu[] = {
 	// clang-format off
 	//   dwFlags, pszStr,        fnMenu
 	{ GMENU_ENABLED, "Save Game",   &gamemenu_save_game },
@@ -18,7 +18,7 @@ TMenuItem sgSingleMenu[6] = {
 	// clang-format on
 };
 /** Contains the game menu items of the multi player menu. */
-TMenuItem sgMultiMenu[5] = {
+TMenuItem sgMultiMenu[] = {
 	// clang-format off
 	//   dwFlags, pszStr,            fnMenu
 	{ GMENU_ENABLED, "Options",         &gamemenu_options      },
@@ -28,7 +28,7 @@ TMenuItem sgMultiMenu[5] = {
 	{ GMENU_ENABLED, NULL,              NULL                   }
 	// clang-format on
 };
-TMenuItem sgOptionsMenu[6] = {
+TMenuItem sgOptionsMenu[] = {
 	// clang-format off
 	//                     dwFlags, pszStr,          fnMenu
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_music_volume  },

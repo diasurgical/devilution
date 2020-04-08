@@ -7,19 +7,19 @@
 #define __DIABLO_H__
 
 extern HWND ghMainWnd;
-extern int glMid1Seed[NUMLEVELS];
-extern int glMid2Seed[NUMLEVELS];
+extern int glMid1Seed[NUMLEVELS + 1];
+extern int glMid2Seed[NUMLEVELS + 1];
 extern int gnLevelTypeTbl[NUMLEVELS];
 extern int MouseX;
 extern int MouseY;
 extern BOOL gbGameLoopStartup;
 extern DWORD glSeedTbl[NUMLEVELS];
 extern BOOL gbRunGame;
-extern int glMid3Seed[NUMLEVELS];
+extern int glMid3Seed[NUMLEVELS + 1];
 extern BOOL gbRunGameResult;
 extern BOOL zoomflag;
 extern BOOL gbProcessPlayers;
-extern int glEndSeed[NUMLEVELS];
+extern int glEndSeed[NUMLEVELS + 1];
 extern BOOL gbLoadGame;
 extern HINSTANCE ghInst;
 extern int DebugMonsters[10];

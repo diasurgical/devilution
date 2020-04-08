@@ -19,7 +19,7 @@ BYTE *sgpLogo;
 int sgCurrentMenuIdx;
 
 /** Maps from font index to bigtgold.cel frame number. */
-const BYTE lfontframe[127] = {
+const BYTE lfontframe[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -32,11 +32,11 @@ const BYTE lfontframe[127] = {
 	26, 42, 0, 43, 0, 0, 0, 1, 2, 3,
 	4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
 	14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-	24, 25, 26, 20, 0, 21, 0
+	24, 25, 26, 20, 0, 21, 0, 0
 };
 
 /** Maps from bigtgold.cel frame number to character width. */
-const BYTE lfontkern[56] = {
+const BYTE lfontkern[] = {
 	18, 33, 21, 26, 28, 19, 19, 26, 25, 11,
 	12, 25, 19, 34, 28, 32, 20, 32, 28, 20,
 	28, 36, 35, 46, 33, 33, 24, 11, 23, 22,

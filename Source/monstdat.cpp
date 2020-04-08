@@ -123,7 +123,7 @@ MonsterData monsterdata[] = {
 	// clang-format on
 };
 
-char MonstConvTbl[128] = {
+BYTE MonstConvTbl[] = {
 	MT_NZOMBIE,
 	MT_BZOMBIE,
 	MT_GZOMBIE,

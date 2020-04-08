@@ -8,19 +8,19 @@
 #include "../DiabloUI/diabloui.h"
 
 HWND ghMainWnd;
-int glMid1Seed[NUMLEVELS];
-int glMid2Seed[NUMLEVELS];
+int glMid1Seed[NUMLEVELS + 1];
+int glMid2Seed[NUMLEVELS + 1];
 int gnLevelTypeTbl[NUMLEVELS];
 int MouseX;
 int MouseY;
 BOOL gbGameLoopStartup;
 DWORD glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
-int glMid3Seed[NUMLEVELS];
+int glMid3Seed[NUMLEVELS + 1];
 BOOL gbRunGameResult;
 BOOL zoomflag;
 BOOL gbProcessPlayers;
-int glEndSeed[NUMLEVELS];
+int glEndSeed[NUMLEVELS + 1];
 BOOL gbLoadGame;
 HINSTANCE ghInst;
 int DebugMonsters[10];
