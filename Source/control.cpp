@@ -1335,7 +1335,7 @@ void InitControlPan()
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", NULL);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", NULL);
 		sgbPlrTalkTbl = 0;
-		sgszTalkMsg[0] = 0;
+		sgszTalkMsg[0] = '\0';
 		for (i = 0; i < MAX_PLRS; i++)
 			whisper[i] = TRUE;
 		for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++)
@@ -1847,7 +1847,7 @@ void CPrintString(int y, char *str, BOOL center, int lines)
 
 	lineOffset = 0;
 	lineStart = lineOffsets[lines][y] + PANEL_LEFT;
-	if (center == 1) {
+	if (center == TRUE) {
 		strWidth = 0;
 		tmp = str;
 		while (*tmp) {
@@ -2179,7 +2179,7 @@ void DrawLevelUpIcon()
 {
 	int nCel;
 
-	if (!stextflag) {
+	if (stextflag == STORE_NONE) {
 		nCel = lvlbtndown ? 3 : 2;
 		ADD_PlrStringXY(PANEL_LEFT + 0, PANEL_TOP - 49, PANEL_LEFT + 120, "Level Up", COL_WHITE);
 		CelDraw(40 + PANEL_X, -17 + PANEL_Y, pChrButtons, nCel, 41);
@@ -2572,7 +2572,7 @@ void DrawGoldSplit(int amount)
 	ADD_PlrStringXY(366, 121, 600, "you want to remove?", COL_GOLD);
 	if (amount > 0) {
 		sprintf(tempstr, "%u", amount);
-		PrintGameStr(388, 140, tempstr, 0);
+		PrintGameStr(388, 140, tempstr, COL_WHITE);
 		for (i = 0; i < tempstr[i]; i++) {
 			screen_x += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[i]]]] + 1;
 		}
@@ -2607,7 +2607,7 @@ void control_drop_gold(char vkey)
 		input[strlen(input) - 1] = '\0';
 		dropGoldValue = atoi(input);
 	} else if (vkey - '0' >= 0 && vkey - '0' <= 9) {
-		if (dropGoldValue || atoi(input) <= initialDropGoldValue) {
+		if (dropGoldValue != 0 || atoi(input) <= initialDropGoldValue) {
 			input[strlen(input)] = vkey;
 			if (atoi(input) > initialDropGoldValue)
 				return;
@@ -2690,7 +2690,7 @@ void DrawTalkPan()
 	CelBlitFrame(gpBuffer + x, pSPentSpn2Cels, frame, 12);
 	frame = (frame & 7) + 1;
 	talk_btn = 0;
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		if (i == myplr)
 			continue;
 		if (whisper[i]) {
@@ -2726,8 +2726,9 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 	int width;
 
 	x += 264;
+	y += 182 + PANEL_TOP;
 	width = x;
-	*nOffset = PitchTbl[y + 182 + PANEL_TOP] + x;
+	*nOffset = PitchTbl[y] + x;
 	while (*msg) {
 
 		c = fontframe[gbFontTransTbl[(BYTE)*msg]];
@@ -2735,7 +2736,7 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 		if (width > 514 + PANEL_LEFT)
 			return msg;
 		msg++;
-		if (c) {
+		if (c != 0) {
 			PrintChar(*nOffset, c, color);
 		}
 		*nOffset += fontkern[c] + 1;
@@ -2813,7 +2814,7 @@ void control_type_message()
 	}
 
 	talkflag = TRUE;
-	sgszTalkMsg[0] = 0;
+	sgszTalkMsg[0] = '\0';
 	frame = 1;
 	for (i = 0; i < 3; i++) {
 		talkbtndown[i] = FALSE;
@@ -2889,7 +2890,7 @@ void control_press_enter()
 	int i;
 	BYTE talk_save;
 
-	if (sgszTalkMsg[0]) {
+	if (sgszTalkMsg[0] != 0) {
 #ifdef HELLFIRE
 		int pmask;
 		pmask = 0;

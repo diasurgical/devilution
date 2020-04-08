@@ -139,7 +139,7 @@ char *ItemDropNames[] = {
 	"teddys1",
 	"cows1",
 	"donkys1",
-	"mooses1"
+	"mooses1",
 #endif
 };
 BYTE ItemAnimLs[] = {
@@ -186,7 +186,7 @@ BYTE ItemAnimLs[] = {
 	10,
 	15,
 	15,
-	15
+	15,
 #endif
 };
 int ItemDropSnds[] = {
@@ -233,7 +233,7 @@ int ItemDropSnds[] = {
 	IS_FMUSH,
 	IS_FHARM,
 	IS_FLARM,
-	IS_FLARM
+	IS_FLARM,
 #endif
 };
 int ItemInvSnds[] = {
@@ -280,7 +280,7 @@ int ItemInvSnds[] = {
 	IS_IMUSH,
 	IS_IHARM,
 	IS_ILARM,
-	IS_ILARM
+	IS_ILARM,
 #endif
 };
 #ifdef HELLFIRE

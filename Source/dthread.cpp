@@ -62,7 +62,7 @@ void dthread_start()
 	}
 
 	sghWorkToDoEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-	if (!sghWorkToDoEvent) {
+	if (sghWorkToDoEvent == NULL) {
 		error_buf = TraceLastError();
 		app_fatal("dthread:1\n%s", error_buf);
 	}
@@ -83,7 +83,7 @@ unsigned int __stdcall dthread_handler(void *data)
 	DWORD dwMilliseconds;
 
 	while (dthread_running) {
-		if (!sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, INFINITE) == -1) {
+		if (!sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, INFINITE) == WAIT_FAILED) {
 			error_buf = TraceLastError();
 			app_fatal("dthread4:\n%s", error_buf);
 		}
@@ -126,7 +126,7 @@ void dthread_cleanup()
 	dthread_running = FALSE;
 	SetEvent(sghWorkToDoEvent);
 	if (sghThread != INVALID_HANDLE_VALUE && glpDThreadId != GetCurrentThreadId()) {
-		if (WaitForSingleObject(sghThread, INFINITE) == -1) {
+		if (WaitForSingleObject(sghThread, INFINITE) == WAIT_FAILED) {
 			error_buf = TraceLastError();
 			app_fatal("dthread3:\n(%s)", error_buf);
 		}

@@ -114,7 +114,7 @@ void InitAutomap()
 		return;
 	}
 
-	dwTiles >>= 1;
+	dwTiles /= 2;
 	pTmp = pAFile;
 
 	for (i = 1; i <= dwTiles; i++) {
@@ -252,7 +252,7 @@ void DrawAutomap()
 
 		for (j = 0; j < cells; j++) {
 			WORD maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
-			if (maptype)
+			if (maptype != 0)
 				DrawAutomapTile(x, sy, maptype);
 			x += AmLine64;
 		}
@@ -261,7 +261,7 @@ void DrawAutomap()
 		y = sy + AmLine16;
 		for (j = 0; j <= cells; j++) {
 			WORD maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
-			if (maptype)
+			if (maptype != 0)
 				DrawAutomapTile(x, y, maptype);
 			x += AmLine64;
 		}
@@ -388,7 +388,7 @@ void DrawAutomapTile(int sx, int sy, WORD automap_type)
 			DrawLine(sx, sy, x1, y2, COLOR_DIM);
 			DrawLine(sx, sy, x2, y2, COLOR_DIM);
 		}
-		if (!(flags & (MAPFLAG_VERTDOOR | MAPFLAG_VERTGRATE | MAPFLAG_VERTARCH)))
+		if ((flags & (MAPFLAG_VERTDOOR | MAPFLAG_VERTGRATE | MAPFLAG_VERTARCH)) == 0)
 			DrawLine(sx, sy - AmLine16, sx - AmLine32, sy, COLOR_DIM);
 	}
 
@@ -421,7 +421,7 @@ void DrawAutomapTile(int sx, int sy, WORD automap_type)
 			DrawLine(sx, sy, x1, y2, COLOR_DIM);
 			DrawLine(sx, sy, x2, y2, COLOR_DIM);
 		}
-		if (!(flags & (MAPFLAG_HORZDOOR | MAPFLAG_HORZGRATE | MAPFLAG_HORZARCH)))
+		if ((flags & (MAPFLAG_HORZDOOR | MAPFLAG_HORZGRATE | MAPFLAG_HORZARCH)) == 0)
 			DrawLine(sx, sy - AmLine16, sx + AmLine32, sy, COLOR_DIM);
 	}
 
@@ -531,7 +531,7 @@ void DrawAutomapItem(int x, int y, BYTE color)
 
 	x1 = x - AmLine32 / 2;
 	y1 = y - AmLine16 / 2;
-	x2 = AmLine64 / 2 + x1;
+	x2 = x1 + AmLine64 / 2;
 	y2 = y1 + AmLine32 / 2;
 	DrawLine(x, y1, x1, y, color);
 	DrawLine(x, y1, x2, y, color);
@@ -673,9 +673,9 @@ void DrawAutomapText()
 			nextline = 50;
 		}
 	}
-	if (setlevel)
+	if (setlevel) {
 		PrintGameStr(8, nextline, quest_level_names[(BYTE)setlvlnum], COL_GOLD);
-	else if (currlevel) {
+	} else if (currlevel) {
 #ifdef HELLFIRE
 		if (currlevel < 17 || currlevel > 20) {
 			if (currlevel < 21 || currlevel > 24)

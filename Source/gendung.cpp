@@ -23,7 +23,7 @@ int SpeedFrameTbl[128][16];
 /**
  * List of transparancy masks to use for dPieces
  */
-char block_lvid[2049];
+char block_lvid[MAXTILES + 1];
 int level_frame_count[MAXTILES];
 int tile_defs[MAXTILES];
 WORD level_frame_types[MAXTILES];
@@ -32,20 +32,20 @@ int nlevel_frames;
 /**
  * List of light blocking dPieces
  */
-BOOLEAN nBlockTable[2049];
+BOOLEAN nBlockTable[MAXTILES + 1];
 /**
  * List of path blocking dPieces
  */
-BOOLEAN nSolidTable[2049];
+BOOLEAN nSolidTable[MAXTILES + 1];
 /**
  * List of transparent dPieces
  */
-BOOLEAN nTransTable[2049];
+BOOLEAN nTransTable[MAXTILES + 1];
 /**
  * List of missile blocking dPieces
  */
-BOOLEAN nMissileTable[2049];
-BOOLEAN nTrapTable[2049];
+BOOLEAN nMissileTable[MAXTILES + 1];
+BOOLEAN nTrapTable[MAXTILES + 1];
 int dminx;
 int dminy;
 int dmaxx;
@@ -382,7 +382,7 @@ void MakeSpeedCels()
 	if (total_frames > 128)
 		total_frames = 128;
 
-	frameidx = 0; /* move into loop ? */
+	frameidx = 0;
 
 	if (light4flag)
 		blk_cnt = 3;
@@ -501,7 +501,7 @@ void MakeSpeedCels()
 
 	for (y = 0; y < MAXDUNY; y++) {
 		for (x = 0; x < MAXDUNX; x++) {
-			if (dPiece[x][y]) {
+			if (dPiece[x][y] != 0) {
 				pMap = &dpiece_defs_map_2[x][y];
 				for (i = 0; i < blocks; i++) {
 					if (pMap->mt[i]) {
@@ -557,7 +557,7 @@ void SetDungeonMicros()
 		for (x = 0; x < MAXDUNX; x++) {
 			lv = dPiece[x][y];
 			pMap = &dpiece_defs_map_2[x][y];
-			if (lv) {
+			if (lv != 0) {
 				lv--;
 				if (leveltype != DTYPE_HELL)
 					pPiece = (WORD *)&pLevelPieces[20 * lv];
@@ -634,7 +634,7 @@ void DRLG_CopyTrans(int sx, int sy, int dx, int dy)
 void DRLG_ListTrans(int num, BYTE *List)
 {
 	int i;
-	BYTE x1, x2, y1, y2;
+	BYTE x1, y1, x2, y2;
 
 	for (i = 0; i < num; i++) {
 		x1 = *List++;
@@ -648,7 +648,7 @@ void DRLG_ListTrans(int num, BYTE *List)
 void DRLG_AreaTrans(int num, BYTE *List)
 {
 	int i;
-	BYTE x1, x2, y1, y2;
+	BYTE x1, y1, x2, y2;
 
 	for (i = 0; i < num; i++) {
 		x1 = *List++;
@@ -681,7 +681,7 @@ void DRLG_SetPC()
 
 	for (j = 0; j < h; j++) {
 		for (i = 0; i < w; i++) {
-			dFlags[i + x][j + y] |= 8;
+			dFlags[i + x][j + y] |= BFLAG_POPULATED;
 		}
 	}
 }
@@ -698,7 +698,7 @@ void Make_SetPC(int x, int y, int w, int h)
 
 	for (j = 0; j < dh; j++) {
 		for (i = 0; i < dw; i++) {
-			dFlags[i + dx][j + dy] |= 8;
+			dFlags[i + dx][j + dy] |= BFLAG_POPULATED;
 		}
 	}
 }

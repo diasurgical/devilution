@@ -58,7 +58,7 @@ void doom_alloc_cel()
 void doom_cleanup()
 {
 #ifdef HELLFIRE
-	if (pDoomCel) {
+	if (pDoomCel != NULL) {
 		MemFreeDbg(pDoomCel);
 		pDoomCel = NULL;
 	}

@@ -1386,14 +1386,14 @@ typedef enum _sfx_id {
 } _sfx_id;
 
 typedef enum sfx_flag {
-	SFX_STREAM   = 0x01,
-	SFX_MISC     = 0x02,
-	SFX_UI       = 0x04,
-	SFX_MONK     = 0x08,
-	SFX_ROGUE    = 0x10,
-	SFX_WARRIOR  = 0x20,
-	SFX_SORCEROR = 0x40,
-	SFX_LOADED   = 0x80,
+	sfx_STREAM   = 0x01,
+	sfx_MISC     = 0x02,
+	sfx_UI       = 0x04,
+	sfx_MONK     = 0x08,
+	sfx_ROGUE    = 0x10,
+	sfx_WARRIOR  = 0x20,
+	sfx_SORCEROR = 0x40,
+	sfx_LOADED   = 0x80,
 } sfx_flag;
 
 typedef enum item_equip_type {
@@ -1768,8 +1768,8 @@ typedef enum _monster_id {
 	MT_ADVOCATE = 0x6C,
 	MT_GOLEM    = 0x6D,
 	MT_DIABLO   = 0x6E,
+	MT_DARKMAGE = 0x6F,
 #ifdef HELLFIRE
-	MT_DARKMAGE = 0x6F, /* not counted in enum in vanilla */
 	MT_HELLBOAR = 0x70,
 	MT_STINGER  = 0x71,
 	MT_PSYCHORB = 0x72,
@@ -1796,8 +1796,10 @@ typedef enum _monster_id {
 	MT_FLESTHNG = 0x87,
 	MT_REAPER   = 0x88,
 	MT_NAKRUL   = 0x89,
-#endif
 	NUM_MTYPES,
+#else
+	NUM_MTYPES  = 0x6F, /// BUGFIX the count is off by one
+#endif
 } _monster_id;
 
 // this enum contains indexes from UniqMonst array for special unique monsters (usually quest related)
