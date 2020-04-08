@@ -81,8 +81,8 @@ void gmenu_init_menu()
 {
 	PentSpin_frame = 1;
 	sgpCurrentMenu = NULL;
-	sgpCurrItem = 0;
-	dword_63447C = 0;
+	sgpCurrItem = NULL;
+	dword_63447C = NULL;
 	sgCurrentMenuIdx = 0;
 	mouseNavigation = FALSE;
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", NULL);
@@ -246,7 +246,7 @@ BOOL gmenu_presskeys(int vkey)
 		break;
 	case VK_ESCAPE:
 		PlaySFX(IS_TITLEMOV);
-		gmenu_set_items(0, 0);
+		gmenu_set_items(NULL, NULL);
 		break;
 	case VK_SPACE:
 		return FALSE;

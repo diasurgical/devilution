@@ -82,7 +82,7 @@ void gamemenu_update_multi(TMenuItem *pMenuItems)
 
 void gamemenu_off()
 {
-	gmenu_set_items(0, NULL);
+	gmenu_set_items(NULL, NULL);
 }
 
 void gamemenu_handle_previous()

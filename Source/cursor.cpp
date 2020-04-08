@@ -185,14 +185,14 @@ void CheckCursMove()
 	sy = MouseY;
 
 	if (chrflag || questlog) {
-		if (sx >= 160) {
-			sx -= 160;
+		if (sx >= SCREEN_WIDTH / 4) {
+			sx -= SCREEN_WIDTH / 4;
 		} else {
 			sx = 0;
 		}
 	} else if (invflag || sbookflag) {
-		if (sx <= 320) {
-			sx += 160;
+		if (sx <= SCREEN_WIDTH / 2) {
+			sx += SCREEN_WIDTH / 4;
 		} else {
 			sx = 0;
 		}

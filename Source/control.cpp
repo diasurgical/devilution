@@ -1774,7 +1774,7 @@ void CPrintString(int y, char *str, BOOL center, int lines)
 
 	lineOffset = 0;
 	lineStart = lineOffsets[lines][y] + PANEL_LEFT;
-	if (center == 1) {
+	if (center == TRUE) {
 		strWidth = 0;
 		tmp = str;
 		while (*tmp) {
@@ -2106,7 +2106,7 @@ void DrawLevelUpIcon()
 {
 	int nCel;
 
-	if (!stextflag) {
+	if (stextflag == STORE_NONE) {
 		nCel = lvlbtndown ? 3 : 2;
 		ADD_PlrStringXY(PANEL_LEFT + 0, PANEL_TOP - 49, PANEL_LEFT + 120, "Level Up", COL_WHITE);
 		CelDraw(40 + PANEL_X, -17 + PANEL_Y, pChrButtons, nCel, 41);
@@ -2480,7 +2480,7 @@ void DrawGoldSplit(int amount)
 	ADD_PlrStringXY(366, 121, 600, "you want to remove?", COL_GOLD);
 	if (amount > 0) {
 		sprintf(tempstr, "%u", amount);
-		PrintGameStr(388, 140, tempstr, 0);
+		PrintGameStr(388, 140, tempstr, COL_WHITE);
 		for (i = 0; i < tempstr[i]; i++) {
 			screen_x += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[i]]]] + 1;
 		}
@@ -2598,7 +2598,7 @@ void DrawTalkPan()
 	CelBlitFrame(gpBuffer + x, pSPentSpn2Cels, frame, 12);
 	frame = (frame & 7) + 1;
 	talk_btn = 0;
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		if (i == myplr)
 			continue;
 		if (whisper[i]) {

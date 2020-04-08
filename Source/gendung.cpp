@@ -663,7 +663,7 @@ void DRLG_SetPC()
 
 	for (j = 0; j < h; j++) {
 		for (i = 0; i < w; i++) {
-			dFlags[i + x][j + y] |= 8;
+			dFlags[i + x][j + y] |= BFLAG_POPULATED;
 		}
 	}
 }
@@ -680,7 +680,7 @@ void Make_SetPC(int x, int y, int w, int h)
 
 	for (j = 0; j < dh; j++) {
 		for (i = 0; i < dw; i++) {
-			dFlags[i + dx][j + dy] |= 8;
+			dFlags[i + dx][j + dy] |= BFLAG_POPULATED;
 		}
 	}
 }

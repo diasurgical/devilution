@@ -915,6 +915,7 @@ TSFX sgSFX[] = {
 };
 
 #define PLRSFXS (SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR)
+
 BOOL effect_is_playing(int nSFX)
 {
 	TSFX *sfx = &sgSFX[nSFX];
@@ -1096,7 +1097,7 @@ void stream_play(TSFX *pSFX, int lVolume, int lPan)
 		SFileEnableDirectAccess(TRUE);
 #endif
 		if (!success) {
-			sghStream = 0;
+			sghStream = NULL;
 		} else {
 			if (!SFileDdaBeginEx(sghStream, 0x40000, 0, 0, lVolume, lPan, 0))
 				stream_stop();
