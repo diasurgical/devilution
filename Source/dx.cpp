@@ -44,12 +44,12 @@ static void dx_create_back_buffer()
 	}
 
 	memset(&ddsd, 0, sizeof(ddsd));
-	ddsd.dwWidth = BUFFER_WIDTH;
-	ddsd.lPitch = BUFFER_WIDTH;
 	ddsd.dwSize = sizeof(ddsd);
 	ddsd.dwFlags = DDSD_PIXELFORMAT | DDSD_PITCH | DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
 	ddsd.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY | DDSCAPS_OFFSCREENPLAIN;
 	ddsd.dwHeight = BUFFER_HEIGHT;
+	ddsd.dwWidth = BUFFER_WIDTH;
+	ddsd.lPitch = BUFFER_WIDTH;
 	ddsd.ddpfPixelFormat.dwSize = sizeof(ddsd.ddpfPixelFormat);
 	error_code = lpDDSPrimary->GetPixelFormat(&ddsd.ddpfPixelFormat);
 	if (error_code != DD_OK)

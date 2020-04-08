@@ -2634,8 +2634,9 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 	int width;
 
 	x += 264;
+	y += 182 + PANEL_TOP;
 	width = x;
-	*nOffset = PitchTbl[y + 182 + PANEL_TOP] + x;
+	*nOffset = PitchTbl[y] + x;
 	while (*msg) {
 
 		c = fontframe[gbFontTransTbl[(BYTE)*msg]];

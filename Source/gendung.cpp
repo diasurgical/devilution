@@ -23,7 +23,7 @@ int SpeedFrameTbl[128][16];
 /**
  * List of transparancy masks to use for dPieces
  */
-char block_lvid[2049];
+char block_lvid[MAXTILES + 1];
 int level_frame_count[MAXTILES];
 int tile_defs[MAXTILES];
 WORD level_frame_types[MAXTILES];
@@ -32,20 +32,20 @@ int nlevel_frames;
 /**
  * List of light blocking dPieces
  */
-BOOLEAN nBlockTable[2049];
+BOOLEAN nBlockTable[MAXTILES + 1];
 /**
  * List of path blocking dPieces
  */
-BOOLEAN nSolidTable[2049];
+BOOLEAN nSolidTable[MAXTILES + 1];
 /**
  * List of transparent dPieces
  */
-BOOLEAN nTransTable[2049];
+BOOLEAN nTransTable[MAXTILES + 1];
 /**
  * List of missile blocking dPieces
  */
-BOOLEAN nMissileTable[2049];
-BOOLEAN nTrapTable[2049];
+BOOLEAN nMissileTable[MAXTILES + 1];
+BOOLEAN nTrapTable[MAXTILES + 1];
 int dminx;
 int dminy;
 int dmaxx;
