@@ -254,124 +254,125 @@ char MonstConvTbl[128] = {
 	MT_DARKMAGE,
 };
 
+#define MAT_NEVER  0
+#define MAT_ALWAYS 1
+#define MAT_RETAIL 2
 /**
- * 0 = Never avalible
- * 1 = Avalible in retail and shareware
- * 2 = avalible in retail only
+ * Define what version a monster type is available in
  */
 BYTE MonstAvailTbl[] = {
-	1, // Zombie
-	1, // Ghoul
-	1, // Rotting Carcass
-	1, // Black Death
-	1, // Fallen One
-	1, // Carver
-	1, // Devil Kin
-	1, // Dark One
-	1, // Skeleton
-	1, // Corpse Axe
-	1, // Burning Dead
-	1, // Horror
-	1, // Fallen One
-	1, // Carver
-	1, // Devil Kin
-	1, // Dark One
-	1, // Scavenger
-	1, // Plague Eater
-	1, // Shadow Beast
-	1, // Bone Gasher
-	1, // Skeleton
-	1, // Corpse Bow
-	1, // Burning Dead
-	1, // Horror
-	1, // Skeleton Captain
-	1, // Corpse Captain
-	1, // Burning Dead Captain
-	1, // Horror Captain
-	0, // Invisible Lord
-	2, // Hidden
-	2, // Stalker
-	2, // Unseen
-	2, // Illusion Weaver
-	0, // Lord Sayter
-	2, // Flesh Clan
-	2, // Stone Clan
-	2, // Fire Clan
-	2, // Night Clan
-	1, // Fiend
-	1, // Blink
-	1, // Gloom
-	1, // Familiar
-	2, // Flesh Clan
-	2, // Stone Clan
-	2, // Fire Clan
-	2, // Night Clan
-	2, // Acid Beast
-	2, // Poison Spitter
-	2, // Pit Beast
-	2, // Lava Maw
-	0, // Skeleton King
-	0, // The Butcher
-	2, // Overlord
-	2, // Mud Man
-	2, // Toad Demon
-	2, // Flayed One
-	0, // Wyrm
-	0, // Cave Slug
-	0, // Devil Wyrm
-	0, // Devourer
-	2, // Magma Demon
-	2, // Blood Stone
-	2, // Hell Stone
-	2, // Lava Lord
-	2, // Horned Demon
-	2, // Mud Runner
-	2, // Frost Charger
-	2, // Obsidian Lord
-	0, // Bone Demon (oldboned in Hellfire)
-	0, // Red Death
-	0, // Litch Demon
-	0, // Undead Balrog
-	0, // Incinerator
-	0, // Flame Lord
-	0, // Doom Fire
-	0, // Hell Burner
-	2, // Red Storm
-	2, // Storm Rider
-	2, // Storm Lord
-	2, // Maelstorm
-	0, // Devil Kin Brute
-	2, // Winged-Demon
-	2, // Gargoyle
-	2, // Blood Claw
-	2, // Death Wing
-	2, // Slayer
-	2, // Guardian
-	2, // Vortex Lord
-	2, // Balrog
-	2, // Cave Viper
-	2, // Fire Drake
-	2, // Gold Viper
-	2, // Azure Drake
-	2, // Black Knight
-	2, // Doom Guard
-	2, // Steel Lord
-	2, // Blood Knight
-	0, // Unraveler
-	0, // Hollow One
-	0, // Pain Master
-	0, // Reality Weaver
-	2, // Succubus
-	2, // Snow Witch
-	2, // Hell Spawn
-	2, // Soul Burner
-	2, // Counselor
-	2, // Magistrate
-	2, // Cabalist
-	2, // Advocate
-	0, // Golem
-	0, // The Dark Lord
-	0, // The Arch-Litch Malignus
+	MAT_ALWAYS, // Zombie
+	MAT_ALWAYS, // Ghoul
+	MAT_ALWAYS, // Rotting Carcass
+	MAT_ALWAYS, // Black Death
+	MAT_ALWAYS, // Fallen One
+	MAT_ALWAYS, // Carver
+	MAT_ALWAYS, // Devil Kin
+	MAT_ALWAYS, // Dark One
+	MAT_ALWAYS, // Skeleton
+	MAT_ALWAYS, // Corpse Axe
+	MAT_ALWAYS, // Burning Dead
+	MAT_ALWAYS, // Horror
+	MAT_ALWAYS, // Fallen One
+	MAT_ALWAYS, // Carver
+	MAT_ALWAYS, // Devil Kin
+	MAT_ALWAYS, // Dark One
+	MAT_ALWAYS, // Scavenger
+	MAT_ALWAYS, // Plague Eater
+	MAT_ALWAYS, // Shadow Beast
+	MAT_ALWAYS, // Bone Gasher
+	MAT_ALWAYS, // Skeleton
+	MAT_ALWAYS, // Corpse Bow
+	MAT_ALWAYS, // Burning Dead
+	MAT_ALWAYS, // Horror
+	MAT_ALWAYS, // Skeleton Captain
+	MAT_ALWAYS, // Corpse Captain
+	MAT_ALWAYS, // Burning Dead Captain
+	MAT_ALWAYS, // Horror Captain
+	MAT_NEVER,  // Invisible Lord
+	MAT_RETAIL, // Hidden
+	MAT_RETAIL, // Stalker
+	MAT_RETAIL, // Unseen
+	MAT_RETAIL, // Illusion Weaver
+	MAT_NEVER,  // Lord Sayter
+	MAT_RETAIL, // Flesh Clan
+	MAT_RETAIL, // Stone Clan
+	MAT_RETAIL, // Fire Clan
+	MAT_RETAIL, // Night Clan
+	MAT_ALWAYS, // Fiend
+	MAT_ALWAYS, // Blink
+	MAT_ALWAYS, // Gloom
+	MAT_ALWAYS, // Familiar
+	MAT_RETAIL, // Flesh Clan
+	MAT_RETAIL, // Stone Clan
+	MAT_RETAIL, // Fire Clan
+	MAT_RETAIL, // Night Clan
+	MAT_RETAIL, // Acid Beast
+	MAT_RETAIL, // Poison Spitter
+	MAT_RETAIL, // Pit Beast
+	MAT_RETAIL, // Lava Maw
+	MAT_NEVER,  // Skeleton King
+	MAT_NEVER,  // The Butcher
+	MAT_RETAIL, // Overlord
+	MAT_RETAIL, // Mud Man
+	MAT_RETAIL, // Toad Demon
+	MAT_RETAIL, // Flayed One
+	MAT_NEVER,  // Wyrm
+	MAT_NEVER,  // Cave Slug
+	MAT_NEVER,  // Devil Wyrm
+	MAT_NEVER,  // Devourer
+	MAT_RETAIL, // Magma Demon
+	MAT_RETAIL, // Blood Stone
+	MAT_RETAIL, // Hell Stone
+	MAT_RETAIL, // Lava Lord
+	MAT_RETAIL, // Horned Demon
+	MAT_RETAIL, // Mud Runner
+	MAT_RETAIL, // Frost Charger
+	MAT_RETAIL, // Obsidian Lord
+	MAT_NEVER,  // Bone Demon (oldboned in Hellfire)
+	MAT_NEVER,  // Red Death
+	MAT_NEVER,  // Litch Demon
+	MAT_NEVER,  // Undead Balrog
+	MAT_NEVER,  // Incinerator
+	MAT_NEVER,  // Flame Lord
+	MAT_NEVER,  // Doom Fire
+	MAT_NEVER,  // Hell Burner
+	MAT_RETAIL, // Red Storm
+	MAT_RETAIL, // Storm Rider
+	MAT_RETAIL, // Storm Lord
+	MAT_RETAIL, // Maelstorm
+	MAT_NEVER,  // Devil Kin Brute
+	MAT_RETAIL, // Winged-Demon
+	MAT_RETAIL, // Gargoyle
+	MAT_RETAIL, // Blood Claw
+	MAT_RETAIL, // Death Wing
+	MAT_RETAIL, // Slayer
+	MAT_RETAIL, // Guardian
+	MAT_RETAIL, // Vortex Lord
+	MAT_RETAIL, // Balrog
+	MAT_RETAIL, // Cave Viper
+	MAT_RETAIL, // Fire Drake
+	MAT_RETAIL, // Gold Viper
+	MAT_RETAIL, // Azure Drake
+	MAT_RETAIL, // Black Knight
+	MAT_RETAIL, // Doom Guard
+	MAT_RETAIL, // Steel Lord
+	MAT_RETAIL, // Blood Knight
+	MAT_NEVER,  // Unraveler
+	MAT_NEVER,  // Hollow One
+	MAT_NEVER,  // Pain Master
+	MAT_NEVER,  // Reality Weaver
+	MAT_RETAIL, // Succubus
+	MAT_RETAIL, // Snow Witch
+	MAT_RETAIL, // Hell Spawn
+	MAT_RETAIL, // Soul Burner
+	MAT_RETAIL, // Counselor
+	MAT_RETAIL, // Magistrate
+	MAT_RETAIL, // Cabalist
+	MAT_RETAIL, // Advocate
+	MAT_NEVER,  // Golem
+	MAT_NEVER,  // The Dark Lord
+	MAT_NEVER,  // The Arch-Litch Malignus
 };
 
 UniqMonstStruct UniqMonst[] = {
