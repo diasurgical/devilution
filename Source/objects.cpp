@@ -305,7 +305,7 @@ void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, in
 		if (!exit) {
 			cnt++;
 			if (cnt > 20000)
-			return;
+				return;
 		}
 	}
 
@@ -633,9 +633,9 @@ void AddStoryBooks()
 			}
 		}
 		if (!done) {
-		cnt++;
-		if (cnt > 20000)
-			return;
+			cnt++;
+			if (cnt > 20000)
+				return;
 		}
 	}
 	AddObject(OBJ_STORYBOOK, xp, yp);
@@ -722,12 +722,12 @@ void AddLazStand()
 			}
 		}
 		if (!found) {
-		cnt++;
-		if (cnt > 10000) {
-			InitRndLocObj(1, 1, OBJ_LAZSTAND);
-			return;
+			cnt++;
+			if (cnt > 10000) {
+				InitRndLocObj(1, 1, OBJ_LAZSTAND);
+				return;
+			}
 		}
-	}
 	}
 	AddObject(OBJ_LAZSTAND, xp, yp);
 	AddObject(OBJ_TNUDEM2, xp, yp + 2);
@@ -1118,12 +1118,12 @@ void AddShrine(int i)
 			slist[j] = 1;
 		}
 		if (gbMaxPlayers != 1 && shrineavail[j] == 1) {
-				slist[j] = 0;
-			}
-		if (gbMaxPlayers == 1 && shrineavail[j] == 2) {
-				slist[j] = 0;
-			}
+			slist[j] = 0;
 		}
+		if (gbMaxPlayers == 1 && shrineavail[j] == 2) {
+			slist[j] = 0;
+		}
+	}
 	do {
 		val = random_(150, NUM_SHRINETYPE);
 	} while (!slist[val]);
@@ -2437,17 +2437,17 @@ void OperateBook(int pnum, int i)
 			oi = objectactive[j];
 			otype = object[oi]._otype;
 			if (otype == OBJ_MCIRCLE2 && object[oi]._oVar6 == 1) {
-					dx = 27;
-					dy = 29;
-					object[oi]._oVar6 = 4;
-					do_add_missile = TRUE;
-				}
+				dx = 27;
+				dy = 29;
+				object[oi]._oVar6 = 4;
+				do_add_missile = TRUE;
+			}
 			if (otype == OBJ_MCIRCLE2 && object[oi]._oVar6 == 2) {
-					dx = 43;
-					dy = 29;
-					object[oi]._oVar6 = 4;
-					do_add_missile = TRUE;
-				}
+				dx = 43;
+				dy = 29;
+				object[oi]._oVar6 = 4;
+				do_add_missile = TRUE;
+			}
 			if (do_add_missile) {
 				object[dObject[35][36] - 1]._oVar5++;
 				AddMissile(plr[pnum]._px, plr[pnum]._py, dx, dy, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);

@@ -99,9 +99,9 @@ void dx_init(HWND hWnd)
 	BOOL bSuccess;
 	GUID *lpGUID;
 
-	assert(! gpBuffer);
-	assert(! sgdwLockCount);
-	assert(! sgpBackBuf);
+	assert(!gpBuffer);
+	assert(!sgdwLockCount);
+	assert(!sgpBackBuf);
 
 	SetFocus(hWnd);
 	ShowWindow(hWnd, SW_SHOWNORMAL);

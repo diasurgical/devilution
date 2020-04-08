@@ -2546,23 +2546,23 @@ typedef enum _setlevels {
 } _setlevels;
 
 typedef enum quest_id {
-	Q_ROCK      = 0x0,
-	Q_MUSHROOM  = 0x1,
-	Q_GARBUD    = 0x2,
-	Q_ZHAR      = 0x3,
-	Q_VEIL      = 0x4,
-	Q_DIABLO    = 0x5,
-	Q_BUTCHER   = 0x6,
-	Q_LTBANNER  = 0x7,
-	Q_BLIND     = 0x8,
-	Q_BLOOD     = 0x9,
-	Q_ANVIL     = 0xA,
-	Q_WARLORD   = 0xB,
-	Q_SKELKING  = 0xC,
-	Q_PWATER    = 0xD,
-	Q_SCHAMB    = 0xE,
-	Q_BETRAYER  = 0xF,
-	Q_INVALID = -1,
+	Q_ROCK     = 0x0,
+	Q_MUSHROOM = 0x1,
+	Q_GARBUD   = 0x2,
+	Q_ZHAR     = 0x3,
+	Q_VEIL     = 0x4,
+	Q_DIABLO   = 0x5,
+	Q_BUTCHER  = 0x6,
+	Q_LTBANNER = 0x7,
+	Q_BLIND    = 0x8,
+	Q_BLOOD    = 0x9,
+	Q_ANVIL    = 0xA,
+	Q_WARLORD  = 0xB,
+	Q_SKELKING = 0xC,
+	Q_PWATER   = 0xD,
+	Q_SCHAMB   = 0xE,
+	Q_BETRAYER = 0xF,
+	Q_INVALID  = -1,
 } quest_id;
 
 typedef enum quest_state {
@@ -2712,9 +2712,9 @@ typedef enum plr_class {
 } plr_class;
 
 typedef enum _ui_classes {
-	UI_WARRIOR     = 0x0,
-	UI_ROGUE       = 0x1,
-	UI_SORCERER    = 0x2,
+	UI_WARRIOR  = 0x0,
+	UI_ROGUE    = 0x1,
+	UI_SORCERER = 0x2,
 	UI_NUM_CLASSES,
 } _ui_classes;
 

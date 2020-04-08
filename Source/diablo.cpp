@@ -288,50 +288,50 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		return 0;
 
 #ifdef _DEBUG
-		SFileEnableDirectAccess(TRUE);
+	SFileEnableDirectAccess(TRUE);
 #endif
-		diablo_init_screen();
-		diablo_parse_flags(lpCmdLine);
-		init_create_window(nCmdShow);
-		ui_sound_init();
-		UiInitialize();
+	diablo_init_screen();
+	diablo_parse_flags(lpCmdLine);
+	init_create_window(nCmdShow);
+	ui_sound_init();
+	UiInitialize();
 #ifdef SPAWN
-		UiSetSpawned(TRUE);
+	UiSetSpawned(TRUE);
 #endif
 
 #ifdef _DEBUG
-		if (showintrodebug)
+	if (showintrodebug)
 #endif
-			play_movie("gendata\\logo.smk", TRUE);
+		play_movie("gendata\\logo.smk", TRUE);
 
 #ifndef SPAWN
-		{
-			char szValueName[] = "Intro";
+	{
+		char szValueName[] = "Intro";
 		if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
-				nData = 1;
-			if (nData)
-				play_movie("gendata\\diablo1.smk", TRUE);
+			nData = 1;
+		if (nData)
+			play_movie("gendata\\diablo1.smk", TRUE);
 		SRegSaveValue(APP_NAME, szValueName, 0, 0);
-		}
+	}
 #endif
 
 #ifdef _DEBUG
-		if (showintrodebug) {
+	if (showintrodebug) {
 #endif
-			UiTitleDialog(7);
-			BlackPalette();
+		UiTitleDialog(7);
+		BlackPalette();
 #ifdef _DEBUG
-		}
+	}
 #endif
 
-		mainmenu_loop();
-		UiDestroy();
-		SaveGamma();
+	mainmenu_loop();
+	UiDestroy();
+	SaveGamma();
 
-		if (ghMainWnd) {
-			Sleep(300);
-			DestroyWindow(ghMainWnd);
-		}
+	if (ghMainWnd) {
+		Sleep(300);
+		DestroyWindow(ghMainWnd);
+	}
 
 	return 0;
 }
@@ -365,33 +365,33 @@ void diablo_parse_flags(char *args)
 			args += strlen(ds);
 			continue;
 		}
-			c = tolower(*args);
-			args++;
+		c = tolower(*args);
+		args++;
 #ifdef _DEBUG
-			switch (c) {
-			case '^':
+		switch (c) {
+		case '^':
 			debug_mode_key_inverted_v = TRUE;
-				break;
-			case '$':
+			break;
+		case '$':
 			debug_mode_dollar_sign = TRUE;
-				break;
-			case 'b':
-				/*
+			break;
+		case 'b':
+			/*
 			debug_mode_key_b = TRUE;
 			*/
-				break;
-			case 'd':
+			break;
+		case 'd':
 			showintrodebug = FALSE;
 			debug_mode_key_d = TRUE;
-				break;
-			case 'f':
-				EnableFrameCount();
-				break;
-			case 'i':
+			break;
+		case 'f':
+			EnableFrameCount();
+			break;
+		case 'i':
 			debug_mode_key_i = TRUE;
-				break;
-			case 'j':
-				/*
+			break;
+		case 'j':
+			/*
 				while(isspace(*args)) {
 					args++;
 				}
@@ -402,96 +402,96 @@ void diablo_parse_flags(char *args)
 				}
 				debug_mode_key_J_trigger = i;
 			*/
-				break;
-			case 'l':
-				setlevel = FALSE;
-				leveldebug = TRUE;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				leveltype = i;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				currlevel = i;
-				plr[0].plrlevel = i;
-				break;
-			case 'm':
-				monstdebug = TRUE;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				DebugMonsters[debugmonsttypes++] = i;
-				break;
-			case 'n':
-			showintrodebug = FALSE;
-				break;
-			case 'q':
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				questdebug = i;
-				break;
-			case 'r':
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				setseed = i;
-				break;
-			case 's':
-			debug_mode_key_s = TRUE;
-				break;
-			case 't':
-				leveldebug = TRUE;
-				setlevel = TRUE;
-				while (isspace(*args)) {
-					args++;
-				}
-				i = 0;
-				while (isdigit(*args)) {
-					i = *args + 10 * i - '0';
-					args++;
-				}
-				setlvlnum = i;
-				break;
-			case 'v':
-				visiondebug = TRUE;
-				break;
-			case 'w':
-			debug_mode_key_w = TRUE;
-				break;
-			case 'x':
-				fullscreen = FALSE;
-				break;
+			break;
+		case 'l':
+			setlevel = FALSE;
+			leveldebug = TRUE;
+			while (isspace(*args)) {
+				args++;
 			}
-#endif
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			leveltype = i;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			currlevel = i;
+			plr[0].plrlevel = i;
+			break;
+		case 'm':
+			monstdebug = TRUE;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			DebugMonsters[debugmonsttypes++] = i;
+			break;
+		case 'n':
+			showintrodebug = FALSE;
+			break;
+		case 'q':
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			questdebug = i;
+			break;
+		case 'r':
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			setseed = i;
+			break;
+		case 's':
+			debug_mode_key_s = TRUE;
+			break;
+		case 't':
+			leveldebug = TRUE;
+			setlevel = TRUE;
+			while (isspace(*args)) {
+				args++;
+			}
+			i = 0;
+			while (isdigit(*args)) {
+				i = *args + 10 * i - '0';
+				args++;
+			}
+			setlvlnum = i;
+			break;
+		case 'v':
+			visiondebug = TRUE;
+			break;
+		case 'w':
+			debug_mode_key_w = TRUE;
+			break;
+		case 'x':
+			fullscreen = FALSE;
+			break;
 		}
+#endif
 	}
+}
 
 void diablo_init_screen()
 {
@@ -1521,7 +1521,7 @@ void PressChar(int vkey)
 
 void LoadLvlGFX()
 {
-	assert(! pDungeonCels);
+	assert(!pDungeonCels);
 
 	switch (leveltype) {
 	case DTYPE_TOWN:
@@ -1564,7 +1564,7 @@ void LoadLvlGFX()
 
 void LoadAllGFX()
 {
-	assert(! pSpeedCels);
+	assert(!pSpeedCels);
 	pSpeedCels = DiabloAllocPtr(0x100000);
 	IncProgress();
 	IncProgress();
@@ -1756,7 +1756,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 			ResyncMPQuests();
 #ifndef SPAWN
 	} else {
-		assert(! pSpeedCels);
+		assert(!pSpeedCels);
 		pSpeedCels = DiabloAllocPtr(0x100000);
 		LoadSetMap();
 		IncProgress();
@@ -1931,11 +1931,11 @@ void diablo_color_cyc_logic()
 		color_cycle_timer = tc;
 		if (!palette_get_color_cycling())
 			return;
-			if (leveltype == DTYPE_HELL) {
-				lighting_color_cycling();
-			} else if (leveltype == DTYPE_CAVES) {
-				if (fullscreen)
-					palette_update_caves();
-			}
+		if (leveltype == DTYPE_HELL) {
+			lighting_color_cycling();
+		} else if (leveltype == DTYPE_CAVES) {
+			if (fullscreen)
+				palette_update_caves();
 		}
 	}
+}
