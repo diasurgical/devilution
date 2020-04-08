@@ -11,8 +11,8 @@ HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
 int gnLevelTypeTbl[NUMLEVELS];
-int MouseY;
 int MouseX;
+int MouseY;
 BOOL gbGameLoopStartup;
 DWORD glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
@@ -119,11 +119,11 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 			InitPortals();
 			InitDungMsgs(myplr);
 		}
-		if (!gbValidSaveFile || !gbLoadGame)
+		if (!gbValidSaveFile || !gbLoadGame) {
 			uMsg = WM_DIABNEWGAME;
-		else
+		} else {
 			uMsg = WM_DIABLOADGAME;
-
+		}
 		run_game_loop(uMsg);
 		NetClose();
 		pfile_create_player_description(0, 0);
@@ -284,7 +284,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	fault_get_filter();
 
 	bNoEvent = diablo_get_not_running();
-	if (!diablo_find_window("DIABLO") && bNoEvent) {
+	if (diablo_find_window(GAME_NAME) || !bNoEvent)
+		return 0;
+
 #ifdef _DEBUG
 		SFileEnableDirectAccess(TRUE);
 #endif
@@ -305,11 +307,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #ifndef SPAWN
 		{
 			char szValueName[] = "Intro";
-			if (!SRegLoadValue("Diablo", szValueName, 0, &nData))
+		if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
 				nData = 1;
 			if (nData)
 				play_movie("gendata\\diablo1.smk", TRUE);
-			SRegSaveValue("Diablo", szValueName, 0, 0);
+		SRegSaveValue(APP_NAME, szValueName, 0, 0);
 		}
 #endif
 
@@ -330,9 +332,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			Sleep(300);
 			DestroyWindow(ghMainWnd);
 		}
-	}
 
-	return FALSE;
+	return 0;
 }
 
 void diablo_parse_flags(char *args)
@@ -349,13 +350,18 @@ void diablo_parse_flags(char *args)
 		if (_strnicmp("dd_emulate", args, strlen("dd_emulate")) == 0) {
 			gbEmulate = 1;
 			args += strlen("dd_emulate");
-		} else if (_strnicmp("dd_backbuf", args, strlen("dd_backbuf")) == 0) {
+			continue;
+		}
+		if (_strnicmp("dd_backbuf", args, strlen("dd_backbuf")) == 0) {
 			gbBackBuf = 1;
 			args += strlen("dd_backbuf");
-		} else if (_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
+			continue;
+		}
+		if (_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
 			gbDupSounds = FALSE;
 			args += strlen("ds_noduplicates");
-		} else {
+			continue;
+		}
 			c = tolower(*args);
 			args++;
 #ifdef _DEBUG
@@ -483,7 +489,6 @@ void diablo_parse_flags(char *args)
 #endif
 		}
 	}
-}
 
 void diablo_init_screen()
 {
@@ -1921,7 +1926,8 @@ void diablo_color_cyc_logic()
 	tc = GetTickCount();
 	if (tc - color_cycle_timer >= 50) {
 		color_cycle_timer = tc;
-		if (palette_get_color_cycling()) {
+		if (!palette_get_color_cycling())
+			return;
 			if (leveltype == DTYPE_HELL) {
 				lighting_color_cycling();
 			} else if (leveltype == DTYPE_CAVES) {
@@ -1930,4 +1936,3 @@ void diablo_color_cyc_logic()
 			}
 		}
 	}
-}

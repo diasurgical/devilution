@@ -772,7 +772,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 	gnDifficulty = sgGameInitInfo.bDiff;
 	SetRndSeed(sgGameInitInfo.dwSeed);
 
-	for (i = 0; i < 17; i++) {
+	for (i = 0; i < NUMLEVELS; i++) {
 		glSeedTbl[i] = GetRndSeed();
 		gnLevelTypeTbl[i] = InitLevelType(i);
 	}

@@ -19,7 +19,7 @@ int gnNumGetRecords;
 
 /* data */
 
-BYTE ItemCAnimTbl[169] = {
+BYTE ItemCAnimTbl[] = {
 	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
 	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,
 	28, 28, 0, 0, 0, 32, 0, 0, 0, 24,
@@ -38,7 +38,7 @@ BYTE ItemCAnimTbl[169] = {
 	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
 	8, 8, 6, 1, 3, 3, 11, 3, 4
 };
-char *ItemDropNames[ITEMTYPES] = {
+char *ItemDropNames[] = {
 	"Armor2",
 	"Axe",
 	"FBttle",
@@ -73,9 +73,9 @@ char *ItemDropNames[ITEMTYPES] = {
 	"Innsign",
 	"Bldstn",
 	"Fanvil",
-	"FLazStaf"
+	"FLazStaf",
 };
-BYTE ItemAnimLs[ITEMTYPES] = {
+BYTE ItemAnimLs[] = {
 	15,
 	13,
 	16,
@@ -110,9 +110,9 @@ BYTE ItemAnimLs[ITEMTYPES] = {
 	13,
 	13,
 	13,
-	8
+	8,
 };
-int ItemDropSnds[ITEMTYPES] = {
+int ItemDropSnds[] = {
 	IS_FHARM,
 	IS_FAXE,
 	IS_FPOT,
@@ -147,9 +147,9 @@ int ItemDropSnds[ITEMTYPES] = {
 	IS_ISIGN,
 	IS_FBLST,
 	IS_FANVL,
-	IS_FSTAF
+	IS_FSTAF,
 };
-int ItemInvSnds[ITEMTYPES] = {
+int ItemInvSnds[] = {
 	IS_IHARM,
 	IS_IAXE,
 	IS_IPOT,
@@ -184,7 +184,7 @@ int ItemInvSnds[ITEMTYPES] = {
 	IS_ISIGN,
 	IS_IBLST,
 	IS_IANVL,
-	IS_ISTAF
+	IS_ISTAF,
 };
 int idoppely = 16;
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
@@ -340,8 +340,8 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		ItemStruct *itm = &plr[p].InvBody[i];
 		if (itm->_itype != ITYPE_NONE && itm->_iStatFlag) {
 
-			mind += itm->_iMinDam;
 			tac += itm->_iAC;
+			mind += itm->_iMinDam;
 			maxd += itm->_iMaxDam;
 
 			if (itm->_iSpell != SPL_NULL) {
@@ -357,7 +357,6 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 						tmpac = 1;
 					bac += tmpac;
 				}
-				dmod += itm->_iPLDamMod;
 				iflgs |= itm->_iFlags;
 				sadd += itm->_iPLStr;
 				madd += itm->_iPLMag;
@@ -366,6 +365,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 				fr += itm->_iPLFR;
 				lr += itm->_iPLLR;
 				mr += itm->_iPLMR;
+				dmod += itm->_iPLDamMod;
 				ghit += itm->_iPLGetHit;
 				lrad += itm->_iPLLight;
 				ihp += itm->_iPLHP;
@@ -393,15 +393,15 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		}
 	}
 
+	plr[p]._pIMinDam = mind;
 	plr[p]._pIMaxDam = maxd;
 	plr[p]._pIAC = tac;
 	plr[p]._pIBonusDam = bdam;
 	plr[p]._pIBonusToHit = btohit;
 	plr[p]._pIBonusAC = bac;
 	plr[p]._pIFlags = iflgs;
-	plr[p]._pIGetHit = ghit;
-	plr[p]._pIMinDam = mind;
 	plr[p]._pIBonusDamMod = dmod;
+	plr[p]._pIGetHit = ghit;
 
 	if (lrad < 2) {
 		lrad = 2;
@@ -2480,7 +2480,7 @@ void FreeItemGFX()
 {
 	int i;
 
-	for (i = 0; i < 35; i++) {
+	for (i = 0; i < ITEMTYPES; i++) {
 		MemFreeDbg(itemanims[i]);
 	}
 }

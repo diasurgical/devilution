@@ -5,17 +5,17 @@
  */
 #include "all.h"
 
-int cursH;
-int icursH28;
 int cursW;
+int cursH;
 int pcursmonst;
 int icursW28;
+int icursH28;
 BYTE *pCursCels;
-int icursH;
 
 /** inv_item value */
 char pcursinvitem;
 int icursW;
+int icursH;
 char pcursitem;
 char pcursobj;
 char pcursplr;
@@ -26,7 +26,7 @@ int pcurs;
 
 /* rdata */
 /** Maps from objcurs.cel frame number to frame width. */
-const int InvItemWidth[180] = {
+const int InvItemWidth[] = {
 	// Cursors
 	0, 33, 32, 32, 32, 32, 32, 32, 32, 32, 32, 23,
 	// Items
@@ -46,11 +46,11 @@ const int InvItemWidth[180] = {
 	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28,
 	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28,
 	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28,
-	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28
+	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28,
 };
 
 /** Maps from objcurs.cel frame number to frame height. */
-const int InvItemHeight[180] = {
+const int InvItemHeight[] = {
 	// Cursors
 	0, 29, 32, 32, 32, 32, 32, 32, 32, 32, 32, 35,
 	// Items
@@ -70,7 +70,7 @@ const int InvItemHeight[180] = {
 	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28,
 	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28,
 	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28,
-	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28
+	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28,
 };
 
 void InitCursor()

@@ -7,10 +7,10 @@
 
 int diabquad1x;
 int diabquad1y;
-int diabquad3x;
-int diabquad3y;
 int diabquad2x;
 int diabquad2y;
+int diabquad3x;
+int diabquad3y;
 int diabquad4x;
 int diabquad4y;
 #ifndef SPAWN
@@ -18,8 +18,8 @@ BOOL hallok[20];
 int l4holdx;
 int l4holdy;
 int SP4x1;
-int SP4x2;
 int SP4y1;
+int SP4x2;
 int SP4y2;
 BYTE L4dungeon[80][80];
 BYTE dung[20][20];

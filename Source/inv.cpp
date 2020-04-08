@@ -1542,8 +1542,9 @@ void AutoGetItem(int pnum, int ii)
 		dropGoldValue = 0;
 	}
 
-	if (ii != MAXITEMS && !dItem[item[ii]._ix][item[ii]._iy]) {
-		return;
+	if (ii != MAXITEMS) {
+		if (dItem[item[ii]._ix][item[ii]._iy] == 0)
+			return;
 	}
 
 	item[ii]._iCreateInfo &= 0x7FFF;

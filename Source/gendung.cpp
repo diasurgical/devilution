@@ -5,87 +5,85 @@
  */
 #include "all.h"
 
-WORD level_frame_types[MAXTILES];
-int themeCount;
-/**
- * List of transparent dPieces
- */
-BOOLEAN nTransTable[2049];
-//int dword_52D204;
-int dMonster[MAXDUNX][MAXDUNY];
 BYTE dungeon[DMAXX][DMAXY];
-char dObject[MAXDUNX][MAXDUNY];
-BYTE *pSpeedCels;
-int nlevel_frames;
 BYTE pdungeon[DMAXX][DMAXY];
-char dDead[MAXDUNX][MAXDUNY];
-MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY];
-char dPreLight[MAXDUNX][MAXDUNY];
-char TransVal;
-int MicroTileLen;
 char dflags[DMAXX][DMAXY];
-int dPiece[MAXDUNX][MAXDUNY];
-char dLight[MAXDUNX][MAXDUNY];
+int setpc_x;
+int setpc_y;
+int setpc_w;
+int setpc_h;
+BYTE *pSetPiece;
 BOOL setloadflag;
-int tile_defs[MAXTILES];
+BYTE *pSpecialCels;
 BYTE *pMegaTiles;
 BYTE *pLevelPieces;
-int gnDifficulty;
+BYTE *pDungeonCels;
+BYTE *pSpeedCels;
+int SpeedFrameTbl[128][16];
 /**
  * List of transparancy masks to use for dPieces
  */
 char block_lvid[2049];
-//char byte_5B78EB;
-char dTransVal[MAXDUNX][MAXDUNY];
-BOOLEAN nTrapTable[2049];
-BYTE leveltype;
-BYTE currlevel;
-BOOLEAN TransList[256];
-/**
- * List of path blocking dPieces
- */
-BOOLEAN nSolidTable[2049];
 int level_frame_count[MAXTILES];
-ScrollStruct ScrollInfo;
-BYTE *pDungeonCels;
-int SpeedFrameTbl[128][16];
-THEME_LOC themeLoc[MAXTHEMES];
-char dPlayer[MAXDUNX][MAXDUNY];
-int ViewBX;
-int ViewBY;
-int ViewDX;
-int ViewDY;
-char dSpecial[MAXDUNX][MAXDUNY];
+int tile_defs[MAXTILES];
+WORD level_frame_types[MAXTILES];
+int level_frame_sizes[MAXTILES];
+int nlevel_frames;
 /**
  * List of light blocking dPieces
  */
 BOOLEAN nBlockTable[2049];
-BYTE *pSpecialCels;
-char dFlags[MAXDUNX][MAXDUNY];
-char dItem[MAXDUNX][MAXDUNY];
-BYTE setlvlnum;
-int level_frame_sizes[MAXTILES];
+/**
+ * List of path blocking dPieces
+ */
+BOOLEAN nSolidTable[2049];
+/**
+ * List of transparent dPieces
+ */
+BOOLEAN nTransTable[2049];
 /**
  * List of missile blocking dPieces
  */
 BOOLEAN nMissileTable[2049];
-BYTE *pSetPiece;
-char setlvltype;
-BOOLEAN setlevel;
-int LvlViewY;
-int LvlViewX;
-int dmaxx;
-int dmaxy;
-int setpc_h;
-int setpc_w;
-int setpc_x;
-int ViewX;
-int ViewY;
-int setpc_y;
-char dMissile[MAXDUNX][MAXDUNY];
+BOOLEAN nTrapTable[2049];
 int dminx;
 int dminy;
+int dmaxx;
+int dmaxy;
+int gnDifficulty;
+BYTE leveltype;
+BYTE currlevel;
+BOOLEAN setlevel;
+BYTE setlvlnum;
+char setlvltype;
+int ViewX;
+int ViewY;
+int ViewBX;
+int ViewBY;
+int ViewDX;
+int ViewDY;
+ScrollStruct ScrollInfo;
+int LvlViewX;
+int LvlViewY;
+int MicroTileLen;
+char TransVal;
+BOOLEAN TransList[256];
+int dPiece[MAXDUNX][MAXDUNY];
 MICROS dpiece_defs_map_2[MAXDUNX][MAXDUNY];
+MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY];
+char dTransVal[MAXDUNX][MAXDUNY];
+char dLight[MAXDUNX][MAXDUNY];
+char dPreLight[MAXDUNX][MAXDUNY];
+char dFlags[MAXDUNX][MAXDUNY];
+char dPlayer[MAXDUNX][MAXDUNY];
+int dMonster[MAXDUNX][MAXDUNY];
+char dDead[MAXDUNX][MAXDUNY];
+char dObject[MAXDUNX][MAXDUNY];
+char dItem[MAXDUNX][MAXDUNY];
+char dMissile[MAXDUNX][MAXDUNY];
+char dSpecial[MAXDUNX][MAXDUNY];
+int themeCount;
+THEME_LOC themeLoc[MAXTHEMES];
 
 void FillSolidBlockTbls()
 {

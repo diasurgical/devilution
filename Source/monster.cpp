@@ -17,6 +17,7 @@ BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
 int totalmonsters;
 CMonster Monsters[MAX_LVLMTYPES];
+BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
 int monstimgtot;
 int uniquetrans;
 int nummtypes;
@@ -689,15 +690,9 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 	Monst->mtalkmsg = Uniq->mtalkmsg;
 	Monst->mlid = AddLight(Monst->_mx, Monst->_my, 3);
 
-	if (gbMaxPlayers == 1) {
-		if (Monst->mtalkmsg) {
-			Monst->_mgoal = MGOAL_INQUIRING;
-		}
-	} else {
-		if (Monst->_mAi == AI_LAZHELP) {
+	if (gbMaxPlayers != 1) {
+		if (Monst->_mAi == AI_LAZHELP)
 			Monst->mtalkmsg = 0;
-		}
-
 		if (Monst->_mAi != AI_LAZURUS || quests[Q_BETRAYER]._qvar1 <= 3) {
 			if (Monst->mtalkmsg) {
 				Monst->_mgoal = MGOAL_INQUIRING;
@@ -706,10 +701,12 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 			Monst->_mgoal = MGOAL_NORMAL;
 		}
 	}
+	else if (Monst->mtalkmsg)
+		Monst->_mgoal = MGOAL_INQUIRING;
 
 	if (gnDifficulty == DIFF_NIGHTMARE) {
-		Monst->mLevel += 15;
 		Monst->_mmaxhp = 3 * Monst->_mmaxhp + 64;
+		Monst->mLevel += 15;
 		Monst->_mhitpoints = Monst->_mmaxhp;
 		Monst->mExp = 2 * (Monst->mExp + 1000);
 		Monst->mMinDamage = 2 * (Monst->mMinDamage + 2);
@@ -719,8 +716,8 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 	}
 
 	if (gnDifficulty == DIFF_HELL) {
-		Monst->mLevel += 30;
 		Monst->_mmaxhp = 4 * Monst->_mmaxhp + 192;
+		Monst->mLevel += 30;
 		Monst->_mhitpoints = Monst->_mmaxhp;
 		Monst->mExp = 4 * (Monst->mExp + 1000);
 		Monst->mMinDamage = 4 * Monst->mMinDamage + 6;
@@ -1632,6 +1629,7 @@ void M2MStartHit(int mid, int i, int dam)
 void MonstStartKill(int i, int pnum, BOOL sendmsg)
 {
 	int md;
+	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS) {
 		app_fatal("MonstStartKill: Invalid monster %d", i);
@@ -1640,19 +1638,20 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 		app_fatal("MonstStartKill: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 	}
 
+	Monst = &monster[i];
 	if (pnum >= 0)
-		monster[i].mWhoHit |= 1 << pnum;
+		Monst->mWhoHit |= 1 << pnum;
 	if (pnum < MAX_PLRS && i > MAX_PLRS)
-		AddPlrMonstExper(monster[i].mLevel, monster[i].mExp, monster[i].mWhoHit);
-	monstkills[monster[i].MType->mtype]++;
-	monster[i]._mhitpoints = 0;
-	SetRndSeed(monster[i]._mRndSeed);
-	if (QuestStatus(Q_GARBUD) && monster[i].mName == UniqMonst[UMT_GARBUD].mName) {
-		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);
+		AddPlrMonstExper(Monst->mLevel, Monst->mExp, Monst->mWhoHit);
+	monstkills[Monst->MType->mtype]++;
+	Monst->_mhitpoints = 0;
+	SetRndSeed(Monst->_mRndSeed);
+	if (QuestStatus(Q_GARBUD) && Monst->mName == UniqMonst[UMT_GARBUD].mName) {
+		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, TRUE, ITYPE_MACE, IMISC_NONE, TRUE, FALSE);
 	} else if (i > MAX_PLRS - 1) { // Golems should not spawn items
-		SpawnItem(i, monster[i]._mx, monster[i]._my, sendmsg);
+		SpawnItem(i, Monst->_mx, Monst->_my, sendmsg);
 	}
-	if (monster[i].MType->mtype == MT_DIABLO)
+	if (Monst->MType->mtype == MT_DIABLO)
 		M_DiabloDeath(i, TRUE);
 	else
 		PlayEffect(i, 2);
@@ -1660,24 +1659,24 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	if (pnum >= 0)
 		md = M_GetDir(i);
 	else
-		md = monster[i]._mdir;
-	monster[i]._mdir = md;
-	NewMonsterAnim(i, monster[i].MType->Anims[MA_DEATH], md);
-	monster[i]._mmode = MM_DEATH;
-	monster[i]._mxoff = 0;
-	monster[i]._myoff = 0;
-	monster[i]._mVar1 = 0;
-	monster[i]._mx = monster[i]._moldx;
-	monster[i]._my = monster[i]._moldy;
-	monster[i]._mfutx = monster[i]._moldx;
-	monster[i]._mfuty = monster[i]._moldy;
+		md = Monst->_mdir;
+	Monst->_mdir = md;
+	NewMonsterAnim(i, Monst->MType->Anims[MA_DEATH], md);
+	Monst->_mmode = MM_DEATH;
+	Monst->_mxoff = 0;
+	Monst->_myoff = 0;
+	Monst->_mVar1 = 0;
+	Monst->_mx = Monst->_moldx;
+	Monst->_my = Monst->_moldy;
+	Monst->_mfutx = Monst->_moldx;
+	Monst->_mfuty = Monst->_moldy;
 	M_CheckEFlag(i);
 	M_ClearSquares(i);
-	dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+	dMonster[Monst->_mx][Monst->_my] = i + 1;
 	CheckQuestKill(i, sendmsg);
-	M_FallenFear(monster[i]._mx, monster[i]._my);
-	if (monster[i].MType->mtype >= MT_NACID && monster[i].MType->mtype <= MT_XACID)
-		AddMissile(monster[i]._mx, monster[i]._my, 0, 0, 0, MIS_ACIDPUD, 1, i, monster[i]._mint + 1, 0);
+	M_FallenFear(Monst->_mx, Monst->_my);
+	if (Monst->MType->mtype >= MT_NACID && Monst->MType->mtype <= MT_XACID)
+		AddMissile(Monst->_mx, Monst->_my, 0, 0, 0, MIS_ACIDPUD, 1, i, Monst->_mint + 1, 0);
 }
 
 void M2MStartKill(int i, int mid)
@@ -5510,19 +5509,20 @@ BOOL CheckMonsterHit(int m, BOOL &ret)
 	}
 
 	if (monster[m]._mAi == AI_GARG && monster[m]._mFlags & MFLAG_ALLOW_SPECIAL) {
-		monster[m]._mmode = MM_SATTACK;
 		monster[m]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
+		monster[m]._mmode = MM_SATTACK;
 		ret = TRUE;
 		return TRUE;
 	}
 
-	if (monster[m].MType->mtype < MT_COUNSLR || monster[m].MType->mtype > MT_ADVOCATE || monster[m]._mgoal == MGOAL_NORMAL) {
-		return FALSE;
-	} else {
-		ret = FALSE;
+	if (monster[m].MType->mtype >= MT_COUNSLR && monster[m].MType->mtype <= MT_ADVOCATE) {
+		if (monster[m]._mgoal != MGOAL_NORMAL) {
+			ret = FALSE;
+			return TRUE;
+		}
 	}
 
-	return TRUE;
+		return FALSE;
 }
 
 int encode_enemy(int m)

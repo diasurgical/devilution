@@ -4,7 +4,9 @@
  * Global definitions and Macros.
  */
 
+#define DIABOOL					BOOL
 #define GAME_NAME				"DIABLO"
+#define APP_NAME				"Diablo"
 
 #define DMAXX					40
 #define DMAXY					40

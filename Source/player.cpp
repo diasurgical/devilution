@@ -835,11 +835,11 @@ void InitPlayer(int pnum, BOOL FirstTime)
 	ClearPlrRVars(&plr[pnum]);
 
 	if (FirstTime) {
+		plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 		plr[pnum]._pRSpell = SPL_INVALID;
 		plr[pnum]._pSBkSpell = SPL_INVALID;
-		plr[pnum]._pSpell = SPL_INVALID;
-		plr[pnum]._pRSplType = RSPLTYPE_INVALID;
-		plr[pnum]._pSplType = RSPLTYPE_INVALID;
+		plr[pnum]._pSpell = plr[pnum]._pRSpell;
+		plr[pnum]._pSplType = plr[pnum]._pRSplType;
 		if ((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_BOW) {
 			plr[pnum]._pwtype = WT_RANGED;
 		} else {
@@ -1204,9 +1204,12 @@ void PM_ChangeOffset(int pnum)
 	plr[pnum]._pxoff = plr[pnum]._pVar6 >> 8;
 	plr[pnum]._pyoff = plr[pnum]._pVar7 >> 8;
 
+	px -= plr[pnum]._pVar6 >> 8;
+	py -= plr[pnum]._pVar7 >> 8;
+
 	if (pnum == myplr && ScrollInfo._sdir) {
-		ScrollInfo._sxoff += px - plr[pnum]._pxoff;
-		ScrollInfo._syoff += py - plr[pnum]._pyoff;
+		ScrollInfo._sxoff += px;
+		ScrollInfo._syoff += py;
 	}
 
 	PM_ChangeLightOff(pnum);
@@ -1675,7 +1678,8 @@ void StartPlayerKill(int pnum, int earflag)
 	ItemStruct ear;
 	ItemStruct *pi;
 
-	if (plr[pnum]._pHitPoints <= 0 && plr[pnum]._pmode == PM_DEATH) {
+	p = &plr[pnum];
+	if (p->_pHitPoints <= 0 && p->_pmode == PM_DEATH) {
 		return;
 	}
 
@@ -1699,34 +1703,33 @@ void StartPlayerKill(int pnum, int earflag)
 #endif
 	}
 
-	if (plr[pnum]._pgfxnum) {
-		plr[pnum]._pgfxnum = 0;
-		plr[pnum]._pGFXLoad = 0;
+	if (p->_pgfxnum) {
+		p->_pgfxnum = 0;
+		p->_pGFXLoad = 0;
 		SetPlrAnims(pnum);
 	}
 
-	if (!(plr[pnum]._pGFXLoad & PFILE_DEATH)) {
+	if (!(p->_pGFXLoad & PFILE_DEATH)) {
 		LoadPlrGFX(pnum, PFILE_DEATH);
 	}
 
-	p = &plr[pnum];
-	NewPlrAnim(pnum, p->_pDAnim[plr[pnum]._pdir], p->_pDFrames, 1, p->_pDWidth);
+	NewPlrAnim(pnum, p->_pDAnim[p->_pdir], p->_pDFrames, 1, p->_pDWidth);
 
-	plr[pnum]._pBlockFlag = FALSE;
-	plr[pnum]._pmode = PM_DEATH;
-	plr[pnum]._pInvincible = TRUE;
+	p->_pBlockFlag = FALSE;
+	p->_pmode = PM_DEATH;
+	p->_pInvincible = TRUE;
 	SetPlayerHitPoints(pnum, 0);
-	plr[pnum]._pVar8 = 1;
+	p->_pVar8 = 1;
 
 	if (pnum != myplr && !earflag && !diablolevel) {
 		for (i = 0; i < NUM_INVLOC; i++) {
-			plr[pnum].InvBody[i]._itype = ITYPE_NONE;
+			p->InvBody[i]._itype = ITYPE_NONE;
 		}
 		CalcPlrInv(pnum, FALSE);
 	}
 
 	if (plr[pnum].plrlevel == currlevel) {
-		FixPlayerLocation(pnum, plr[pnum]._pdir);
+		FixPlayerLocation(pnum, p->_pdir);
 		RemovePlrFromMap(pnum);
 		dFlags[p->_px][p->_py] |= BFLAG_DEAD_PLAYER;
 		SetPlayerOld(pnum);
@@ -1736,7 +1739,7 @@ void StartPlayerKill(int pnum, int earflag)
 			deathdelay = 30;
 
 			if (pcurs >= CURSOR_FIRSTITEM) {
-				PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+				PlrDeadItem(pnum, &p->HoldItem, 0, 0);
 				SetCursor_(CURSOR_HAND);
 			}
 
@@ -1762,11 +1765,10 @@ void StartPlayerKill(int pnum, int earflag)
 							PlrDeadItem(pnum, &ear, 0, 0);
 						}
 					} else {
-						pi = &plr[pnum].InvBody[0];
+						pi = &p->InvBody[0];
 						i = NUM_INVLOC;
-						while (i != 0) {
-							i--;
-							pdd = (i + plr[pnum]._pdir) & 7;
+						while (i--) {
+							pdd = (i + p->_pdir) & 7;
 							PlrDeadItem(pnum, pi, offset_x[pdd], offset_y[pdd]);
 							pi++;
 						}
@@ -1827,7 +1829,8 @@ void DropHalfPlayersGold(int pnum)
 
 	hGold = plr[pnum]._pGold >> 1;
 	for (i = 0; i < MAXBELTITEMS && hGold > 0; i++) {
-		if (plr[pnum].SpdList[i]._itype == ITYPE_GOLD && plr[pnum].SpdList[i]._ivalue != GOLD_MAX_LIMIT) {
+		if (plr[pnum].SpdList[i]._itype == ITYPE_GOLD &&
+			plr[pnum].SpdList[i]._ivalue != GOLD_MAX_LIMIT) {
 			if (hGold < plr[pnum].SpdList[i]._ivalue) {
 				plr[pnum].SpdList[i]._ivalue -= hGold;
 				SetSpdbarGoldCurs(pnum, i);
@@ -2100,6 +2103,7 @@ BOOL PM_DoStand(int pnum)
 BOOL PM_DoWalk(int pnum)
 {
 	int anim_len;
+	BOOL rv;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk: illegal player %d", pnum);
@@ -2143,17 +2147,19 @@ BOOL PM_DoWalk(int pnum)
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
-
-		return TRUE;
+		rv = TRUE;
+	} else {
+		PM_ChangeOffset(pnum);
+		rv = FALSE;
 	}
 
-	PM_ChangeOffset(pnum);
-	return FALSE;
+	return rv;
 }
 
 BOOL PM_DoWalk2(int pnum)
 {
 	int anim_len;
+	BOOL rv;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk2: illegal player %d", pnum);
@@ -2190,21 +2196,22 @@ BOOL PM_DoWalk2(int pnum)
 		}
 
 		ClearPlrPVars(pnum);
-
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
-
-		return TRUE;
+		rv = TRUE;
+	} else {
+		PM_ChangeOffset(pnum);
+		rv = FALSE;
 	}
 
-	PM_ChangeOffset(pnum);
-	return FALSE;
+	return rv;
 }
 
 BOOL PM_DoWalk3(int pnum)
 {
 	int anim_len;
+	BOOL rv;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoWalk3: illegal player %d", pnum);
@@ -2249,12 +2256,13 @@ BOOL PM_DoWalk3(int pnum)
 		if (leveltype != DTYPE_TOWN) {
 			ChangeLightOff(plr[pnum]._plid, 0, 0);
 		}
-
-		return TRUE;
+		rv = TRUE;
+	} else {
+		PM_ChangeOffset(pnum);
+		rv = FALSE;
 	}
 
-	PM_ChangeOffset(pnum);
-	return FALSE;
+	return rv;
 }
 
 BOOL WeaponDur(int pnum, int durrnd)

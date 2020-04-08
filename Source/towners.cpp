@@ -91,8 +91,8 @@ int TownCowY[3] = { 16, 14, 20 };
 int TownCowDir[3] = { 1, 3, 4 };
 int cowoffx[8] = { -1, 0, -1, -1, -1, 0, -1, -1 };
 int cowoffy[8] = { -1, -1, -1, 0, -1, -1, -1, 0 };
-QuestTalkData Qtalklist[11] = {
-	// clang-format off
+QuestTalkData Qtalklist[] = {
+// clang-format off
 	// _qinfra,      _qblkm,       _qgarb,      _qzhar,      _qveil,      _qmod,       _qbutch,      _qbol,         _qblind,      _qblood,      _qanvil,      _qwarlrd,      _qking,       _qpw,           _qbone,      _qvb
 	{ TEXT_INFRA6,  TEXT_MUSH6,  -1,          -1,          TEXT_VEIL5, -1,          TEXT_BUTCH5, TEXT_BANNER6, TEXT_BLIND5, TEXT_BLOOD5, TEXT_ANVIL6, TEXT_WARLRD5, TEXT_KING7,  TEXT_POISON7,  TEXT_BONE5, TEXT_VILE9  },
 	{ TEXT_INFRA3,  -1,           -1,          -1,          TEXT_VEIL3, -1,          TEXT_BUTCH3, TEXT_BANNER4, TEXT_BLIND3, TEXT_BLOOD3, TEXT_ANVIL3, TEXT_WARLRD3, TEXT_KING5,  TEXT_POISON4,  TEXT_BONE3, TEXT_VILE7  },
@@ -446,12 +446,13 @@ void TownDead()
 	tidx = GetActiveTowner(TOWN_DEADGUY);
 	TownCtrlMsg(tidx);
 	if (!qtextflag) {
-		if ((quests[Q_BUTCHER]._qactive != QUEST_ACTIVE || quests[Q_BUTCHER]._qlog) && quests[Q_BUTCHER]._qactive != QUEST_INIT) {
+		if (quests[Q_BUTCHER]._qactive == QUEST_ACTIVE && quests[Q_BUTCHER]._qlog == 0) {
+			return;
+		}
+		if (quests[Q_BUTCHER]._qactive != QUEST_INIT) {
 			towner[tidx]._tAnimDelay = 1000;
 			towner[tidx]._tAnimFrame = 1;
 			strcpy(towner[tidx]._tName, "Slain Townsman");
-		} else {
-			return;
 		}
 	}
 	if (quests[Q_BUTCHER]._qactive != QUEST_INIT)
@@ -665,15 +666,17 @@ void TalkToTowner(int p, int t)
 				InitQTextMsg(TEXT_BANNER2);
 				towner[t]._tMsgSaid = TRUE;
 			}
-			if (quests[Q_LTBANNER]._qvar2 == 1 && PlrHasItem(p, IDI_BANNER, i) != NULL && !towner[t]._tMsgSaid) {
-				quests[Q_LTBANNER]._qactive = QUEST_DONE;
-				quests[Q_LTBANNER]._qvar1 = 3;
-				RemoveInvItem(p, i);
-				CreateItem(UITEM_HARCREST, towner[t]._tx, towner[t]._ty + 1);
-				towner[t]._tbtcnt = 150;
-				towner[t]._tVar1 = p;
-				InitQTextMsg(TEXT_BANNER3);
-				towner[t]._tMsgSaid = TRUE;
+			if (quests[Q_LTBANNER]._qvar2 == 1 && PlrHasItem(p, IDI_BANNER, i) != NULL) {
+				if (!towner[t]._tMsgSaid) {
+					quests[Q_LTBANNER]._qactive = QUEST_DONE;
+					quests[Q_LTBANNER]._qvar1 = 3;
+					RemoveInvItem(p, i);
+					CreateItem(UITEM_HARCREST, towner[t]._tx, towner[t]._ty + 1);
+					towner[t]._tbtcnt = 150;
+					towner[t]._tVar1 = p;
+					InitQTextMsg(TEXT_BANNER3);
+					towner[t]._tMsgSaid = TRUE;
+				}
 			}
 		}
 		if (!qtextflag) {
@@ -729,16 +732,18 @@ void TalkToTowner(int p, int t)
 					InitQTextMsg(TEXT_INFRA5);
 					towner[t]._tMsgSaid = TRUE;
 				}
-				if (quests[Q_ROCK]._qvar2 == 1 && PlrHasItem(p, IDI_ROCK, i) != NULL && !towner[t]._tMsgSaid) {
-					quests[Q_ROCK]._qactive = QUEST_DONE;
-					quests[Q_ROCK]._qvar2 = 2;
-					quests[Q_ROCK]._qvar1 = 2;
-					RemoveInvItem(p, i);
-					CreateItem(UITEM_INFRARING, towner[t]._tx, towner[t]._ty + 1);
-					towner[t]._tbtcnt = 150;
-					towner[t]._tVar1 = p;
-					InitQTextMsg(TEXT_INFRA7);
-					towner[t]._tMsgSaid = TRUE;
+				if (quests[Q_ROCK]._qvar2 == 1 && PlrHasItem(p, IDI_ROCK, i) != NULL) {
+					if (!towner[t]._tMsgSaid) {
+						quests[Q_ROCK]._qactive = QUEST_DONE;
+						quests[Q_ROCK]._qvar2 = 2;
+						quests[Q_ROCK]._qvar1 = 2;
+						RemoveInvItem(p, i);
+						CreateItem(UITEM_INFRARING, towner[t]._tx, towner[t]._ty + 1);
+						towner[t]._tbtcnt = 150;
+						towner[t]._tVar1 = p;
+						InitQTextMsg(TEXT_INFRA7);
+						towner[t]._tMsgSaid = TRUE;
+					}
 				}
 			}
 			if (plr[p]._pLvlVisited[9] && quests[Q_ANVIL]._qactive != QUEST_NOTAVAIL) {
@@ -894,16 +899,16 @@ void TalkToTowner(int p, int t)
 				towner[t]._tbtcnt = 150;
 				towner[t]._tVar1 = p;
 				InitQTextMsg(TEXT_VILE1);
+				towner[t]._tMsgSaid = TRUE;
 				quests[Q_BETRAYER]._qactive = QUEST_ACTIVE;
 				quests[Q_BETRAYER]._qlog = TRUE;
-				towner[t]._tMsgSaid = TRUE;
 			} else if (quests[Q_BETRAYER]._qactive == QUEST_DONE && quests[Q_BETRAYER]._qvar1 == 7) {
 				quests[Q_BETRAYER]._qvar1 = 8;
 				towner[t]._tbtcnt = 150;
 				towner[t]._tVar1 = p;
 				InitQTextMsg(TEXT_VILE3);
-				quests[Q_DIABLO]._qlog = TRUE;
 				towner[t]._tMsgSaid = TRUE;
+				quests[Q_DIABLO]._qlog = TRUE;
 			}
 		}
 		if (gbMaxPlayers != 1) {
@@ -931,8 +936,9 @@ void TalkToTowner(int p, int t)
 				StartStore(STORE_STORY);
 			}
 		}
-	} else if (towner[t]._ttype == TOWN_COW && !qtextflag) {
-		CowSFX(p);
+	} else if (towner[t]._ttype == TOWN_COW) {
+		if (!qtextflag)
+			CowSFX(p);
 	}
 }
 

@@ -62,9 +62,9 @@ BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 	pszDst = dst;
 	memset(dst, 0, size);
 #ifdef SPAWN
-	if (!SRegLoadData("Diablo", "Audio Playback ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
+	if (!SRegLoadData(APP_NAME, "Audio Playback ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
 #else
-	if (!SRegLoadData("Diablo", "Video Player ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
+	if (!SRegLoadData(APP_NAME, "Video Player ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
 #endif
 		return FALSE;
 	}
@@ -132,9 +132,9 @@ BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 	}
 
 #ifdef SPAWN
-	return SRegSaveData("Diablo", "Audio Playback ", 0, (BYTE *)pbData, dwLen);
+	return SRegSaveData(APP_NAME, "Audio Playback ", 0, (BYTE *)pbData, dwLen);
 #else
-	return SRegSaveData("Diablo", "Video Player ", 0, (BYTE *)pbData, dwLen);
+	return SRegSaveData(APP_NAME, "Video Player ", 0, (BYTE *)pbData, dwLen);
 #endif
 }
 

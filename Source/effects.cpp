@@ -914,6 +914,7 @@ TSFX sgSFX[] = {
 	// clang-format on
 };
 
+#define PLRSFXS (SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR)
 BOOL effect_is_playing(int nSFX)
 {
 	TSFX *sfx = &sgSFX[nSFX];
@@ -1224,7 +1225,7 @@ void sound_init()
 {
 	BYTE mask = 0;
 	if (gbMaxPlayers > 1) {
-		mask = SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR;
+		mask = PLRSFXS;
 	} else if (plr[myplr]._pClass == PC_WARRIOR) {
 		mask = SFX_WARRIOR;
 	} else if (plr[myplr]._pClass == PC_ROGUE) {
@@ -1247,7 +1248,7 @@ void priv_sound_init(BYTE bLoadMask)
 		return;
 	}
 
-	pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
+	pc = bLoadMask & PLRSFXS;
 	bLoadMask ^= pc;
 
 	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
@@ -1263,7 +1264,7 @@ void priv_sound_init(BYTE bLoadMask)
 			continue;
 		}
 
-		if (sgSFX[i].bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(sgSFX[i].bFlags & pc)) {
+		if (sgSFX[i].bFlags & PLRSFXS && !(sgSFX[i].bFlags & pc)) {
 			continue;
 		}
 

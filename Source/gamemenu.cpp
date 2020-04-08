@@ -217,42 +217,31 @@ void gamemenu_get_gamma()
 void gamemenu_music_volume(BOOL bActivate)
 {
 	int volume;
+
 	if (bActivate) {
 		if (gbMusicOn) {
 			gbMusicOn = FALSE;
 			music_stop();
 			sound_get_or_set_music_volume(VOLUME_MIN);
-			gamemenu_get_music();
-			return;
-		}
+        } else {
 		gbMusicOn = TRUE;
 		sound_get_or_set_music_volume(VOLUME_MAX);
 		music_start(leveltype);
-		gamemenu_get_music();
-		return;
 	}
-
+    } else {
 	volume = gamemenu_slider_music_sound(sgOptionsMenu);
 	sound_get_or_set_music_volume(volume);
 
 	if (volume == VOLUME_MIN) {
-
 		if (gbMusicOn) {
 			gbMusicOn = FALSE;
 			music_stop();
 		}
-
-		gamemenu_get_music();
-		return;
-	}
-
-	if (gbMusicOn) {
-		gamemenu_get_music();
-		return;
-	}
-
+        } else if (!gbMusicOn) {
 	gbMusicOn = TRUE;
 	music_start(leveltype);
+        }
+    }
 	gamemenu_get_music();
 }
 

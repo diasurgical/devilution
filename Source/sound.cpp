@@ -270,7 +270,7 @@ void snd_init(HWND hWnd)
 void snd_get_volume(char *value_name, int *value)
 {
 	int v = *value;
-	if (!SRegLoadValue("Diablo", value_name, 0, &v)) {
+	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
 		v = VOLUME_MAX;
 	}
 	*value = v;
@@ -362,7 +362,7 @@ void sound_cleanup()
 
 void snd_set_volume(char *key, int value)
 {
-	SRegSaveValue("Diablo", key, 0, value);
+	SRegSaveValue(APP_NAME, key, 0, value);
 }
 
 void music_stop()

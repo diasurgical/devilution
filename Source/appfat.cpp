@@ -523,7 +523,7 @@ void __cdecl DrawDlg(char *pszFmt, ...)
 	va_start(arglist, pszFmt);
 	wvsprintf(text, pszFmt, arglist);
 	va_end(arglist);
-	SDrawMessageBox(text, "Diablo", MB_TASKMODAL | MB_ICONEXCLAMATION);
+	SDrawMessageBox(text, APP_NAME, MB_TASKMODAL | MB_ICONEXCLAMATION);
 }
 
 #ifdef _DEBUG

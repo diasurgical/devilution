@@ -1802,7 +1802,7 @@ typedef enum _speech_id {
 	TEXT_BOOK31     = 0xFF,
 	TEXT_BOOK32     = 0x100,
 	TEXT_BOOK33     = 0x101,
-	TEXT_INTRO      = 0x102
+	TEXT_INTRO      = 0x102,
 } _speech_id;
 
 typedef enum object_graphic_id {
@@ -2560,7 +2560,8 @@ typedef enum quest_id {
 	Q_SKELKING  = 0xC,
 	Q_PWATER    = 0xD,
 	Q_SCHAMB    = 0xE,
-	Q_BETRAYER  = 0xF
+	Q_BETRAYER  = 0xF,
+	Q_INVALID = -1,
 } quest_id;
 
 typedef enum quest_state {
