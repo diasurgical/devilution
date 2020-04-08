@@ -1021,14 +1021,14 @@ BOOL calc_snd_position(int x, int y, int *plVolume, int *plPan)
 	x -= plr[myplr]._px;
 	y -= plr[myplr]._py;
 
-	pan = (x - y) << 8;
+	pan = (x - y) * 256;
 	*plPan = pan;
 
 	if (abs(pan) > 6400)
 		return FALSE;
 
 	volume = abs(x) > abs(y) ? abs(x) : abs(y);
-	volume <<= 6;
+	volume *= 64;
 	*plVolume = volume;
 
 	if (volume >= 6400)

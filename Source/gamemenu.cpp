@@ -35,8 +35,8 @@ TMenuItem sgOptionsMenu[] = {
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_sound_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, "Gamma",         &gamemenu_gamma         },
 	{ GMENU_ENABLED               , NULL,            &gamemenu_color_cycling },
-	{ GMENU_ENABLED               , "Previous Menu", &gamemenu_previous    },
-	{ GMENU_ENABLED               , NULL,            NULL                    }
+	{ GMENU_ENABLED               , "Previous Menu", &gamemenu_previous      },
+	{ GMENU_ENABLED               , NULL,            NULL                    },
 	// clang-format on
 };
 /** Specifies the menu names for music enabled and disabled. */

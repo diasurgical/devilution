@@ -123,6 +123,9 @@ MonsterData monsterdata[] = {
 	// clang-format on
 };
 
+/**
+ * Map between .DUN file value and monster type enum
+ */
 BYTE MonstConvTbl[] = {
 	MT_NZOMBIE,
 	MT_BZOMBIE,

@@ -1274,7 +1274,7 @@ void InitControlPan()
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", NULL);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", NULL);
 		sgbPlrTalkTbl = 0;
-		sgszTalkMsg[0] = 0;
+		sgszTalkMsg[0] = '\0';
 		for (i = 0; i < MAX_PLRS; i++)
 			whisper[i] = TRUE;
 		for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++)
@@ -2720,7 +2720,7 @@ void control_type_message()
 	}
 
 	talkflag = TRUE;
-	sgszTalkMsg[0] = 0;
+	sgszTalkMsg[0] = '\0';
 	frame = 1;
 	for (i = 0; i < 3; i++) {
 		talkbtndown[i] = FALSE;
