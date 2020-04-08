@@ -48,17 +48,11 @@ char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" }
 
 void gamemenu_on()
 {
-	void (*proc)(TMenuItem *);
-	TMenuItem *item;
-
 	if (gbMaxPlayers == 1) {
-		proc = gamemenu_update_single;
-		item = sgSingleMenu;
+		gmenu_set_items(sgSingleMenu, gamemenu_update_single);
 	} else {
-		proc = gamemenu_update_multi;
-		item = sgMultiMenu;
+		gmenu_set_items(sgMultiMenu, gamemenu_update_multi);
 	}
-	gmenu_set_items(item, proc);
 	PressEscKey();
 }
 
