@@ -30,6 +30,7 @@ int pcurs;
 /* rdata */
 /** Maps from objcurs.cel frame number to frame width. */
 const int InvItemWidth[] = {
+	// clang-format off
 	// Cursors
 	0, 33, 32, 32, 32, 32, 32, 32, 32, 32, 32, 23,
 	// Items
@@ -58,10 +59,12 @@ const int InvItemWidth[] = {
 	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28,
 	2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28, 2 * 28
 #endif
+	// clang-format on
 };
 
 /** Maps from objcurs.cel frame number to frame height. */
 const int InvItemHeight[] = {
+	// clang-format off
 	// Cursors
 	0, 29, 32, 32, 32, 32, 32, 32, 32, 32, 32, 35,
 	// Items
@@ -90,11 +93,12 @@ const int InvItemHeight[] = {
 	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28,
 	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28
 #endif
+	// clang-format on
 };
 
 void InitCursor()
 {
-	assert(! pCursCels);
+	assert(!pCursCels);
 	pCursCels = LoadFileInMem("Data\\Inv\\Objcurs.CEL", NULL);
 #ifdef HELLFIRE
 	pCursCels2 = LoadFileInMem("Data\\Inv\\Objcurs2.CEL", NULL);

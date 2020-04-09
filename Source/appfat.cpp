@@ -573,7 +573,7 @@ void center_window(HWND hDlg)
 	}
 }
 
-static BOOL CALLBACK FuncDlg(HWND hDlg, UINT uMsg,WPARAM wParam, LPARAM lParam)
+static BOOL CALLBACK FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) {
 	case WM_INITDIALOG:

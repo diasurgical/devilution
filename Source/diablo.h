@@ -7,19 +7,26 @@
 #define __DIABLO_H__
 
 extern HWND ghMainWnd;
+extern DWORD glSeedTbl[NUMLEVELS];
+extern int gnLevelTypeTbl[NUMLEVELS];
+#ifndef HELLFIRE
+extern int glEndSeed[NUMLEVELS];
+extern int glMid1Seed[NUMLEVELS];
+extern int glMid2Seed[NUMLEVELS];
+extern int glMid3Seed[NUMLEVELS];
+#else
+extern int glEndSeed[NUMLEVELS + 1];
 extern int glMid1Seed[NUMLEVELS + 1];
 extern int glMid2Seed[NUMLEVELS + 1];
-extern int gnLevelTypeTbl[NUMLEVELS];
+extern int glMid3Seed[NUMLEVELS + 1];
+#endif
 extern int MouseX;
 extern int MouseY;
 extern BOOL gbGameLoopStartup;
-extern DWORD glSeedTbl[NUMLEVELS];
 extern BOOL gbRunGame;
-extern int glMid3Seed[NUMLEVELS + 1];
 extern BOOL gbRunGameResult;
 extern BOOL zoomflag;
 extern BOOL gbProcessPlayers;
-extern int glEndSeed[NUMLEVELS + 1];
 extern BOOL gbLoadGame;
 extern HINSTANCE ghInst;
 extern int DebugMonsters[10];
@@ -36,14 +43,6 @@ extern BOOL trigdebug;
 extern int setseed;
 extern int debugmonsttypes;
 extern int PauseMode;
-#ifdef HELLFIRE
-extern BOOLEAN UseTheoQuest;
-extern BOOLEAN UseCowFarmer;
-extern BOOLEAN UseNestArt;
-extern BOOLEAN UseBardTest;
-extern BOOLEAN UseBarbarianTest;
-extern BOOLEAN UseMultiTest;
-#endif
 extern char sgbMouseDown;
 extern int color_cycle_timer;
 
@@ -55,9 +54,6 @@ void free_game();
 BOOL diablo_get_not_running();
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 void diablo_parse_flags(char *args);
-#ifdef HELLFIRE
-LONG __stdcall diablo_TopLevelExceptionFilter(PEXCEPTION_POINTERS pExc);
-#endif
 void diablo_init_screen();
 BOOL diablo_find_window(LPCSTR lpClassName);
 void diablo_reload_process(HINSTANCE hInstance);
@@ -84,10 +80,6 @@ void game_loop(BOOL bStartup);
 void game_logic();
 void timeout_cursor(BOOL bTimeout);
 void diablo_color_cyc_logic();
-#ifdef HELLFIRE
-void alloc_plr();
-PlayerStruct *get_plr_mem(PlayerStruct *p);
-#endif
 
 /* data */
 

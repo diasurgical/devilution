@@ -354,7 +354,7 @@ BYTE MonstConvTbl[] = {
 #endif
 };
 
-#define MAT_NEVER  0
+#define MAT_NEVER 0
 #define MAT_ALWAYS 1
 #define MAT_RETAIL 2
 /**

@@ -65,7 +65,7 @@ void InitHash()
 			seed = (125 * seed + 3) % 0x2AAAAB;
 			ch = (seed & 0xFFFF);
 			seed = (125 * seed + 3) % 0x2AAAAB;
-			hashtable[i][j] = ch << 16 | (seed & 0xFFFF);
+			hashtable[j][i] = ch << 16 | (seed & 0xFFFF);
 		}
 	}
 }
