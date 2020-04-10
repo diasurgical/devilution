@@ -13,12 +13,12 @@ BOOL terminating;
 int cleanup_thread_id;
 
 // delete overloads the delete operator.
-//void operator delete(void *ptr)
-//{
-//	if (ptr != NULL) {
-//		SMemFree(ptr, "delete", -1, 0);
-//	}
-//}
+void __cdecl operator delete(void *ptr)
+{
+	if (ptr != NULL) {
+		SMemFree(ptr, "delete", -1, 0);
+	}
+}
 
 void TriggerBreak()
 {
