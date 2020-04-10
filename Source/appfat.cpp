@@ -484,6 +484,7 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 
 	init_cleanup(FALSE);
 	exit(1);
+	ExitProcess(1);
 }
 
 void MsgBox(const char *pszFmt, va_list va)
