@@ -30,7 +30,7 @@ size = 0xD
 [[func]]
 name = "app_fatal"
 addr = 0x401947
-size = 0x24
+size = 0x2E
 
 [[func]]
 name = "MsgBox"
