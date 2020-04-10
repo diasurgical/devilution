@@ -1054,6 +1054,15 @@ typedef struct QuestData {
 	char *_qlstr;
 } QuestData;
 
+#ifdef HELLFIRE
+typedef struct CornerStoneStruct {
+	int x;
+	int y;
+	BOOL activated;
+	ItemStruct item;
+} CornerStoneStruct;
+#endif
+
 //////////////////////////////////////////////////
 // gamemenu/gmenu
 //////////////////////////////////////////////////

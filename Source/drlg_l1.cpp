@@ -2648,8 +2648,8 @@ void CreateL5Dungeon(DWORD rseed, int entry)
 			}
 			if ( dPiece[i][j] == 317 )
 			{
-				RowOfCornerStone = i;
-				ColOfCornerStone = j;
+				CornerStone.x = i;
+				CornerStone.y = j;
 			}
 		}
 	}

@@ -16,10 +16,7 @@ ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
 #ifdef HELLFIRE
-int RowOfCornerStone;
-int ColOfCornerStone;
-int dword_691CB0;
-ItemStruct CornerItemMaybe;
+CornerStoneStruct CornerStone;
 #endif
 BYTE *itemanims[ITEMTYPES];
 BOOL UniqueItemFlag[128];
@@ -3055,9 +3052,9 @@ void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, 
 void items_427A72()
 {
 	PkItemStruct id;
-	if (dword_691CB0) {
-		if (CornerItemMaybe.IDidx >= 0) {
-			PackItem(&id, &CornerItemMaybe);
+	if (CornerStone.activated) {
+		if (CornerStone.item.IDidx >= 0) {
+			PackItem(&id, &CornerStone.item);
 			SRegSaveData(APP_NAME, off_4A5AC4, 0, (BYTE *)&id, 19);
 		} else {
 			SRegSaveData(APP_NAME, off_4A5AC4, 0, (BYTE *)"", 1);
@@ -3071,12 +3068,12 @@ void items_427ABA(int x, int y)
 	DWORD dwSize;
 	PkItemStruct PkSItem;
 
-	if (dword_691CB0 || x == 0 || y == 0) {
+	if (CornerStone.activated || x == 0 || y == 0) {
 		return;
 	}
 
-	CornerItemMaybe.IDidx = 0;
-	dword_691CB0 = 1;
+	CornerStone.item.IDidx = 0;
+	CornerStone.activated = TRUE;
 	if (dItem[x][y]) {
 		ii = dItem[x][y] - 1;
 		for (i = 0; i < numitems; i++) {
@@ -3098,7 +3095,7 @@ void items_427ABA(int x, int y)
 			item[ii]._ix = x;
 			item[ii]._iy = y;
 			RespawnItem(ii, FALSE);
-			CornerItemMaybe = item[ii];
+			CornerStone.item = item[ii];
 			numitems++;
 		}
 	}

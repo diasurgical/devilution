@@ -2029,15 +2029,15 @@ void InvGetItem(int pnum, int ii)
 #endif
 		dItem[item[ii]._ix][item[ii]._iy] = 0;
 #ifdef HELLFIRE
-		if (currlevel == 21 && item[ii]._ix == RowOfCornerStone && item[ii]._iy == ColOfCornerStone) {
-			CornerItemMaybe.IDidx = -1;
-			CornerItemMaybe._itype = ITYPE_MISC;
-			CornerItemMaybe._iSelFlag = FALSE;
-			CornerItemMaybe._ix = 0;
-			CornerItemMaybe._iy = 0;
-			CornerItemMaybe._iAnimFlag = FALSE;
-			CornerItemMaybe._iIdentified = FALSE;
-			CornerItemMaybe._iPostDraw = FALSE;
+		if (currlevel == 21 && item[ii]._ix == CornerStone.x && item[ii]._iy == CornerStone.y) {
+			CornerStone.item.IDidx = -1;
+			CornerStone.item._itype = ITYPE_MISC;
+			CornerStone.item._iSelFlag = FALSE;
+			CornerStone.item._ix = 0;
+			CornerStone.item._iy = 0;
+			CornerStone.item._iAnimFlag = FALSE;
+			CornerStone.item._iIdentified = FALSE;
+			CornerStone.item._iPostDraw = FALSE;
 		}
 #endif
 		i = 0;
@@ -2175,15 +2175,15 @@ void AutoGetItem(int pnum, int ii)
 	if (done) {
 		dItem[item[ii]._ix][item[ii]._iy] = 0;
 #ifdef HELLFIRE
-		if (currlevel == 21 && item[ii]._ix == RowOfCornerStone && item[ii]._iy == ColOfCornerStone) {
-			CornerItemMaybe.IDidx = -1;
-			CornerItemMaybe._itype = ITYPE_MISC;
-			CornerItemMaybe._iSelFlag = FALSE;
-			CornerItemMaybe._ix = 0;
-			CornerItemMaybe._iy = 0;
-			CornerItemMaybe._iAnimFlag = FALSE;
-			CornerItemMaybe._iIdentified = FALSE;
-			CornerItemMaybe._iPostDraw = FALSE;
+		if (currlevel == 21 && item[ii]._ix == CornerStone.x && item[ii]._iy == CornerStone.y) {
+			CornerStone.item.IDidx = -1;
+			CornerStone.item._itype = ITYPE_MISC;
+			CornerStone.item._iSelFlag = FALSE;
+			CornerStone.item._ix = 0;
+			CornerStone.item._iy = 0;
+			CornerStone.item._iAnimFlag = FALSE;
+			CornerStone.item._iIdentified = FALSE;
+			CornerStone.item._iPostDraw = FALSE;
 		}
 #endif
 		i = 0;
@@ -2267,15 +2267,15 @@ void SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 	if (ii != -1) {
 		dItem[item[ii]._ix][item[ii]._iy] = 0;
 #ifdef HELLFIRE
-		if (currlevel == 21 && item[ii]._ix == RowOfCornerStone && item[ii]._iy == ColOfCornerStone) {
-			CornerItemMaybe.IDidx = -1;
-			CornerItemMaybe._itype = ITYPE_MISC;
-			CornerItemMaybe._iSelFlag = FALSE;
-			CornerItemMaybe._ix = 0;
-			CornerItemMaybe._iy = 0;
-			CornerItemMaybe._iAnimFlag = FALSE;
-			CornerItemMaybe._iIdentified = FALSE;
-			CornerItemMaybe._iPostDraw = FALSE;
+		if (currlevel == 21 && item[ii]._ix == CornerStone.x && item[ii]._iy == CornerStone.y) {
+			CornerStone.item.IDidx = -1;
+			CornerStone.item._itype = ITYPE_MISC;
+			CornerStone.item._iSelFlag = FALSE;
+			CornerStone.item._ix = 0;
+			CornerStone.item._iy = 0;
+			CornerStone.item._iAnimFlag = FALSE;
+			CornerStone.item._iIdentified = FALSE;
+			CornerStone.item._iPostDraw = FALSE;
 		}
 #endif
 		i = 0;
@@ -2459,8 +2459,8 @@ int InvPutItem(int pnum, int x, int y)
 	RespawnItem(ii, TRUE);
 	numitems++;
 #ifdef HELLFIRE
-	if (currlevel == 21 && x == RowOfCornerStone && y == ColOfCornerStone) {
-		CornerItemMaybe = item[ii];
+	if (currlevel == 21 && x == CornerStone.x && y == CornerStone.y) {
+		CornerStone.item = item[ii];
 		InitQTextMsg(296);
 		quests[Q_CORNSTN]._qlog = 0;
 		quests[Q_CORNSTN]._qactive = 3;
@@ -2559,8 +2559,8 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 	RespawnItem(ii, TRUE);
 	numitems++;
 #ifdef HELLFIRE
-	if (currlevel == 21 && x == RowOfCornerStone && y == ColOfCornerStone) {
-		CornerItemMaybe = item[ii];
+	if (currlevel == 21 && x == CornerStone.x && y == CornerStone.y) {
+		CornerStone.item = item[ii];
 		InitQTextMsg(296);
 		quests[Q_CORNSTN]._qlog = 0;
 		quests[Q_CORNSTN]._qactive = 3;
