@@ -13,8 +13,8 @@ BOOL jogging_opt = TRUE;
 
 /** Contains the game menu items of the single player menu. */
 TMenuItem sgSingleMenu[] = {
-	// clang-format off
-	// dwFlags,      pszStr,         fnMenu
+// clang-format off
+//	  dwFlags,       pszStr,         fnMenu
 	{ GMENU_ENABLED, "Save Game",     &gamemenu_save_game  },
 	{ GMENU_ENABLED, "Options",       &gamemenu_options    },
 	{ GMENU_ENABLED, "New Game",      &gamemenu_new_game   },
@@ -25,12 +25,12 @@ TMenuItem sgSingleMenu[] = {
 	{ GMENU_ENABLED, "Quit Hellfire", &gamemenu_quit_game  },
 #endif
 	{ GMENU_ENABLED, NULL,            NULL }
-	// clang-format on
+// clang-format on
 };
 /** Contains the game menu items of the multi player menu. */
 TMenuItem sgMultiMenu[] = {
-	// clang-format off
-	// dwFlags,      pszStr,            fnMenu
+// clang-format off
+//	  dwFlags,       pszStr,            fnMenu
 	{ GMENU_ENABLED, "Options",         &gamemenu_options      },
 	{ GMENU_ENABLED, "New Game",        &gamemenu_new_game     },
 	{ GMENU_ENABLED, "Restart In Town", &gamemenu_restart_town },
@@ -40,11 +40,11 @@ TMenuItem sgMultiMenu[] = {
 	{ GMENU_ENABLED, "Quit Hellfire",   &gamemenu_quit_game    },
 #endif
 	{ GMENU_ENABLED, NULL,              NULL                   },
-	// clang-format on
+// clang-format on
 };
 TMenuItem sgOptionsMenu[] = {
-	// clang-format off
-	// dwFlags,                     pszStr,          fnMenu
+// clang-format off
+//	  dwFlags,                      pszStr,          fnMenu
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_music_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_sound_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, "Gamma",         &gamemenu_gamma         },
@@ -55,7 +55,7 @@ TMenuItem sgOptionsMenu[] = {
 #endif
 	{ GMENU_ENABLED               , "Previous Menu", &gamemenu_previous      },
 	{ GMENU_ENABLED               , NULL,            NULL                    },
-	// clang-format on
+// clang-format on
 };
 /** Specifies the menu names for music enabled and disabled. */
 char *music_toggle_names[] = {
@@ -289,17 +289,17 @@ void gamemenu_music_volume(BOOL bActivate)
 #else
 			music_start(leveltype);
 #endif
-		}
-	} else {
-		volume = gamemenu_slider_music_sound(&sgOptionsMenu[0]);
-		sound_get_or_set_music_volume(volume);
-		if (volume == VOLUME_MIN) {
-			if (gbMusicOn) {
-				gbMusicOn = FALSE;
-				music_stop();
-			}
-		} else if (!gbMusicOn) {
-			gbMusicOn = TRUE;
+        }
+    } else {
+        volume = gamemenu_slider_music_sound(&sgOptionsMenu[0]);
+        sound_get_or_set_music_volume(volume);
+        if (volume == VOLUME_MIN) {
+            if (gbMusicOn) {
+                gbMusicOn = FALSE;
+                music_stop();
+            }
+        } else if (!gbMusicOn) {
+            gbMusicOn = TRUE;
 #ifdef HELLFIRE
 			int lt;
 			if (currlevel >= 17) {
@@ -313,9 +313,9 @@ void gamemenu_music_volume(BOOL bActivate)
 #else
 			music_start(leveltype);
 #endif
-		}
-	}
-	gamemenu_get_music();
+        }
+    }
+    gamemenu_get_music();
 }
 
 int gamemenu_slider_music_sound(TMenuItem *menu_item)

@@ -14,7 +14,7 @@ extern ItemGetRecordStruct itemrecord[MAXITEMS];
 extern ItemStruct item[MAXITEMS + 1];
 extern BOOL itemhold[3][3];
 #ifdef HELLFIRE
-CornerStoneStruct CornerStone;
+extern CornerStoneStruct CornerStone;
 #endif
 extern BYTE *itemanims[ITEMTYPES];
 extern BOOL UniqueItemFlag[128];
