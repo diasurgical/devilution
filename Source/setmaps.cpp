@@ -61,7 +61,7 @@ char *quest_level_names[] = {
 	"Bone Chamber",
 	"Maze",
 	"Poisoned Water Supply",
-	"Archbishop Lazarus' Lair"
+	"Archbishop Lazarus' Lair",
 };
 
 int ObjIndex(int x, int y)
@@ -140,10 +140,10 @@ void LoadSetMap()
 		LoadPreL1Dungeon("Levels\\L1Data\\SklKng1.DUN", 83, 45);
 		LoadL1Dungeon("Levels\\L1Data\\SklKng2.DUN", 83, 45);
 		LoadPalette("Levels\\L1Data\\L1_2.pal");
-		DRLG_AreaTrans(sizeof(SkelKingTrans1) / 4, SkelKingTrans1);
-		DRLG_ListTrans(sizeof(SkelKingTrans2) / 4, SkelKingTrans2);
-		DRLG_AreaTrans(sizeof(SkelKingTrans3) / 4, SkelKingTrans3);
-		DRLG_ListTrans(sizeof(SkelKingTrans4) / 4, SkelKingTrans4);
+		DRLG_AreaTrans(sizeof(SkelKingTrans1) / 4, &SkelKingTrans1[0]);
+		DRLG_ListTrans(sizeof(SkelKingTrans2) / 4, &SkelKingTrans2[0]);
+		DRLG_AreaTrans(sizeof(SkelKingTrans3) / 4, &SkelKingTrans3[0]);
+		DRLG_ListTrans(sizeof(SkelKingTrans4) / 4, &SkelKingTrans4[0]);
 		AddL1Objs(0, 0, MAXDUNX, MAXDUNY);
 		AddSKingObjs();
 		InitSKingTriggers();
@@ -152,9 +152,9 @@ void LoadSetMap()
 		LoadPreL2Dungeon("Levels\\L2Data\\Bonecha2.DUN", 69, 39);
 		LoadL2Dungeon("Levels\\L2Data\\Bonecha1.DUN", 69, 39);
 		LoadPalette("Levels\\L2Data\\L2_2.pal");
-		DRLG_ListTrans(sizeof(SkelChamTrans1) / 4, SkelChamTrans1);
-		DRLG_AreaTrans(sizeof(SkelChamTrans2) / 4, SkelChamTrans2);
-		DRLG_ListTrans(sizeof(SkelChamTrans3) / 4, SkelChamTrans3);
+		DRLG_ListTrans(sizeof(SkelChamTrans1) / 4, &SkelChamTrans1[0]);
+		DRLG_AreaTrans(sizeof(SkelChamTrans2) / 4, &SkelChamTrans2[0]);
+		DRLG_ListTrans(sizeof(SkelChamTrans3) / 4, &SkelChamTrans3[0]);
 		AddL2Objs(0, 0, MAXDUNX, MAXDUNY);
 		AddSChamObjs();
 		InitSChambTriggers();

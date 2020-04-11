@@ -26,7 +26,7 @@ int sgdwLastTime; // check name
  * 65 66 67 68 69 70 71 72
  * @see graphics/inv/inventory.png
  */
-const InvXY InvRect[73] = {
+const InvXY InvRect[] = {
 	// clang-format off
 	//  X,   Y
 	{ RIGHT_PANEL + 132,  31 }, // helmet
@@ -321,14 +321,14 @@ void DrawInv()
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND) {
 			InvDrawSlotBack(RIGHT_PANEL_X + 247, 160 + SCREEN_Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 			light_table_index = 0;
-			cel_transparency_active = 1;
+			cel_transparency_active = TRUE;
 
 			pBuff = frame_width == INV_SLOT_SIZE_PX
 			    ? &gpBuffer[SCREENXY(RIGHT_PANEL_X + 197, SCREEN_Y)]
 			    : &gpBuffer[SCREENXY(RIGHT_PANEL_X + 183, SCREEN_Y)];
 			CelClippedBlitLightTrans(pBuff, pCursCels, frame, frame_width, 0, 8);
 
-			cel_transparency_active = 0;
+			cel_transparency_active = FALSE;
 		}
 	}
 	if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
@@ -1233,7 +1233,7 @@ void CheckInvCut(int pnum, int mx, int my)
 	if (r >= SLOTXY_INV_FIRST && r <= SLOTXY_INV_LAST) {
 		ig = r - SLOTXY_INV_FIRST;
 		ii = plr[pnum].InvGrid[ig];
-		if (ii) {
+		if (ii != 0) {
 			iv = ii;
 			if (ii <= 0) {
 				iv = -ii;
@@ -1408,7 +1408,7 @@ void CheckBookLevel(int pnum)
 	if (plr[pnum].HoldItem._iMiscId == IMISC_BOOK) {
 		plr[pnum].HoldItem._iMinMag = spelldata[plr[pnum].HoldItem._iSpell].sMinInt;
 		slvl = plr[pnum]._pSplLvl[plr[pnum].HoldItem._iSpell];
-		while (slvl) {
+		while (slvl != 0) {
 			plr[pnum].HoldItem._iMinMag += 20 * plr[pnum].HoldItem._iMinMag / 100;
 			slvl--;
 			if (plr[pnum].HoldItem._iMinMag + 20 * plr[pnum].HoldItem._iMinMag / 100 > 255) {
@@ -1442,7 +1442,7 @@ void CheckQuestItem(int pnum)
 			quests[Q_ANVIL]._qvar1 = 1;
 		}
 #ifndef SPAWN
-		if (quests[Q_ANVIL]._qlog == 1) {
+		if (quests[Q_ANVIL]._qlog == TRUE) {
 			sfxdelay = 10;
 			if (plr[myplr]._pClass == PC_WARRIOR) {
 				sfxdnum = PS_WARR89;
@@ -1472,7 +1472,7 @@ void CheckQuestItem(int pnum)
 			quests[Q_ROCK]._qvar1 = 1;
 		}
 #ifndef SPAWN
-		if (quests[Q_ROCK]._qlog == 1) {
+		if (quests[Q_ROCK]._qlog == TRUE) {
 			sfxdelay = 10;
 			if (plr[myplr]._pClass == PC_WARRIOR) {
 				sfxdnum = PS_WARR87;
@@ -1508,7 +1508,7 @@ void InvGetItem(int pnum, int ii)
 		dropGoldValue = 0;
 	}
 
-	if (dItem[item[ii]._ix][item[ii]._iy]) {
+	if (dItem[item[ii]._ix][item[ii]._iy] != 0) {
 		if (myplr == pnum && pcurs >= CURSOR_FIRSTITEM)
 			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr]._px, plr[myplr]._py);
 		item[ii]._iCreateInfo &= ~0x8000;
@@ -1731,7 +1731,7 @@ BOOL CanPut(int x, int y)
 	if (nSolidTable[dPiece[x][y]])
 		return FALSE;
 
-	if (dObject[x][y]) {
+	if (dObject[x][y] != 0) {
 		if (object[dObject[x][y] > 0 ? dObject[x][y] - 1 : -1 - dObject[x][y]]._oSolidFlag)
 			return FALSE;
 	}
@@ -1994,7 +1994,7 @@ char CheckInvHLight()
 		pi = &p->InvBody[rv];
 	} else if (r >= 25 && r <= 64) {
 		r = abs(p->InvGrid[r - 25]);
-		if (!r)
+		if (r == 0)
 			return -1;
 		ii = r - 1;
 		rv = ii + 7;
@@ -2131,7 +2131,7 @@ BOOL UseInvItem(int pnum, int cii)
 		return TRUE;
 	if (pcurs != CURSOR_HAND)
 		return TRUE;
-	if (stextflag)
+	if (stextflag != STORE_NONE)
 		return TRUE;
 	if (cii <= INVITEM_HAND_RIGHT)
 		return FALSE;
@@ -2236,7 +2236,7 @@ void DoTelekinesis()
 		NetSendCmdParam1(TRUE, CMD_OPOBJT, pcursobj);
 	if (pcursitem != -1)
 		NetSendCmdGItem(TRUE, CMD_REQUESTAGITEM, myplr, myplr, pcursitem);
-	if (pcursmonst != -1 && !M_Talker(pcursmonst) && !monster[pcursmonst].mtalkmsg)
+	if (pcursmonst != -1 && !M_Talker(pcursmonst) && monster[pcursmonst].mtalkmsg == 0)
 		NetSendCmdParam1(TRUE, CMD_KNOCKBACK, pcursmonst);
 	SetCursor_(CURSOR_HAND);
 }
