@@ -580,7 +580,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 		d = plr[p]._pdir;
 
-		// TODO: Add debug assert here ( plr[p]._pNAnim[d] != NULL )
+		assert(plr[p]._pNAnim[d]);
 		plr[p]._pAnimData = plr[p]._pNAnim[d];
 
 		plr[p]._pAnimLen = plr[p]._pNFrames;
@@ -2957,7 +2957,7 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 
 void DrawULine(int y)
 {
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	int yy;
