@@ -6,7 +6,7 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-void *sgpBackCel;
+BYTE *sgpBackCel;
 int sgdwProgress;
 int progress_id;
 
@@ -43,7 +43,7 @@ void DrawCutscene()
 	DWORD i;
 
 	lock_buf(1);
-	CelDraw(PANEL_X, 480 + SCREEN_Y - 1, (BYTE *)sgpBackCel, 1, 640);
+	CelDraw(PANEL_X, 480 + SCREEN_Y - 1, sgpBackCel, 1, 640);
 
 	for (i = 0; i < sgdwProgress; i++) {
 		DrawProgress(

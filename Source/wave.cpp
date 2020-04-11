@@ -1,9 +1,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-BOOL WCloseFile(HANDLE file)
+void WCloseFile(HANDLE file)
 {
-	return SFileCloseFile(file);
+	SFileCloseFile(file);
 }
 
 LONG WGetFileSize(HANDLE hsFile, DWORD *lpFileSizeHigh)
@@ -82,7 +82,7 @@ BOOL LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
 	return ret;
 }
 
-void *AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
+void AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
 {
 	DWORD length;
 
@@ -97,7 +97,6 @@ void *AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
 	pMemFile->buf_len = length;
 	pMemFile->buf = DiabloAllocPtr(length);
 	pMemFile->file = hsFile;
-	return pMemFile->buf;
 }
 
 void FreeMemFile(MEMFILE *pMemFile)
