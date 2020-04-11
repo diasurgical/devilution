@@ -2,14 +2,14 @@
 #ifndef __WAVE_H__
 #define __WAVE_H__
 
-BOOL WCloseFile(HANDLE file);
+void WCloseFile(HANDLE file);
 LONG WGetFileSize(HANDLE hsFile, DWORD *lpFileSizeHigh);
 void WGetFileArchive(HANDLE hsFile, DWORD *retry, const char *FileName);
 BOOL WOpenFile(const char *FileName, HANDLE *phsFile, BOOL mayNotExist);
 void WReadFile(HANDLE hsFile, LPVOID buf, DWORD to_read);
 int WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence);
 BOOL LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx);
-void *AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos);
+void AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos);
 void FreeMemFile(MEMFILE *pMemFile);
 BOOL ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk);
 BOOL ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t length);

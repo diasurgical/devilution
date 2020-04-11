@@ -28,7 +28,7 @@ HWND init_find_mom_parent();
 void init_await_mom_parent_exit();
 void init_archives();
 HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs);
-char *init_strip_trailing_slash(char *path);
+void init_strip_trailing_slash(char *path);
 BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phArchive);
 void init_get_file_info();
 LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);

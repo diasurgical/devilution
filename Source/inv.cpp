@@ -1860,7 +1860,7 @@ int InvPutItem(int pnum, int x, int y)
 	item[ii]._iy = y;
 	RespawnItem(ii, TRUE);
 	numitems++;
-	SetCursor_(CURSOR_HAND);
+	NewCursor(CURSOR_HAND);
 	return ii;
 }
 
@@ -2238,7 +2238,7 @@ void DoTelekinesis()
 		NetSendCmdGItem(TRUE, CMD_REQUESTAGITEM, myplr, myplr, pcursitem);
 	if (pcursmonst != -1 && !M_Talker(pcursmonst) && monster[pcursmonst].mtalkmsg == 0)
 		NetSendCmdParam1(TRUE, CMD_KNOCKBACK, pcursmonst);
-	SetCursor_(CURSOR_HAND);
+	NewCursor(CURSOR_HAND);
 }
 
 int CalculateGold(int pnum)
@@ -2264,7 +2264,7 @@ BOOL DropItemBeforeTrig()
 {
 	if (TryInvPut()) {
 		NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 		return TRUE;
 	}
 

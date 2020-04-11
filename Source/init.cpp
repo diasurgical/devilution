@@ -319,7 +319,7 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int dwPri
 	return NULL;
 }
 
-char *init_strip_trailing_slash(char *path)
+void init_strip_trailing_slash(char *path)
 {
 	char *result;
 
@@ -328,7 +328,6 @@ char *init_strip_trailing_slash(char *path)
 		if (!result[1])
 			*result = 0;
 	}
-	return result;
 }
 
 BOOL init_read_test_file(char *pszPath, char *pszArchive, int dwPriority, HANDLE *phArchive)
