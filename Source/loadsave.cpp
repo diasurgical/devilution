@@ -521,7 +521,7 @@ void SaveLevel()
 	int dwLen;
 	BYTE *SaveBuff;
 
-	if (!currlevel)
+	if (currlevel == 0)
 		glSeedTbl[0] = GetRndSeed();
 
 	dwLen = codec_get_encoded_len(FILEBUFF);
@@ -694,7 +694,7 @@ void LoadLevel()
 
 	for (i = 0; i < MAX_PLRS; i++) {
 		if (plr[i].plractive && currlevel == plr[i].plrlevel)
-			LightList[plr[i]._plid]._lunflag = 1;
+			LightList[plr[i]._plid]._lunflag = TRUE;
 	}
 
 	mem_free_dbg(LoadBuff);
