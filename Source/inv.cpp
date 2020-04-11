@@ -134,7 +134,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 {
 	BYTE *dst;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	dst = &gpBuffer[X + PitchTbl[Y]];
 
@@ -1710,15 +1710,13 @@ void SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 			if (itemactive[i] == ii) {
 				DeleteItem(itemactive[i], i);
 				FindGetItem(idx, ci, iseed);
-				/// ASSERT: assert(FindGetItem(idx,ci,iseed) == -1);
-				FindGetItem(idx, ci, iseed); /* todo: replace with above */
+				assert(FindGetItem(idx,ci,iseed) == -1);
 				i = 0;
 			} else {
 				i++;
 			}
 		}
-		/// ASSERT: assert(FindGetItem(idx, ci, iseed) == -1);
-		FindGetItem(idx, ci, iseed); /* todo: replace with above */
+		assert(FindGetItem(idx, ci, iseed) == -1);
 	}
 }
 
@@ -1847,9 +1845,7 @@ int InvPutItem(int pnum, int x, int y)
 		}
 	}
 
-	CanPut(x, y); //if (!CanPut(x, y)) {
-	//	assertion_failed(1524, "C:\\Diablo\\Direct\\inv.cpp", "CanPut(x,y)");
-	//}
+	assert(CanPut(x, y));
 
 	ii = itemavail[0];
 	dItem[x][y] = ii + 1;
@@ -1916,7 +1912,7 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 		}
 	}
 
-	CanPut(x, y);
+	assert(CanPut(x, y));
 
 	ii = itemavail[0];
 	dItem[x][y] = ii + 1;

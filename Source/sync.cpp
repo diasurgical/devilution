@@ -27,7 +27,7 @@ DWORD sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen)
 	pHdr->bLevel = currlevel;
 	pHdr->wLen = 0;
 	SyncPlrInv(pHdr);
-	/// ASSERT: assert(dwMaxLen <= 0xffff);
+	assert(dwMaxLen <= 0xffff);
 	sync_one_monster();
 
 	for (i = 0; i < nummonsters && dwMaxLen >= sizeof(TSyncMonster); i++) {
@@ -168,7 +168,7 @@ void SyncPlrInv(TSyncHeader *pHdr)
 		pHdr->bItemI = -1;
 	}
 
-	/// ASSERT: assert((DWORD) sgnSyncPInv < NUM_INVLOC);
+	assert((DWORD)sgnSyncPInv < NUM_INVLOC);
 	pItem = &plr[myplr].InvBody[sgnSyncPInv];
 	if (pItem->_itype != ITYPE_NONE) {
 		pHdr->bPInvLoc = sgnSyncPInv;
@@ -215,7 +215,7 @@ DWORD sync_update(int pnum, const BYTE *pbBuf)
 		pbBuf += sizeof(TSyncMonster);
 	}
 
-	/// ASSERT: assert(wLen == 0);
+	assert(wLen == 0);
 
 	return pHdr->wLen + sizeof(*pHdr);
 }

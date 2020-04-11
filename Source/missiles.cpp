@@ -23,8 +23,8 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 {
 	int k, sl;
 
-	/// ASSERT: assert((DWORD)myplr < MAX_PLRS);
-	/// ASSERT: assert((DWORD)i < 64);
+	assert((DWORD)myplr < MAX_PLRS);
+	assert((DWORD)i < 64);
 	sl = plr[myplr]._pSplLvl[i] + plr[myplr]._pISplLvlAdd;
 
 	switch (i) {

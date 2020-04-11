@@ -2318,7 +2318,7 @@ static void DrawZoom(int x, int y)
 		wdt = SCREEN_WIDTH / 2;
 	}
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -2441,7 +2441,7 @@ void ClearScreenBuffer()
 {
 	lock_buf(3);
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -2604,8 +2604,8 @@ static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 	HRESULT hDDVal;
 	RECT SrcRect;
 
-	/// ASSERT: assert(! (dwX & 3));
-	/// ASSERT: assert(! (dwWdt & 3));
+	assert(!(dwX & 3));
+	assert(!(dwWdt & 3));
 
 	if (lpDDSBackBuf != NULL) {
 		SrcRect.left = dwX + SCREEN_X;
