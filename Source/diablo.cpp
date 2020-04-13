@@ -257,6 +257,7 @@ BOOL diablo_get_not_running()
  * @param lpCmdLine The command line for the application
  * @param nCmdShow Initial window state
  */
+#ifndef TESTGEN
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HINSTANCE hInst;
@@ -335,6 +336,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	return 0;
 }
+#endif
 
 void diablo_parse_flags(char *args)
 {

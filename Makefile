@@ -21,6 +21,9 @@ LDFLAGS=-L./ -static-libgcc -mwindows
 
 all: devilution.exe
 
+testgen: CXXFLAGS += -DTESTGEN -I./SourceT -Wno-narrowing
+testgen: testgen.exe
+
 debug: CXXFLAGS += -D_DEBUG
 debug: CPPFLAGS += -D_DEBUG
 debug: devilution.exe
@@ -28,10 +31,16 @@ debug: devilution.exe
 DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp, $(wildcard Source/*.cpp)))
 OBJS=$(DIABLO_SRC:.cpp=.o)
 
+TESTGEN_SRC=SourceT/testgen.cpp
+TESTGEN_OBJS=$(TESTGEN_SRC:.cpp=.o)
+
 PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.o)
 
 devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+testgen.exe: $(OBJS) $(TESTGEN_OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 diabres.o: Diablo.rc
@@ -50,6 +59,6 @@ storm.dll:
 #	$(error Please copy storm.dll (version 1.09[b]) here)
 
 clean:
-	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS) $(PKWARE_OBJS:.o=d) diabres.o storm.lib diabloui.lib devilution.exe
+	@$(RM) -v $(OBJS) $(TESTGEN_OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS) $(PKWARE_OBJS:.o=d) diabres.o storm.lib diabloui.lib devilution.exe
 
 .PHONY: clean all

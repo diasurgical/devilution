@@ -51,7 +51,7 @@
 #endif
 
 // If defined, use copy protection [Default -> Defined]
-#if !defined(_DEBUG) && !defined(SPAWN)
+#if !defined(_DEBUG) && !defined(SPAWN) && !defined(TESTGEN)
 #define COPYPROT
 #endif
 
