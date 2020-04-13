@@ -7,10 +7,10 @@
 
 int qtexty;
 char *qtextptr;
-int qtextSpd;
-BOOLEAN qtextflag;
-int scrolltexty;
 int sgLastScroll;
+BOOLEAN qtextflag;
+int qtextDelay;
+int qtextSpd;
 BYTE *pMedTextCels;
 BYTE *pTextBoxCels;
 
@@ -72,9 +72,9 @@ void InitQTextMsg(int m)
 		qtextptr = alltext[m].txtstr;
 		qtextflag = TRUE;
 		qtexty = 500;
-		sgLastScroll = qscroll_spd_tbl[alltext[m].txtspd - 1];
-		scrolltexty = sgLastScroll;
-		qtextSpd = GetTickCount();
+		qtextSpd = qscroll_spd_tbl[alltext[m].txtspd - 1];
+		qtextDelay = qtextSpd;
+		sgLastScroll = GetTickCount();
 	}
 	PlaySFX(alltext[m].sfxnr);
 }
@@ -272,17 +272,17 @@ void DrawQText()
 
 	currTime = GetTickCount();
 	while (1) {
-		if (sgLastScroll <= 0) {
+		if (qtextSpd <= 0) {
 			qtexty--;
-			qtexty += sgLastScroll;
+			qtexty += qtextSpd;
 		} else {
-			scrolltexty--;
-			if (scrolltexty != 0) {
+			qtextDelay--;
+			if (qtextDelay != 0) {
 				qtexty--;
 			}
 		}
-		if (scrolltexty == 0) {
-			scrolltexty = sgLastScroll;
+		if (qtextDelay == 0) {
+			qtextDelay = qtextSpd;
 		}
 		if (qtexty <= 209) {
 			qtexty += 38;
@@ -292,8 +292,8 @@ void DrawQText()
 			}
 			break;
 		}
-		qtextSpd += 50;
-		if (currTime - qtextSpd >= 0x7FFFFFFF) {
+		sgLastScroll += 50;
+		if (currTime - sgLastScroll >= 0x7FFFFFFF) {
 			break;
 		}
 	}
