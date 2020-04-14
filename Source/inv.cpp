@@ -1710,13 +1710,15 @@ void SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 			if (itemactive[i] == ii) {
 				DeleteItem(itemactive[i], i);
 				FindGetItem(idx, ci, iseed);
-				assert(FindGetItem(idx,ci,iseed) == -1);
+				/// ASSERT: assert(FindGetItem(idx,ci,iseed) == -1);
+				FindGetItem(idx, ci, iseed); /* todo: replace with above */
 				i = 0;
 			} else {
 				i++;
 			}
 		}
-		assert(FindGetItem(idx, ci, iseed) == -1);
+		/// ASSERT: assert(FindGetItem(idx, ci, iseed) == -1);
+		FindGetItem(idx, ci, iseed); /* todo: replace with above */
 	}
 }
 
@@ -1845,7 +1847,9 @@ int InvPutItem(int pnum, int x, int y)
 		}
 	}
 
-	assert(CanPut(x, y));
+	CanPut(x, y); //if (!CanPut(x, y)) {
+	//	assertion_failed(1524, "C:\\Diablo\\Direct\\inv.cpp", "CanPut(x,y)");
+	//}
 
 	ii = itemavail[0];
 	dItem[x][y] = ii + 1;
@@ -1912,7 +1916,7 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 		}
 	}
 
-	assert(CanPut(x, y));
+	CanPut(x, y);
 
 	ii = itemavail[0];
 	dItem[x][y] = ii + 1;

@@ -1680,7 +1680,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 	goe = 0;
 	if (!onlygood && random_(0, 3))
 		onlygood = TRUE;
-	if (pre == 0) {
+	if (!pre) {
 		nt = 0;
 		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
 			if (flgs & PL_Prefix[j].PLIType) {
