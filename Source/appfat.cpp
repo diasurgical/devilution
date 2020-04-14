@@ -55,6 +55,9 @@ LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 }
 #endif
 
+/**
+ * @brief Returns a formatted error message based on the given error code.
+ */
 char *GetErrorStr(DWORD error_code)
 {
 	int size;
@@ -462,11 +465,17 @@ void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 	strncpy(pszBuffer, szError, dwMaxChars);
 }
 
+/**
+ * @brief Returns a formatted error message of the last error.
+ */
 char *TraceLastError()
 {
 	return GetErrorStr(GetLastError());
 }
 
+/**
+ * @brief Terminates the game and displays an error message box.
+ */
 void __cdecl app_fatal(const char *pszFmt, ...)
 {
 	va_list va;
@@ -487,6 +496,9 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 	ExitProcess(1);
 }
 
+/**
+ * @brief Displays an error message box based on the given format string and variable argument list.
+ */
 void MsgBox(const char *pszFmt, va_list va)
 {
 	char Text[256];
@@ -497,6 +509,9 @@ void MsgBox(const char *pszFmt, va_list va)
 	MessageBox(ghMainWnd, Text, "ERROR", MB_TASKMODAL | MB_ICONHAND);
 }
 
+/**
+ * @brief Cleans up after a fatal application error.
+ */
 void FreeDlg()
 {
 	if (terminating && cleanup_thread_id != GetCurrentThreadId())
@@ -516,6 +531,9 @@ void FreeDlg()
 	ShowCursor(TRUE);
 }
 
+/**
+ * @brief Displays a warning message box based on the given formatted error message.
+ */
 void __cdecl DrawDlg(char *pszFmt, ...)
 {
 	char text[256];
@@ -534,6 +552,9 @@ void assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
 }
 #endif
 
+/**
+ * @brief Terminates the game with a DirectDraw assertion message box.
+ */
 void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
 	char *msg;
@@ -544,6 +565,9 @@ void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
+/**
+ * @brief Terminates the game with a DirectSound assertion message box.
+ */
 void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
 	char *msg;
@@ -554,6 +578,9 @@ void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
+/**
+ * @brief Centres the given dialog box.
+ */
 void center_window(HWND hDlg)
 {
 	LONG w, h;
@@ -574,6 +601,9 @@ void center_window(HWND hDlg)
 	}
 }
 
+/**
+ * @brief Callback function which processes messages sent to the given dialog box.
+ */
 static BOOL CALLBACK FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg) {
@@ -594,7 +624,10 @@ static BOOL CALLBACK FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return TRUE;
 }
 
-void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
+/**
+ * @brief Terminates the game and displays an error dialog box based on the given dialog_id.
+ */
+void ErrDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	char *size;
 	LPARAM dwInitParam[128];
@@ -606,12 +639,15 @@ void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line
 		log_file_path = size + 1;
 
 	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, FuncDlg, (LPARAM)dwInitParam) == -1)
-		app_fatal("ErrDlg: %d", template_id);
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, FuncDlg, (LPARAM)dwInitParam) == -1)
+		app_fatal("ErrDlg: %d", dialog_id);
 
 	app_fatal(NULL);
 }
 
+/**
+ * @brief Sets the text of the given dialog.
+ */
 static void TextDlg(HWND hDlg, char *text)
 {
 	center_window(hDlg);
@@ -620,7 +656,10 @@ static void TextDlg(HWND hDlg, char *text)
 		SetDlgItemText(hDlg, 1000, text);
 }
 
-void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
+/**
+ * @brief Displays a warning dialog box based on the given dialog_id and error code.
+ */
+void ErrOkDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	char *size;
 	LPARAM dwInitParam[128];
@@ -630,9 +669,12 @@ void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_li
 		log_file_path = size + 1;
 
 	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
-	DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, FuncDlg, (LPARAM)dwInitParam);
+	DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, FuncDlg, (LPARAM)dwInitParam);
 }
 
+/**
+ * @brief Terminates the game with a file not found error dialog.
+ */
 void FileErrDlg(const char *error)
 {
 	FreeDlg();
@@ -646,6 +688,9 @@ void FileErrDlg(const char *error)
 	app_fatal(NULL);
 }
 
+/**
+ * @brief Terminates the game with an out of disk space error dialog.
+ */
 void DiskFreeDlg(char *error)
 {
 	FreeDlg();
@@ -656,6 +701,9 @@ void DiskFreeDlg(char *error)
 	app_fatal(NULL);
 }
 
+/**
+ * @brief Terminates the game with an insert CD error dialog.
+ */
 BOOL InsertCDDlg()
 {
 	int nResult;
@@ -671,6 +719,9 @@ BOOL InsertCDDlg()
 	return nResult == IDOK;
 }
 
+/**
+ * @brief Terminates the game with a read-only directory error dialog.
+ */
 void DirErrorDlg(char *error)
 {
 	FreeDlg();
