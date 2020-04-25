@@ -86,5 +86,8 @@ diablo.res: Diablo.rc
 
 clean:
 	@$(RM) -v $(OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch
+	make -C DiabloUI clean
+	make -C 3rdParty/Storm clean
+	make -C 3rdParty/PKWare clean
 
 .PHONY: clean all
