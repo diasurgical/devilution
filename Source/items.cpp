@@ -29,9 +29,20 @@ int gnNumGetRecords;
 /* data */
 
 #ifdef HELLFIRE
-int OilLevels[10] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
-int OilValues[10] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
-int OilMagic[10] = { 31, 32, 33, 34, 35, 36, 37, 38, 39, 40 };
+int OilLevels[] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
+int OilValues[] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
+int OilMagic[] = {
+	IMISC_OILACC,
+	IMISC_OILMAST,
+	IMISC_OILSHARP,
+	IMISC_OILDEATH,
+	IMISC_OILSKILL,
+	IMISC_OILBSMTH,
+	IMISC_OILFORT,
+	IMISC_OILPERM,
+	IMISC_OILHARD,
+	IMISC_OILIMP,
+};
 char OilNames[10][25] = {
 	"Oil of Accuracy",
 	"Oil of Mastery",
@@ -978,7 +989,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 			plr[p]._pBlockFlag = TRUE;
 			plr[p]._pIFlags |= ISPL_FASTBLOCK;
 		}
-		if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[p].InvBody[5]._itype == ITYPE_NONE)
+		if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE)
 			plr[p]._pBlockFlag = TRUE;
 		if (plr[p].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON && plr[p].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND && plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE)
 			plr[p]._pBlockFlag = TRUE;

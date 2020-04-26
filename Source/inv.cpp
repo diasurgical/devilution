@@ -1923,8 +1923,8 @@ void CheckQuestItem(int pnum)
 	}
 #ifdef HELLFIRE
 	if (plr[pnum].HoldItem.IDidx == IDI_MAPOFDOOM) {
-		quests[Q_GRAVE]._qlog = 0;
-		quests[Q_GRAVE]._qactive = 2;
+		quests[Q_GRAVE]._qlog = FALSE;
+		quests[Q_GRAVE]._qactive = QUEST_ACTIVE;
 		quests[Q_GRAVE]._qvar1 = 1;
 		sfxdelay = 10;
 		if (plr[myplr]._pClass == PC_WARRIOR) {
@@ -2462,8 +2462,8 @@ int InvPutItem(int pnum, int x, int y)
 	if (currlevel == 21 && x == CornerStone.x && y == CornerStone.y) {
 		CornerStone.item = item[ii];
 		InitQTextMsg(296);
-		quests[Q_CORNSTN]._qlog = 0;
-		quests[Q_CORNSTN]._qactive = 3;
+		quests[Q_CORNSTN]._qlog = FALSE;
+		quests[Q_CORNSTN]._qactive = QUEST_DONE;
 	}
 #endif
 	NewCursor(CURSOR_HAND);

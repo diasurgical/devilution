@@ -68,7 +68,11 @@ char *sound_toggle_names[] = {
 	"Sound Disabled",
 };
 #ifdef HELLFIRE
-char *jogging_toggle_names[] = { "Jog", "Walk", "Fast Walk" };
+char *jogging_toggle_names[] = {
+	"Jog",
+	"Walk",
+};
+char *jogging_title = "Fast Walk";
 #endif
 #ifndef HELLFIRE
 /** Specifies the menu names for colour cycling disabled and enabled. */
@@ -356,7 +360,7 @@ void gamemenu_loadjog(BOOL bActivate)
 {
 	if (gbMaxPlayers == 1) {
 		jogging_opt = !jogging_opt;
-		SRegSaveValue(APP_NAME, jogging_toggle_names[2], FALSE, jogging_opt);
+		SRegSaveValue(APP_NAME, jogging_title, FALSE, jogging_opt);
 		PlaySFX(IS_TITLEMOV);
 		gamemenu_jogging();
 	}
