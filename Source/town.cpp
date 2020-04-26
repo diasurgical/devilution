@@ -7,7 +7,7 @@
  */
 void town_clear_upper_buf(BYTE *pBuff)
 {
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -74,7 +74,7 @@ void town_clear_upper_buf(BYTE *pBuff)
  */
 void town_clear_low_buf(BYTE *pBuff)
 {
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -430,7 +430,7 @@ void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int efl
 	int mi, px, py;
 	char bv;
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 	pBuff = &gpBuffer[dx + PitchTbl[dy]];
 
@@ -1228,7 +1228,7 @@ void T_DrawZoom(int x, int y)
 		break;
 	}
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 	gpBufEnd = &gpBuffer[PitchTbl[-17 + SCREEN_Y]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
@@ -1240,7 +1240,7 @@ void T_DrawZoom(int x, int y)
 		sx += 32;
 		sy += 16;
 	}
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 	gpBufEnd = &gpBuffer[PitchTbl[160 + SCREEN_Y]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
@@ -1277,7 +1277,7 @@ void T_DrawZoom(int x, int y)
 		wdt = SCREEN_WIDTH / 2;
 	}
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {

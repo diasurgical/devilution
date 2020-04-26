@@ -44,7 +44,7 @@ char gszProductName[MAX_PATH] = "Diablo v1.09";
 void init_cleanup(BOOL show_cursor)
 {
 	pfile_flush_W();
-	init_disable_screensaver(0);
+	init_disable_screensaver(FALSE);
 	init_run_office_from_start_menu();
 
 	if (diabdat_mpq) {
@@ -176,7 +176,7 @@ void init_disable_screensaver(BOOLEAN disable)
 
 	if (disable) {
 		cbData = 16;
-		success = RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData);
+		success = RegQueryValueEx(phkResult, "ScreenSaveActive", NULL, &Type, (LPBYTE)Data, &cbData);
 		if (success == ERROR_SUCCESS)
 			screensaver_enabled_prev = Data[0] != '0';
 		enabled = FALSE;
@@ -184,9 +184,9 @@ void init_disable_screensaver(BOOLEAN disable)
 		enabled = screensaver_enabled_prev;
 	}
 
-	Data[1] = 0;
 	Data[0] = enabled ? '1' : '0';
-	RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2);
+	Data[1] = 0;
+	RegSetValueEx(phkResult, "ScreenSaveActive", NULL, REG_SZ, (const BYTE *)Data, 2);
 	RegCloseKey(phkResult);
 }
 
@@ -204,7 +204,7 @@ void init_create_window(int nCmdShow)
 	wcex.lpfnWndProc = WindowProc;
 	wcex.hInstance = ghInst;
 	wcex.hIcon = LoadIcon(ghInst, MAKEINTRESOURCE(IDI_ICON1));
-	wcex.hCursor = LoadCursor(0, IDC_ARROW);
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wcex.lpszMenuName = GAME_NAME;
 	wcex.lpszClassName = "DIABLO";
@@ -229,7 +229,7 @@ void init_create_window(int nCmdShow)
 	BlackPalette();
 	snd_init(hWnd);
 	init_archives();
-	init_disable_screensaver(1);
+	init_disable_screensaver(TRUE);
 }
 
 void init_kill_mom_parent()
@@ -237,7 +237,7 @@ void init_kill_mom_parent()
 	HWND handle;
 
 	handle = init_find_mom_parent();
-	if (handle) {
+	if (handle != NULL) {
 		PostMessage(handle, WM_CLOSE, 0, 0);
 		killed_mom_parent = TRUE;
 	}
@@ -269,7 +269,7 @@ void init_await_mom_parent_exit()
 	}
 	do {
 		Sleep(250);
-	} while (GetTickCount() - tick <= 4000 && init_find_mom_parent());
+	} while (GetTickCount() - tick <= 4000 && init_find_mom_parent() != NULL);
 }
 
 void init_archives()
@@ -375,7 +375,7 @@ HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int dwPri
 	return NULL;
 }
 
-char *init_strip_trailing_slash(char *path)
+void init_strip_trailing_slash(char *path)
 {
 	char *result;
 
@@ -384,7 +384,6 @@ char *init_strip_trailing_slash(char *path)
 		if (!result[1])
 			*result = 0;
 	}
-	return result;
 }
 
 BOOL init_read_test_file(char *pszPath, char *pszArchive, int dwPriority, HANDLE *phArchive)
@@ -462,7 +461,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_DESTROY:
 		init_cleanup(TRUE);
-		ghMainWnd = 0;
+		ghMainWnd = NULL;
 		PostQuitMessage(0);
 		break;
 	case WM_PAINT:

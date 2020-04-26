@@ -48,7 +48,7 @@ else
 	VC_INC_DIR = $(VC6_INC_DIR)
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi /FAs
+CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
 ifeq ($(HELLFIRE),1)
@@ -106,5 +106,8 @@ diablo.res: Diablo.rc
 
 clean:
 	@$(RM) -v $(OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch vc50.idb vc50.pdb hellfire.pdb
+	make -C DiabloUI clean
+	make -C 3rdParty/Storm clean
+	make -C 3rdParty/PKWare clean
 
 .PHONY: clean all

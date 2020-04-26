@@ -518,13 +518,13 @@ void InitItemGFX()
 
 BOOL ItemPlace(int xp, int yp)
 {
-	if (dMonster[xp][yp])
+	if (dMonster[xp][yp] != 0)
 		return FALSE;
-	if (dPlayer[xp][yp])
+	if (dPlayer[xp][yp] != 0)
 		return FALSE;
-	if (dItem[xp][yp])
+	if (dItem[xp][yp] != 0)
 		return FALSE;
-	if (dObject[xp][yp])
+	if (dObject[xp][yp] != 0)
 		return FALSE;
 	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
@@ -894,19 +894,16 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		lr = 0;
 	}
 
-	if (mr > 75) {
-		mr = 75;
-	}
+	if (mr > MAXRESIST)
+		mr = MAXRESIST;
 	plr[p]._pMagResist = mr;
 
-	if (fr > 75) {
-		fr = 75;
-	}
+	if (fr > MAXRESIST)
+		fr = MAXRESIST;
 	plr[p]._pFireResist = fr;
 
-	if (lr > 75) {
-		lr = 75;
-	}
+	if (lr > MAXRESIST)
+		lr = MAXRESIST;
 	plr[p]._pLghtResist = lr;
 
 	if (plr[p]._pClass == PC_WARRIOR) {
@@ -1068,7 +1065,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 		d = plr[p]._pdir;
 
-		// TODO: Add debug assert here ( plr[p]._pNAnim[d] != NULL )
+		assert(plr[p]._pNAnim[d]);
 		plr[p]._pAnimData = plr[p]._pNAnim[d];
 
 		plr[p]._pAnimLen = plr[p]._pNFrames;
@@ -1233,7 +1230,7 @@ void CalcPlrBookVals(int p)
 {
 	int i, slvl;
 
-	if (!currlevel) {
+	if (currlevel == 0) {
 		for (i = 1; witchitem[i]._itype != ITYPE_NONE; i++) {
 			WitchBookLevel(i);
 #ifndef HELLFIRE
@@ -1247,7 +1244,7 @@ void CalcPlrBookVals(int p)
 			plr[p].InvList[i]._iMinMag = spelldata[plr[p].InvList[i]._iSpell].sMinInt;
 			slvl = plr[p]._pSplLvl[plr[p].InvList[i]._iSpell];
 
-			while (slvl) {
+			while (slvl != 0) {
 				plr[p].InvList[i]._iMinMag += 20 * plr[p].InvList[i]._iMinMag / 100;
 				slvl--;
 				if (plr[p].InvList[i]._iMinMag + 20 * plr[p].InvList[i]._iMinMag / 100 > 255) {
@@ -1270,7 +1267,7 @@ void CalcPlrInv(int p, BOOL Loadgfx)
 		CalcPlrBookVals(p);
 		CalcPlrScrolls(p);
 		CalcPlrStaff(p);
-		if (p == myplr && !currlevel)
+		if (p == myplr && currlevel == 0)
 			RecalcStoreStats();
 	}
 }
@@ -1384,7 +1381,7 @@ void CreatePlrItems(int p)
 
 	plr[p]._pNumInv = 0;
 
-	pi = plr[p].SpdList;
+	pi = &plr[p].SpdList[0];
 	for (i = MAXBELTITEMS; i != 0; i--) {
 		pi->_itype = ITYPE_NONE;
 		pi++;
@@ -1516,16 +1513,16 @@ BOOL ItemSpaceOk(int i, int j)
 	if (i < 0 || i >= MAXDUNX || j < 0 || j >= MAXDUNY)
 		return FALSE;
 
-	if (dMonster[i][j])
+	if (dMonster[i][j] != 0)
 		return FALSE;
 
-	if (dPlayer[i][j])
+	if (dPlayer[i][j] != 0)
 		return FALSE;
 
-	if (dItem[i][j])
+	if (dItem[i][j] != 0)
 		return FALSE;
 
-	if (dObject[i][j]) {
+	if (dObject[i][j] != 0) {
 		oi = dObject[i][j] > 0 ? dObject[i][j] - 1 : -(dObject[i][j] + 1);
 		if (object[oi]._oSolidFlag)
 			return FALSE;
@@ -1670,9 +1667,9 @@ void GetBookSpell(int i, int lvl)
 	if (lvl > 5)
 		lvl = 5;
 #endif
-	s = 1;
+	s = SPL_FIREBOLT;
 #ifdef HELLFIRE
-	bs = 1;
+	bs = SPL_FIREBOLT;
 #endif
 	while (rv > 0) {
 		if (spelldata[s].sBookLvl != -1 && lvl >= spelldata[s].sBookLvl) {
@@ -1787,7 +1784,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 		if (lvl > 10)
 			lvl = 10;
 #endif
-		s = 1;
+		s = SPL_FIREBOLT;
 		while (rv > 0) {
 			if (spelldata[s].sStaffLvl != -1 && l >= spelldata[s].sStaffLvl) {
 				rv--;
@@ -1799,7 +1796,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 			if (gbMaxPlayers == 1 && s == SPL_HEALOTHER)
 				s = SPL_FLARE;
 			if (s == MAX_SPELLS)
-				s = 1;
+				s = SPL_FIREBOLT;
 		}
 		sprintf(istr, "%s of %s", item[i]._iName, spelldata[bs].sNameText);
 		if (!control_WriteStringToBuffer((BYTE *)istr))
@@ -2061,7 +2058,7 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		break;
 	case IPL_SPELL:
 		item[i]._iSpell = param1;
-		item[i]._iCharges = param1;
+		item[i]._iCharges = param1; // BUGFIX: should be param2. This code was correct in v1.04, and the bug was introduced between 1.04 and 1.09b.
 		item[i]._iMaxCharges = param2;
 		break;
 	case IPL_FIREDAM:
@@ -2314,7 +2311,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 				}
 			}
 		}
-		if (nt) {
+		if (nt != 0) {
 			preidx = l[random_(23, nt)];
 			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
 			strcpy(item[i]._iIName, istr);
@@ -2342,7 +2339,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 				nl++;
 			}
 		}
-		if (nl) {
+		if (nl != 0) {
 			sufidx = l[random_(23, nl)];
 			sprintf(istr, "%s of %s", item[i]._iIName, PL_Suffix[sufidx].PLName);
 			strcpy(item[i]._iIName, istr);
@@ -2618,7 +2615,7 @@ int CheckUnique(int i, int lvl, int uper, BOOL recreate)
 		}
 	}
 
-	if (!numu)
+	if (numu == 0)
 		return -1;
 
 	random_(29, 10); /// BUGFIX: unused, last unique in array always gets chosen
@@ -4120,7 +4117,7 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 
 void DrawULine(int y)
 {
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	int yy;

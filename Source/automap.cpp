@@ -49,6 +49,9 @@ int AmLine4;
 #define MAPFLAG_DIRT 0x40
 #define MAPFLAG_STAIRS 0x80
 
+/**
+ * @brief Initializes the automap.
+ */
 void InitAutomapOnce()
 {
 	automapflag = FALSE;
@@ -60,6 +63,9 @@ void InitAutomapOnce()
 	AmLine4 = 2;
 }
 
+/**
+ * @brief Loads the mapping between tile IDs and automap shapes.
+ */
 void InitAutomap()
 {
 	BYTE b1, b2;
@@ -132,6 +138,9 @@ void InitAutomap()
 	}
 }
 
+/**
+ * @brief Displays the automap.
+ */
 void StartAutomap()
 {
 	AutoMapXOfs = 0;
@@ -139,30 +148,45 @@ void StartAutomap()
 	automapflag = TRUE;
 }
 
+/**
+ * @brief Scrolls the automap upwards.
+ */
 void AutomapUp()
 {
 	AutoMapXOfs--;
 	AutoMapYOfs--;
 }
 
+/**
+ * @brief Scrolls the automap downwards.
+ */
 void AutomapDown()
 {
 	AutoMapXOfs++;
 	AutoMapYOfs++;
 }
 
+/**
+ * @brief Scrolls the automap leftwards.
+ */
 void AutomapLeft()
 {
 	AutoMapXOfs--;
 	AutoMapYOfs++;
 }
 
+/**
+ * @brief Scrolls the automap rightwards.
+ */
 void AutomapRight()
 {
 	AutoMapXOfs++;
 	AutoMapYOfs--;
 }
 
+/**
+ * @brief Increases the zoom level of the automap.
+ */
 void AutomapZoomIn()
 {
 	if (AutoMapScale < 200) {
@@ -175,6 +199,9 @@ void AutomapZoomIn()
 	}
 }
 
+/**
+ * @brief Decreases the zoom level of the automap.
+ */
 void AutomapZoomOut()
 {
 	if (AutoMapScale > 50) {
@@ -187,6 +214,9 @@ void AutomapZoomOut()
 	}
 }
 
+/**
+ * @brief Renders the automap on screen.
+ */
 void DrawAutomap()
 {
 	int cells;
@@ -276,6 +306,9 @@ void DrawAutomap()
 	DrawAutomapText();
 }
 
+/**
+ * @brief Renders the given automap shape at the specified screen coordinates.
+ */
 void DrawAutomapTile(int sx, int sy, WORD automap_type)
 {
 	BOOL do_vert;
@@ -540,6 +573,9 @@ void DrawAutomapItem(int x, int y, BYTE color)
 }
 #endif
 
+/**
+ * @brief Renders an arrow on the automap, centered on and facing the direction of the player.
+ */
 void DrawAutomapPlr()
 {
 	int px, py;
@@ -612,6 +648,9 @@ void DrawAutomapPlr()
 	}
 }
 
+/**
+ * @brief Returns the automap shape at the given coordinate.
+ */
 WORD GetAutomapType(int x, int y, BOOL view)
 {
 	WORD rv;
@@ -658,6 +697,9 @@ WORD GetAutomapType(int x, int y, BOOL view)
 	return rv;
 }
 
+/**
+ * @brief Renders game info, such as the name of the current level, and in multi player the name of the game and the game password.
+ */
 void DrawAutomapText()
 {
 	char desc[256];
@@ -692,6 +734,9 @@ void DrawAutomapText()
 	}
 }
 
+/**
+ * @brief Marks the given coordinate as within view on the automap.
+ */
 void SetAutomapView(int x, int y)
 {
 	WORD maptype, solid;
@@ -764,6 +809,9 @@ void SetAutomapView(int x, int y)
 	}
 }
 
+/**
+ * @brief Resets the zoom level of the automap.
+ */
 void AutomapZoomReset()
 {
 	AutoMapXOfs = 0;

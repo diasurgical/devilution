@@ -2375,7 +2375,7 @@ static void DrawZoom(int x, int y)
 		wdt = SCREEN_WIDTH / 2;
 	}
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -2498,7 +2498,7 @@ void ClearScreenBuffer()
 {
 	lock_buf(3);
 
-	/// ASSERT: assert(gpBuffer);
+	assert(gpBuffer);
 
 #ifdef USE_ASM
 	__asm {
@@ -2661,8 +2661,8 @@ static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 	HRESULT hDDVal;
 	RECT SrcRect;
 
-	/// ASSERT: assert(! (dwX & 3));
-	/// ASSERT: assert(! (dwWdt & 3));
+	assert(!(dwX & 3));
+	assert(!(dwWdt & 3));
 
 	if (lpDDSBackBuf != NULL) {
 		SrcRect.left = dwX + SCREEN_X;
@@ -2672,11 +2672,7 @@ static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 		/// ASSERT: assert(! gpBuffer);
 		dwTicks = GetTickCount();
 		while (1) {
-#ifdef __cplusplus
 			hDDVal = lpDDSPrimary->BltFast(dwX, dwY, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
-#else
-			hDDVal = lpDDSPrimary->lpVtbl->BltFast(lpDDSPrimary, dwX, dwY, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
-#endif
 			if (hDDVal == DD_OK) {
 				break;
 			}
@@ -2773,17 +2769,10 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 		return;
 	}
 
-#ifdef __cplusplus
 	if (lpDDSPrimary->IsLost() == DDERR_SURFACELOST) {
 		if (lpDDSPrimary->Restore() != DD_OK) {
 			return;
 		}
-#else
-	if (lpDDSPrimary->lpVtbl->IsLost(lpDDSPrimary) == DDERR_SURFACELOST) {
-		if (lpDDSPrimary->lpVtbl->Restore(lpDDSPrimary) != DD_OK) {
-			return;
-		}
-#endif
 		ResetPal();
 		ysize = SCREEN_HEIGHT;
 	}
@@ -2793,11 +2782,7 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 		dwTicks = GetTickCount();
 		while (1) {
 			DDS_desc.dwSize = sizeof(DDS_desc);
-#ifdef __cplusplus
 			hDDVal = lpDDSPrimary->Lock(NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
-#else
-			hDDVal = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
-#endif
 			if (hDDVal == DD_OK) {
 				break;
 			}
@@ -2864,11 +2849,7 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 	}
 
 	if (lpDDSBackBuf == NULL) {
-#ifdef __cplusplus
 		hDDVal = lpDDSPrimary->Unlock(NULL);
-#else
-		hDDVal = lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
-#endif
 		if (hDDVal != DDERR_SURFACELOST && hDDVal != DD_OK) {
 			DDErrMsg(hDDVal, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
 		}
@@ -2900,7 +2881,7 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
 		unlock_buf(0);
 	}
 
-	DrawMain(hgt, 0, 0, 0, 0, 0);
+	DrawMain(hgt, FALSE, FALSE, FALSE, FALSE, FALSE);
 
 	if (draw_cursor) {
 		lock_buf(0);

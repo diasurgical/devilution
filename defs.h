@@ -83,6 +83,8 @@
 #define VOLUME_MIN				-1600
 #define VOLUME_MAX				0
 
+#define NUM_TOWNERS				16
+
 // todo: enums
 #ifdef HELLFIRE
 #define NUMLEVELS				25
