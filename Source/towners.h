@@ -2,7 +2,7 @@
 #ifndef __TOWNERS_H__
 #define __TOWNERS_H__
 
-extern TownerStruct towner[16];
+extern TownerStruct towner[NUM_TOWNERS];
 
 int GetActiveTowner(int t);
 void SetTownerGPtrs(BYTE *pData, BYTE **pAnim);

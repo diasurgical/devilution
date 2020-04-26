@@ -8,13 +8,13 @@ DWORD sgdwCowClicks;
 BOOL bannerflag;
 BOOL boyloadflag;
 BYTE *pCowCels;
-TownerStruct towner[16];
+TownerStruct towner[NUM_TOWNERS];
 
 #ifndef SPAWN
 const int snSFX[3][NUM_CLASSES] = {
 	{ PS_WARR52, PS_ROGUE52, PS_MAGE52 },
 	{ PS_WARR49, PS_ROGUE49, PS_MAGE49 },
-	{ PS_WARR50, PS_ROGUE50, PS_MAGE50 }
+	{ PS_WARR50, PS_ROGUE50, PS_MAGE50 },
 };
 #endif
 
@@ -86,9 +86,9 @@ char AnimOrder[6][148] = {
 	    1, 2, 1, 19, 18, 19, 1, 2, 1, 2,
 	    3, -1 }
 };
-int TownCowX[3] = { 58, 56, 59 };
-int TownCowY[3] = { 16, 14, 20 };
-int TownCowDir[3] = { 1, 3, 4 };
+int TownCowX[] = { 58, 56, 59 };
+int TownCowY[] = { 16, 14, 20 };
+int TownCowDir[] = { DIR_SW, DIR_NW, DIR_N };
 int cowoffx[8] = { -1, 0, -1, -1, -1, 0, -1, -1 };
 int cowoffy[8] = { -1, -1, -1, 0, -1, -1, -1, 0 };
 QuestTalkData Qtalklist[] = {
@@ -197,7 +197,7 @@ void InitSmith()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_SMITH, 62, 63, 0, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_SMITH, 62, 63, 0, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -214,7 +214,7 @@ void InitBarOwner()
 	int i;
 
 	bannerflag = FALSE; // unused
-	InitTownerInfo(numtowners, 96, 1, TOWN_TAVERN, 55, 62, 3, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_TAVERN, 55, 62, 3, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -230,7 +230,7 @@ void InitTownDead()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_DEADGUY, 24, 32, -1, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_DEADGUY, 24, 32, -1, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\Butch\\Deadguy.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -246,7 +246,7 @@ void InitWitch()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_WITCH, 80, 20, 5, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_WITCH, 80, 20, 5, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -262,7 +262,7 @@ void InitBarmaid()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_BMAID, 43, 66, -1, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_BMAID, 43, 66, -1, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -279,7 +279,7 @@ void InitBoy()
 	int i;
 
 	boyloadflag = TRUE;
-	InitTownerInfo(numtowners, 96, 1, TOWN_PEGBOY, 11, 53, -1, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_PEGBOY, 11, 53, -1, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -295,7 +295,7 @@ void InitHealer()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_HEALER, 55, 79, 1, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_HEALER, 55, 79, 1, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\Healer\\Healer.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -311,7 +311,7 @@ void InitTeller()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_STORY, 62, 71, 2, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_STORY, 62, 71, 2, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\Strytell\\Strytell.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -327,7 +327,7 @@ void InitDrunk()
 {
 	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_DRUNK, 71, 84, 4, 10);
+	InitTownerInfo(numtowners, 96, TRUE, TOWN_DRUNK, 71, 84, 4, 10);
 	InitQstSnds(numtowners);
 	towner[numtowners]._tNData = LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", NULL);
 	for (i = 0; i < 8; i++) {
@@ -351,22 +351,22 @@ void InitCows()
 		x = TownCowX[i];
 		y = TownCowY[i];
 		dir = TownCowDir[i];
-		InitTownerInfo(numtowners, 128, 0, TOWN_COW, TownCowX[i], TownCowY[i], -1, 10);
+		InitTownerInfo(numtowners, 128, FALSE, TOWN_COW, x, y, -1, 10);
 		towner[numtowners]._tNData = pCowCels;
 		SetTownerGPtrs(towner[numtowners]._tNData, towner[numtowners]._tNAnim);
 		towner[numtowners]._tNFrames = 12;
 		NewTownerAnim(numtowners, towner[numtowners]._tNAnim[dir], towner[numtowners]._tNFrames, 3);
 		towner[numtowners]._tAnimFrame = random_(0, 11) + 1;
-		towner[numtowners]._tSelFlag = 1;
+		towner[numtowners]._tSelFlag = TRUE;
 		strcpy(towner[numtowners]._tName, "Cow");
 
 		xo = x + cowoffx[dir];
 		yo = y + cowoffy[dir];
-		if (!dMonster[x][yo])
+		if (dMonster[x][yo] == 0)
 			dMonster[x][yo] = -(numtowners + 1);
-		if (!dMonster[xo][y])
+		if (dMonster[xo][y] == 0)
 			dMonster[xo][y] = -(numtowners + 1);
-		if (!dMonster[xo][yo])
+		if (dMonster[xo][yo] == 0)
 			dMonster[xo][yo] = -(numtowners + 1);
 
 		numtowners++;
@@ -379,7 +379,7 @@ void InitTowners()
 	boyloadflag = FALSE;
 	InitSmith();
 	InitHealer();
-	if (quests[Q_BUTCHER]._qactive && quests[Q_BUTCHER]._qactive != QUEST_DONE)
+	if (quests[Q_BUTCHER]._qactive != QUEST_NOTAVAIL && quests[Q_BUTCHER]._qactive != QUEST_DONE)
 		InitTownDead();
 	InitBarOwner();
 	InitTeller();
@@ -394,7 +394,7 @@ void FreeTownerGFX()
 {
 	int i;
 
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < NUM_TOWNERS; i++) {
 		if (towner[i]._tNData == pCowCels) {
 			towner[i]._tNData = NULL;
 		} else if (towner[i]._tNData) {
@@ -410,7 +410,7 @@ void TownCtrlMsg(int i)
 	int p;
 	int dx, dy;
 
-	if (towner[i]._tbtcnt) {
+	if (towner[i]._tbtcnt != 0) {
 		p = towner[i]._tVar1;
 		dx = abs(towner[i]._tx - plr[p]._px);
 		dy = abs(towner[i]._ty - plr[p]._py);
@@ -519,7 +519,7 @@ void ProcessTowners()
 {
 	int i, ao;
 
-	for (i = 0; i < 16; i++) {
+	for (i = 0; i < NUM_TOWNERS; i++) {
 		switch (towner[i]._ttype) {
 		case TOWN_SMITH:
 			TownBlackSmith();
@@ -787,13 +787,13 @@ void TalkToTowner(int p, int t)
 			RemoveInvItem(p, i);
 			quests[Q_MUSHROOM]._qactive = QUEST_ACTIVE;
 			quests[Q_MUSHROOM]._qlog = TRUE;
-			quests[Q_MUSHROOM]._qvar1 = 2;
+			quests[Q_MUSHROOM]._qvar1 = QS_TOMEGIVEN;
 			towner[t]._tbtcnt = 150;
 			towner[t]._tVar1 = p;
 			InitQTextMsg(TEXT_MUSH8);
 			towner[t]._tMsgSaid = TRUE;
 		} else if (quests[Q_MUSHROOM]._qactive == QUEST_ACTIVE) {
-			if (quests[Q_MUSHROOM]._qvar1 >= 2 && quests[Q_MUSHROOM]._qvar1 <= 4) {
+			if (quests[Q_MUSHROOM]._qvar1 >= QS_TOMEGIVEN && quests[Q_MUSHROOM]._qvar1 <= QS_MUSHPICKED) {
 				if (PlrHasItem(p, IDI_MUSHROOM, i) != NULL) {
 					RemoveInvItem(p, i);
 					quests[Q_MUSHROOM]._qvar1 = 5;
@@ -874,7 +874,7 @@ void TalkToTowner(int p, int t)
 				RemoveInvItem(p, i);
 				SpawnQuestItem(IDI_SPECELIX, towner[t]._tx, towner[t]._ty + 1, 0, 0);
 				InitQTextMsg(TEXT_MUSH4);
-				quests[Q_MUSHROOM]._qvar1 = 7;
+				quests[Q_MUSHROOM]._qvar1 = QS_BRAINGIVEN;
 				Qtalklist[TOWN_HEALER]._qblkm = -1;
 			}
 		}
