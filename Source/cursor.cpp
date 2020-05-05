@@ -189,7 +189,7 @@ void CheckCursMove()
 	sy = MouseY;
 
 	if (chrflag || questlog) {
-		if (sx >= SCREEN_WIDTH / 4) {
+		if (sx >= SCREEN_WIDTH / 4) { /// BUGFIX: (sx >= SCREEN_WIDTH / 4)
 			sx -= SCREEN_WIDTH / 4;
 		} else {
 			sx = 0;
