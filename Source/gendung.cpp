@@ -560,13 +560,13 @@ void SetDungeonMicros()
 	if (zoomflag) {
 		ViewDX = SCREEN_WIDTH;
 		ViewDY = VIEWPORT_HEIGHT;
-		ViewBX = SCREEN_WIDTH / 64;
-		ViewBY = VIEWPORT_HEIGHT / 32;
+		ViewBX = SCREEN_WIDTH / TILE_WIDTH;
+		ViewBY = VIEWPORT_HEIGHT / TILE_HEIGHT;
 	} else {
 		ViewDX = ZOOM_WIDTH;
 		ViewDY = ZOOM_HEIGHT;
-		ViewBX = ZOOM_WIDTH / 64;
-		ViewBY = ZOOM_HEIGHT / 32;
+		ViewBX = ZOOM_WIDTH / TILE_WIDTH;
+		ViewBY = ZOOM_HEIGHT / TILE_HEIGHT;
 	}
 }
 
