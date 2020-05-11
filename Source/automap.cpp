@@ -75,7 +75,7 @@ void InitAutomap()
 
 	for (i = 0; i < 31; i++) {
 		d = (j << 6) / 100;
-		AmShiftTab[i] = 2 * (320 / d) + 1;
+		AmShiftTab[i] = 2 * (SCREEN_WIDTH / 2 / d) + 1;
 		if ((SCREEN_WIDTH / 2) % d)
 			AmShiftTab[i]++;
 		if ((SCREEN_WIDTH / 2) % d >= (j << 5) / 100)

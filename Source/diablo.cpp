@@ -822,7 +822,7 @@ BOOL LeftMouseDown(int wParam)
 					} else if (qtextflag) {
 						qtextflag = FALSE;
 						stream_stop();
-					} else if (chrflag && MouseX < 320) {
+					} else if (chrflag && MouseX < SPANEL_WIDTH) {
 						CheckChrBtns();
 					} else if (invflag && MouseX > RIGHT_PANEL) {
 						if (!dropGoldFlag)
