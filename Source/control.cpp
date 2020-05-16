@@ -1786,7 +1786,7 @@ void DrawInfoBox()
 		if (pcursitem != -1)
 			GetItemStr(pcursitem);
 		if (pcursobj != -1)
-			GetObjectStr(pcursobj);
+			;//GetObjectStr(pcursobj);
 		if (pcursmonst != -1) {
 			if (leveltype != DTYPE_TOWN) {
 				infoclr = COL_WHITE;
