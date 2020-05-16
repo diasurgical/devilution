@@ -2252,14 +2252,33 @@ void AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 void AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
+#ifdef HELLFIRE
+	BYTE lvl;
 
-	missile[mi]._midam = 16 * (random_(53, 10) + random_(53, 10) + plr[id]._pLevel + 2) >> 1;
+	if (random(53, 10) + random(53, 10) + (id > 0) + 2 != 0)
+		lvl = plr[id]._pLevel;
+	else
+		lvl = currlevel;
+	missile[mi]._midam = lvl << 4;
+#else
+	/// ASSERT: assert((DWORD)mi < MAXMISSILES);
+	missile[mi]._midam = 16 * (random(53, 10) + random(53, 10) + plr[id]._pLevel + 2);
+#endif
+	missile[mi]._midam >>= 1;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
+#ifdef HELLFIRE
+	missile[mi]._mirange = 10 * (missile[mi]._mispllvl + 1);
+	if (mienemy || id < 0)
+		missile[mi]._mirange += currlevel;
+	else
+#else
 	missile[mi]._mirange = 10;
-	i = missile[mi]._mispllvl;
-	if (i > 0)
-		missile[mi]._mirange = 10 * (i + 1);
-	missile[mi]._mirange = ((missile[mi]._mirange * plr[id]._pISplDur >> 3) & 0xFFFFFFF0) + 16 * missile[mi]._mirange;
+	for (i = missile[mi]._mispllvl; i > 0; i--) {
+		missile[mi]._mirange += 10;
+	}
+#endif
+	missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
+	missile[mi]._mirange <<= 4;
 	missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
 	missile[mi]._miVar2 = 0;
 }
