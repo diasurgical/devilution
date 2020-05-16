@@ -2251,7 +2251,6 @@ void AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 
 void AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	int i;
 #ifdef HELLFIRE
 	BYTE lvl;
 
@@ -2261,6 +2260,8 @@ void AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		lvl = currlevel;
 	missile[mi]._midam = lvl << 4;
 #else
+	int i;
+
 	/// ASSERT: assert((DWORD)mi < MAXMISSILES);
 	missile[mi]._midam = 16 * (random(53, 10) + random(53, 10) + plr[id]._pLevel + 2);
 #endif
