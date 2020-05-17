@@ -39,7 +39,7 @@ void LoadGame(BOOL firstflag)
 	_nummonsters = WLoad();
 	_numitems = WLoad();
 	_nummissiles = WLoad();
-	_nobjects = WLoad();
+	//_nobjects = WLoad();
 
 	for (i = 0; i < NUMLEVELS; i++) {
 		glSeedTbl[i] = ILoad();
@@ -67,7 +67,7 @@ void LoadGame(BOOL firstflag)
 	nummonsters = _nummonsters;
 	numitems = _numitems;
 	nummissiles = _nummissiles;
-	nobjects = _nobjects;
+	//nobjects = _nobjects;
 
 	for (i = 0; i < MAXMONSTERS; i++)
 		monstkills[i] = ILoad();
@@ -83,14 +83,14 @@ void LoadGame(BOOL firstflag)
 			missileavail[i] = BLoad();
 		for (i = 0; i < nummissiles; i++)
 			LoadMissile(missileactive[i]);
-		for (i = 0; i < MAXOBJECTS; i++)
-			objectactive[i] = BLoad();
-		for (i = 0; i < MAXOBJECTS; i++)
-			objectavail[i] = BLoad();
-		for (i = 0; i < nobjects; i++)
-			LoadObject(objectactive[i]);
-		for (i = 0; i < nobjects; i++)
-			SyncObjectAnim(objectactive[i]);
+		//for (i = 0; i < MAXOBJECTS; i++)
+			//objectactive[i] = BLoad();
+		//for (i = 0; i < MAXOBJECTS; i++)
+			//objectavail[i] = BLoad();
+		//for (i = 0; i < nobjects; i++)
+			//LoadObject(objectactive[i]);
+		//for (i = 0; i < nobjects; i++)
+			//SyncObjectAnim(objectactive[i]);
 
 		numlights = WLoad();
 
@@ -311,7 +311,7 @@ void SaveGame()
 	WSave(nummonsters);
 	WSave(numitems);
 	WSave(nummissiles);
-	WSave(nobjects);
+	//WSave(nobjects);
 
 	for (i = 0; i < NUMLEVELS; i++) {
 		ISave(glSeedTbl[i]);
@@ -341,12 +341,12 @@ void SaveGame()
 			BSave(missileavail[i]);
 		for (i = 0; i < nummissiles; i++)
 			SaveMissile(missileactive[i]);
-		for (i = 0; i < MAXOBJECTS; i++)
-			BSave(objectactive[i]);
-		for (i = 0; i < MAXOBJECTS; i++)
-			BSave(objectavail[i]);
-		for (i = 0; i < nobjects; i++)
-			SaveObject(objectactive[i]);
+		//for (i = 0; i < MAXOBJECTS; i++)
+			//BSave(objectactive[i]);
+		//for (i = 0; i < MAXOBJECTS; i++)
+			//BSave(objectavail[i]);
+		//for (i = 0; i < nobjects; i++)
+			//SaveObject(objectactive[i]);
 
 		WSave(numlights);
 
