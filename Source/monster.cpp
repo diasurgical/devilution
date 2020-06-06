@@ -1640,7 +1640,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	Monst = &monster[i];
 	if (pnum >= 0)
 		Monst->mWhoHit |= 1 << pnum;
-	if (pnum < MAX_PLRS && i > MAX_PLRS)
+	if (pnum < MAX_PLRS && i > MAX_PLRS) /// BUGFIX: i >= MAX_PLRS
 		AddPlrMonstExper(Monst->mLevel, Monst->mExp, Monst->mWhoHit);
 	monstkills[Monst->MType->mtype]++;
 	Monst->_mhitpoints = 0;
