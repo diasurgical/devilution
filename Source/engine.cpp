@@ -3811,6 +3811,7 @@ void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 							dst[-1] = col;
 							dst[1] = col;
 							dst[-BUFFER_WIDTH] = col;
+							// BUGFIX: only set `if (dst+BUFFER_WIDTH < gpBufEnd)`
 							dst[BUFFER_WIDTH] = col;
 						}
 						dst++;
