@@ -2988,7 +2988,7 @@ void DrawULine(int y)
 	dst = &gpBuffer[PitchTbl[SStringY[y] + 198] + 26 + PANEL_X];
 
 	for (i = 0; i < 3; i++, src += BUFFER_WIDTH, dst += BUFFER_WIDTH)
-		memcpy(dst, src, 266);
+		memcpy(dst, src, 266); // BUGFIX: should be 267
 #endif
 }
 
