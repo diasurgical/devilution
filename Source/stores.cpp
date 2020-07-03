@@ -203,13 +203,13 @@ void DrawSLine(int y)
 	if (stextsize) {
 		xy = SCREENXY(PANEL_LEFT + 26, 25);
 		yy = PitchTbl[sy + 198] + 26 + PANEL_X;
-		width = 586 / 4;
-		line = BUFFER_WIDTH - 586;
+		width = 586 / 4;           // BUGFIX: should be 587, not 586
+		line = BUFFER_WIDTH - 586; // BUGFIX: should be 587, not 586
 	} else {
 		xy = SCREENXY(PANEL_LEFT + 346, 25);
 		yy = PitchTbl[sy + 198] + 346 + PANEL_X;
-		width = 266 / 4;
-		line = BUFFER_WIDTH - 266;
+		width = 266 / 4;           // BUGFIX: should be 267, not 266
+		line = BUFFER_WIDTH - 266; // BUGFIX: should be 267, not 266
 	}
 
 	/// ASSERT: assert(gpBuffer);
