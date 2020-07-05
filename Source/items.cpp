@@ -10,6 +10,7 @@ BOOL uitemflag;
 int itemavail[MAXITEMS];
 ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
+/** Contains the items on ground in the current game. */
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
 BYTE *itemanims[ITEMTYPES];
@@ -19,6 +20,7 @@ int gnNumGetRecords;
 
 /* data */
 
+/** Maps from item_cursor_graphic to in-memory item type. */
 BYTE ItemCAnimTbl[] = {
 	20, 16, 16, 16, 4, 4, 4, 12, 12, 12,
 	12, 12, 12, 12, 12, 21, 21, 25, 12, 28,
@@ -38,6 +40,7 @@ BYTE ItemCAnimTbl[] = {
 	14, 17, 17, 17, 0, 34, 1, 0, 3, 17,
 	8, 8, 6, 1, 3, 3, 11, 3, 4
 };
+/** Map of item type .cel file names. */
 char *ItemDropNames[] = {
 	"Armor2",
 	"Axe",
@@ -75,6 +78,7 @@ char *ItemDropNames[] = {
 	"Fanvil",
 	"FLazStaf",
 };
+/** Maps of item drop animation length. */
 BYTE ItemAnimLs[] = {
 	15,
 	13,
@@ -112,6 +116,7 @@ BYTE ItemAnimLs[] = {
 	13,
 	8,
 };
+/** Maps of drop sounds effect of dropping the item on ground. */
 int ItemDropSnds[] = {
 	IS_FHARM,
 	IS_FAXE,
@@ -149,6 +154,7 @@ int ItemDropSnds[] = {
 	IS_FANVL,
 	IS_FSTAF,
 };
+/** Maps of drop sounds effect of placing the item in the inventory. */
 int ItemInvSnds[] = {
 	IS_IHARM,
 	IS_IAXE,
@@ -186,7 +192,9 @@ int ItemInvSnds[] = {
 	IS_IANVL,
 	IS_ISTAF,
 };
+/** Specifies the current Y-coordinate used for validation of items on ground. */
 int idoppely = 16;
+/** Maps from Griswold premium item number to a quality level delta as added to the base quality level. */
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
 void InitItemGFX()
