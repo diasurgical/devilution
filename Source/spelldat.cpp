@@ -1,3 +1,8 @@
+/**
+ * @file spelldat.cpp
+ *
+ * Implementation of all spell data.
+ */
 #include "all.h"
 
 /** Data related to each spell ID. */

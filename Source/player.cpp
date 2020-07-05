@@ -1,3 +1,8 @@
+/**
+ * @file player.cpp
+ *
+ * Implementation of player functionality, leveling, actions, creation, loading, etc.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

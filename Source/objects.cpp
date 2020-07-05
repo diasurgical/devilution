@@ -1,3 +1,8 @@
+/**
+ * @file objects.cpp
+ *
+ * Implementation of object functionality, interaction, spawning, loading, etc.
+ */
 #include "all.h"
 
 int trapid;

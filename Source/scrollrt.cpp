@@ -1,3 +1,8 @@
+/**
+ * @file plrmsg.cpp
+ *
+ * Implementation of functionality for rendering the dungeons, monsters and calling other render routines.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

@@ -1,3 +1,8 @@
+/**
+ * @file towners.cpp
+ *
+ * Implementation of functionality for loading and spawning towners.
+ */
 #include "all.h"
 
 BOOL storeflag;

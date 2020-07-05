@@ -1,3 +1,8 @@
+/**
+ * @file setmaps.cpp
+ *
+ * Implementation of functionality the special quest dungeons.
+ */
 #include "all.h"
 
 // BUGFIX: constant data should be const

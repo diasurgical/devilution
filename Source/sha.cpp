@@ -1,3 +1,8 @@
+/**
+ * @file sha.cpp
+ *
+ * Implementation of functionality for calculating X-SHA-1 (a flawed implementation of SHA-1).
+ */
 #include "all.h"
 
 SHA1Context sgSHA1[3];

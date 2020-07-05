@@ -1,3 +1,8 @@
+/**
+ * @file pack.cpp
+ *
+ * Implementation of functions for minifying player data structure.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
