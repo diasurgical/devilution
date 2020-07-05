@@ -6,21 +6,28 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** Contains the audio channels used for playback of sounds. */
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;
 BOOLEAN gbSndInited;
 int sglMusicVolume;
 int sglSoundVolume;
+/** Provides a handle to the dynamic library dsound.dll. */
 HMODULE hDsound_dll;
+/** Specifies whether background music is enabled. */
 HANDLE sghMusic;
 LPDIRECTSOUNDBUFFER sglpDSB;
 
 /* data */
 
 BOOLEAN gbMusicOn = TRUE;
+/** Specifies whether sound effects are enabled. */
 BOOLEAN gbSoundOn = TRUE;
+/** Specifies that no duplicate audio channel should be used. */
 BOOLEAN gbDupSounds = TRUE;
+/** Specifies the active background music track id. */
 int sgnMusicTrack = NUM_MUSIC;
+/** Maps from track ID to track name. */
 char *sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
 	"Music\\sTowne.wav",

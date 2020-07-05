@@ -9,14 +9,22 @@
 
 _SNETVERSIONDATA fileinfo;
 int gbActive;
+/** Specifies the path to diablo.exe. */
 char diablo_exe_path[MAX_PATH];
+/** A handle to an unused MPQ archive. */
 HANDLE hellfire_mpq;
+/** Specifies the path to patch_rt.mpq. */
 char patch_rt_mpq_path[MAX_PATH];
 WNDPROC CurrentProc;
+/** A handle to the diabdat.mpq archive. */
 HANDLE diabdat_mpq;
+/** Specifies the path to diabdat.mpq. */
 char diabdat_mpq_path[MAX_PATH];
+/** A handle to the patch_rt.mpq archive. */
 HANDLE patch_rt_mpq;
+/** Specifies whether the MS Office Shortcut Bar was killed. */
 BOOL killed_mom_parent;
+/** Stores the previous state of the screensaver. */
 BOOLEAN screensaver_enabled_prev;
 
 /* data */

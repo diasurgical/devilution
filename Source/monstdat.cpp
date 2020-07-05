@@ -5,6 +5,7 @@
  */
 #include "all.h"
 
+/** Contains the data related to each monster ID. */
 MonsterData monsterdata[] = {
 	// clang-format off
 	// width, mImage, GraphicType,                       has_special, sndfile,                             snd_special, has_trans, TransFile,                         Frames[6],                  Rate[6],              mName,               mMinDLvl, mMaxDLvl, mLevel, mMinHP, mMaxHP, mAi,         mFlags,                                                              mInt, mHit, mAFNum, mMinDamage, mMaxDamage, mHit2, mAFNum2, mMinDamage2, mMaxDamage2, mArmorClass, mMonstClass, mMagicRes                                                    , mMagicRes2                                                   , mTreasure, mSelFlag,  mExp
@@ -377,7 +378,7 @@ BYTE MonstAvailTbl[] = {
 	MAT_NEVER,  // The Dark Lord
 	MAT_NEVER,  // The Arch-Litch Malignus
 };
-
+/** Contains the data related to each unique monster ID. */
 UniqMonstStruct UniqMonst[] = {
 	// clang-format off
 	// mtype,       mName,                   mTrnName, mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg

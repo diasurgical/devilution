@@ -6,15 +6,21 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** In-memory palette to which gamma corrections are applied. */
 PALETTEENTRY logical_palette[256];
+/** The active palette of the system. */
 PALETTEENTRY system_palette[256];
+/** The original palette as loaded from file. */
 PALETTEENTRY orig_palette[256];
 int gdwPalEntries;
 
 /* data */
 
+/** Specifies the gamma correction level. */
 int gamma_correction = 100;
+/** Specifies whether colour cycling is enabled. */
 BOOL color_cycling_enabled = TRUE;
+/** Specifies whether the palette has max brightness. */
 BOOLEAN sgbFadedIn = TRUE;
 
 static void palette_update()

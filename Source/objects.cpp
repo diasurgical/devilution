@@ -10,6 +10,7 @@ int trapdir;
 BYTE *pObjCels[40];
 char ObjFileList[40];
 int objectactive[MAXOBJECTS];
+/** Specifies the number of active objects. */
 int nobjects;
 int leverid;
 int objectavail[MAXOBJECTS];
@@ -17,8 +18,11 @@ ObjectStruct object[MAXOBJECTS];
 BOOL InitObjFlag;
 int numobjfiles;
 
+/** Specifies the X-coordinate delta between barrels. */
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
+/** Specifies the Y-coordinate delta between barrels. */
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+/** Maps from shrine_id to shrine name. */
 char *shrinestrs[NUM_SHRINETYPE] = {
 	"Mysterious",
 	"Hidden",
@@ -47,22 +51,30 @@ char *shrinestrs[NUM_SHRINETYPE] = {
 	"Glimmering",
 	"Tainted"
 };
+/** Specifies the minimum dungeon level on which each shrine will appear. */
 char shrinemin[NUM_SHRINETYPE] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1
 };
+/** Specifies the maximum dungeon level on which each shrine will appear. */
 char shrinemax[NUM_SHRINETYPE] = {
 	16, 16, 16, 16, 16, 16, 16, 8, 16, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
 	16, 16, 16, 16, 16, 16
 };
-/** 0 - sp+mp, 1 - sp only, 2 - mp only */
+/**
+ * Specifies the game type for which each shrine may appear.
+ * 0 - sp & mp
+ * 1 - sp only
+ * 2 - mp only
+ */
 BYTE shrineavail[NUM_SHRINETYPE] = {
 	0, 0, 1, 1, 0, 0, 0, 0, 1, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
 	0, 0, 0, 0, 0, 2
 };
+/** Maps from book_id to book name. */
 char *StoryBookName[9] = {
 	"The Great Conflict",
 	"The Wages of Sin are War",
@@ -74,6 +86,7 @@ char *StoryBookName[9] = {
 	"Tale of the Three",
 	"The Black King"
 };
+/** Specifies the speech IDs of each dungeon type narrator book, for each player class. */
 int StoryText[3][3] = {
 	{ TEXT_BOOK11, TEXT_BOOK12, TEXT_BOOK13 },
 	{ TEXT_BOOK21, TEXT_BOOK22, TEXT_BOOK23 },
