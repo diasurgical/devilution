@@ -1,3 +1,8 @@
+/**
+ * @file objdat.cpp
+ *
+ * Implementation of all object data.
+ */
 #include "all.h"
 
 /** Maps from dun_object_id to object_id. */

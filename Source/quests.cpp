@@ -1,3 +1,8 @@
+/**
+ * @file quests.cpp
+ *
+ * Implementation of functionality for handling quests.
+ */
 #include "all.h"
 
 int qtopline;
@@ -11,7 +16,8 @@ int WaterDone;
 int ReturnLvlX;
 int ReturnLvlY;
 int ReturnLvlT;
-int ALLQUESTS; /** current frame # for the pentagram selector */
+/** current frame # for the pentagram selector */
+int ALLQUESTS;
 int ReturnLvl;
 
 QuestData questlist[MAXQUESTS] = {

@@ -1,3 +1,8 @@
+/**
+ * @file render.cpp
+ *
+ * Implementation of functionality for rendering the level tiles.
+ */
 #include "all.h"
 #include "_asm.cpp"
 

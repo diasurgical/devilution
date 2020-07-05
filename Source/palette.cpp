@@ -1,3 +1,8 @@
+/**
+ * @file palette.cpp
+ *
+ * Implementation of functions for handling the engines color palette.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

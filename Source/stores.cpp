@@ -1,3 +1,8 @@
+/**
+ * @file stores.cpp
+ *
+ * Implementation of functionality for stores and towner dialogs.
+ */
 #include "all.h"
 
 int stextup;

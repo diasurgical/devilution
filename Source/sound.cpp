@@ -1,3 +1,8 @@
+/**
+ * @file sound.cpp
+ *
+ * Implementation of functions setting up the audio pipeline.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 

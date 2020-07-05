@@ -1,3 +1,8 @@
+/**
+ * @file plrmsg.cpp
+ *
+ * Implementation of functionality for printing the ingame chat messages.
+ */
 #include "all.h"
 
 static BYTE plr_msg_slot;

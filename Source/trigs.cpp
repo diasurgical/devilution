@@ -1,3 +1,8 @@
+/**
+ * @file trigs.cpp
+ *
+ * Implementation of functionality for triggering events when the player enters an area.
+ */
 #include "all.h"
 
 BOOL townwarps[3];

@@ -1,3 +1,8 @@
+/**
+ * @file restrict.cpp
+ *
+ * Implementation of functionality for checking if the game will be able run on the system.
+ */
 #include "all.h"
 
 BOOL SystemSupported()

@@ -1,3 +1,8 @@
+/**
+ * @file sync.cpp
+ *
+ * Implementation of functionality for syncing game state with other players.
+ */
 #include "all.h"
 
 WORD sync_word_6AA708[MAXMONSTERS];

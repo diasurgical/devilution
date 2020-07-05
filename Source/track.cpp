@@ -1,3 +1,8 @@
+/**
+ * @file track.cpp
+ *
+ * Implementation of functionality tracking what the mouse cursor is pointing at.
+ */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
