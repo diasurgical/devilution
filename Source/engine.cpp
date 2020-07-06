@@ -17,7 +17,8 @@
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
 #endif
 
-char gbPixelCol;  // automap pixel color 8-bit (palette entry)
+/** automap pixel color 8-bit (palette entry) */
+char gbPixelCol;
 BOOL gbRotateMap; // flip - if y < x
 int orgseed;
 /** Width of sprite being blitted */
@@ -25,6 +26,7 @@ int sgnWidth;
 /** Current game seed */
 int sglGameSeed;
 static CCritSect sgMemCrit;
+/** Number of times the current seed has been fetched */
 int SeedCount;
 BOOL gbNotInView; // valid - if x/y are in bounds
 

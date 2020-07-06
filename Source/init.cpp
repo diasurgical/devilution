@@ -8,6 +8,7 @@
 #include "../DiabloUI/diabloui.h"
 
 _SNETVERSIONDATA fileinfo;
+/** True if the game is the current active window */
 int gbActive;
 /** Specifies the path to diablo.exe. */
 char diablo_exe_path[MAX_PATH];
@@ -15,6 +16,7 @@ char diablo_exe_path[MAX_PATH];
 HANDLE hellfire_mpq;
 /** Specifies the path to patch_rt.mpq. */
 char patch_rt_mpq_path[MAX_PATH];
+/** The current input handler function */
 WNDPROC CurrentProc;
 /** A handle to the diabdat.mpq archive. */
 HANDLE diabdat_mpq;

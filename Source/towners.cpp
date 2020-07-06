@@ -218,6 +218,9 @@ void InitQstSnds(int i)
 	}
 }
 
+/**
+ * @brief Load Griswold in to the game
+ */
 void InitSmith()
 {
 	int i;

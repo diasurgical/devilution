@@ -5,23 +5,38 @@
  */
 #include "all.h"
 
+/** Pixel width of the current cursor image */
 int cursW;
+/** Pixel height of the current cursor image */
 int cursH;
+/** Current highlighted monster */
 int pcursmonst;
+/** Width of current cursor in inventory cells */
 int icursW28;
+/** Height of current cursor in inventory cells */
 int icursH28;
+/** Cursor images CEL */
 BYTE *pCursCels;
 
 /** inv_item value */
 char pcursinvitem;
+/** Pixel width of the current cursor image */
 int icursW;
+/** Pixel height of the current cursor image */
 int icursH;
+/** Current highlighted item */
 char pcursitem;
+/** Current highlighted object */
 char pcursobj;
+/** Current highlighted player */
 char pcursplr;
+/** Current highlighted tile row */
 int cursmx;
+/** Current highlighted tile column */
 int cursmy;
+/** Previously highlighted monster */
 int pcurstemp;
+/** Index of current cursor image */
 int pcurs;
 
 /* rdata */
