@@ -58,7 +58,8 @@ static BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
  * @brief RLE compress the pixel data
  * @param src Raw pixel buffer
  * @param dst Output buffer
- * @param width width of pixel buffer
+ * @param width Width of pixel buffer
+
  * @return Output buffer
  */
 static BYTE *CaptureEnc(BYTE *src, BYTE *dst, int width)
