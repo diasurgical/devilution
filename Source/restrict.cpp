@@ -49,7 +49,8 @@ BOOL RestrictedTest()
 
 /**
  * @brief Check that we have write access to the game install folder
- * @return True if we have write access
+ * @return False if we have write access
+
  */
 BOOL ReadOnlyTest()
 {
