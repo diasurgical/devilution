@@ -32,6 +32,12 @@ static BOOL CaptureHdr(HANDLE hFile, short width, short height)
 	return WriteFile(hFile, &Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
+/**
+ * @brief Write the current ingame palette to the PCX file
+ * @param hFile File handler for the PCX file.
+ * @param palette Current palette
+ * @return True if successful, else false
+ */
 static BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	DWORD NumberOfBytesWritten;
@@ -48,6 +54,14 @@ static BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 	return WriteFile(hFile, pcx_palette, sizeof(pcx_palette), &NumberOfBytesWritten, NULL) && NumberOfBytesWritten == sizeof(pcx_palette);
 }
 
+/**
+ * @brief RLE compress the pixel data
+ * @param src Raw pixel buffer
+ * @param dst Output buffer
+ * @param width Width of pixel buffer
+
+ * @return Output buffer
+ */
 static BYTE *CaptureEnc(BYTE *src, BYTE *dst, int width)
 {
 	int rleLength;
@@ -82,6 +96,15 @@ static BYTE *CaptureEnc(BYTE *src, BYTE *dst, int width)
 	return dst;
 }
 
+/**
+ * @brief Write the pixel data to the PCX file
+ * @param hFile File handler for the PCX file.
+ * @param width Image width
+ * @param height Image height
+ * @param stride Buffer width
+ * @param pixels Raw pixel buffer
+ * @return True if successful, else false
+ */
 static BOOL CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
 {
 	int writeSize;
@@ -129,6 +152,10 @@ static HANDLE CaptureFile(char *dst_path)
 	return INVALID_HANDLE_VALUE;
 }
 
+/**
+ * @brief Make a red version of the given palette and apply it to the screen.
+ * @param pal The original palette
+ */
 static void RedPalette(PALETTEENTRY *pal)
 {
 	PALETTEENTRY red[256];
@@ -144,6 +171,10 @@ static void RedPalette(PALETTEENTRY *pal)
 	lpDDPalette->SetEntries(0, 0, 256, red);
 }
 
+/**
+ * @brief Save the current screen to a screen??.PCX (00-99) in file if available, then make the screen red for 200ms.
+
+ */
 void CaptureScreen()
 {
 	HANDLE hObject;

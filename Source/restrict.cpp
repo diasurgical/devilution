@@ -5,6 +5,10 @@
  */
 #include "all.h"
 
+/**
+ * @brief Check that the OS version is the minimum required by the game
+ * @return True if suported
+ */
 BOOL SystemSupported()
 {
 	OSVERSIONINFO VersionInformation;
@@ -20,6 +24,11 @@ BOOL SystemSupported()
 	return ret;
 }
 
+/**
+ * @brief Check that we have write access to the Windows install folder
+ * @return False if we have write access
+
+ */
 BOOL RestrictedTest()
 {
 	FILE *f;
@@ -39,6 +48,11 @@ BOOL RestrictedTest()
 	return ret;
 }
 
+/**
+ * @brief Check that we have write access to the game install folder
+ * @return False if we have write access
+
+ */
 BOOL ReadOnlyTest()
 {
 	char *c;

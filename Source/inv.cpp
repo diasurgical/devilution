@@ -188,6 +188,9 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 #endif
 }
 
+/**
+ * @brief Render the inventory panel to the back buffer
+ */
 void DrawInv()
 {
 	BOOL invtest[NUM_INV_GRID_ELEM];

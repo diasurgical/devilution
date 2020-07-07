@@ -6,7 +6,10 @@
 #ifndef SPAWN
 #include "all.h"
 
+/** This will be true if a lava pool has been generated for the level */
+
 BOOLEAN lavapool;
+/** unused */
 int abyssx;
 int lockoutcnt;
 BOOLEAN lockout[DMAXX][DMAXY];

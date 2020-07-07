@@ -11,6 +11,11 @@ BYTE movie_playing;
 /** Should the movie play in a loop. */
 BOOL loop_movie;
 
+/**
+ * @brief Start playback of a given video.
+ * @param pszMovie The file name of the video
+ * @param user_can_close Set to false to make the video unskippable.
+ */
 void play_movie(char *pszMovie, BOOL user_can_close)
 {
 	WNDPROC saveProc;
@@ -50,6 +55,10 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	sound_disable_music(FALSE);
 }
 
+/**
+ * @brief Input handeler for use during vidoe playback.
+ * @see WNDPROC
+ */
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg) {
