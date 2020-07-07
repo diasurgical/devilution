@@ -58,7 +58,8 @@ LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 
 /**
  * @brief Returns a formatted error message based on the given error code.
- * @param DWORD DirectX error code
+ * @param error_code DirectX error code
+
  */
 char *GetErrorStr(DWORD error_code)
 {
