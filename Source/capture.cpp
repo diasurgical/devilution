@@ -171,7 +171,8 @@ static void RedPalette(PALETTEENTRY *pal)
 }
 
 /**
- * @brief Save the current screen to a screen??.PCX (00-99) in file is avalible, then make the screen red for 200ms.
+ * @brief Save the current screen to a screen??.PCX (00-99) in file if available, then make the screen red for 200ms.
+
  */
 void CaptureScreen()
 {
