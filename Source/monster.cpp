@@ -3952,7 +3952,7 @@ void MAI_Golum(int i)
 				for (k = 0; k < 5; k++) {
 					_menemy = dMonster[monster[i]._mx + k - 2][monster[i]._my + j - 2];
 					if (_menemy > 0)
-						monster[_menemy]._msquelch = UCHAR_MAX;
+						monster[_menemy]._msquelch = UCHAR_MAX; // BUGFIX: should be `monster[_menemy-1]`, not monster[_menemy].
 				}
 			}
 		}
