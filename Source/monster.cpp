@@ -4730,7 +4730,7 @@ BOOL DirOK(int i, int mdir)
 				mi = -mi;
 			if (mi != 0)
 				mi--;
-			// BUGFIX: should only run pack member check if mi was non-zero prior to executing the body of the above if-statemnet.
+			// BUGFIX: should only run pack member check if mi was non-zero prior to executing the body of the above if-statement.
 			if (monster[mi].leaderflag == 1
 			    && monster[mi].leader == i
 			    && monster[mi]._mfutx == x
