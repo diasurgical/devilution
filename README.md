@@ -3,7 +3,7 @@
 [![Build status](https://img.shields.io/github/downloads/diasurgical/devilution/total.svg)](https://github.com/diasurgical/devilution/releases)
 [![github stars](https://img.shields.io/github/stars/diasurgical/devilution.svg)](https://github.com/diasurgical/devilution/stargazers)
 
-![Discord Channel](https://avatars3.githubusercontent.com/u/1965106?s=16&v=4) [Discord Chat Channel](https://discord.gg/aQBQdDe)
+![Discord Channel](https://avatars3.githubusercontent.com/u/1965106?s=16&v=4) [Discord Chat Channel](https://discord.gg/YQKCAYQ)
 
 # Devilution
 Diablo devolved - magic behind the 1996 computer game
