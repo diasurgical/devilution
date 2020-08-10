@@ -536,13 +536,13 @@ void DrawHelp()
 	PrintSString(0, 23, TRUE, "Press ESC to end or the arrow keys to scroll.", COL_GOLD, 0);
 }
 
-void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
+void DrawHelpLine(int x, int y, char *text, char color)
 {
 	int off, width;
 	BYTE c;
 
 	width = 0;
-	off = PitchTbl[SStringY[help_line_nr] + 204] + always_0 + 96 + PANEL_LEFT;
+	off = PitchTbl[SStringY[y] + 44 + SCREEN_Y] + x + 32 + PANEL_X;
 	while (*text) {
 		c = gbFontTransTbl[(BYTE)*text];
 		text++;

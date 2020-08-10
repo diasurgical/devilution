@@ -2941,7 +2941,7 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 	int len, width, off, i, k;
 	BYTE c;
 
-	off = x + PitchTbl[SStringY[y] + 204] + 96;
+	off = x + PitchTbl[SStringY[y] + 44 + SCREEN_Y] + 32 + SCREEN_X;
 	len = strlen(str);
 	k = 0;
 	if (cjustflag) {
@@ -2993,7 +2993,7 @@ void DrawULine(int y)
 	BYTE *src, *dst;
 
 	src = &gpBuffer[SCREENXY(PANEL_LEFT + 26, 25)];
-	dst = &gpBuffer[PitchTbl[SStringY[y] + 198] + 26 + PANEL_X];
+	dst = &gpBuffer[PitchTbl[SStringY[y] + 38 + SCREEN_Y] + 26 + PANEL_X];
 
 	for (i = 0; i < 3; i++, src += BUFFER_WIDTH, dst += BUFFER_WIDTH)
 		memcpy(dst, src, 266); // BUGFIX: should be 267

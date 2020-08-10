@@ -71,7 +71,7 @@ void InitQTextMsg(int m)
 		questlog = FALSE;
 		qtextptr = alltext[m].txtstr;
 		qtextflag = TRUE;
-		qtexty = 500;
+		qtexty = 340 + SCREEN_Y;
 		qtextSpd = qscroll_spd_tbl[alltext[m].txtspd - 1];
 		qtextDelay = qtextSpd;
 		sgLastScroll = GetTickCount();
@@ -81,7 +81,7 @@ void InitQTextMsg(int m)
 
 void DrawQTextBack()
 {
-	CelDraw(PANEL_X + 24, 487, pTextBoxCels, 1, 591);
+	CelDraw(PANEL_X + 24, SCREEN_Y + 327, pTextBoxCels, 1, 591);
 
 #define TRANS_RECT_X (PANEL_LEFT + 27)
 #define TRANS_RECT_Y 28
@@ -265,7 +265,7 @@ void DrawQText()
 		}
 		tx = 48 + PANEL_X;
 		ty += 38;
-		if (ty > 501) {
+		if (ty > 341 + SCREEN_Y) {
 			doneflag = TRUE;
 		}
 	}
@@ -284,7 +284,7 @@ void DrawQText()
 		if (qtextDelay == 0) {
 			qtextDelay = qtextSpd;
 		}
-		if (qtexty <= 209) {
+		if (qtexty <= 49 + SCREEN_Y) {
 			qtexty += 38;
 			qtextptr = pnl;
 			if (*pnl == '|') {

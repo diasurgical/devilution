@@ -137,7 +137,7 @@ void FreeStoreMem()
 
 void DrawSTextBack()
 {
-	CelDraw(PANEL_X + 344, 487, pSTextBoxCels, 1, 271);
+	CelDraw(PANEL_X + 344, 327 + SCREEN_Y, pSTextBoxCels, 1, 271);
 
 #define TRANS_RECT_X (PANEL_LEFT + 347)
 #define TRANS_RECT_Y 28
@@ -158,7 +158,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 		xx = PANEL_X + 32;
 	else
 		xx = PANEL_X + 352;
-	off = xx + x + PitchTbl[s + 204];
+	off = xx + x + PitchTbl[s + 44 + SCREEN_Y];
 	len = strlen(str);
 	if (stextsize)
 		yy = 577;
@@ -174,7 +174,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 		off += k;
 	}
 	if (stextsel == y) {
-		CelDraw(cjustflag ? xx + x + k - 20 : xx + x - 20, s + 205, pSPentSpn2Cels, InStoreFlag, 12);
+		CelDraw(cjustflag ? xx + x + k - 20 : xx + x - 20, s + 45 + SCREEN_Y, pSPentSpn2Cels, InStoreFlag, 12);
 	}
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
@@ -186,7 +186,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		off = PitchTbl[s + 204] + PANEL_X + 592 - x;
+		off = PitchTbl[s + 44 + SCREEN_Y] + PANEL_X + 592 - x;
 		for (i = strlen(valstr) - 1; i >= 0; i--) {
 			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
 			off -= fontkern[c] + 1;
@@ -196,7 +196,7 @@ void PrintSString(int x, int y, BOOL cjustflag, char *str, char col, int val)
 		}
 	}
 	if (stextsel == y) {
-		CelDraw(cjustflag ? (xx + x + k + 4) : (PANEL_X + 596 - x), s + 205, pSPentSpn2Cels, InStoreFlag, 12);
+		CelDraw(cjustflag ? (xx + x + k + 4) : (PANEL_X + 596 - x), s + 45 + SCREEN_Y, pSPentSpn2Cels, InStoreFlag, 12);
 	}
 }
 
@@ -207,12 +207,12 @@ void DrawSLine(int y)
 	sy = SStringY[y];
 	if (stextsize) {
 		xy = SCREENXY(PANEL_LEFT + 26, 25);
-		yy = PitchTbl[sy + 198] + 26 + PANEL_X;
+		yy = PitchTbl[sy + 38 + SCREEN_Y] + 26 + PANEL_X;
 		width = 586 / 4;           // BUGFIX: should be 587, not 586
 		line = BUFFER_WIDTH - 586; // BUGFIX: should be 587, not 586
 	} else {
 		xy = SCREENXY(PANEL_LEFT + 346, 25);
-		yy = PitchTbl[sy + 198] + 346 + PANEL_X;
+		yy = PitchTbl[sy + 38 + SCREEN_Y] + 346 + PANEL_X;
 		width = 266 / 4;           // BUGFIX: should be 267, not 266
 		line = BUFFER_WIDTH - 266; // BUGFIX: should be 267, not 266
 	}
@@ -252,8 +252,8 @@ void DrawSSlider(int y1, int y2)
 {
 	int yd1, yd2, yd3;
 
-	yd1 = SStringY[y1] + 204;
-	yd2 = SStringY[y2] + 204;
+	yd1 = SStringY[y1] + 44 + SCREEN_Y;
+	yd2 = SStringY[y2] + 44 + SCREEN_Y;
 	if (stextscrlubtn != -1)
 		CelDraw(PANEL_X + 601, yd1, pSTextSlidCels, 12, 12);
 	else
@@ -274,7 +274,7 @@ void DrawSSlider(int y1, int y2)
 		yd3 = 1000 * (stextsval + ((yd3 - stextup) >> 2)) / (storenumh - 1) * (SStringY[y2] - SStringY[y1] - 24) / 1000;
 	else
 		yd3 = 0;
-	CelDraw(PANEL_X + 601, SStringY[y1 + 1] + 204 + yd3, pSTextSlidCels, 13, 12);
+	CelDraw(PANEL_X + 601, SStringY[y1 + 1] + 44 + SCREEN_Y + yd3, pSTextSlidCels, 13, 12);
 }
 
 void DrawSTextHelp()

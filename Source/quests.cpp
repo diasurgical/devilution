@@ -738,7 +738,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 	BYTE c;
 
 	s = SStringY[y];
-	off = x + PitchTbl[SStringY[y] + 204] + 96;
+	off = x + PitchTbl[SStringY[y] + 44 + SCREEN_Y] + 32 + SCREEN_X;
 	len = strlen(str);
 	k = 0;
 	if (cjustflag) {
@@ -750,7 +750,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 		off += k;
 	}
 	if (qline == y) {
-		CelDraw(cjustflag ? x + k + 76 : x + 76, s + 205, pSPentSpn2Cels, ALLQUESTS, 12);
+		CelDraw(cjustflag ? x + k + 12 + SCREEN_X : x + 12 + SCREEN_X, s + 205, pSPentSpn2Cels, ALLQUESTS, 12);
 	}
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
@@ -761,7 +761,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 		off += fontkern[c] + 1;
 	}
 	if (qline == y) {
-		CelDraw(cjustflag ? x + k + 100 : 340 - x, s + 205, pSPentSpn2Cels, ALLQUESTS, 12);
+		CelDraw(cjustflag ? x + k + 36 + SCREEN_X : 276 + SCREEN_X - x, s + 205, pSPentSpn2Cels, ALLQUESTS, 12);
 	}
 }
 
