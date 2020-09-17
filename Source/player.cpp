@@ -73,7 +73,16 @@ int StrengthTbl[3] = { 30, 20, 15 };
 int MagicTbl[3] = { 10, 15, 35 };
 int DexterityTbl[3] = { 20, 30, 15 };
 int VitalityTbl[3] = { 25, 20, 20 };
-int ToBlkTbl[3] = { 30, 20, 10 };
+int ToBlkTbl[] = {
+	30,
+	20,
+	10,
+#ifdef HELLFIRE
+	25,
+	25,
+	30,
+#endif
+};
 char *ClassStrTblOld[] = {
 	"Warrior",
 	"Rogue",
