@@ -698,10 +698,10 @@ void DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible)
 
 	if (nXPos >= 0 && nXPos <= MAXDUNX && nYPos >= 0 && nYPos <= MAXDUNY) {
 		if (doautomap) {
-			if (dFlags[nXPos][nYPos] >= 0) {
+			if (!(dFlags[nCrawlX][nCrawlY] & BFLAG_EXPLORED)) {
 				SetAutomapView(nXPos, nXPos);
+				dFlags[nXPos][nYPos] |= BFLAG_EXPLORED;
 			}
-			dFlags[nXPos][nYPos] |= BFLAG_EXPLORED;
 		}
 		if (visible) {
 			dFlags[nXPos][nYPos] |= BFLAG_LIT;
