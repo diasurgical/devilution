@@ -1952,7 +1952,7 @@ int CheckUnique(int i, int lvl, int uper, BOOL recreate)
 	BOOLEAN uok[128];
 
 	if (random_(28, 100) > uper)
-		return -1;
+		return UITYPE_INVALID;
 
 	numu = 0;
 	memset(uok, 0, sizeof(uok));
@@ -1966,7 +1966,7 @@ int CheckUnique(int i, int lvl, int uper, BOOL recreate)
 	}
 
 	if (numu == 0)
-		return -1;
+		return UITYPE_INVALID;
 
 	random_(29, 10); /// BUGFIX: unused, last unique in array always gets chosen
 	idata = 0;
@@ -2039,7 +2039,7 @@ void ItemRndDur(int ii)
 		item[ii]._iDurability = random_(0, item[ii]._iMaxDur >> 1) + (item[ii]._iMaxDur >> 2) + 1;
 }
 
-void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, BOOL recreate, BOOL pregen)
+void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, BOOL onlygood, BOOL recreate, BOOL pregen)
 {
 	int iblvl, uid;
 
@@ -2101,7 +2101,8 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 
 void SpawnItem(int m, int x, int y, BOOL sendmsg)
 {
-	int ii, onlygood, idx;
+	int ii, idx;
+	BOOL onlygood = FALSE;
 
 	if (monster[m]._uniqtype || ((monster[m].MData->mTreasure & 0x8000) && gbMaxPlayers != 1)) {
 		idx = RndUItem(m);
@@ -2109,14 +2110,13 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 			SpawnUnique(-(idx + 1), x, y);
 			return;
 		}
-		onlygood = 1;
+		onlygood = TRUE;
 	} else if (quests[Q_MUSHROOM]._qactive != QUEST_ACTIVE || quests[Q_MUSHROOM]._qvar1 != QS_MUSHGIVEN) {
 		idx = RndItem(m);
 		if (!idx)
 			return;
 		if (idx > 0) {
 			idx--;
-			onlygood = 0;
 		} else {
 			SpawnUnique(-(idx + 1), x, y);
 			return;
@@ -2252,8 +2252,8 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 
 void RecreateItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 {
-	int uper, onlygood, recreate;
-	BOOL pregen;
+	int uper;
+	BOOL onlygood, recreate, pregen;
 
 	if (!idx) {
 		SetPlrHandItem(&item[ii], IDI_GOLD);
@@ -2277,17 +2277,17 @@ void RecreateItem(int ii, int idx, WORD icreateinfo, int iseed, int ivalue)
 				SetupAllUseful(ii, iseed, icreateinfo & CF_LEVEL);
 			} else {
 				uper = 0;
-				onlygood = 0;
-				recreate = 0;
+				onlygood = FALSE;
+				recreate = FALSE;
 				pregen = FALSE;
 				if (icreateinfo & CF_UPER1)
 					uper = 1;
 				if (icreateinfo & CF_UPER15)
 					uper = 15;
 				if (icreateinfo & CF_ONLYGOOD)
-					onlygood = 1;
+					onlygood = TRUE;
 				if (icreateinfo & CF_UNIQUE)
-					recreate = 1;
+					recreate = TRUE;
 				if (icreateinfo & CF_PREGEN)
 					pregen = TRUE;
 				SetupAllItems(ii, idx, iseed, icreateinfo & CF_LEVEL, uper, onlygood, recreate, pregen);
