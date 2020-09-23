@@ -491,7 +491,7 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 		yy = 0;
 	}
 	for (j = 0; j < sy && done; j++) {
-		if (yy >= 40) {
+		if (yy >= NUM_INV_GRID_ELEM) {
 			done = FALSE;
 		}
 		xx = ii % 10;
@@ -546,7 +546,7 @@ BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 		yy = 0;
 	}
 	for (j = 0; j < sy && done; j++) {
-		if (yy >= 40) {
+		if (yy >= NUM_INV_GRID_ELEM) {
 			done = FALSE;
 		}
 		xx = ii % 10;
