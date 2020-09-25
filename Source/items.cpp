@@ -2102,7 +2102,7 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, BOOL onlygood,
 void SpawnItem(int m, int x, int y, BOOL sendmsg)
 {
 	int ii, idx;
-	BOOL onlygood = FALSE;
+	BOOL onlygood;
 
 	if (monster[m]._uniqtype || ((monster[m].MData->mTreasure & 0x8000) && gbMaxPlayers != 1)) {
 		idx = RndUItem(m);
@@ -2117,6 +2117,7 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg)
 			return;
 		if (idx > 0) {
 			idx--;
+			onlygood = FALSE;
 		} else {
 			SpawnUnique(-(idx + 1), x, y);
 			return;

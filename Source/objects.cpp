@@ -3723,19 +3723,36 @@ BOOL OperateFountains(int pnum, int i)
 
 void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 {
+	int weaponType;
+
 	if (object[i]._oSelFlag == 0)
 		return;
 	SetRndSeed(object[i]._oRndSeed);
+
+	switch (random_(0, 4) + ITYPE_SWORD) {
+	case ITYPE_SWORD:
+		weaponType = ITYPE_SWORD;
+		break;
+	case ITYPE_AXE:
+		weaponType = ITYPE_AXE;
+		break;
+	case ITYPE_BOW:
+		weaponType = ITYPE_BOW;
+		break;
+	case ITYPE_MACE:
+		weaponType = ITYPE_MACE;
+		break;
+	}
 
 	object[i]._oSelFlag = 0;
 	object[i]._oAnimFrame++;
 	if (deltaload)
 		return;
 
-	CreateTypeItem(object[i]._ox, object[i]._oy,
-		leveltype > 1,
-		ITYPE_SWORD + random_(0, 4),
-		IMISC_NONE, sendmsg, FALSE);
+	if (leveltype > 1)
+		CreateTypeItem(object[i]._ox, object[i]._oy, TRUE, weaponType, IMISC_NONE, sendmsg, FALSE);
+	else
+		CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, weaponType, IMISC_NONE, sendmsg, FALSE);
 	if (pnum == myplr)
 		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 }
