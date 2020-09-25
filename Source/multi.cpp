@@ -648,25 +648,26 @@ void multi_event_handler(BOOL add)
 void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 {
 	DWORD LeftReason;
-	DWORD *data;
+	_gamedata *gameData;
 
 	switch (pEvt->eventid) {
 	case EVENT_TYPE_PLAYER_CREATE_GAME:
-		data = (DWORD *)pEvt->data;
-		sgGameInitInfo.dwSeed = data[0];
-		sgGameInitInfo.bDiff = data[1];
+		gameData = (_gamedata *)pEvt->data;
+		sgGameInitInfo.dwSeed = gameData->dwSeed;
+		sgGameInitInfo.bDiff = gameData->bDiff;
 		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
 		break;
 	case EVENT_TYPE_PLAYER_LEAVE_GAME:
 		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
 		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
+
 		LeftReason = 0;
-		data = (DWORD *)pEvt->data;
-		if (data && (DWORD)pEvt->databytes >= 4)
-			LeftReason = data[0];
+		if (pEvt->data && pEvt->databytes >= sizeof(DWORD))
+			LeftReason = *(DWORD *)pEvt->data;
 		sgdwPlayerLeftReasonTbl[pEvt->playerid] = LeftReason;
 		if (LeftReason == LEAVE_ENDING)
 			gbSomebodyWonGameKludge = TRUE;
+
 		sgbSendDeltaTbl[pEvt->playerid] = FALSE;
 		dthread_remove_player(pEvt->playerid);
 
