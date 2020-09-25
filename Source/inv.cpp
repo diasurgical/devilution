@@ -1766,7 +1766,7 @@ BOOL TryInvPut()
 {
 	int dir;
 
-	if (numitems >= 127)
+	if (numitems >= MAXITEMS)
 		return FALSE;
 
 	dir = GetDirection(plr[myplr]._px, plr[myplr]._py, cursmx, cursmy);
@@ -1806,7 +1806,7 @@ int InvPutItem(int pnum, int x, int y)
 	int xx, yy;
 	int xp, yp;
 
-	if (numitems >= 127)
+	if (numitems >= MAXITEMS)
 		return -1;
 
 	if (FindGetItem(plr[pnum].HoldItem.IDidx, plr[pnum].HoldItem._iCreateInfo, plr[pnum].HoldItem._iSeed) != -1) {
@@ -1875,7 +1875,7 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 	int xx, yy;
 	int xp, yp;
 
-	if (numitems >= 127)
+	if (numitems >= MAXITEMS)
 		return -1;
 
 	if (FindGetItem(idx, icreateinfo, iseed) != -1) {
