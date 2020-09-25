@@ -86,6 +86,13 @@ struct CCritSect {
 #define GAMESTATE_STARTED 0x08
 #define GAMESTATE_REPLAY  0x80
 
+#define PS_CONNECTED 0x10000
+#define PS_TURN_ARRIVED 0x20000
+#define PS_ACTIVE 0x40000
+
+#define LEAVE_ENDING 0x40000004
+#define LEAVE_DROP 0x40000006
+
 #if defined(__GNUC__) || defined(__cplusplus)
 extern "C" {
 #endif

@@ -2534,7 +2534,7 @@ void DoEnding()
 	int musicVolume;
 
 	if (gbMaxPlayers > 1) {
-		SNetLeaveGame(0x40000004);
+		SNetLeaveGame(LEAVE_ENDING);
 	}
 
 	music_stop();

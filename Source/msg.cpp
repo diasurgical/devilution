@@ -1135,7 +1135,7 @@ DWORD ParseCmd(int pnum, TCmd *pCmd)
 	}
 
 	if (pCmd->bCmd < CMD_DLEVEL_0 || pCmd->bCmd > CMD_DLEVEL_END) {
-		SNetDropPlayer(pnum, 0x40000006);
+		SNetDropPlayer(pnum, LEAVE_DROP);
 		return 0;
 	}
 

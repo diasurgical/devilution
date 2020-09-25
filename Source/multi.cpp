@@ -215,7 +215,7 @@ void multi_msg_countdown()
 	int i;
 
 	for (i = 0; i < MAX_PLRS; i++) {
-		if (player_state[i] & 0x20000) {
+		if (player_state[i] & PS_TURN_ARRIVED) {
 			if (gdwMsgLenTbl[i] == 4)
 				multi_parse_turn(i, *(DWORD *)glpMsgTbl[i]);
 		}
@@ -242,7 +242,7 @@ void multi_handle_turn_upper_bit(int pnum)
 	int i;
 
 	for (i = 0; i < MAX_PLRS; i++) {
-		if (player_state[i] & 0x10000 && i != pnum)
+		if (player_state[i] & PS_CONNECTED && i != pnum)
 			break;
 	}
 
@@ -290,11 +290,11 @@ void multi_player_left_msg(int pnum, int left)
 		if (left) {
 			pszFmt = "Player '%s' just left the game";
 			switch (sgdwPlayerLeftReasonTbl[pnum]) {
-			case 0x40000004:
+			case LEAVE_ENDING:
 				pszFmt = "Player '%s' killed Diablo and left the game!";
 				gbSomebodyWonGameKludge = TRUE;
 				break;
-			case 0x40000006:
+			case LEAVE_DROP:
 				pszFmt = "Player '%s' dropped due to timeout";
 				break;
 			}
@@ -397,11 +397,11 @@ void multi_begin_timeout()
 	bGroupCount = 0;
 	for (i = 0; i < MAX_PLRS; i++) {
 		nState = player_state[i];
-		if (nState & 0x10000) {
+		if (nState & PS_CONNECTED) {
 			if (nLowestPlayer == -1) {
 				nLowestPlayer = i;
 			}
-			if (nState & 0x40000) {
+			if (nState & PS_ACTIVE) {
 				bGroupPlayers++;
 				if (nLowestActive == -1) {
 					nLowestActive = i;
@@ -444,8 +444,8 @@ void multi_check_drop_player()
 	int i;
 
 	for (i = 0; i < MAX_PLRS; i++) {
-		if (!(player_state[i] & 0x40000) && player_state[i] & 0x10000) {
-			SNetDropPlayer(i, 0x40000006);
+		if (!(player_state[i] & PS_ACTIVE) && player_state[i] & PS_CONNECTED) {
+			SNetDropPlayer(i, LEAVE_DROP);
 		}
 	}
 }
@@ -665,7 +665,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		if (data && (DWORD)pEvt->databytes >= 4)
 			LeftReason = data[0];
 		sgdwPlayerLeftReasonTbl[pEvt->playerid] = LeftReason;
-		if (LeftReason == 0x40000004)
+		if (LeftReason == LEAVE_ENDING)
 			gbSomebodyWonGameKludge = TRUE;
 		sgbSendDeltaTbl[pEvt->playerid] = FALSE;
 		dthread_remove_player(pEvt->playerid);
