@@ -2633,8 +2633,8 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 	BYTE c;
 	int width;
 
-	x += 264;
-	y += 182 + PANEL_TOP;
+	x += 200 + SCREEN_X;
+	y += 22 + PANEL_Y;
 	width = x;
 	*nOffset = PitchTbl[y] + x;
 	while (*msg) {
