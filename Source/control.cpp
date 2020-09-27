@@ -2405,7 +2405,7 @@ void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 	char *tmp;
 	int screen_x, line, width;
 
-	width = PitchTbl[y] + x + RIGHT_PANEL + 120;
+	width = PitchTbl[y] + x + RIGHT_PANEL_X + SPLICONLENGTH;
 	line = 0;
 	if (cjustflag) {
 		screen_x = 0;
