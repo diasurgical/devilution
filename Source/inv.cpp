@@ -718,7 +718,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 	sx = icursW28;
 	sy = icursH28;
 	done = FALSE;
-	for (r = 0; r < sizeof(InvRect) / sizeof(InvRect[0]) && !done; r++) {
+	for (r = 0; r < NUM_XY_SLOTS && !done; r++) {
 		if (i >= InvRect[r].X && i < InvRect[r].X + INV_SLOT_SIZE_PX) {
 			if (j >= InvRect[r].Y - INV_SLOT_SIZE_PX - 1 && j < InvRect[r].Y) {
 				done = TRUE;
@@ -1952,7 +1952,7 @@ char CheckInvHLight()
 	PlayerStruct *p;
 	char rv;
 
-	for (r = 0; (DWORD)r < 73; r++) {
+	for (r = 0; (DWORD)r < NUM_XY_SLOTS; r++) {
 		if (MouseX >= InvRect[r].X
 		    && MouseX < InvRect[r].X + 29
 		    && MouseY >= InvRect[r].Y - 29
