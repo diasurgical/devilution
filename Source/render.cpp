@@ -14,7 +14,7 @@ DWORD *gpDrawMask = NULL;
 // char world_4B326D[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /** Specifies the draw masks used to render transparency of the right side of tiles. */
-DWORD RightMask[32] = {
+DWORD RightMask[TILE_WIDTH] = {
 	0xEAAAAAAA, 0xF5555555,
 	0xFEAAAAAA, 0xFF555555,
 	0xFFEAAAAA, 0xFFF55555,
@@ -33,7 +33,7 @@ DWORD RightMask[32] = {
 	0xFFFFFFFF, 0xFFFFFFFF
 };
 /** Specifies the draw masks used to render transparency of the left side of tiles. */
-DWORD LeftMask[32] = {
+DWORD LeftMask[TILE_WIDTH] = {
 	0xAAAAAAAB, 0x5555555F,
 	0xAAAAAABF, 0x555555FF,
 	0xAAAAABFF, 0x55555FFF,
@@ -52,7 +52,7 @@ DWORD LeftMask[32] = {
 	0xFFFFFFFF, 0xFFFFFFFF
 };
 /** Specifies the draw masks used to render transparency of wall tiles. */
-DWORD WallMask[32] = {
+DWORD WallMask[TILE_WIDTH] = {
 	0xAAAAAAAA, 0x55555555,
 	0xAAAAAAAA, 0x55555555,
 	0xAAAAAAAA, 0x55555555,

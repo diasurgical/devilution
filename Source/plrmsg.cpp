@@ -89,16 +89,16 @@ void DrawPlrMsg()
 	int i;
 	DWORD x = 10 + SCREEN_X;
 	DWORD y = 70 + SCREEN_Y;
-	DWORD width = 620;
+	DWORD width = SCREEN_WIDTH - 20;
 	_plrmsg *pMsg;
 
 	if (chrflag || questlog) {
 		if (invflag || sbookflag)
 			return;
-		x = 330 + SCREEN_X;
-		width = 300;
+		x += SPANEL_WIDTH;
+		width -= SPANEL_WIDTH;
 	} else if (invflag || sbookflag)
-		width = 300;
+		width -= SPANEL_WIDTH;
 
 	pMsg = plr_msgs;
 	for (i = 0; i < 8; i++) {
