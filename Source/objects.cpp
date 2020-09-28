@@ -3424,7 +3424,7 @@ void OperateShrine(int pnum, int i, int sType)
 			if (plr[pnum].InvList[j]._iMagical && !plr[pnum].InvList[j]._iIdentified)
 				plr[pnum].InvList[j]._iIdentified = TRUE;
 		}
-		for (j = 0; j < 8; j++) {
+		for (j = 0; j < MAXBELTITEMS; j++) {
 			if (plr[pnum].SpdList[j]._iMagical && !plr[pnum].SpdList[j]._iIdentified)
 				plr[pnum].SpdList[j]._iIdentified = TRUE; // belt items can't be magical?
 		}
