@@ -384,7 +384,6 @@ void InitCutscene(unsigned int uMsg)
 			LoadPalette("Gendata\\Cuttt.pal");
 			progress_id = 1;
 			break;
-		// BUGFIX: what about case DTYPE_CATHEDRAL ?
 		case DTYPE_CATACOMBS:
 			sgpBackCel = LoadFileInMem("Gendata\\Cut2.CEL", NULL);
 			LoadPalette("Gendata\\Cut2.pal");
