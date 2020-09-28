@@ -62,7 +62,7 @@ void InitTownTriggers()
 
 #ifndef SPAWN
 	if (gbMaxPlayers == MAX_PLRS) {
-		for (i = 0; i < sizeof(townwarps) / sizeof(townwarps[0]); i++) {
+		for (i = 0; i < 3; i++) {
 			townwarps[i] = TRUE;
 		}
 		trigs[numtrigs]._tx = 49;
@@ -82,7 +82,7 @@ void InitTownTriggers()
 		numtrigs++;
 	} else {
 #endif
-		for (i = 0; i < MAX_PLRS - 1; i++) {
+		for (i = 0; i < 3; i++) {
 			townwarps[i] = FALSE;
 		}
 #ifndef SPAWN
