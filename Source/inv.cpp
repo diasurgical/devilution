@@ -725,30 +725,30 @@ void CheckInvPaste(int pnum, int mx, int my)
 				r--;
 			}
 		}
-		if (r == 24) {
+		if (r == SLOTXY_CHEST_LAST) {
 			if ((sx & 1) == 0)
 				i -= 14;
 			if ((sy & 1) == 0) {
 				j -= 14;
 			}
 		}
-		if (r == 64 && (sy & 1) == 0)
+		if (r == SLOTXY_INV_LAST && (sy & 1) == 0)
 			j += 14;
 	}
 	if (!done)
 		return;
 	il = ILOC_UNEQUIPABLE;
-	if (r >= 0 && r <= 3)
+	if (r >= SLOTXY_HEAD_FIRST && r <= SLOTXY_HEAD_LAST)
 		il = ILOC_HELM;
-	if (r >= 4 && r <= 5)
+	if (r >= SLOTXY_RING_LEFT && r <= SLOTXY_RING_RIGHT)
 		il = ILOC_RING;
-	if (r == 6)
+	if (r == SLOTXY_AMULET)
 		il = ILOC_AMULET;
-	if (r >= 7 && r <= 18)
+	if (r >= SLOTXY_HAND_LEFT_FIRST && r <= SLOTXY_HAND_RIGHT_LAST)
 		il = ILOC_ONEHAND;
-	if (r >= 19 && r <= 24)
+	if (r >= SLOTXY_CHEST_FIRST && r <= SLOTXY_CHEST_LAST)
 		il = ILOC_ARMOR;
-	if (r >= 65 && r <= 72)
+	if (r >= SLOTXY_BELT_FIRST && r <= SLOTXY_BELT_LAST)
 		il = ILOC_BELT;
 	done = FALSE;
 	if (plr[pnum].HoldItem._iLoc == il)
@@ -772,7 +772,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 	if (il == ILOC_UNEQUIPABLE) {
 		done = TRUE;
 		it = 0;
-		ii = r - 25;
+		ii = r - SLOTXY_INV_FIRST;
 		if (plr[pnum].HoldItem._itype == ITYPE_GOLD) {
 			yy = 10 * (ii / 10);
 			xx = ii % 10;
@@ -849,7 +849,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 			cn = SwapItem(&plr[pnum].InvBody[INVLOC_HEAD], &plr[pnum].HoldItem);
 		break;
 	case ILOC_RING:
-		if (r == 4) {
+		if (r == SLOTXY_RING_LEFT) {
 			NetSendCmdChItem(FALSE, INVLOC_RING_LEFT);
 			if (plr[pnum].InvBody[INVLOC_RING_LEFT]._itype == ITYPE_NONE)
 				plr[pnum].InvBody[INVLOC_RING_LEFT] = plr[pnum].HoldItem;
@@ -871,7 +871,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 			cn = SwapItem(&plr[pnum].InvBody[INVLOC_AMULET], &plr[pnum].HoldItem);
 		break;
 	case ILOC_ONEHAND:
-		if (r <= 12) {
+		if (r <= SLOTXY_HAND_LEFT_LAST) {
 			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE) {
 				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass != plr[pnum].HoldItem._iClass) {
 					NetSendCmdChItem(FALSE, INVLOC_HAND_LEFT);
@@ -971,7 +971,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 		break;
 	case ILOC_UNEQUIPABLE:
 		if (plr[pnum].HoldItem._itype == ITYPE_GOLD && it == 0) {
-			ii = r - 25;
+			ii = r - SLOTXY_INV_FIRST;
 			yy = 10 * (ii / 10);
 			xx = ii % 10;
 			if (plr[pnum].InvGrid[yy + xx] > 0) {
@@ -1036,7 +1036,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 						plr[pnum].InvGrid[i] = 0;
 				}
 			}
-			ii = r - 25;
+			ii = r - SLOTXY_INV_FIRST;
 			yy = 10 * (ii / 10 - ((sy - 1) >> 1));
 			if (yy < 0)
 				yy = 0;
@@ -1056,7 +1056,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 		}
 		break;
 	case ILOC_BELT:
-		ii = r - 65;
+		ii = r - SLOTXY_BELT_FIRST;
 		if (plr[pnum].HoldItem._itype == ITYPE_GOLD) {
 			if (plr[pnum].SpdList[ii]._itype != ITYPE_NONE) {
 				if (plr[pnum].SpdList[ii]._itype == ITYPE_GOLD) {
@@ -1961,7 +1961,7 @@ char CheckInvHLight()
 		}
 	}
 
-	if ((DWORD)r >= 73)
+	if ((DWORD)r >= NUM_XY_SLOTS)
 		return -1;
 
 	rv = -1;
@@ -1969,22 +1969,22 @@ char CheckInvHLight()
 	pi = NULL;
 	p = &plr[myplr];
 	ClearPanel();
-	if (r >= 0 && r <= 3) {
+	if (r >= SLOTXY_HEAD_FIRST && r <= SLOTXY_HEAD_LAST) {
 		rv = INVLOC_HEAD;
 		pi = &p->InvBody[rv];
-	} else if (r == 4) {
+	} else if (r == SLOTXY_RING_LEFT) {
 		rv = INVLOC_RING_LEFT;
 		pi = &p->InvBody[rv];
-	} else if (r == 5) {
+	} else if (r == SLOTXY_RING_RIGHT) {
 		rv = INVLOC_RING_RIGHT;
 		pi = &p->InvBody[rv];
-	} else if (r == 6) {
+	} else if (r == SLOTXY_AMULET) {
 		rv = INVLOC_AMULET;
 		pi = &p->InvBody[rv];
-	} else if (r >= 7 && r <= 12) {
+	} else if (r >= SLOTXY_HAND_LEFT_FIRST && r <= SLOTXY_HAND_LEFT_LAST) {
 		rv = INVLOC_HAND_LEFT;
 		pi = &p->InvBody[rv];
-	} else if (r >= 13 && r <= 18) {
+	} else if (r >= SLOTXY_HAND_RIGHT_FIRST && r <= SLOTXY_HAND_RIGHT_LAST) {
 		pi = &p->InvBody[INVLOC_HAND_LEFT];
 		if (pi->_itype == ITYPE_NONE || pi->_iLoc != ILOC_TWOHAND) {
 			rv = INVLOC_HAND_RIGHT;
@@ -1992,18 +1992,18 @@ char CheckInvHLight()
 		} else {
 			rv = INVLOC_HAND_LEFT;
 		}
-	} else if (r >= 19 && r <= 24) {
+	} else if (r >= SLOTXY_CHEST_FIRST && r <= SLOTXY_CHEST_LAST) {
 		rv = INVLOC_CHEST;
 		pi = &p->InvBody[rv];
-	} else if (r >= 25 && r <= 64) {
-		r = abs(p->InvGrid[r - 25]);
+	} else if (r >= SLOTXY_INV_FIRST && r <= SLOTXY_INV_LAST) {
+		r = abs(p->InvGrid[r - SLOTXY_INV_FIRST]);
 		if (r == 0)
 			return -1;
 		ii = r - 1;
 		rv = ii + 7;
 		pi = &p->InvList[ii];
-	} else if (r >= 65) {
-		r -= 65;
+	} else if (r >= SLOTXY_BELT_FIRST) {
+		r -= SLOTXY_BELT_FIRST;
 		drawsbarflag = TRUE;
 		pi = &p->SpdList[r];
 		if (pi->_itype == ITYPE_NONE)
