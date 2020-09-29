@@ -2000,7 +2000,7 @@ char CheckInvHLight()
 		if (r == 0)
 			return -1;
 		ii = r - 1;
-		rv = ii + 7;
+		rv = ii + INVITEM_INV_FIRST;
 		pi = &p->InvList[ii];
 	} else if (r >= SLOTXY_BELT_FIRST) {
 		r -= SLOTXY_BELT_FIRST;
@@ -2008,7 +2008,7 @@ char CheckInvHLight()
 		pi = &p->SpdList[r];
 		if (pi->_itype == ITYPE_NONE)
 			return -1;
-		rv = r + 47;
+		rv = r + INVITEM_BELT_FIRST;
 	}
 
 	if (pi->_itype == ITYPE_NONE)
