@@ -451,7 +451,7 @@ void DrawInvBelt()
 			continue;
 		}
 
-		InvDrawSlotBack(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, 28, 28);
+		InvDrawSlotBack(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 		frame = plr[myplr].SpdList[i]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
@@ -475,7 +475,7 @@ void DrawInvBelt()
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
 			ff = fontframe[gbFontTransTbl[fi]];
-			PrintChar(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + 28, ff, 0);
+			PrintChar(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + INV_SLOT_SIZE_PX, ff, 0);
 		}
 	}
 }
@@ -1105,7 +1105,7 @@ void CheckInvPaste(int pnum, int mx, int my)
 	}
 	CalcPlrInv(pnum, TRUE);
 	if (pnum == myplr) {
-		if (cn == 1)
+		if (cn == CURSOR_HAND)
 			SetCursorPos(MouseX + (cursW >> 1), MouseY + (cursH >> 1));
 		SetCursor_(cn);
 	}
@@ -1954,8 +1954,8 @@ char CheckInvHLight()
 
 	for (r = 0; (DWORD)r < 73; r++) {
 		if (MouseX >= InvRect[r].X
-		    && MouseX < InvRect[r].X + 29
-		    && MouseY >= InvRect[r].Y - 29
+		    && MouseX < InvRect[r].X + (INV_SLOT_SIZE_PX + 1)
+		    && MouseY >= InvRect[r].Y - (INV_SLOT_SIZE_PX + 1)
 		    && MouseY < InvRect[r].Y) {
 			break;
 		}

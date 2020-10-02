@@ -558,7 +558,7 @@ void S_ScrollSPBuy(int idx)
 			boughtitems--;
 	}
 
-	for (l = 5; l < 20 && idx < 6; l += 4) {
+	for (l = 5; l < 20 && idx < SMITH_PREMIUM_ITEMS; l += 4) {
 		if (premiumitem[idx]._itype != ITYPE_NONE) {
 			iclr = COL_WHITE;
 			if (premiumitem[idx]._iMagical)
