@@ -2825,7 +2825,7 @@ BOOL M_CallWalk(int i, int md)
 
 BOOL M_PathWalk(int i)
 {
-	char path[25];
+	char path[MAX_PATH_LENGTH];
 	BOOL(*Check)
 	(int, int, int);
 
