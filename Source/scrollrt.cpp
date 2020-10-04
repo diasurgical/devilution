@@ -1102,7 +1102,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 }
 
 /**
- * @brief Render a row of tile
+ * @brief Render a row of tiles
  * @param x dPiece coordinate
  * @param y dPiece coordinate
  * @param sx Back buffer coordinate
@@ -2696,10 +2696,10 @@ static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 }
 
 /**
- * @brief Check render pipline and blit indivudal screen parts
+ * @brief Check render pipeline and blit individual screen parts
  * @param dwHgt Section of screen to update from top to bottom
  * @param draw_desc Render info box
- * @param draw_hp Render halth bar
+ * @param draw_hp Render health bar
  * @param draw_mana Render mana bar
  * @param draw_sbar Render belt
  * @param draw_btn Render panel buttons
