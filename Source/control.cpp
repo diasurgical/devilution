@@ -2138,7 +2138,7 @@ void DrawLevelUpIcon()
 
 void CheckChrBtns()
 {
-	int pc, i;
+	int pc, i, x, y;
 
 	if (!chrbtnactive && plr[myplr]._pStatPts) {
 		pc = plr[myplr]._pClass;
@@ -2163,10 +2163,12 @@ void CheckChrBtns()
 			default:
 				continue;
 			}
+			x = ChrBtnsRect[i].x + ChrBtnsRect[i].w;
+			y = ChrBtnsRect[i].y + ChrBtnsRect[i].h;
 			if (MouseX >= ChrBtnsRect[i].x
-			    && MouseX <= ChrBtnsRect[i].x + ChrBtnsRect[i].w
+			    && MouseX <= x
 			    && MouseY >= ChrBtnsRect[i].y
-			    && MouseY <= ChrBtnsRect[i].y + ChrBtnsRect[i].h) {
+			    && MouseY <= y) {
 				chrbtn[i] = TRUE;
 				chrbtnactive = TRUE;
 			}
