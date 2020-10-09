@@ -1359,7 +1359,7 @@ void DrawCtrlBtns()
  */
 void DoSpeedBook()
 {
-	unsigned __int64 spells, spell;
+	unsigned __int64 spell, spells;
 	int xo, yo, X, Y, i, j;
 
 	spselflag = TRUE;
