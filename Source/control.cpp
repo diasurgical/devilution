@@ -2658,7 +2658,8 @@ char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
 	*nOffset = PitchTbl[y] + x;
 	while (*msg) {
 
-		c = fontframe[gbFontTransTbl[(BYTE)*msg]];
+		c = gbFontTransTbl[(BYTE)*msg];
+		c = fontframe[c];
 		width += fontkern[c] + 1;
 		if (width > 450 + PANEL_X)
 			return msg;
