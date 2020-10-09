@@ -1418,8 +1418,10 @@ void DoPanBtn()
 	int i;
 
 	for (i = 0; i < numpanbtns; i++) {
-		if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
-			if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+		int x = PanBtnPos[i][0] + PanBtnPos[i][2];
+		int y = PanBtnPos[i][1] + PanBtnPos[i][3];
+		if (MouseX >= PanBtnPos[i][0] && MouseX <= x) {
+			if (MouseY >= PanBtnPos[i][1] && MouseY <= y) {
 				panbtn[i] = TRUE;
 				drawbtnflag = TRUE;
 				panbtndown = TRUE;
