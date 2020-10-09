@@ -1898,7 +1898,10 @@ void DrawChr()
 	else
 		MY_PlrStringXY(258, 239, 301, chrstr, col, 0);
 
-	col = plr[myplr]._pMagResist == 0 ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pMagResist == 0)
+		col = COL_WHITE;
+	else
+		col = COL_BLUE;
 	if (plr[myplr]._pMagResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pMagResist);
 	} else {
@@ -1907,7 +1910,10 @@ void DrawChr()
 	}
 	ADD_PlrStringXY(257, 276, 300, chrstr, col);
 
-	col = plr[myplr]._pFireResist == 0 ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pFireResist == 0)
+		col = COL_WHITE;
+	else
+		col = COL_BLUE;
 	if (plr[myplr]._pFireResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pFireResist);
 	} else {
@@ -1916,7 +1922,10 @@ void DrawChr()
 	}
 	ADD_PlrStringXY(257, 304, 300, chrstr, col);
 
-	col = plr[myplr]._pLghtResist == 0 ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pLghtResist == 0)
+		col = COL_WHITE;
+	else
+		col = COL_BLUE;
 	if (plr[myplr]._pLghtResist < MAXRESIST) {
 		sprintf(chrstr, "%i%%", plr[myplr]._pLghtResist);
 	} else {
@@ -2000,7 +2009,10 @@ void DrawChr()
 			CelDraw(137 + SCREEN_X, 244 + SCREEN_Y, pChrButtons, chrbtn[ATTRIB_VIT] + 8, 41);
 	}
 
-	col = plr[myplr]._pMaxHP <= plr[myplr]._pMaxHPBase ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pMaxHP > plr[myplr]._pMaxHPBase)
+		col = COL_BLUE;
+	else
+		col = COL_WHITE;
 	sprintf(chrstr, "%i", plr[myplr]._pMaxHP >> 6);
 	ADD_PlrStringXY(95, 304, 126, chrstr, col);
 	if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
@@ -2008,7 +2020,10 @@ void DrawChr()
 	sprintf(chrstr, "%i", plr[myplr]._pHitPoints >> 6);
 	ADD_PlrStringXY(143, 304, 174, chrstr, col);
 
-	col = plr[myplr]._pMaxMana <= plr[myplr]._pMaxManaBase ? COL_WHITE : COL_BLUE;
+	if (plr[myplr]._pMaxMana > plr[myplr]._pMaxManaBase)
+		col = COL_BLUE;
+	else
+		col = COL_WHITE;
 	sprintf(chrstr, "%i", plr[myplr]._pMaxMana >> 6);
 	ADD_PlrStringXY(95, 332, 126, chrstr, col);
 	if (plr[myplr]._pMana != plr[myplr]._pMaxMana)
