@@ -2500,8 +2500,11 @@ void DrawGoldSplit(int amount)
 	if (amount > 0) {
 		sprintf(tempstr, "%u", amount);
 		PrintGameStr(388, 140, tempstr, COL_WHITE);
+	}
+	if (amount > 0) {
 		for (i = 0; i < tempstr[i]; i++) {
-			screen_x += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[i]]]] + 1;
+			BYTE c = fontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
+			screen_x += fontkern[c] + 1;
 		}
 		screen_x += 452;
 	} else {
