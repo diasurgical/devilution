@@ -140,7 +140,7 @@ extern int StrengthTbl[3];
 extern int MagicTbl[3];
 extern int DexterityTbl[3];
 extern int VitalityTbl[3];
-extern int ToBlkTbl[3];
+extern int ToBlkTbl[];
 extern char *ClassStrTblOld[];
 extern int MaxStats[3][4];
 extern int ExpLvlsTbl[MAXCHARLEVEL];
