@@ -1443,16 +1443,22 @@ void control_set_button_down(int btn_id)
 
 void control_check_btn_press()
 {
+	int x, y;
+
+	x = PanBtnPos[3][0] + PanBtnPos[3][2];
+	y = PanBtnPos[3][1] + PanBtnPos[3][3];
 	if (MouseX >= PanBtnPos[3][0]
-	    && MouseX <= PanBtnPos[3][0] + PanBtnPos[3][2]
+	    && MouseX <= x
 	    && MouseY >= PanBtnPos[3][1]
-	    && MouseY <= PanBtnPos[3][1] + PanBtnPos[3][3]) {
+	    && MouseY <= y) {
 		control_set_button_down(3);
 	}
+	x = PanBtnPos[6][0] + PanBtnPos[6][2];
+	y = PanBtnPos[6][1] + PanBtnPos[6][3];
 	if (MouseX >= PanBtnPos[6][0]
-	    && MouseX <= PanBtnPos[6][0] + PanBtnPos[6][2]
+	    && MouseX <= x
 	    && MouseY >= PanBtnPos[6][1]
-	    && MouseY <= PanBtnPos[6][1] + PanBtnPos[6][3]) {
+	    && MouseY <= y) {
 		control_set_button_down(6);
 	}
 }
