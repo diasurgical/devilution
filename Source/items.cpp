@@ -1821,7 +1821,7 @@ void SetupItem(int i)
 
 int RndItem(int m)
 {
-	int i, ri;
+	int i, ri, r;
 	int ril[512];
 
 	if ((monster[m].MData->mTreasure & 0x8000) != 0)
@@ -1852,7 +1852,8 @@ int RndItem(int m)
 			ri--;
 	}
 
-	return ril[random_(24, ri)] + 1;
+	r = random_(24, ri);
+	return ril[r] + 1;
 }
 
 int RndUItem(int m)
