@@ -2191,6 +2191,7 @@ void OperateL2RDoor(int pnum, int oi, BOOL sendflag)
 	}
 }
 
+// BUGFIX (?) - out of all door functions, only this one is BOOL in hellfire, apparently for no reason
 void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 {
 	int xp, yp;
@@ -2399,7 +2400,7 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	}
 }
 
-void OperateL1Door(int pnum, int i, BOOL sendflag)
+void OperateL1Door(int pnum, int i, DIABOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -2583,7 +2584,7 @@ void OperateSChambBk(int pnum, int i)
 	}
 }
 
-void OperateChest(int pnum, int i, BOOL sendmsg)
+void OperateChest(int pnum, int i, DIABOOL sendmsg)
 {
 	int j, mdir, mtype;
 
@@ -2690,7 +2691,7 @@ void OperateInnSignChest(int pnum, int i)
 	}
 }
 
-void OperateSlainHero(int pnum, int i, BOOL sendmsg)
+void OperateSlainHero(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		object[i]._oSelFlag = 0;
@@ -2747,7 +2748,7 @@ void OperateTrapLvr(int i)
 	}
 }
 
-void OperateSarc(int pnum, int i, BOOL sendmsg)
+void OperateSarc(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
@@ -2769,7 +2770,7 @@ void OperateSarc(int pnum, int i, BOOL sendmsg)
 	}
 }
 
-void OperateL2Door(int pnum, int i, BOOL sendflag)
+void OperateL2Door(int pnum, int i, DIABOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -2781,7 +2782,7 @@ void OperateL2Door(int pnum, int i, BOOL sendflag)
 		OperateL2RDoor(pnum, i, sendflag);
 }
 
-void OperateL3Door(int pnum, int i, BOOL sendflag)
+void OperateL3Door(int pnum, int i, DIABOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -3473,7 +3474,7 @@ void OperateShrine(int pnum, int i, int sType)
 		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
 }
 
-void OperateSkelBook(int pnum, int i, BOOL sendmsg)
+void OperateSkelBook(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
@@ -3492,7 +3493,7 @@ void OperateSkelBook(int pnum, int i, BOOL sendmsg)
 	}
 }
 
-void OperateBookCase(int pnum, int i, BOOL sendmsg)
+void OperateBookCase(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
@@ -3517,7 +3518,7 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 	}
 }
 
-void OperateDecap(int pnum, int i, BOOL sendmsg)
+void OperateDecap(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		object[i]._oSelFlag = 0;
@@ -3530,7 +3531,7 @@ void OperateDecap(int pnum, int i, BOOL sendmsg)
 	}
 }
 
-void OperateArmorStand(int pnum, int i, BOOL sendmsg)
+void OperateArmorStand(int pnum, int i, DIABOOL sendmsg)
 {
 	BOOL uniqueRnd;
 
@@ -3721,7 +3722,7 @@ BOOL OperateFountains(int pnum, int i)
 	return applied;
 }
 
-void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
+void OperateWeaponRack(int pnum, int i, DIABOOL sendmsg)
 {
 	int weaponType;
 
