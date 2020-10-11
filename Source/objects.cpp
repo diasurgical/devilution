@@ -2521,12 +2521,12 @@ void OperateBookLever(int pnum, int i)
 	if (object[i]._oSelFlag != 0 && !qtextflag) {
 		if (object[i]._otype == OBJ_BLINDBOOK && !quests[Q_BLIND]._qvar1) {
 			quests[Q_BLIND]._qactive = QUEST_ACTIVE;
-			quests[Q_BLIND]._qlog = 1;
+			quests[Q_BLIND]._qlog = TRUE;
 			quests[Q_BLIND]._qvar1 = 1;
 		}
 		if (object[i]._otype == OBJ_BLOODBOOK && !quests[Q_BLOOD]._qvar1) {
 			quests[Q_BLOOD]._qactive = QUEST_ACTIVE;
-			quests[Q_BLOOD]._qlog = 1;
+			quests[Q_BLOOD]._qlog = TRUE;
 			quests[Q_BLOOD]._qvar1 = 1;
 			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 19, 2 * setpc_y + 26, 0, 1);
 			SpawnQuestItem(IDI_BLDSTONE, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
@@ -2535,7 +2535,7 @@ void OperateBookLever(int pnum, int i)
 		object[i]._otype = object[i]._otype;
 		if (object[i]._otype == OBJ_STEELTOME && !quests[Q_WARLORD]._qvar1) {
 			quests[Q_WARLORD]._qactive = QUEST_ACTIVE;
-			quests[Q_WARLORD]._qlog = 1;
+			quests[Q_WARLORD]._qlog = TRUE;
 			quests[Q_WARLORD]._qvar1 = 1;
 		}
 		if (object[i]._oAnimFrame != object[i]._oVar6) {
@@ -2569,7 +2569,7 @@ void OperateSChambBk(int pnum, int i)
 		object[i]._oAnimFrame = object[i]._oVar6;
 		if (quests[Q_SCHAMB]._qactive == QUEST_INIT) {
 			quests[Q_SCHAMB]._qactive = QUEST_ACTIVE;
-			quests[Q_SCHAMB]._qlog = 1;
+			quests[Q_SCHAMB]._qlog = TRUE;
 		}
 		if (plr[myplr]._pClass == PC_WARRIOR) {
 			textdef = TEXT_BONER;

@@ -1169,7 +1169,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
 	gpDrawMask = pMask;
-	if (!(BYTE)light_table_index) {
+	if ((BYTE)light_table_index == 0) {
 		if (level_cel_block & 0x8000)
 			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
 			    + (WORD)(level_cel_block & 0xF000);
@@ -1822,7 +1822,7 @@ void drawUpperScreen(BYTE *pBuff)
 	}
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
-	if (!(BYTE)light_table_index) {
+	if ((BYTE)light_table_index == 0) {
 		if (level_cel_block & 0x8000)
 			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
 			    + (WORD)(level_cel_block & 0xF000);
@@ -2430,7 +2430,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
-	if (!(BYTE)light_table_index) {
+	if ((BYTE)light_table_index == 0) {
 		if (level_cel_block & 0x8000)
 			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
 			    + (WORD)(level_cel_block & 0xF000);

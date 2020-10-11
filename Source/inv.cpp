@@ -2130,7 +2130,7 @@ BOOL UseInvItem(int pnum, int cii)
 	ItemStruct *Item;
 	BOOL speedlist;
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr)
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr)
 		return TRUE;
 	if (pcurs != CURSOR_HAND)
 		return TRUE;

@@ -1129,7 +1129,7 @@ void StartStand(int pnum, int dir)
 		app_fatal("StartStand: illegal player %d", pnum);
 	}
 
-	if (!plr[pnum]._pInvincible || plr[pnum]._pHitPoints || pnum != myplr) {
+	if (!plr[pnum]._pInvincible || plr[pnum]._pHitPoints != 0 || pnum != myplr) {
 		if (!(plr[pnum]._pGFXLoad & PFILE_STAND)) {
 			LoadPlrGFX(pnum, PFILE_STAND);
 		}
@@ -1245,7 +1245,7 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 		app_fatal("StartWalk: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1315,7 +1315,7 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		app_fatal("StartWalk2: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1394,7 +1394,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		app_fatal("StartWalk3: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1472,7 +1472,7 @@ void StartAttack(int pnum, int d)
 		app_fatal("StartAttack: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1493,7 +1493,7 @@ void StartRangeAttack(int pnum, int d, int cx, int cy)
 		app_fatal("StartRangeAttack: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1516,7 +1516,7 @@ void StartPlrBlock(int pnum, int dir)
 		app_fatal("StartPlrBlock: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1538,7 +1538,7 @@ void StartSpell(int pnum, int d, int cx, int cy)
 	if ((DWORD)pnum >= MAX_PLRS)
 		app_fatal("StartSpell: illegal player %d", pnum);
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}
@@ -1634,7 +1634,7 @@ void StartPlrHit(int pnum, int dam, BOOL forcehit)
 		app_fatal("StartPlrHit: illegal player %d", pnum);
 	}
 
-	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr) {
+	if (plr[pnum]._pInvincible && plr[pnum]._pHitPoints == 0 && pnum == myplr) {
 		SyncPlrKill(pnum, -1);
 		return;
 	}

@@ -17,30 +17,30 @@ int WaterDone;
 int ReturnLvlX;
 int ReturnLvlY;
 int ReturnLvlT;
-/** current frame # for the pentagram selector */
-int ALLQUESTS;
+/** current frame # for the quest pentagram selector */
+int questpentframe;
 int ReturnLvl;
 
 /** Contains the data related to each quest_id. */
 QuestData questlist[MAXQUESTS] = {
 	// clang-format off
-	// _qdlvl, _qdmultlvl, _qlvlt,          _qdtype,   _qdrnd, _qslvl, _qflags, _qdmsg,         _qlstr
-	{       5,         -1, DTYPE_NONE,      Q_ROCK,  100,      0,       0, TEXT_INFRA5,   "The Magic Rock"           },
-	{       9,         -1, DTYPE_NONE,      Q_MUSHROOM,   100,      0,       0, TEXT_MUSH8,    "Black Mushroom"           },
-	{       4,         -1, DTYPE_NONE,      Q_GARBUD,   100,      0,       0, TEXT_GARBUD1,  "Gharbad The Weak"         },
-	{       8,         -1, DTYPE_NONE,      Q_ZHAR,   100,      0,       0, TEXT_ZHAR1,    "Zhar the Mad"             },
-	{      14,         -1, DTYPE_NONE,      Q_VEIL,   100,      0,       0, TEXT_VEIL9,    "Lachdanan"                },
-	{      15,         -1, DTYPE_NONE,      Q_DIABLO,    100,      0,       1, TEXT_VILE3,    "Diablo"                   },
-	{       2,          2, DTYPE_NONE,      Q_BUTCHER,  100,      0,       1, TEXT_BUTCH9,   "The Butcher"              },
-	{       4,         -1, DTYPE_NONE,      Q_LTBANNER,    100,      0,       0, TEXT_BANNER2,  "Ogden's Sign"             },
-	{       7,         -1, DTYPE_NONE,      Q_BLIND,  100,      0,       0, TEXT_BLINDING, "Halls of the Blind"       },
-	{       5,         -1, DTYPE_NONE,      Q_BLOOD,  100,      0,       0, TEXT_BLOODY,   "Valor"                    },
-	{      10,         -1, DTYPE_NONE,      Q_ANVIL,  100,      0,       0, TEXT_ANVIL5,   "Anvil of Fury"            },
-	{      13,         -1, DTYPE_NONE,      Q_WARLORD, 100,      0,       0, TEXT_BLOODWAR, "Warlord of Blood"         },
-	{       3,          3, DTYPE_CATHEDRAL, Q_SKELKING,   100,      1,       1, TEXT_KING2,    "The Curse of King Leoric" },
-	{       2,         -1, DTYPE_CAVES,     Q_PWATER,     100,      4,       0, TEXT_POISON3,  "Poisoned Water Supply"    },
-	{       6,         -1, DTYPE_CATACOMBS, Q_SCHAMB,   100,      2,       0, TEXT_BONER,    "The Chamber of Bone"      },
-	{      15,         15, DTYPE_CATHEDRAL, Q_BETRAYER,     100,      5,       1, TEXT_VILE1,    "Archbishop Lazarus"       },
+	// _qdlvl,  _qdmultlvl, _qlvlt,          _qdtype,     _qdrnd,  _qslvl,  _qflags,       _qdmsg,        _qlstr
+	{       5,         -1, DTYPE_NONE,      Q_ROCK,      100,      0,       QUEST_SINGLE,  TEXT_INFRA5,   "The Magic Rock"           },
+	{       9,         -1, DTYPE_NONE,      Q_MUSHROOM,  100,      0,       QUEST_SINGLE,  TEXT_MUSH8,    "Black Mushroom"           },
+	{       4,         -1, DTYPE_NONE,      Q_GARBUD,    100,      0,       QUEST_SINGLE,  TEXT_GARBUD1,  "Gharbad The Weak"         },
+	{       8,         -1, DTYPE_NONE,      Q_ZHAR,      100,      0,       QUEST_SINGLE,  TEXT_ZHAR1,    "Zhar the Mad"             },
+	{      14,         -1, DTYPE_NONE,      Q_VEIL,      100,      0,       QUEST_SINGLE,  TEXT_VEIL9,    "Lachdanan"                },
+	{      15,         -1, DTYPE_NONE,      Q_DIABLO,    100,      0,       QUEST_ANY,     TEXT_VILE3,    "Diablo"                   },
+	{       2,          2, DTYPE_NONE,      Q_BUTCHER,   100,      0,       QUEST_ANY,     TEXT_BUTCH9,   "The Butcher"              },
+	{       4,         -1, DTYPE_NONE,      Q_LTBANNER,  100,      0,       QUEST_SINGLE,  TEXT_BANNER2,  "Ogden's Sign"             },
+	{       7,         -1, DTYPE_NONE,      Q_BLIND,     100,      0,       QUEST_SINGLE,  TEXT_BLINDING, "Halls of the Blind"       },
+	{       5,         -1, DTYPE_NONE,      Q_BLOOD,     100,      0,       QUEST_SINGLE,  TEXT_BLOODY,   "Valor"                    },
+	{      10,         -1, DTYPE_NONE,      Q_ANVIL,     100,      0,       QUEST_SINGLE,  TEXT_ANVIL5,   "Anvil of Fury"            },
+	{      13,         -1, DTYPE_NONE,      Q_WARLORD,   100,      0,       QUEST_SINGLE,  TEXT_BLOODWAR, "Warlord of Blood"         },
+	{       3,          3, DTYPE_CATHEDRAL, Q_SKELKING,  100,      1,       QUEST_ANY,     TEXT_KING2,    "The Curse of King Leoric" },
+	{       2,         -1, DTYPE_CAVES,     Q_PWATER,    100,      4,       QUEST_SINGLE,  TEXT_POISON3,  "Poisoned Water Supply"    },
+	{       6,         -1, DTYPE_CATACOMBS, Q_SCHAMB,    100,      2,       QUEST_SINGLE,  TEXT_BONER,    "The Chamber of Bone"      },
+	{      15,         15, DTYPE_CATHEDRAL, Q_BETRAYER,  100,      5,       QUEST_ANY,     TEXT_VILE1,    "Archbishop Lazarus"       },
 	// clang-format on
 };
 /**
@@ -96,33 +96,34 @@ void InitQuests()
 		}
 	} else {
 		for (i = 0; i < MAXQUESTS; i++) {
-			if (!(questlist[i]._qflags & 1)) {
+			if (!(questlist[i]._qflags & QUEST_ANY)) {
 				quests[i]._qactive = QUEST_NOTAVAIL;
 			}
 		}
 	}
 
 	questlog = FALSE;
-	ALLQUESTS = 1;
+	questpentframe = 1;
 	WaterDone = 0;
 	initiatedQuests = 0;
 
 	for (z = 0; z < MAXQUESTS; z++) {
-		if (gbMaxPlayers <= 1 || questlist[z]._qflags & 1) {
+		if (gbMaxPlayers > 1 && !(questlist[z]._qflags & QUEST_ANY))
+			continue;
 			quests[z]._qtype = questlist[z]._qdtype;
 			if (gbMaxPlayers > 1) {
 				quests[z]._qlevel = questlist[z]._qdmultlvl;
 				if (!delta_quest_inited(initiatedQuests)) {
 					quests[z]._qactive = QUEST_INIT;
 					quests[z]._qvar1 = 0;
-					quests[z]._qlog = 0;
+					quests[z]._qlog = FALSE;
 				}
 				initiatedQuests++;
 			} else {
 				quests[z]._qactive = QUEST_INIT;
 				quests[z]._qlevel = questlist[z]._qdlvl;
 				quests[z]._qvar1 = 0;
-				quests[z]._qlog = 0;
+				quests[z]._qlog = FALSE;
 			}
 
 			quests[z]._qslvl = questlist[z]._qslvl;
@@ -132,7 +133,6 @@ void InitQuests()
 			quests[z]._qlvltype = questlist[z]._qlvlt;
 			quests[z]._qvar2 = 0;
 			quests[z]._qmsg = questlist[z]._qdmsg;
-		}
 	}
 
 	if (gbMaxPlayers == 1) {
@@ -158,9 +158,9 @@ void InitQuests()
 	}
 #endif
 
-	if (!quests[Q_SKELKING]._qactive)
+	if (quests[Q_SKELKING]._qactive == QUEST_NOTAVAIL)
 		quests[Q_SKELKING]._qvar2 = 2;
-	if (!quests[Q_ROCK]._qactive)
+	if (quests[Q_ROCK]._qactive == QUEST_NOTAVAIL)
 		quests[Q_ROCK]._qvar2 = 2;
 	quests[Q_LTBANNER]._qvar1 = 1;
 	if (gbMaxPlayers != 1)
@@ -273,15 +273,15 @@ BOOL ForceQuests()
 
 BOOL QuestStatus(int i)
 {
-	BOOL result;
-
-	if (setlevel
-	    || currlevel != quests[i]._qlevel
-	    || !quests[i]._qactive
-	    || (result = 1, gbMaxPlayers != 1) && !(questlist[i]._qflags & 1)) {
-		result = FALSE;
-	}
-	return result;
+	if (setlevel)
+		return FALSE;
+	if (currlevel != quests[i]._qlevel)
+		return FALSE;
+	if (quests[i]._qactive == QUEST_NOTAVAIL)
+		return FALSE;
+	if (gbMaxPlayers != 1 && !(questlist[i]._qflags & QUEST_ANY))
+		return FALSE;
+	return TRUE;
 }
 
 void CheckQuestKill(int m, BOOL sendmsg)
@@ -750,7 +750,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 		off += k;
 	}
 	if (qline == y) {
-		CelDraw(cjustflag ? x + k + 12 + SCREEN_X : x + 12 + SCREEN_X, s + 205, pSPentSpn2Cels, ALLQUESTS, 12);
+		CelDraw(cjustflag ? x + k + 12 + SCREEN_X : x + 12 + SCREEN_X, s + 205, pSPentSpn2Cels, questpentframe, 12);
 	}
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
@@ -761,7 +761,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 		off += fontkern[c] + 1;
 	}
 	if (qline == y) {
-		CelDraw(cjustflag ? x + k + 36 + SCREEN_X : 276 + SCREEN_X - x, s + 205, pSPentSpn2Cels, ALLQUESTS, 12);
+		CelDraw(cjustflag ? x + k + 36 + SCREEN_X : 276 + SCREEN_X - x, s + 205, pSPentSpn2Cels, questpentframe, 12);
 	}
 }
 
@@ -777,7 +777,7 @@ void DrawQuestLog()
 		y += 2;
 	}
 	PrintQLString(0, 22, TRUE, "Close Quest Log", 0);
-	ALLQUESTS = (ALLQUESTS & 7) + 1;
+	questpentframe = (questpentframe & 7) + 1;
 }
 
 void StartQuestlog()
@@ -800,7 +800,7 @@ void StartQuestlog()
 	if (numqlines != 0)
 		qline = qtopline;
 	questlog = TRUE;
-	ALLQUESTS = 1;
+	questpentframe = 1;
 }
 
 void QuestlogUp()

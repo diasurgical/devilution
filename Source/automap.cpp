@@ -611,7 +611,7 @@ void DrawAutomapText()
 	}
 	if (setlevel) {
 		PrintGameStr(8, nextline, quest_level_names[(BYTE)setlvlnum], COL_GOLD);
-	} else if (currlevel) {
+	} else if (currlevel != 0) {
 		sprintf(desc, "Level: %i", currlevel);
 		PrintGameStr(8, nextline, desc, COL_GOLD);
 	}

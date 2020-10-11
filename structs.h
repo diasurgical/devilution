@@ -984,7 +984,7 @@ typedef struct QuestStruct {
 	unsigned char _qmsg;
 	unsigned char _qvar1;
 	unsigned char _qvar2;
-	int _qlog;
+	BOOL _qlog;
 } QuestStruct;
 
 typedef struct QuestData {

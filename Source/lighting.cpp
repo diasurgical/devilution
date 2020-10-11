@@ -994,7 +994,7 @@ void ToggleLighting()
 
 	lightflag ^= TRUE;
 
-	if (lightflag != 0) {
+	if (lightflag) {
 		memset(dLight, 0, sizeof(dLight));
 	} else {
 		memcpy(dLight, dPreLight, sizeof(dLight));
@@ -1033,7 +1033,7 @@ int AddLight(int x, int y, int r)
 {
 	int lid;
 
-	if (lightflag != 0) {
+	if (lightflag) {
 		return -1;
 	}
 
@@ -1129,7 +1129,7 @@ void ProcessLightList()
 	int i, j;
 	BYTE temp;
 
-	if (lightflag != 0) {
+	if (lightflag) {
 		return;
 	}
 
