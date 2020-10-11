@@ -6,7 +6,10 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-static void PackItem(PkItemStruct *id, ItemStruct *is)
+#ifndef HELLFIRE
+static
+#endif
+void PackItem(PkItemStruct *id, ItemStruct *is)
 {
 	if (is->_itype == ITYPE_NONE) {
 		id->idx = 0xFFFF;
@@ -103,12 +106,19 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 		pi++;
 	}
 
+#ifdef HELLFIRE
+	pPack->wReflection = pPlayer->wReflection;
+	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
+	pPack->pDifficulty = pPlayer->pDifficulty;
+	pPack->pDamAcFlags = pPlayer->pDamAcFlags;
+#else
 	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
 
 	if (gbMaxPlayers == 1 || manashield)
 		pPack->pManaShield = pPlayer->pManaShield;
 	else
 		pPack->pManaShield = FALSE;
+#endif
 }
 
 /**
@@ -119,7 +129,10 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
  * @param is The source packed item
  * @param id The distination item
  */
-static void UnPackItem(PkItemStruct *is, ItemStruct *id)
+#ifndef HELLFIRE
+static
+#endif
+void UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	if (is->idx == 0xFFFF) {
 		id->_itype = ITYPE_NONE;
@@ -255,7 +268,14 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->pTownWarps = 0;
 	pPlayer->pDungMsgs = 0;
 	pPlayer->pLvlLoad = 0;
+#ifdef HELLFIRE
+	pPlayer->wReflection = pPack->wReflection;
+	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
+	pPlayer->pDifficulty = pPack->pDifficulty;
+	pPlayer->pDamAcFlags = pPack->pDamAcFlags;
+#else
 	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
 	pPlayer->pBattleNet = pPack->pBattleNet;
 	pPlayer->pManaShield = pPack->pManaShield;
+#endif
 }

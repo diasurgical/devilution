@@ -7,8 +7,13 @@
 #define __MONSTDAT_H__
 
 extern MonsterData monsterdata[];
+#ifdef HELLFIRE
+extern int MonstConvTbl[];
+extern int MonstAvailTbl[];
+#else
 extern BYTE MonstConvTbl[];
 extern BYTE MonstAvailTbl[];
+#endif
 extern UniqMonstStruct UniqMonst[];
 
 #endif /* __MONSTDAT_H__ */
