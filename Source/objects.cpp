@@ -2848,7 +2848,7 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	}
 }
 
-void OperateL1Door(int pnum, int i, BOOL sendflag)
+void OperateL1Door(int pnum, int i, DIABOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -3184,7 +3184,7 @@ void OperateInnSignChest(int pnum, int i)
 	}
 }
 
-void OperateSlainHero(int pnum, int i, BOOL sendmsg)
+void OperateSlainHero(int pnum, int i, DIABOOL sendmsg)
 {
 	if (object[i]._oSelFlag != 0) {
 		object[i]._oSelFlag = 0;
@@ -3274,7 +3274,7 @@ void OperateSarc(int pnum, int i, DIABOOL sendmsg)
 	}
 }
 
-void OperateL2Door(int pnum, int i, BOOL sendflag)
+void OperateL2Door(int pnum, int i, DIABOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -3286,7 +3286,7 @@ void OperateL2Door(int pnum, int i, BOOL sendflag)
 		OperateL2RDoor(pnum, i, sendflag);
 }
 
-void OperateL3Door(int pnum, int i, BOOL sendflag)
+void OperateL3Door(int pnum, int i, DIABOOL sendflag)
 {
 	int dpx, dpy;
 
