@@ -654,6 +654,7 @@ void CalcSelfItems(int pnum)
 {
 	int i;
 	PlayerStruct *p;
+	ItemStruct *pi;
 	BOOL sf, changeflag;
 	int sa, ma, da;
 
@@ -662,34 +663,36 @@ void CalcSelfItems(int pnum)
 	sa = 0;
 	ma = 0;
 	da = 0;
-	for (i = 0; i < NUM_INVLOC; i++) {
-		if (p->InvBody[i]._itype != ITYPE_NONE) {
-			p->InvBody[i]._iStatFlag = TRUE;
-			if (p->InvBody[i]._iIdentified) {
-				sa += p->InvBody[i]._iPLStr;
-				ma += p->InvBody[i]._iPLMag;
-				da += p->InvBody[i]._iPLDex;
+	pi = p->InvBody;
+	for (i = 0; i < NUM_INVLOC; i++, pi++) {
+		if (pi->_itype != ITYPE_NONE) {
+			pi->_iStatFlag = TRUE;
+			if (pi->_iIdentified) {
+				sa += pi->_iPLStr;
+				ma += pi->_iPLMag;
+				da += pi->_iPLDex;
 			}
 		}
 	}
 	do {
 		changeflag = FALSE;
-		for (i = 0; i < NUM_INVLOC; i++) {
-			if (p->InvBody[i]._itype != ITYPE_NONE && p->InvBody[i]._iStatFlag) {
+		pi = p->InvBody;
+		for (i = 0; i < NUM_INVLOC; i++, pi++) {
+			if (pi->_itype != ITYPE_NONE && pi->_iStatFlag) {
 				sf = TRUE;
-				if (sa + p->_pBaseStr < p->InvBody[i]._iMinStr)
+				if (sa + p->_pBaseStr < pi->_iMinStr)
 					sf = FALSE;
-				if (ma + p->_pBaseMag < p->InvBody[i]._iMinMag)
+				if (ma + p->_pBaseMag < pi->_iMinMag)
 					sf = FALSE;
-				if (da + p->_pBaseDex < p->InvBody[i]._iMinDex)
+				if (da + p->_pBaseDex < pi->_iMinDex)
 					sf = FALSE;
 				if (!sf) {
 					changeflag = TRUE;
-					p->InvBody[i]._iStatFlag = FALSE;
-					if (p->InvBody[i]._iIdentified) {
-						sa -= p->InvBody[i]._iPLStr;
-						ma -= p->InvBody[i]._iPLMag;
-						da -= p->InvBody[i]._iPLDex;
+					pi->_iStatFlag = FALSE;
+					if (pi->_iIdentified) {
+						sa -= pi->_iPLStr;
+						ma -= pi->_iPLMag;
+						da -= pi->_iPLDex;
 					}
 				}
 			}
