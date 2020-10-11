@@ -1858,6 +1858,7 @@ typedef enum monster_resistance {
 } monster_resistance;
 
 typedef enum missile_resistance {
+	MISR_NONE      = 0,
 	MISR_FIRE      = 1,
 	MISR_LIGHTNING = 2,
 	MISR_MAGIC     = 3,
