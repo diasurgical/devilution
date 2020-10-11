@@ -2891,14 +2891,15 @@ BOOL PlrHitPlr(int pnum, char p)
 			StartPlrBlock(p, dir);
 		} else {
 			mind = plr[pnum]._pIMinDam;
-			maxd = random_(5, plr[pnum]._pIMaxDam - mind + 1);
-			dam = maxd + mind;
-			dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + dam * plr[pnum]._pIBonusDam / 100;
+			maxd = plr[pnum]._pIMaxDam;
+			dam = random_(5, maxd - mind + 1) + mind;
+			dam += (dam * plr[pnum]._pIBonusDam) / 100;
+			dam += plr[pnum]._pIBonusDamMod + plr[pnum]._pDamageMod;
 
 			if (plr[pnum]._pClass == PC_WARRIOR) {
 				lvl = plr[pnum]._pLevel;
 				if (random_(6, 100) < lvl) {
-					dam *= 2;
+					dam <<= 1;
 				}
 			}
 			skdam = dam << 6;
