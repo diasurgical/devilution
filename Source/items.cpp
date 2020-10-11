@@ -2476,11 +2476,11 @@ int RndItem(int m)
 		return 0;
 
 	if (random_(24, 100) > 25)
-		return 1;
+		return IDI_GOLD + 1;
 
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
-		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
+		if (AllItemsList[i].iRnd == IDROP_DOUBLE && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
 		}
@@ -4665,9 +4665,10 @@ int RndSmithItem(int lvl)
 			ril[ri] = i;
 			ri++;
 #ifdef HELLFIRE
-			if (AllItemsList[i].iRnd == 2 && ri < 512) {
+			if (AllItemsList[i].iRnd == IDROP_DOUBLE && ri < 512) {
 #else
-			if (AllItemsList[i].iRnd == 2) {
+			if (AllItemsList[i].iRnd == IDROP_DOUBLE)
+				{
 #endif
 				ril[ri] = i;
 				ri++;
