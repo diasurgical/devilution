@@ -4105,18 +4105,18 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, BOOL sendmsg)
 		return;
 	}
 
-	object[i]._oBreak = -1;
 	object[i]._oVar1 = 0;
 	object[i]._oAnimFlag = 1;
 	object[i]._oAnimFrame = 1;
 	object[i]._oAnimDelay = 1;
 	object[i]._oSolidFlag = FALSE;
 	object[i]._oMissFlag = TRUE;
+	object[i]._oBreak = -1;
 	object[i]._oSelFlag = 0;
 	object[i]._oPreFlag = TRUE;
 	if (deltaload) {
-		object[i]._oAnimCnt = 0;
 		object[i]._oAnimFrame = object[i]._oAnimLen;
+		object[i]._oAnimCnt = 0;
 		object[i]._oAnimDelay = 1000;
 		return;
 	}
