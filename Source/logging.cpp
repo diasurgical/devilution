@@ -121,6 +121,16 @@ void log_get_version(VS_FIXEDFILEINFO *file_info)
 
 void __cdecl log_printf(const char *pszFmt, ...)
 {
+#ifdef HELLFIRE
+	CHAR Buffer[1024];
+	DWORD NumberOfBytesWritten, nNumberOfBytesToWrite;
+	va_list va;
+
+	va_start(va, pszFmt);
+	nNumberOfBytesToWrite = wvsprintf(Buffer, va_arg(va, const CHAR *), va);
+	WriteFile((HANDLE)pszFmt, Buffer, nNumberOfBytesToWrite, &NumberOfBytesWritten, 0);
+	va_end(va);
+#else
 	size_t size;
 	char *pBuffer;
 	char msg[512];
@@ -147,6 +157,7 @@ void __cdecl log_printf(const char *pszFmt, ...)
 		nNumberOfBytesToWrite += size;
 	}
 	sgMemCrit.Leave();
+#endif
 }
 
 void log_dump_computer_info()

@@ -77,10 +77,12 @@ BOOL __stdcall mainmenu_select_hero_dialog(
 
 	pfile_create_player_description(cdesc, cdlen);
 	if (multi) {
+#ifndef HELLFIRE
 		if (mode == 'BNET')
 			*multi = hero_is_created || !plr[myplr].pBattleNet;
 		else
 			*multi = hero_is_created;
+#endif
 	}
 	if (cname && clen)
 		SStrCopy(cname, gszHero, clen);

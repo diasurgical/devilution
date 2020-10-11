@@ -654,7 +654,7 @@ void ErrDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line_n
 		log_file_path = size + 1;
 
 	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, FuncDlg, (LPARAM)dwInitParam) == -1)
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1)
 		app_fatal("ErrDlg: %d", dialog_id);
 
 	app_fatal(NULL);
@@ -684,7 +684,7 @@ void ErrOkDlg(int dialog_id, DWORD error_code, char *log_file_path, int log_line
 		log_file_path = size + 1;
 
 	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
-	DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, FuncDlg, (LPARAM)dwInitParam);
+	DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
 /**
@@ -697,7 +697,7 @@ void FileErrDlg(const char *error)
 	if (!error)
 		error = "";
 
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, FuncDlg, (LPARAM)error) == -1)
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
 		app_fatal("FileErrDlg");
 
 	app_fatal(NULL);
@@ -710,7 +710,7 @@ void DiskFreeDlg(char *error)
 {
 	FreeDlg();
 
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, FuncDlg, (LPARAM)error) == -1)
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
 		app_fatal("DiskFreeDlg");
 
 	app_fatal(NULL);
@@ -725,7 +725,7 @@ BOOL InsertCDDlg()
 
 	ShowCursor(TRUE);
 
-	nResult = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, FuncDlg, (LPARAM) "");
+	nResult = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM) "");
 	if (nResult == -1)
 		app_fatal("InsertCDDlg");
 
@@ -741,7 +741,7 @@ void DirErrorDlg(char *error)
 {
 	FreeDlg();
 
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, FuncDlg, (LPARAM)error) == -1)
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
 		app_fatal("DirErrorDlg");
 
 	app_fatal(NULL);

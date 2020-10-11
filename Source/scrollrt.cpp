@@ -29,6 +29,9 @@ DWORD sgdwCursHgt;
 DWORD level_cel_block;
 DWORD sgdwCursXOld;
 DWORD sgdwCursYOld;
+#ifdef HELLFIRE
+BOOLEAN AutoMapShowItems;
+#endif
 /**
  * Specifies the type of arches to render.
  */
@@ -200,12 +203,25 @@ static void scrollrt_draw_cursor_item()
 		if (!plr[myplr].HoldItem._iStatFlag) {
 			col = PAL16_RED + 5;
 		}
-		CelBlitOutlineSafe(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
-		if (col != PAL16_RED + 5) {
-			CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
+#ifdef HELLFIRE
+		if (pcurs <= 179) {
+#endif
+			CelBlitOutlineSafe(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
+			if (col != PAL16_RED + 5) {
+				CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
+			} else {
+				CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8, 1);
+			}
+#ifdef HELLFIRE
 		} else {
-			CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8, 1);
+			CelBlitOutlineSafe(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels2, pcurs - 179, cursW, 0, 8);
+			if (col != PAL16_RED + 5) {
+				CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels2, pcurs - 179, cursW, 0, 8);
+			} else {
+				CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels2, pcurs - 179, cursW, 0, 8, 1);
+			}
 		}
+#endif
 	} else {
 		CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
 	}
@@ -233,6 +249,10 @@ void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre
 			/// ASSERT: assert(missileactive[i] < MAXMISSILES);
 			if (missileactive[i] >= MAXMISSILES)
 				break;
+#ifdef HELLFIRE
+			if (missileactive[i] < 0)
+				break;
+#endif
 			m = &missile[missileactive[i]];
 			if (m->_mix == x && m->_miy == y && m->_miPreFlag == pre && m->_miDrawFlag) {
 				pCelBuff = m->_miAnimData;
@@ -258,7 +278,11 @@ void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre
 		}
 	} else {
 		m = &missile[dMissile[x][y] - 1];
+#ifdef HELLFIRE
+		if (m->_miPreFlag == pre) {
+#else
 		if (m->_miPreFlag == pre && m->_miDrawFlag) {
+#endif
 			pCelBuff = m->_miAnimData;
 			if (!pCelBuff) {
 				// app_fatal("Draw Missile 2 type %d: NULL Cel Buffer", m->_mitype);
@@ -304,6 +328,10 @@ void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, B
 			/// ASSERT: assert(missileactive[i] < MAXMISSILES);
 			if (missileactive[i] >= MAXMISSILES)
 				break;
+#ifdef HELLFIRE
+			if (missileactive[i] < 0)
+				break;
+#endif
 			m = &missile[missileactive[i]];
 			if (m->_mix == x && m->_miy == y && m->_miPreFlag == pre && m->_miDrawFlag) {
 				pCelBuff = m->_miAnimData;
@@ -329,7 +357,11 @@ void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, B
 		}
 	} else {
 		m = &missile[dMissile[x][y] - 1];
+#ifdef HELLFIRE
+		if (m->_miPreFlag == pre) {
+#else
 		if (m->_miPreFlag == pre && m->_miDrawFlag) {
+#endif
 			pCelBuff = m->_miAnimData;
 			if (!pCelBuff) {
 				// app_fatal("Draw Missile 2 type %d Clipped: NULL Cel Buffer", m->_mitype);
@@ -521,6 +553,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 			Cl2DrawOutline(165, px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
 		if (pnum == myplr) {
 			Cl2Draw(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2Draw(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -530,8 +563,10 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 		} else if (!(dFlags[x][y] & BFLAG_LIT) || plr[myplr]._pInfraFlag && light_table_index > 8) {
 			Cl2DrawLightTbl(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap, 1);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DrawLightTbl(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -542,6 +577,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    CelSkip,
 				    CelCap,
 				    1);
+#endif
 		} else {
 			l = light_table_index;
 			if (light_table_index < 5)
@@ -549,6 +585,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 			else
 				light_table_index -= 5;
 			Cl2DrawLight(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DrawLight(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -558,6 +595,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 			light_table_index = l;
 		}
 	}
@@ -607,6 +645,7 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 			Cl2DrawOutlineSafe(165, px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
 		if (pnum == myplr) {
 			Cl2DrawSafe(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DrawSafe(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -616,8 +655,10 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 		} else if (!(dFlags[x][y] & BFLAG_LIT) || plr[myplr]._pInfraFlag && light_table_index > 8) {
 			Cl2DrawLightTblSafe(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap, 1);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DrawLightTblSafe(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -628,6 +669,7 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 				    CelSkip,
 				    CelCap,
 				    1);
+#endif
 		} else {
 			l = light_table_index;
 			if (light_table_index < 5)
@@ -635,6 +677,7 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 			else
 				light_table_index -= 5;
 			Cl2DrawLightSafe(px, py, pCelBuff, nCel, nWidth, CelSkip, CelCap);
+#ifndef HELLFIRE
 			if (plr[pnum].pManaShield)
 				Cl2DrawLightSafe(
 				    px + plr[pnum]._pAnimWidth2 - misfiledata[MFILE_MANASHLD].mAnimWidth2[0],
@@ -644,6 +687,7 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
 				    misfiledata[MFILE_MANASHLD].mAnimWidth[0],
 				    CelSkip,
 				    CelCap);
+#endif
 			light_table_index = l;
 		}
 	}
@@ -731,8 +775,15 @@ static void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
 	}
 
 	/// ASSERT: assert((unsigned char)bv < MAXOBJECTS);
+#ifdef HELLFIRE
+	if (bv >= MAXOBJECTS)
+		return;
+	if (bv < 0)
+		return;
+#else
 	if ((BYTE)bv >= MAXOBJECTS)
 		return;
+#endif
 
 	pCelBuff = object[bv]._oAnimData;
 	if (!pCelBuff) {
@@ -794,7 +845,11 @@ static void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSki
 	}
 
 	/// ASSERT: assert((unsigned char)bv < MAXOBJECTS);
+#ifdef HELLFIRE
+	if (bv >= MAXOBJECTS)
+#else
 	if ((BYTE)bv >= MAXOBJECTS)
+#endif
 		return;
 
 	pCelBuff = object[bv]._oAnimData;
@@ -2153,7 +2208,9 @@ static void DrawGame(int x, int y)
 		sy -= TILE_HEIGHT;
 		x--;
 		y--;
+#ifndef HELLFIRE
 		blocks++;
+#endif
 		break;
 	case SDIR_SE:
 		blocks++;

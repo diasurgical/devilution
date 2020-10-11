@@ -21,32 +21,52 @@ VC6_LIB_DIR = $(VC6_DIR)/Lib
 VC5_DIR ?= $(HOME)/DevStudio_5.10/VC
 
 VC5_BIN_DIR = $(VC5_DIR)/bin
+VC5_INC_DIR = $(VC5_DIR)/include
 VC5_LIB_DIR = $(VC5_DIR)/lib
 
 IDE_DIR ?= $(VS6_DIR)/Common/MSDev98
 IDE_BIN_DIR = $(IDE_DIR)/bin
 ifeq ($(OS),Windows_NT)
-	CL = $(VC6_BIN_DIR)/CL.EXE
+	CL5 = $(VC5_BIN_DIR)/CL.EXE
+	CL6 = $(VC6_BIN_DIR)/CL.EXE
 	RC = $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = $(VC5_BIN_DIR)/link.exe
 	VC6_LINK = $(VC6_BIN_DIR)/link.exe
 else
-	CL = wine $(VC6_BIN_DIR)/CL.EXE
+	CL5 = wine $(VC5_BIN_DIR)/CL.EXE
+	CL6 = wine $(VC6_BIN_DIR)/CL.EXE
 	RC = wine $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = wine $(VC5_BIN_DIR)/link.exe
 	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
+ifeq ($(HELLFIRE),1)
+	CL = $(CL5)
+	VC_INC_DIR = $(VC5_INC_DIR)
+else
+	CL = $(CL6)
+	VC_INC_DIR = $(VC6_INC_DIR)
+endif
+
+CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
+
+ifeq ($(HELLFIRE),1)
+	CFLAGS += /D "HELLFIRE"
+endif
 
 ifeq ($(SPAWN),1)
 	CFLAGS += /D "SPAWN"
 endif
 
 ifeq ($(MAKE_BUILD),pdb)
+ifeq ($(HELLFIRE),1)
+	VC_LINK = $(VC5_LINK)
+	LINKFLAGS += /pdb:"hellfire.pdb" /LIBPATH:$(VC5_LIB_DIR) /debug
+else
 	VC_LINK = $(VC6_LINK)
 	LINKFLAGS += /pdb:"Diablo.pdb" /LIBPATH:$(VC6_LIB_DIR) /debug
+endif
 else
 	VC_LINK = $(VC5_LINK)
 	LINKFLAGS += /LIBPATH:$(VC5_LIB_DIR)
@@ -82,10 +102,10 @@ main_files:
 	$(CL) $(CFLAGS) /Fo$@ $<
 
 diablo.res: Diablo.rc
-	$(RC) /i $(VC6_INC_DIR) /l 0x409 /fo $@ $<
+	$(RC) /i $(VC_INC_DIR) /l 0x409 /fo $@ $<
 
 clean:
-	@$(RM) -v $(OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch
+	@$(RM) -v $(OBJS) vc60.idb vc60.pdb Diablo.pdb Diablo.pch vc50.idb vc50.pdb hellfire.pdb
 	make -C DiabloUI clean
 	make -C 3rdParty/Storm clean
 	make -C 3rdParty/PKWare clean
