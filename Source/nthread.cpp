@@ -89,7 +89,11 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 		return TRUE;
 	}
 	if (!SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, gdwMsgLenTbl, (LPDWORD)player_state)) {
+#ifdef HELLFIRE
+		if (GetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
+#else
 		if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
+#endif
 			nthread_terminate_game("SNetReceiveTurns");
 		sgbTicsOutOfSync = FALSE;
 		sgbSyncCountdown = 1;
