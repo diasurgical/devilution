@@ -936,6 +936,14 @@ typedef struct TSyncHeader {
 	WORD wPInvCI;
 	DWORD dwPInvSeed;
 	BYTE bPInvId;
+#ifdef HELLFIRE
+	WORD wToHit;
+	WORD wMaxDam;
+	BYTE bMinStr;
+	BYTE bMinMag;
+	BYTE bMinDex;
+	BYTE bAC;
+#endif
 } TSyncHeader;
 
 typedef struct TSyncMonster {
