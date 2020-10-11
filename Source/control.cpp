@@ -160,7 +160,11 @@ const BYTE gbFontTransTbl[256] = {
 
 /** Maps from spell_id to spelicon.cel frame number. */
 char SpellITbl[MAX_SPELLS] = {
+#ifdef HELLFIRE
+	27,
+#else
 	1,
+#endif
 	1,
 	2,
 	3,
@@ -197,6 +201,23 @@ char SpellITbl[MAX_SPELLS] = {
 	10,
 	36,
 	30,
+#ifdef HELLFIRE
+	51,
+	51,
+	50,
+	46,
+	47,
+	43,
+	45,
+	48,
+	49,
+	44,
+	35,
+	35,
+	35,
+	35,
+	35,
+#endif
 };
 /** Maps from panel_button_id to the position and dimensions of a panel button. */
 int PanBtnPos[8][5] = {
@@ -238,13 +259,21 @@ int SpellPages[6][7] = {
 	{ SPL_RESURRECT, SPL_FIREWALL, SPL_TELEKINESIS, SPL_LIGHTNING, SPL_TOWN, SPL_FLASH, SPL_STONE },
 	{ SPL_RNDTELEPORT, SPL_MANASHIELD, SPL_ELEMENT, SPL_FIREBALL, SPL_WAVE, SPL_CHAIN, SPL_GUARDIAN },
 	{ SPL_NOVA, SPL_GOLEM, SPL_TELEPORT, SPL_APOCA, SPL_BONESPIRIT, SPL_FLARE, SPL_ETHEREALIZE },
+#ifndef HELLFIRE
 	{ -1, -1, -1, -1, -1, -1, -1 },
+#else
+	{ SPL_LIGHTWALL, SPL_IMMOLAT, SPL_WARP, SPL_REFLECT, SPL_BERSERK, SPL_FIRERING, SPL_SEARCH },
+#endif
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
 #define SPLICONLENGTH 56
 #define SPLROWICONLS 10
+#ifdef HELLFIRE
+#define SPLICONLAST 52
+#else
 #define SPLICONLAST 43
+#endif
 
 /**
  * Draw spell cell onto the back buffer.
@@ -460,9 +489,9 @@ void DrawSpell()
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
 	if (spl != SPL_INVALID)
-		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, SpellITbl[spl], SPLICONLENGTH);
+		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, SpellITbl[spl], 56);
 	else
-		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, 27, SPLICONLENGTH);
+		DrawSpellCel(PANEL_X + 565, PANEL_Y + 119, pSpellCels, 27, 56);
 }
 
 void DrawSpellList()
@@ -518,6 +547,10 @@ void DrawSpellList()
 			if (MouseX >= lx && MouseX < lx + SPLICONLENGTH && MouseY >= ly && MouseY < ly + SPLICONLENGTH) {
 				pSpell = j;
 				pSplType = i;
+#ifdef HELLFIRE
+				if (plr[myplr]._pClass == PC_MONK && j == SPL_SEARCH)
+					i = RSPLTYPE_SKILL;
+#endif
 				DrawSpellCel(x, y, pSpellCels, c, SPLICONLENGTH);
 				switch (i) {
 				case RSPLTYPE_SKILL:
@@ -1139,11 +1172,22 @@ void DrawLifeFlask()
 	double p;
 	int filled;
 
+#ifdef HELLFIRE
+	if (plr[myplr]._pMaxHP <= 0) {
+		p = 0.0;
+	} else {
+		p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	}
+#else
 	p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+#endif
 	plr[myplr]._pHPPer = p;
 	filled = plr[myplr]._pHPPer;
+
+#ifndef HELLFIRE
 	if (filled > 80)
 		filled = 80;
+#endif
 	filled = 80 - filled;
 	if (filled > 11)
 		filled = 11;
@@ -1163,14 +1207,25 @@ void UpdateLifeFlask()
 {
 	double p;
 	int filled;
+
+#ifdef HELLFIRE
+	if (plr[myplr]._pMaxHP <= 0) {
+		p = 0.0;
+	} else {
+		p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	}
+#else
 	p = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+#endif
 	filled = p;
 	plr[myplr]._pHPPer = filled;
 
 	if (filled > 69)
 		filled = 69;
+#ifndef HELLFIRE
 	else if (filled < 0)
 		filled = 0;
+#endif
 	if (filled != 69)
 		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 96 + PANEL_X, PANEL_Y);
 	if (filled != 0)
@@ -1180,8 +1235,10 @@ void UpdateLifeFlask()
 void DrawManaFlask()
 {
 	int filled = plr[myplr]._pManaPer;
+#ifndef HELLFIRE
 	if (filled > 80)
 		filled = 80;
+#endif
 	filled = 80 - filled;
 	if (filled > 11)
 		filled = 11;
@@ -1257,7 +1314,11 @@ void InitControlPan()
 	memset(pLifeBuff, 0, 88 * 88);
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", NULL);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", NULL);
+#ifndef HELLFIRE
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", NULL);
+#else
+	pSpellCels = LoadFileInMem("Data\\SpelIcon.CEL", NULL);
+#endif
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", NULL);
 	CelBlitWidth(pBtmBuff, 0, (PANEL_HEIGHT + 16) - 1, PANEL_WIDTH, pStatusPanel, 1, PANEL_WIDTH);
@@ -1313,6 +1374,14 @@ void InitControlPan()
 		SpellPages[0][0] = SPL_DISARM;
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		SpellPages[0][0] = SPL_RECHARGE;
+#endif
+#ifdef HELLFIRE
+	} else if (plr[myplr]._pClass == PC_MONK) {
+		SpellPages[0][0] = SPL_SEARCH;
+	} else if (plr[myplr]._pClass == PC_BARD) {
+		SpellPages[0][0] = SPL_IDENTIFY;
+	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+		SpellPages[0][0] = SPL_BLODBOIL;
 #endif
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", NULL);
@@ -1745,7 +1814,11 @@ void DrawInfoBox()
 			infoclr = COL_GOLD;
 			strcpy(infostr, plr[pcursplr]._pName);
 			ClearPanel();
+#ifdef HELLFIRE
+			sprintf(tempstr, "%s, Level : %i", ClassStrTbl[plr[pcursplr]._pClass], plr[pcursplr]._pLevel);
+#else
 			sprintf(tempstr, "Level : %i", plr[pcursplr]._pLevel);
+#endif
 			AddPanelString(tempstr, TRUE);
 			sprintf(tempstr, "Hit Points %i of %i", plr[pcursplr]._pHitPoints >> 6, plr[pcursplr]._pMaxHP >> 6);
 			AddPanelString(tempstr, TRUE);
@@ -2345,11 +2418,19 @@ char GetSBookTrans(int ii, BOOL townok)
 {
 	char st;
 
+#ifdef HELLFIRE
+	if ((plr[myplr]._pClass == PC_MONK) && (ii == SPL_SEARCH))
+		return RSPLTYPE_SKILL;
+#endif
 	st = RSPLTYPE_SPELL;
 	if (plr[myplr]._pISpells & (__int64)1 << (ii - 1)) {
 		st = RSPLTYPE_CHARGES;
 	}
+#ifdef HELLFIRE
+	if (plr[myplr]._pAblSpells & (__int64)1 << (ii - 1)) {
+#else
 	if (plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64)
+#endif
 		st = RSPLTYPE_SKILL;
 	}
 	if (st == RSPLTYPE_SPELL) {
@@ -2374,7 +2455,12 @@ void DrawSpellBook()
 	unsigned __int64 spl;
 
 	CelDraw(RIGHT_PANEL_X, 351 + SCREEN_Y, pSpellBkCel, 1, 320);
+#ifdef HELLFIRE
+	if (sbooktab < 5)
+		CelDraw(RIGHT_PANEL_X + 61 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 61);
+#else
 	CelDraw(RIGHT_PANEL_X + 76 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 76);
+#endif
 
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 
@@ -2479,9 +2565,15 @@ void CheckSBook()
 			force_redraw = 255;
 		}
 	}
+#ifdef HELLFIRE
+	if (MouseX >= RIGHT_PANEL + 7 && MouseX < RIGHT_PANEL + 312 && MouseY >= 320 && MouseY < 349) {
+		sbooktab = (MouseX - (RIGHT_PANEL + 7)) / 61;
+	}
+#else
 	if (MouseX >= RIGHT_PANEL + 7 && MouseX < RIGHT_PANEL + 313 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 313` to `< 311`
 		sbooktab = (MouseX - (RIGHT_PANEL + 7)) / 76;
 	}
+#endif
 }
 
 char *get_pieces_str(int nGold)
@@ -2728,6 +2820,7 @@ void control_release_talk_btn()
 	}
 }
 
+#ifndef HELLFIRE
 void control_reset_talk_msg(char *msg)
 {
 	int i, pmask;
@@ -2741,6 +2834,7 @@ void control_reset_talk_msg(char *msg)
 	if (!msgcmd_add_server_cmd_W(sgszTalkMsg))
 		NetSendCmdString(pmask, sgszTalkMsg);
 }
+#endif
 
 void control_type_message()
 {
@@ -2828,7 +2922,18 @@ void control_press_enter()
 	BYTE talk_save;
 
 	if (sgszTalkMsg[0] != 0) {
+#ifdef HELLFIRE
+		int pmask;
+		pmask = 0;
+
+		for (i = 0; i < MAX_PLRS; i++) {
+			if (whisper[i])
+				pmask |= 1 << i;
+		}
+		NetSendCmdString(pmask, sgszTalkMsg);
+#else
 		control_reset_talk_msg(sgszTalkMsg);
+#endif
 		for (i = 0; i < 8; i++) {
 			if (!strcmp(sgszTalkSave[i], sgszTalkMsg))
 				break;

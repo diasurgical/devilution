@@ -16,6 +16,9 @@ extern int cel_transparency_active;
 extern int level_piece_id;
 extern void (*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
 extern int draw_monster_num;
+#ifdef HELLFIRE
+extern BOOLEAN AutoMapShowItems;
+#endif
 
 void ClearCursor();
 void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre);

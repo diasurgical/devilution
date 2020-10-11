@@ -20,7 +20,7 @@ extern int numobjfiles;
 
 void InitObjectGFX();
 void FreeObjectGFX();
-BOOL RndLocOk(int xp, int yp);
+DIABOOL RndLocOk(int xp, int yp);
 void InitRndLocObj(int min, int max, int objtype);
 void InitRndLocBigObj(int min, int max, int objtype);
 void InitRndLocObj5x5(int min, int max, int objtype);
@@ -30,16 +30,23 @@ void AddCandles();
 void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, int y2, int msg);
 void InitRndBarrels();
 void AddL1Objs(int x1, int y1, int x2, int y2);
+#ifdef HELLFIRE
+void add_crypt_objs(int x1, int y1, int x2, int y2);
+#endif
 void AddL2Objs(int x1, int y1, int x2, int y2);
 void AddL3Objs(int x1, int y1, int x2, int y2);
-BOOL WallTrapLocOk(int xp, int yp);
+DIABOOL WallTrapLocOk(int xp, int yp);
 void AddL2Torches();
-BOOL TorchLocOK(int xp, int yp);
+DIABOOL TorchLocOK(int xp, int yp);
 void AddObjTraps();
 void AddChestTraps();
 void LoadMapObjects(BYTE *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx);
 void LoadMapObjs(BYTE *pMap, int startx, int starty);
 void AddDiabObjs();
+#ifdef HELLFIRE
+void objects_add_lv22(int s);
+void objects_add_lv24();
+#endif
 void AddStoryBooks();
 void AddHookedBodies(int freq);
 void AddL4Goodies();
@@ -82,6 +89,11 @@ void AddTorturedBody(int i);
 void GetRndObjLoc(int randarea, int &xx, int &yy);
 void AddMushPatch();
 void AddSlainHero();
+#ifdef HELLFIRE
+void objects_44D8C5(int ot, int v2, int ox, int oy);
+void objects_44DA68(int a1, int a2);
+void objects_454AF0(int a1, int a2, int a3);
+#endif
 void AddObject(int ot, int ox, int oy);
 void Obj_Light(int i, int lr);
 void Obj_Circle(int i);
@@ -126,7 +138,7 @@ void OperatePedistal(int pnum, int i);
 void TryDisarm(int pnum, int i);
 int ItemMiscIdIdx(int imiscid);
 void OperateShrine(int pnum, int i, int sType);
-void OperateSkelBook(int pnum, int i,DIABOOL sendmsg);
+void OperateSkelBook(int pnum, int i, DIABOOL sendmsg);
 void OperateBookCase(int pnum, int i, DIABOOL sendmsg);
 void OperateDecap(int pnum, int i, DIABOOL sendmsg);
 void OperateArmorStand(int pnum, int i, DIABOOL sendmsg);
@@ -155,6 +167,12 @@ void SyncL2Doors(int i);
 void SyncL3Doors(int i);
 void SyncObjectAnim(int o);
 void GetObjectStr(int i);
+#ifdef HELLFIRE
+void operate_lv24_lever();
+void objects_454BA8();
+void objects_rnd_454BEA();
+DIABOOL objects_lv_24_454B04(int s);
+#endif
 
 /* rdata */
 
