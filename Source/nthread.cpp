@@ -30,7 +30,11 @@ void nthread_terminate_game(const char *pszFcn)
 {
 	DWORD sErr;
 
+#ifdef HELLFIRE
+	sErr = GetLastError();
+#else
 	sErr = SErrGetLastError();
+#endif
 	if (sErr == STORM_ERROR_INVALID_PLAYER) {
 		return;
 	} else if (sErr == STORM_ERROR_GAME_TERMINATED) {
