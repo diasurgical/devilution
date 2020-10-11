@@ -2862,7 +2862,7 @@ int ItemMiscIdIdx(int imiscid)
 	int i;
 
 	i = 0;
-	while (AllItemsList[i].iRnd == 0 || AllItemsList[i].iMiscId != imiscid) {
+	while (AllItemsList[i].iRnd == IDROP_NEVER || AllItemsList[i].iMiscId != imiscid) {
 		i++;
 	}
 

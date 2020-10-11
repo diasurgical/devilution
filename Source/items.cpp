@@ -1834,11 +1834,11 @@ int RndItem(int m)
 		return 0;
 
 	if (random_(24, 100) > 25)
-		return 1;
+		return IDI_GOLD + 1;
 
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
-		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
+		if (AllItemsList[i].iRnd == IDROP_DOUBLE && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
 		}
@@ -3367,7 +3367,7 @@ int RndSmithItem(int lvl)
 		if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
-			if (AllItemsList[i].iRnd == 2) {
+			if (AllItemsList[i].iRnd == IDROP_DOUBLE) {
 				ril[ri] = i;
 				ri++;
 			}
