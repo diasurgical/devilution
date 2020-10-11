@@ -35,6 +35,10 @@ char *sgszMusicTracks[NUM_MUSIC] = {
 	"Music\\sLvlA.wav",
 	"Music\\sLvlA.wav",
 	"Music\\sLvlA.wav",
+#ifdef HELLFIRE
+	"Music\\sLvlA.wav",
+	"Music\\sLvlA.wav",
+#endif
 	"Music\\sintro.wav",
 #else
 	"Music\\DTowne.wav",
@@ -42,6 +46,10 @@ char *sgszMusicTracks[NUM_MUSIC] = {
 	"Music\\DLvlB.wav",
 	"Music\\DLvlC.wav",
 	"Music\\DLvlD.wav",
+#ifdef HELLFIRE
+	"Music\\DLvlE.wav",
+	"Music\\DLvlF.wav",
+#endif
 	"Music\\Dintro.wav",
 #endif
 };

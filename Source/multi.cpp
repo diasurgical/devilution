@@ -119,7 +119,7 @@ void multi_send_packet(void *packet, BYTE dwSize)
 	TPkt pkt;
 
 	NetRecvPlrData(&pkt);
-	pkt.hdr.wLen = dwSize + 19;
+	pkt.hdr.wLen = dwSize + sizeof(pkt.hdr);
 	memcpy(pkt.body, packet, dwSize);
 	if (!SNetSendMessage(myplr, &pkt.hdr, pkt.hdr.wLen))
 		nthread_terminate_game("SNetSendMessage0");
@@ -197,7 +197,7 @@ void multi_send_msg_packet(int pmask, BYTE *src, BYTE len)
 	TPkt pkt;
 
 	NetRecvPlrData(&pkt);
-	t = len + 19;
+	t = len + sizeof(pkt.hdr);
 	pkt.hdr.wLen = t;
 	memcpy(pkt.body, src, len);
 	for (v = 1, p = 0; p < MAX_PLRS; p++, v <<= 1) {
@@ -622,7 +622,9 @@ void NetClose()
 	tmsg_cleanup();
 	multi_event_handler(FALSE);
 	SNetLeaveGame(3);
+#ifndef HELLFIRE
 	msgcmd_cmd_cleanup();
+#endif
 	if (gbMaxPlayers > 1)
 		Sleep(2000);
 }
@@ -810,7 +812,18 @@ int InitLevelType(int l)
 	if (l >= 9 && l <= 12)
 		return DTYPE_CAVES;
 
+#ifdef HELLFIRE
+	if (l >= 13 && l <= 16)
+		return DTYPE_HELL;
+	if (l >= 21 && l <= 24)
+		return DTYPE_CATHEDRAL; // Crypt
+	if (l >= 17 && l <= 20)
+		return DTYPE_CAVES; // Hive
+
+	return DTYPE_CATHEDRAL;
+#else
 	return DTYPE_HELL;
+#endif
 }
 
 void SetupLocalCoords()
@@ -878,8 +891,10 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 			    && (!first || SErrGetLastError() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(pfExitProgram))) {
 				return FALSE;
 			}
+#ifndef HELLFIRE
 			if (type == 'BNET')
 				plr[0].pBattleNet = 1;
+#endif
 		}
 
 		multi_event_handler(TRUE);
@@ -897,8 +912,10 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 
 		pfile_read_player_from_save();
 
+#ifndef HELLFIRE
 		if (type == 'BNET')
 			plr[myplr].pBattleNet = 1;
+#endif
 
 		return TRUE;
 	}
