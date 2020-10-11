@@ -3029,11 +3029,13 @@ void CheckNewPath(int pnum)
 	}
 
 	if (plr[pnum].destAction == ACTION_ATTACKMON) {
-		MakePlrPath(pnum, monster[plr[pnum].destParam1]._mfutx, monster[plr[pnum].destParam1]._mfuty, FALSE);
+		i = plr[pnum].destParam1;
+		MakePlrPath(pnum, monster[i]._mfutx, monster[i]._mfuty, FALSE);
 	}
 
 	if (plr[pnum].destAction == ACTION_ATTACKPLR) {
-		MakePlrPath(pnum, plr[plr[pnum].destParam1]._pfutx, plr[plr[pnum].destParam1]._pfuty, FALSE);
+		i = plr[pnum].destParam1;
+		MakePlrPath(pnum, plr[i]._pfutx, plr[i]._pfuty, FALSE);
 	}
 
 	if (plr[pnum].walkpath[0] != WALK_NONE) {
