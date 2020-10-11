@@ -115,7 +115,7 @@ void RedoPlayerVision();
 void OperateL1RDoor(int pnum, int oi, DIABOOL sendflag);
 void OperateL1LDoor(int pnum, int oi, DIABOOL sendflag);
 void OperateL2RDoor(int pnum, int oi, DIABOOL sendflag);
-void OperateL2LDoor(int pnum, int oi, BOOL sendflag); // BUGFIX (?) - out of all door functions, only this one is BOOL in hellfire, apparently for no reason
+void OperateL2LDoor(int pnum, int oi, BOOL sendflag);
 void OperateL3RDoor(int pnum, int oi, DIABOOL sendflag);
 void OperateL3LDoor(int pnum, int oi, DIABOOL sendflag);
 void MonstCheckDoors(int m);
