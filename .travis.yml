@@ -79,3 +79,25 @@ jobs:
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../spawn-status.sh
           .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Spawn 1.09b"
+    - stage: Riivaaja
+      name: "Hellfire 1.01: Calculate binary accuracy"
+      language: minimal
+      sudo: required
+      services:
+        - docker
+      addons: {}
+      script:
+        - |
+          set -e
+          wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          mv comparer-config/hellfire.toml comparer-config.toml
+          echo '#!/bin/sh' | sudo tee /bin/wine
+          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
+          sudo chmod +x /bin/wine
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e HELLFIRE=1 diasurgical/riivaaja:stable
+          dd if=/dev/zero bs=1 count=3072 of=hellfire.exe
+          dd if=Diablo.exe >> hellfire.exe
+          ./devilution-comparer generate-full hellfire.exe --no-mem-disp --truncate-to-original
+          docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../hellfire-status.sh
+          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Hellfire 1.01"
