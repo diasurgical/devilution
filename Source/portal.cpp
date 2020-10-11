@@ -129,7 +129,7 @@ void SetCurrentPortal(int p)
 
 void GetPortalLevel()
 {
-	if (currlevel) {
+	if (currlevel != 0) {
 		setlevel = FALSE;
 		currlevel = 0;
 		plr[myplr].plrlevel = 0;

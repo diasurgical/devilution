@@ -717,7 +717,7 @@ void DrawAutomapText()
 	}
 	if (setlevel) {
 		PrintGameStr(8, nextline, quest_level_names[(BYTE)setlvlnum], COL_GOLD);
-	} else if (currlevel) {
+	} else if (currlevel != 0) {
 #ifdef HELLFIRE
 		if (currlevel < 17 || currlevel > 20) {
 			if (currlevel < 21 || currlevel > 24)

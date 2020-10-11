@@ -513,7 +513,7 @@ void PrintStoreItem(ItemStruct *x, int l, char iclr)
 	str = x->_iMinStr;
 	dex = x->_iMinDex;
 	mag = x->_iMinMag;
-	if (!(str + mag + dex)) {
+	if ((str + mag + dex) == 0) {
 		strcat(sstr, "No required attributes");
 	} else {
 		strcpy(tempstr, "Required:");
@@ -707,7 +707,7 @@ void S_StartSSell()
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
 
-			if (!(storehold[storenumh]._ivalue >>= 2))
+			if ((storehold[storenumh]._ivalue >>= 2) == 0)
 				storehold[storenumh]._ivalue = 1;
 
 			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
@@ -979,7 +979,7 @@ void S_StartWSell()
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
 
-			if (!(storehold[storenumh]._ivalue >>= 2))
+			if ((storehold[storenumh]._ivalue >>= 2) == 0)
 				storehold[storenumh]._ivalue = 1;
 
 			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
@@ -999,7 +999,7 @@ void S_StartWSell()
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
 
-			if (!(storehold[storenumh]._ivalue >>= 2))
+			if ((storehold[storenumh]._ivalue >>= 2) == 0)
 				storehold[storenumh]._ivalue = 1;
 
 			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
