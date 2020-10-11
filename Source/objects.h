@@ -133,7 +133,7 @@ void OperateArmorStand(int pnum, int i, BOOL sendmsg);
 int FindValidShrine(int i);
 void OperateGoatShrine(int pnum, int i, int sType);
 void OperateCauldron(int pnum, int i, int sType);
-BOOL OperateFountains(int pnum, int i);
+DIABOOL OperateFountains(int pnum, int i);
 void OperateWeaponRack(int pnum, int i, BOOL sendmsg);
 void OperateStoryBook(int pnum, int i);
 void OperateLazStand(int pnum, int i);

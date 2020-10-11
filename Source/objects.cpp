@@ -3602,10 +3602,11 @@ void OperateCauldron(int pnum, int i, int sType)
 	force_redraw = 255;
 }
 
-BOOL OperateFountains(int pnum, int i)
+DIABOOL OperateFountains(int pnum, int i)
 {
 	int prev, add, rnd, cnt;
-	BOOL applied, done;
+	DIABOOL applied;
+	BOOL done;
 
 	applied = FALSE;
 	SetRndSeed(object[i]._oRndSeed);
