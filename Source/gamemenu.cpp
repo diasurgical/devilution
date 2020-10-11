@@ -1,43 +1,61 @@
+
 /**
  * @file gamemenu.cpp
  *
  * Implementation of the in-game menu functions.
  */
 #include "all.h"
+#include "../3rdParty/Storm/Source/storm.h"
+
+#ifdef HELLFIRE
+BOOL jogging_opt = TRUE;
+#endif
 
 /** Contains the game menu items of the single player menu. */
 TMenuItem sgSingleMenu[] = {
-	// clang-format off
-	// dwFlags,      pszStr,         fnMenu
-	{ GMENU_ENABLED, "Save Game",    &gamemenu_save_game  },
-	{ GMENU_ENABLED, "Options",      &gamemenu_options    },
-	{ GMENU_ENABLED, "New Game",     &gamemenu_new_game   },
-	{ GMENU_ENABLED, "Load Game",    &gamemenu_load_game  },
-	{ GMENU_ENABLED, "Quit Diablo",  &gamemenu_quit_game  },
-	{ GMENU_ENABLED, NULL,           NULL }
-	// clang-format on
+// clang-format off
+//	  dwFlags,       pszStr,         fnMenu
+	{ GMENU_ENABLED, "Save Game",     &gamemenu_save_game  },
+	{ GMENU_ENABLED, "Options",       &gamemenu_options    },
+	{ GMENU_ENABLED, "New Game",      &gamemenu_new_game   },
+	{ GMENU_ENABLED, "Load Game",     &gamemenu_load_game  },
+#ifndef HELLFIRE
+	{ GMENU_ENABLED, "Quit Diablo",   &gamemenu_quit_game  },
+#else
+	{ GMENU_ENABLED, "Quit Hellfire", &gamemenu_quit_game  },
+#endif
+	{ GMENU_ENABLED, NULL,            NULL }
+// clang-format on
 };
 /** Contains the game menu items of the multi player menu. */
 TMenuItem sgMultiMenu[] = {
-	// clang-format off
-	// dwFlags,      pszStr,            fnMenu
+// clang-format off
+//	  dwFlags,       pszStr,            fnMenu
 	{ GMENU_ENABLED, "Options",         &gamemenu_options      },
 	{ GMENU_ENABLED, "New Game",        &gamemenu_new_game     },
 	{ GMENU_ENABLED, "Restart In Town", &gamemenu_restart_town },
+#ifndef HELLFIRE
 	{ GMENU_ENABLED, "Quit Diablo",     &gamemenu_quit_game    },
+#else
+	{ GMENU_ENABLED, "Quit Hellfire",   &gamemenu_quit_game    },
+#endif
 	{ GMENU_ENABLED, NULL,              NULL                   },
-	// clang-format on
+// clang-format on
 };
 TMenuItem sgOptionsMenu[] = {
-	// clang-format off
-	// dwFlags,                     pszStr,          fnMenu
+// clang-format off
+//	  dwFlags,                      pszStr,          fnMenu
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_music_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_sound_volume  },
 	{ GMENU_ENABLED | GMENU_SLIDER, "Gamma",         &gamemenu_gamma         },
+#ifndef HELLFIRE
 	{ GMENU_ENABLED               , NULL,            &gamemenu_color_cycling },
+#else
+	{ GMENU_ENABLED | GMENU_SLIDER, NULL,            &gamemenu_loadjog       },
+#endif
 	{ GMENU_ENABLED               , "Previous Menu", &gamemenu_previous      },
 	{ GMENU_ENABLED               , NULL,            NULL                    },
-	// clang-format on
+// clang-format on
 };
 /** Specifies the menu names for music enabled and disabled. */
 char *music_toggle_names[] = {
@@ -49,8 +67,17 @@ char *sound_toggle_names[] = {
 	"Sound",
 	"Sound Disabled",
 };
+#ifdef HELLFIRE
+char *jogging_toggle_names[] = {
+	"Jog",
+	"Walk",
+};
+char *jogging_title = "Fast Walk";
+#endif
+#ifndef HELLFIRE
 /** Specifies the menu names for colour cycling disabled and enabled. */
 char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
+#endif
 
 void gamemenu_on()
 {
@@ -110,6 +137,9 @@ void gamemenu_new_game(BOOL bActivate)
 	deathflag = FALSE;
 	force_redraw = 255;
 	scrollrt_draw_game_screen(TRUE);
+#ifdef HELLFIRE
+	CornerStone.activated = FALSE;
+#endif
 	gbRunGame = FALSE;
 	gamemenu_off();
 }
@@ -130,6 +160,9 @@ void gamemenu_load_game(BOOL bActivate)
 	DrawAndBlit();
 	LoadGame(FALSE);
 	ClrDiabloMsg();
+#ifdef HELLFIRE
+	CornerStone.activated = FALSE;
+#endif
 	PaletteFadeOut(8);
 	deathflag = FALSE;
 	force_redraw = 255;
@@ -161,6 +194,11 @@ void gamemenu_save_game(BOOL bActivate)
 	ClrDiabloMsg();
 	force_redraw = 255;
 	SetCursor_(CURSOR_HAND);
+#ifdef HELLFIRE
+	if (CornerStone.activated) {
+		items_427A72();
+	}
+#endif
 	interface_msg_pump();
 	SetWindowProc(saveProc);
 }
@@ -174,8 +212,13 @@ void gamemenu_options(BOOL bActivate)
 {
 	gamemenu_get_music();
 	gamemenu_get_sound();
+#ifdef HELLFIRE
+	gamemenu_jogging();
+#endif
 	gamemenu_get_gamma();
+#ifndef HELLFIRE
 	gamemenu_get_color_cycling();
+#endif
 	gmenu_set_items(sgOptionsMenu, NULL);
 }
 
@@ -203,10 +246,21 @@ void gamemenu_get_sound()
 	gamemenu_sound_music_toggle(sound_toggle_names, &sgOptionsMenu[1], sound_get_or_set_sound_volume(1));
 }
 
+#ifdef HELLFIRE
+void gamemenu_jogging()
+{
+	gmenu_slider_steps(&sgOptionsMenu[3], 2);
+	gmenu_slider_set(&sgOptionsMenu[3], 0, 1, jogging_opt);
+	sgOptionsMenu[3].pszStr = jogging_toggle_names[!jogging_opt ? 1 : 0];
+}
+#endif
+
+#ifndef HELLFIRE
 void gamemenu_get_color_cycling()
 {
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[palette_get_color_cycling() & 1];
 }
+#endif
 
 void gamemenu_get_gamma()
 {
@@ -226,23 +280,46 @@ void gamemenu_music_volume(BOOL bActivate)
 		} else {
 			gbMusicOn = TRUE;
 			sound_get_or_set_music_volume(VOLUME_MAX);
+#ifdef HELLFIRE
+			int lt;
+			if (currlevel >= 17) {
+				if (currlevel > 20)
+					lt = DTYPE_NEST;
+				else
+					lt = DTYPE_CRYPT;
+			} else
+				lt = leveltype;
+			music_start(lt);
+#else
 			music_start(leveltype);
-		}
-	} else {
-		volume = gamemenu_slider_music_sound(&sgOptionsMenu[0]);
-		sound_get_or_set_music_volume(volume);
-
-		if (volume == VOLUME_MIN) {
-			if (gbMusicOn) {
-				gbMusicOn = FALSE;
-				music_stop();
-			}
-		} else if (!gbMusicOn) {
-			gbMusicOn = TRUE;
+#endif
+        }
+    } else {
+        volume = gamemenu_slider_music_sound(&sgOptionsMenu[0]);
+        sound_get_or_set_music_volume(volume);
+        if (volume == VOLUME_MIN) {
+            if (gbMusicOn) {
+                gbMusicOn = FALSE;
+                music_stop();
+            }
+        } else if (!gbMusicOn) {
+            gbMusicOn = TRUE;
+#ifdef HELLFIRE
+			int lt;
+			if (currlevel >= 17) {
+				if (currlevel > 20)
+					lt = DTYPE_NEST;
+				else
+					lt = DTYPE_CRYPT;
+			} else
+				lt = leveltype;
+			music_start(lt);
+#else
 			music_start(leveltype);
-		}
-	}
-	gamemenu_get_music();
+#endif
+        }
+    }
+    gamemenu_get_music();
 }
 
 int gamemenu_slider_music_sound(TMenuItem *menu_item)
@@ -278,6 +355,18 @@ void gamemenu_sound_volume(BOOL bActivate)
 	gamemenu_get_sound();
 }
 
+#ifdef HELLFIRE
+void gamemenu_loadjog(BOOL bActivate)
+{
+	if (gbMaxPlayers == 1) {
+		jogging_opt = !jogging_opt;
+		SRegSaveValue(APP_NAME, jogging_title, FALSE, jogging_opt);
+		PlaySFX(IS_TITLEMOV);
+		gamemenu_jogging();
+	}
+}
+#endif
+
 void gamemenu_gamma(BOOL bActivate)
 {
 	int gamma;
@@ -300,6 +389,7 @@ int gamemenu_slider_gamma()
 	return gmenu_slider_get(&sgOptionsMenu[2], 30, 100);
 }
 
+#ifndef HELLFIRE
 void gamemenu_color_cycling(BOOL bActivate)
 {
 	BOOL color_cycling;
@@ -307,3 +397,4 @@ void gamemenu_color_cycling(BOOL bActivate)
 	color_cycling = palette_set_color_cycling(palette_get_color_cycling() == 0);
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[color_cycling & 1];
 }
+#endif
