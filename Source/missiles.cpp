@@ -4677,8 +4677,7 @@ void MI_Manashield(int i)
 		}
 
 #ifndef HELLFIRE
-	if (id == myplr && plr[id]._pHitPoints == 0 && missile[i]._miVar1 == 0 && plr[id]._pmode != PM_DEATH)
-			{
+		if (id == myplr && plr[id]._pHitPoints == 0 && missile[i]._miVar1 == 0 && plr[id]._pmode != PM_DEATH) {
 			missile[i]._mirange = 0;
 			missile[i]._miDelFlag = TRUE;
 			SyncPlrKill(id, -1);
