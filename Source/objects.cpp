@@ -68,15 +68,39 @@ char shrinemax[NUM_SHRINETYPE] = {
 };
 /**
  * Specifies the game type for which each shrine may appear.
- * 0 - sp & mp
- * 1 - sp only
- * 2 - mp only
+ * SHRINETYPE_ANY - 0 - sp & mp
+ * SHRINETYPE_SINGLE - 1 - sp only
+ * SHRINETYPE_MULTI - 2 - mp only
  */
+
 BYTE shrineavail[NUM_SHRINETYPE] = {
-	0, 0, 1, 1, 0, 0, 0, 0, 1, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 2, 0,
-	0, 0, 0, 0, 0, 2
-};
+	    SHRINETYPE_ANY,    // SHRINE_MYSTERIOUS
+	    SHRINETYPE_ANY,    // SHRINE_HIDDEN
+	    SHRINETYPE_SINGLE, // SHRINE_GLOOMY
+	    SHRINETYPE_SINGLE, // SHRINE_WEIRD
+	    SHRINETYPE_ANY,    // SHRINE_MAGICAL
+	    SHRINETYPE_ANY,    // SHRINE_STONE 
+	    SHRINETYPE_ANY,    // SHRINE_RELIGIOUS
+	    SHRINETYPE_ANY,    // SHRINE_ENCHANTED
+	    SHRINETYPE_SINGLE, // SHRINE_THAUMATURGIC
+	    SHRINETYPE_ANY,    // SHRINE_FASCINATING
+	    SHRINETYPE_ANY,    // SHRINE_CRYPTIC
+	    SHRINETYPE_ANY,    // SHRINE_MAGICAL2
+	    SHRINETYPE_ANY,    // SHRINE_ELDRITCH
+	    SHRINETYPE_ANY,    // SHRINE_EERIE
+	    SHRINETYPE_ANY,    // SHRINE_DIVINE
+	    SHRINETYPE_ANY,    // SHRINE_HOLY
+	    SHRINETYPE_ANY,    // SHRINE_SACRED
+	    SHRINETYPE_ANY,    // SHRINE_SPIRITUAL
+	    SHRINETYPE_MULTI,  // SHRINE_SPOOKY
+	    SHRINETYPE_ANY,    // SHRINE_ABANDONED
+	    SHRINETYPE_ANY,    // SHRINE_CREEPY
+	    SHRINETYPE_ANY,    // SHRINE_QUIET 
+	    SHRINETYPE_ANY,    // SHRINE_SECLUDED
+	    SHRINETYPE_ANY,    // SHRINE_ORNATE
+	    SHRINETYPE_ANY,    // SHRINE_GLIMMERING
+	    SHRINETYPE_MULTI   // SHRINE_TAINTED
+    };
 /** Maps from book_id to book name. */
 char *StoryBookName[9] = {
 	"The Great Conflict",
@@ -4217,28 +4241,31 @@ void OperateArmorStand(int pnum, int i, DIABOOL sendmsg)
 
 int FindValidShrine(int i)
 {
-	BOOL done;
 	int rv;
+	DIABOOL done;
 
-	while (1) {
-		done = FALSE;
-		while (!done) {
-			rv = random_(0, NUM_SHRINETYPE);
-			if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != 8)
-				done = TRUE;
+	done = FALSE;
+	do {
+		rv = random_(0, NUM_SHRINETYPE);
+		if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != SHRINE_THAUMATURGIC) {
+			done = TRUE;
 		}
-
-		if (gbMaxPlayers != 1) {
-			if (shrineavail[rv] != 1) {
-				break;
+		if (done) {
+			if (gbMaxPlayers != 1) {
+				if (shrineavail[rv] == 1) {
+					done = FALSE;
+					continue;
+				}
 			}
-		} else {
-			if (shrineavail[rv] != 2) {
-				break;
+			if (gbMaxPlayers == 1) {
+				if (shrineavail[rv] == 2) {
+					done = FALSE;
+					continue;
+				}
 			}
+			done = TRUE;
 		}
-	}
-
+	} while (!done);
 	return rv;
 }
 

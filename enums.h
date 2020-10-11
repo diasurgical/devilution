@@ -3418,6 +3418,12 @@ typedef enum anim_armor_id {
 #endif
 } anim_armor_id;
 
+typedef enum shrine_gametype {
+	SHRINETYPE_ANY    = 0,
+	SHRINETYPE_SINGLE = 1,
+	SHRINETYPE_MULTI  = 2,
+} shrine_gametype;
+
 typedef enum shrine_type {
 	SHRINE_MYSTERIOUS   = 0,
 	SHRINE_HIDDEN       = 1,
