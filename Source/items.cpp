@@ -5068,6 +5068,33 @@ BOOL HealerItemOk(int i)
 		result = TRUE;
 
 	if (gbMaxPlayers == 1) {
+#ifdef HELLFIRE
+		if (AllItemsList[i].iMiscId == IMISC_ELIXSTR && plr[myplr]._pBaseStr < MaxStats[plr[myplr]._pClass][ATTRIB_STR])
+			result = TRUE;
+		else if (AllItemsList[i].iMiscId == IMISC_ELIXMAG && plr[myplr]._pBaseMag < MaxStats[plr[myplr]._pClass][ATTRIB_MAG])
+			result = TRUE;
+		else if (AllItemsList[i].iMiscId == IMISC_ELIXDEX && plr[myplr]._pBaseDex < MaxStats[plr[myplr]._pClass][ATTRIB_DEX])
+			result = TRUE;
+		else if (AllItemsList[i].iMiscId == IMISC_ELIXVIT && plr[myplr]._pBaseVit < MaxStats[plr[myplr]._pClass][ATTRIB_VIT])
+			result = TRUE;
+	}
+
+	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL) // BUGFIX this is a duplicate with the wrong case
+		result = TRUE;
+
+	else if (AllItemsList[i].iMiscId == IMISC_REJUV)
+		result = TRUE;
+	else if (AllItemsList[i].iMiscId == IMISC_FULLREJUV)
+		result = TRUE;
+	else if (AllItemsList[i].iMiscId == IMISC_HEAL)
+		result = FALSE;
+	else if (AllItemsList[i].iMiscId == IMISC_FULLHEAL)
+		result = FALSE;
+	else if (AllItemsList[i].iMiscId == IMISC_MANA)
+		result = FALSE;
+	else if (AllItemsList[i].iMiscId == IMISC_FULLMANA)
+		result = FALSE;
+#else
 		if (AllItemsList[i].iMiscId == IMISC_ELIXSTR)
 			result = TRUE;
 		if (AllItemsList[i].iMiscId == IMISC_ELIXMAG)
@@ -5093,6 +5120,7 @@ BOOL HealerItemOk(int i)
 		result = FALSE;
 	if (AllItemsList[i].iMiscId == IMISC_FULLMANA)
 		result = FALSE;
+#endif
 
 	return result;
 }
