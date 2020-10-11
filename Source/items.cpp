@@ -3600,17 +3600,16 @@ BOOL OilItem(ItemStruct *x, PlayerStruct *p)
 #endif
 void RechargeItem(ItemStruct *i, int r)
 {
-	while (i->_iCharges != i->_iMaxCharges) {
-		i->_iMaxCharges--;
-		if (i->_iMaxCharges == 0) {
-			break;
-		}
-		i->_iCharges += r;
-		if (i->_iCharges >= i->_iMaxCharges) {
-			if (i->_iCharges > i->_iMaxCharges)
-				i->_iCharges = i->_iMaxCharges;
-			return;
-		}
+	if (i->_iCharges != i->_iMaxCharges) {
+		do {
+			i->_iMaxCharges--;
+			if (i->_iMaxCharges == 0) {
+				return;
+			}
+			i->_iCharges += r;
+		} while (i->_iCharges < i->_iMaxCharges);
+		if (i->_iCharges > i->_iMaxCharges)
+			i->_iCharges = i->_iMaxCharges;
 	}
 }
 
