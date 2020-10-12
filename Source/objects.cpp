@@ -79,7 +79,7 @@ BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_SINGLE, // SHRINE_GLOOMY
 	SHRINETYPE_SINGLE, // SHRINE_WEIRD
 	SHRINETYPE_ANY,    // SHRINE_MAGICAL
-	SHRINETYPE_ANY,    // SHRINE_STONE 
+	SHRINETYPE_ANY,    // SHRINE_STONE
 	SHRINETYPE_ANY,    // SHRINE_RELIGIOUS
 	SHRINETYPE_ANY,    // SHRINE_ENCHANTED
 	SHRINETYPE_SINGLE, // SHRINE_THAUMATURGIC
@@ -95,7 +95,7 @@ BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_MULTI,  // SHRINE_SPOOKY
 	SHRINETYPE_ANY,    // SHRINE_ABANDONED
 	SHRINETYPE_ANY,    // SHRINE_CREEPY
-	SHRINETYPE_ANY,    // SHRINE_QUIET 
+	SHRINETYPE_ANY,    // SHRINE_QUIET
 	SHRINETYPE_ANY,    // SHRINE_SECLUDED
 	SHRINETYPE_ANY,    // SHRINE_ORNATE
 	SHRINETYPE_ANY,    // SHRINE_GLIMMERING
@@ -1869,17 +1869,10 @@ void Obj_Door(int i)
 	} else {
 		dx = object[i]._ox;
 		dy = object[i]._oy;
-#ifdef HELLFIRE
 		dok = !dMonster[dx][dy];
-		dok = dok && !dItem[dx][dy];
-		dok = dok && !dDead[dx][dy];
-		dok = dok && !dPlayer[dx][dy];
-#else
-		dok = !dMonster[dx][dy];
-		dok = dok & !dItem[dx][dy];
-		dok = dok & !dDead[dx][dy];
-		dok = dok & !dPlayer[dx][dy];
-#endif
+		dok = dok HFAND !dItem[dx][dy];
+		dok = dok HFAND !dDead[dx][dy];
+		dok = dok HFAND !dPlayer[dx][dy];
 		object[i]._oSelFlag = 2;
 		object[i]._oVar4 = dok ? 1 : 2;
 		object[i]._oMissFlag = TRUE;
@@ -2603,6 +2596,7 @@ void OperateL1LDoor(int pnum, int oi, DIABOOL sendflag)
 void OperateL2RDoor(int pnum, int oi, DIABOOL sendflag)
 {
 	int xp, yp;
+	DIABOOL dok;
 
 	if (object[oi]._oVar4 == 2) {
 		if (!deltaload)
@@ -2627,7 +2621,10 @@ void OperateL2RDoor(int pnum, int oi, DIABOOL sendflag)
 
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
-	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+	dok = !dMonster[xp][yp];
+	dok = dok HFAND !dItem[xp][yp];
+	dok = dok HFAND !dDead[xp][yp];
+	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
 		object[oi]._oVar4 = 0;
@@ -2644,6 +2641,7 @@ void OperateL2RDoor(int pnum, int oi, DIABOOL sendflag)
 void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 {
 	int xp, yp;
+	DIABOOL dok;
 
 	if (object[oi]._oVar4 == 2) {
 		if (!deltaload)
@@ -2668,7 +2666,10 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
-	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+	dok = !dMonster[xp][yp];
+	dok = dok HFAND !dItem[xp][yp];
+	dok = dok HFAND !dDead[xp][yp];
+	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
 		object[oi]._oVar4 = 0;
@@ -2685,6 +2686,7 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 void OperateL3RDoor(int pnum, int oi, DIABOOL sendflag)
 {
 	int xp, yp;
+	DIABOOL dok;
 
 	if (object[oi]._oVar4 == 2) {
 		if (!deltaload)
@@ -2710,7 +2712,10 @@ void OperateL3RDoor(int pnum, int oi, DIABOOL sendflag)
 
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
-	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+	dok = !dMonster[xp][yp];
+	dok = dok HFAND !dItem[xp][yp];
+	dok = dok HFAND !dDead[xp][yp];
+	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
 		object[oi]._oVar4 = 0;
@@ -2727,6 +2732,7 @@ void OperateL3RDoor(int pnum, int oi, DIABOOL sendflag)
 void OperateL3LDoor(int pnum, int oi, DIABOOL sendflag)
 {
 	int xp, yp;
+	DIABOOL dok;
 
 	if (object[oi]._oVar4 == 2) {
 		if (!deltaload)
@@ -2752,7 +2758,10 @@ void OperateL3LDoor(int pnum, int oi, DIABOOL sendflag)
 
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
-	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+	dok = !dMonster[xp][yp];
+	dok = dok HFAND !dItem[xp][yp];
+	dok = dok HFAND !dDead[xp][yp];
+	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
 		object[oi]._oVar4 = 0;
