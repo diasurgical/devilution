@@ -1775,9 +1775,7 @@ void Obj_Light(int i, int lr)
 	int ox, oy, dx, dy, p, tr;
 	DIABOOL turnon;
 
-#ifdef HELLFIRE
 	turnon = FALSE;
-#endif
 	if (object[i]._oVar1 != -1) {
 		ox = object[i]._ox;
 		oy = object[i]._oy;
@@ -1798,7 +1796,7 @@ void Obj_Light(int i, int lr)
 			}
 		}
 		if (turnon) {
-			if (!object[i]._oVar1)
+			if (object[i]._oVar1 == 0)
 				object[i]._olid = AddLight(ox, oy, lr);
 			object[i]._oVar1 = 1;
 		} else {
@@ -1905,8 +1903,8 @@ void Obj_FlameTrap(int i)
 	int x, y;
 	int j, k;
 
-	if (object[i]._oVar2) {
-		if (object[i]._oVar4) {
+	if (object[i]._oVar2 != 0) {
+		if (object[i]._oVar4 != 0) {
 			object[i]._oAnimFrame--;
 			if (object[i]._oAnimFrame == 1) {
 				object[i]._oVar4 = 0;
@@ -1915,7 +1913,7 @@ void Obj_FlameTrap(int i)
 				ChangeLightRadius(object[i]._olid, object[i]._oAnimFrame);
 			}
 		}
-	} else if (!object[i]._oVar4) {
+	} else if (object[i]._oVar4 == 0) {
 		if (object[i]._oVar3 == 2) {
 			x = object[i]._ox - 2;
 			y = object[i]._oy;
@@ -1933,7 +1931,7 @@ void Obj_FlameTrap(int i)
 				y++;
 			}
 		}
-		if (object[i]._oVar4)
+		if (object[i]._oVar4 != 0)
 			ActivateTrapLine(object[i]._otype, object[i]._oVar1);
 	} else {
 		if (object[i]._oAnimFrame == object[i]._oAnimLen)
@@ -1950,7 +1948,7 @@ void Obj_Trap(int i)
 	int sx, sy, dx, dy, x, y;
 
 	otrig = FALSE;
-	if (!object[i]._oVar4) {
+	if (object[i]._oVar4 == 0) {
 		oti = dObject[object[i]._oVar1][object[i]._oVar2] - 1;
 		switch (object[oti]._otype) {
 		case OBJ_L1LDOOR:
@@ -1959,7 +1957,7 @@ void Obj_Trap(int i)
 		case OBJ_L2RDOOR:
 		case OBJ_L3LDOOR:
 		case OBJ_L3RDOOR:
-			if (object[oti]._oVar4)
+			if (object[oti]._oVar4 != 0)
 				otrig = TRUE;
 			break;
 		case OBJ_LEVER:
@@ -2792,7 +2790,7 @@ void MonstCheckDoors(int m)
 	    || dObject[mx + 1][my + 1]) {
 		for (i = 0; i < nobjects; ++i) {
 			oi = objectactive[i];
-			if ((object[oi]._otype == OBJ_L1LDOOR || object[oi]._otype == OBJ_L1RDOOR) && !object[oi]._oVar4) {
+			if ((object[oi]._otype == OBJ_L1LDOOR || object[oi]._otype == OBJ_L1RDOOR) && object[oi]._oVar4 == 0) {
 				dpx = abs(object[oi]._ox - mx);
 				dpy = abs(object[oi]._oy - my);
 				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L1LDOOR)
@@ -2800,7 +2798,7 @@ void MonstCheckDoors(int m)
 				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L1RDOOR)
 					OperateL1RDoor(myplr, oi, TRUE);
 			}
-			if ((object[oi]._otype == OBJ_L2LDOOR || object[oi]._otype == OBJ_L2RDOOR) && !object[oi]._oVar4) {
+			if ((object[oi]._otype == OBJ_L2LDOOR || object[oi]._otype == OBJ_L2RDOOR) && object[oi]._oVar4 == 0) {
 				dpx = abs(object[oi]._ox - mx);
 				dpy = abs(object[oi]._oy - my);
 				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L2LDOOR)
@@ -2808,7 +2806,7 @@ void MonstCheckDoors(int m)
 				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L2RDOOR)
 					OperateL2RDoor(myplr, oi, TRUE);
 			}
-			if ((object[oi]._otype == OBJ_L3LDOOR || object[oi]._otype == OBJ_L3RDOOR) && !object[oi]._oVar4) {
+			if ((object[oi]._otype == OBJ_L3LDOOR || object[oi]._otype == OBJ_L3RDOOR) && object[oi]._oVar4 == 0) {
 				dpx = abs(object[oi]._ox - mx);
 				dpy = abs(object[oi]._oy - my);
 				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L3RDOOR)
@@ -3083,7 +3081,7 @@ void OperateChest(int pnum, int i, DIABOOL sendmsg)
 				}
 			} else {
 				for (j = 0; j < object[i]._oVar1; j++) {
-					if (object[i]._oVar2)
+					if (object[i]._oVar2 != 0)
 						CreateRndItem(object[i]._ox, object[i]._oy, FALSE, sendmsg, FALSE);
 					else
 						CreateRndUseful(pnum, object[i]._ox, object[i]._oy, sendmsg);
@@ -4857,7 +4855,7 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, BOOL sendmsg)
 		PlaySfxLoc(IS_BARREL, object[i]._ox, object[i]._oy);
 		SetRndSeed(object[i]._oRndSeed);
 		if (object[i]._oVar2 <= 1) {
-			if (!object[i]._oVar3)
+			if (object[i]._oVar3 == 0)
 				CreateRndUseful(pnum, object[i]._ox, object[i]._oy, sendmsg);
 			else
 				CreateRndItem(object[i]._ox, object[i]._oy, FALSE, sendmsg, FALSE);
