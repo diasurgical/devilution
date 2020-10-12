@@ -508,22 +508,22 @@ void DrawSpellList()
 		switch ((spell_type)i) {
 		case RSPLTYPE_SKILL:
 			SetSpellTrans(RSPLTYPE_SKILL);
-			c = SPLICONLAST + 3;
 			mask = plr[myplr]._pAblSpells;
+			c = SPLICONLAST + 3;
 			break;
 		case RSPLTYPE_SPELL:
-			c = SPLICONLAST + 4;
 			mask = plr[myplr]._pMemSpells;
+			c = SPLICONLAST + 4;
 			break;
 		case RSPLTYPE_SCROLL:
 			SetSpellTrans(RSPLTYPE_SCROLL);
-			c = SPLICONLAST + 1;
 			mask = plr[myplr]._pScrlSpells;
+			c = SPLICONLAST + 1;
 			break;
 		case RSPLTYPE_CHARGES:
 			SetSpellTrans(RSPLTYPE_CHARGES);
-			c = SPLICONLAST + 2;
 			mask = plr[myplr]._pISpells;
+			c = SPLICONLAST + 2;
 			break;
 		}
 		for (spl = 1, j = 1; j < MAX_SPELLS; spl <<= 1, j++) {
@@ -549,10 +549,14 @@ void DrawSpellList()
 				pSplType = i;
 #ifdef HELLFIRE
 				if (plr[myplr]._pClass == PC_MONK && j == SPL_SEARCH)
-					i = RSPLTYPE_SKILL;
+					pSplType = RSPLTYPE_SKILL;
 #endif
 				DrawSpellCel(x, y, pSpellCels, c, SPLICONLENGTH);
+#ifdef HELLFIRE
+				switch (pSplType) {
+#else
 				switch (i) {
+#endif
 				case RSPLTYPE_SKILL:
 					sprintf(infostr, "%s Skill", spelldata[pSpell].sSkillText);
 					break;
