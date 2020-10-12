@@ -296,7 +296,7 @@ void palette_update_crypt()
 
 	if (dword_6E2D58 > 1) {
 		col = system_palette[15];
-		for (i = 15; i > 0; i--) {
+		for (i = 15; i > 1; i--) {
 			system_palette[i].peRed = system_palette[i - 1].peRed;
 			system_palette[i].peGreen = system_palette[i - 1].peGreen;
 			system_palette[i].peBlue = system_palette[i - 1].peBlue;
@@ -337,7 +337,7 @@ void palette_update_hive()
 
 	if (dword_6E2D60 == 2) {
 		col = system_palette[8];
-		for (i = 8; i > 0; i--) {
+		for (i = 8; i > 1; i--) {
 			system_palette[i].peRed = system_palette[i - 1].peRed;
 			system_palette[i].peGreen = system_palette[i - 1].peGreen;
 			system_palette[i].peBlue = system_palette[i - 1].peBlue;
