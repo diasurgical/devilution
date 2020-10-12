@@ -78,8 +78,7 @@ char *GetErrorStr(DWORD error_code)
 	size = strlen(sz_error_buf);
 
 	chr = &sz_error_buf[size - 1];
-	while (size > 0) {
-		size--;
+	while (size-- > 0) {
 		chr--;
 
 		if (*chr != '\r' && *chr != '\n')
