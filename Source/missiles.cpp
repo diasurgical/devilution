@@ -2356,6 +2356,7 @@ void AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 
 	if (mienemy && id > 0) {
 		mon = monster[id].MType;
+#ifndef HELLFIRE
 		if (mon->mtype == MT_SUCCUBUS)
 			SetMissAnim(mi, MFILE_FLAREEXP);
 		if (mon->mtype == MT_SNOWWICH)
@@ -2364,6 +2365,22 @@ void AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 			SetMissAnim(mi, MFILE_SCBSEXPD);
 		if (mon->mtype == MT_SOLBRNR)
 			SetMissAnim(mi, MFILE_SCBSEXPC);
+#else
+		switch (mon->mtype) {
+		case MT_SUCCUBUS:
+			SetMissAnim(mi, MFILE_FLAREEXP);
+			break;
+		case MT_SNOWWICH:
+			SetMissAnim(mi, MFILE_SCBSEXPB);
+			break;
+		case MT_HLSPWN:
+			SetMissAnim(mi, MFILE_SCBSEXPD);
+			break;
+		case MT_SOLBRNR:
+			SetMissAnim(mi, MFILE_SCBSEXPC);
+			break;
+		}
+#endif
 	}
 
 	missile[mi]._mix = missile[dx]._mix;
