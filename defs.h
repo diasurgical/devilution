@@ -121,7 +121,15 @@
 #define PMSG_COUNT				8
 
 // Diablo Retail Version Game ID
+#ifdef HELLFIRE
+#define GAME_ID					((int)'HRTL')
+#define GAME_VERSION			34
+#define PROGRAM_NAME			"Hellfire Retail"
+#else
 #define GAME_ID					((int)'DRTL')
+#define GAME_VERSION			42
+#define PROGRAM_NAME			"Diablo Retail"
+#endif
 
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
