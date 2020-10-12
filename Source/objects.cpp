@@ -52,19 +52,95 @@ char *shrinestrs[NUM_SHRINETYPE] = {
 	"Secluded",
 	"Ornate",
 	"Glimmering",
-	"Tainted"
+	"Tainted",
+#ifdef HELLFIRE
+	"Oily",
+	"Glowing",
+	"Mendicant's",
+	"Sparkling",
+	"Town",
+	"Shimmering",
+	"Solar",
+	"Murphy's",
+#endif
 };
 /** Specifies the minimum dungeon level on which each shrine will appear. */
 char shrinemin[NUM_SHRINETYPE] = {
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1
+	1, // Mysterious
+	1, // Hidden
+	1, // Gloomy
+	1, // Weird
+	1, // Magical
+	1, // Stone
+	1, // Religious
+	1, // Enchanted
+	1, // Thaumaturgic
+	1, // Fascinating
+	1, // Cryptic
+	1, // Magical
+	1, // Eldritch
+	1, // Eerie
+	1, // Divine
+	1, // Holy
+	1, // Sacred
+	1, // Spiritual
+	1, // Spooky
+	1, // Abandoned
+	1, // Creepy
+	1, // Quiet
+	1, // Secluded
+	1, // Ornate
+	1, // Glimmering
+	1, // Tainted
+#ifdef HELLFIRE
+	1, // Oily
+	1, // Glowing
+	1, // Mendicant's
+	1, // Sparkling
+	1, // Town
+	1, // Shimmering
+	1, // Solar,
+	1, // Murphy's
+#endif
 };
 /** Specifies the maximum dungeon level on which each shrine will appear. */
 char shrinemax[NUM_SHRINETYPE] = {
-	16, 16, 16, 16, 16, 16, 16, 8, 16, 16,
-	16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-	16, 16, 16, 16, 16, 16
+	MAX_LVLS, // Mysterious
+	MAX_LVLS, // Hidden
+	MAX_LVLS, // Gloomy
+	MAX_LVLS, // Weird
+	MAX_LVLS, // Magical
+	MAX_LVLS, // Stone
+	MAX_LVLS, // Religious
+	8,        // Enchanted
+	MAX_LVLS, // Thaumaturgic
+	MAX_LVLS, // Fascinating
+	MAX_LVLS, // Cryptic
+	MAX_LVLS, // Magical
+	MAX_LVLS, // Eldritch
+	MAX_LVLS, // Eerie
+	MAX_LVLS, // Divine
+	MAX_LVLS, // Holy
+	MAX_LVLS, // Sacred
+	MAX_LVLS, // Spiritual
+	MAX_LVLS, // Spooky
+	MAX_LVLS, // Abandoned
+	MAX_LVLS, // Creepy
+	MAX_LVLS, // Quiet
+	MAX_LVLS, // Secluded
+	MAX_LVLS, // Ornate
+	MAX_LVLS, // Glimmering
+	MAX_LVLS, // Tainted
+#ifdef HELLFIRE
+	MAX_LVLS, // Oily
+	MAX_LVLS, // Glowing
+	MAX_LVLS, // Mendicant's
+	MAX_LVLS, // Sparkling
+	MAX_LVLS, // Town
+	MAX_LVLS, // Shimmering
+	MAX_LVLS, // Solar,
+	MAX_LVLS, // Murphy's
+#endif
 };
 /**
  * Specifies the game type for which each shrine may appear.
@@ -99,7 +175,17 @@ BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_ANY,    // SHRINE_SECLUDED
 	SHRINETYPE_ANY,    // SHRINE_ORNATE
 	SHRINETYPE_ANY,    // SHRINE_GLIMMERING
-	SHRINETYPE_MULTI   // SHRINE_TAINTED
+	SHRINETYPE_MULTI,  // SHRINE_TAINTED
+#ifdef HELLFIRE
+	SHRINETYPE_ANY,    // SHRINE_OILY
+	SHRINETYPE_ANY,    // SHRINE_GLOWING
+	SHRINETYPE_ANY,    // SHRINE_MENDICANT
+	SHRINETYPE_ANY,    // SHRINE_SPARKLING
+	SHRINETYPE_ANY,    // SHRINE_TOWN
+	SHRINETYPE_ANY,    // SHRINE_SHIMMERING
+	SHRINETYPE_SINGLE, // SHRINE_SOLAR
+	SHRINETYPE_ANY,    // SHRINE_MURPHYS
+#endif
 };
 /** Maps from book_id to book name. */
 char *StoryBookName[] = {

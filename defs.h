@@ -33,8 +33,10 @@
 
 #define MAX_CHARACTERS			10
 #ifdef HELLFIRE
+#define MAX_LVLS				24
 #define MAX_LVLMTYPES			24
 #else
+#define MAX_LVLS				16
 #define MAX_LVLMTYPES			16
 #endif
 // #define MAX_PATH				260
