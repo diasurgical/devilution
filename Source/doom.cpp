@@ -143,5 +143,5 @@ void doom_draw()
 	}
 #endif
 
-	CelDraw(SCREEN_X, PANEL_Y - 1, pDoomCel, 1, SCREEN_WIDTH);
+	CelDraw(SCREEN_X, PANEL_Y - 1, pDoomCel, 1, 640);
 }
