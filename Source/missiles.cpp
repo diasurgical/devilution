@@ -2274,13 +2274,15 @@ void AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 {
 	int i;
 
-	missile[mi]._midam = 16 * (random_(53, 10) + random_(53, 10) + plr[id]._pLevel + 2) >> 1;
+	missile[mi]._midam = (random_(53, 10) + random_(53, 10) + plr[id]._pLevel + 2) << 4;
+	missile[mi]._midam >>= 1;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	missile[mi]._mirange = 10;
 	i = missile[mi]._mispllvl;
 	if (i > 0)
 		missile[mi]._mirange = 10 * (i + 1);
-	missile[mi]._mirange = ((missile[mi]._mirange * plr[id]._pISplDur >> 3) & 0xFFFFFFF0) + 16 * missile[mi]._mirange;
+	missile[mi]._mirange += (plr[id]._pISplDur * missile[mi]._mirange) >> 7;
+	missile[mi]._mirange <<= 4;
 	missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
 	missile[mi]._miVar2 = 0;
 }
