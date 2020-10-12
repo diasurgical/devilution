@@ -280,9 +280,12 @@ PATHNODE *path_get_node1(int dx, int dy)
 PATHNODE *path_get_node2(int dx, int dy)
 {
 	PATHNODE *result = pnode_ptr->NextNode;
-	while (result != NULL && (result->x != dx || result->y != dy))
+	while (result != NULL) {
+		if (result->x == dx && result->y == dy)
+			return result;
 		result = result->NextNode;
-	return result;
+	}
+	return NULL;
 }
 
 /**
