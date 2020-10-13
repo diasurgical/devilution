@@ -1737,6 +1737,7 @@ void T_Pass3()
 
 #ifndef SPAWN
 	if (gbMaxPlayers == 1) {
+#endif
 #ifdef HELLFIRE
 		if(quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
 		|| quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10)
@@ -1752,25 +1753,28 @@ void T_Pass3()
 		else
 			town_47552C();
 #endif
-#ifdef HELLFIRE
-		if (!(plr[myplr].pTownWarps & 1) && plr[myplr]._pLevel < 10) {
-#else
-		if (!(plr[myplr].pTownWarps & 1)) {
-#endif
-#endif
-			T_FillTile(P3Tiles, 48, 20, 320);
 #ifndef SPAWN
-		}
 #ifdef HELLFIRE
-		if (!(plr[myplr].pTownWarps & 2) && plr[myplr]._pLevel < 15) {
+		if (!(plr[myplr].pTownWarps & 1) && plr[myplr]._pLevel < 10)
 #else
-		if (!(plr[myplr].pTownWarps & 2)) {
+		if (!(plr[myplr].pTownWarps & 1))
 #endif
 #endif
+		{
+			T_FillTile(P3Tiles, 48, 20, 320);
+		}
+#ifndef SPAWN
+#ifdef HELLFIRE
+		if (!(plr[myplr].pTownWarps & 2) && plr[myplr]._pLevel < 15)
+#else
+		if (!(plr[myplr].pTownWarps & 2))
+#endif
+#endif
+		{
 			T_FillTile(P3Tiles, 16, 68, 332);
 			T_FillTile(P3Tiles, 16, 70, 331);
-#ifndef SPAWN
 		}
+#ifndef SPAWN
 #ifdef HELLFIRE
 		if (!(plr[myplr].pTownWarps & 4) && plr[myplr]._pLevel < 20) {
 #else
@@ -1783,7 +1787,6 @@ void T_Pass3()
 #ifndef SPAWN
 		}
 	}
-#endif
 #ifdef HELLFIRE
 	else
 	{
@@ -1801,6 +1804,7 @@ void T_Pass3()
 		else
 			town_47552C();
 	}
+#endif
 #endif
 
 	if (quests[Q_PWATER]._qactive != QUEST_DONE && quests[Q_PWATER]._qactive) {
