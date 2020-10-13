@@ -21,7 +21,7 @@ void DrawQText();
 
 /* rdata */
 
-extern const BYTE mfontframe[127];
+extern const BYTE mfontframe[128];
 extern const BYTE mfontkern[56];
 
 /* data */
