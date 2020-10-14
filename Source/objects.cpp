@@ -808,7 +808,7 @@ void objects_add_lv22(int s)
 				return;
 		}
 	}
-	objects_44D8C5(86, s, xp, yp);
+	objects_44D8C5(OBJ_STORYBOOK, s, xp, yp);
 	AddObject(OBJ_STORYCANDLE, xp - 2, yp + 1);
 	AddObject(OBJ_STORYCANDLE, xp - 2, yp);
 	AddObject(OBJ_STORYCANDLE, xp - 1, yp - 1);
@@ -856,7 +856,7 @@ void objects_add_lv24()
 
 void objects_454AF0(int a1, int a2, int a3)
 {
-	objects_44D8C5(86, a1, a2, a3);
+	objects_44D8C5(OBJ_STORYBOOK, a1, a2, a3);
 }
 #endif
 
