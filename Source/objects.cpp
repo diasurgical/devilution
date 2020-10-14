@@ -4945,7 +4945,14 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, BOOL sendmsg)
 	}
 
 	if (object[i]._otype == OBJ_BARRELEX) {
-		PlaySfxLoc(IS_BARLFIRE, object[i]._ox, object[i]._oy);
+#ifdef HELLFIRE
+		if (currlevel >= 21 && currlevel <= 24)
+			PlaySfxLoc(IS_POPPOP3, object[i]._ox, object[i]._oy);
+		else if (currlevel >= 17 && currlevel <= 20)
+			PlaySfxLoc(IS_POPPOP8, object[i]._ox, object[i]._oy);
+		else
+#endif
+			PlaySfxLoc(IS_BARLFIRE, object[i]._ox, object[i]._oy);
 		for (yp = object[i]._oy - 1; yp <= object[i]._oy + 1; yp++) {
 			for (xp = object[i]._ox - 1; xp <= object[i]._ox + 1; xp++) {
 				if (dMonster[xp][yp] > 0)
@@ -4960,7 +4967,14 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, BOOL sendmsg)
 			}
 		}
 	} else {
-		PlaySfxLoc(IS_BARREL, object[i]._ox, object[i]._oy);
+#ifdef HELLFIRE
+		if (currlevel >= 21 && currlevel <= 24)
+			PlaySfxLoc(IS_POPPOP2, object[i]._ox, object[i]._oy);
+		else if (currlevel >= 17 && currlevel <= 20)
+			PlaySfxLoc(IS_POPPOP5, object[i]._ox, object[i]._oy);
+		else
+#endif
+			PlaySfxLoc(IS_BARREL, object[i]._ox, object[i]._oy);
 		SetRndSeed(object[i]._oRndSeed);
 		if (object[i]._oVar2 <= 1) {
 			if (object[i]._oVar3 == 0)
