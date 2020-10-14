@@ -627,17 +627,37 @@ BOOL S_StartSPBuy()
 
 BOOL SmithSellOk(int i)
 {
-	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
+	ItemStruct *pI;
+
+#ifdef HELLFIRE
+	if (i < 0)
+		pI = &plr[myplr].SpdList[-(i + 1)];
+	else
+#endif
+		pI = &plr[myplr].InvList[i];
+
+	if (pI->_itype == ITYPE_NONE)
 		return FALSE;
-	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
+#ifdef HELLFIRE
+	if (pI->_iMiscId > 29 && pI->_iMiscId < 41)
+	 	return TRUE;
+#endif
+	if (pI->_itype == ITYPE_MISC)
 		return FALSE;
-	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
+	if (pI->_itype == ITYPE_GOLD)
 		return FALSE;
-	if (plr[myplr].InvList[i]._itype == ITYPE_MEAT)
+	if (pI->_itype == ITYPE_MEAT)
 		return FALSE;
-	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF)
+#ifdef HELLFIRE
+	if (pI->_itype == ITYPE_STAFF && pI->_iSpell != SPL_NULL)
 		return FALSE;
-	if (plr[myplr].InvList[i].IDidx == IDI_LAZSTAFF)
+	if (pI->_iClass == ICLASS_QUEST)
+		return FALSE;
+#else
+	if (pI->_itype == ITYPE_STAFF)
+		return FALSE;
+#endif
+	if (pI->IDidx == IDI_LAZSTAFF)
 		return FALSE;
 
 	return TRUE;
