@@ -188,8 +188,8 @@ static void lock_buf_priv()
 	if (error_code != DD_OK)
 		DDErrMsg(error_code, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
 
-	gpBufEnd += (size_t)ddsd.lpSurface;
 	gpBuffer = (BYTE *)ddsd.lpSurface;
+	gpBufEnd += (size_t)ddsd.lpSurface;
 	sgdwLockCount++;
 }
 
