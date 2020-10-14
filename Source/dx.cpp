@@ -80,9 +80,9 @@ static HRESULT dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN 
 
 	if (ghDiabMod == NULL) {
 		ghDiabMod = LoadLibrary("ddraw.dll");
-		if (ghDiabMod == NULL) {
-			ErrDlg(IDD_DIALOG4, GetLastError(), "C:\\Src\\Diablo\\Source\\dx.cpp", 122);
-		}
+	}
+	if (ghDiabMod == NULL) {
+		ErrDlg(IDD_DIALOG4, GetLastError(), "C:\\Src\\Diablo\\Source\\dx.cpp", 122);
 	}
 
 	DirectDrawCreate = (HRESULT(WINAPI *)(LPGUID, LPDIRECTDRAW *, LPUNKNOWN))GetProcAddress(ghDiabMod, "DirectDrawCreate");
