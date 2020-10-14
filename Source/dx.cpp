@@ -279,9 +279,8 @@ void dx_reinit()
 
 	dx_init(ghMainWnd);
 
-	while (lockCount != 0) {
+	while (lockCount-- != 0) {
 		lock_buf_priv();
-		lockCount--;
 	}
 
 	sgMemCrit.Leave();
