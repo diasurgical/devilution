@@ -7,7 +7,11 @@
 #define __OBJDAT_H__
 
 extern int ObjTypeConv[];
-extern ObjDataStruct AllObjects[99];
-extern char *ObjMasterLoadList[56];
+extern ObjDataStruct AllObjects[];
+extern char *ObjMasterLoadList[];
+#ifdef HELLFIRE
+extern char *ObjCryptLoadList[];
+extern char *ObjHiveLoadList[];
+#endif
 
 #endif /* __OBJDAT_H__ */

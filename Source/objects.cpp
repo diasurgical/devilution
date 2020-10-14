@@ -223,10 +223,22 @@ void InitObjectGFX()
 
 	memset(fileload, FALSE, sizeof(fileload));
 
+#ifdef HELLFIRE
+	int lvl = currlevel;
+	if (currlevel >= 17 && currlevel <= 20)
+		lvl -= 8;
+	else if (currlevel >= 21 && currlevel <= 24)
+		lvl -= 20;
+#endif
 	for (i = 0; AllObjects[i].oload != -1; i++) {
 		if (AllObjects[i].oload == 1
+#ifdef HELLFIRE
+		    && (int)lvl >= AllObjects[i].ominlvl
+		    && (int)lvl <= AllObjects[i].omaxlvl) {
+#else
 		    && (int)currlevel >= AllObjects[i].ominlvl
 		    && (int)currlevel <= AllObjects[i].omaxlvl) {
+#endif
 			fileload[AllObjects[i].ofindex] = TRUE;
 		}
 		if (AllObjects[i].otheme != THEME_NONE) {
@@ -246,6 +258,12 @@ void InitObjectGFX()
 		if (fileload[i]) {
 			ObjFileList[numobjfiles] = i;
 			sprintf(filestr, "Objects\\%s.CEL", ObjMasterLoadList[i]);
+#ifdef HELLFIRE
+			if (currlevel >= 17 && currlevel < 21)
+				sprintf(filestr, "Objects\\%s.CEL", ObjHiveLoadList[i]);
+			else if (currlevel >= 21)
+				sprintf(filestr, "Objects\\%s.CEL", ObjCryptLoadList[i]);
+#endif
 			pObjCels[numobjfiles] = LoadFileInMem(filestr, NULL);
 			numobjfiles++;
 		}
