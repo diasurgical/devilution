@@ -14,7 +14,7 @@ ItemStruct premiumitem[SMITH_PREMIUM_ITEMS];
 BYTE *pSTextBoxCels;
 int premiumlevel;
 int talker;
-STextStruct stext[24];
+STextStruct stext[STORE_LINES];
 char stextsize;
 
 int stextsmax;
@@ -90,11 +90,7 @@ void InitStores()
 	pSTextBoxCels = LoadFileInMem("Data\\TextBox2.CEL", NULL);
 	pSPentSpn2Cels = LoadFileInMem("Data\\PentSpn2.CEL", NULL);
 	pSTextSlidCels = LoadFileInMem("Data\\TextSlid.CEL", NULL);
-#ifdef HELLFIRE
-	ClearSText(0, 104);
-#else
-	ClearSText(0, 24);
-#endif
+	ClearSText(0, STORE_LINES);
 	stextflag = STORE_NONE;
 	InStoreFlag = 1;
 	stextsize = FALSE;
@@ -1535,7 +1531,7 @@ void StartStore(char s)
 		chrflag = FALSE;
 		questlog = FALSE;
 		dropGoldFlag = FALSE;
-		ClearSText(0, 24);
+		ClearSText(0, STORE_LINES);
 		ReleaseStoreBtn();
 		switch (t) {
 		case STORE_SMITH:
@@ -1613,12 +1609,12 @@ void StartStore(char s)
 			break;
 		}
 
-		for (i = 0; i < 24; i++) {
+		for (i = 0; i < STORE_LINES; i++) {
 			if (stext[i]._ssel)
 				break;
 		}
 
-		stextsel = i == 24 ? -1 : i;
+		stextsel = i == STORE_LINES ? -1 : i;
 		stextflag = t;
 		if (t != STORE_SBUY || storenumh)
 			break;
@@ -1658,7 +1654,7 @@ void DrawSText()
 		}
 	}
 
-	for (i = 0; i < 24; i++) {
+	for (i = 0; i < STORE_LINES; i++) {
 		if (stext[i]._sline)
 			DrawSLine(i);
 		if (stext[i]._sstr[0])
@@ -1761,7 +1757,7 @@ void STextUp()
 		stextsel--;
 		while (!stext[stextsel]._ssel) {
 			if (!stextsel)
-				stextsel = 23;
+				stextsel = STORE_LINES - 1;
 			else
 				stextsel--;
 		}
@@ -1769,13 +1765,13 @@ void STextUp()
 	}
 
 	if (!stextsel)
-		stextsel = 23;
+		stextsel = STORE_LINES - 1;
 	else
 		stextsel--;
 
 	while (!stext[stextsel]._ssel) {
 		if (!stextsel)
-			stextsel = 23;
+			stextsel = STORE_LINES - 1;
 		else
 			stextsel--;
 	}
@@ -1797,7 +1793,7 @@ void STextDown()
 
 		stextsel++;
 		while (!stext[stextsel]._ssel) {
-			if (stextsel == 23)
+			if (stextsel == STORE_LINES - 1)
 				stextsel = 0;
 			else
 				stextsel++;
@@ -1805,13 +1801,13 @@ void STextDown()
 		return;
 	}
 
-	if (stextsel == 23)
+	if (stextsel == STORE_LINES - 1)
 		stextsel = 0;
 	else
 		stextsel++;
 
 	while (!stext[stextsel]._ssel) {
-		if (stextsel == 23)
+		if (stextsel == STORE_LINES - 1)
 			stextsel = 0;
 		else
 			stextsel++;
