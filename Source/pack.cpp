@@ -282,12 +282,11 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->pDungMsgs2 = 0;
 #endif
 	pPlayer->pLvlLoad = 0;
-#ifdef HELLFIRE
 	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
+#ifdef HELLFIRE
 	pPlayer->pDifficulty = pPack->pDifficulty;
 	pPlayer->pDamAcFlags = pPack->pDamAcFlags;
 #else
-	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
 	pPlayer->pBattleNet = pPack->pBattleNet;
 	pPlayer->pManaShield = pPack->pManaShield;
 #endif
