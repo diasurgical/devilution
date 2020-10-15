@@ -273,11 +273,16 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	}
 
 	CalcPlrInv(pnum, FALSE);
-	pPlayer->pTownWarps = 0;
-	pPlayer->pDungMsgs = 0;
-	pPlayer->pLvlLoad = 0;
 #ifdef HELLFIRE
 	pPlayer->wReflection = pPack->wReflection;
+#endif
+	pPlayer->pTownWarps = 0;
+	pPlayer->pDungMsgs = 0;
+#ifdef HELLFIRE
+	pPlayer->pDungMsgs2 = 0;
+#endif
+	pPlayer->pLvlLoad = 0;
+#ifdef HELLFIRE
 	pPlayer->pDiabloKillLevel = pPack->pDiabloKillLevel;
 	pPlayer->pDifficulty = pPack->pDifficulty;
 	pPlayer->pDamAcFlags = pPack->pDamAcFlags;
