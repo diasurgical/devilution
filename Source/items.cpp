@@ -2008,6 +2008,11 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 	case IPL_DAMP_CURSE:
 		item[i]._iPLDam -= r;
 		break;
+#ifdef HELLFIRE
+	case IPL_DOPPELGANGER:
+		item[i]._iDamAcFlags |= 16;
+		// no break
+#endif
 	case IPL_TOHIT_DAMP:
 		r = RndPL(param1, param2);
 		item[i]._iPLDam += r;
@@ -2080,18 +2085,36 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		break;
 	case IPL_SPELL:
 		item[i]._iSpell = param1;
+#ifdef HELLFIRE
+		item[i]._iCharges = param2;
+#else
 		item[i]._iCharges = param1; // BUGFIX: should be param2. This code was correct in v1.04, and the bug was introduced between 1.04 and 1.09b.
+#endif
 		item[i]._iMaxCharges = param2;
 		break;
 	case IPL_FIREDAM:
 		item[i]._iFlags |= ISPL_FIREDAM;
+#ifdef HELLFIRE
+		item[i]._iFlags &= ~ISPL_LIGHTDAM;
+#endif
 		item[i]._iFMinDam = param1;
 		item[i]._iFMaxDam = param2;
+#ifdef HELLFIRE
+		item[i]._iLMinDam = 0;
+		item[i]._iLMaxDam = 0;
+#endif
 		break;
 	case IPL_LIGHTDAM:
 		item[i]._iFlags |= ISPL_LIGHTDAM;
+#ifdef HELLFIRE
+		item[i]._iFlags &= ~ISPL_FIREDAM;
+#endif
 		item[i]._iLMinDam = param1;
 		item[i]._iLMaxDam = param2;
+#ifdef HELLFIRE
+		item[i]._iFMinDam = 0;
+		item[i]._iFMaxDam = 0;
+#endif
 		break;
 	case IPL_STR:
 		item[i]._iPLStr += r;
@@ -2154,6 +2177,11 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iMaxDur += r2;
 		item[i]._iDurability += r2;
 		break;
+#ifdef HELLFIRE
+	case IPL_CRYSTALLINE:
+		item[i]._iPLDam += 140 + r * 2;
+		// no break
+#endif
 	case IPL_DUR_CURSE:
 		item[i]._iMaxDur -= r * item[i]._iMaxDur / 100;
 		if (item[i]._iMaxDur < 1)
@@ -2170,16 +2198,44 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 	case IPL_LIGHT_CURSE:
 		item[i]._iPLLight -= param1;
 		break;
+#ifdef HELLFIRE
+	case IPL_MULT_ARROWS:
+		item[i]._iFlags |= ISPL_MULT_ARROWS;
+		break;
+#endif
 	case IPL_FIRE_ARROWS:
 		item[i]._iFlags |= ISPL_FIRE_ARROWS;
+#ifdef HELLFIRE
+		item[i]._iFlags &= ~ISPL_LIGHT_ARROWS;
+#endif
 		item[i]._iFMinDam = param1;
 		item[i]._iFMaxDam = param2;
+#ifdef HELLFIRE
+		item[i]._iLMinDam = 0;
+		item[i]._iLMaxDam = 0;
+#endif
 		break;
 	case IPL_LIGHT_ARROWS:
 		item[i]._iFlags |= ISPL_LIGHT_ARROWS;
+#ifdef HELLFIRE
+		item[i]._iFlags &= ~ISPL_FIRE_ARROWS;
+#endif
 		item[i]._iLMinDam = param1;
 		item[i]._iLMaxDam = param2;
+#ifdef HELLFIRE
+		item[i]._iFMinDam = 0;
+		item[i]._iFMaxDam = 0;
+#endif
 		break;
+#ifdef HELLFIRE
+	case IPL_FIREBALL:
+		item[i]._iFlags |= (ISPL_LIGHT_ARROWS | ISPL_FIRE_ARROWS);
+		item[i]._iFMinDam = param1;
+		item[i]._iFMaxDam = param2;
+		item[i]._iLMinDam = 0;
+		item[i]._iLMaxDam = 0;
+		break;
+#endif
 	case IPL_THORNS:
 		item[i]._iFlags |= ISPL_THORNS;
 		break;
@@ -2220,7 +2276,11 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		drawhpflag = TRUE;
 		break;
 	case IPL_TARGAC:
+#ifdef HELLFIRE
+		item[i]._iPLEnAc = param1;
+#else
 		item[i]._iPLEnAc += r;
+#endif
 		break;
 	case IPL_FASTATTACK:
 		if (param1 == 1)
@@ -2279,16 +2339,77 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iCurs = param1;
 		break;
 	case IPL_ADDACLIFE:
+#ifdef HELLFIRE
+		item[i]._iFlags |= (ISPL_LIGHT_ARROWS | ISPL_FIRE_ARROWS);
+		item[i]._iFMinDam = param1;
+		item[i]._iFMaxDam = param2;
+		item[i]._iLMinDam = 1;
+		item[i]._iLMaxDam = 0;
+#else
 		item[i]._iPLHP = (plr[myplr]._pIBonusAC + plr[myplr]._pIAC + plr[myplr]._pDexterity / 5) << 6;
+#endif
 		break;
 	case IPL_ADDMANAAC:
+#ifdef HELLFIRE
+		item[i]._iFlags |= (ISPL_LIGHTDAM | ISPL_FIREDAM);
+		item[i]._iFMinDam = param1;
+		item[i]._iFMaxDam = param2;
+		item[i]._iLMinDam = 2;
+		item[i]._iLMaxDam = 0;
+#else
 		item[i]._iAC += (plr[myplr]._pMaxManaBase >> 6) / 10;
+#endif
 		break;
 	case IPL_FIRERESCLVL:
 		item[i]._iPLFR = 30 - plr[myplr]._pLevel;
 		if (item[i]._iPLFR < 0)
 			item[i]._iPLFR = 0;
 		break;
+#ifdef HELLFIRE
+	case IPL_FIRERES_CURSE:
+		item[i]._iPLFR -= r;
+		break;
+	case IPL_LIGHTRES_CURSE:
+		item[i]._iPLLR -= r;
+		break;
+	case IPL_MAGICRES_CURSE:
+		item[i]._iPLMR -= r;
+		break;
+	case IPL_ALLRES_CURSE:
+		item[i]._iPLFR -= r;
+		item[i]._iPLLR -= r;
+		item[i]._iPLMR -= r;
+		break;
+	case IPL_DEVASTATION:
+		item[i]._iDamAcFlags |= 0x01;
+		break;
+	case IPL_DECAY:
+		item[i]._iDamAcFlags |= 0x02;
+		item[i]._iPLDam += r;
+		break;
+	case IPL_PERIL:
+		item[i]._iDamAcFlags |= 0x04;
+		break;
+	case IPL_JESTERS:
+		item[i]._iDamAcFlags |= 0x08;
+		break;
+	case IPL_ACDEMON:
+		item[i]._iDamAcFlags |= 0x20;
+		break;
+	case IPL_ACUNDEAD:
+		item[i]._iDamAcFlags |= 0x40;
+		break;
+	case IPL_MANATOLIFE:
+		r2 = ((plr[myplr]._pMaxManaBase >> 6) * 50 / 100);
+		item[i]._iPLMana -= (r2 << 6);
+		item[i]._iPLHP += (r2 << 6);
+		break;
+	case IPL_LIFETOMANA:
+		r2 = ((plr[myplr]._pMaxHPBase >> 6) * 40 / 100);
+		item[i]._iPLHP -= (r2 << 6);
+		item[i]._iPLMana += (r2 << 6);
+		break;
+#endif
 	}
 	if (item[i]._iVAdd1 || item[i]._iVMult1) {
 		item[i]._iVAdd2 = PLVal(r, param1, param2, minval, maxval);
