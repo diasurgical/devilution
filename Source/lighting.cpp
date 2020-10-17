@@ -565,8 +565,8 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 #ifdef HELLFIRE
 	} else if (dLight[nXPos][nYPos] > lightradius[nRadius][0]) {
 		dLight[nXPos][nYPos] = lightradius[nRadius][0];
-	}
 #endif
+	}
 
 	mult = xoff + 8*yoff;
 	for (y = 0; y < min_y; y++) {
@@ -915,6 +915,21 @@ void MakeLightTable()
 		}
 		tbl += 224;
 	}
+#ifdef HELLFIRE
+	if (currlevel >= 17) {
+		tbl = pLightTbl;
+		for (i = 0; i < lights; i++) {
+			*tbl++ = 0;
+			for (j = 1; j < 16; j++)
+				*tbl++ = j;
+			tbl += 240;
+		}
+		*tbl++ = 0;
+		for (j = 1; j < 16; j++)
+			*tbl++ = 1;
+		tbl += 240;
+	}
+#endif
 
 	trn = LoadFileInMem("PlrGFX\\Infra.TRN", NULL);
 	for (i = 0; i < 256; i++) {
@@ -954,27 +969,41 @@ void MakeLightTable()
 		*tbl++ = 0;
 	}
 
-	for (k = 0; k < 16; k++) {
-		for (l = 0; l < 128; l++) {
-			if (l > (k + 1) * 8) {
-				lightradius[k][l] = 15;
+	for (j = 0; j < 16; j++) {
+		for (i = 0; i < 128; i++) {
+			if (i > (j + 1) * 8) {
+				lightradius[j][i] = 15;
 			} else {
-				lightradius[k][l] = l * 15.0 / ((k + 1) * 8.0) + 0.5;
+				fs = (double)15 * i / ((double)8 * (j + 1));
+				lightradius[j][i] = (BYTE)(fs + 0.5);
 			}
 		}
 	}
 
-	for (i = 0; i < 8; i++) {
-		for (j = 0; j < 8; j++) {
+#ifdef HELLFIRE
+	if (currlevel >= 17) {
+		for (j = 0; j < 16; j++) {
+			fa = (sqrt((double)(16 - j))) / 128;
+			fa *= fa;
+			for (i = 0; i < 128; i++) {
+				lightradius[15 - j][i] = 15 - (BYTE)(fa * (double)((128 - i) * (128 - i)));
+				if (lightradius[15 - j][i] > 15)
+					lightradius[15 - j][i] = 0;
+				lightradius[15 - j][i] = lightradius[15 - j][i] - (BYTE)((15 - j) / 2);
+				if (lightradius[15 - j][i] > 15)
+					lightradius[15 - j][i] = 0;
+			}
+		}
+	}
+#endif
+	for (j = 0; j < 8; j++) {
+		for (i = 0; i < 8; i++) {
 			for (k = 0; k < 16; k++) {
 				for (l = 0; l < 16; l++) {
 					fs = (BYTE)sqrt((8 * l - j) * (8 * l - j) + (8 * k - i) * (8 * k - i));
-					if (fs < 0.0) {
-						fa = -0.5;
-					} else {
-						fa = 0.5;
-					}
-					lightblock[i * 8 + j][k][l] = fs + fa;
+					fs += fs < 0 ? -0.5 : 0.5;
+
+					lightblock[j * 8 + i][k][l] = fs;
 				}
 			}
 		}
