@@ -556,11 +556,19 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 		max_y = 15;
 	}
 
+#ifdef HELLFIRE
+	if (currlevel < 17) {
+#else
 	if (nXPos >= 0 && nXPos < MAXDUNX && nYPos >= 0 && nYPos < MAXDUNY) {
+#endif
 		dLight[nXPos][nYPos] = 0;
+#ifdef HELLFIRE
+	} else if (dLight[nXPos][nYPos] > lightradius[nRadius][0]) {
+		dLight[nXPos][nYPos] = lightradius[nRadius][0];
 	}
+#endif
 
-	mult = xoff + 8 * yoff;
+	mult = xoff + 8*yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < max_x; x++) {
 			radius_block = lightblock[mult][y][x];
@@ -568,11 +576,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_x = nXPos + x;
 				temp_y = nYPos + y;
 				v = lightradius[nRadius][radius_block];
-				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if (v < dLight[temp_x][temp_y]) {
+#ifndef HELLFIRE
+				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
+#endif
+					if (v < dLight[temp_x][temp_y])
 						dLight[temp_x][temp_y] = v;
-					}
-				}
 			}
 		}
 	}
@@ -585,11 +593,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_x = nXPos + y;
 				temp_y = nYPos - x;
 				v = lightradius[nRadius][radius_block];
-				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if (v < dLight[temp_x][temp_y]) {
+#ifndef HELLFIRE
+				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
+#endif
+					if (v < dLight[temp_x][temp_y])
 						dLight[temp_x][temp_y] = v;
-					}
-				}
 			}
 		}
 	}
@@ -602,11 +610,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_x = nXPos - x;
 				temp_y = nYPos - y;
 				v = lightradius[nRadius][radius_block];
-				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if (v < dLight[temp_x][temp_y]) {
+#ifndef HELLFIRE
+				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
+#endif
+					if (v < dLight[temp_x][temp_y])
 						dLight[temp_x][temp_y] = v;
-					}
-				}
 			}
 		}
 	}
@@ -619,11 +627,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_x = nXPos - y;
 				temp_y = nYPos + x;
 				v = lightradius[nRadius][radius_block];
-				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if (v < dLight[temp_x][temp_y]) {
+#ifndef HELLFIRE
+				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
+#endif
+					if (v < dLight[temp_x][temp_y])
 						dLight[temp_x][temp_y] = v;
-					}
-				}
 			}
 		}
 	}
