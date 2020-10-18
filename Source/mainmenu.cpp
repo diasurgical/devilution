@@ -95,12 +95,17 @@ void mainmenu_loop()
 	BOOL done;
 	int menu;
 
-	done = FALSE;
 	mainmenu_refresh_music();
+	done = FALSE;
 
 	do {
 		menu = 0;
+#ifdef HELLFIRE
+		//if (!UiMainMenuDialog(gszProductName, &menu, UseMultiTest, effects_play_sound, 30))
 		if (!UiMainMenuDialog(gszProductName, &menu, effects_play_sound, 30))
+#else
+		if (!UiMainMenuDialog(gszProductName, &menu, effects_play_sound, 30))
+#endif
 			app_fatal("Unable to display mainmenu");
 
 		switch (menu) {
@@ -112,10 +117,15 @@ void mainmenu_loop()
 			if (!mainmenu_multi_player())
 				done = TRUE;
 			break;
-		case MAINMENU_REPLAY_INTRO:
 		case MAINMENU_ATTRACT_MODE:
+#ifdef HELLFIRE
+			break;
+#endif
+		case MAINMENU_REPLAY_INTRO:
 #ifdef SPAWN
+#ifndef HELLFIRE
 			done = FALSE;
+#endif
 #else
 			if (gbActive)
 				mainmenu_play_intro();
@@ -124,6 +134,12 @@ void mainmenu_loop()
 		case MAINMENU_SHOW_CREDITS:
 			UiCreditsDialog(16);
 			break;
+#ifdef HELLFIRE
+		case MAINMENU_SHOW_SUPPORT:
+			//UiSupportDialog(16);
+			UiCreditsDialog(16);
+			break;
+#endif
 		case MAINMENU_EXIT_DIABLO:
 			done = TRUE;
 			break;
