@@ -205,8 +205,37 @@ BOOL mainmenu_init_menu(int type)
 
 BOOL mainmenu_multi_player()
 {
+#ifdef HELLFIRE
+	int dlgresult;
+	BOOL hero_is_created = TRUE;
+
+	while (TRUE) {
+		gbMaxPlayers = MAX_PLRS;
+		dlgresult = 0;
+		jogging_opt = FALSE;
+		if (!UiSelHeroMultDialog(
+		        pfile_ui_set_hero_infos,
+		        pfile_ui_save_create,
+		        pfile_delete_save,
+		        pfile_ui_set_class_stats,
+		        &dlgresult,
+		        &hero_is_created, // Not in hellfire
+		        gszHero
+		        //,UseBardTest,
+		        //UseBarbarianTest
+		        )) {
+			app_fatal("Can't load multiplayer dialog");
+		}
+
+		if (dlgresult == SELHERO_PREVIOUS)
+			return TRUE;
+		if (!mainmenu_init_menu(dlgresult))
+			return FALSE;
+	}
+#else
 	gbMaxPlayers = MAX_PLRS;
 	return mainmenu_init_menu(SELHERO_CONNECT);
+#endif
 }
 
 #ifndef SPAWN
