@@ -151,8 +151,40 @@ void mainmenu_loop()
 
 BOOL mainmenu_single_player()
 {
+#ifdef HELLFIRE
+	int dlgresult;
+
+	while (TRUE) {
+		gbMaxPlayers = 1;
+		dlgresult = 0;
+
+		if (!SRegLoadValue(APP_NAME, jogging_title, 0, &jogging_opt)) {
+			jogging_opt = TRUE;
+		}
+
+		if (!UiSelHeroSingDialog(
+		        pfile_ui_set_hero_infos,
+		        pfile_ui_save_create,
+		        pfile_delete_save,
+		        pfile_ui_set_class_stats,
+		        &dlgresult,
+		        gszHero,
+		        &gnDifficulty
+		        //,UseBardTest,
+		        //UseBarbarianTest
+		        )) {
+			app_fatal("Unable to display SelHeroSing");
+		}
+
+		if (dlgresult == SELHERO_PREVIOUS)
+			return TRUE;
+		if (!mainmenu_init_menu(dlgresult))
+			return FALSE;
+	}
+#else
 	gbMaxPlayers = 1;
 	return mainmenu_init_menu(SELHERO_NEW_DUNGEON);
+#endif
 }
 
 BOOL mainmenu_init_menu(int type)
