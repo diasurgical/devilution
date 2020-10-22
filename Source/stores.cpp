@@ -2586,6 +2586,14 @@ void S_HealerEnter()
 		gossipend = TEXT_PEPIN11;
 		StartStore(STORE_GOSSIP);
 		break;
+#ifdef HELLFIRE
+	case 14:
+		StartStore(STORE_HBUY);
+		break;
+	case 16:
+		stextflag = STORE_NONE;
+		break;
+#else
 	case 14:
 		if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
 			PlaySFX(IS_CAST8);
@@ -2599,6 +2607,7 @@ void S_HealerEnter()
 	case 18:
 		stextflag = STORE_NONE;
 		break;
+#endif
 	}
 }
 
