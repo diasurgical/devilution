@@ -30,11 +30,7 @@ void nthread_terminate_game(const char *pszFcn)
 {
 	DWORD sErr;
 
-#ifdef HELLFIRE
-	sErr = GetLastError();
-#else
-	sErr = SErrGetLastError();
-#endif
+	sErr = DERROR();
 	if (sErr == STORM_ERROR_INVALID_PLAYER) {
 		return;
 	} else if (sErr == STORM_ERROR_GAME_TERMINATED) {
@@ -92,11 +88,7 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 		return TRUE;
 	}
 	if (!SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, gdwMsgLenTbl, (LPDWORD)player_state)) {
-#ifdef HELLFIRE
-		if (GetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
-#else
-		if (SErrGetLastError() != STORM_ERROR_NO_MESSAGES_WAITING)
-#endif
+		if (DERROR() != STORM_ERROR_NO_MESSAGES_WAITING)
 			nthread_terminate_game("SNetReceiveTurns");
 		sgbTicsOutOfSync = FALSE;
 		sgbSyncCountdown = 1;

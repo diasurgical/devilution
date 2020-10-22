@@ -92,7 +92,7 @@ BOOL msg_wait_resync()
 		return FALSE;
 	}
 
-	if (sgbDeltaChunks != 21) {
+	if (sgbDeltaChunks != MAX_CHUNKS) {
 		DrawDlg("Unable to get level data");
 		msg_free_packets();
 		return FALSE;
@@ -115,9 +115,9 @@ int msg_wait_for_turns()
 	BOOL received;
 	DWORD turns;
 
-	if (!sgbDeltaChunks) {
+	if (sgbDeltaChunks == 0) {
 		nthread_send_and_recv_turn(0, 0);
-		if (!SNetGetOwnerTurnsWaiting(&turns) && SErrGetLastError() == STORM_ERROR_NOT_IN_GAME)
+		if (!SNetGetOwnerTurnsWaiting(&turns) && DERROR() == STORM_ERROR_NOT_IN_GAME)
 			return 100;
 		if (GetTickCount() - sgdwOwnerWait <= 2000 && turns < gdwTurnsInTransit)
 			return 0;
@@ -136,11 +136,11 @@ int msg_wait_for_turns()
 		gbDeltaSender = myplr;
 		nthread_set_turn_upper_bit();
 	}
-	if (sgbDeltaChunks == 20) {
-		sgbDeltaChunks = 21;
+	if (sgbDeltaChunks == MAX_CHUNKS - 1) {
+		sgbDeltaChunks = MAX_CHUNKS;
 		return 99;
 	}
-	return 100 * sgbDeltaChunks / 21;
+	return 100 * sgbDeltaChunks / MAX_CHUNKS;
 }
 
 void run_delta_info()
@@ -1185,7 +1185,7 @@ DWORD On_DLEVEL(int pnum, TCmd *pCmd)
 	}
 	if (sgbRecvCmd == CMD_DLEVEL_END) {
 		if (p->bCmd == CMD_DLEVEL_END) {
-			sgbDeltaChunks = 20;
+			sgbDeltaChunks = MAX_CHUNKS - 1;
 			return p->wBytes + sizeof(*p);
 		} else if (p->bCmd == CMD_DLEVEL_0 && p->wOffset == 0) {
 			sgdwRecvOffset = 0;
@@ -1196,7 +1196,7 @@ DWORD On_DLEVEL(int pnum, TCmd *pCmd)
 	} else if (sgbRecvCmd != p->bCmd) {
 		DeltaImportData(sgbRecvCmd, sgdwRecvOffset);
 		if (p->bCmd == CMD_DLEVEL_END) {
-			sgbDeltaChunks = 20;
+			sgbDeltaChunks = MAX_CHUNKS - 1;
 			sgbRecvCmd = CMD_DLEVEL_END;
 			return p->wBytes + sizeof(*p);
 		} else {

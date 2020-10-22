@@ -16,8 +16,10 @@
 
 #ifdef HELLFIRE
 #define HFAND &&
+#define DERROR					GetLastError
 #else
 #define HFAND &
+#define DERROR					SErrGetLastError
 #endif
 
 #define DMAXX					40
@@ -35,17 +37,17 @@
 #ifdef HELLFIRE
 #define MAX_LVLS				24
 #define MAX_LVLMTYPES			24
+#define MAX_SPELLS				52
 #else
 #define MAX_LVLS				16
 #define MAX_LVLMTYPES			16
-#endif
-// #define MAX_PATH				260
-#define MAX_SEND_STR_LEN		80
-#ifdef HELLFIRE
-#define MAX_SPELLS				52
-#else
 #define MAX_SPELLS				37
 #endif
+
+#define MAX_CHUNKS				(MAX_LVLS + 5)
+
+// #define MAX_PATH				260
+#define MAX_SEND_STR_LEN		80
 
 #define MAXDEAD					31
 #define MAXDUNX					112
