@@ -271,7 +271,7 @@ BYTE *DeltaExportJunk(BYTE *dst)
 	}
 
 	mq = sgJunk.quests;
-	for (i = 0; i < MAXMULTIQUESTS; i++) {
+	for (i = 0; i < MAXQUESTS; i++) {
 		if (questlist[i]._qflags & QUEST_ANY) {
 			mq->qlog = quests[i]._qlog;
 			mq->qstate = quests[i]._qactive;
@@ -1313,7 +1313,7 @@ void DeltaImportJunk(BYTE *src)
 	}
 
 	mq = sgJunk.quests;
-	for (i = 0; i < MAXMULTIQUESTS; i++) {
+	for (i = 0; i < MAXQUESTS; i++) {
 		if (questlist[i]._qflags & QUEST_ANY) {
 			memcpy(mq, src, sizeof(MultiQuests));
 			src += sizeof(MultiQuests);
