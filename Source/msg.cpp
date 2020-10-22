@@ -1384,7 +1384,8 @@ DWORD On_SBSPELL(TCmd *pCmd, int pnum)
 	TCmdParam1 *p = (TCmdParam1 *)pCmd;
 
 	if (gbBufferMsgs != 1) {
-		if (currlevel != 0 || spelldata[p->wParam1].sTownSpell) {
+		int spell = p->wParam1;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			plr[pnum]._pSpell = p->wParam1;
 			plr[pnum]._pSplType = plr[pnum]._pSBkSplType;
 			plr[pnum]._pSplFrom = 1;
