@@ -1802,7 +1802,8 @@ DWORD On_SPELLXYD(TCmd *pCmd, int pnum)
 	TCmdLocParam3 *p = (TCmdLocParam3 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam1].sTownSpell) {
+		int spell = p->wParam1;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLWALL;
 			plr[pnum].destParam1 = p->x;
