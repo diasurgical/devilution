@@ -275,7 +275,7 @@ int FindClosest(int sx, int sy, int rad)
 	for (i = 1; i < rad; i++) {
 		cr = CrawlNum[i] + 2;
 #ifdef HELLFIRE
-		for (j = CrawlTable[CrawlNum[i]]; j > 0; j--) {
+		for (j = CrawlTable[CrawlNum[i]]; j > 0; j--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 		for (j = (BYTE)CrawlTable[CrawlNum[i]]; j > 0; j--) {
 #endif
@@ -2440,7 +2440,7 @@ void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 		for (j = 0; j < 6; j++) {
 			k = CrawlNum[j] + 2;
 #ifdef HELLFIRE
-			for (i = CrawlTable[CrawlNum[j]]; i > 0; i--) {
+			for (i = CrawlTable[CrawlNum[j]]; i > 0; i--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 			for (i = (BYTE)CrawlTable[CrawlNum[j]]; i > 0; i--) {
 #endif
@@ -2580,7 +2580,7 @@ void AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		pn = CrawlNum[i];
 		k = pn + 2;
 #ifdef HELLFIRE
-		for (j = CrawlTable[pn]; j > 0; j--) {
+		for (j = CrawlTable[pn]; j > 0; j--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 		for (j = (BYTE)CrawlTable[pn]; j > 0; j--) {
 #endif
@@ -2811,7 +2811,7 @@ void AddStone(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		k = CrawlNum[i];
 		l = k + 2;
 #ifdef HELLFIRE
-		for (j = CrawlTable[k]; j > 0; j--) {
+		for (j = CrawlTable[k]; j > 0; j--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
 #endif
@@ -3027,7 +3027,7 @@ void AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 		k = CrawlNum[i];
 		pn = k + 2;
 #ifdef HELLFIRE
-		for (j = CrawlTable[k]; j > 0; j--) {
+		for (j = CrawlTable[k]; j > 0; j--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
 #endif
@@ -3500,7 +3500,7 @@ void MI_Golem(int i)
 			k = CrawlNum[l];
 			tid = k + 2;
 #ifdef HELLFIRE
-			for (m = CrawlTable[k]; m > 0; m--) {
+			for (m = CrawlTable[k]; m > 0; m--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 			for (m = (BYTE)CrawlTable[k]; m > 0; m--) {
 #endif
@@ -4897,7 +4897,7 @@ void MI_Chain(int i)
 		k = CrawlNum[m];
 		l = k + 2;
 #ifdef HELLFIRE
-		for (n = CrawlTable[k]; n > 0; n--) {
+		for (n = CrawlTable[k]; n > 0; n--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
 #else
 		for (n = (BYTE)CrawlTable[k]; n > 0; n--) {
 #endif
