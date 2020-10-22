@@ -60,7 +60,7 @@ void msg_get_next_packet()
 
 	sgpCurrPkt = (TMegaPkt *)DiabloAllocPtr(sizeof(TMegaPkt));
 	sgpCurrPkt->pNext = NULL;
-	sgpCurrPkt->dwSpaceLeft = 32000;
+	sgpCurrPkt->dwSpaceLeft = sizeof(result->data);
 
 	result = (TMegaPkt *)&sgpMegaPkt;
 	while (result->pNext) {
@@ -161,9 +161,9 @@ void msg_pre_packet()
 	TFakeCmdPlr *cmd, *tmpCmd;
 	TFakeDropPlr *dropCmd;
 
-	pkt = sgpMegaPkt;
-	for (i = -1; pkt; pkt = pkt->pNext) {
-		spaceLeft = 32000;
+	i = -1;
+	for (pkt = sgpMegaPkt; pkt != NULL; pkt = pkt->pNext) {
+		spaceLeft = sizeof(pkt->data);
 		cmd = (TFakeCmdPlr *)pkt->data;
 		while (spaceLeft != pkt->dwSpaceLeft) {
 			if (cmd->bCmd == FAKE_CMD_SETID) {
@@ -192,7 +192,7 @@ void DeltaExportData(int pnum)
 	char src;
 
 	if (sgbDeltaChanged) {
-		dst = (BYTE *)DiabloAllocPtr(4722);
+		dst = (BYTE *)DiabloAllocPtr(sizeof(DLevel) + 1);
 		for (i = 0; i < NUMLEVELS; i++) {
 			dstEnd = dst + 1;
 			dstEnd = DeltaExportItem(dstEnd, sgLevels[i].item);
