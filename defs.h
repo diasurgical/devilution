@@ -57,13 +57,14 @@
 #define MAXLIGHTS				32
 #define MAXMISSILES				125
 #define MAXMONSTERS				200
-#define MAXMULTIQUESTS			4
 #define MAXOBJECTS				127
 #define MAXPORTAL				4
 #ifdef HELLFIRE
 #define MAXQUESTS				24
+#define MAXMULTIQUESTS			10
 #else
 #define MAXQUESTS				16
+#define MAXMULTIQUESTS			4
 #endif
 #define MAXTHEMES				50
 #define MAXTILES				2048
