@@ -1825,7 +1825,8 @@ DWORD On_SPELLXY(TCmd *pCmd, int pnum)
 	TCmdLocParam2 *p = (TCmdLocParam2 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam1].sTownSpell) {
+		int spell = p->wParam1;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELL;
 			plr[pnum].destParam1 = p->x;
@@ -1846,7 +1847,8 @@ DWORD On_TSPELLXY(TCmd *pCmd, int pnum)
 	TCmdLocParam2 *p = (TCmdLocParam2 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam1].sTownSpell) {
+		int spell = p->wParam1;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELL;
 			plr[pnum].destParam1 = p->x;
