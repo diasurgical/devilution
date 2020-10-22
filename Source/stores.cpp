@@ -2282,8 +2282,8 @@ void WitchBuyItem()
 	StoreAutoPlace();
 
 	if (idx >= 3) {
-		if (idx == 19) {
-			witchitem[19]._itype = ITYPE_NONE;
+		if (idx == WITCH_ITEMS - 1) {
+			witchitem[WITCH_ITEMS - 1]._itype = ITYPE_NONE;
 		} else {
 			for (; witchitem[idx + 1]._itype != ITYPE_NONE; idx++) {
 				witchitem[idx] = witchitem[idx + 1];
