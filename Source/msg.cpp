@@ -1497,62 +1497,67 @@ DWORD On_GETITEM(TCmd *pCmd, int pnum)
 
 BOOL delta_get_item(TCmdGItem *pI, BYTE bLevel)
 {
-	BOOL result;
 	TCmdPItem *pD;
 	int i;
-	BOOL found;
 
-	result = TRUE;
-	found = FALSE;
-	if (gbMaxPlayers != 1) {
-		pD = sgLevels[bLevel].item;
-		for (i = 0; i < MAXITEMS; i++, pD++) {
-			if (pD->bCmd != 0xFF && pD->wIndx == pI->wIndx && pD->wCI == pI->wCI && pD->dwSeed == pI->dwSeed) {
-				found = TRUE;
-				break;
-			}
+	if (gbMaxPlayers == 1)
+		return TRUE;
+
+	pD = sgLevels[bLevel].item;
+	for (i = 0; i < MAXITEMS; i++, pD++) {
+		if (pD->bCmd == 0xFF || pD->wIndx != pI->wIndx || pD->wCI != pI->wCI || pD->dwSeed != pI->dwSeed)
+			continue;
+
+		if (pD->bCmd == CMD_WALKXY) {
+			return TRUE;
 		}
-		if (found) {
-			if (pD->bCmd == CMD_WALKXY) {
-				return result;
-			}
-			if (pD->bCmd == CMD_STAND) {
-				sgbDeltaChanged = 1;
-				pD->bCmd = CMD_WALKXY;
-				return result;
-			}
-			if (pD->bCmd == CMD_ACK_PLRINFO) {
-				pD->bCmd = 0xFF;
-				sgbDeltaChanged = 1;
-				return result;
-			}
-			app_fatal("delta:1");
+		if (pD->bCmd == CMD_STAND) {
+			sgbDeltaChanged = TRUE;
+			pD->bCmd = CMD_WALKXY;
+			return TRUE;
 		}
-		if (((pI->wCI >> 8) & 0x80) == 0)
-			return FALSE;
-		pD = sgLevels[bLevel].item;
-		for (i = 0; i < MAXITEMS; i++, pD++) {
-			if (pD->bCmd == 0xFF) {
-				sgbDeltaChanged = 1;
-				pD->bCmd = CMD_WALKXY;
-				pD->x = pI->x;
-				pD->y = pI->y;
-				pD->wIndx = pI->wIndx;
-				pD->wCI = pI->wCI;
-				pD->dwSeed = pI->dwSeed;
-				pD->bId = pI->bId;
-				pD->bDur = pI->bDur;
-				pD->bMDur = pI->bMDur;
-				pD->bCh = pI->bCh;
-				pD->bMCh = pI->bMCh;
-				pD->wValue = pI->wValue;
-				pD->dwBuff = pI->dwBuff;
-				result = TRUE;
-				break;
-			}
+		if (pD->bCmd == CMD_ACK_PLRINFO) {
+			sgbDeltaChanged = TRUE;
+			pD->bCmd = 0xFF;
+			return TRUE;
+		}
+
+		app_fatal("delta:1");
+		break;
+	}
+
+	if ((pI->wCI & CF_PREGEN) == 0)
+		return FALSE;
+
+	pD = sgLevels[bLevel].item;
+	for (i = 0; i < MAXITEMS; i++, pD++) {
+		if (pD->bCmd == 0xFF) {
+			sgbDeltaChanged = TRUE;
+			pD->bCmd = CMD_WALKXY;
+			pD->x = pI->x;
+			pD->y = pI->y;
+			pD->wIndx = pI->wIndx;
+			pD->wCI = pI->wCI;
+			pD->dwSeed = pI->dwSeed;
+			pD->bId = pI->bId;
+			pD->bDur = pI->bDur;
+			pD->bMDur = pI->bMDur;
+			pD->bCh = pI->bCh;
+			pD->bMCh = pI->bMCh;
+			pD->wValue = pI->wValue;
+			pD->dwBuff = pI->dwBuff;
+#ifdef HELLFIRE
+			pD->wToHit = pI->wToHit;
+			pD->wMaxDam = pI->wMaxDam;
+			pD->bMinStr = pI->bMinStr;
+			pD->bMinMag = pI->bMinMag;
+			pD->bMinDex = pI->bMinDex;
+			pD->bAC = pI->bAC;
+#endif
+			break;
 		}
 	}
-	return result;
+	return TRUE;
 }
 
 DWORD On_GOTOAGETITEM(TCmd *pCmd, int pnum)
