@@ -43,13 +43,8 @@ BOOL WOpenFile(const char *FileName, HANDLE *phsFile, BOOL mayNotExist)
 	while (1) {
 		if (SFileOpenFile(FileName, phsFile))
 			return TRUE;
-#ifdef HELLFIRE
-		if (mayNotExist && GetLastError() == ERROR_FILE_NOT_FOUND)
+		if (mayNotExist && DERROR() == ERROR_FILE_NOT_FOUND)
 			break;
-#else
-		if (mayNotExist && SErrGetLastError() == ERROR_FILE_NOT_FOUND)
-			break;
-#endif
 		WGetFileArchive(NULL, &retry, FileName);
 	}
 	return FALSE;
