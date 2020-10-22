@@ -6303,17 +6303,17 @@ addr = 0x44A2F6
 size = 0x4
 
 [[func]]
-name = "On_cmd_100"
+name = "On_NAKRUL"
 addr = 0x44A2FA
 size = 0x28
 
 [[func]]
-name = "On_cmd_101"
+name = "On_OPENHIVE"
 addr = 0x44A322
 size = 0x32
 
 [[func]]
-name = "On_cmd_102"
+name = "On_OPENCRYPT"
 addr = 0x44A354
 size = 0x28
 
