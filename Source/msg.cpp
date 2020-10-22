@@ -1968,7 +1968,8 @@ DWORD On_SPELLID(TCmd *pCmd, int pnum)
 	TCmdParam3 *p = (TCmdParam3 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam2].sTownSpell) {
+		int spell = p->wParam2;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLMON;
 			plr[pnum].destParam1 = p->wParam1;
@@ -1988,7 +1989,8 @@ DWORD On_SPELLPID(TCmd *pCmd, int pnum)
 	TCmdParam3 *p = (TCmdParam3 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam2].sTownSpell) {
+		int spell = p->wParam2;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLPLR;
 			plr[pnum].destParam1 = p->wParam1;
@@ -2008,7 +2010,8 @@ DWORD On_TSPELLID(TCmd *pCmd, int pnum)
 	TCmdParam3 *p = (TCmdParam3 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam2].sTownSpell) {
+		int spell = p->wParam2;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLMON;
 			plr[pnum].destParam1 = p->wParam1;
@@ -2028,7 +2031,8 @@ DWORD On_TSPELLPID(TCmd *pCmd, int pnum)
 	TCmdParam3 *p = (TCmdParam3 *)pCmd;
 
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel != 0 || spelldata[p->wParam2].sTownSpell) {
+		int spell = p->wParam2;
+		if (currlevel != 0 || spelldata[spell].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLPLR;
 			plr[pnum].destParam1 = p->wParam1;
