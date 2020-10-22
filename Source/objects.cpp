@@ -1972,9 +1972,9 @@ void Obj_Door(int i)
 		dx = object[i]._ox;
 		dy = object[i]._oy;
 		dok = dMonster[dx][dy] == 0;
-		dok = dok HFAND dItem[dx][dy] == 0;
-		dok = dok HFAND dDead[dx][dy] == 0;
-		dok = dok HFAND dPlayer[dx][dy] == 0;
+		dok = dok HFAND (dItem[dx][dy] == 0);
+		dok = dok HFAND (dDead[dx][dy] == 0);
+		dok = dok HFAND (dPlayer[dx][dy] == 0);
 		object[i]._oSelFlag = 2;
 		object[i]._oVar4 = dok ? 1 : 2;
 		object[i]._oMissFlag = TRUE;
@@ -2724,8 +2724,8 @@ void OperateL2RDoor(int pnum, int oi, DIABOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND dItem[xp][yp] == 0;
-	dok = dok HFAND dDead[xp][yp] == 0;
+	dok = dok HFAND (dItem[xp][yp] == 0);
+	dok = dok HFAND (dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2769,8 +2769,8 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND dItem[xp][yp] == 0;
-	dok = dok HFAND dDead[xp][yp] == 0;
+	dok = dok HFAND (dItem[xp][yp] == 0);
+	dok = dok HFAND (dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2815,8 +2815,8 @@ void OperateL3RDoor(int pnum, int oi, DIABOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND dItem[xp][yp] == 0;
-	dok = dok HFAND dDead[xp][yp] == 0;
+	dok = dok HFAND (dItem[xp][yp] == 0);
+	dok = dok HFAND (dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2861,8 +2861,8 @@ void OperateL3LDoor(int pnum, int oi, DIABOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND dItem[xp][yp] == 0;
-	dok = dok HFAND dDead[xp][yp] == 0;
+	dok = dok HFAND (dItem[xp][yp] == 0);
+	dok = dok HFAND (dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
