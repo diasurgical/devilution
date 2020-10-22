@@ -1216,13 +1216,17 @@ void DeltaImportData(BYTE cmd, DWORD recv_offset)
 	BYTE i;
 	BYTE *src;
 
-	if (sgRecvBuf[0])
-		PkwareDecompress(&sgRecvBuf[1], recv_offset, 4721);
+	if (sgRecvBuf[0] != 0)
+		PkwareDecompress(&sgRecvBuf[1], recv_offset, (sizeof(sgRecvBuf) / sizeof(sgRecvBuf[0])) - 1);
 
 	src = &sgRecvBuf[1];
 	if (cmd == CMD_DLEVEL_JUNK) {
 		DeltaImportJunk(src);
+#ifdef HELLFIRE
+	} else if (cmd >= CMD_DLEVEL_0 && cmd <= CMD_DLEVEL_24) {
+#else
 	} else if (cmd >= CMD_DLEVEL_0 && cmd <= CMD_DLEVEL_16) {
+#endif
 		i = cmd - CMD_DLEVEL_0;
 		src = DeltaImportItem(src, sgLevels[i].item);
 		src = DeltaImportObject(src, sgLevels[i].object);
