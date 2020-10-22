@@ -411,9 +411,9 @@ void DeltaAddItem(int ii)
 	int i;
 	TCmdPItem *pD;
 
-	if (gbMaxPlayers == 1) {
+	if (gbMaxPlayers == 1)
 		return;
-	}
+
 	pD = sgLevels[currlevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != 0xFF
@@ -428,8 +428,8 @@ void DeltaAddItem(int ii)
 	pD = sgLevels[currlevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd == 0xFF) {
-			pD->bCmd = CMD_STAND;
 			sgbDeltaChanged = TRUE;
+			pD->bCmd = CMD_STAND;
 			pD->x = item[ii]._ix;
 			pD->y = item[ii]._iy;
 			pD->wIndx = item[ii].IDidx;
@@ -441,6 +441,14 @@ void DeltaAddItem(int ii)
 			pD->bCh = item[ii]._iCharges;
 			pD->bMCh = item[ii]._iMaxCharges;
 			pD->wValue = item[ii]._ivalue;
+#ifdef HELLFIRE
+			pD->wToHit = item[ii]._iPLToHit;
+			pD->wMaxDam = item[ii]._iMaxDam;
+			pD->bMinStr = item[ii]._iMinStr;
+			pD->bMinMag = item[ii]._iMinMag;
+			pD->bMinDex = item[ii]._iMinDex;
+			pD->bAC = item[ii]._iAC;
+#endif
 			return;
 		}
 	}
