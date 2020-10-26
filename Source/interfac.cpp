@@ -101,7 +101,7 @@ void ShowProgress(unsigned int uMsg)
 		FreeGameMem();
 		IncProgress();
 		pfile_remove_temp_files();
-		LoadGameLevel(TRUE, 0);
+		LoadGameLevel(TRUE, ENTRY_MAIN);
 		IncProgress();
 		break;
 	case WM_DIABNEXTLVL:
@@ -116,7 +116,7 @@ void ShowProgress(unsigned int uMsg)
 		leveltype = gnLevelTypeTbl[currlevel];
 		assert(plr[myplr].plrlevel == currlevel);
 		IncProgress();
-		LoadGameLevel(FALSE, 0);
+		LoadGameLevel(FALSE, ENTRY_MAIN);
 		IncProgress();
 		break;
 	case WM_DIABPREVLVL:
@@ -132,7 +132,7 @@ void ShowProgress(unsigned int uMsg)
 		leveltype = gnLevelTypeTbl[currlevel];
 		assert(plr[myplr].plrlevel == currlevel);
 		IncProgress();
-		LoadGameLevel(FALSE, 1);
+		LoadGameLevel(FALSE, ENTRY_PREV);
 		IncProgress();
 		break;
 	case WM_DIABSETLVL:
@@ -146,7 +146,7 @@ void ShowProgress(unsigned int uMsg)
 		leveltype = setlvltype;
 		FreeGameMem();
 		IncProgress();
-		LoadGameLevel(FALSE, 2);
+		LoadGameLevel(FALSE, ENTRY_SETLVL);
 		IncProgress();
 		break;
 	case WM_DIABRTNLVL:
@@ -159,7 +159,7 @@ void ShowProgress(unsigned int uMsg)
 		FreeGameMem();
 		IncProgress();
 		GetReturnLvlPos();
-		LoadGameLevel(FALSE, 3);
+		LoadGameLevel(FALSE, ENTRY_RTNLVL);
 		IncProgress();
 		break;
 	case WM_DIABWARPLVL:
@@ -172,7 +172,7 @@ void ShowProgress(unsigned int uMsg)
 		FreeGameMem();
 		GetPortalLevel();
 		IncProgress();
-		LoadGameLevel(FALSE, 5);
+		LoadGameLevel(FALSE, ENTRY_WARPLVL);
 		IncProgress();
 		break;
 	case WM_DIABTOWNWARP:
@@ -187,7 +187,7 @@ void ShowProgress(unsigned int uMsg)
 		leveltype = gnLevelTypeTbl[currlevel];
 		assert(plr[myplr].plrlevel == currlevel);
 		IncProgress();
-		LoadGameLevel(FALSE, 6);
+		LoadGameLevel(FALSE, ENTRY_TWARPDN);
 		IncProgress();
 		break;
 	case WM_DIABTWARPUP:
@@ -202,7 +202,7 @@ void ShowProgress(unsigned int uMsg)
 		leveltype = gnLevelTypeTbl[currlevel];
 		assert(plr[myplr].plrlevel == currlevel);
 		IncProgress();
-		LoadGameLevel(FALSE, 7);
+		LoadGameLevel(FALSE, ENTRY_TWARPUP);
 		IncProgress();
 		break;
 	case WM_DIABRETOWN:
@@ -217,7 +217,7 @@ void ShowProgress(unsigned int uMsg)
 		leveltype = gnLevelTypeTbl[currlevel];
 		assert(plr[myplr].plrlevel == currlevel);
 		IncProgress();
-		LoadGameLevel(FALSE, 0);
+		LoadGameLevel(FALSE, ENTRY_MAIN);
 		IncProgress();
 		break;
 	}
