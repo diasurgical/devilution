@@ -21,6 +21,24 @@ void __cdecl operator delete(void *ptr)
 	}
 }
 
+#ifdef _DEBUG
+static LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
+{
+	if (pExc->ExceptionRecord == NULL) {
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
+	if (pExc->ExceptionRecord->ExceptionCode != EXCEPTION_BREAKPOINT) {
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
+
+	if (((BYTE *)pExc->ContextRecord->Eip)[0] == 0xCC) { // int 3
+		pExc->ContextRecord->Eip++;
+	}
+
+	return EXCEPTION_CONTINUE_EXECUTION;
+}
+#endif
+
 void TriggerBreak()
 {
 #ifdef _DEBUG
@@ -38,65 +56,13 @@ void TriggerBreak()
 #endif
 }
 
-#ifdef _DEBUG
-LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
-{
-	if (pExc->ExceptionRecord == NULL) {
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-	if (pExc->ExceptionRecord->ExceptionCode != EXCEPTION_BREAKPOINT) {
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-
-	if (((BYTE *)pExc->ContextRecord->Eip)[0] == 0xCC) { // int 3
-		pExc->ContextRecord->Eip++;
-	}
-
-	return EXCEPTION_CONTINUE_EXECUTION;
-}
-#endif
-
-/**
- * @brief Returns a formatted error message based on the given error code.
- * @param error_code DirectX error code
-
- */
-char *GetErrorStr(DWORD error_code)
-{
-	int size;
-	char *chr;
-
-	if (HRESULT_FACILITY(error_code) == _FACDS) {
-		TraceErrorDS(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]));
-	} else if (HRESULT_FACILITY(error_code) == _FACDD) {
-		TraceErrorDD(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]));
-	} else if (!SErrGetErrorStr(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]))
-	    && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]), NULL)) {
-		wsprintf(sz_error_buf, "unknown error 0x%08x", error_code);
-	}
-
-	size = strlen(sz_error_buf);
-
-	chr = &sz_error_buf[size - 1];
-	while (size-- > 0) {
-		chr--;
-
-		if (*chr != '\r' && *chr != '\n')
-			break;
-
-		*chr = 0x00;
-	}
-
-	return sz_error_buf;
-}
-
 /**
  * @brief Generate a textual message for DirectDraw error codes
  * @param hError DirectDraw error code
  * @param pszBuffer Buffer for the error message
  * @param dwMaxChars Length of pszBuffer
  */
-void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
+static void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
 
@@ -412,7 +378,7 @@ void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
  * @param pszBuffer Buffer for the error message
  * @param dwMaxChars Length of pszBuffer
  */
-void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
+static void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
 
@@ -468,36 +434,44 @@ void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 }
 
 /**
- * @brief Returns a formatted error message of the last error.
+ * @brief Returns a formatted error message based on the given error code.
+ * @param error_code DirectX error code
  */
-char *TraceLastError()
+const char *GetErrorStr(DWORD error_code)
 {
-	return GetErrorStr(GetLastError());
+	int size;
+	char *chr;
+
+	if (HRESULT_FACILITY(error_code) == _FACDS) {
+		TraceErrorDS(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]));
+	} else if (HRESULT_FACILITY(error_code) == _FACDD) {
+		TraceErrorDD(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]));
+	} else if (!SErrGetErrorStr(error_code, sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]))
+	    && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), sz_error_buf, sizeof(sz_error_buf) / sizeof(sz_error_buf[0]), NULL)) {
+		wsprintf(sz_error_buf, "unknown error 0x%08x", error_code);
+	}
+
+	size = strlen(sz_error_buf);
+
+	chr = &sz_error_buf[size - 1];
+	while (size-- > 0) {
+		chr--;
+
+		if (*chr != '\r' && *chr != '\n')
+			break;
+
+		*chr = 0x00;
+	}
+
+	return sz_error_buf;
 }
 
 /**
- * @brief Terminates the game and displays an error message box.
- * @param pszFmt Optional error message.
- * @param ... (see printf)
+ * @brief Returns a formatted error message of the last error.
  */
-void __cdecl app_fatal(const char *pszFmt, ...)
+const char *TraceLastError()
 {
-	va_list va;
-
-	va_start(va, pszFmt);
-	FreeDlg();
-#ifdef _DEBUG
-	TriggerBreak();
-#endif
-
-	if (pszFmt)
-		MsgBox(pszFmt, va);
-
-	va_end(va);
-
-	init_cleanup(FALSE);
-	exit(1);
-	ExitProcess(1);
+	return GetErrorStr(GetLastError());
 }
 
 /**
@@ -505,7 +479,7 @@ void __cdecl app_fatal(const char *pszFmt, ...)
  * @param pszFmt Error message format
  * @param va Additional parameters for message format
  */
-void MsgBox(const char *pszFmt, va_list va)
+static void MsgBox(const char *pszFmt, va_list va)
 {
 	char Text[256];
 
@@ -518,7 +492,7 @@ void MsgBox(const char *pszFmt, va_list va)
 /**
  * @brief Cleans up after a fatal application error.
  */
-void FreeDlg()
+static void FreeDlg()
 {
 	if (terminating && cleanup_thread_id != GetCurrentThreadId())
 		Sleep(20000);
@@ -535,6 +509,34 @@ void FreeDlg()
 
 	SNetDestroy();
 	ShowCursor(TRUE);
+}
+
+/**
+ * @brief Terminates the game and displays an error message box.
+ * @param pszFmt Optional error message.
+ * @param ... (see printf)
+ */
+#ifdef HELLFIRE
+__declspec(naked)
+#endif
+void __cdecl app_fatal(const char *pszFmt, ...)
+{
+	va_list va;
+
+	va_start(va, pszFmt);
+	FreeDlg();
+#if defined(_DEBUG) || defined(HELLFIRE)
+	TriggerBreak();
+#endif
+
+	if (pszFmt)
+		MsgBox(pszFmt, va);
+
+	va_end(va);
+
+	init_cleanup(FALSE);
+	exit(1);
+	ExitProcess(1);
 }
 
 /**
@@ -571,7 +573,7 @@ void assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
  */
 void DDErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
 {
-	char *msg;
+	const char *msg;
 
 	if (error_code) {
 		msg = GetErrorStr(error_code);
@@ -584,7 +586,7 @@ void DDErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
  */
 void DSErrMsg(DWORD error_code, int log_line_nr, const char *log_file_path)
 {
-	char *msg;
+	const char *msg;
 
 	if (error_code) {
 		msg = GetErrorStr(error_code);
@@ -613,6 +615,17 @@ void center_window(HWND hDlg)
 	if (!SetWindowPos(hDlg, HWND_TOP, (screenW - w) / 2, (screenH - h) / 2, 0, 0, SWP_NOZORDER | SWP_NOSIZE)) {
 		app_fatal("center_window: %s", TraceLastError());
 	}
+}
+
+/**
+ * @brief Sets the text of the given dialog.
+ */
+static void TextDlg(HWND hDlg, const char *text)
+{
+	center_window(hDlg);
+
+	if (text)
+		SetDlgItemText(hDlg, 1000, text);
 }
 
 /**
@@ -659,17 +672,7 @@ void ErrDlg(int dialog_id, DWORD error_code, const char *log_file_path, int log_
 	app_fatal(NULL);
 }
 
-/**
- * @brief Sets the text of the given dialog.
- */
-static void TextDlg(HWND hDlg, const char *text)
-{
-	center_window(hDlg);
-
-	if (text)
-		SetDlgItemText(hDlg, 1000, text);
-}
-
+#ifndef HELLFIRE
 /**
  * @brief Displays a warning dialog box based on the given dialog_id and error code.
  */
@@ -685,6 +688,7 @@ void ErrOkDlg(int dialog_id, DWORD error_code, const char *log_file_path, int lo
 	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
 	DialogBoxParam(ghInst, MAKEINTRESOURCE(dialog_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
+#endif
 
 /**
  * @brief Terminates the game with a file not found error dialog.
@@ -733,6 +737,7 @@ BOOL InsertCDDlg()
 	return nResult == IDOK;
 }
 
+#ifndef HELLFIRE
 /**
  * @brief Terminates the game with a read-only directory error dialog.
  */
@@ -745,3 +750,4 @@ void DirErrorDlg(const char *error)
 
 	app_fatal(NULL);
 }
+#endif
