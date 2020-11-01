@@ -14,6 +14,42 @@ typedef struct CodecSignature {
 
 #define BLOCKSIZE 64
 
+static void codec_init_key(int unused, char *pszPassword)
+{
+	int i, ch, n;
+	char key[136]; // last 64 bytes are the SHA1
+	char pw[64];
+	char digest[SHA1HashSize];
+	char *keyInit;
+
+	srand(0x7058);
+
+	keyInit = key;
+	for (i = 0; i < sizeof(key); i++) {
+		*keyInit = rand();
+		keyInit++;
+	}
+	ch = 0;
+	for (i = 0; i < 64; i++) {
+		if (!pszPassword[ch])
+			ch = 0;
+		pw[i] = pszPassword[ch];
+		ch++;
+	}
+	SHA1Reset(0);
+	SHA1Calculate(0, pw, digest);
+	SHA1Clear();
+	for (i = 0; i < sizeof(key); i++)
+		key[i] ^= digest[i % SHA1HashSize];
+	memset(pw, 0, sizeof(pw));
+	memset(digest, 0, sizeof(digest));
+	for (n = 0; n < 3; n++) {
+		SHA1Reset(n);
+		SHA1Calculate(n, &key[72], NULL);
+	}
+	memset(key, 0, sizeof(key));
+}
+
 int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 {
 	char buf[128];
@@ -56,42 +92,6 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, char *pszPassword)
 error:
 	SHA1Clear();
 	return 0;
-}
-
-void codec_init_key(int unused, char *pszPassword)
-{
-	int i, ch, n;
-	char key[136]; // last 64 bytes are the SHA1
-	char pw[64];
-	char digest[SHA1HashSize];
-	char *keyInit;
-
-	srand(0x7058);
-
-	keyInit = key;
-	for (i = 0; i < sizeof(key); i++) {
-		*keyInit = rand();
-		keyInit++;
-	}
-	ch = 0;
-	for (i = 0; i < 64; i++) {
-		if (!pszPassword[ch])
-			ch = 0;
-		pw[i] = pszPassword[ch];
-		ch++;
-	}
-	SHA1Reset(0);
-	SHA1Calculate(0, pw, digest);
-	SHA1Clear();
-	for (i = 0; i < sizeof(key); i++)
-		key[i] ^= digest[i % SHA1HashSize];
-	memset(pw, 0, sizeof(pw));
-	memset(digest, 0, sizeof(digest));
-	for (n = 0; n < 3; n++) {
-		SHA1Reset(n);
-		SHA1Calculate(n, &key[72], NULL);
-	}
-	memset(key, 0, sizeof(key));
 }
 
 DWORD codec_get_encoded_len(DWORD dwSrcBytes)
