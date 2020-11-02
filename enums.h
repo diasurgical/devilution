@@ -2291,6 +2291,12 @@ typedef enum dflag {
 	BFLAG_EXPLORED    = 0x80,
 } dflag;
 
+typedef enum clicktype {
+	CLICK_NONE  = 0,
+	CLICK_LEFT  = 1,
+	CLICK_RIGHT = 2,
+};
+
  /*
  First 5 bits store level
  6th bit stores onlygood flag
