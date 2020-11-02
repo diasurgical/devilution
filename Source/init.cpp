@@ -51,6 +51,135 @@ HANDLE hfopt2_mpq;
 char gszVersionNumber[MAX_PATH] = "internal version unknown";
 char gszProductName[MAX_PATH] = "Diablo v1.09";
 
+static void init_run_office(char *dir)
+{
+	HANDLE hSearch;
+	WIN32_FIND_DATA find;
+	char szFirst[MAX_PATH];
+
+	strcpy(szFirst, dir);
+	if (szFirst[0] != '\0' && szFirst[strlen(szFirst) - 1] == '\\') {
+		strcat(szFirst, "*");
+	} else {
+		strcat(szFirst, "\\*");
+	}
+	hSearch = FindFirstFile(szFirst, &find);
+	if (hSearch == INVALID_HANDLE_VALUE) {
+		return;
+	}
+
+	while (1) {
+		if (find.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+			if (strcmp(find.cFileName, ".") != 0 && strcmp(find.cFileName, "..") != 0) {
+				char szNext[MAX_PATH] = "";
+				if (dir[0] != '\0' && dir[strlen(dir) - 1] == '\\') {
+					sprintf(szNext, "%s%s\\", dir, find.cFileName);
+				} else {
+					sprintf(szNext, "%s\\%s\\", dir, find.cFileName);
+				}
+				init_run_office(szNext);
+			}
+		} else if (_strcmpi(find.cFileName, "Microsoft Office Shortcut Bar.lnk") == 0) {
+			ShellExecute(GetDesktopWindow(), "open", find.cFileName, "", dir, SW_SHOWNORMAL);
+		}
+		if (!FindNextFile(hSearch, &find)) {
+			break;
+		}
+	}
+
+	FindClose(hSearch);
+}
+
+static HWND init_find_mom_parent()
+{
+	HWND i, handle;
+	char ClassName[256];
+
+	for (i = GetForegroundWindow();; i = GetWindow(handle, GW_HWNDNEXT)) {
+		handle = i;
+		if (!i)
+			break;
+		GetClassName(i, ClassName, 255);
+		if (!_strcmpi(ClassName, "MOM Parent"))
+			break;
+	}
+	return handle;
+}
+
+static void init_kill_mom_parent()
+{
+	HWND handle;
+
+	handle = init_find_mom_parent();
+	if (handle != NULL) {
+		PostMessage(handle, WM_CLOSE, 0, 0);
+		killed_mom_parent = TRUE;
+	}
+}
+
+static void init_await_mom_parent_exit()
+{
+	DWORD tick;
+
+	tick = GetTickCount();
+	if (!init_find_mom_parent()) {
+		return;
+	}
+	do {
+		Sleep(250);
+	} while (GetTickCount() - tick <= 4000 && init_find_mom_parent() != NULL);
+}
+
+static void init_run_office_from_start_menu()
+{
+	LPITEMIDLIST idl;
+
+	if (!killed_mom_parent) {
+		return;
+	}
+
+	killed_mom_parent = FALSE;
+	char szPath[256] = ""; /// BUGFIX: size should be at least 'MAX_PATH'
+	idl = NULL;
+
+	if (SHGetSpecialFolderLocation(GetDesktopWindow(), CSIDL_STARTMENU, &idl) == NOERROR) {
+		SHGetPathFromIDList(idl, szPath);
+		init_run_office(szPath);
+	}
+}
+
+static void init_disable_screensaver(BOOLEAN disable)
+{
+	BOOLEAN enabled;
+	char Data[16];
+	DWORD Type, cbData;
+	HKEY phkResult;
+	LRESULT success;
+
+	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
+	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
+
+	success = RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult);
+	if (success != ERROR_SUCCESS) {
+		return;
+	}
+
+	if (disable) {
+		cbData = 16;
+		success = RegQueryValueEx(phkResult, "ScreenSaveActive", NULL, &Type, (LPBYTE)Data, &cbData);
+		if (success == ERROR_SUCCESS)
+			screensaver_enabled_prev = Data[0] != '0';
+		enabled = FALSE;
+	} else {
+		enabled = screensaver_enabled_prev;
+	}
+
+	Data[0] = enabled ? '1' : '0';
+	Data[1] = 0;
+	RegSetValueEx(phkResult, "ScreenSaveActive", NULL, REG_SZ, (const BYTE *)Data, 2);
+	RegCloseKey(phkResult);
+}
+
 void init_cleanup(BOOL show_cursor)
 {
 	pfile_flush_W();
@@ -111,178 +240,129 @@ void init_cleanup(BOOL show_cursor)
 		ShowCursor(TRUE);
 }
 
-void init_run_office_from_start_menu()
+static void init_strip_trailing_slash(char *path)
 {
-	LPITEMIDLIST idl;
+	char *result;
 
-	if (!killed_mom_parent) {
-		return;
-	}
-
-	killed_mom_parent = FALSE;
-	char szPath[256] = ""; /// BUGFIX: size should be at least 'MAX_PATH'
-	idl = NULL;
-
-	if (SHGetSpecialFolderLocation(GetDesktopWindow(), CSIDL_STARTMENU, &idl) == NOERROR) {
-		SHGetPathFromIDList(idl, szPath);
-		init_run_office(szPath);
+	result = strrchr(path, '\\');
+	if (result) {
+		if (!result[1])
+			*result = 0;
 	}
 }
 
-void init_run_office(char *dir)
+static BOOL init_read_test_file(char *pszPath, const char *pszArchive, int dwPriority, HANDLE *phArchive)
 {
-	HANDLE hSearch;
-	WIN32_FIND_DATA find;
-	char szFirst[MAX_PATH];
+	DWORD dwSize;
+	char *pszDrive, *pszRoot;
+	char szDrive[MAX_PATH];
 
-	strcpy(szFirst, dir);
-	if (szFirst[0] != '\0' && szFirst[strlen(szFirst) - 1] == '\\') {
-		strcat(szFirst, "*");
-	} else {
-		strcat(szFirst, "\\*");
-	}
-	hSearch = FindFirstFile(szFirst, &find);
-	if (hSearch == INVALID_HANDLE_VALUE) {
-		return;
+	dwSize = GetLogicalDriveStrings(sizeof(szDrive), szDrive);
+	if (dwSize == 0 || dwSize > sizeof(szDrive)) {
+		return FALSE;
 	}
 
+	while (*pszArchive == '\\') {
+		pszArchive++;
+	}
+
+	pszDrive = szDrive;
+	if (*pszDrive == '\0') {
+		return FALSE;
+	}
 	while (1) {
-		if (find.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-			if (strcmp(find.cFileName, ".") != 0 && strcmp(find.cFileName, "..") != 0) {
-				char szNext[MAX_PATH] = "";
-				if (dir[0] != '\0' && dir[strlen(dir) - 1] == '\\') {
-					sprintf(szNext, "%s%s\\", dir, find.cFileName);
-				} else {
-					sprintf(szNext, "%s\\%s\\", dir, find.cFileName);
-				}
-				init_run_office(szNext);
+		pszRoot = pszDrive;
+		while (*pszDrive++ != '\0')
+			;
+		if (GetDriveType(pszRoot) == DRIVE_CDROM) {
+			strcpy(pszPath, pszRoot);
+			strcat(pszPath, pszArchive);
+			if (SFileOpenArchive(pszPath, dwPriority, FS_CD, phArchive)) {
+				break;
 			}
-		} else if (_strcmpi(find.cFileName, "Microsoft Office Shortcut Bar.lnk") == 0) {
-			ShellExecute(GetDesktopWindow(), "open", find.cFileName, "", dir, SW_SHOWNORMAL);
 		}
-		if (!FindNextFile(hSearch, &find)) {
-			break;
+		if (*pszDrive == '\0') {
+			return FALSE;
 		}
 	}
 
-	FindClose(hSearch);
+	return TRUE;
 }
 
-void init_disable_screensaver(BOOLEAN disable)
+static HANDLE init_test_access(char *mpq_path, const char *mpq_name, const char *reg_loc, int dwPriority, int fs)
 {
-	BOOLEAN enabled;
-	char Data[16];
-	DWORD Type, cbData;
-	HKEY phkResult;
-	LRESULT success;
+	char *last_slash_pos;
+	char Filename[MAX_PATH];
+	char Buffer[MAX_PATH];
+	char archive_path[MAX_PATH];
+	HANDLE archive;
 
-	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
-	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
-
-	success = RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult);
-	if (success != ERROR_SUCCESS) {
-		return;
+	if (!GetCurrentDirectory(sizeof(Buffer), Buffer))
+		app_fatal("Can't get program path");
+	init_strip_trailing_slash(Buffer);
+	if (!SFileSetBasePath(Buffer))
+		app_fatal("SFileSetBasePath");
+	if (!GetModuleFileName(ghInst, Filename, sizeof(Filename)))
+		app_fatal("Can't get program name");
+	last_slash_pos = strrchr(Filename, '\\');
+	if (last_slash_pos)
+		*last_slash_pos = '\0';
+	init_strip_trailing_slash(Filename);
+	strcpy(mpq_path, Buffer);
+	strcat(mpq_path, mpq_name);
+	if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
+		return archive;
+	if (strcmp(Filename, Buffer)) {
+		strcpy(mpq_path, Filename);
+		strcat(mpq_path, mpq_name);
+		if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
+			return archive;
 	}
-
-	if (disable) {
-		cbData = 16;
-		success = RegQueryValueEx(phkResult, "ScreenSaveActive", NULL, &Type, (LPBYTE)Data, &cbData);
-		if (success == ERROR_SUCCESS)
-			screensaver_enabled_prev = Data[0] != '0';
-		enabled = FALSE;
-	} else {
-		enabled = screensaver_enabled_prev;
+	archive_path[0] = '\0';
+	if (reg_loc) {
+		if (SRegLoadString("Archives", reg_loc, 0, archive_path, sizeof(archive_path))) {
+			init_strip_trailing_slash(archive_path);
+			strcpy(mpq_path, archive_path);
+			strcat(mpq_path, mpq_name);
+			if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
+				return archive;
+		}
 	}
-
-	Data[0] = enabled ? '1' : '0';
-	Data[1] = 0;
-	RegSetValueEx(phkResult, "ScreenSaveActive", NULL, REG_SZ, (const BYTE *)Data, 2);
-	RegCloseKey(phkResult);
+	if (fs != FS_PC && init_read_test_file(archive_path, mpq_name, dwPriority, &archive)) {
+		strcpy(mpq_path, archive_path);
+		return archive;
+	}
+	return NULL;
 }
 
-void init_create_window(int nCmdShow)
+static void init_get_file_info()
 {
-	int nWidth, nHeight;
-	HWND hWnd;
-	WNDCLASSEXA wcex;
+	DWORD dwLen;
+	void *pBlock;
+	unsigned int uBytes;
+	DWORD dwHandle;
+	VS_FIXEDFILEINFO *lpBuffer;
 
-	init_kill_mom_parent();
-	pfile_init_save_directory();
-	memset(&wcex, 0, sizeof(wcex));
-	wcex.cbSize = sizeof(wcex);
-	wcex.style = CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc = WindowProc;
-	wcex.hInstance = ghInst;
-	wcex.hIcon = LoadIcon(ghInst, MAKEINTRESOURCE(IDI_ICON1));
-	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-	wcex.lpszMenuName = GAME_NAME;
-	wcex.lpszClassName = "DIABLO";
-	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	if (!RegisterClassEx(&wcex))
-		app_fatal("Unable to register window class");
-	if (GetSystemMetrics(SM_CXSCREEN) < SCREEN_WIDTH)
-		nWidth = SCREEN_WIDTH;
-	else
-		nWidth = GetSystemMetrics(SM_CXSCREEN);
-	if (GetSystemMetrics(SM_CYSCREEN) < SCREEN_HEIGHT)
-		nHeight = SCREEN_HEIGHT;
-	else
-		nHeight = GetSystemMetrics(SM_CYSCREEN);
-	hWnd = CreateWindowEx(0, "DIABLO", GAME_NAME, WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
-	if (!hWnd)
-		app_fatal("Unable to create main window");
-	ShowWindow(hWnd, SW_SHOWNORMAL); // nCmdShow used only in beta: ShowWindow(hWnd, nCmdShow)
-	UpdateWindow(hWnd);
-	init_await_mom_parent_exit();
-	dx_init(hWnd);
-	BlackPalette();
-	snd_init(hWnd);
-	init_archives();
-	init_disable_screensaver(TRUE);
-}
-
-void init_kill_mom_parent()
-{
-	HWND handle;
-
-	handle = init_find_mom_parent();
-	if (handle != NULL) {
-		PostMessage(handle, WM_CLOSE, 0, 0);
-		killed_mom_parent = TRUE;
+	if (GetModuleFileName(ghInst, diablo_exe_path, sizeof(diablo_exe_path))) {
+		dwLen = GetFileVersionInfoSize(diablo_exe_path, &dwHandle);
+		if (dwLen) {
+			pBlock = DiabloAllocPtr(dwLen);
+			if (GetFileVersionInfo(diablo_exe_path, 0, dwLen, pBlock)) {
+				if (VerQueryValue(pBlock, "\\", (LPVOID *)&lpBuffer, &uBytes))
+					sprintf(
+					    gszVersionNumber,
+					    "version %d.%d.%d.%d",
+					    lpBuffer->dwProductVersionMS >> 16,
+					    lpBuffer->dwProductVersionMS & 0xFFFF,
+					    lpBuffer->dwProductVersionLS >> 16,
+					    lpBuffer->dwProductVersionLS & 0xFFFF);
+			}
+			mem_free_dbg(pBlock);
+		}
 	}
 }
 
-HWND init_find_mom_parent()
-{
-	HWND i, handle;
-	char ClassName[256];
-
-	for (i = GetForegroundWindow();; i = GetWindow(handle, GW_HWNDNEXT)) {
-		handle = i;
-		if (!i)
-			break;
-		GetClassName(i, ClassName, 255);
-		if (!_strcmpi(ClassName, "MOM Parent"))
-			break;
-	}
-	return handle;
-}
-
-void init_await_mom_parent_exit()
-{
-	DWORD tick;
-
-	tick = GetTickCount();
-	if (!init_find_mom_parent()) {
-		return;
-	}
-	do {
-		Sleep(250);
-	} while (GetTickCount() - tick <= 4000 && init_find_mom_parent() != NULL);
-}
-
-void init_archives()
+static void init_archives()
 {
 	HANDLE fh;
 #ifdef COPYPROT
@@ -339,125 +419,66 @@ void init_archives()
 #endif
 }
 
-HANDLE init_test_access(char *mpq_path, const char *mpq_name, const char *reg_loc, int dwPriority, int fs)
+void init_create_window(int nCmdShow)
 {
-	char *last_slash_pos;
-	char Filename[MAX_PATH];
-	char Buffer[MAX_PATH];
-	char archive_path[MAX_PATH];
-	HANDLE archive;
+	int nWidth, nHeight;
+	HWND hWnd;
+	WNDCLASSEXA wcex;
 
-	if (!GetCurrentDirectory(sizeof(Buffer), Buffer))
-		app_fatal("Can't get program path");
-	init_strip_trailing_slash(Buffer);
-	if (!SFileSetBasePath(Buffer))
-		app_fatal("SFileSetBasePath");
-	if (!GetModuleFileName(ghInst, Filename, sizeof(Filename)))
-		app_fatal("Can't get program name");
-	last_slash_pos = strrchr(Filename, '\\');
-	if (last_slash_pos)
-		*last_slash_pos = '\0';
-	init_strip_trailing_slash(Filename);
-	strcpy(mpq_path, Buffer);
-	strcat(mpq_path, mpq_name);
-	if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
-		return archive;
-	if (strcmp(Filename, Buffer)) {
-		strcpy(mpq_path, Filename);
-		strcat(mpq_path, mpq_name);
-		if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
-			return archive;
-	}
-	archive_path[0] = '\0';
-	if (reg_loc) {
-		if (SRegLoadString("Archives", reg_loc, 0, archive_path, sizeof(archive_path))) {
-			init_strip_trailing_slash(archive_path);
-			strcpy(mpq_path, archive_path);
-			strcat(mpq_path, mpq_name);
-			if (SFileOpenArchive(mpq_path, dwPriority, fs, &archive))
-				return archive;
-		}
-	}
-	if (fs != FS_PC && init_read_test_file(archive_path, mpq_name, dwPriority, &archive)) {
-		strcpy(mpq_path, archive_path);
-		return archive;
-	}
-	return NULL;
+	init_kill_mom_parent();
+	pfile_init_save_directory();
+	memset(&wcex, 0, sizeof(wcex));
+	wcex.cbSize = sizeof(wcex);
+	wcex.style = CS_HREDRAW | CS_VREDRAW;
+	wcex.lpfnWndProc = WindowProc;
+	wcex.hInstance = ghInst;
+	wcex.hIcon = LoadIcon(ghInst, MAKEINTRESOURCE(IDI_ICON1));
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	wcex.lpszMenuName = GAME_NAME;
+	wcex.lpszClassName = "DIABLO";
+	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+	if (!RegisterClassEx(&wcex))
+		app_fatal("Unable to register window class");
+	if (GetSystemMetrics(SM_CXSCREEN) < SCREEN_WIDTH)
+		nWidth = SCREEN_WIDTH;
+	else
+		nWidth = GetSystemMetrics(SM_CXSCREEN);
+	if (GetSystemMetrics(SM_CYSCREEN) < SCREEN_HEIGHT)
+		nHeight = SCREEN_HEIGHT;
+	else
+		nHeight = GetSystemMetrics(SM_CYSCREEN);
+	hWnd = CreateWindowEx(0, "DIABLO", GAME_NAME, WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
+	if (!hWnd)
+		app_fatal("Unable to create main window");
+	ShowWindow(hWnd, SW_SHOWNORMAL); // nCmdShow used only in beta: ShowWindow(hWnd, nCmdShow)
+	UpdateWindow(hWnd);
+	init_await_mom_parent_exit();
+	dx_init(hWnd);
+	BlackPalette();
+	snd_init(hWnd);
+	init_archives();
+	init_disable_screensaver(TRUE);
 }
 
-void init_strip_trailing_slash(char *path)
+static void init_activate_window(HWND hWnd, BOOL bActive)
 {
-	char *result;
+	LONG dwNewLong;
 
-	result = strrchr(path, '\\');
-	if (result) {
-		if (!result[1])
-			*result = 0;
-	}
-}
+	gbActive = bActive;
+	UiAppActivate(bActive);
+	dwNewLong = GetWindowLong(hWnd, GWL_STYLE);
 
-BOOL init_read_test_file(char *pszPath, const char *pszArchive, int dwPriority, HANDLE *phArchive)
-{
-	DWORD dwSize;
-	char *pszDrive, *pszRoot;
-	char szDrive[MAX_PATH];
+	if (gbActive && fullscreen)
+		dwNewLong &= ~WS_SYSMENU;
+	else
+		dwNewLong |= WS_SYSMENU;
 
-	dwSize = GetLogicalDriveStrings(sizeof(szDrive), szDrive);
-	if (dwSize == 0 || dwSize > sizeof(szDrive)) {
-		return FALSE;
-	}
+	SetWindowLong(hWnd, GWL_STYLE, dwNewLong);
 
-	while (*pszArchive == '\\') {
-		pszArchive++;
-	}
-
-	pszDrive = szDrive;
-	if (*pszDrive == '\0') {
-		return FALSE;
-	}
-	while (1) {
-		pszRoot = pszDrive;
-		while (*pszDrive++ != '\0')
-			;
-		if (GetDriveType(pszRoot) == DRIVE_CDROM) {
-			strcpy(pszPath, pszRoot);
-			strcat(pszPath, pszArchive);
-			if (SFileOpenArchive(pszPath, dwPriority, FS_CD, phArchive)) {
-				break;
-			}
-		}
-		if (*pszDrive == '\0') {
-			return FALSE;
-		}
-	}
-
-	return TRUE;
-}
-
-void init_get_file_info()
-{
-	DWORD dwLen;
-	void *pBlock;
-	unsigned int uBytes;
-	DWORD dwHandle;
-	VS_FIXEDFILEINFO *lpBuffer;
-
-	if (GetModuleFileName(ghInst, diablo_exe_path, sizeof(diablo_exe_path))) {
-		dwLen = GetFileVersionInfoSize(diablo_exe_path, &dwHandle);
-		if (dwLen) {
-			pBlock = DiabloAllocPtr(dwLen);
-			if (GetFileVersionInfo(diablo_exe_path, 0, dwLen, pBlock)) {
-				if (VerQueryValue(pBlock, "\\", (LPVOID *)&lpBuffer, &uBytes))
-					sprintf(
-					    gszVersionNumber,
-					    "version %d.%d.%d.%d",
-					    lpBuffer->dwProductVersionMS >> 16,
-					    lpBuffer->dwProductVersionMS & 0xFFFF,
-					    lpBuffer->dwProductVersionLS >> 16,
-					    lpBuffer->dwProductVersionLS & 0xFFFF);
-			}
-			mem_free_dbg(pBlock);
-		}
+	if (gbActive) {
+		force_redraw = 255;
+		ResetPal();
 	}
 }
 
@@ -501,27 +522,6 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	}
 
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
-}
-
-void init_activate_window(HWND hWnd, BOOL bActive)
-{
-	LONG dwNewLong;
-
-	gbActive = bActive;
-	UiAppActivate(bActive);
-	dwNewLong = GetWindowLong(hWnd, GWL_STYLE);
-
-	if (gbActive && fullscreen)
-		dwNewLong &= ~WS_SYSMENU;
-	else
-		dwNewLong |= WS_SYSMENU;
-
-	SetWindowLong(hWnd, GWL_STYLE, dwNewLong);
-
-	if (gbActive) {
-		force_redraw = 255;
-		ResetPal();
-	}
 }
 
 LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
