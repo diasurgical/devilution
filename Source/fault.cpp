@@ -5,9 +5,40 @@
  */
 #include "all.h"
 
+typedef struct STACK_FRAME {
+	struct STACK_FRAME *pNext;
+	void *pCallRet;
+} STACK_FRAME;
+
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
 
 int fault_unused;
+
+static void *fault_set_filter(void *unused)
+{
+	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
+	return unused;
+}
+
+static LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused)
+{
+	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
+}
+
+static LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
+{
+	return fault_reset_filter(&fault_unused);
+}
+
+static void fault_init_filter()
+{
+	fault_set_filter(&fault_unused);
+}
+
+static void fault_cleanup_filter_atexit()
+{
+	atexit((void(__cdecl *)(void))fault_cleanup_filter);
+}
 
 #ifndef _MSC_VER
 __attribute__((constructor))
@@ -22,71 +53,7 @@ fault_c_init(void)
 SEG_ALLOCATE(SEGMENT_C_INIT)
 _PVFV exception_c_init_funcs[] = { &fault_c_init };
 
-void fault_init_filter()
-{
-	fault_set_filter(&fault_unused);
-}
-
-void fault_cleanup_filter_atexit()
-{
-	atexit((void(__cdecl *)(void))fault_cleanup_filter);
-}
-
-LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
-{
-	return fault_reset_filter(&fault_unused);
-}
-
-LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
-{
-	PEXCEPTION_RECORD xcpt;
-	char szExceptionNameBuf[MAX_PATH];
-	char szModuleName[MAX_PATH];
-	char *pszExceptionName;
-	int sectionNumber, sectionOffset;
-	PCONTEXT ctx;
-
-	log_dump_computer_info();
-	xcpt = ExceptionInfo->ExceptionRecord;
-	pszExceptionName = fault_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
-	log_printf("Exception code: %08X %s\r\n", xcpt->ExceptionCode, pszExceptionName);
-
-	fault_unknown_module(xcpt->ExceptionAddress, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
-	log_printf("Fault address:\t%08X %02X:%08X %s\r\n", xcpt->ExceptionAddress, sectionNumber, sectionOffset, szModuleName);
-
-	ctx = ExceptionInfo->ContextRecord;
-
-	log_printf("\r\nRegisters:\r\n");
-	log_printf(
-	    "EAX:%08X\r\nEBX:%08X\r\nECX:%08X\r\nEDX:%08X\r\nESI:%08X\r\nEDI:%08X\r\n",
-	    ctx->Eax,
-	    ctx->Ebx,
-	    ctx->Ecx,
-	    ctx->Edx,
-	    ctx->Esi,
-	    ctx->Edi);
-	log_printf("CS:EIP:%04X:%08X\r\n", ctx->SegCs, ctx->Eip);
-	log_printf("SS:ESP:%04X:%08X EBP:%08X\r\n", ctx->SegSs, ctx->Esp, ctx->Ebp);
-	log_printf("DS:%04X ES:%04X FS:%04X GS:%04X\r\n", ctx->SegDs, ctx->SegEs, ctx->SegFs, ctx->SegGs);
-
-	log_printf("Flags:%08X\r\n", ctx->EFlags);
-	fault_call_stack((void *)ctx->Eip, (STACK_FRAME *)ctx->Ebp);
-
-	log_printf("Stack bytes:\r\n");
-	fault_hex_format((BYTE *)ctx->Esp, 768);
-
-	log_printf("Code bytes:\r\n");
-	fault_hex_format((BYTE *)ctx->Eip, 16);
-
-	log_printf("\r\n");
-	log_flush(TRUE);
-
-	if (lpTopLevelExceptionFilter)
-		return lpTopLevelExceptionFilter(ExceptionInfo);
-	return EXCEPTION_CONTINUE_SEARCH;
-}
-
-void fault_hex_format(BYTE *ptr, DWORD numBytes)
+static void fault_hex_format(BYTE *ptr, DWORD numBytes)
 {
 	DWORD i, bytesRead;
 	const char *fmt;
@@ -127,7 +94,7 @@ void fault_hex_format(BYTE *ptr, DWORD numBytes)
 	log_printf("\r\n");
 }
 
-void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
+static void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
 {
 	MEMORY_BASIC_INFORMATION memInfo;
 	PIMAGE_DOS_HEADER dosHeader;
@@ -178,7 +145,7 @@ void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength,
 	}
 }
 
-void fault_call_stack(void *instr, STACK_FRAME *stackFrame)
+static void fault_call_stack(void *instr, STACK_FRAME *stackFrame)
 {
 	STACK_FRAME *oldStackFrame;
 	char szModuleName[MAX_PATH];
@@ -203,7 +170,7 @@ void fault_call_stack(void *instr, STACK_FRAME *stackFrame)
 	log_printf("\r\n");
 }
 
-char *fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
+static char *fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 {
 	const char *s;
 
@@ -285,15 +252,53 @@ char *fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 	return lpString1;
 }
 
-void *fault_set_filter(void *unused)
+LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 {
-	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
-	return unused;
-}
+	PEXCEPTION_RECORD xcpt;
+	char szExceptionNameBuf[MAX_PATH];
+	char szModuleName[MAX_PATH];
+	char *pszExceptionName;
+	int sectionNumber, sectionOffset;
+	PCONTEXT ctx;
 
-LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused)
-{
-	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
+	log_dump_computer_info();
+	xcpt = ExceptionInfo->ExceptionRecord;
+	pszExceptionName = fault_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
+	log_printf("Exception code: %08X %s\r\n", xcpt->ExceptionCode, pszExceptionName);
+
+	fault_unknown_module(xcpt->ExceptionAddress, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
+	log_printf("Fault address:\t%08X %02X:%08X %s\r\n", xcpt->ExceptionAddress, sectionNumber, sectionOffset, szModuleName);
+
+	ctx = ExceptionInfo->ContextRecord;
+
+	log_printf("\r\nRegisters:\r\n");
+	log_printf(
+	    "EAX:%08X\r\nEBX:%08X\r\nECX:%08X\r\nEDX:%08X\r\nESI:%08X\r\nEDI:%08X\r\n",
+	    ctx->Eax,
+	    ctx->Ebx,
+	    ctx->Ecx,
+	    ctx->Edx,
+	    ctx->Esi,
+	    ctx->Edi);
+	log_printf("CS:EIP:%04X:%08X\r\n", ctx->SegCs, ctx->Eip);
+	log_printf("SS:ESP:%04X:%08X EBP:%08X\r\n", ctx->SegSs, ctx->Esp, ctx->Ebp);
+	log_printf("DS:%04X ES:%04X FS:%04X GS:%04X\r\n", ctx->SegDs, ctx->SegEs, ctx->SegFs, ctx->SegGs);
+
+	log_printf("Flags:%08X\r\n", ctx->EFlags);
+	fault_call_stack((void *)ctx->Eip, (STACK_FRAME *)ctx->Ebp);
+
+	log_printf("Stack bytes:\r\n");
+	fault_hex_format((BYTE *)ctx->Esp, 768);
+
+	log_printf("Code bytes:\r\n");
+	fault_hex_format((BYTE *)ctx->Eip, 16);
+
+	log_printf("\r\n");
+	log_flush(TRUE);
+
+	if (lpTopLevelExceptionFilter)
+		return lpTopLevelExceptionFilter(ExceptionInfo);
+	return EXCEPTION_CONTINUE_SEARCH;
 }
 
 LPTOP_LEVEL_EXCEPTION_FILTER fault_get_filter()
