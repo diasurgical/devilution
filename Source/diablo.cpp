@@ -318,7 +318,7 @@ static void start_game(unsigned int uMsg)
 	gmenu_init_menu();
 	InitLevelCursor();
 	sgnTimeoutCurs = CURSOR_NONE;
-	sgbMouseDown = 0;
+	sgbMouseDown = CLICK_NONE;
 	track_repeat_walk(FALSE);
 }
 
@@ -787,53 +787,64 @@ static BOOL TryIconCurs()
 	if (pcurs == CURSOR_RESURRECT) {
 		NetSendCmdParam1(TRUE, CMD_RESURRECT, pcursplr);
 		return TRUE;
-	} else if (pcurs == CURSOR_HEALOTHER) {
+	}
+
+	if (pcurs == CURSOR_HEALOTHER) {
 		NetSendCmdParam1(TRUE, CMD_HEALOTHER, pcursplr);
 		return TRUE;
-	} else if (pcurs == CURSOR_TELEKINESIS) {
+	}
+
+	if (pcurs == CURSOR_TELEKINESIS) {
 		DoTelekinesis();
 		return TRUE;
-	} else if (pcurs == CURSOR_IDENTIFY) {
-		if (pcursinvitem != -1) {
+	}
+
+	if (pcurs == CURSOR_IDENTIFY) {
+		if (pcursinvitem != -1)
 			CheckIdentify(myplr, pcursinvitem);
-		} else {
+		else
 			NewCursor(CURSOR_HAND);
-		}
 		return TRUE;
-	} else if (pcurs == CURSOR_REPAIR) {
-		if (pcursinvitem != -1) {
+	}
+
+	if (pcurs == CURSOR_REPAIR) {
+		if (pcursinvitem != -1)
 			DoRepair(myplr, pcursinvitem);
-		} else {
+		else
 			NewCursor(CURSOR_HAND);
-		}
 		return TRUE;
-	} else if (pcurs == CURSOR_RECHARGE) {
-		if (pcursinvitem != -1) {
+	}
+
+	if (pcurs == CURSOR_RECHARGE) {
+		if (pcursinvitem != -1)
 			DoRecharge(myplr, pcursinvitem);
-		} else {
+		else
 			NewCursor(CURSOR_HAND);
-		}
 		return TRUE;
+	}
+
 #ifdef HELLFIRE
-	} else if (pcurs == CURSOR_OIL) {
-		if (pcursinvitem != -1) {
+	if (pcurs == CURSOR_OIL) {
+		if (pcursinvitem != -1)
 			DoOil(myplr, pcursinvitem);
-		} else {
+		else
 			SetCursor_(CURSOR_HAND);
-		}
 		return TRUE;
+	}
+
 #endif
-	} else if (pcurs == CURSOR_TELEPORT) {
-		if (pcursmonst != -1) {
+	if (pcurs == CURSOR_TELEPORT) {
+		if (pcursmonst != -1)
 			NetSendCmdParam3(TRUE, CMD_TSPELLID, pcursmonst, plr[myplr]._pTSpell, GetSpellLevel(myplr, plr[myplr]._pTSpell));
-		} else if (pcursplr != -1) {
+		else if (pcursplr != -1)
 			NetSendCmdParam3(TRUE, CMD_TSPELLPID, pcursplr, plr[myplr]._pTSpell, GetSpellLevel(myplr, plr[myplr]._pTSpell));
-		} else {
+		else
 			NetSendCmdLocParam2(TRUE, CMD_TSPELLXY, cursmx, cursmy, plr[myplr]._pTSpell, GetSpellLevel(myplr, plr[myplr]._pTSpell));
-		}
 		NewCursor(CURSOR_HAND);
 		return TRUE;
-	} else if (pcurs == CURSOR_DISARM && pcursobj == -1) {
+	}
+
+	if (pcurs == CURSOR_DISARM && pcursobj == -1) {
 		NewCursor(CURSOR_HAND);
 		return TRUE;
 	}
@@ -843,51 +854,72 @@ static BOOL TryIconCurs()
 
 static BOOL LeftMouseDown(int wParam)
 {
-	if (!gmenu_left_mouse(TRUE) && !control_check_talk_btn() && sgnTimeoutCurs == CURSOR_NONE) {
-		if (deathflag) {
-			control_check_btn_press();
-		} else if (PauseMode != 2) {
-			if (doomflag) {
-				doom_close();
-			} else if (spselflag) {
-				SetSpell();
-			} else if (stextflag != STORE_NONE) {
-				CheckStoreBtn();
-			} else if (MouseY < PANEL_TOP) {
-				if (!gmenu_is_active() && !TryIconCurs()) {
-					if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
-						QuestlogESC();
-					} else if (qtextflag) {
-						qtextflag = FALSE;
-						stream_stop();
-					} else if (chrflag && MouseX < SPANEL_WIDTH) {
-						CheckChrBtns();
-					} else if (invflag && MouseX > RIGHT_PANEL) {
-						if (!dropGoldFlag)
-							CheckInvItem();
-					} else if (sbookflag && MouseX > RIGHT_PANEL) {
-						CheckSBook();
-					} else if (pcurs >= CURSOR_FIRSTITEM) {
-						if (TryInvPut()) {
-							NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-							NewCursor(CURSOR_HAND);
-						}
-					} else {
-						if (plr[myplr]._pStatPts != 0 && !spselflag)
-							CheckLvlBtn();
-						if (!lvlbtndown)
-							return LeftMouseCmd(wParam == MK_SHIFT + MK_LBUTTON);
-					}
+	if (gmenu_left_mouse(TRUE))
+		return FALSE;
+
+	if (control_check_talk_btn())
+		return FALSE;
+
+	if (sgnTimeoutCurs != CURSOR_NONE)
+		return FALSE;
+
+	if (deathflag) {
+		control_check_btn_press();
+		return FALSE;
+	}
+
+	if (PauseMode == 2) {
+		return FALSE;
+	}
+	if (doomflag) {
+		doom_close();
+		return FALSE;
+	} 
+
+	if (spselflag) {
+		SetSpell();
+		return FALSE;
+	}
+
+	if (stextflag != STORE_NONE) {
+		CheckStoreBtn();
+		return FALSE;
+	}
+
+	if (MouseY < PANEL_TOP) {
+		if (!gmenu_is_active() && !TryIconCurs()) {
+			if (questlog && MouseX > 32 && MouseX < 288 && MouseY > 32 && MouseY < 308) {
+				QuestlogESC();
+			} else if (qtextflag) {
+				qtextflag = FALSE;
+				stream_stop();
+			} else if (chrflag && MouseX < SPANEL_WIDTH) {
+				CheckChrBtns();
+			} else if (invflag && MouseX > RIGHT_PANEL) {
+				if (!dropGoldFlag)
+					CheckInvItem();
+			} else if (sbookflag && MouseX > RIGHT_PANEL) {
+				CheckSBook();
+			} else if (pcurs >= CURSOR_FIRSTITEM) {
+				if (TryInvPut()) {
+					NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
+					NewCursor(CURSOR_HAND);
 				}
 			} else {
-				if (!talkflag && !dropGoldFlag && !gmenu_is_active())
-					CheckInvScrn();
-				DoPanBtn();
-				if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
-					NewCursor(CURSOR_HAND);
+				if (plr[myplr]._pStatPts != 0 && !spselflag)
+					CheckLvlBtn();
+				if (!lvlbtndown)
+					return LeftMouseCmd(wParam == MK_SHIFT + MK_LBUTTON);
 			}
 		}
+	} else {
+		if (!talkflag && !dropGoldFlag && !gmenu_is_active())
+			CheckInvScrn();
+		DoPanBtn();
+		if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
+			NewCursor(CURSOR_HAND);
 	}
+	
 
 	return FALSE;
 }
@@ -1519,33 +1551,33 @@ LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	case WM_MOUSEMOVE:
 		return 0;
 	case WM_LBUTTONDOWN:
-		if (sgbMouseDown != 0)
+		if (sgbMouseDown != CLICK_NONE)
 			return 0;
-		sgbMouseDown = 1;
+		sgbMouseDown = CLICK_LEFT;
 		SetCapture(hWnd);
 		return 0;
 	case WM_LBUTTONUP:
-		if (sgbMouseDown != 1)
+		if (sgbMouseDown != CLICK_LEFT)
 			return 0;
-		sgbMouseDown = 0;
+		sgbMouseDown = CLICK_NONE;
 		ReleaseCapture();
 		return 0;
 	case WM_RBUTTONDOWN:
-		if (sgbMouseDown != 0)
+		if (sgbMouseDown != CLICK_NONE)
 			return 0;
-		sgbMouseDown = 2;
+		sgbMouseDown = CLICK_RIGHT;
 		SetCapture(hWnd);
 		return 0;
 	case WM_RBUTTONUP:
-		if (sgbMouseDown != 2)
+		if (sgbMouseDown != CLICK_RIGHT)
 			return 0;
-		sgbMouseDown = 0;
+		sgbMouseDown = CLICK_NONE;
 		ReleaseCapture();
 		return 0;
 	case WM_CAPTURECHANGED:
 		if (hWnd == (HWND)lParam)
 			return 0;
-		sgbMouseDown = 0;
+		sgbMouseDown = CLICK_NONE;
 		return 0;
 	}
 
@@ -1583,8 +1615,8 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONDOWN:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
 		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
-		if (sgbMouseDown == 0) {
-			sgbMouseDown = 1;
+		if (sgbMouseDown == CLICK_NONE) {
+			sgbMouseDown = CLICK_LEFT;
 			SetCapture(hWnd);
 			track_repeat_walk(LeftMouseDown(wParam));
 		}
@@ -1592,8 +1624,8 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
 		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
-		if (sgbMouseDown == 1) {
-			sgbMouseDown = 0;
+		if (sgbMouseDown == CLICK_LEFT) {
+			sgbMouseDown = CLICK_NONE;
 			LeftMouseUp();
 			track_repeat_walk(FALSE);
 			ReleaseCapture();
@@ -1602,8 +1634,8 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_RBUTTONDOWN:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
 		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
-		if (sgbMouseDown == 0) {
-			sgbMouseDown = 2;
+		if (sgbMouseDown == CLICK_NONE) {
+			sgbMouseDown = CLICK_RIGHT;
 			SetCapture(hWnd);
 			RightMouseDown();
 		}
@@ -1611,14 +1643,14 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_RBUTTONUP:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
 		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
-		if (sgbMouseDown == 2) {
-			sgbMouseDown = 0;
+		if (sgbMouseDown == CLICK_RIGHT) {
+			sgbMouseDown = CLICK_NONE;
 			ReleaseCapture();
 		}
 		return 0;
 	case WM_CAPTURECHANGED:
 		if (hWnd != (HWND)lParam) {
-			sgbMouseDown = 0;
+			sgbMouseDown = CLICK_NONE;
 			track_repeat_walk(FALSE);
 		}
 		break;
@@ -1637,7 +1669,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		sound_stop();
 		music_stop();
 		track_repeat_walk(FALSE);
-		sgbMouseDown = 0;
+		sgbMouseDown = CLICK_NONE;
 		ReleaseCapture();
 		ShowProgress(uMsg);
 		force_redraw = 255;
@@ -2085,7 +2117,7 @@ static void game_logic()
 static void timeout_cursor(BOOL bTimeout)
 {
 	if (bTimeout) {
-		if (sgnTimeoutCurs == CURSOR_NONE && !sgbMouseDown) {
+		if (sgnTimeoutCurs == CURSOR_NONE && sgbMouseDown == CLICK_NONE) {
 			sgnTimeoutCurs = pcurs;
 			multi_net_ping();
 			ClearPanel();
