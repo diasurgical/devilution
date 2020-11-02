@@ -19,7 +19,9 @@
 
 /** automap pixel color 8-bit (palette entry) */
 char gbPixelCol;
-BOOL gbRotateMap; // flip - if y < x
+/** flip - if y < x */
+BOOL gbRotateMap;
+/** Seed value before the most recent call to SetRndSeed() */
 int orgseed;
 /** Width of sprite being blitted */
 int sgnWidth;
@@ -28,7 +30,8 @@ int sglGameSeed;
 static CCritSect sgMemCrit;
 /** Number of times the current seed has been fetched */
 int SeedCount;
-BOOL gbNotInView; // valid - if x/y are in bounds
+/** valid - if x/y are in bounds */
+BOOL gbNotInView;
 
 /**
  * Specifies the increment used in the Borland C/C++ pseudo-random.
@@ -2727,60 +2730,13 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 }
 
 /**
- * @brief Blit CL2 sprite, to the back buffer at the given coordianates
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- */
-void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
-{
-	BYTE *pRLEBytes;
-	DWORD *pFrameTable;
-	int nDataStart, nDataSize;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	Cl2Blit(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
-	    pRLEBytes + nDataStart,
-	    nDataSize - nDataStart,
-	    nWidth);
-}
-
-/**
  * @brief Blit CL2 sprite to the given buffer
  * @param pDecodeTo The output buffer
  * @param pRLEBytes CL2 pixel stream (run-length encoded)
  * @param nDataSize Size of CL2 in bytes
  * @param nWidth Width of sprite
  */
-void Cl2Blit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+static void Cl2Blit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 #ifdef USE_ASM
 	__asm {
@@ -2922,55 +2878,6 @@ void Cl2Blit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 }
 
 /**
- * @brief Blit a solid colder shape one pixel larger then the given sprite shape, to the back buffer at the given coordianates
- * @param col Color index from current palette
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- */
-void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
-{
-	int nDataStart, nDataSize;
-	BYTE *pRLEBytes;
-	DWORD *pFrameTable;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	Cl2BlitOutline(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
-	    pRLEBytes + nDataStart,
-	    nDataSize - nDataStart,
-	    nWidth,
-	    col);
-}
-
-/**
  * @brief Blit a solid colder shape one pixel larger then the given sprite shape, to the given buffer
  * @param pDecodeTo The output buffer
  * @param pRLEBytes CL2 pixel stream (run-length encoded)
@@ -2978,7 +2885,7 @@ void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
  * @param nWidth Width of sprite
  * @param col Color index from current palette
  */
-void Cl2BlitOutline(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
+static void Cl2BlitOutline(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
 #ifdef USE_ASM
 	__asm {
@@ -3141,65 +3048,6 @@ void Cl2BlitOutline(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth,
 }
 
 /**
- * @brief Blit CL2 sprite, and apply a given lighting, to the back buffer at the given coordianates
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- * @param light Light shade to use
- */
-void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
-{
-	int nDataStart, nDataSize, idx, nSize;
-	BYTE *pRLEBytes, *pDecodeTo;
-	DWORD *pFrameTable;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	nSize = nDataSize - nDataStart;
-	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
-
-	idx = light4flag ? 1024 : 4096;
-	if (light == 2)
-		idx += 256; // gray colors
-	if (light >= 4)
-		idx += (light - 1) << 8;
-
-	Cl2BlitLight(
-	    pDecodeTo,
-	    pRLEBytes,
-	    nSize,
-	    nWidth,
-	    &pLightTbl[idx]);
-}
-
-/**
  * @brief Blit CL2 sprite, and apply lighting, to the given buffer
  * @param pDecodeTo The output buffer
  * @param pRLEBytes CL2 pixel stream (run-length encoded)
@@ -3207,7 +3055,7 @@ void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
  * @param nWidth Width of sprite
  * @param pTable Light color table
  */
-void Cl2BlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
+static void Cl2BlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
 #ifdef USE_ASM
 	__asm {
@@ -3358,110 +3206,13 @@ void Cl2BlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, B
 }
 
 /**
- * @brief Blit CL2 sprite, and apply lighting, to the back buffer at the given coordinates
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- */
-void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
-{
-	int nDataStart, nDataSize, nSize;
-	BYTE *pRLEBytes, *pDecodeTo;
-	DWORD *pFrameTable;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	nSize = nDataSize - nDataStart;
-	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
-
-	if (light_table_index)
-		Cl2BlitLight(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[light_table_index * 256]);
-	else
-		Cl2Blit(pDecodeTo, pRLEBytes, nSize, nWidth);
-}
-
-/**
- * @brief Same as Cl2Draw but checks for drawing outside the buffer
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- */
-void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
-{
-	BYTE *pRLEBytes;
-	DWORD *pFrameTable;
-	int nDataStart, nDataSize;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	Cl2BlitSafe(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
-	    pRLEBytes + nDataStart,
-	    nDataSize - nDataStart,
-	    nWidth);
-}
-
-/**
  * @brief Same as Cl2Blit but checks for drawing outside the buffer
  * @param pDecodeTo The output buffer
  * @param pRLEBytes CL2 pixel stream (run-length encoded)
  * @param nDataSize Size of CL2 in bytes
  * @param nWidth Width of sprite
  */
-void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+static void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 #ifdef USE_ASM
 	__asm {
@@ -3616,57 +3367,6 @@ void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 }
 
 /**
- * @brief Same as Cl2DrawOutline but checks for drawing outside the buffer
- * @param col Color index from current palette
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- */
-void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
-{
-	int nDataStart, nDataSize;
-	BYTE *pRLEBytes;
-	DWORD *pFrameTable;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	gpBufEnd -= BUFFER_WIDTH;
-	Cl2BlitOutlineSafe(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
-	    pRLEBytes + nDataStart,
-	    nDataSize - nDataStart,
-	    nWidth,
-	    col);
-	gpBufEnd += BUFFER_WIDTH;
-}
-
-/**
  * @brief Same as Cl2BlitOutline but checks for drawing outside the buffer
  * @param pDecodeTo The output buffer
  * @param pRLEBytes CL2 pixel stream (run-length encoded)
@@ -3674,7 +3374,7 @@ void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
  * @param nWidth Width of sprite
  * @param col Color index from current palette
  */
-void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
+static void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
 #ifdef USE_ASM
 	__asm {
@@ -3849,65 +3549,6 @@ void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 }
 
 /**
- * @brief Same as Cl2DrawLightTbl but checks for drawing outside the buffer
- * @param sx Back buffer coordinate
- * @param sy Back buffer coordinate
- * @param pCelBuff CL2 buffer
- * @param nCel CL2 frame number
- * @param nWidth Width of sprite
- * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
- * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
- * @param light light shade to use
- */
-void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
-{
-	int nDataStart, nDataSize, idx, nSize;
-	BYTE *pRLEBytes, *pDecodeTo;
-	DWORD *pFrameTable;
-
-	assert(gpBuffer != NULL);
-	if (gpBuffer == NULL)
-		return;
-	assert(pCelBuff != NULL);
-	if (pCelBuff == NULL)
-		return;
-	assert(nCel > 0);
-	if (nCel <= 0)
-		return;
-
-	pFrameTable = (DWORD *)pCelBuff;
-	assert(nCel <= (int)pFrameTable[0]);
-	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
-	if (!nDataStart)
-		return;
-
-	if (CelCap == 8)
-		nDataSize = 0;
-	else
-		nDataSize = *(WORD *)&pRLEBytes[CelCap];
-	if (!nDataSize)
-		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
-	nSize = nDataSize - nDataStart;
-	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
-
-	idx = light4flag ? 1024 : 4096;
-	if (light == 2)
-		idx += 256; // gray colors
-	if (light >= 4)
-		idx += (light - 1) << 8;
-
-	Cl2BlitLightSafe(
-	    pDecodeTo,
-	    pRLEBytes,
-	    nSize,
-	    nWidth,
-	    &pLightTbl[idx]);
-}
-
-/**
  * @brief Same as Cl2BlitLight but checks for drawing outside the buffer
  * @param pDecodeTo The output buffer
  * @param pRLEBytes CL2 pixel stream (run-length encoded)
@@ -3915,7 +3556,7 @@ void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
  * @param nWidth With of CL2 sprite
  * @param pTable Light color table
  */
-void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
+static void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
 #ifdef USE_ASM
 	__asm {
@@ -4076,6 +3717,368 @@ void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidt
 		}
 	}
 #endif
+}
+
+/**
+ * @brief Blit CL2 sprite, to the back buffer at the given coordianates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+{
+	BYTE *pRLEBytes;
+	DWORD *pFrameTable;
+	int nDataStart, nDataSize;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	Cl2Blit(
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
+	    nWidth);
+}
+
+/**
+ * @brief Blit a solid colder shape one pixel larger then the given sprite shape, to the back buffer at the given coordianates
+ * @param col Color index from current palette
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+{
+	int nDataStart, nDataSize;
+	BYTE *pRLEBytes;
+	DWORD *pFrameTable;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	Cl2BlitOutline(
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
+	    nWidth,
+	    col);
+}
+
+/**
+ * @brief Blit CL2 sprite, and apply a given lighting, to the back buffer at the given coordianates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ * @param light Light shade to use
+ */
+void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
+{
+	int nDataStart, nDataSize, idx, nSize;
+	BYTE *pRLEBytes, *pDecodeTo;
+	DWORD *pFrameTable;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+
+	idx = light4flag ? 1024 : 4096;
+	if (light == 2)
+		idx += 256; // gray colors
+	if (light >= 4)
+		idx += (light - 1) << 8;
+
+	Cl2BlitLight(
+	    pDecodeTo,
+	    pRLEBytes,
+	    nSize,
+	    nWidth,
+	    &pLightTbl[idx]);
+}
+
+/**
+ * @brief Blit CL2 sprite, and apply lighting, to the back buffer at the given coordinates
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+{
+	int nDataStart, nDataSize, nSize;
+	BYTE *pRLEBytes, *pDecodeTo;
+	DWORD *pFrameTable;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+
+	if (light_table_index)
+		Cl2BlitLight(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[light_table_index * 256]);
+	else
+		Cl2Blit(pDecodeTo, pRLEBytes, nSize, nWidth);
+}
+
+/**
+ * @brief Same as Cl2Draw but checks for drawing outside the buffer
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+{
+	BYTE *pRLEBytes;
+	DWORD *pFrameTable;
+	int nDataStart, nDataSize;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	Cl2BlitSafe(
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
+	    nWidth);
+}
+
+/**
+ * @brief Same as Cl2DrawOutline but checks for drawing outside the buffer
+ * @param col Color index from current palette
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+{
+	int nDataStart, nDataSize;
+	BYTE *pRLEBytes;
+	DWORD *pFrameTable;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	gpBufEnd -= BUFFER_WIDTH;
+	Cl2BlitOutlineSafe(
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
+	    nWidth,
+	    col);
+	gpBufEnd += BUFFER_WIDTH;
+}
+
+/**
+ * @brief Same as Cl2DrawLightTbl but checks for drawing outside the buffer
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff CL2 buffer
+ * @param nCel CL2 frame number
+ * @param nWidth Width of sprite
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ * @param light light shade to use
+ */
+void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
+{
+	int nDataStart, nDataSize, idx, nSize;
+	BYTE *pRLEBytes, *pDecodeTo;
+	DWORD *pFrameTable;
+
+	assert(gpBuffer != NULL);
+	if (gpBuffer == NULL)
+		return;
+	assert(pCelBuff != NULL);
+	if (pCelBuff == NULL)
+		return;
+	assert(nCel > 0);
+	if (nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	assert(nCel <= (int)pFrameTable[0]);
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
+		return;
+
+	if (CelCap == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
+	if (!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	nSize = nDataSize - nDataStart;
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+
+	idx = light4flag ? 1024 : 4096;
+	if (light == 2)
+		idx += 256; // gray colors
+	if (light >= 4)
+		idx += (light - 1) << 8;
+
+	Cl2BlitLightSafe(
+	    pDecodeTo,
+	    pRLEBytes,
+	    nSize,
+	    nWidth,
+	    &pLightTbl[idx]);
 }
 
 /**
