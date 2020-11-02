@@ -1761,6 +1761,57 @@ BOOL control_WriteStringToBuffer(BYTE *str)
 	return TRUE;
 }
 
+static void CPrintString(int y, const char *str, BOOL center, int lines)
+{
+	BYTE c;
+	const char *tmp;
+	int strWidth, lineOffset, lineStart;
+
+	lineOffset = 0;
+	lineStart = lineOffsets[lines][y] + PANEL_LEFT;
+	if (center == TRUE) {
+		strWidth = 0;
+		tmp = str;
+		while (*tmp) {
+			c = gbFontTransTbl[(BYTE)*tmp++];
+			strWidth += fontkern[fontframe[c]] + 2;
+		}
+		if (strWidth < 288)
+			lineOffset = (288 - strWidth) >> 1;
+		lineStart += lineOffset;
+	}
+	while (*str) {
+		c = gbFontTransTbl[(BYTE)*str++];
+		c = fontframe[c];
+		lineOffset += fontkern[c] + 2;
+		if (c) {
+			if (lineOffset < 288) {
+				PrintChar(lineStart, c, infoclr);
+			}
+		}
+		lineStart += fontkern[c] + 2;
+	}
+}
+
+static void PrintInfo()
+{
+	int yo, lo, i;
+
+	if (!talkflag) {
+		yo = 0;
+		lo = 1;
+		if (infostr[0] != '\0') {
+			CPrintString(0, infostr, TRUE, pnumlines);
+			yo = 1;
+			lo = 0;
+		}
+
+		for (i = 0; i < pnumlines; i++) {
+			CPrintString(i + yo, panelstr[i], pstrjust[i], pnumlines - lo);
+		}
+	}
+}
+
 /**
  * Sets a string to be drawn in the info box and then draws it.
  */
@@ -1832,54 +1883,36 @@ void DrawInfoBox()
 		PrintInfo();
 }
 
-void PrintInfo()
-{
-	int yo, lo, i;
-
-	if (!talkflag) {
-		yo = 0;
-		lo = 1;
-		if (infostr[0] != '\0') {
-			CPrintString(0, infostr, TRUE, pnumlines);
-			yo = 1;
-			lo = 0;
-		}
-
-		for (i = 0; i < pnumlines; i++) {
-			CPrintString(i + yo, panelstr[i], pstrjust[i], pnumlines - lo);
-		}
-	}
-}
-
-void CPrintString(int y, const char *str, BOOL center, int lines)
+/**
+ * @brief Identical to MY_PlrStringXY(x, y, width, pszStr, col, 1)
+ */
+static void ADD_PlrStringXY(int x, int y, int width, const char *pszStr, char col)
 {
 	BYTE c;
 	const char *tmp;
-	int strWidth, lineOffset, lineStart;
+	int nOffset, screen_x, line, widthOffset;
 
-	lineOffset = 0;
-	lineStart = lineOffsets[lines][y] + PANEL_LEFT;
-	if (center == TRUE) {
-		strWidth = 0;
-		tmp = str;
-		while (*tmp) {
-			c = gbFontTransTbl[(BYTE)*tmp++];
-			strWidth += fontkern[fontframe[c]] + 2;
-		}
-		if (strWidth < 288)
-			lineOffset = (288 - strWidth) >> 1;
-		lineStart += lineOffset;
+	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
+	widthOffset = width - x + 1;
+	line = 0;
+	screen_x = 0;
+	tmp = pszStr;
+	while (*tmp) {
+		c = gbFontTransTbl[(BYTE)*tmp++];
+		screen_x += fontkern[fontframe[c]] + 1;
 	}
-	while (*str) {
-		c = gbFontTransTbl[(BYTE)*str++];
+	if (screen_x < widthOffset)
+		line = (widthOffset - screen_x) >> 1;
+	nOffset += line;
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
 		c = fontframe[c];
-		lineOffset += fontkern[c] + 2;
+		line += fontkern[c] + 1;
 		if (c) {
-			if (lineOffset < 288) {
-				PrintChar(lineStart, c, infoclr);
-			}
+			if (line < widthOffset)
+				PrintChar(nOffset, c, col);
 		}
-		lineStart += fontkern[c] + 2;
+		nOffset += fontkern[c] + 1;
 	}
 }
 
@@ -1894,6 +1927,45 @@ void PrintGameStr(int x, int y, const char *str, int color)
 		if (c)
 			PrintChar(off, c, color);
 		off += fontkern[c] + 1;
+	}
+}
+
+/**
+ * @brief Render text string to back buffer
+ * @param x Screen coordinate
+ * @param y Screen coordinate
+ * @param endX End of line in screen coordinate
+ * @param pszStr String to print, in Windows-1252 encoding
+ * @param col text_color color value
+ * @param base Letter spacing
+ */
+static void MY_PlrStringXY(int x, int y, int endX, const char *pszStr, char col, int base)
+{
+	BYTE c;
+	const char *tmp;
+	int nOffset, screen_x, line, widthOffset;
+
+	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
+	widthOffset = endX - x + 1;
+	line = 0;
+	screen_x = 0;
+	tmp = pszStr;
+	while (*tmp) {
+		c = gbFontTransTbl[(BYTE)*tmp++];
+		screen_x += fontkern[fontframe[c]] + base;
+	}
+	if (screen_x < widthOffset)
+		line = (widthOffset - screen_x) >> 1;
+	nOffset += line;
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = fontframe[c];
+		line += fontkern[c] + base;
+		if (c) {
+			if (line < widthOffset)
+				PrintChar(nOffset, c, col);
+		}
+		nOffset += fontkern[c] + base;
 	}
 }
 
@@ -2121,78 +2193,6 @@ void DrawChr()
 	ADD_PlrStringXY(143, 332, 174, chrstr, col);
 }
 
-/**
- * @brief Identical to MY_PlrStringXY(x, y, width, pszStr, col, 1)
- */
-void ADD_PlrStringXY(int x, int y, int width, const char *pszStr, char col)
-{
-	BYTE c;
-	const char *tmp;
-	int nOffset, screen_x, line, widthOffset;
-
-	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
-	widthOffset = width - x + 1;
-	line = 0;
-	screen_x = 0;
-	tmp = pszStr;
-	while (*tmp) {
-		c = gbFontTransTbl[(BYTE)*tmp++];
-		screen_x += fontkern[fontframe[c]] + 1;
-	}
-	if (screen_x < widthOffset)
-		line = (widthOffset - screen_x) >> 1;
-	nOffset += line;
-	while (*pszStr) {
-		c = gbFontTransTbl[(BYTE)*pszStr++];
-		c = fontframe[c];
-		line += fontkern[c] + 1;
-		if (c) {
-			if (line < widthOffset)
-				PrintChar(nOffset, c, col);
-		}
-		nOffset += fontkern[c] + 1;
-	}
-}
-
-/**
- * @brief Render text string to back buffer
- * @param x Screen coordinate
- * @param y Screen coordinate
- * @param endX End of line in screen coordinate
- * @param pszStr String to print, in Windows-1252 encoding
- * @param col text_color color value
- * @param base Letter spacing
- */
-void MY_PlrStringXY(int x, int y, int endX, const char *pszStr, char col, int base)
-{
-	BYTE c;
-	const char *tmp;
-	int nOffset, screen_x, line, widthOffset;
-
-	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
-	widthOffset = endX - x + 1;
-	line = 0;
-	screen_x = 0;
-	tmp = pszStr;
-	while (*tmp) {
-		c = gbFontTransTbl[(BYTE)*tmp++];
-		screen_x += fontkern[fontframe[c]] + base;
-	}
-	if (screen_x < widthOffset)
-		line = (widthOffset - screen_x) >> 1;
-	nOffset += line;
-	while (*pszStr) {
-		c = gbFontTransTbl[(BYTE)*pszStr++];
-		c = fontframe[c];
-		line += fontkern[c] + base;
-		if (c) {
-			if (line < widthOffset)
-				PrintChar(nOffset, c, col);
-		}
-		nOffset += fontkern[c] + base;
-	}
-}
-
 void CheckLvlBtn()
 {
 	if (!lvlbtndown && MouseX >= 40 + PANEL_LEFT && MouseX <= 81 + PANEL_LEFT && MouseY >= -39 + PANEL_TOP && MouseY <= -17 + PANEL_TOP)
@@ -2292,26 +2292,7 @@ void ReleaseChrBtns()
 	}
 }
 
-void DrawDurIcon()
-{
-	PlayerStruct *p;
-	int x;
-
-	if ((chrflag || questlog) && (invflag || sbookflag))
-		return;
-
-	x = PANEL_X + PANEL_WIDTH - 32 - 16;
-	if (invflag || sbookflag)
-		x -= SPANEL_WIDTH;
-
-	p = &plr[myplr];
-	x = DrawDurIcon4Item(&p->InvBody[INVLOC_HEAD], x, 4);
-	x = DrawDurIcon4Item(&p->InvBody[INVLOC_CHEST], x, 3);
-	x = DrawDurIcon4Item(&p->InvBody[INVLOC_HAND_LEFT], x, 0);
-	DrawDurIcon4Item(&p->InvBody[INVLOC_HAND_RIGHT], x, 0);
-}
-
-int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
+static int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
 {
 	if (pItem->_itype == ITYPE_NONE)
 		return x;
@@ -2344,6 +2325,25 @@ int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
 		c += 8;
 	CelDraw(x, -17 + PANEL_Y, pDurIcons, c, 32);
 	return x - 32 - 8;
+}
+
+void DrawDurIcon()
+{
+	PlayerStruct *p;
+	int x;
+
+	if ((chrflag || questlog) && (invflag || sbookflag))
+		return;
+
+	x = PANEL_X + PANEL_WIDTH - 32 - 16;
+	if (invflag || sbookflag)
+		x -= SPANEL_WIDTH;
+
+	p = &plr[myplr];
+	x = DrawDurIcon4Item(&p->InvBody[INVLOC_HEAD], x, 4);
+	x = DrawDurIcon4Item(&p->InvBody[INVLOC_CHEST], x, 3);
+	x = DrawDurIcon4Item(&p->InvBody[INVLOC_HAND_LEFT], x, 0);
+	DrawDurIcon4Item(&p->InvBody[INVLOC_HAND_RIGHT], x, 0);
 }
 
 void RedBack()
@@ -2420,6 +2420,37 @@ void RedBack()
 		}
 	}
 #endif
+}
+
+static void PrintSBookStr(int x, int y, BOOL cjustflag, const char *pszStr, char col)
+{
+	BYTE c;
+	const char *tmp;
+	int screen_x, line, width;
+
+	width = PitchTbl[y] + x + RIGHT_PANEL_X + SPLICONLENGTH;
+	line = 0;
+	if (cjustflag) {
+		screen_x = 0;
+		tmp = pszStr;
+		while (*tmp) {
+			c = gbFontTransTbl[(BYTE)*tmp++];
+			screen_x += fontkern[fontframe[c]] + 1;
+		}
+		if (screen_x < 222)
+			line = (222 - screen_x) >> 1;
+		width += line;
+	}
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = fontframe[c];
+		line += fontkern[c] + 1;
+		if (c) {
+			if (line <= 222)
+				PrintChar(width, c, col);
+		}
+		width += fontkern[c] + 1;
+	}
 }
 
 char GetSBookTrans(int ii, BOOL townok)
@@ -2517,37 +2548,6 @@ void DrawSpellBook()
 			PrintSBookStr(10, yp - 12, FALSE, tempstr, COL_WHITE);
 		}
 		yp += 43;
-	}
-}
-
-void PrintSBookStr(int x, int y, BOOL cjustflag, const char *pszStr, char col)
-{
-	BYTE c;
-	const char *tmp;
-	int screen_x, line, width;
-
-	width = PitchTbl[y] + x + RIGHT_PANEL_X + SPLICONLENGTH;
-	line = 0;
-	if (cjustflag) {
-		screen_x = 0;
-		tmp = pszStr;
-		while (*tmp) {
-			c = gbFontTransTbl[(BYTE)*tmp++];
-			screen_x += fontkern[fontframe[c]] + 1;
-		}
-		if (screen_x < 222)
-			line = (222 - screen_x) >> 1;
-		width += line;
-	}
-	while (*pszStr) {
-		c = gbFontTransTbl[(BYTE)*pszStr++];
-		c = fontframe[c];
-		line += fontkern[c] + 1;
-		if (c) {
-			if (line <= 222)
-				PrintChar(width, c, col);
-		}
-		width += fontkern[c] + 1;
 	}
 }
 
@@ -2698,6 +2698,31 @@ void control_set_gold_curs(int pnum)
 	NewCursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 }
 
+static char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
+{
+	BYTE c;
+	int width;
+
+	x += 200 + SCREEN_X;
+	y += 22 + PANEL_Y;
+	width = x;
+	*nOffset = PitchTbl[y] + x;
+	while (*msg) {
+
+		c = gbFontTransTbl[(BYTE)*msg];
+		c = fontframe[c];
+		width += fontkern[c] + 1;
+		if (width > 450 + PANEL_X)
+			return msg;
+		msg++;
+		if (c != 0) {
+			PrintChar(*nOffset, c, color);
+		}
+		*nOffset += fontkern[c] + 1;
+	}
+	return NULL;
+}
+
 void DrawTalkPan()
 {
 	int i, off, talk_btn, color, nCel, x;
@@ -2756,31 +2781,6 @@ void DrawTalkPan()
 
 		talk_btn++;
 	}
-}
-
-char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int color)
-{
-	BYTE c;
-	int width;
-
-	x += 200 + SCREEN_X;
-	y += 22 + PANEL_Y;
-	width = x;
-	*nOffset = PitchTbl[y] + x;
-	while (*msg) {
-
-		c = gbFontTransTbl[(BYTE)*msg];
-		c = fontframe[c];
-		width += fontkern[c] + 1;
-		if (width > 450 + PANEL_X)
-			return msg;
-		msg++;
-		if (c != 0) {
-			PrintChar(*nOffset, c, color);
-		}
-		*nOffset += fontkern[c] + 1;
-	}
-	return NULL;
 }
 
 BOOL control_check_talk_btn()
@@ -2870,61 +2870,7 @@ void control_reset_talk()
 	force_redraw = 255;
 }
 
-BOOL control_talk_last_key(int vkey)
-{
-	int result;
-
-	if (gbMaxPlayers == 1)
-		return FALSE;
-
-	if (!talkflag)
-		return FALSE;
-
-	if ((DWORD)vkey < VK_SPACE)
-		return FALSE;
-
-	result = strlen(sgszTalkMsg);
-	if (result < 78) {
-		sgszTalkMsg[result] = vkey;
-		sgszTalkMsg[result + 1] = '\0';
-	}
-	return TRUE;
-}
-
-BOOL control_presskeys(int vkey)
-{
-	int len;
-	BOOL ret;
-
-	if (gbMaxPlayers != 1) {
-		if (!talkflag) {
-			ret = FALSE;
-		} else {
-			if (vkey == VK_SPACE) {
-			} else if (vkey == VK_ESCAPE) {
-				control_reset_talk();
-			} else if (vkey == VK_RETURN) {
-				control_press_enter();
-			} else if (vkey == VK_BACK) {
-				len = strlen(sgszTalkMsg);
-				if (len > 0)
-					sgszTalkMsg[len - 1] = '\0';
-			} else if (vkey == VK_DOWN) {
-				control_up_down(1);
-			} else if (vkey == VK_UP) {
-				control_up_down(-1);
-			} else {
-				return FALSE;
-			}
-			ret = TRUE;
-		}
-	} else {
-		ret = FALSE;
-	}
-	return ret;
-}
-
-void control_press_enter()
+static void control_press_enter()
 {
 	int i;
 	BYTE talk_save;
@@ -2964,7 +2910,28 @@ void control_press_enter()
 	control_reset_talk();
 }
 
-void control_up_down(int v)
+BOOL control_talk_last_key(int vkey)
+{
+	int result;
+
+	if (gbMaxPlayers == 1)
+		return FALSE;
+
+	if (!talkflag)
+		return FALSE;
+
+	if ((DWORD)vkey < VK_SPACE)
+		return FALSE;
+
+	result = strlen(sgszTalkMsg);
+	if (result < 78) {
+		sgszTalkMsg[result] = vkey;
+		sgszTalkMsg[result + 1] = '\0';
+	}
+	return TRUE;
+}
+
+static void control_up_down(int v)
 {
 	int i;
 
@@ -2975,4 +2942,37 @@ void control_up_down(int v)
 			return;
 		}
 	}
+}
+
+BOOL control_presskeys(int vkey)
+{
+	int len;
+	BOOL ret;
+
+	if (gbMaxPlayers != 1) {
+		if (!talkflag) {
+			ret = FALSE;
+		} else {
+			if (vkey == VK_SPACE) {
+			} else if (vkey == VK_ESCAPE) {
+				control_reset_talk();
+			} else if (vkey == VK_RETURN) {
+				control_press_enter();
+			} else if (vkey == VK_BACK) {
+				len = strlen(sgszTalkMsg);
+				if (len > 0)
+					sgszTalkMsg[len - 1] = '\0';
+			} else if (vkey == VK_DOWN) {
+				control_up_down(1);
+			} else if (vkey == VK_UP) {
+				control_up_down(-1);
+			} else {
+				return FALSE;
+			}
+			ret = TRUE;
+		}
+	} else {
+		ret = FALSE;
+	}
+	return ret;
 }
