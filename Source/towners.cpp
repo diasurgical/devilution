@@ -539,7 +539,7 @@ void TownCtrlMsg(int i)
 		if (dx >= 2 || dy >= 2) {
 			towner[i]._tbtcnt = 0;
 			qtextflag = FALSE;
-			sfx_stop();
+			stream_stop();
 		}
 #else
 		if (dx >= 2 || dy >= 2)
