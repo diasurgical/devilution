@@ -2295,7 +2295,7 @@ typedef enum clicktype {
 	CLICK_NONE  = 0,
 	CLICK_LEFT  = 1,
 	CLICK_RIGHT = 2,
-};
+} clicktype;
 
  /*
  First 5 bits store level
