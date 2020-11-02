@@ -23,7 +23,6 @@ extern char pcursobj;
 extern char pcursplr;
 extern int cursmx;
 extern int cursmy;
-extern int pcurstemp;
 extern int pcurs;
 
 void InitCursor();
@@ -32,8 +31,6 @@ void SetICursor(int i);
 void SetCursor_(int i);
 void NewCursor(int i);
 void InitLevelCursor();
-void CheckTown();
-void CheckRportal();
 void CheckCursMove();
 
 /* rdata */
