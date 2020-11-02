@@ -79,17 +79,7 @@ char *jogging_title = "Fast Walk";
 const char *const color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 #endif
 
-void gamemenu_on()
-{
-	if (gbMaxPlayers == 1) {
-		gmenu_set_items(sgSingleMenu, gamemenu_update_single);
-	} else {
-		gmenu_set_items(sgMultiMenu, gamemenu_update_multi);
-	}
-	PressEscKey();
-}
-
-void gamemenu_update_single(TMenuItem *pMenuItems)
+static void gamemenu_update_single(TMenuItem *pMenuItems)
 {
 	BOOL enable;
 
@@ -102,9 +92,19 @@ void gamemenu_update_single(TMenuItem *pMenuItems)
 	gmenu_enable(&sgSingleMenu[0], enable);
 }
 
-void gamemenu_update_multi(TMenuItem *pMenuItems)
+static void gamemenu_update_multi(TMenuItem *pMenuItems)
 {
 	gmenu_enable(&sgMultiMenu[2], deathflag);
+}
+
+void gamemenu_on()
+{
+	if (gbMaxPlayers == 1) {
+		gmenu_set_items(sgSingleMenu, gamemenu_update_single);
+	} else {
+		gmenu_set_items(sgMultiMenu, gamemenu_update_multi);
+	}
+	PressEscKey();
 }
 
 void gamemenu_off()
@@ -208,26 +208,7 @@ void gamemenu_restart_town(BOOL bActivate)
 	NetSendCmd(TRUE, CMD_RETOWN);
 }
 
-void gamemenu_options(BOOL bActivate)
-{
-	gamemenu_get_music();
-	gamemenu_get_sound();
-#ifdef HELLFIRE
-	gamemenu_jogging();
-#endif
-	gamemenu_get_gamma();
-#ifndef HELLFIRE
-	gamemenu_get_color_cycling();
-#endif
-	gmenu_set_items(sgOptionsMenu, NULL);
-}
-
-void gamemenu_get_music()
-{
-	gamemenu_sound_music_toggle(music_toggle_names, sgOptionsMenu, sound_get_or_set_music_volume(1));
-}
-
-void gamemenu_sound_music_toggle(const char *const *names, TMenuItem *menu_item, int volume)
+static void gamemenu_sound_music_toggle(const char *const *names, TMenuItem *menu_item, int volume)
 {
 	if (gbSndInited) {
 		menu_item->dwFlags |= GMENU_ENABLED | GMENU_SLIDER;
@@ -241,13 +222,23 @@ void gamemenu_sound_music_toggle(const char *const *names, TMenuItem *menu_item,
 	menu_item->pszStr = names[1];
 }
 
-void gamemenu_get_sound()
+static int gamemenu_slider_music_sound(TMenuItem *menu_item)
+{
+	return gmenu_slider_get(menu_item, VOLUME_MIN, VOLUME_MAX);
+}
+
+static void gamemenu_get_music()
+{
+	gamemenu_sound_music_toggle(music_toggle_names, sgOptionsMenu, sound_get_or_set_music_volume(1));
+}
+
+static void gamemenu_get_sound()
 {
 	gamemenu_sound_music_toggle(sound_toggle_names, &sgOptionsMenu[1], sound_get_or_set_sound_volume(1));
 }
 
 #ifdef HELLFIRE
-void gamemenu_jogging()
+static void gamemenu_jogging()
 {
 	gmenu_slider_steps(&sgOptionsMenu[3], 2);
 	gmenu_slider_set(&sgOptionsMenu[3], 0, 1, jogging_opt);
@@ -255,17 +246,36 @@ void gamemenu_jogging()
 }
 #endif
 
+static void gamemenu_get_gamma()
+{
+	gmenu_slider_steps(&sgOptionsMenu[2], 15);
+	gmenu_slider_set(&sgOptionsMenu[2], 30, 100, UpdateGamma(0));
+}
+
 #ifndef HELLFIRE
-void gamemenu_get_color_cycling()
+static void gamemenu_get_color_cycling()
 {
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[palette_get_color_cycling() & 1];
 }
 #endif
 
-void gamemenu_get_gamma()
+static int gamemenu_slider_gamma()
 {
-	gmenu_slider_steps(&sgOptionsMenu[2], 15);
-	gmenu_slider_set(&sgOptionsMenu[2], 30, 100, UpdateGamma(0));
+	return gmenu_slider_get(&sgOptionsMenu[2], 30, 100);
+}
+
+void gamemenu_options(BOOL bActivate)
+{
+	gamemenu_get_music();
+	gamemenu_get_sound();
+#ifdef HELLFIRE
+	gamemenu_jogging();
+#endif
+	gamemenu_get_gamma();
+#ifndef HELLFIRE
+	gamemenu_get_color_cycling();
+#endif
+	gmenu_set_items(sgOptionsMenu, NULL);
 }
 
 void gamemenu_music_volume(BOOL bActivate)
@@ -320,11 +330,6 @@ void gamemenu_music_volume(BOOL bActivate)
         }
     }
     gamemenu_get_music();
-}
-
-int gamemenu_slider_music_sound(TMenuItem *menu_item)
-{
-	return gmenu_slider_get(menu_item, VOLUME_MIN, VOLUME_MAX);
 }
 
 void gamemenu_sound_volume(BOOL bActivate)
@@ -382,11 +387,6 @@ void gamemenu_gamma(BOOL bActivate)
 
 	UpdateGamma(gamma);
 	gamemenu_get_gamma();
-}
-
-int gamemenu_slider_gamma()
-{
-	return gmenu_slider_get(&sgOptionsMenu[2], 30, 100);
 }
 
 #ifndef HELLFIRE
