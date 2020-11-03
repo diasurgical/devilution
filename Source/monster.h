@@ -35,7 +35,7 @@ BOOL MonstPlace(int xp, int yp);
 void monster_some_crypt();
 #endif
 void PlaceMonster(int i, int mtype, int x, int y);
-void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize);
+void PlaceUniqueMonst(int uniqindex, int miniontype, int bosspacksize);
 void PlaceQuestMonsters();
 void PlaceGroup(int mtype, int num, int leaderf, int leader);
 void LoadDiabMonsts();

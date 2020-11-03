@@ -2297,6 +2297,12 @@ typedef enum clicktype {
 	CLICK_RIGHT = 2,
 } clicktype;
 
+typedef enum placeflag {
+	PLACE_SCATTER = 1,
+	PLACE_SPECIAL = 2,
+	PLACE_UNIQUE  = 4,
+} placeflag;
+
  /*
  First 5 bits store level
  6th bit stores onlygood flag

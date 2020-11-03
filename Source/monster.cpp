@@ -224,46 +224,46 @@ void GetLevelMTypes()
 	mamask = 3; // monster availability mask
 #endif
 
-	AddMonsterType(MT_GOLEM, 2);
+	AddMonsterType(MT_GOLEM, PLACE_SPECIAL);
 	if (currlevel == 16) {
-		AddMonsterType(MT_ADVOCATE, 1);
-		AddMonsterType(MT_RBLACK, 1);
-		AddMonsterType(MT_DIABLO, 2);
+		AddMonsterType(MT_ADVOCATE, PLACE_SCATTER);
+		AddMonsterType(MT_RBLACK, PLACE_SCATTER);
+		AddMonsterType(MT_DIABLO, PLACE_SPECIAL);
 		return;
 	}
 
 #ifdef HELLFIRE
 	if (currlevel == 18)
-		AddMonsterType(117, 1);
+		AddMonsterType(MT_HORKSPWN, PLACE_SCATTER);
 	if (currlevel == 19) {
-		AddMonsterType(117, 1);
-		AddMonsterType(123, 4);
+		AddMonsterType(MT_HORKSPWN, PLACE_SCATTER);
+		AddMonsterType(MT_HORKDMN, PLACE_UNIQUE);
 	}
 	if (currlevel == 20)
-		AddMonsterType(124, 4);
+		AddMonsterType(MT_DEFILER, PLACE_UNIQUE);
 	if (currlevel == 24) {
-		AddMonsterType(133, 1);
-		AddMonsterType(137, 2);
+		AddMonsterType(MT_ARCHLICH, PLACE_SCATTER);
+		AddMonsterType(MT_NAKRUL, PLACE_SPECIAL);
 	}
 #endif
 
 	if (!setlevel) {
 		if (QuestStatus(Q_BUTCHER))
-			AddMonsterType(MT_CLEAVER, 2);
+			AddMonsterType(MT_CLEAVER, PLACE_SPECIAL);
 		if (QuestStatus(Q_GARBUD))
-			AddMonsterType(UniqMonst[UMT_GARBUD].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_GARBUD].mtype, PLACE_UNIQUE);
 		if (QuestStatus(Q_ZHAR))
-			AddMonsterType(UniqMonst[UMT_ZHAR].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_ZHAR].mtype, PLACE_UNIQUE);
 		if (QuestStatus(Q_LTBANNER))
-			AddMonsterType(UniqMonst[UMT_SNOTSPIL].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_SNOTSPIL].mtype, PLACE_UNIQUE);
 		if (QuestStatus(Q_VEIL))
-			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, PLACE_UNIQUE);
 		if (QuestStatus(Q_WARLORD))
-			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, PLACE_UNIQUE);
 
 		if (gbMaxPlayers != 1 && currlevel == quests[Q_SKELKING]._qlevel) {
 
-			AddMonsterType(MT_SKING, 4);
+			AddMonsterType(MT_SKING, PLACE_UNIQUE);
 
 			nt = 0;
 			for (i = MT_WSKELAX; i <= MT_WSKELAX + numskeltypes; i++) {
@@ -278,7 +278,7 @@ void GetLevelMTypes()
 					}
 				}
 			}
-			AddMonsterType(skeltypes[random_(88, nt)], 1);
+			AddMonsterType(skeltypes[random_(88, nt)], PLACE_SCATTER);
 		}
 
 		nt = 0;
@@ -295,7 +295,7 @@ void GetLevelMTypes()
 
 		if (monstdebug) {
 			for (i = 0; i < debugmonsttypes; i++)
-				AddMonsterType(DebugMonsters[i], 1);
+				AddMonsterType(DebugMonsters[i], PLACE_SCATTER);
 		} else {
 
 			while (nt > 0 && nummtypes < MAX_LVLMTYPES && monstimgtot < 4000) {
@@ -310,7 +310,7 @@ void GetLevelMTypes()
 
 				if (nt != 0) {
 					i = random_(88, nt);
-					AddMonsterType(typelist[i], 1);
+					AddMonsterType(typelist[i], PLACE_SCATTER);
 					typelist[i] = typelist[--nt];
 				}
 			}
@@ -318,7 +318,7 @@ void GetLevelMTypes()
 
 	} else {
 		if (setlvlnum == SL_SKELKING) {
-			AddMonsterType(MT_SKING, 4);
+			AddMonsterType(MT_SKING, PLACE_UNIQUE);
 		}
 	}
 }
@@ -689,7 +689,7 @@ void PlaceMonster(int i, int mtype, int x, int y)
 }
 
 #ifndef SPAWN
-void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
+void PlaceUniqueMonst(int uniqindex, int miniontype, int bosspacksize)
 {
 	int xp, yp, x, y, i;
 	int uniqtype;
@@ -913,7 +913,7 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 	nummonsters++;
 
 	if (Uniq->mUnqAttr & 1) {
-		PlaceGroup(miniontype, unpackfilesize, Uniq->mUnqAttr, nummonsters - 1);
+		PlaceGroup(miniontype, bosspacksize, Uniq->mUnqAttr, nummonsters - 1);
 	}
 
 	if (Monst->_mAi != AI_GARG) {
@@ -970,18 +970,18 @@ void PlaceQuestMonsters()
 			setp = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", NULL);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
-			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, 1);
+			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, PLACE_SCATTER);
 		}
 		if (QuestStatus(Q_VEIL)) {
-			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, 1);
+			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, PLACE_SCATTER);
 		}
 		if (QuestStatus(Q_ZHAR) && zharlib == -1) {
 			quests[Q_ZHAR]._qactive = QUEST_NOTAVAIL;
 		}
 
 		if (currlevel == quests[Q_BETRAYER]._qlevel && gbMaxPlayers != 1) {
-			AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, 4);
-			AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, PLACE_UNIQUE);
+			AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, PLACE_UNIQUE);
 			PlaceUniqueMonst(UMT_LAZURUS, 0, 0);
 			PlaceUniqueMonst(UMT_RED_VEX, 0, 0);
 			PlaceUniqueMonst(UMT_BLACKJADE, 0, 0);
@@ -1155,11 +1155,11 @@ void InitMonsters()
 		numplacemonsters = na / 30;
 		if (gbMaxPlayers != 1)
 			numplacemonsters += numplacemonsters >> 1;
-		if (nummonsters + numplacemonsters > 190)
-			numplacemonsters = 190 - nummonsters;
+		if (nummonsters + numplacemonsters > MAXMONSTERS - 10)
+			numplacemonsters = MAXMONSTERS - 10 - nummonsters;
 		totalmonsters = nummonsters + numplacemonsters;
 		for (i = 0; i < nummtypes; i++) {
-			if (Monsters[i].mPlaceFlags & 1) {
+			if (Monsters[i].mPlaceFlags & PLACE_SCATTER) {
 				scattertypes[numscattypes] = i;
 				numscattypes++;
 			}
@@ -1225,15 +1225,15 @@ void SetMapMonsters(BYTE *pMap, int startx, int starty)
 	int i, j;
 	int mtype;
 
-	AddMonsterType(MT_GOLEM, 2);
+	AddMonsterType(MT_GOLEM, PLACE_SPECIAL);
 	AddMonster(1, 0, 0, 0, FALSE);
 	AddMonster(1, 0, 0, 0, FALSE);
 	AddMonster(1, 0, 0, 0, FALSE);
 	AddMonster(1, 0, 0, 0, FALSE);
 	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
-		AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, 4);
-		AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, 4);
-		AddMonsterType(UniqMonst[UMT_BLACKJADE].mtype, 4);
+		AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, PLACE_UNIQUE);
+		AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, PLACE_UNIQUE);
+		AddMonsterType(UniqMonst[UMT_BLACKJADE].mtype, PLACE_UNIQUE);
 		PlaceUniqueMonst(UMT_LAZURUS, 0, 0);
 		PlaceUniqueMonst(UMT_RED_VEX, 0, 0);
 		PlaceUniqueMonst(UMT_BLACKJADE, 0, 0);
@@ -1250,7 +1250,7 @@ void SetMapMonsters(BYTE *pMap, int startx, int starty)
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
 			if (*lm) {
-				mtype = AddMonsterType(MonstConvTbl[(*lm) - 1], 2);
+				mtype = AddMonsterType(MonstConvTbl[(*lm) - 1], PLACE_SPECIAL);
 				PlaceMonster(nummonsters++, mtype, i + startx + 16, j + starty + 16);
 			}
 			lm++;
@@ -3118,7 +3118,7 @@ void GroupUnity(int i)
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("GroupUnity: Invalid monster %d", i);
 
-	if (monster[i].leaderflag) {
+	if (monster[i].leaderflag != 0) {
 		leader = monster[i].leader;
 		clear = LineClearF(CheckNoSolid, monster[i]._mx, monster[i]._my, monster[leader]._mfutx, monster[leader]._mfuty);
 		if (clear || monster[i].leaderflag != 1) {
@@ -4037,7 +4037,7 @@ void MAI_Scav(int i)
 	if (monster[i]._mmode != MM_STAND)
 		return;
 	if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1) && Monst->_mgoal != MGOAL_HEALING) {
-		if (Monst->leaderflag) {
+		if (Monst->leaderflag != 0) {
 			monster[Monst->leader].packsize--;
 			Monst->leaderflag = 0;
 		}
