@@ -26,6 +26,108 @@ void mainmenu_refresh_music()
 #endif
 }
 
+static BOOL mainmenu_init_menu(int type)
+{
+	BOOL success;
+
+	if (type == SELHERO_PREVIOUS)
+		return TRUE;
+
+	music_stop();
+
+	success = StartGame(type != SELHERO_CONTINUE, type != SELHERO_CONNECT);
+	if (success)
+		mainmenu_refresh_music();
+
+	return success;
+}
+
+static BOOL mainmenu_single_player()
+{
+#ifdef HELLFIRE
+	int dlgresult;
+
+	while (TRUE) {
+		gbMaxPlayers = 1;
+		dlgresult = 0;
+
+		if (!SRegLoadValue(APP_NAME, jogging_title, 0, &jogging_opt)) {
+			jogging_opt = TRUE;
+		}
+
+		if (!UiSelHeroSingDialog(
+		        pfile_ui_set_hero_infos,
+		        pfile_ui_save_create,
+		        pfile_delete_save,
+		        pfile_ui_set_class_stats,
+		        &dlgresult,
+		        gszHero,
+		        &gnDifficulty
+		        //,UseBardTest,
+		        //UseBarbarianTest
+		        )) {
+			app_fatal("Unable to display SelHeroSing");
+		}
+
+		if (dlgresult == SELHERO_PREVIOUS)
+			return TRUE;
+		if (!mainmenu_init_menu(dlgresult))
+			return FALSE;
+	}
+#else
+	gbMaxPlayers = 1;
+	return mainmenu_init_menu(SELHERO_NEW_DUNGEON);
+#endif
+}
+
+static BOOL mainmenu_multi_player()
+{
+#ifdef HELLFIRE
+	int dlgresult;
+	BOOL hero_is_created = TRUE;
+
+	while (TRUE) {
+		gbMaxPlayers = MAX_PLRS;
+		dlgresult = 0;
+		jogging_opt = FALSE;
+		if (!UiSelHeroMultDialog(
+		        pfile_ui_set_hero_infos,
+		        pfile_ui_save_create,
+		        pfile_delete_save,
+		        pfile_ui_set_class_stats,
+		        &dlgresult,
+		        &hero_is_created, // Not in hellfire
+		        gszHero
+		        //,UseBardTest,
+		        //UseBarbarianTest
+		        )) {
+			app_fatal("Can't load multiplayer dialog");
+		}
+
+		if (dlgresult == SELHERO_PREVIOUS)
+			return TRUE;
+		if (!mainmenu_init_menu(dlgresult))
+			return FALSE;
+	}
+#else
+	gbMaxPlayers = MAX_PLRS;
+	return mainmenu_init_menu(SELHERO_CONNECT);
+#endif
+}
+
+#ifndef SPAWN
+static void mainmenu_play_intro()
+{
+	music_stop();
+#ifdef HELLFIRE
+	play_movie("gendata\\Hellfire.smk", TRUE);
+#else
+	play_movie("gendata\\diablo1.smk", TRUE);
+#endif
+	mainmenu_refresh_music();
+}
+#endif
+
 void __stdcall mainmenu_change_name(int arg1, int arg2, int arg3, int arg4, char *name_1, char *name_2)
 {
 	if (UiValidPlayerName(name_2))
@@ -148,105 +250,3 @@ void mainmenu_loop()
 
 	music_stop();
 }
-
-BOOL mainmenu_single_player()
-{
-#ifdef HELLFIRE
-	int dlgresult;
-
-	while (TRUE) {
-		gbMaxPlayers = 1;
-		dlgresult = 0;
-
-		if (!SRegLoadValue(APP_NAME, jogging_title, 0, &jogging_opt)) {
-			jogging_opt = TRUE;
-		}
-
-		if (!UiSelHeroSingDialog(
-		        pfile_ui_set_hero_infos,
-		        pfile_ui_save_create,
-		        pfile_delete_save,
-		        pfile_ui_set_class_stats,
-		        &dlgresult,
-		        gszHero,
-		        &gnDifficulty
-		        //,UseBardTest,
-		        //UseBarbarianTest
-		        )) {
-			app_fatal("Unable to display SelHeroSing");
-		}
-
-		if (dlgresult == SELHERO_PREVIOUS)
-			return TRUE;
-		if (!mainmenu_init_menu(dlgresult))
-			return FALSE;
-	}
-#else
-	gbMaxPlayers = 1;
-	return mainmenu_init_menu(SELHERO_NEW_DUNGEON);
-#endif
-}
-
-BOOL mainmenu_init_menu(int type)
-{
-	BOOL success;
-
-	if (type == SELHERO_PREVIOUS)
-		return TRUE;
-
-	music_stop();
-
-	success = StartGame(type != SELHERO_CONTINUE, type != SELHERO_CONNECT);
-	if (success)
-		mainmenu_refresh_music();
-
-	return success;
-}
-
-BOOL mainmenu_multi_player()
-{
-#ifdef HELLFIRE
-	int dlgresult;
-	BOOL hero_is_created = TRUE;
-
-	while (TRUE) {
-		gbMaxPlayers = MAX_PLRS;
-		dlgresult = 0;
-		jogging_opt = FALSE;
-		if (!UiSelHeroMultDialog(
-		        pfile_ui_set_hero_infos,
-		        pfile_ui_save_create,
-		        pfile_delete_save,
-		        pfile_ui_set_class_stats,
-		        &dlgresult,
-		        &hero_is_created, // Not in hellfire
-		        gszHero
-		        //,UseBardTest,
-		        //UseBarbarianTest
-		        )) {
-			app_fatal("Can't load multiplayer dialog");
-		}
-
-		if (dlgresult == SELHERO_PREVIOUS)
-			return TRUE;
-		if (!mainmenu_init_menu(dlgresult))
-			return FALSE;
-	}
-#else
-	gbMaxPlayers = MAX_PLRS;
-	return mainmenu_init_menu(SELHERO_CONNECT);
-#endif
-}
-
-#ifndef SPAWN
-void mainmenu_play_intro()
-{
-	music_stop();
-#ifdef HELLFIRE
-	play_movie("gendata\\Hellfire.smk", TRUE);
-#else
-	play_movie("gendata\\diablo1.smk", TRUE);
-#endif
-	mainmenu_refresh_music();
-}
-#endif
