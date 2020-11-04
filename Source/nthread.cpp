@@ -107,6 +107,32 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 	}
 }
 
+static unsigned int __stdcall nthread_handler(void *data)
+{
+	int delta;
+	BOOL received;
+
+	if (nthread_should_run) {
+		while (1) {
+			sgMemCrit.Enter();
+			if (!nthread_should_run)
+				break;
+			nthread_send_and_recv_turn(0, 0);
+			if (nthread_recv_turns(&received))
+				delta = last_tick - GetTickCount();
+			else
+				delta = 50;
+			sgMemCrit.Leave();
+			if (delta > 0)
+				Sleep(delta);
+			if (!nthread_should_run)
+				return 0;
+		}
+		sgMemCrit.Leave();
+	}
+	return 0;
+}
+
 void nthread_set_turn_upper_bit()
 {
 	turn_upper_bit = 0x80000000;
@@ -166,32 +192,6 @@ void nthread_start(BOOL set_turn_upper_bit)
 		}
 		SetThreadPriority(sghThread, THREAD_PRIORITY_HIGHEST);
 	}
-}
-
-unsigned int __stdcall nthread_handler(void *data)
-{
-	int delta;
-	BOOL received;
-
-	if (nthread_should_run) {
-		while (1) {
-			sgMemCrit.Enter();
-			if (!nthread_should_run)
-				break;
-			nthread_send_and_recv_turn(0, 0);
-			if (nthread_recv_turns(&received))
-				delta = last_tick - GetTickCount();
-			else
-				delta = 50;
-			sgMemCrit.Leave();
-			if (delta > 0)
-				Sleep(delta);
-			if (!nthread_should_run)
-				return 0;
-		}
-		sgMemCrit.Leave();
-	}
-	return 0;
 }
 
 void nthread_cleanup()
