@@ -297,6 +297,17 @@ DIABOOL RndLocOk(int xp, int yp)
 	return FALSE;
 }
 
+static DIABOOL WallTrapLocOkK(int xp, int yp)
+{
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
+		return FALSE;
+
+	if (nTrapTable[dPiece[xp][yp]] != FALSE)
+		return TRUE;
+	else
+		return FALSE;
+}
+
 void InitRndLocObj(int min, int max, int objtype)
 {
 	int i, xp, yp, numobjs;
@@ -603,7 +614,7 @@ void AddL3Objs(int x1, int y1, int x2, int y2)
 	}
 }
 
-DIABOOL WallTrapLocOk(int xp, int yp)
+DIABOOL TorchLocOK(int xp, int yp)
 {
 	if (dFlags[xp][yp] & BFLAG_POPULATED)
 		return FALSE;
@@ -616,7 +627,7 @@ void AddL2Torches()
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			if (!WallTrapLocOk(i, j))
+			if (!TorchLocOK(i, j))
 				continue;
 
 			pn = dPiece[i][j];
@@ -633,17 +644,6 @@ void AddL2Torches()
 				AddObject(OBJ_TORCHR, i, j - 1);
 		}
 	}
-}
-
-DIABOOL TorchLocOK(int xp, int yp)
-{
-	if (dFlags[xp][yp] & BFLAG_POPULATED)
-		return FALSE;
-
-	if (nTrapTable[dPiece[xp][yp]] != FALSE)
-		return TRUE;
-	else
-		return FALSE;
 }
 
 void AddObjTraps()
@@ -675,7 +675,7 @@ void AddObjTraps()
 				while (!nSolidTable[dPiece[xp][j]])
 					xp--;
 
-				if (!TorchLocOK(xp, j) || i - xp <= 1)
+				if (!WallTrapLocOkK(xp, j) || i - xp <= 1)
 					continue;
 
 				AddObject(OBJ_TRAPL, xp, j);
@@ -688,7 +688,7 @@ void AddObjTraps()
 				while (!nSolidTable[dPiece[i][yp]])
 					yp--;
 
-				if (!TorchLocOK(i, yp) || j - yp <= 1)
+				if (!WallTrapLocOkK(i, yp) || j - yp <= 1)
 					continue;
 
 				AddObject(OBJ_TRAPR, i, yp);
