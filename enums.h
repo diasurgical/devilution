@@ -1841,7 +1841,7 @@ typedef enum monster_goal {
 	MGOAL_RETREAT   = 2,
 	MGOAL_HEALING   = 3,
 	MGOAL_MOVE      = 4,
-	MGOAL_SHOOT     = 5,
+	MGOAL_ATTACK2   = 5,
 	MGOAL_INQUIRING = 6,
 	MGOAL_TALKING   = 7,
 } monster_goal;
