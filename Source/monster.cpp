@@ -1786,7 +1786,7 @@ void M_StartHit(int i, int pnum, int dam)
 
 void M_DiabloDeath(int i, BOOL sendmsg)
 {
-	MonsterStruct *Monst, *pmonster;
+	MonsterStruct *Monst;
 	int dist;
 	int j, k;
 	int _moldx, _moldy;
@@ -1798,28 +1798,30 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 	quests[Q_DIABLO]._qactive = QUEST_DONE;
 	if (sendmsg)
 		NetSendCmdQuest(TRUE, Q_DIABLO);
-	gbProcessPlayers = FALSE;
 	sgbSaveSoundOn = gbSoundOn;
+	gbProcessPlayers = FALSE;
+#ifdef HELLFIRE
+	gbSoundOn = FALSE;
+#endif
 	for (j = 0; j < nummonsters; j++) {
 		k = monstactive[j];
 		if (k == i || monster[i]._msquelch == 0)
 			continue;
 
-		pmonster = monster + k;
-		NewMonsterAnim(k, pmonster->MType->Anims[MA_DEATH], pmonster->_mdir);
+		NewMonsterAnim(k, monster[k].MType->Anims[MA_DEATH], monster[k]._mdir);
+		monster[k]._mmode = MM_DEATH;
 		monster[k]._mxoff = 0;
 		monster[k]._myoff = 0;
 		monster[k]._mVar1 = 0;
-		_moldx = monster[k]._moldx;
-		_moldy = monster[k]._moldy;
-		monster[k]._my = _moldy;
-		monster[k]._mfuty = _moldy;
-		monster[k]._mmode = MM_DEATH;
-		monster[k]._mx = _moldx;
-		monster[k]._mfutx = _moldx;
+		monster[k]._mx = monster[k]._moldx;
+		monster[k]._my = monster[k]._moldy;
+		monster[k]._mfuty = monster[k]._mx;
+		monster[k]._mfutx = monster[k]._my;
+		monster[k]._moldx = monster[k]._mx; // BUGFIX: useless code but is bin exact in hellfire and doesn't affect vanilla - can remove in devilutionx
+		monster[k]._moldy = monster[k]._my; // BUGFIX: useless code but is bin exact in hellfire and doesn't affect vanilla - can remove in devilutionx
 		M_CheckEFlag(k);
 		M_ClearSquares(k);
-		dMonster[pmonster->_mx][pmonster->_my] = k + 1;
+		dMonster[monster[k]._mx][monster[k]._my] = k + 1;
 	}
 	AddLight(Monst->_mx, Monst->_my, 8);
 	DoVision(Monst->_mx, Monst->_my, 8, FALSE, TRUE);
@@ -1829,12 +1831,10 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 		dist = abs(ViewY - Monst->_my);
 	if (dist > 20)
 		dist = 20;
-	j = ViewX << 16;
-	k = ViewY << 16;
-	Monst->_mVar3 = j;
-	Monst->_mVar4 = k;
-	Monst->_mVar5 = (int)((j - (Monst->_mx << 16)) / (double)dist);
-	Monst->_mVar6 = (int)((k - (Monst->_my << 16)) / (double)dist);
+	Monst->_mVar3 = ViewX << 16;
+	Monst->_mVar4 = ViewY << 16;
+	Monst->_mVar5 = (int)((Monst->_mVar3 - (Monst->_mx << 16)) / (double)dist);
+	Monst->_mVar6 = (int)((Monst->_mVar4 - (Monst->_my << 16)) / (double)dist);
 }
 
 #ifdef HELLFIRE
@@ -2265,29 +2265,51 @@ BOOL M_DoWalk(int i)
 	BOOL rv;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoWalk: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoWalk: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
-	rv = FALSE;
 	if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
 		monster[i]._mx += monster[i]._mVar1;
 		monster[i]._my += monster[i]._mVar2;
 		dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+#ifdef HELLFIRE
+		if (!(monster[i]._mFlags & MFLAG_HIDDEN) && monster[i].mlid != 0)
+#else
 		if (monster[i]._uniqtype != 0)
+#endif
 			ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
 		M_StartStand(i, monster[i]._mdir);
 		rv = TRUE;
-	} else if (!monster[i]._mAnimCnt) {
-		monster[i]._mVar8++;
-		monster[i]._mVar6 += monster[i]._mxvel;
-		monster[i]._mVar7 += monster[i]._myvel;
-		monster[i]._mxoff = monster[i]._mVar6 >> 4;
-		monster[i]._myoff = monster[i]._mVar7 >> 4;
+	} else {
+		if (monster[i]._mAnimCnt == 0) {
+#ifdef HELLFIRE
+			if (monster[i]._mVar8 == 0 && monster[i].MType->mtype == MT_FLESTHNG)
+				PlayEffect(i, 3);
+#endif
+			monster[i]._mVar8++;
+			monster[i]._mVar6 += monster[i]._mxvel;
+			monster[i]._mVar7 += monster[i]._myvel;
+			monster[i]._mxoff = monster[i]._mVar6 >> 4;
+			monster[i]._myoff = monster[i]._mVar7 >> 4;
+		}
+		rv = FALSE;
 	}
 
+#ifdef HELLFIRE
+	if (!(monster[i]._mFlags & MFLAG_HIDDEN) && monster[i].mlid != 0)
+#else
 	if (monster[i]._uniqtype != 0)
+#endif
 		M_ChangeLightOffset(i);
 
 	return rv;
@@ -2298,18 +2320,34 @@ BOOL M_DoWalk2(int i)
 	BOOL rv;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoWalk2: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoWalk2: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
 		dMonster[monster[i]._mVar1][monster[i]._mVar2] = 0;
+#ifdef HELLFIRE
+		if (!(monster[i]._mFlags & MFLAG_HIDDEN) && monster[i].mlid != 0)
+#else
 		if (monster[i]._uniqtype != 0)
+#endif
 			ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
 		M_StartStand(i, monster[i]._mdir);
 		rv = TRUE;
 	} else {
-		if (!monster[i]._mAnimCnt) {
+		if (monster[i]._mAnimCnt == 0) {
+#ifdef HELLFIRE
+			if (monster[i]._mVar8 == 0 && monster[i].MType->mtype == MT_FLESTHNG)
+				PlayEffect(i, 3);
+#endif
 			monster[i]._mVar8++;
 			monster[i]._mVar6 += monster[i]._mxvel;
 			monster[i]._mVar7 += monster[i]._myvel;
@@ -2318,7 +2356,11 @@ BOOL M_DoWalk2(int i)
 		}
 		rv = FALSE;
 	}
+#ifdef HELLFIRE
+	if (!(monster[i]._mFlags & MFLAG_HIDDEN) && monster[i].mlid != 0)
+#else
 	if (monster[i]._uniqtype != 0)
+#endif
 		M_ChangeLightOffset(i);
 
 	return rv;
@@ -2329,9 +2371,17 @@ BOOL M_DoWalk3(int i)
 	BOOL rv;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoWalk3: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoWalk3: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
@@ -2339,12 +2389,20 @@ BOOL M_DoWalk3(int i)
 		monster[i]._my = monster[i]._mVar2;
 		dFlags[monster[i]._mVar4][monster[i]._mVar5] &= ~BFLAG_MONSTLR;
 		dMonster[monster[i]._mx][monster[i]._my] = i + 1;
-		if (monster[i]._uniqtype)
+#ifdef HELLFIRE
+		if (!(monster[i]._mFlags & MFLAG_HIDDEN) && monster[i].mlid != 0)
+#else
+		if (monster[i]._uniqtype != 0)
+#endif
 			ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
 		M_StartStand(i, monster[i]._mdir);
 		rv = TRUE;
 	} else {
-		if (!monster[i]._mAnimCnt) {
+		if (monster[i]._mAnimCnt == 0) {
+#ifdef HELLFIRE
+			if (monster[i]._mVar8 == 0 && monster[i].MType->mtype == MT_FLESTHNG)
+				PlayEffect(i, 3);
+#endif
 			monster[i]._mVar8++;
 			monster[i]._mVar6 += monster[i]._mxvel;
 			monster[i]._mVar7 += monster[i]._myvel;
@@ -2353,7 +2411,11 @@ BOOL M_DoWalk3(int i)
 		}
 		rv = FALSE;
 	}
+#ifdef HELLFIRE
+	if (monster[i]._uniqtype != 0 && !(monster[i]._mFlags & MFLAG_HIDDEN)) // BUGFIX: change uniqtype check to mlid check like it is in all other places
+#else
 	if (monster[i]._uniqtype != 0)
+#endif
 		M_ChangeLightOffset(i);
 
 	return rv;
@@ -2617,7 +2679,7 @@ int M_DoRSpAttack(int i)
 	if (monster[i].MType == NULL) // BUGFIX: should check MData
 		app_fatal("M_DoRSpAttack: Monster %d \"%s\" MData NULL", i, monster[i].mName);
 
-	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2 && !monster[i]._mAnimCnt) {
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2 && monster[i]._mAnimCnt == 0) {
 		AddMissile(
 		    monster[i]._mx,
 		    monster[i]._my,
@@ -2956,7 +3018,6 @@ void PrepDoEnding()
 
 BOOL M_DoDeath(int i)
 {
-	int var1;
 	int x, y;
 
 	if ((DWORD)i >= MAXMONSTERS)
@@ -2973,7 +3034,6 @@ BOOL M_DoDeath(int i)
 #endif
 
 	monster[i]._mVar1++;
-	var1 = monster[i]._mVar1;
 	if (monster[i].MType->mtype == MT_DIABLO) {
 		x = monster[i]._mx - ViewX;
 		if (x < 0)
@@ -2990,7 +3050,7 @@ BOOL M_DoDeath(int i)
 		}
 		ViewY += y;
 
-		if (var1 == 140)
+		if (monster[i]._mVar1 == 140)
 			PrepDoEnding();
 	} else if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
 		if (monster[i]._uniqtype == 0)
@@ -3034,13 +3094,20 @@ BOOL M_DoSpStand(int i)
 
 BOOL M_DoDelay(int i)
 {
-	int mVar2;
 	int oFrame;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoDelay: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoDelay: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 
 	monster[i]._mAnimData = monster[i].MType->Anims[MA_STAND].Data[M_GetDir(i)];
 	if (monster[i]._mAi == AI_LAZURUS) {
@@ -3048,10 +3115,7 @@ BOOL M_DoDelay(int i)
 			monster[i]._mVar2 = 8;
 	}
 
-	mVar2 = monster[i]._mVar2;
-	monster[i]._mVar2--;
-
-	if (!mVar2) {
+	if (monster[i]._mVar2-- == 0) {
 		oFrame = monster[i]._mAnimFrame;
 		M_StartStand(i, monster[i]._mdir);
 		monster[i]._mAnimFrame = oFrame;
@@ -3064,7 +3128,11 @@ BOOL M_DoDelay(int i)
 BOOL M_DoStone(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("M_DoStone: Invalid monster %d", i);
+#endif
 
 	if (!monster[i]._mhitpoints) {
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
