@@ -670,7 +670,11 @@ static void delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd == 0xFF) {
 			sgbDeltaChanged = TRUE;
+#ifdef HELLFIRE
+			*pD = *pI;
+#else
 			memcpy(pD, pI, sizeof(TCmdPItem));
+#endif
 			pD->bCmd = CMD_ACK_PLRINFO;
 			pD->x = x;
 			pD->y = y;
@@ -767,19 +771,17 @@ void DeltaLoadLevel()
 		for (i = 0; i < nummonsters; i++) {
 			if (sgLevels[currlevel].monster[i]._mx != 0xFF) {
 				M_ClearSquares(i);
-				x = sgLevels[currlevel].monster[i]._mx;
-				y = sgLevels[currlevel].monster[i]._my;
-				monster[i]._mx = x;
-				monster[i]._my = y;
-				monster[i]._moldx = x;
-				monster[i]._moldy = y;
-				monster[i]._mfutx = x;
-				monster[i]._mfuty = y;
+				monster[i]._mx = sgLevels[currlevel].monster[i]._mx;
+				monster[i]._my = sgLevels[currlevel].monster[i]._my;
+				monster[i]._moldx = monster[i]._mx;
+				monster[i]._moldy = monster[i]._my;
+				monster[i]._mfutx = monster[i]._mx;
+				monster[i]._mfuty = monster[i]._my;
 				if (sgLevels[currlevel].monster[i]._mhitpoints != -1)
 					monster[i]._mhitpoints = sgLevels[currlevel].monster[i]._mhitpoints;
-				if (!sgLevels[currlevel].monster[i]._mhitpoints) {
-					monster[i]._moldx = x;
-					monster[i]._moldy = y;
+				if (sgLevels[currlevel].monster[i]._mhitpoints == 0) {
+					monster[i]._moldx = sgLevels[currlevel].monster[i]._mx; // CODEFIX: useless assignment
+					monster[i]._moldy = sgLevels[currlevel].monster[i]._my; // CODEFIX: useless assignment
 					M_ClearSquares(i);
 					if (monster[i]._mAi != AI_DIABLO) {
 						if (!monster[i]._uniqtype)
@@ -849,6 +851,14 @@ void DeltaLoadLevel()
 					item[ii]._iMaxDur = sgLevels[currlevel].item[i].bMDur;
 					item[ii]._iCharges = sgLevels[currlevel].item[i].bCh;
 					item[ii]._iMaxCharges = sgLevels[currlevel].item[i].bMCh;
+#ifdef HELLFIRE
+					item[ii]._iPLToHit = sgLevels[currlevel].item[i].wToHit;
+					item[ii]._iMaxDam = sgLevels[currlevel].item[i].wMaxDam;
+					item[ii]._iMinStr = sgLevels[currlevel].item[i].bMinStr;
+					item[ii]._iMinMag = sgLevels[currlevel].item[i].bMinMag;
+					item[ii]._iMinDex = sgLevels[currlevel].item[i].bMinDex;
+					item[ii]._iAC = sgLevels[currlevel].item[i].bAC;
+#endif
 				}
 				x = sgLevels[currlevel].item[i].x;
 				y = sgLevels[currlevel].item[i].y;
@@ -870,7 +880,7 @@ void DeltaLoadLevel()
 				}
 				item[ii]._ix = x;
 				item[ii]._iy = y;
-				dItem[x][y] = ii + 1;
+				dItem[item[ii]._ix][item[ii]._iy] = ii + 1;
 				RespawnItem(ii, FALSE);
 				numitems++;
 			}
@@ -1250,6 +1260,14 @@ void NetSendCmdDItem(BOOL bHiPri, int ii)
 		cmd.bCh = item[ii]._iCharges;
 		cmd.bMCh = item[ii]._iMaxCharges;
 		cmd.wValue = item[ii]._ivalue;
+#ifdef HELLFIRE
+		cmd.wToHit = item[ii]._iPLToHit;
+		cmd.wMaxDam = item[ii]._iMaxDam;
+		cmd.bMinStr = item[ii]._iMinStr;
+		cmd.bMinMag = item[ii]._iMinMag;
+		cmd.bMinDex = item[ii]._iMinDex;
+		cmd.bAC = item[ii]._iAC;
+#endif
 	}
 
 	if (bHiPri)
