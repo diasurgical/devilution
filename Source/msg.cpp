@@ -194,7 +194,11 @@ static BYTE *DeltaExportItem(BYTE *dst, TCmdPItem *src)
 			*dst = 0xFF;
 			dst++;
 		} else {
+#ifdef HELLFIRE
+			*reinterpret_cast<TCmdPItem *>(dst) = *src;
+#else
 			memcpy(dst, src, sizeof(TCmdPItem));
+#endif
 			dst += sizeof(TCmdPItem);
 		}
 		src++;
@@ -212,7 +216,11 @@ static BYTE *DeltaImportItem(BYTE *src, TCmdPItem *dst)
 			memset(dst, 0xFF, sizeof(TCmdPItem));
 			src++;
 		} else {
+#ifdef HELLFIRE
+			*dst = *reinterpret_cast<TCmdPItem *>(src);
+#else
 			memcpy(dst, src, sizeof(TCmdPItem));
+#endif
 			src += sizeof(TCmdPItem);
 		}
 		dst++;
@@ -238,11 +246,15 @@ static BYTE *DeltaExportMonster(BYTE *dst, DMonsterStr *src)
 	int i;
 
 	for (i = 0; i < MAXMONSTERS; i++) {
-		if (*(BYTE *)src == 0xFF) {
+		if (src->_mx == 0xFF) {
 			*dst = 0xFF;
 			dst++;
 		} else {
+#ifdef HELLFIRE
+			*reinterpret_cast<DMonsterStr *>(dst) = *src;
+#else
 			memcpy(dst, src, sizeof(DMonsterStr));
+#endif
 			dst += sizeof(DMonsterStr);
 		}
 		src++;
@@ -260,7 +272,11 @@ static BYTE *DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 			memset(dst, 0xFF, sizeof(DMonsterStr));
 			src++;
 		} else {
+#ifdef HELLFIRE
+			*dst = *reinterpret_cast<DMonsterStr *>(src);
+#else
 			memcpy(dst, src, sizeof(DMonsterStr));
+#endif
 			src += sizeof(DMonsterStr);
 		}
 		dst++;
@@ -271,30 +287,34 @@ static BYTE *DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 
 static BYTE *DeltaExportJunk(BYTE *dst)
 {
-	int i;
-	MultiQuests *mq;
-	DPortal *pD;
+	int i, q;
 
 	for (i = 0; i < MAXPORTAL; i++) {
-		pD = &sgJunk.portal[i];
-		if (pD->x == 0xFF) {
+		if (sgJunk.portal[i].x == 0xFF) {
 			*dst = 0xFF;
 			dst++;
 		} else {
-			memcpy(dst, pD, sizeof(*pD));
-			dst += sizeof(*pD);
+#ifdef HELLFIRE
+			*reinterpret_cast<DPortal *>(dst) = sgJunk.portal[i];
+#else
+			memcpy(dst, &sgJunk.portal[i], sizeof(DPortal));
+#endif
+			dst += sizeof(DPortal);
 		}
 	}
 
-	mq = sgJunk.quests;
-	for (i = 0; i < MAXQUESTS; i++) {
+	for (i = 0, q = 0; i < MAXQUESTS; i++) {
 		if (questlist[i]._qflags & QUEST_ANY) {
-			mq->qlog = quests[i]._qlog;
-			mq->qstate = quests[i]._qactive;
-			mq->qvar1 = quests[i]._qvar1;
-			memcpy(dst, mq, sizeof(*mq));
-			dst += sizeof(*mq);
-			mq++;
+			sgJunk.quests[q].qlog = quests[i]._qlog;
+			sgJunk.quests[q].qstate = quests[i]._qactive;
+			sgJunk.quests[q].qvar1 = quests[i]._qvar1;
+#ifdef HELLFIRE
+			*reinterpret_cast<MultiQuests *>(dst) = sgJunk.quests[q];
+#else
+			memcpy(dst, &sgJunk.quests[q], sizeof(MultiQuests));
+#endif
+			dst += sizeof(MultiQuests);
+			q++;
 		}
 	}
 
@@ -303,8 +323,7 @@ static BYTE *DeltaExportJunk(BYTE *dst)
 
 static void DeltaImportJunk(BYTE *src)
 {
-	int i;
-	MultiQuests *mq;
+	int i, q;
 
 	for (i = 0; i < MAXPORTAL; i++) {
 		if (*src == 0xFF) {
@@ -312,7 +331,11 @@ static void DeltaImportJunk(BYTE *src)
 			src++;
 			SetPortalStats(i, FALSE, 0, 0, 0, DTYPE_TOWN);
 		} else {
+#ifdef HELLFIRE
+			sgJunk.portal[i] = *reinterpret_cast<DPortal *>(src);
+#else
 			memcpy(&sgJunk.portal[i], src, sizeof(DPortal));
+#endif
 			src += sizeof(DPortal);
 			SetPortalStats(
 				i,
@@ -324,15 +347,18 @@ static void DeltaImportJunk(BYTE *src)
 		}
 	}
 
-	mq = sgJunk.quests;
-	for (i = 0; i < MAXQUESTS; i++) {
+	for (i = 0, q = 0; i < MAXQUESTS; i++) {
 		if (questlist[i]._qflags & QUEST_ANY) {
-			memcpy(mq, src, sizeof(MultiQuests));
+#ifdef HELLFIRE
+			sgJunk.quests[q] = *reinterpret_cast<MultiQuests *>(src);
+#else
+			memcpy(&sgJunk.quests[q], src, sizeof(MultiQuests));
+#endif
 			src += sizeof(MultiQuests);
-			quests[i]._qlog = mq->qlog;
-			quests[i]._qactive = mq->qstate;
-			quests[i]._qvar1 = mq->qvar1;
-			mq++;
+			quests[i]._qlog = sgJunk.quests[q].qlog;
+			quests[i]._qactive = sgJunk.quests[q].qstate;
+			quests[i]._qvar1 = sgJunk.quests[q].qvar1;
+			q++;
 		}
 	}
 }
@@ -1058,7 +1084,11 @@ void NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p
 	int ticks;
 	TCmdGItem cmd;
 
+#ifdef HELLFIRE
+	cmd = *p;
+#else
 	memcpy(&cmd, p, sizeof(cmd));
+#endif
 	cmd.bPnum = pnum;
 	cmd.bCmd = bCmd;
 	cmd.bMaster = mast;
@@ -1109,7 +1139,11 @@ void NetSendCmdExtra(TCmdGItem *p)
 {
 	TCmdGItem cmd;
 
+#ifdef HELLFIRE
+	cmd = *p;
+#else
 	memcpy(&cmd, p, sizeof(cmd));
+#endif
 	cmd.dwTime = 0;
 	cmd.bCmd = CMD_ITEMEXTRA;
 	NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
@@ -1143,6 +1177,14 @@ void NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 		cmd.bCh = plr[myplr].HoldItem._iCharges;
 		cmd.bMCh = plr[myplr].HoldItem._iMaxCharges;
 		cmd.wValue = plr[myplr].HoldItem._ivalue;
+#ifdef HELLFIRE
+		cmd.wToHit = plr[myplr].HoldItem._iPLToHit;
+		cmd.wMaxDam = plr[myplr].HoldItem._iMaxDam;
+		cmd.bMinStr = plr[myplr].HoldItem._iMinStr;
+		cmd.bMinMag = plr[myplr].HoldItem._iMinMag;
+		cmd.bMinDex = plr[myplr].HoldItem._iMinDex;
+		cmd.bAC = plr[myplr].HoldItem._iAC;
+#endif
 	}
 
 	if (bHiPri)
