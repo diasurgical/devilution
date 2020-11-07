@@ -1084,7 +1084,11 @@ BOOL NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 	int ticks;
 	TCmdGItem cmd;
 
+#ifdef HELLFIRE
+	cmd = *p;
+#else
 	memcpy(&cmd, p, sizeof(cmd));
+#endif
 	cmd.bCmd = bCmd;
 	cmd.bPnum = pnum;
 	cmd.bMaster = mast;
