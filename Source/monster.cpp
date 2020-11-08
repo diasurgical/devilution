@@ -2966,10 +2966,8 @@ void DoEnding()
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 #endif
 		play_movie("gendata\\DiabVic2.smk", FALSE);
-	} 
-#endif
-#ifdef HELLFIRE
-	else if (plr[myplr]._pClass == PC_SORCERER || plr[myplr]._pClass ==  PC_MONK){
+	} else if (plr[myplr]._pClass == PC_SORCERER) {
+		play_movie("gendata\\DiabVic1.smk", FALSE);
 		play_movie("gendata\\DiabVic1.smk", FALSE);
 	} 
 #else
