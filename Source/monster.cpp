@@ -2968,6 +2968,8 @@ void DoEnding()
 		play_movie("gendata\\DiabVic2.smk", FALSE);
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		play_movie("gendata\\DiabVic1.smk", FALSE);
+#ifdef HELLFIRE
+	} else if (plr[myplr]._pClass == PC_MONK) {
 		play_movie("gendata\\DiabVic1.smk", FALSE);
 #endif
 		play_movie("gendata\\DiabVic3.smk", FALSE);
