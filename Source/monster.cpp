@@ -2969,14 +2969,7 @@ void DoEnding()
 	} else if (plr[myplr]._pClass == PC_SORCERER) {
 		play_movie("gendata\\DiabVic1.smk", FALSE);
 		play_movie("gendata\\DiabVic1.smk", FALSE);
-	} 
-#else
-	else if (plr[myplr]._pClass == PC_SORCERER) {
-		play_movie("gendata\\DiabVic1.smk", FALSE);
-	} 
 #endif
-
-	else {
 		play_movie("gendata\\DiabVic3.smk", FALSE);
 	}
 	play_movie("gendata\\Diabend.smk", FALSE);
