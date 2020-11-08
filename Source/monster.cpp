@@ -2960,11 +2960,24 @@ void DoEnding()
 	}
 
 #ifndef SPAWN
+#ifndef HELLFIRE
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 		play_movie("gendata\\DiabVic2.smk", FALSE);
-	} else if (plr[myplr]._pClass == PC_SORCERER) {
+	} 
+#endif
+#ifdef HELLFIRE
+	if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass  == PC_BARBARIAN) {
+		play_movie("gendata\\DiabVic2.smk", FALSE);
+	}
+	else if (plr[myplr]._pClass == PC_SORCERER || plr[myplr]._pClass ==  PC_MONK){
 		play_movie("gendata\\DiabVic1.smk", FALSE);
-	} else {
+	} 
+#else
+	else if (plr[myplr]._pClass == PC_SORCERER) {
+		play_movie("gendata\\DiabVic1.smk", FALSE);
+	} 
+#endif	
+	else {
 		play_movie("gendata\\DiabVic3.smk", FALSE);
 	}
 	play_movie("gendata\\Diabend.smk", FALSE);
