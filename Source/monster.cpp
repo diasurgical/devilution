@@ -2964,6 +2964,7 @@ void DoEnding()
 	if (plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_BARBARIAN) {
 #else
 	if (plr[myplr]._pClass == PC_WARRIOR) {
+#endif
 		play_movie("gendata\\DiabVic2.smk", FALSE);
 	} 
 #endif
