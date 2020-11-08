@@ -2972,6 +2972,7 @@ void DoEnding()
 	} else if (plr[myplr]._pClass == PC_MONK) {
 		play_movie("gendata\\DiabVic1.smk", FALSE);
 #endif
+	} else {
 		play_movie("gendata\\DiabVic3.smk", FALSE);
 	}
 	play_movie("gendata\\Diabend.smk", FALSE);
