@@ -9,6 +9,7 @@
 extern BOOL trigflag;
 extern int numtrigs;
 extern TriggerStruct trigs[MAXTRIGGERS];
+extern int TWarpFrom;
 
 void InitNoTriggers();
 void InitTownTriggers();
