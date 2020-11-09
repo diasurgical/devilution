@@ -383,6 +383,54 @@ void InitPlayerGFX(int pnum)
 	}
 }
 
+static DWORD GetPlrGFXSize(const char *szCel)
+{
+	DWORD c;
+	const char *a, *w;
+	DWORD dwSize, dwMaxSize;
+	HANDLE hsFile;
+	char pszName[256];
+	char Type[16];
+
+	dwMaxSize = 0;
+
+	for (c = 0; c < NUM_CLASSES; c++) {
+#ifdef SPAWN
+		if (c != 0)
+			continue;
+#endif
+		for (a = &ArmourChar[0]; *a; a++) {
+#ifdef SPAWN
+			if (a != &ArmourChar[0])
+				break;
+#endif
+			for (w = &WepChar[0]; *w; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
+#ifdef HELLFIRE
+				if ((c == PC_BARD && hfbard_mpq == NULL) || (c == PC_BARBARIAN && hfbarb_mpq == NULL)) {
+#endif
+					sprintf(Type, "%c%c%c", CharChar[c], *a, *w);
+					sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], Type, Type, szCel);
+#ifdef HELLFIRE
+				} else {
+					sprintf(Type, "%c%c%c", CharCharHF[c], *a, *w);
+					sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTblOld[c], Type, Type, szCel);
+				}
+#endif
+				if (WOpenFile(pszName, &hsFile, TRUE)) {
+					/// ASSERT: assert(hsFile);
+					dwSize = WGetFileSize(hsFile, NULL);
+					WCloseFile(hsFile);
+					if (dwMaxSize <= dwSize) {
+						dwMaxSize = dwSize;
+					}
+				}
+			}
+		}
+	}
+
+	return dwMaxSize;
+}
+
 void InitPlrGFXMem(int pnum)
 {
 	if ((DWORD)pnum >= MAX_PLRS) {
@@ -452,54 +500,6 @@ void InitPlrGFXMem(int pnum)
 	plr[pnum]._pBData = DiabloAllocPtr(plr_bframe_size);
 
 	plr[pnum]._pGFXLoad = 0;
-}
-
-DWORD GetPlrGFXSize(const char *szCel)
-{
-	DWORD c;
-	const char *a, *w;
-	DWORD dwSize, dwMaxSize;
-	HANDLE hsFile;
-	char pszName[256];
-	char Type[16];
-
-	dwMaxSize = 0;
-
-	for (c = 0; c < NUM_CLASSES; c++) {
-#ifdef SPAWN
-		if (c != 0)
-			continue;
-#endif
-		for (a = &ArmourChar[0]; *a; a++) {
-#ifdef SPAWN
-			if (a != &ArmourChar[0])
-				break;
-#endif
-			for (w = &WepChar[0]; *w; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
-#ifdef HELLFIRE
-				if ((c == PC_BARD && hfbard_mpq == NULL) || (c == PC_BARBARIAN && hfbarb_mpq == NULL)) {
-#endif
-					sprintf(Type, "%c%c%c", CharChar[c], *a, *w);
-					sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], Type, Type, szCel);
-#ifdef HELLFIRE
-				} else {
-					sprintf(Type, "%c%c%c", CharCharHF[c], *a, *w);
-					sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTblOld[c], Type, Type, szCel);
-				}
-#endif
-				if (WOpenFile(pszName, &hsFile, TRUE)) {
-					/// ASSERT: assert(hsFile);
-					dwSize = WGetFileSize(hsFile, NULL);
-					WCloseFile(hsFile);
-					if (dwMaxSize <= dwSize) {
-						dwMaxSize = dwSize;
-					}
-				}
-			}
-		}
-	}
-
-	return dwMaxSize;
 }
 
 void FreePlayerGFX(int pnum)
@@ -1907,6 +1907,43 @@ void RespawnDeadItem(ItemStruct *itm, int x, int y)
 	itm->_itype = ITYPE_NONE;
 }
 
+static void PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
+{
+	int x, y;
+	int i, j, k;
+
+	if (itm->_itype == ITYPE_NONE)
+		return;
+
+	if ((DWORD)pnum >= MAX_PLRS) {
+		app_fatal("PlrDeadItem: illegal player %d", pnum);
+	}
+
+	x = xx + plr[pnum]._px;
+	y = yy + plr[pnum]._py;
+	if ((xx || yy) && ItemSpaceOk(x, y)) {
+		RespawnDeadItem(itm, x, y);
+		plr[pnum].HoldItem = *itm;
+		NetSendCmdPItem(FALSE, CMD_RESPAWNITEM, x, y);
+		return;
+	}
+
+	for (k = 1; k < 50; k++) {
+		for (j = -k; j <= k; j++) {
+			y = j + plr[pnum]._py;
+			for (i = -k; i <= k; i++) {
+				x = i + plr[pnum]._px;
+				if (ItemSpaceOk(x, y)) {
+					RespawnDeadItem(itm, x, y);
+					plr[pnum].HoldItem = *itm;
+					NetSendCmdPItem(FALSE, CMD_RESPAWNITEM, x, y);
+					return;
+				}
+			}
+		}
+	}
+}
+
 void StartPlayerKill(int pnum, int earflag)
 {
 	BOOL diablolevel;
@@ -2031,43 +2068,6 @@ void StartPlayerKill(int pnum, int earflag)
 #ifndef HELLFIRE
 	SetPlayerHitPoints(pnum, 0);
 #endif
-}
-
-void PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
-{
-	int x, y;
-	int i, j, k;
-
-	if (itm->_itype == ITYPE_NONE)
-		return;
-
-	if ((DWORD)pnum >= MAX_PLRS) {
-		app_fatal("PlrDeadItem: illegal player %d", pnum);
-	}
-
-	x = xx + plr[pnum]._px;
-	y = yy + plr[pnum]._py;
-	if ((xx || yy) && ItemSpaceOk(x, y)) {
-		RespawnDeadItem(itm, x, y);
-		plr[pnum].HoldItem = *itm;
-		NetSendCmdPItem(FALSE, CMD_RESPAWNITEM, x, y);
-		return;
-	}
-
-	for (k = 1; k < 50; k++) {
-		for (j = -k; j <= k; j++) {
-			y = j + plr[pnum]._py;
-			for (i = -k; i <= k; i++) {
-				x = i + plr[pnum]._px;
-				if (ItemSpaceOk(x, y)) {
-					RespawnDeadItem(itm, x, y);
-					plr[pnum].HoldItem = *itm;
-					NetSendCmdPItem(FALSE, CMD_RESPAWNITEM, x, y);
-					return;
-				}
-			}
-		}
-	}
 }
 
 void DropHalfPlayersGold(int pnum)
@@ -3199,6 +3199,56 @@ BOOL PM_DoBlock(int pnum)
 	return FALSE;
 }
 
+static void ArmorDur(int pnum)
+{
+	int a;
+	ItemStruct *pi;
+	PlayerStruct *p;
+
+	if (pnum != myplr) {
+		return;
+	}
+
+	if ((DWORD)pnum >= MAX_PLRS) {
+		app_fatal("ArmorDur: illegal player %d", pnum);
+	}
+
+	p = &plr[pnum];
+	if (p->InvBody[INVLOC_CHEST]._itype == ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE) {
+		return;
+	}
+
+	a = random_(8, 3);
+	if (p->InvBody[INVLOC_CHEST]._itype != ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE) {
+		a = 1;
+	}
+	if (p->InvBody[INVLOC_CHEST]._itype == ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
+		a = 0;
+	}
+
+	if (a != 0) {
+		pi = &p->InvBody[INVLOC_CHEST];
+	} else {
+		pi = &p->InvBody[INVLOC_HEAD];
+	}
+	if (pi->_iDurability == DUR_INDESTRUCTIBLE) {
+		return;
+	}
+
+	pi->_iDurability--;
+	if (pi->_iDurability != 0) {
+		return;
+	}
+
+	if (a != 0) {
+		NetSendCmdDelItem(TRUE, INVLOC_CHEST);
+	} else {
+		NetSendCmdDelItem(TRUE, INVLOC_HEAD);
+	}
+	pi->_itype = ITYPE_NONE;
+	CalcPlrInv(pnum, TRUE);
+}
+
 BOOL PM_DoSpell(int pnum)
 {
 	if ((DWORD)pnum >= MAX_PLRS) {
@@ -3304,56 +3354,6 @@ BOOL PM_DoGotHit(int pnum)
 	plr[pnum]._pVar8++;
 #endif
 	return FALSE;
-}
-
-void ArmorDur(int pnum)
-{
-	int a;
-	ItemStruct *pi;
-	PlayerStruct *p;
-
-	if (pnum != myplr) {
-		return;
-	}
-
-	if ((DWORD)pnum >= MAX_PLRS) {
-		app_fatal("ArmorDur: illegal player %d", pnum);
-	}
-
-	p = &plr[pnum];
-	if (p->InvBody[INVLOC_CHEST]._itype == ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE) {
-		return;
-	}
-
-	a = random_(8, 3);
-	if (p->InvBody[INVLOC_CHEST]._itype != ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE) {
-		a = 1;
-	}
-	if (p->InvBody[INVLOC_CHEST]._itype == ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
-		a = 0;
-	}
-
-	if (a != 0) {
-		pi = &p->InvBody[INVLOC_CHEST];
-	} else {
-		pi = &p->InvBody[INVLOC_HEAD];
-	}
-	if (pi->_iDurability == DUR_INDESTRUCTIBLE) {
-		return;
-	}
-
-	pi->_iDurability--;
-	if (pi->_iDurability != 0) {
-		return;
-	}
-
-	if (a != 0) {
-		NetSendCmdDelItem(TRUE, INVLOC_CHEST);
-	} else {
-		NetSendCmdDelItem(TRUE, INVLOC_HEAD);
-	}
-	pi->_itype = ITYPE_NONE;
-	CalcPlrInv(pnum, TRUE);
 }
 
 BOOL PM_DoDeath(int pnum)
@@ -3789,6 +3789,33 @@ void ValidatePlayer()
 	plr[myplr]._pMemSpells &= msk;
 }
 
+static void CheckCheatStats(int pnum)
+{
+	if (plr[pnum]._pStrength > 750) {
+		plr[pnum]._pStrength = 750;
+	}
+
+	if (plr[pnum]._pDexterity > 750) {
+		plr[pnum]._pDexterity = 750;
+	}
+
+	if (plr[pnum]._pMagic > 750) {
+		plr[pnum]._pMagic = 750;
+	}
+
+	if (plr[pnum]._pVitality > 750) {
+		plr[pnum]._pVitality = 750;
+	}
+
+	if (plr[pnum]._pHitPoints > 128000) {
+		plr[pnum]._pHitPoints = 128000;
+	}
+
+	if (plr[pnum]._pMana > 128000) {
+		plr[pnum]._pMana = 128000;
+	}
+}
+
 void ProcessPlayers()
 {
 	int pnum;
@@ -3903,33 +3930,6 @@ void ProcessPlayers()
 				}
 			}
 		}
-	}
-}
-
-void CheckCheatStats(int pnum)
-{
-	if (plr[pnum]._pStrength > 750) {
-		plr[pnum]._pStrength = 750;
-	}
-
-	if (plr[pnum]._pDexterity > 750) {
-		plr[pnum]._pDexterity = 750;
-	}
-
-	if (plr[pnum]._pMagic > 750) {
-		plr[pnum]._pMagic = 750;
-	}
-
-	if (plr[pnum]._pVitality > 750) {
-		plr[pnum]._pVitality = 750;
-	}
-
-	if (plr[pnum]._pHitPoints > 128000) {
-		plr[pnum]._pHitPoints = 128000;
-	}
-
-	if (plr[pnum]._pMana > 128000) {
-		plr[pnum]._pMana = 128000;
 	}
 }
 
