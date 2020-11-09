@@ -78,6 +78,74 @@ void snd_update(BOOL bStopAll)
 	}
 }
 
+static LPDIRECTSOUNDBUFFER sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
+{
+	DWORD i;
+
+	if (!gbDupSounds) {
+		return NULL;
+	}
+
+	for (i = 0; i < 8; i++) {
+		if (!DSBs[i]) {
+			if (sglpDS->DuplicateSoundBuffer(DSB, &DSBs[i]) != DS_OK) {
+				return NULL;
+			}
+
+			return DSBs[i];
+		}
+	}
+
+	return NULL;
+}
+
+static void snd_get_volume(const char *value_name, int *value)
+{
+	int v = *value;
+	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
+		v = VOLUME_MAX;
+	}
+	*value = v;
+
+	if (*value < VOLUME_MIN) {
+		*value = VOLUME_MIN;
+	} else if (*value > VOLUME_MAX) {
+		*value = VOLUME_MAX;
+	}
+	*value -= *value % 100;
+}
+
+static void snd_set_volume(const char *key, int value)
+{
+	SRegSaveValue(APP_NAME, key, 0, value);
+}
+
+static BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
+{
+	HANDLE file;
+	LPVOID buf1, buf2;
+	DWORD size1, size2;
+	BOOL rv;
+
+	if (DSB->Restore() != DS_OK)
+		return FALSE;
+
+	rv = FALSE;
+
+	WOpenFile(sound_file->sound_path, &file, FALSE);
+	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, FILE_BEGIN);
+
+	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
+		WReadFile(file, buf1, size1);
+		if (DSB->Unlock(buf1, size1, buf2, size2) == DS_OK)
+			rv = TRUE;
+	}
+
+	WCloseFile(file);
+
+	return rv;
+}
+
 void snd_stop_snd(TSnd *pSnd)
 {
 	if (pSnd && pSnd->DSB)
@@ -150,51 +218,19 @@ void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 	pSnd->start_tc = tc;
 }
 
-LPDIRECTSOUNDBUFFER sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
+static void sound_CreateSoundBuffer(TSnd *sound_file)
 {
-	DWORD i;
+	DSBUFFERDESC DSB;
+	HRESULT error_code;
+	memset(&DSB, 0, sizeof(DSBUFFERDESC));
 
-	if (!gbDupSounds) {
-		return NULL;
-	}
-
-	for (i = 0; i < 8; i++) {
-		if (!DSBs[i]) {
-			if (sglpDS->DuplicateSoundBuffer(DSB, &DSBs[i]) != DS_OK) {
-				return NULL;
-			}
-
-			return DSBs[i];
-		}
-	}
-
-	return NULL;
-}
-
-BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
-{
-	HANDLE file;
-	LPVOID buf1, buf2;
-	DWORD size1, size2;
-	BOOL rv;
-
-	if (DSB->Restore() != DS_OK)
-		return FALSE;
-
-	rv = FALSE;
-
-	WOpenFile(sound_file->sound_path, &file, FALSE);
-	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, FILE_BEGIN);
-
-	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
-		WReadFile(file, buf1, size1);
-		if (DSB->Unlock(buf1, size1, buf2, size2) == DS_OK)
-			rv = TRUE;
-	}
-
-	WCloseFile(file);
-
-	return rv;
+	DSB.dwSize = sizeof(DSBUFFERDESC);
+	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
+	DSB.dwBufferBytes = sound_file->chunk.dwSize;
+	DSB.lpwfxFormat = &sound_file->fmt;
+	error_code = sglpDS->CreateSoundBuffer(&DSB, &sound_file->DSB, NULL);
+	if (error_code != ERROR_SUCCESS)
+		DSErrMsg(error_code, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 }
 
 TSnd *sound_file_load(const char *path)
@@ -237,21 +273,6 @@ TSnd *sound_file_load(const char *path)
 	return pSnd;
 }
 
-void sound_CreateSoundBuffer(TSnd *sound_file)
-{
-	DSBUFFERDESC DSB;
-	HRESULT error_code;
-	memset(&DSB, 0, sizeof(DSBUFFERDESC));
-
-	DSB.dwSize = sizeof(DSBUFFERDESC);
-	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
-	DSB.dwBufferBytes = sound_file->chunk.dwSize;
-	DSB.lpwfxFormat = &sound_file->fmt;
-	error_code = sglpDS->CreateSoundBuffer(&DSB, &sound_file->DSB, NULL);
-	if (error_code != ERROR_SUCCESS)
-		DSErrMsg(error_code, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
-}
-
 void sound_file_cleanup(TSnd *sound_file)
 {
 	if (sound_file) {
@@ -265,45 +286,7 @@ void sound_file_cleanup(TSnd *sound_file)
 	}
 }
 
-void snd_init(HWND hWnd)
-{
-	int error_code;
-	snd_get_volume("Sound Volume", &sglSoundVolume);
-	gbSoundOn = sglSoundVolume > VOLUME_MIN;
-
-	snd_get_volume("Music Volume", &sglMusicVolume);
-	gbMusicOn = sglMusicVolume > VOLUME_MIN;
-
-	error_code = sound_DirectSoundCreate(NULL, &sglpDS, NULL);
-	if (error_code != DS_OK)
-		sglpDS = NULL;
-
-	if (sglpDS && sglpDS->SetCooperativeLevel(hWnd, DSSCL_EXCLUSIVE) == DS_OK)
-		sound_create_primary_buffer(NULL);
-
-	SVidInitialize(sglpDS);
-	SFileDdaInitialize(sglpDS);
-
-	gbSndInited = sglpDS != NULL;
-}
-
-void snd_get_volume(const char *value_name, int *value)
-{
-	int v = *value;
-	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
-		v = VOLUME_MAX;
-	}
-	*value = v;
-
-	if (*value < VOLUME_MIN) {
-		*value = VOLUME_MIN;
-	} else if (*value > VOLUME_MAX) {
-		*value = VOLUME_MAX;
-	}
-	*value -= *value % 100;
-}
-
-void sound_create_primary_buffer(HANDLE music_track)
+static void sound_create_primary_buffer(HANDLE music_track)
 {
 	HRESULT error_code;
 	DSBUFFERDESC dsbuf;
@@ -343,7 +326,7 @@ void sound_create_primary_buffer(HANDLE music_track)
 	}
 }
 
-HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter)
+static HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter)
 {
 	HRESULT(WINAPI * DirectSoundCreate)
 	(LPGUID lpGuid, LPDIRECTSOUND * ppDS, LPUNKNOWN pUnkOuter);
@@ -362,6 +345,28 @@ HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pU
 	return DirectSoundCreate(lpGuid, ppDS, pUnkOuter);
 }
 
+void snd_init(HWND hWnd)
+{
+	int error_code;
+	snd_get_volume("Sound Volume", &sglSoundVolume);
+	gbSoundOn = sglSoundVolume > VOLUME_MIN;
+
+	snd_get_volume("Music Volume", &sglMusicVolume);
+	gbMusicOn = sglMusicVolume > VOLUME_MIN;
+
+	error_code = sound_DirectSoundCreate(NULL, &sglpDS, NULL);
+	if (error_code != DS_OK)
+		sglpDS = NULL;
+
+	if (sglpDS && sglpDS->SetCooperativeLevel(hWnd, DSSCL_EXCLUSIVE) == DS_OK)
+		sound_create_primary_buffer(NULL);
+
+	SVidInitialize(sglpDS);
+	SFileDdaInitialize(sglpDS);
+
+	gbSndInited = sglpDS != NULL;
+}
+
 void sound_cleanup()
 {
 	snd_update(TRUE);
@@ -378,11 +383,6 @@ void sound_cleanup()
 		snd_set_volume("Sound Volume", sglSoundVolume);
 		snd_set_volume("Music Volume", sglMusicVolume);
 	}
-}
-
-void snd_set_volume(const char *key, int value)
-{
-	SRegSaveValue(APP_NAME, key, 0, value);
 }
 
 void music_stop()
