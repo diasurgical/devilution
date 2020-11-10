@@ -1469,7 +1469,7 @@ void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 									if ((!(monster[dm].mMagicRes & RESIST_MAGIC) || (monster[dm].mMagicRes & RESIST_MAGIC) == 1 && !random_(99, 2)) && monster[dm]._mmode != MM_CHARGE) {
 										j = 6;
 										double slvl = (double)GetSpellLevel(id, SPL_BERSERK);
-										monster[dm]._mFlags |= MFLAG_UNUSED | MFLAG_GOLEM;
+										monster[dm]._mFlags |= MFLAG_BERSERK | MFLAG_GOLEM;
 										monster[dm].mMinDamage = ((double)(random_(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMinDamage + slvl;
 										monster[dm].mMaxDamage = ((double)(random_(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMaxDamage + slvl;
 										monster[dm].mMinDamage2 = ((double)(random_(145, 10) + 20) / 100 - -1) * (double)monster[dm].mMinDamage2 + slvl;
