@@ -416,7 +416,7 @@ void CheckCursMove()
 				cursmy = my;
 			}
 #ifdef HELLFIRE
-			if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_UNUSED)) {
+			if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_BERSERK)) {
 				pcursmonst = -1;
 			}
 #else
@@ -490,7 +490,7 @@ void CheckCursMove()
 			cursmy = my;
 		}
 #ifdef HELLFIRE
-		if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_UNUSED)) {
+		if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_BERSERK)) {
 			pcursmonst = -1;
 		}
 #else
@@ -666,7 +666,7 @@ void CheckCursMove()
 		cursmy = my;
 	}
 #ifdef HELLFIRE
-	if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_UNUSED)) {
+	if (pcursmonst != -1 && monster[pcursmonst]._mFlags & MFLAG_GOLEM && !(monster[pcursmonst]._mFlags & MFLAG_BERSERK)) {
 		pcursmonst = -1;
 	}
 #else

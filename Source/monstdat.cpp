@@ -195,7 +195,7 @@ MonsterData monsterdata[] = {
 #ifdef HELLFIRE
 int MonstConvTbl[] = {
 #else
-BYTE MonstConvTbl[] = {
+char MonstConvTbl[] = {
 #endif
 	MT_NZOMBIE,
 	MT_BZOMBIE,
@@ -364,7 +364,7 @@ BYTE MonstConvTbl[] = {
 #ifdef HELLFIRE
 int MonstAvailTbl[] = {
 #else
-BYTE MonstAvailTbl[] = {
+char MonstAvailTbl[] = {
 #endif
 	MAT_ALWAYS, // Zombie
 	MAT_ALWAYS, // Ghoul
