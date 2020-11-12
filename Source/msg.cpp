@@ -2597,11 +2597,11 @@ static DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
 
 static DWORD On_OPENCRYPT(TCmd *pCmd, int pnum)
 {
-	if ( gbBufferMsgs != 1 )
+	if (gbBufferMsgs != 1 )
 	{
 		town_475595();
 		InitTownTriggers();
-		if ( !currlevel )
+		if (currlevel == 0)
 			PlaySFX(IS_SARC);
 	}
 	return sizeof(*pCmd);
