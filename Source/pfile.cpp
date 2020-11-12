@@ -587,10 +587,10 @@ static BOOL __stdcall GetPermSaveNames(DWORD dwIndex, char *szPerm)
 {
 	const char *fmt;
 
-	if (dwIndex < 17)
+	if (dwIndex < NUMLEVELS)
 		fmt = "perml%02d";
-	else if (dwIndex < 34) {
-		dwIndex -= 17;
+	else if (dwIndex < NUMLEVELS * 2) {
+		dwIndex -= NUMLEVELS;
 		fmt = "perms%02d";
 	} else
 		return FALSE;
@@ -603,10 +603,10 @@ static BOOL __stdcall GetTempSaveNames(DWORD dwIndex, char *szTemp)
 {
 	const char *fmt;
 
-	if (dwIndex < 17)
+	if (dwIndex < NUMLEVELS)
 		fmt = "templ%02d";
-	else if (dwIndex < 34) {
-		dwIndex -= 17;
+	else if (dwIndex < NUMLEVELS * 2) {
+		dwIndex -= NUMLEVELS;
 		fmt = "temps%02d";
 	} else
 		return FALSE;
