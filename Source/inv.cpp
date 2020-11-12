@@ -900,7 +900,7 @@ BOOL GoldAutoPlace(int pnum)
 	for (i = 39; i >= 0 && !done; i--) {
 		yy = 10 * (i / 10);
 		xx = i % 10;
-		if (!plr[pnum].InvGrid[xx + yy]) {
+		if (plr[pnum].InvGrid[xx + yy] == 0) {
 			ii = plr[pnum]._pNumInv;
 			plr[pnum].InvList[ii] = plr[pnum].HoldItem;
 			plr[pnum]._pNumInv = plr[pnum]._pNumInv + 1;
@@ -963,7 +963,7 @@ BOOL GoldAutoPlace(int pnum)
 		for (int i = 39; i >= 0 && !done; i--) {
 			yy = 10 * (i / 10);
 			xx = i % 10;
-			if (!plr[pnum].InvGrid[xx + yy]) {
+			if (plr[pnum].InvGrid[xx + yy] == 0) {
 				ii = plr[pnum]._pNumInv;
 				plr[pnum].InvList[ii] = plr[pnum].HoldItem;
 				plr[pnum]._pNumInv = plr[pnum]._pNumInv + 1;

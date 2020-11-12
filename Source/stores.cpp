@@ -2083,7 +2083,7 @@ BOOL StoreGoldFit(int idx)
 
 	cost = storehold[idx]._iIvalue;
 	sz = cost / GOLD_MAX_LIMIT;
-	if (cost % GOLD_MAX_LIMIT)
+	if (cost % GOLD_MAX_LIMIT != 0)
 		sz++;
 
 	SetCursor_(storehold[idx]._iCurs + CURSOR_FIRSTITEM);
@@ -2094,7 +2094,7 @@ BOOL StoreGoldFit(int idx)
 		return TRUE;
 
 	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
-		if (!plr[myplr].InvGrid[i])
+		if (plr[myplr].InvGrid[i] == 0)
 			numsqrs++;
 	}
 
@@ -2124,7 +2124,7 @@ void PlaceStoreGold(int v)
 	for (i = 0; i < NUM_INV_GRID_ELEM && !done; i++) {
 		yy = 10 * (i / 10);
 		xx = i % 10;
-		if (!plr[myplr].InvGrid[xx + yy]) {
+		if (plr[myplr].InvGrid[xx + yy] == 0) {
 			ii = plr[myplr]._pNumInv;
 			GetGoldSeed(myplr, &golditem);
 			plr[myplr].InvList[ii] = golditem;
