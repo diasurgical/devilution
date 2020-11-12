@@ -2554,15 +2554,10 @@ static DWORD On_REMSHIELD(TCmd *pCmd, int pnum)
 #else
 static DWORD On_REFLECT(TCmd *pCmd, int pnum)
 {
-	int i, mx;
-
-	if ( gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel )
-	{
-		for(i = 0; i < nummissiles; i++)
-		{
-			mx = missileactive[i];
-			if ( missile[mx]._mitype == MIS_REFLECT && missile[mx]._misource == pnum )
-			{
+	if (gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel) {
+		for (int i = 0; i < nummissiles; i++) {
+			int mx = missileactive[i];
+			if (missile[mx]._mitype == MIS_REFLECT && missile[mx]._misource == pnum) {
 				ClearMissileSpot(mx);
 				DeleteMissile(mx, i);
 			}
@@ -2574,8 +2569,7 @@ static DWORD On_REFLECT(TCmd *pCmd, int pnum)
 
 static DWORD On_NAKRUL(TCmd *pCmd, int pnum)
 {
-	if ( gbBufferMsgs != 1 )
-	{
+	if (gbBufferMsgs != 1) {
 		operate_lv24_lever();
 		IsUberRoomOpened = 1;
 		quests[Q_NAKRUL]._qactive = 3;
@@ -2587,8 +2581,7 @@ static DWORD On_NAKRUL(TCmd *pCmd, int pnum)
 static DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
 {
 	TCmdLocParam2 *p = (TCmdLocParam2 *)pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
+	if (gbBufferMsgs != 1) {
 		AddMissile(p->x, p->y, p->wParam1, p->wParam2, 0, MIS_HIVEEXP2, 0, pnum, 0, 0);
 		town_4751C6();
 	}
@@ -2597,11 +2590,10 @@ static DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
 
 static DWORD On_OPENCRYPT(TCmd *pCmd, int pnum)
 {
-	if ( gbBufferMsgs != 1 )
-	{
+	if (gbBufferMsgs != 1) {
 		town_475595();
 		InitTownTriggers();
-		if ( !currlevel )
+		if (currlevel == 0)
 			PlaySFX(IS_SARC);
 	}
 	return sizeof(*pCmd);
