@@ -3950,7 +3950,7 @@ void OperateShrine(int pnum, int i, int sType)
 		if (pnum != myplr)
 			return;
 		for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
-			if (!plr[pnum].InvGrid[j]) {
+			if (plr[pnum].InvGrid[j] == 0) {
 				r = 5 * leveltype + random_(160, 10 * leveltype);
 				t = plr[pnum]._pNumInv; // check
 				plr[pnum].InvList[t] = golditem;

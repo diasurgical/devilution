@@ -104,7 +104,7 @@ void GiveGoldCheat()
 	int i, ni;
 
 	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
-		if (!plr[myplr].InvGrid[i]) {
+		if (plr[myplr].InvGrid[i] == 0) {
 			ni = plr[myplr]._pNumInv++;
 			SetPlrHandItem(&plr[myplr].InvList[ni], IDI_GOLD);
 			GetPlrHandSeed(&plr[myplr].InvList[ni]);
