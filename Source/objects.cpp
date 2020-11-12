@@ -1563,20 +1563,25 @@ void AddPedistal(int i)
 
 void AddStoryBook(int i)
 {
-	int bookframe;
-
 	SetRndSeed(glSeedTbl[16]);
-	bookframe = random_(0, 3);
 
-	object[i]._oVar1 = bookframe;
+	object[i]._oVar1 = random_(0, 3);
 	if (currlevel == 4)
-		object[i]._oVar2 = StoryText[bookframe][0];
+		object[i]._oVar2 = StoryText[object[i]._oVar1][0];
+#ifdef HELLFIRE
 	if (currlevel == 8)
-		object[i]._oVar2 = StoryText[bookframe][1];
+#else
+	else if (currlevel == 8)
+#endif
+		object[i]._oVar2 = StoryText[object[i]._oVar1][1];
+#ifdef HELLFIRE
 	if (currlevel == 12)
-		object[i]._oVar2 = StoryText[bookframe][2];
-	object[i]._oVar3 = (currlevel >> 2) + 3 * bookframe - 1;
-	object[i]._oAnimFrame = 5 - 2 * bookframe;
+#else
+	else if (currlevel == 12)
+#endif
+		object[i]._oVar2 = StoryText[object[i]._oVar1][2];
+	object[i]._oVar3 = (currlevel >> 2) + 3 * object[i]._oVar1 - 1;
+	object[i]._oAnimFrame = 5 - 2 * object[i]._oVar1;
 	object[i]._oVar4 = object[i]._oAnimFrame + 1;
 }
 
@@ -4995,8 +5000,8 @@ void BreakObject(int pnum, int oi)
 
 	if (pnum != -1) {
 		mind = plr[pnum]._pIMinDam;
-		maxd = random_(163, plr[pnum]._pIMaxDam - mind + 1);
-		objdam = maxd + mind;
+		maxd = plr[pnum]._pIMaxDam;
+		objdam = random_(163, maxd - mind + 1) + mind;
 		objdam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + objdam * plr[pnum]._pIBonusDam / 100;
 	} else {
 		objdam = 10;
@@ -5151,26 +5156,16 @@ void SyncL3Doors(int i)
 
 void SyncObjectAnim(int o)
 {
-	int file;
-	int i;
-	int ofindex;
+	int i, index;
 
-	file = ObjFileList[0];
-	ofindex = AllObjects[object[o]._otype].ofindex;
+	index = AllObjects[object[o]._otype].ofindex;
 	i = 0;
-	while (file != ofindex) {
-		file = ObjFileList[i + 1];
+	while (ObjFileList[i] != index) {
 		i++;
 	}
+
 	object[o]._oAnimData = pObjCels[i];
 	switch (object[o]._otype) {
-	case OBJ_BOOK2R:
-	case OBJ_BLINDBOOK:
-	case OBJ_STEELTOME:
-		SyncQSTLever(o);
-		break;
-	case OBJ_L1LIGHT:
-		break;
 	case OBJ_L1LDOOR:
 	case OBJ_L1RDOOR:
 		SyncL1Doors(o);
@@ -5183,15 +5178,20 @@ void SyncObjectAnim(int o)
 	case OBJ_L3RDOOR:
 		SyncL3Doors(o);
 		break;
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		SyncCrux(o);
+		break;
 	case OBJ_LEVER:
 	case OBJ_BOOK2L:
 	case OBJ_SWITCHSKL:
 		SyncLever(o);
 		break;
-	case OBJ_CRUX1:
-	case OBJ_CRUX2:
-	case OBJ_CRUX3:
-		SyncCrux(o);
+	case OBJ_BOOK2R:
+	case OBJ_BLINDBOOK:
+	case OBJ_STEELTOME:
+		SyncQSTLever(o);
 		break;
 	case OBJ_PEDISTAL:
 		SyncPedistal(o);
