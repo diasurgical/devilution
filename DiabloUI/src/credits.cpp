@@ -24,7 +24,7 @@ LRESULT __stdcall credits_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 {
     HWND v5; // eax
 
-    if (Msg > 0x111)
+    if (Msg > WM_COMMAND)
     {
         if (Msg == 275)
         {

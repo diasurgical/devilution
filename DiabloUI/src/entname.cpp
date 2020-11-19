@@ -29,7 +29,7 @@ LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
             entname_charname = (char*)lParam;
             EntName_LoadFocusChkName(hWnd);
             return 0;
-        case 0x111u:
+        case WM_COMMAND:
             if ((unsigned short)wParam != 1)
             {
                 if ((unsigned short)wParam != 2)
@@ -41,7 +41,7 @@ LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
                 goto LABEL_11;
             }
             goto LABEL_18;
-        case 0x113u:
+        case WM_TIMER:
             v7 = GetFocus();
             Focus_DoBlitSpinIncFrame(hWnd, v7);
             return 0;

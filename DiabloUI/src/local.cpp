@@ -334,7 +334,7 @@ LRESULT __stdcall local_PostUiWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
             v9 = 2;
         LABEL_15:
             v7 = GetParent(hWnd);
-            SendMessageA(v7, 0x111u, v9, 0);
+            SendMessageA(v7, WM_COMMAND, v9, 0);
             goto LABEL_21;
         case 0x20u:
         LABEL_26:
@@ -416,7 +416,7 @@ LRESULT __stdcall local_PostUiWndProc2(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
             UpdateWindow(hWnd);
             v5 = (unsigned short)GetWindowLongA(hWnd, -12);
             v6 = GetParent(hWnd);
-            PostMessageA(v6, 0x111u, v5, (LPARAM)hWnd);
+            PostMessageA(v6, WM_COMMAND, v5, (LPARAM)hWnd);
             return 0;
     }
     if (v4)

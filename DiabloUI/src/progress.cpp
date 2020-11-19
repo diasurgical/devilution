@@ -77,7 +77,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
                     local_1000812B(hWnd);
                     ShowCursor(TRUE);
                     return 1;
-                case 0x111u:
+                case WM_COMMAND:
                     if ( (WORD)wParam == 2 )
                     {
                         SDlgKillTimer(hWnd, 1);
@@ -87,7 +87,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
                         Progress_100098B0();
                     }
                     break;
-                case 0x113u:
+                case WM_TIMER:
                     Progress_100098C5(hWnd);
                     break;
             }

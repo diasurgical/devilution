@@ -689,11 +689,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 #ifndef HELLFIRE
     if (RestrictedTest())
+    {
         ErrOkDlg(IDD_DIALOG10, 0, "C:\\Src\\Diablo\\Source\\DIABLO.CPP", 877);
+    }
     if (ReadOnlyTest())
     {
         if (!GetModuleFileName(ghInst, szFileName, sizeof(szFileName)))
+        {
             szFileName[0] = '\0';
+        }
         DirErrorDlg(szFileName);
     }
 #endif
@@ -711,10 +715,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     bNoEvent = diablo_get_not_running();
 #ifdef HELLFIRE
     if (diablo_find_window("DIABLO"))
+    {
         return 0;
+    }
 #endif
     if (diablo_find_window(GAME_NAME) || !bNoEvent)
+    {
         return 0;
+    }
 
 #ifdef _DEBUG
     SFileEnableDirectAccess(TRUE);

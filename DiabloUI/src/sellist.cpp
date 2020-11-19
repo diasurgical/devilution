@@ -17,7 +17,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
     HWND v8;  // eax
     HWND v9;  // eax
 
-    if (Msg > 0x111)
+    if (Msg > WM_COMMAND)
     {
         if (Msg == 275)
         {
@@ -42,7 +42,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
     }
     switch (Msg)
     {
-        case 0x111u:
+        case WM_COMMAND:
             if (HIWORD(wParam) == 7)
             {
                 Focus_GetAndBlitSpin(hWnd, lParam);

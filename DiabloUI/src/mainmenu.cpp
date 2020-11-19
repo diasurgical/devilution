@@ -40,30 +40,30 @@ LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 {
     HWND v5; // eax
 
-    if (Msg <= 0x113)
+    if (Msg <= WM_TIMER)
     {
-        if (Msg != 275)
+        if (Msg != WM_TIMER)
         {
-            if (Msg == 2)
+            if (Msg == WM_DESTROY)
             {
                 MainMenu_KillAndFreeMenu(hWnd);
             }
-            else if (Msg > 0x103)
+            else if (Msg > WM_DEADCHAR)
             {
-                if (Msg <= 0x105)
+                if (Msg <= WM_SYSKEYUP)
                 {
                     v5 = (HWND)SDrawGetFrameWindow(NULL);
                     SendMessageA(v5, Msg, wParam, lParam);
                 }
                 else
                 {
-                    if (Msg == 272)
+                    if (Msg == WM_INITDIALOG)
                     {
                         MainMenu_LoadMenuGFX(hWnd);
                         PostMessageA(hWnd, 0x7E8u, 0, 0);
                         return 1;
                     }
-                    if (Msg == 273)
+                    if (Msg == WM_COMMAND)
                     {
                         MainMenu_SetMenuTimer(hWnd);
                         switch (HIWORD(wParam))
@@ -93,13 +93,17 @@ LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
         }
         return 0;
     }
-    if (Msg >= 0x200)
+    if (Msg >= WM_MOUSEFIRST)
     {
-        if (Msg <= 0x202)
+        if (Msg <= WM_LBUTTONUP)
+        {
             goto LABEL_34;
-        if (Msg <= 0x203)
+        }
+        if (Msg <= WM_LBUTTONDBLCLK)
+        {
             return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
-        if (Msg <= 0x205)
+        }
+        if (Msg <= WM_RBUTTONUP)
         {
         LABEL_34:
             MainMenu_SetMenuTimer(hWnd);
@@ -213,7 +217,7 @@ void __fastcall MainMenu_CheckWParamFocus(HWND hWnd, WPARAM wParam)
         case 1u:
             v3 = GetFocus();
             v4 = GetWindowLongA(v3, -12);
-            SendMessageA(hWnd, 0x111u, v4, 0);
+            SendMessageA(hWnd, WM_COMMAND, v4, 0);
             return;
         case 2u:
             v5 = 5;

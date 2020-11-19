@@ -43,7 +43,7 @@ LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
             case 0x110u:
                 SelYesNo_LoadSelYN_GFX(hWnd);
                 return 0;
-            case 0x111u:
+            case WM_COMMAND:
                 if (HIWORD(wParam) == 7)
                 {
                     Focus_GetAndBlitSpin(hWnd, lParam);
@@ -81,7 +81,7 @@ LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
                     SelYesNo_DoSelectYesNo(v10, v7);
                 }
                 break;
-            case 0x113u:
+            case WM_TIMER:
                 v4 = GetFocus();
                 if (!Focus_DoBlitSpinIncFrame(hWnd, v4))
                 {

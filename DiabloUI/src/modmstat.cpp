@@ -54,7 +54,7 @@ int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
                 case 0x110u:
                     ModmStat_10008DE4(hWnd);
                     return 0;
-                case 0x111u:
+                case WM_COMMAND:
                     if ( HIWORD(wParam) == 7 )
                     {
                         Focus_100075B7(hWnd, (HWND)lParam);
@@ -69,7 +69,7 @@ int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
                         ModmStat_10008E89((int)hWnd, 1);
                     }
                     break;
-                case 0x113u:
+                case WM_TIMER:
                     if ( dword_1002A258 )
                         ModmStat_10008EBF(hWnd);
                     if ( Modem_10008653() )

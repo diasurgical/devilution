@@ -16,7 +16,7 @@ LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 {
     HWND v5; // eax
 
-    if (Msg > 0x111)
+    if (Msg > WM_COMMAND)
     {
         if (Msg != 513 && Msg != 516)
         {

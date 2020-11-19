@@ -34,7 +34,7 @@ void __cdecl DiabEdit_SetupWindow()
 // ref: 0x100057E8
 LRESULT __stdcall DiabEdit_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-    if (Msg <= 0x113)
+    if (Msg <= WM_TIMER)
     {
         if (Msg == 275)
         {
@@ -110,7 +110,7 @@ void __fastcall DiabEdit_SendWndCommand(HWND hWnd, WORD a2)
 
     v4 = (a2 << 16) | (unsigned short)GetWindowLongA(hWnd, -12);
     v5 = GetParent(hWnd);
-    SendMessageA(v5, 0x111u, v4, (LPARAM)hWnd);
+    SendMessageA(v5, WM_COMMAND, v4, (LPARAM)hWnd);
 }
 
 // ref: 0x1000594E

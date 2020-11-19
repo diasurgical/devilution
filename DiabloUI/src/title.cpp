@@ -188,7 +188,7 @@ LRESULT __stdcall Title_MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 {
     HWND v5; // eax
 
-    if (uMsg <= 0x111)
+    if (uMsg <= WM_COMMAND)
     {
         if (uMsg != 273)
         {

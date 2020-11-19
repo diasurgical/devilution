@@ -3256,20 +3256,20 @@ static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 
 #if defined(USE_ASM) && !defined(RGBMODE)
         __asm {
-			mov		esi, gpBuffer
-			mov		edi, DDS_desc.lpSurface
-			add		esi, nSrcOff
-			add		edi, nDstOff
-			mov		eax, nSrcWdt
-			mov		ebx, nDstWdt
-			mov		edx, dwHgt
-		blitline:
-			mov		ecx, dwWdt
-			rep movsd
-			add		esi, eax
-			add		edi, ebx
-			dec		edx
-			jnz		blitline
+            mov     esi, gpBuffer
+            mov     edi, DDS_desc.lpSurface
+            add     esi, nSrcOff
+            add     edi, nDstOff
+            mov     eax, nSrcWdt
+            mov     ebx, nDstWdt
+            mov     edx, dwHgt
+        blitline:
+            mov     ecx, dwWdt
+            rep movsd
+            add     esi, eax
+            add     edi, ebx
+            dec     edx
+            jnz     blitline
         }
 #else
         int wdt, hgt;

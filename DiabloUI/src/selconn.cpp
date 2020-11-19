@@ -557,7 +557,7 @@ LRESULT __stdcall SelConn_1000A73E(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
             v7 = 1;
 LABEL_13:
             v5 = GetParent(hWnd);
-            SendMessageA(v5, 0x111u, v7, 0);
+            SendMessageA(v5, WM_COMMAND, v7, 0);
             return 0;
     }
     if ( v4 )

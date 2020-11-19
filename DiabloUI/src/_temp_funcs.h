@@ -309,7 +309,7 @@ void __fastcall local_SetDiabloCursor(HWND hWnd);
 
 void __cdecl j_MainMenu_cpp_init();
 void __cdecl MainMenu_cpp_init();
-BOOL __stdcall UiMainMenuDialog(char* name, int* pdwResult, void(__stdcall* fnSound)(char* file), int attractTimeOut);
+BOOL __stdcall UiMainMenuDialog(const char* name, int* pdwResult, void(__stdcall* fnSound)(char* file), int attractTimeOut);
 LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall MainMenu_KillAndFreeMenu(HWND hWnd);
 void __fastcall MainMenu_SetMenuTimer(HWND hWnd);

@@ -49,11 +49,11 @@ int __stdcall DirLink_10005D63(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int 
     char *v7; // [esp+4h] [ebp-8h]
     char *v8; // [esp+8h] [ebp-4h]
 
-    if ( Msg > 0x111 )
+    if ( Msg > WM_COMMAND)
     {
         switch ( Msg )
         {
-            case 0x113u:
+            case WM_TIMER:
                 if ( wParam == 3 )
                 {
                     DirLink_100062BF(hWnd, v6, v7, v8);

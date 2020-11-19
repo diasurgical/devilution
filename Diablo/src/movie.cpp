@@ -41,7 +41,9 @@ void play_movie(const char* pszMovie, BOOL user_can_close)
         while (video_stream)
         {
             if (!gbActive || user_can_close && !movie_playing)
+            {
                 break;
+            }
             while (PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE))
             {
                 if (Msg.message != WM_QUIT)
@@ -51,17 +53,21 @@ void play_movie(const char* pszMovie, BOOL user_can_close)
                 }
             }
             if (!SVidPlayContinue())
+            {
                 break;
+            }
         }
         if (video_stream)
+        {
             SVidPlayEnd(video_stream);
+        }
     }
     SetWindowProc(saveProc);
     sound_disable_music(FALSE);
 }
 
 /**
- * @brief Input handeler for use during vidoe playback.
+ * @brief Input handler for use during video playback.
  * @see WNDPROC
  */
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)

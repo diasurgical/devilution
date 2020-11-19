@@ -59,7 +59,7 @@ int __stdcall SelIPX_1000C692(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
     int v7; // [esp+0h] [ebp-Ch]
     int savedregs; // [esp+Ch] [ebp+0h]
 
-    if ( Msg > 0x113 )
+    if ( Msg > WM_TIMER)
     {
         switch ( Msg )
         {
