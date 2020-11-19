@@ -6,11 +6,11 @@
 #ifndef __PACK_H__
 #define __PACK_H__
 
-void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield);
-void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok);
+void PackPlayer(PkPlayerStruct* pPack, int pnum, BOOL manashield);
+void UnPackPlayer(PkPlayerStruct* pPack, int pnum, BOOL killok);
 #ifdef HELLFIRE
-void PackItem(PkItemStruct *id, ItemStruct *is);
-void UnPackItem(PkItemStruct *is, ItemStruct *id);
+void PackItem(PkItemStruct* id, ItemStruct* is);
+void UnPackItem(PkItemStruct* is, ItemStruct* id);
 #endif
 
 /* rdata */

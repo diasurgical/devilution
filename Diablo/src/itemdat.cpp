@@ -7,7 +7,7 @@
 
 /** Contains the data related to each item ID. */
 ItemDataStruct AllItemsList[] = {
-	// clang-format off
+    // clang-format off
 	// iRnd,          iClass,        iLoc,             iCurs,                             itype,        iItemId,            iName,                         iSName, iMinMLvl, iDurability, iMinDam, iMaxDam, iMinAC, iMaxAC, iMinStr, iMinMag, iMinDex, iFlags,            iMiscId,         iSpell,          iUsable, iValue, iMaxValue
 	{  IDROP_REGULAR, ICLASS_GOLD,   ILOC_UNEQUIPABLE, ICURS_GOLD,                        ITYPE_GOLD,   UITYPE_NONE,        "Gold",                        NULL,          1,           0,       0,       0,      0,      0,       0,       0,       0, ISPL_NONE,         IMISC_NONE,      SPL_NULL,        TRUE,         0,         0 },
 	{  IDROP_NEVER,   ICLASS_WEAPON, ILOC_ONEHAND,     ICURS_SHORT_SWORD,                 ITYPE_SWORD,  UITYPE_NONE,        "Short Sword",                 NULL,          2,          20,       2,       6,      0,      0,      18,       0,       0, ISPL_NONE,         IMISC_NONE,      SPL_NULL,        FALSE,       50,        50 },
@@ -206,12 +206,12 @@ ItemDataStruct AllItemsList[] = {
 	{  IDROP_REGULAR, ICLASS_MISC,   ILOC_UNEQUIPABLE, ICURS_RUNE_OF_STONE,               ITYPE_MISC,   UITYPE_NONE,        "Rune of Stone",               "Rune",        7,           0,       0,       0,      0,      0,       0,      25,       0, ISPL_NONE,         IMISC_RUNES,     SPL_NULL,         TRUE,      300,       300 },
 #endif
 	{  IDROP_NEVER,   ICLASS_NONE,   ILOC_INVALID,     ICURS_POTION_OF_FULL_MANA,         ITYPE_MISC,   UITYPE_NONE,        NULL,                          NULL,          0,           0,       0,       0,      0,      0,       0,       0,       0, ISPL_NONE,         IMISC_NONE,      SPL_NULL,        FALSE,        0,         0 },
-	// clang-format on
+    // clang-format on
 };
 
 /** Contains the data related to each item prefix. */
 const PLStruct PL_Prefix[] = {
-	// clang-format off
+    // clang-format off
 	// PLName,          PLPower,         PLParam1, PLParam2, PLMinLvl, PLIType,                                                      PLGOE, PLDouble, PLOk,  PLMinVal, PLMaxVal, PLMultVal
 	{ "Tin",            IPL_TOHIT_CURSE,        6,       10,        3,                       PLT_WEAP |             PLT_BOW | PLT_MISC,  0, TRUE,     FALSE,        0,        0,        -3 },
 	{ "Brass",          IPL_TOHIT_CURSE,        1,        5,        1,                       PLT_WEAP |             PLT_BOW | PLT_MISC,  0, TRUE,     FALSE,        0,        0,        -2 },
@@ -314,12 +314,12 @@ const PLStruct PL_Prefix[] = {
 	{ "Doppelganger's", IPL_DOPPELGANGER,      81,       95,       11,                       PLT_WEAP | PLT_STAFF                     ,  0, FALSE,    TRUE,      2000,     2400,        10 },
 #endif
 	{ "",               IPL_INVALID,            0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 },
-	// clang-format on
+    // clang-format on
 };
 
 /** Contains the data related to each item suffix. */
 const PLStruct PL_Suffix[] = {
-	// clang-format off
+// clang-format off
 	// PLName,          PLPower,       PLParam1, PLParam2, PLMinLvl, PLIType,                                                         PLGOE, PLDouble, PLOk,  PLMinVal, PLMaxVal, PLMultVal
 #ifdef HELLFIRE
 	{  "quality",       IPL_DAMMOD,           1,        2,        2,                       PLT_WEAP | PLT_STAFF | PLT_BOW           ,     0, FALSE,    TRUE,       100,      200,         2 },
@@ -463,12 +463,12 @@ const PLStruct PL_Suffix[] = {
 	{  "peril",         IPL_PERIL,            1,        1,        5,                       PLT_WEAP | PLT_STAFF | PLT_BOW           ,     0, FALSE,    TRUE,       500,      500,         1 },
 #endif
 	{  "",              IPL_INVALID,          0,        0,        0, 0                                                              ,     0, FALSE,    FALSE,        0,        0,         0 },
-	// clang-format on
+    // clang-format on
 };
 
 /** Contains the data related to each unique item ID. */
 const UItemStruct UniqueItemList[] = {
-	// clang-format off
+    // clang-format off
 	// UIName,                    UIItemId,     UIMinLvl, UINumPL, UIValue, UIPower1,     UIParam1, UIParam2, UIPower2,      UIParam3, UIParam4, UIPower3,      UIParam5, UIParam6, UIPower4,      UIParam7, UIParam8, UIPower5,      UIParam9, UIParam10, UIPower6,      UIParam11, UIParam12
 	{  "The Butcher's Cleaver",   UITYPE_CLEAVER,      1,       3,    3650, IPL_STR,            10,       10, IPL_SETDAM,           4,       24, IPL_SETDUR,          10,       10, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,             0,         0 },
 	{  "The Undead Crown",        UITYPE_SKCROWN,      1,       3,   16650, IPL_RNDSTEALLIFE,    0,        0, IPL_SETAC,            8,        8, IPL_INVCURS,         77,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,             0,         0 },
@@ -587,5 +587,5 @@ const UItemStruct UniqueItemList[] = {
 	{  "Gladiator's Ring",        UITYPE_RING,        10,       2,   10000, IPL_LIFETOMANA,     40,       40, IPL_INVCURS,        186,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,             0,         0 },
 #endif
 	{  "",                        UITYPE_INVALID,      0,       0,       0, IPL_TOHIT,           0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,             0,         0 },
-	// clang-format on
+    // clang-format on
 };

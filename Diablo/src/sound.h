@@ -9,11 +9,11 @@
 extern BOOLEAN gbSndInited;
 
 void snd_update(BOOL bStopAll);
-void snd_stop_snd(TSnd *pSnd);
-BOOL snd_playing(TSnd *pSnd);
-void snd_play_snd(TSnd *pSnd, int lVolume, int lPan);
-TSnd *sound_file_load(const char *path);
-void sound_file_cleanup(TSnd *sound_file);
+void snd_stop_snd(TSnd* pSnd);
+BOOL snd_playing(TSnd* pSnd);
+void snd_play_snd(TSnd* pSnd, int lVolume, int lPan);
+TSnd* sound_file_load(const char* path);
+void sound_file_cleanup(TSnd* sound_file);
 void snd_init(HWND hWnd);
 void sound_cleanup();
 void music_stop();

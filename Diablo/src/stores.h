@@ -8,7 +8,7 @@
 
 extern ItemStruct boyitem;
 extern ItemStruct premiumitem[SMITH_PREMIUM_ITEMS];
-extern BYTE *pSTextBoxCels;
+extern BYTE* pSTextBoxCels;
 extern int premiumlevel;
 extern int talker;
 #ifdef HELLFIRE
@@ -19,8 +19,8 @@ extern ItemStruct witchitem[20];
 extern int numpremium;
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
-extern BYTE *pSTextSlidCels;
-extern BYTE *pSPentSpn2Cels;
+extern BYTE* pSTextSlidCels;
+extern BYTE* pSPentSpn2Cels;
 extern int boylevel;
 extern ItemStruct smithitem[SMITH_ITEMS];
 extern int stextdown;
@@ -29,7 +29,7 @@ extern char stextflag;
 void InitStores();
 void SetupTownStores();
 void FreeStoreMem();
-void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int val);
+void PrintSString(int x, int y, BOOL cjustflag, const char* str, char col, int val);
 void DrawSLine(int y);
 void DrawSTextHelp();
 void ClearSText(int s, int e);

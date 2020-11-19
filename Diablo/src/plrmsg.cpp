@@ -9,143 +9,154 @@ static BYTE plr_msg_slot;
 _plrmsg plr_msgs[PMSG_COUNT];
 
 /** Maps from player_num to text colour, as used in chat messages. */
-const char text_color_from_player_num[MAX_PLRS + 1] = { COL_WHITE, COL_WHITE, COL_WHITE, COL_WHITE, COL_GOLD };
+const char text_color_from_player_num[MAX_PLRS + 1] = {COL_WHITE, COL_WHITE, COL_WHITE, COL_WHITE, COL_GOLD};
 
 void plrmsg_delay(BOOL delay)
 {
-	int i;
-	_plrmsg *pMsg;
-	static DWORD plrmsg_ticks;
+    int i;
+    _plrmsg* pMsg;
+    static DWORD plrmsg_ticks;
 
-	if (delay) {
-		plrmsg_ticks = -GetTickCount();
-		return;
-	}
+    if (delay)
+    {
+        plrmsg_ticks = -GetTickCount();
+        return;
+    }
 
-	plrmsg_ticks += GetTickCount();
-	pMsg = plr_msgs;
-	for (i = 0; i < PMSG_COUNT; i++, pMsg++)
-		pMsg->time += plrmsg_ticks;
+    plrmsg_ticks += GetTickCount();
+    pMsg = plr_msgs;
+    for (i = 0; i < PMSG_COUNT; i++, pMsg++)
+        pMsg->time += plrmsg_ticks;
 }
 
-char *ErrorPlrMsg(const char *pszMsg)
+char* ErrorPlrMsg(const char* pszMsg)
 {
-	char *result;
-	_plrmsg *pMsg = &plr_msgs[plr_msg_slot];
-	plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
-	pMsg->player = MAX_PLRS;
-	pMsg->time = GetTickCount();
-	result = strncpy(pMsg->str, pszMsg, sizeof(pMsg->str));
-	pMsg->str[sizeof(pMsg->str) - 1] = '\0';
-	return result;
+    char* result;
+    _plrmsg* pMsg = &plr_msgs[plr_msg_slot];
+    plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
+    pMsg->player = MAX_PLRS;
+    pMsg->time = GetTickCount();
+    result = strncpy(pMsg->str, pszMsg, sizeof(pMsg->str));
+    pMsg->str[sizeof(pMsg->str) - 1] = '\0';
+    return result;
 }
 
-size_t __cdecl EventPlrMsg(const char *pszFmt, ...)
+size_t __cdecl EventPlrMsg(const char* pszFmt, ...)
 {
-	_plrmsg *pMsg;
-	va_list va;
+    _plrmsg* pMsg;
+    va_list va;
 
-	va_start(va, pszFmt);
-	pMsg = &plr_msgs[plr_msg_slot];
-	plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
-	pMsg->player = MAX_PLRS;
-	pMsg->time = GetTickCount();
-	vsprintf(pMsg->str, pszFmt, va);
-	va_end(va);
-	return strlen(pMsg->str);
+    va_start(va, pszFmt);
+    pMsg = &plr_msgs[plr_msg_slot];
+    plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
+    pMsg->player = MAX_PLRS;
+    pMsg->time = GetTickCount();
+    vsprintf(pMsg->str, pszFmt, va);
+    va_end(va);
+    return strlen(pMsg->str);
 }
 
-void SendPlrMsg(int pnum, const char *pszStr)
+void SendPlrMsg(int pnum, const char* pszStr)
 {
-	_plrmsg *pMsg = &plr_msgs[plr_msg_slot];
-	plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
-	pMsg->player = pnum;
-	pMsg->time = GetTickCount();
-	strlen(plr[pnum]._pName); /* these are used in debug */
-	strlen(pszStr);
-	sprintf(pMsg->str, "%s (lvl %d): %s", plr[pnum]._pName, plr[pnum]._pLevel, pszStr);
+    _plrmsg* pMsg = &plr_msgs[plr_msg_slot];
+    plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
+    pMsg->player = pnum;
+    pMsg->time = GetTickCount();
+    strlen(plr[pnum]._pName); /* these are used in debug */
+    strlen(pszStr);
+    sprintf(pMsg->str, "%s (lvl %d): %s", plr[pnum]._pName, plr[pnum]._pLevel, pszStr);
 }
 
 void ClearPlrMsg()
 {
-	int i;
-	_plrmsg *pMsg = plr_msgs;
-	DWORD tick = GetTickCount();
+    int i;
+    _plrmsg* pMsg = plr_msgs;
+    DWORD tick = GetTickCount();
 
-	for (i = 0; i < PMSG_COUNT; i++, pMsg++) {
-		if ((int)(tick - pMsg->time) > 10000)
-			pMsg->str[0] = '\0';
-	}
+    for (i = 0; i < PMSG_COUNT; i++, pMsg++)
+    {
+        if ((int)(tick - pMsg->time) > 10000)
+            pMsg->str[0] = '\0';
+    }
 }
 
 void InitPlrMsg()
 {
-	memset(plr_msgs, 0, sizeof(plr_msgs));
-	plr_msg_slot = 0;
+    memset(plr_msgs, 0, sizeof(plr_msgs));
+    plr_msg_slot = 0;
 }
 
 void DrawPlrMsg()
 {
-	int i;
-	DWORD x = 10 + SCREEN_X;
-	DWORD y = 70 + SCREEN_Y;
-	DWORD width = SCREEN_WIDTH - 20;
-	_plrmsg *pMsg;
+    int i;
+    DWORD x = 10 + SCREEN_X;
+    DWORD y = 70 + SCREEN_Y;
+    DWORD width = SCREEN_WIDTH - 20;
+    _plrmsg* pMsg;
 
-	if (chrflag || questlog) {
-		if (invflag || sbookflag)
-			return;
-		x += SPANEL_WIDTH;
-		width -= SPANEL_WIDTH;
-	} else if (invflag || sbookflag)
-		width -= SPANEL_WIDTH;
+    if (chrflag || questlog)
+    {
+        if (invflag || sbookflag)
+            return;
+        x += SPANEL_WIDTH;
+        width -= SPANEL_WIDTH;
+    }
+    else if (invflag || sbookflag)
+        width -= SPANEL_WIDTH;
 
-	pMsg = plr_msgs;
-	for (i = 0; i < PMSG_COUNT; i++) {
-		if (pMsg->str[0])
-			PrintPlrMsg(x, y, width, pMsg->str, text_color_from_player_num[pMsg->player]);
-		pMsg++;
-		y += 35;
-	}
+    pMsg = plr_msgs;
+    for (i = 0; i < PMSG_COUNT; i++)
+    {
+        if (pMsg->str[0])
+            PrintPlrMsg(x, y, width, pMsg->str, text_color_from_player_num[pMsg->player]);
+        pMsg++;
+        y += 35;
+    }
 }
 
-void PrintPlrMsg(DWORD x, DWORD y, DWORD width, const char *str, BYTE col)
+void PrintPlrMsg(DWORD x, DWORD y, DWORD width, const char* str, BYTE col)
 {
-	int line = 0;
+    int line = 0;
 
-	while (*str) {
-		BYTE c;
-		int screen = PitchTbl[y] + x;
-		DWORD len = 0;
-		const char *sstr = str;
-		const char *endstr = sstr;
+    while (*str)
+    {
+        BYTE c;
+        int screen = PitchTbl[y] + x;
+        DWORD len = 0;
+        const char* sstr = str;
+        const char* endstr = sstr;
 
-		while (1) {
-			if (*sstr) {
-				c = gbFontTransTbl[(BYTE)*sstr++];
-				c = fontframe[c];
-				len += fontkern[c] + 1;
-				if (!c) // allow wordwrap on blank glyph
-					endstr = sstr;
-				else if (len >= width)
-					break;
-			} else {
-				endstr = sstr;
-				break;
-			}
-		}
+        while (1)
+        {
+            if (*sstr)
+            {
+                c = gbFontTransTbl[(BYTE)*sstr++];
+                c = fontframe[c];
+                len += fontkern[c] + 1;
+                if (!c) // allow wordwrap on blank glyph
+                    endstr = sstr;
+                else if (len >= width)
+                    break;
+            }
+            else
+            {
+                endstr = sstr;
+                break;
+            }
+        }
 
-		while (str < endstr) {
-			c = gbFontTransTbl[(BYTE)*str++];
-			c = fontframe[c];
-			if (c)
-				PrintChar(screen, c, col);
-			screen += fontkern[c] + 1;
-		}
+        while (str < endstr)
+        {
+            c = gbFontTransTbl[(BYTE)*str++];
+            c = fontframe[c];
+            if (c)
+                PrintChar(screen, c, col);
+            screen += fontkern[c] + 1;
+        }
 
-		y += 10;
-		line++;
-		if (line == 3)
-			break;
-	}
+        y += 10;
+        line++;
+        if (line == 3)
+            break;
+    }
 }

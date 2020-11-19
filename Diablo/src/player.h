@@ -8,7 +8,7 @@
 
 extern int myplr;
 #ifdef HELLFIRE
-extern PlayerStruct *plr;
+extern PlayerStruct* plr;
 #else
 extern PlayerStruct plr[MAX_PLRS];
 #endif
@@ -18,9 +18,9 @@ void LoadPlrGFX(int pnum, player_graphic gfxflag);
 void InitPlayerGFX(int pnum);
 void InitPlrGFXMem(int pnum);
 void FreePlayerGFX(int pnum);
-void NewPlrAnim(int pnum, BYTE *Peq, int numFrames, int Delay, int width);
+void NewPlrAnim(int pnum, BYTE* Peq, int numFrames, int Delay, int width);
 void SetPlrAnims(int pnum);
-void ClearPlrRVars(PlayerStruct *p);
+void ClearPlrRVars(PlayerStruct* p);
 void CreatePlayer(int pnum, char c);
 int CalcStatDiff(int pnum);
 void NextPlrLevel(int pnum);
@@ -87,6 +87,6 @@ extern int MagicTbl[NUM_CLASSES];
 extern int DexterityTbl[NUM_CLASSES];
 extern int VitalityTbl[NUM_CLASSES];
 extern int MaxStats[NUM_CLASSES][4];
-extern const char *const ClassStrTbl[NUM_CLASSES];
+extern const char* const ClassStrTbl[NUM_CLASSES];
 
 #endif /* __PLAYER_H__ */

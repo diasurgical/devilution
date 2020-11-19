@@ -1,5 +1,6 @@
 
-#define STRICT // for WNDPROC. ref: Remarks in https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-callwindowproca
+#define STRICT // for WNDPROC. ref: Remarks in
+               // https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-callwindowproca
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
@@ -125,7 +126,7 @@ extern int yesno_msgtbl2[2];
 extern int yesno_msgtbl1[3];
 extern int titlemsgtbl[2];
 
-//data+bss
+// data+bss
 extern int artfont_cpp_float;
 extern FontStruct font42g;
 extern FontStruct* sgpCurrFont;
@@ -147,7 +148,7 @@ extern int dword_1002941C;                                         // weak
 extern HGDIOBJ dword_10029420;                                     // idb
 extern HGDIOBJ dword_10029424;                                     // idb
 extern BYTE* dword_10029428;                                       // idb
-extern void *dword_1002942C;                                       // idb
+extern void* dword_1002942C;                                       // idb
 extern int(__stdcall* dword_10029430)(DWORD, DWORD, DWORD, DWORD); // weak
 extern void* dword_10029434;                                       // idb
 extern int dword_10029438[4];                                      // weak
@@ -191,7 +192,7 @@ extern DWORD* cr8_somegamestruct;
 extern int cr8_dword_10029638; // weak
 extern int cr8_dword_1002963C; // weak
 extern int cr8_dword_10029640; // weak
-extern int *cr8game_playerID;  // idb
+extern int* cr8game_playerID;  // idb
 extern _gamedata cr8_gamedata;
 extern HWND cr8_sendmsg1;      // idb
 extern HWND cr8_sendmsg2;      // idb
@@ -202,7 +203,7 @@ extern int cr8_dword_1002966C; // idb
 extern char cr8_gamename[32];
 extern char cr8_gamepassword[32];
 extern BYTE* cr8_creat_bg_ptr;
-extern BYTE *cr8_but_xsm_ptr;       // idb
+extern BYTE* cr8_but_xsm_ptr;       // idb
 extern BYTE* cr8_diffbtns_ptr;      // idb
 extern int creadung_playername;     // weak
 extern int* creadung_playerID;      // idb
@@ -246,7 +247,7 @@ extern int doom_cpp_float;       // weak
 extern LPSTR dword_10029858;     // idb
 extern int dword_1002985C;       // weak
 extern int EntName_cpp_float;    // weak
-extern char *entname_charname;
+extern char* entname_charname;
 extern int fade_cpp_float; // weak
 extern int sgbFadeRange;   // idb
 extern tagPALETTEENTRY fadepal[256];
@@ -279,7 +280,7 @@ extern int dword_1002A13C;          // weak
 extern int gnModemPlayerid;         // weak
 extern int dword_1002A144;          // weak
 extern int dword_1002A148;          // weak
-extern void *dword_1002A14C;        // idb
+extern void* dword_1002A14C;        // idb
 extern int dword_1002A150;          // weak
 extern char byte_1002A154;          // idb
 extern char byte_1002A1D4;          // idb
@@ -301,7 +302,7 @@ extern DWORD dword_1002A308;        // idb
 extern DWORD dword_1002A310;        // idb
 extern BYTE* dword_1002A318;        // idb
 extern BYTE* dword_1002A31C;        // idb
-extern BYTE *dword_1002A320;        // idb
+extern BYTE* dword_1002A320;        // idb
 extern BYTE* dword_1002A324;        // idb
 extern void* dword_1002A328;        // idb
 extern int Sbar_cpp_float;          // weak
@@ -324,7 +325,7 @@ extern char byte_1002A380[128];     // weak
 extern int dword_1002A400;          // weak
 extern int dword_1002A404;          // weak
 extern int dword_1002A408;          // weak
-extern BOOL(__stdcall *selhero_fnstats) (unsigned int, _uidefaultstats *);
+extern BOOL(__stdcall* selhero_fnstats)(unsigned int, _uidefaultstats*);
 extern int SelHero_cpp_float;     // weak
 extern DWORD selhero_sizedata[2]; // idb
 extern int selhero_difficulty;    // weak
@@ -335,7 +336,7 @@ extern BOOL(__stdcall* selhero_fnremove)(_uiheroinfo*);
 extern BOOL(__stdcall* selhero_fninfo)(BOOL(__stdcall* fninfo)(_uiheroinfo*));
 extern char selhero_heromag[4];
 extern char selhero_heronamestr[16];
-extern BOOL(__stdcall *selhero_fncreate)(_uiheroinfo *);
+extern BOOL(__stdcall* selhero_fncreate)(_uiheroinfo*);
 extern char selhero_herodex[4];
 extern _uiheroinfo* sgpHeroInfo;
 extern int selhero_is_created; // weak

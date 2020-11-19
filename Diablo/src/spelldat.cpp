@@ -7,7 +7,7 @@
 
 /** Data related to each spell ID. */
 SpellData spelldata[] = {
-	// clang-format off
+    // clang-format off
 	// sName,    sManaCost, sType,           sNameText,            sSkillText, sBookLvl, sStaffLvl, sTargeted, sTownSpell, sMinInt, sSFX,     sMissiles[3],                         sManaAdj, sMinMana, sStaffMin, sStaffMax, sBookCost, sStaffCost
 	{ SPL_NULL,          0, 0,               NULL,                 NULL,              0,         0, FALSE,     FALSE,            0, 0,        { 0,                 0,          0 },        0,        0,        40,        80,         0,          0 },
 	{ SPL_FIREBOLT,      6, STYPE_FIRE,      "Firebolt",           "Firebolt",        1,         1, TRUE,      FALSE,           15, IS_CAST2, { MIS_FIREBOLT,      0,          0 },        1,        3,        40,        80,      1000,         50 },
@@ -98,5 +98,5 @@ SpellData spelldata[] = {
 	{ SPL_RUNEIMMOLAT, 255, STYPE_MAGIC,     "Rune of Immolation", NULL,             -1,        -1, TRUE,      FALSE,           48, IS_CAST8, { MIS_RUNEIMMOLAT,   0,          0 },        1,       10,        40,        80,      8000,        300 },
 	{ SPL_RUNESTONE,   255, STYPE_MAGIC,     "Rune of Stone",      NULL,             -1,        -1, TRUE,      FALSE,           48, IS_CAST8, { MIS_RUNESTONE,     0,          0 },        1,       10,        40,        80,      8000,        300 },
 #endif
-	// clang-format on
+    // clang-format on
 };

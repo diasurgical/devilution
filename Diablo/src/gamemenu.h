@@ -7,7 +7,7 @@
 #define __GAMEMENU_H__
 
 #ifdef HELLFIRE
-extern char *jogging_title;
+extern char* jogging_title;
 extern BOOL jogging_opt;
 #endif
 

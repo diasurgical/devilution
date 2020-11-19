@@ -7,7 +7,7 @@
 #define __QUESTS_H__
 
 extern BOOL questlog;
-extern BYTE *pQLogCel;
+extern BYTE* pQLogCel;
 extern QuestStruct quests[MAXQUESTS];
 extern int ReturnLvlX;
 extern int ReturnLvlY;

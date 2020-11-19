@@ -7,7 +7,7 @@
 
 /** Contains the data related to each monster ID. */
 MonsterData monsterdata[] = {
-	// clang-format off
+    // clang-format off
 	// width, mImage, GraphicType,                        has_special, sndfile,                             snd_special, has_trans, TransFile,                         Frames[6],                  Rate[6],              mName,               mMinDLvl, mMaxDLvl, mLevel, mMinHP, mMaxHP, mAi,          mFlags                                                             , mInt, mHit, mAFNum, mMinDamage, mMaxDamage, mHit2, mAFNum2, mMinDamage2, mMaxDamage2, mArmorClass, mMonstClass, mMagicRes                                                    , mMagicRes2                                                   , mTreasure, mSelFlag,  mExp
 	{    128,    799, "Monsters\\Zombie\\Zombie%c.CL2",   FALSE,       "Monsters\\Zombie\\Zombie%c%i.WAV",  FALSE,       FALSE,     NULL,                              { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Zombie",                   1,        3,      1,      4,      7, AI_ZOMBIE,    0                                                                  ,    0,   10,      8,          2,          5,     0,       0,           0,           0,           5, MC_UNDEAD,   IMMUNE_MAGIC  |                                  IMMUNE_NULL_40, IMMUNE_MAGIC  |                                  IMMUNE_NULL_40,         0,        3,    54 },
 	{    128,    799, "Monsters\\Zombie\\Zombie%c.CL2",   FALSE,       "Monsters\\Zombie\\Zombie%c%i.WAV",  FALSE,       TRUE,      "Monsters\\Zombie\\Bluered.TRN",   { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Ghoul",                    2,        4,      2,      7,     11, AI_ZOMBIE,    0                                                                  ,    1,   10,      8,          3,         10,     0,       0,           0,           0,          10, MC_UNDEAD,   IMMUNE_MAGIC  |                                  IMMUNE_NULL_40, IMMUNE_MAGIC  |                                  IMMUNE_NULL_40,         0,        3,    58 },
@@ -186,7 +186,7 @@ MonsterData monsterdata[] = {
 	{    160,   2000, "Monsters\\Diablo\\Diablo%c.CL2",   TRUE,        "Monsters\\Diablo\\Diablo%c%i.WAV",  TRUE,        FALSE,     NULL,                              { 16,  6, 16,  6, 16, 16 }, { 0, 0, 0, 0, 0, 0 }, "The Dark Lord",           50,       50,     30,   1666,   1666, AI_DIABLO,                   MFLAG_KNOCKBACK | MFLAG_SEARCH | MFLAG_CAN_OPEN_DOOR,    3,  220,      4,         30,         60,     0,      11,           0,           0,          90, MC_DEMON,    IMMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMMUNE_NULL_40, IMMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMMUNE_NULL_40,         0,        7, 31666 },
 	{    128,   1060, "Monsters\\DarkMage\\Dmage%c.CL2",  TRUE,        "Monsters\\DarkMage\\Dmag%c%i.WAV",  FALSE,       FALSE,     NULL,                              {  6,  1, 21,  6, 23, 18 }, { 0, 0, 0, 0, 0, 0 }, "The Arch-Litch Malignus", 30,       30,     30,    160,    160, AI_COUNSLR,                                                   MFLAG_CAN_OPEN_DOOR,    3,  120,      8,         20,         40,     0,       0,           0,           0,          70, MC_DEMON,    RESIST_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMMUNE_NULL_40, IMMUNE_MAGIC  | IMMUNE_FIRE  | IMMUNE_LIGHTNING  | IMMUNE_NULL_40,         0,        7,  4968 },
 #endif
-	// clang-format on
+    // clang-format on
 };
 
 /**
@@ -197,161 +197,28 @@ int MonstConvTbl[] = {
 #else
 char MonstConvTbl[] = {
 #endif
-	MT_NZOMBIE,
-	MT_BZOMBIE,
-	MT_GZOMBIE,
-	MT_YZOMBIE,
-	MT_RFALLSP,
-	MT_DFALLSP,
-	MT_YFALLSP,
-	MT_BFALLSP,
-	MT_WSKELAX,
-	MT_TSKELAX,
-	MT_RSKELAX,
-	MT_XSKELAX,
-	MT_RFALLSD,
-	MT_DFALLSD,
-	MT_YFALLSD,
-	MT_BFALLSD,
-	MT_NSCAV,
-	MT_BSCAV,
-	MT_WSCAV,
-	MT_YSCAV,
-	MT_WSKELBW,
-	MT_TSKELBW,
-	MT_RSKELBW,
-	MT_XSKELBW,
-	MT_WSKELSD,
-	MT_TSKELSD,
-	MT_RSKELSD,
-	MT_XSKELSD,
-	MT_SNEAK,
-	MT_STALKER,
-	MT_UNSEEN,
-	MT_ILLWEAV,
-	MT_NGOATMC,
-	MT_BGOATMC,
-	MT_RGOATMC,
-	MT_GGOATMC,
-	MT_FIEND,
-	MT_GLOOM,
-	MT_BLINK,
-	MT_FAMILIAR,
-	MT_NGOATBW,
-	MT_BGOATBW,
-	MT_RGOATBW,
-	MT_GGOATBW,
-	MT_NACID,
-	MT_RACID,
-	MT_BACID,
-	MT_XACID,
-	MT_SKING,
-	MT_FAT,
-	MT_MUDMAN,
-	MT_TOAD,
-	MT_FLAYED,
-	MT_WYRM,
-	MT_CAVSLUG,
-	MT_DEVOUR,
-	MT_DVLWYRM,
-	MT_NMAGMA,
-	MT_YMAGMA,
-	MT_BMAGMA,
-	MT_WMAGMA,
-	MT_HORNED,
-	MT_MUDRUN,
-	MT_FROSTC,
-	MT_OBLORD,
-	MT_BONEDMN,
-	MT_REDDTH,
-	MT_LTCHDMN,
-	MT_UDEDBLRG,
-	0,
-	0,
-	0,
-	0,
-	MT_INCIN,
-	MT_FLAMLRD,
-	MT_DOOMFIRE,
-	MT_HELLBURN,
-	0,
-	0,
-	0,
-	0,
-	MT_RSTORM,
-	MT_STORM,
-	MT_STORML,
-	MT_MAEL,
-	MT_WINGED,
-	MT_GARGOYLE,
-	MT_BLOODCLW,
-	MT_DEATHW,
-	MT_MEGA,
-	MT_GUARD,
-	MT_VTEXLRD,
-	MT_BALROG,
-	MT_NSNAKE,
-	MT_RSNAKE,
-	MT_GSNAKE,
-	MT_BSNAKE,
-	MT_NBLACK,
-	MT_RTBLACK,
-	MT_BTBLACK,
-	MT_RBLACK,
-	MT_UNRAV,
-	MT_HOLOWONE,
-	MT_PAINMSTR,
-	MT_REALWEAV,
-	MT_SUCCUBUS,
-	MT_SNOWWICH,
-	MT_HLSPWN,
-	MT_SOLBRNR,
-	MT_COUNSLR,
-	MT_MAGISTR,
-	MT_CABALIST,
-	MT_ADVOCATE,
-	0,
-	MT_DIABLO,
-	0,
-	MT_GOLEM,
-	0,
-	0,
-	0, // Monster from blood1.dun and blood2.dun
-	0,
-	0,
-	0,
-	0, // Snotspill from banner2.dun
-	0,
-	0,
-	MT_BIGFALL,
-	MT_DARKMAGE,
+    MT_NZOMBIE,  MT_BZOMBIE,  MT_GZOMBIE,  MT_YZOMBIE,  MT_RFALLSP,  MT_DFALLSP,  MT_YFALLSP,  MT_BFALLSP,  MT_WSKELAX,
+    MT_TSKELAX,  MT_RSKELAX,  MT_XSKELAX,  MT_RFALLSD,  MT_DFALLSD,  MT_YFALLSD,  MT_BFALLSD,  MT_NSCAV,    MT_BSCAV,
+    MT_WSCAV,    MT_YSCAV,    MT_WSKELBW,  MT_TSKELBW,  MT_RSKELBW,  MT_XSKELBW,  MT_WSKELSD,  MT_TSKELSD,  MT_RSKELSD,
+    MT_XSKELSD,  MT_SNEAK,    MT_STALKER,  MT_UNSEEN,   MT_ILLWEAV,  MT_NGOATMC,  MT_BGOATMC,  MT_RGOATMC,  MT_GGOATMC,
+    MT_FIEND,    MT_GLOOM,    MT_BLINK,    MT_FAMILIAR, MT_NGOATBW,  MT_BGOATBW,  MT_RGOATBW,  MT_GGOATBW,  MT_NACID,
+    MT_RACID,    MT_BACID,    MT_XACID,    MT_SKING,    MT_FAT,      MT_MUDMAN,   MT_TOAD,     MT_FLAYED,   MT_WYRM,
+    MT_CAVSLUG,  MT_DEVOUR,   MT_DVLWYRM,  MT_NMAGMA,   MT_YMAGMA,   MT_BMAGMA,   MT_WMAGMA,   MT_HORNED,   MT_MUDRUN,
+    MT_FROSTC,   MT_OBLORD,   MT_BONEDMN,  MT_REDDTH,   MT_LTCHDMN,  MT_UDEDBLRG, 0,           0,           0,
+    0,           MT_INCIN,    MT_FLAMLRD,  MT_DOOMFIRE, MT_HELLBURN, 0,           0,           0,           0,
+    MT_RSTORM,   MT_STORM,    MT_STORML,   MT_MAEL,     MT_WINGED,   MT_GARGOYLE, MT_BLOODCLW, MT_DEATHW,   MT_MEGA,
+    MT_GUARD,    MT_VTEXLRD,  MT_BALROG,   MT_NSNAKE,   MT_RSNAKE,   MT_GSNAKE,   MT_BSNAKE,   MT_NBLACK,   MT_RTBLACK,
+    MT_BTBLACK,  MT_RBLACK,   MT_UNRAV,    MT_HOLOWONE, MT_PAINMSTR, MT_REALWEAV, MT_SUCCUBUS, MT_SNOWWICH, MT_HLSPWN,
+    MT_SOLBRNR,  MT_COUNSLR,  MT_MAGISTR,  MT_CABALIST, MT_ADVOCATE, 0,           MT_DIABLO,   0,           MT_GOLEM,
+    0,           0,
+    0, // Monster from blood1.dun and blood2.dun
+    0,           0,           0,
+    0, // Snotspill from banner2.dun
+    0,           0,           MT_BIGFALL,  MT_DARKMAGE,
 #ifdef HELLFIRE
-	MT_HELLBOAR,
-	MT_STINGER,
-	MT_PSYCHORB,
-	MT_ARACHNON,
-	MT_FELLTWIN,
-	MT_HORKSPWN,
-	MT_STINGER,
-	MT_PSYCHORB,
-	MT_ARACHNON,
-	MT_LASHWORM,
-	MT_TORCHANT,
-	MT_HORKDMN,
-	MT_DEFILER,
-	MT_GRAVEDIG,
-	MT_TOMBRAT,
-	MT_FIREBAT,
-	MT_SKLWING,
-	MT_LICH,
-	MT_CRYPTDMN,
-	MT_FIREBAT,
-	MT_SKLWING,
-	MT_LICH,
-	MT_BICLOPS,
-	MT_FLESTHNG,
-	MT_REAPER,
-	MT_NAKRUL,
+    MT_HELLBOAR, MT_STINGER,  MT_PSYCHORB, MT_ARACHNON, MT_FELLTWIN, MT_HORKSPWN, MT_STINGER,  MT_PSYCHORB, MT_ARACHNON,
+    MT_LASHWORM, MT_TORCHANT, MT_HORKDMN,  MT_DEFILER,  MT_GRAVEDIG, MT_TOMBRAT,  MT_FIREBAT,  MT_SKLWING,  MT_LICH,
+    MT_CRYPTDMN, MT_FIREBAT,  MT_SKLWING,  MT_LICH,     MT_BICLOPS,  MT_FLESTHNG, MT_REAPER,   MT_NAKRUL,
 #endif
 };
 
@@ -366,162 +233,162 @@ int MonstAvailTbl[] = {
 #else
 char MonstAvailTbl[] = {
 #endif
-	MAT_ALWAYS, // Zombie
-	MAT_ALWAYS, // Ghoul
-	MAT_ALWAYS, // Rotting Carcass
-	MAT_ALWAYS, // Black Death
-	MAT_ALWAYS, // Fallen One
-	MAT_ALWAYS, // Carver
-	MAT_ALWAYS, // Devil Kin
-	MAT_ALWAYS, // Dark One
-	MAT_ALWAYS, // Skeleton
-	MAT_ALWAYS, // Corpse Axe
-	MAT_ALWAYS, // Burning Dead
-	MAT_ALWAYS, // Horror
-	MAT_ALWAYS, // Fallen One
-	MAT_ALWAYS, // Carver
-	MAT_ALWAYS, // Devil Kin
-	MAT_ALWAYS, // Dark One
-	MAT_ALWAYS, // Scavenger
-	MAT_ALWAYS, // Plague Eater
-	MAT_ALWAYS, // Shadow Beast
-	MAT_ALWAYS, // Bone Gasher
-	MAT_ALWAYS, // Skeleton
-	MAT_ALWAYS, // Corpse Bow
-	MAT_ALWAYS, // Burning Dead
-	MAT_ALWAYS, // Horror
-	MAT_ALWAYS, // Skeleton Captain
-	MAT_ALWAYS, // Corpse Captain
-	MAT_ALWAYS, // Burning Dead Captain
-	MAT_ALWAYS, // Horror Captain
-	MAT_NEVER,  // Invisible Lord
-	MAT_RETAIL, // Hidden
-	MAT_RETAIL, // Stalker
-	MAT_RETAIL, // Unseen
-	MAT_RETAIL, // Illusion Weaver
+    MAT_ALWAYS, // Zombie
+    MAT_ALWAYS, // Ghoul
+    MAT_ALWAYS, // Rotting Carcass
+    MAT_ALWAYS, // Black Death
+    MAT_ALWAYS, // Fallen One
+    MAT_ALWAYS, // Carver
+    MAT_ALWAYS, // Devil Kin
+    MAT_ALWAYS, // Dark One
+    MAT_ALWAYS, // Skeleton
+    MAT_ALWAYS, // Corpse Axe
+    MAT_ALWAYS, // Burning Dead
+    MAT_ALWAYS, // Horror
+    MAT_ALWAYS, // Fallen One
+    MAT_ALWAYS, // Carver
+    MAT_ALWAYS, // Devil Kin
+    MAT_ALWAYS, // Dark One
+    MAT_ALWAYS, // Scavenger
+    MAT_ALWAYS, // Plague Eater
+    MAT_ALWAYS, // Shadow Beast
+    MAT_ALWAYS, // Bone Gasher
+    MAT_ALWAYS, // Skeleton
+    MAT_ALWAYS, // Corpse Bow
+    MAT_ALWAYS, // Burning Dead
+    MAT_ALWAYS, // Horror
+    MAT_ALWAYS, // Skeleton Captain
+    MAT_ALWAYS, // Corpse Captain
+    MAT_ALWAYS, // Burning Dead Captain
+    MAT_ALWAYS, // Horror Captain
+    MAT_NEVER,  // Invisible Lord
+    MAT_RETAIL, // Hidden
+    MAT_RETAIL, // Stalker
+    MAT_RETAIL, // Unseen
+    MAT_RETAIL, // Illusion Weaver
 #ifdef HELLFIRE
-	MAT_RETAIL, // Satyr Lord
+    MAT_RETAIL, // Satyr Lord
 #else
-	MAT_NEVER,  // Lord Sayter
+    MAT_NEVER, // Lord Sayter
 #endif
-	MAT_RETAIL, // Flesh Clan
-	MAT_RETAIL, // Stone Clan
-	MAT_RETAIL, // Fire Clan
-	MAT_RETAIL, // Night Clan
-	MAT_ALWAYS, // Fiend
-	MAT_ALWAYS, // Blink
-	MAT_ALWAYS, // Gloom
-	MAT_ALWAYS, // Familiar
-	MAT_RETAIL, // Flesh Clan
-	MAT_RETAIL, // Stone Clan
-	MAT_RETAIL, // Fire Clan
-	MAT_RETAIL, // Night Clan
-	MAT_RETAIL, // Acid Beast
-	MAT_RETAIL, // Poison Spitter
-	MAT_RETAIL, // Pit Beast
-	MAT_RETAIL, // Lava Maw
-	MAT_NEVER,  // Skeleton King
-	MAT_NEVER,  // The Butcher
-	MAT_RETAIL, // Overlord
-	MAT_RETAIL, // Mud Man
-	MAT_RETAIL, // Toad Demon
-	MAT_RETAIL, // Flayed One
-	MAT_NEVER,  // Wyrm
-	MAT_NEVER,  // Cave Slug
-	MAT_NEVER,  // Devil Wyrm
-	MAT_NEVER,  // Devourer
-	MAT_RETAIL, // Magma Demon
-	MAT_RETAIL, // Blood Stone
-	MAT_RETAIL, // Hell Stone
-	MAT_RETAIL, // Lava Lord
-	MAT_RETAIL, // Horned Demon
-	MAT_RETAIL, // Mud Runner
-	MAT_RETAIL, // Frost Charger
-	MAT_RETAIL, // Obsidian Lord
-	MAT_NEVER,  // Bone Demon (oldboned in Hellfire)
-	MAT_NEVER,  // Red Death
-	MAT_NEVER,  // Litch Demon
-	MAT_NEVER,  // Undead Balrog
-	MAT_NEVER,  // Incinerator
-	MAT_NEVER,  // Flame Lord
-	MAT_NEVER,  // Doom Fire
-	MAT_NEVER,  // Hell Burner
-	MAT_RETAIL, // Red Storm
-	MAT_RETAIL, // Storm Rider
-	MAT_RETAIL, // Storm Lord
-	MAT_RETAIL, // Maelstorm
+    MAT_RETAIL, // Flesh Clan
+    MAT_RETAIL, // Stone Clan
+    MAT_RETAIL, // Fire Clan
+    MAT_RETAIL, // Night Clan
+    MAT_ALWAYS, // Fiend
+    MAT_ALWAYS, // Blink
+    MAT_ALWAYS, // Gloom
+    MAT_ALWAYS, // Familiar
+    MAT_RETAIL, // Flesh Clan
+    MAT_RETAIL, // Stone Clan
+    MAT_RETAIL, // Fire Clan
+    MAT_RETAIL, // Night Clan
+    MAT_RETAIL, // Acid Beast
+    MAT_RETAIL, // Poison Spitter
+    MAT_RETAIL, // Pit Beast
+    MAT_RETAIL, // Lava Maw
+    MAT_NEVER,  // Skeleton King
+    MAT_NEVER,  // The Butcher
+    MAT_RETAIL, // Overlord
+    MAT_RETAIL, // Mud Man
+    MAT_RETAIL, // Toad Demon
+    MAT_RETAIL, // Flayed One
+    MAT_NEVER,  // Wyrm
+    MAT_NEVER,  // Cave Slug
+    MAT_NEVER,  // Devil Wyrm
+    MAT_NEVER,  // Devourer
+    MAT_RETAIL, // Magma Demon
+    MAT_RETAIL, // Blood Stone
+    MAT_RETAIL, // Hell Stone
+    MAT_RETAIL, // Lava Lord
+    MAT_RETAIL, // Horned Demon
+    MAT_RETAIL, // Mud Runner
+    MAT_RETAIL, // Frost Charger
+    MAT_RETAIL, // Obsidian Lord
+    MAT_NEVER,  // Bone Demon (oldboned in Hellfire)
+    MAT_NEVER,  // Red Death
+    MAT_NEVER,  // Litch Demon
+    MAT_NEVER,  // Undead Balrog
+    MAT_NEVER,  // Incinerator
+    MAT_NEVER,  // Flame Lord
+    MAT_NEVER,  // Doom Fire
+    MAT_NEVER,  // Hell Burner
+    MAT_RETAIL, // Red Storm
+    MAT_RETAIL, // Storm Rider
+    MAT_RETAIL, // Storm Lord
+    MAT_RETAIL, // Maelstorm
 #ifdef HELLFIRE
-	MAT_RETAIL, // Devil Kin Brute
+    MAT_RETAIL, // Devil Kin Brute
 #else
-	MAT_NEVER,  // Devil Kin Brute
+    MAT_NEVER, // Devil Kin Brute
 #endif
-	MAT_RETAIL, // Winged-Demon
-	MAT_RETAIL, // Gargoyle
-	MAT_RETAIL, // Blood Claw
-	MAT_RETAIL, // Death Wing
-	MAT_RETAIL, // Slayer
-	MAT_RETAIL, // Guardian
-	MAT_RETAIL, // Vortex Lord
-	MAT_RETAIL, // Balrog
-	MAT_RETAIL, // Cave Viper
-	MAT_RETAIL, // Fire Drake
-	MAT_RETAIL, // Gold Viper
-	MAT_RETAIL, // Azure Drake
-	MAT_RETAIL, // Black Knight
-	MAT_RETAIL, // Doom Guard
-	MAT_RETAIL, // Steel Lord
-	MAT_RETAIL, // Blood Knight
+    MAT_RETAIL, // Winged-Demon
+    MAT_RETAIL, // Gargoyle
+    MAT_RETAIL, // Blood Claw
+    MAT_RETAIL, // Death Wing
+    MAT_RETAIL, // Slayer
+    MAT_RETAIL, // Guardian
+    MAT_RETAIL, // Vortex Lord
+    MAT_RETAIL, // Balrog
+    MAT_RETAIL, // Cave Viper
+    MAT_RETAIL, // Fire Drake
+    MAT_RETAIL, // Gold Viper
+    MAT_RETAIL, // Azure Drake
+    MAT_RETAIL, // Black Knight
+    MAT_RETAIL, // Doom Guard
+    MAT_RETAIL, // Steel Lord
+    MAT_RETAIL, // Blood Knight
 #ifdef HELLFIRE
-	MAT_RETAIL, // The Shredded
+    MAT_RETAIL, // The Shredded
 #else
-	MAT_NEVER,  // Unraveler
+    MAT_NEVER, // Unraveler
 #endif
-	MAT_NEVER,  // Hollow One
-	MAT_NEVER,  // Pain Master
-	MAT_NEVER,  // Reality Weaver
-	MAT_RETAIL, // Succubus
-	MAT_RETAIL, // Snow Witch
-	MAT_RETAIL, // Hell Spawn
-	MAT_RETAIL, // Soul Burner
-	MAT_RETAIL, // Counselor
-	MAT_RETAIL, // Magistrate
-	MAT_RETAIL, // Cabalist
-	MAT_RETAIL, // Advocate
-	MAT_NEVER,  // Golem
-	MAT_NEVER,  // The Dark Lord
-	MAT_NEVER,  // The Arch-Litch Malignus
+    MAT_NEVER,  // Hollow One
+    MAT_NEVER,  // Pain Master
+    MAT_NEVER,  // Reality Weaver
+    MAT_RETAIL, // Succubus
+    MAT_RETAIL, // Snow Witch
+    MAT_RETAIL, // Hell Spawn
+    MAT_RETAIL, // Soul Burner
+    MAT_RETAIL, // Counselor
+    MAT_RETAIL, // Magistrate
+    MAT_RETAIL, // Cabalist
+    MAT_RETAIL, // Advocate
+    MAT_NEVER,  // Golem
+    MAT_NEVER,  // The Dark Lord
+    MAT_NEVER,  // The Arch-Litch Malignus
 #ifdef HELLFIRE
-	MAT_RETAIL, // Hellboar
-	MAT_RETAIL, // Stinger
-	MAT_RETAIL, // Psychorb
-	MAT_RETAIL, // Arachnon
-	MAT_RETAIL, // Felltwin
-	MAT_RETAIL, // Hork Spawn
-	MAT_RETAIL, // Venomtail
-	MAT_RETAIL, // Necromorb
-	MAT_RETAIL, // Spider Lord
-	MAT_RETAIL, // Lashworm
-	MAT_RETAIL, // Torchant
-	MAT_NEVER,  // Hork Demon
-	MAT_NEVER,  // Hell Bug
-	MAT_RETAIL, // Gravedigger
-	MAT_RETAIL, // Tomb Rat
-	MAT_RETAIL, // Firebat
-	MAT_RETAIL, // Skullwing
-	MAT_RETAIL, // Lich
-	MAT_RETAIL, // Crypt Demon
-	MAT_RETAIL, // Hellbat
-	MAT_RETAIL, // Bone Demon
-	MAT_RETAIL, // Arch Lich
-	MAT_RETAIL, // Biclops
-	MAT_RETAIL, // Flesh Thing
-	MAT_RETAIL, // Reaper
-	MAT_NEVER,  // Na-Krul
+    MAT_RETAIL, // Hellboar
+    MAT_RETAIL, // Stinger
+    MAT_RETAIL, // Psychorb
+    MAT_RETAIL, // Arachnon
+    MAT_RETAIL, // Felltwin
+    MAT_RETAIL, // Hork Spawn
+    MAT_RETAIL, // Venomtail
+    MAT_RETAIL, // Necromorb
+    MAT_RETAIL, // Spider Lord
+    MAT_RETAIL, // Lashworm
+    MAT_RETAIL, // Torchant
+    MAT_NEVER,  // Hork Demon
+    MAT_NEVER,  // Hell Bug
+    MAT_RETAIL, // Gravedigger
+    MAT_RETAIL, // Tomb Rat
+    MAT_RETAIL, // Firebat
+    MAT_RETAIL, // Skullwing
+    MAT_RETAIL, // Lich
+    MAT_RETAIL, // Crypt Demon
+    MAT_RETAIL, // Hellbat
+    MAT_RETAIL, // Bone Demon
+    MAT_RETAIL, // Arch Lich
+    MAT_RETAIL, // Biclops
+    MAT_RETAIL, // Flesh Thing
+    MAT_RETAIL, // Reaper
+    MAT_NEVER,  // Na-Krul
 #endif
 };
 /** Contains the data related to each unique monster ID. */
 UniqMonstStruct UniqMonst[] = {
-	// clang-format off
+    // clang-format off
 	// mtype,       mName,                      mTrnName,    mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
 	{  MT_NGOATMC,  "Gharbad the Weak",         "BSDB",        4,    120, AI_GARBUD,   3,          8,         16,                              IMMUNE_LIGHTNING | IMMUNE_NULL_40,        0,        0,        0, TEXT_GARBUD1   },
 	{  MT_SKING,    "Skeleton King",            "GENRL",       0,    240, AI_SKELKING, 3,          6,         16, IMMUNE_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMMUNE_NULL_40,        1,        0,        0, 0              },
@@ -626,5 +493,5 @@ UniqMonstStruct UniqMonst[] = {
 	{  MT_OBLORD,   "Grimspike",                "GENERAL",    19,    534, AI_SNEAK,    1,         25,         40, IMMUNE_MAGIC | RESIST_FIRE |                    IMMUNE_NULL_40,        3,        0,        0, 0              },
 	{  MT_STORML,   "Doomlock",                 "GENERAL",    28,    534, AI_SNEAK,    1,         35,         55, IMMUNE_MAGIC | RESIST_FIRE | RESIST_LIGHTNING | IMMUNE_NULL_40,        3,        0,        0, 0              },
 	{  -1,          NULL,                       NULL,          0,      0, 0,           0,          0,          0, 0                                                             ,        0,        0,        0, 0              },
-	// clang-format on
+    // clang-format on
 };

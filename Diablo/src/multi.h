@@ -17,20 +17,24 @@ extern char szPlayerName[128];
 extern BYTE gbDeltaSender;
 extern int player_state[MAX_PLRS];
 
-void multi_msg_add(BYTE *pbMsg, BYTE bLen);
-void NetSendLoPri(BYTE *pbMsg, BYTE bLen);
-void NetSendHiPri(BYTE *pbMsg, BYTE bLen);
-void multi_send_msg_packet(int pmask, BYTE *src, BYTE len);
+void multi_msg_add(BYTE* pbMsg, BYTE bLen);
+void NetSendLoPri(BYTE* pbMsg, BYTE bLen);
+void NetSendHiPri(BYTE* pbMsg, BYTE bLen);
+void multi_send_msg_packet(int pmask, BYTE* src, BYTE len);
 void multi_msg_countdown();
 void multi_player_left(int pnum, int reason);
 void multi_net_ping();
 int multi_handle_delta();
 void multi_process_network_packets();
-void multi_send_zero_packet(int pnum, BYTE bCmd, BYTE *pbSrc, DWORD dwLen);
+void multi_send_zero_packet(int pnum, BYTE bCmd, BYTE* pbSrc, DWORD dwLen);
 void NetClose();
-BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram);
-BOOL multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
-BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, BOOL *pfExitProgram);
-void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv);
+BOOL NetInit(BOOL bSinglePlayer, BOOL* pfExitProgram);
+BOOL multi_init_single(_SNETPROGRAMDATA* client_info, _SNETPLAYERDATA* user_info, _SNETUIDATA* ui_info);
+BOOL multi_init_multi(
+    _SNETPROGRAMDATA* client_info,
+    _SNETPLAYERDATA* user_info,
+    _SNETUIDATA* ui_info,
+    BOOL* pfExitProgram);
+void recv_plrinfo(int pnum, TCmdPlrInfoHdr* p, BOOL recv);
 
 #endif /* __MULTI_H__ */

@@ -7,7 +7,7 @@
 
 /** Data related to each missile ID. */
 MissileData missiledata[] = {
-	// clang-format off
+    // clang-format off
 	// mName,             mAddProc,                   mProc,              mDraw, mType, mResist,        mFileNum,        miSFX,       mlSFX;
 	{  MIS_ARROW,         &AddArrow,                  &MI_Arrow,          TRUE,      0, MISR_NONE,      MFILE_ARROWS,    -1,          -1          },
 	{  MIS_FIREBOLT,      &AddFirebolt,               &MI_Firebolt,       TRUE,      1, MISR_FIRE,      MFILE_FIREBA,    LS_FBOLT1,   LS_FIRIMP2  },
@@ -127,12 +127,12 @@ MissileData missiledata[] = {
 	{  MIS_EXBL3,         &AddMisexp,                 &MI_Misexp,         TRUE,      2, MISR_NONE,      MFILE_EXBL3,     LS_FIRIMP2,  -1          },
 	{  MIS_EXORA1,        &AddMisexp,                 &MI_Misexp,         TRUE,      2, MISR_NONE,      MFILE_EXORA1,    LS_FIRIMP2,  -1          },
 #endif
-	// clang-format on
+    // clang-format on
 };
 
 /** Data related to each missile graphic ID. */
 MisFileData misfiledata[] = {
-	// clang-format off
+    // clang-format off
 	// mAnimName, mAnimFAmt, mName, mFlags, mAnimData[16],                                      mAnimDelay[16],                                     mAnimLen[16],                                                       mAnimWidth[16],                                                             mAnimWidth2[16]
 	{  MFILE_ARROWS,      1, "Arrows",   2, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 16,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, {  96,   0,   0,   0,   0,   0,   0,   0,  0,  0,  0,  0,  0,  0,  0,  0 }, {  16,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 } },
 	{  MFILE_FIREBA,     16, "Fireba",   0, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14 }, {  96,  96,  96,  96,  96,  96,  96,  96, 96, 96, 96, 96, 96, 96, 96, 96 }, {  16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16 } },
@@ -196,5 +196,5 @@ MisFileData misfiledata[] = {
 	{  MFILE_EXBL3,       1, "ex_blu3",  1, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, {  7,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, { 292,   0,   0,   0,   0,   0,   0,   0,  0,  0,  0,  0,  0,  0,  0,  0 }, { 114,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 } },
 #endif
 	{  MFILE_NONE,        0, "",         0, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, {   0,   0,   0,   0,   0,   0,   0,   0,  0,  0,  0,  0,  0,  0,  0,  0 }, {   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 } },
-	// clang-format on
+    // clang-format on
 };

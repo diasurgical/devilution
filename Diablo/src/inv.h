@@ -16,7 +16,7 @@ void DrawInvBelt();
 BOOL AutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag);
 BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag);
 BOOL GoldAutoPlace(int pnum);
-int SwapItem(ItemStruct *a, ItemStruct *b);
+int SwapItem(ItemStruct* a, ItemStruct* b);
 void CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, BOOL bId);
 void inv_update_rem_item(int pnum, BYTE iv);
 void RemoveInvItem(int pnum, int iv);
@@ -33,11 +33,30 @@ int FindGetItem(int idx, WORD ci, int iseed);
 void SyncGetItem(int x, int y, int idx, WORD ci, int iseed);
 BOOL CanPut(int x, int y);
 BOOL TryInvPut();
-void DrawInvMsg(const char *msg);
+void DrawInvMsg(const char* msg);
 int InvPutItem(int pnum, int x, int y);
-int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, DWORD ibuff
+int SyncPutItem(
+    int pnum,
+    int x,
+    int y,
+    int idx,
+    WORD icreateinfo,
+    int iseed,
+    int Id,
+    int dur,
+    int mdur,
+    int ch,
+    int mch,
+    int ivalue,
+    DWORD ibuff
 #ifdef HELLFIRE
-	, int to_hit, int max_dam, int min_str, int min_mag, int min_dex, int ac
+    ,
+    int to_hit,
+    int max_dam,
+    int min_str,
+    int min_mag,
+    int min_dex,
+    int ac
 #endif
 );
 char CheckInvHLight();

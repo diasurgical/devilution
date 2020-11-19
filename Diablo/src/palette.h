@@ -10,7 +10,7 @@ extern PALETTEENTRY system_palette[256];
 
 void SaveGamma();
 void palette_init();
-void LoadPalette(const char *pszFileName);
+void LoadPalette(const char* pszFileName);
 void LoadRndLvlPal(int l);
 void ResetPal();
 void IncreaseGamma();

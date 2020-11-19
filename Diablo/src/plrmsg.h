@@ -7,12 +7,12 @@
 #define __PLRMSG_H__
 
 void plrmsg_delay(BOOL delay);
-char *ErrorPlrMsg(const char *pszMsg);
-size_t __cdecl EventPlrMsg(const char *pszFmt, ...);
-void SendPlrMsg(int pnum, const char *pszStr);
+char* ErrorPlrMsg(const char* pszMsg);
+size_t __cdecl EventPlrMsg(const char* pszFmt, ...);
+void SendPlrMsg(int pnum, const char* pszStr);
 void ClearPlrMsg();
 void InitPlrMsg();
 void DrawPlrMsg();
-void PrintPlrMsg(DWORD x, DWORD y, DWORD width, const char *str, BYTE col);
+void PrintPlrMsg(DWORD x, DWORD y, DWORD width, const char* str, BYTE col);
 
 #endif /* __PLRMSG_H__ */

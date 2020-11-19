@@ -9,7 +9,8 @@
 #include "types.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 #include "appfat.h"
 #include "automap.h"

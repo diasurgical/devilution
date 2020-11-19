@@ -11,7 +11,7 @@ int sfxdnum;
 /** A handle to the current sound effect playing. */
 HANDLE sghStream;
 /** Specifies the sound file and the playback state of the current sound effect. */
-TSFX *sgpStreamSFX;
+TSFX* sgpStreamSFX;
 
 /**
  * Monster sound type prefix
@@ -20,12 +20,12 @@ TSFX *sgpStreamSFX;
  * d: Death
  * s: Special
  */
-const char MonstSndChar[] = { 'a', 'h', 'd', 's' };
+const char MonstSndChar[] = {'a', 'h', 'd', 's'};
 
 /* data */
 /** List of all sounds, except monsters and music */
 TSFX sgSFX[] = {
-	// clang-format off
+    // clang-format off
 	// bFlags,                   pszName,                       pSnd
 	{ sfx_MISC,                  "Sfx\\Misc\\Walk1.wav",        NULL },
 	{ sfx_MISC,                  "Sfx\\Misc\\Walk2.wav",        NULL },
@@ -1091,7 +1091,7 @@ TSFX sgSFX[] = {
 	{ sfx_MISC,                  "Sfx\\Items\\Cropen.wav",      NULL },
 	{ sfx_MISC,                  "Sfx\\Items\\Crclos.wav",      NULL },
 #endif
-	// clang-format on
+    // clang-format on
 };
 
 #ifdef HELLFIRE
@@ -1102,394 +1102,448 @@ TSFX sgSFX[] = {
 
 BOOL effect_is_playing(int nSFX)
 {
-	TSFX *sfx = &sgSFX[nSFX];
-	if (sfx->pSnd)
-		return snd_playing(sfx->pSnd);
+    TSFX* sfx = &sgSFX[nSFX];
+    if (sfx->pSnd)
+        return snd_playing(sfx->pSnd);
 
-	if (sfx->bFlags & sfx_STREAM)
-		return sfx == sgpStreamSFX;
+    if (sfx->bFlags & sfx_STREAM)
+        return sfx == sgpStreamSFX;
 
-	return FALSE;
+    return FALSE;
 }
 
 void stream_stop()
 {
-	if (sghStream) {
-		SFileDdaEnd(sghStream);
-		SFileCloseFile(sghStream);
-		sghStream = NULL;
-		sgpStreamSFX = NULL;
-	}
+    if (sghStream)
+    {
+        SFileDdaEnd(sghStream);
+        SFileCloseFile(sghStream);
+        sghStream = NULL;
+        sgpStreamSFX = NULL;
+    }
 }
 
-static void stream_play(TSFX *pSFX, int lVolume, int lPan)
+static void stream_play(TSFX* pSFX, int lVolume, int lPan)
 {
-	BOOL success;
+    BOOL success;
 
-	assert(pSFX);
-	assert(pSFX->bFlags & sfx_STREAM);
-	stream_stop();
-	lVolume += sound_get_or_set_sound_volume(1);
-	if (lVolume >= VOLUME_MIN) {
-		if (lVolume > VOLUME_MAX)
-			lVolume = VOLUME_MAX;
+    assert(pSFX);
+    assert(pSFX->bFlags & sfx_STREAM);
+    stream_stop();
+    lVolume += sound_get_or_set_sound_volume(1);
+    if (lVolume >= VOLUME_MIN)
+    {
+        if (lVolume > VOLUME_MAX)
+            lVolume = VOLUME_MAX;
 #ifdef _DEBUG
-		SFileEnableDirectAccess(FALSE);
+        SFileEnableDirectAccess(FALSE);
 #endif
-		success = SFileOpenFile(pSFX->pszName, &sghStream);
+        success = SFileOpenFile(pSFX->pszName, &sghStream);
 #ifdef _DEBUG
-		SFileEnableDirectAccess(TRUE);
+        SFileEnableDirectAccess(TRUE);
 #endif
-		if (!success) {
-			sghStream = NULL;
-		} else {
-			if (!SFileDdaBeginEx(sghStream, 0x40000, 0, 0, lVolume, lPan, 0))
-				stream_stop();
-			else
-				sgpStreamSFX = pSFX;
-		}
-	}
+        if (!success)
+        {
+            sghStream = NULL;
+        }
+        else
+        {
+            if (!SFileDdaBeginEx(sghStream, 0x40000, 0, 0, lVolume, lPan, 0))
+                stream_stop();
+            else
+                sgpStreamSFX = pSFX;
+        }
+    }
 }
 
 static void stream_update()
 {
-	DWORD current, end;
+    DWORD current, end;
 
-	if (sghStream != NULL && SFileDdaGetPos(sghStream, &current, &end) && current >= end) {
-		stream_stop();
-	}
+    if (sghStream != NULL && SFileDdaGetPos(sghStream, &current, &end) && current >= end)
+    {
+        stream_stop();
+    }
 }
 
 static void sfx_stop()
 {
-	int i;
-	TSFX *snd;
+    int i;
+    TSFX* snd;
 
-	snd = &sgSFX[0];
-	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
-		if (snd->pSnd)
-			snd_stop_snd(snd->pSnd);
-		snd++;
-	}
+    snd = &sgSFX[0];
+    for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++)
+    {
+        if (snd->pSnd)
+            snd_stop_snd(snd->pSnd);
+        snd++;
+    }
 }
 
 void InitMonsterSND(int monst)
 {
-	TSnd *pSnd;
-	char name[MAX_PATH];
-	char *path;
-	int mtype, i, j;
+    TSnd* pSnd;
+    char name[MAX_PATH];
+    char* path;
+    int mtype, i, j;
 
-	if (!gbSndInited) {
-		return;
-	}
+    if (!gbSndInited)
+    {
+        return;
+    }
 
-	mtype = Monsters[monst].mtype;
-	for (i = 0; i < 4; i++) {
-		if (MonstSndChar[i] != 's' || monsterdata[mtype].snd_special) {
-			for (j = 0; j < 2; j++) {
-				sprintf(name, monsterdata[mtype].sndfile, MonstSndChar[i], j + 1);
-				path = (char *)DiabloAllocPtr(strlen(name) + 1);
-				strcpy(path, name);
-				pSnd = sound_file_load(path);
-				Monsters[monst].Snds[i][j] = pSnd;
-				if (!pSnd)
-					mem_free_dbg(path);
-			}
-		}
-	}
+    mtype = Monsters[monst].mtype;
+    for (i = 0; i < 4; i++)
+    {
+        if (MonstSndChar[i] != 's' || monsterdata[mtype].snd_special)
+        {
+            for (j = 0; j < 2; j++)
+            {
+                sprintf(name, monsterdata[mtype].sndfile, MonstSndChar[i], j + 1);
+                path = (char*)DiabloAllocPtr(strlen(name) + 1);
+                strcpy(path, name);
+                pSnd = sound_file_load(path);
+                Monsters[monst].Snds[i][j] = pSnd;
+                if (!pSnd)
+                    mem_free_dbg(path);
+            }
+        }
+    }
 }
 
 void FreeMonsterSnd()
 {
-	int mtype, i, j, k;
-	const char *file;
-	TSnd *pSnd;
+    int mtype, i, j, k;
+    const char* file;
+    TSnd* pSnd;
 
-	for (i = 0; i < nummtypes; i++) {
-		mtype = Monsters[i].mtype;
-		for (j = 0; j < 4; ++j) {
-			for (k = 0; k < 2; ++k) {
-				pSnd = Monsters[i].Snds[j][k];
-				if (pSnd) {
-					Monsters[i].Snds[j][k] = NULL;
-					file = pSnd->sound_path;
-					pSnd->sound_path = NULL;
-					sound_file_cleanup(pSnd);
+    for (i = 0; i < nummtypes; i++)
+    {
+        mtype = Monsters[i].mtype;
+        for (j = 0; j < 4; ++j)
+        {
+            for (k = 0; k < 2; ++k)
+            {
+                pSnd = Monsters[i].Snds[j][k];
+                if (pSnd)
+                {
+                    Monsters[i].Snds[j][k] = NULL;
+                    file = pSnd->sound_path;
+                    pSnd->sound_path = NULL;
+                    sound_file_cleanup(pSnd);
 
-					// pSnd->sound_path is malloc'd (but only for monsters).
-					mem_free_dbg(const_cast<char *>(file));
-				}
-			}
-		}
-	}
+                    // pSnd->sound_path is malloc'd (but only for monsters).
+                    mem_free_dbg(const_cast<char*>(file));
+                }
+            }
+        }
+    }
 }
 
-static BOOL calc_snd_position(int x, int y, int *plVolume, int *plPan)
+static BOOL calc_snd_position(int x, int y, int* plVolume, int* plPan)
 {
-	int pan, volume;
+    int pan, volume;
 
-	x -= plr[myplr]._px;
-	y -= plr[myplr]._py;
+    x -= plr[myplr]._px;
+    y -= plr[myplr]._py;
 
-	pan = (x - y) * 256;
-	*plPan = pan;
+    pan = (x - y) * 256;
+    *plPan = pan;
 
-	if (abs(pan) > 6400)
-		return FALSE;
+    if (abs(pan) > 6400)
+        return FALSE;
 
-	volume = abs(x) > abs(y) ? abs(x) : abs(y);
-	volume *= 64;
-	*plVolume = volume;
+    volume = abs(x) > abs(y) ? abs(x) : abs(y);
+    volume *= 64;
+    *plVolume = volume;
 
-	if (volume >= 6400)
-		return FALSE;
+    if (volume >= 6400)
+        return FALSE;
 
-	*plVolume = -volume;
+    *plVolume = -volume;
 
-	return TRUE;
+    return TRUE;
 }
 
-static void PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
+static void PlaySFX_priv(TSFX* pSFX, BOOL loc, int x, int y)
 {
-	int lPan, lVolume;
+    int lPan, lVolume;
 
-	if (plr[myplr].pLvlLoad && gbMaxPlayers != 1) {
-		return;
-	}
-	if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
-		return;
-	}
+    if (plr[myplr].pLvlLoad && gbMaxPlayers != 1)
+    {
+        return;
+    }
+    if (!gbSndInited || !gbSoundOn || gbBufferMsgs)
+    {
+        return;
+    }
 
-	if (!(pSFX->bFlags & (sfx_STREAM | sfx_MISC)) && pSFX->pSnd != 0 && snd_playing(pSFX->pSnd)) {
-		return;
-	}
+    if (!(pSFX->bFlags & (sfx_STREAM | sfx_MISC)) && pSFX->pSnd != 0 && snd_playing(pSFX->pSnd))
+    {
+        return;
+    }
 
-	lPan = 0;
-	lVolume = 0;
-	if (loc && !calc_snd_position(x, y, &lVolume, &lPan)) {
-		return;
-	}
+    lPan = 0;
+    lVolume = 0;
+    if (loc && !calc_snd_position(x, y, &lVolume, &lPan))
+    {
+        return;
+    }
 
-	if (pSFX->bFlags & sfx_STREAM) {
-		stream_play(pSFX, lVolume, lPan);
-		return;
-	}
+    if (pSFX->bFlags & sfx_STREAM)
+    {
+        stream_play(pSFX, lVolume, lPan);
+        return;
+    }
 
-	if (!pSFX->pSnd)
-		pSFX->pSnd = sound_file_load(pSFX->pszName);
+    if (!pSFX->pSnd)
+        pSFX->pSnd = sound_file_load(pSFX->pszName);
 
-	if (pSFX->pSnd)
-		snd_play_snd(pSFX->pSnd, lVolume, lPan);
+    if (pSFX->pSnd)
+        snd_play_snd(pSFX->pSnd, lVolume, lPan);
 }
 
 void PlayEffect(int i, int mode)
 {
-	int sndIdx, mi, lVolume, lPan;
-	TSnd *snd;
+    int sndIdx, mi, lVolume, lPan;
+    TSnd* snd;
 
-	if (plr[myplr].pLvlLoad) {
-		return;
-	}
+    if (plr[myplr].pLvlLoad)
+    {
+        return;
+    }
 
-	sndIdx = random_(164, 2);
-	if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
-		return;
-	}
+    sndIdx = random_(164, 2);
+    if (!gbSndInited || !gbSoundOn || gbBufferMsgs)
+    {
+        return;
+    }
 
-	mi = monster[i]._mMTidx;
-	snd = Monsters[mi].Snds[mode][sndIdx];
-	if (!snd || snd_playing(snd)) {
-		return;
-	}
+    mi = monster[i]._mMTidx;
+    snd = Monsters[mi].Snds[mode][sndIdx];
+    if (!snd || snd_playing(snd))
+    {
+        return;
+    }
 
-	if (!calc_snd_position(monster[i]._mx, monster[i]._my, &lVolume, &lPan))
-		return;
+    if (!calc_snd_position(monster[i]._mx, monster[i]._my, &lVolume, &lPan))
+        return;
 
-	snd_play_snd(snd, lVolume, lPan);
+    snd_play_snd(snd, lVolume, lPan);
 }
 
 static int RndSFX(int psfx)
 {
-	int nRand;
+    int nRand;
 
-	if (psfx == PS_WARR69)
-		nRand = 2;
-	else if (psfx == PS_WARR14)
-		nRand = 3;
-	else if (psfx == PS_WARR15)
-		nRand = 3;
-	else if (psfx == PS_WARR16)
-		nRand = 3;
+    if (psfx == PS_WARR69)
+        nRand = 2;
+    else if (psfx == PS_WARR14)
+        nRand = 3;
+    else if (psfx == PS_WARR15)
+        nRand = 3;
+    else if (psfx == PS_WARR16)
+        nRand = 3;
 #ifndef SPAWN
-	else if (psfx == PS_MAGE69)
-		nRand = 2;
-	else if (psfx == PS_ROGUE69)
-		nRand = 2;
+    else if (psfx == PS_MAGE69)
+        nRand = 2;
+    else if (psfx == PS_ROGUE69)
+        nRand = 2;
 #endif
 #ifdef HELLFIRE
-	else if (psfx == PS_MONK69)
-		nRand = 2;
+    else if (psfx == PS_MONK69)
+        nRand = 2;
 #endif
-	else if (psfx == PS_SWING)
-		nRand = 2;
-	else if (psfx == LS_ACID)
-		nRand = 2;
-	else if (psfx == IS_FMAG)
-		nRand = 2;
-	else if (psfx == IS_MAGIC)
-		nRand = 2;
-	else if (psfx == IS_BHIT)
-		nRand = 2;
+    else if (psfx == PS_SWING)
+        nRand = 2;
+    else if (psfx == LS_ACID)
+        nRand = 2;
+    else if (psfx == IS_FMAG)
+        nRand = 2;
+    else if (psfx == IS_MAGIC)
+        nRand = 2;
+    else if (psfx == IS_BHIT)
+        nRand = 2;
 #ifndef SPAWN
-	else if (psfx == PS_WARR2)
-		nRand = 3;
+    else if (psfx == PS_WARR2)
+        nRand = 3;
 #endif
-	else
-		return psfx;
-	return psfx + random_(165, nRand);
+    else
+        return psfx;
+    return psfx + random_(165, nRand);
 }
 
 void PlaySFX(int psfx)
 {
-	psfx = RndSFX(psfx);
-	PlaySFX_priv(&sgSFX[psfx], FALSE, 0, 0);
+    psfx = RndSFX(psfx);
+    PlaySFX_priv(&sgSFX[psfx], FALSE, 0, 0);
 }
 
 void PlaySfxLoc(int psfx, int x, int y)
 {
-	TSnd *pSnd;
+    TSnd* pSnd;
 
-	psfx = RndSFX(psfx);
+    psfx = RndSFX(psfx);
 
-	if (psfx >= 0 && psfx <= 3) {
-		pSnd = sgSFX[psfx].pSnd;
-		if (pSnd)
-			pSnd->start_tc = 0;
-	}
+    if (psfx >= 0 && psfx <= 3)
+    {
+        pSnd = sgSFX[psfx].pSnd;
+        if (pSnd)
+            pSnd->start_tc = 0;
+    }
 
-	PlaySFX_priv(&sgSFX[psfx], TRUE, x, y);
+    PlaySFX_priv(&sgSFX[psfx], TRUE, x, y);
 }
 
 void sound_stop()
 {
-	int i, j, k;
+    int i, j, k;
 
-	snd_update(TRUE);
-	stream_stop();
-	sfx_stop();
+    snd_update(TRUE);
+    stream_stop();
+    sfx_stop();
 
-	for (i = 0; i < nummtypes; i++) {
-		for (j = 0; j < 4; j++) {
-			for (k = 0; k < 2; k++) {
-				snd_stop_snd(Monsters[i].Snds[j][k]);
-			}
-		}
-	}
+    for (i = 0; i < nummtypes; i++)
+    {
+        for (j = 0; j < 4; j++)
+        {
+            for (k = 0; k < 2; k++)
+            {
+                snd_stop_snd(Monsters[i].Snds[j][k]);
+            }
+        }
+    }
 }
 
 void sound_update()
 {
-	if (!gbSndInited) {
-		return;
-	}
+    if (!gbSndInited)
+    {
+        return;
+    }
 
-	snd_update(FALSE);
-	stream_update();
+    snd_update(FALSE);
+    stream_update();
 }
 
 void effects_cleanup_sfx()
 {
-	DWORD i;
+    DWORD i;
 
-	sound_stop();
+    sound_stop();
 
-	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
-		if (sgSFX[i].pSnd) {
-			sound_file_cleanup(sgSFX[i].pSnd);
-			sgSFX[i].pSnd = NULL;
-		}
-	}
+    for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++)
+    {
+        if (sgSFX[i].pSnd)
+        {
+            sound_file_cleanup(sgSFX[i].pSnd);
+            sgSFX[i].pSnd = NULL;
+        }
+    }
 }
 
 static void priv_sound_init(BYTE bLoadMask)
 {
-	BYTE pc;
-	DWORD i;
+    BYTE pc;
+    DWORD i;
 
-	if (!gbSndInited) {
-		return;
-	}
+    if (!gbSndInited)
+    {
+        return;
+    }
 
-	pc = bLoadMask & PLRSFXS;
-	bLoadMask ^= pc;
+    pc = bLoadMask & PLRSFXS;
+    bLoadMask ^= pc;
 
-	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
-		if (sgSFX[i].pSnd) {
-			continue;
-		}
+    for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++)
+    {
+        if (sgSFX[i].pSnd)
+        {
+            continue;
+        }
 
-		if (sgSFX[i].bFlags & sfx_STREAM) {
-			continue;
-		}
+        if (sgSFX[i].bFlags & sfx_STREAM)
+        {
+            continue;
+        }
 
-		if (bLoadMask && !(sgSFX[i].bFlags & bLoadMask)) {
-			continue;
-		}
+        if (bLoadMask && !(sgSFX[i].bFlags & bLoadMask))
+        {
+            continue;
+        }
 
-		if (sgSFX[i].bFlags & PLRSFXS && !(sgSFX[i].bFlags & pc)) {
-			continue;
-		}
+        if (sgSFX[i].bFlags & PLRSFXS && !(sgSFX[i].bFlags & pc))
+        {
+            continue;
+        }
 
-		sgSFX[i].pSnd = sound_file_load(sgSFX[i].pszName);
-	}
+        sgSFX[i].pSnd = sound_file_load(sgSFX[i].pszName);
+    }
 }
 
 void sound_init()
 {
-	BYTE mask = 0;
-	if (gbMaxPlayers > 1) {
-		mask = PLRSFXS;
-	} else if (plr[myplr]._pClass == PC_WARRIOR) {
-		mask = sfx_WARRIOR;
-	} else if (plr[myplr]._pClass == PC_ROGUE) {
-		mask = sfx_ROGUE;
-	} else if (plr[myplr]._pClass == PC_SORCERER) {
-		mask = sfx_SORCEROR;
+    BYTE mask = 0;
+    if (gbMaxPlayers > 1)
+    {
+        mask = PLRSFXS;
+    }
+    else if (plr[myplr]._pClass == PC_WARRIOR)
+    {
+        mask = sfx_WARRIOR;
+    }
+    else if (plr[myplr]._pClass == PC_ROGUE)
+    {
+        mask = sfx_ROGUE;
+    }
+    else if (plr[myplr]._pClass == PC_SORCERER)
+    {
+        mask = sfx_SORCEROR;
 #ifdef HELLFIRE
-	} else if (plr[myplr]._pClass == PC_MONK) {
-		mask = sfx_MONK;
-	} else if (plr[myplr]._pClass == PC_BARD) {
-		mask = sfx_ROGUE;
-	} else if (plr[myplr]._pClass == PC_BARBARIAN) {
-		mask = sfx_WARRIOR;
+    }
+    else if (plr[myplr]._pClass == PC_MONK)
+    {
+        mask = sfx_MONK;
+    }
+    else if (plr[myplr]._pClass == PC_BARD)
+    {
+        mask = sfx_ROGUE;
+    }
+    else if (plr[myplr]._pClass == PC_BARBARIAN)
+    {
+        mask = sfx_WARRIOR;
 #endif
-	} else {
-		app_fatal("effects:1");
-	}
+    }
+    else
+    {
+        app_fatal("effects:1");
+    }
 
-	priv_sound_init(mask);
+    priv_sound_init(mask);
 }
 
 void ui_sound_init()
 {
-	priv_sound_init(sfx_UI);
+    priv_sound_init(sfx_UI);
 }
 
-void __stdcall effects_play_sound(const char *snd_file)
+void __stdcall effects_play_sound(const char* snd_file)
 {
-	DWORD i;
+    DWORD i;
 
-	if (!gbSndInited || !gbSoundOn) {
-		return;
-	}
+    if (!gbSndInited || !gbSoundOn)
+    {
+        return;
+    }
 
-	for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++) {
-		if (!_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd) {
-			if (!snd_playing(sgSFX[i].pSnd))
-				snd_play_snd(sgSFX[i].pSnd, 0, 0);
+    for (i = 0; i < sizeof(sgSFX) / sizeof(TSFX); i++)
+    {
+        if (!_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd)
+        {
+            if (!snd_playing(sgSFX[i].pSnd))
+                snd_play_snd(sgSFX[i].pSnd, 0, 0);
 
-			return;
-		}
-	}
+            return;
+        }
+    }
 }

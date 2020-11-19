@@ -11,7 +11,7 @@ extern TownerStruct towner[NUM_TOWNERS];
 void InitTowners();
 void FreeTownerGFX();
 void ProcessTowners();
-ItemStruct *PlrHasItem(int pnum, int item, int &i);
+ItemStruct* PlrHasItem(int pnum, int item, int& i);
 void TalkToTowner(int p, int t);
 
 /* data */

@@ -17,7 +17,7 @@ void DeltaExportData(int pnum);
 void delta_init();
 void delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel);
 void delta_monster_hp(int mi, int hp, BYTE bLevel);
-void delta_sync_monster(const TSyncMonster *pSync, BYTE bLevel);
+void delta_sync_monster(const TSyncMonster* pSync, BYTE bLevel);
 BOOL delta_portal_inited(int i);
 BOOL delta_quest_inited(int i);
 void DeltaAddItem(int ii);
@@ -42,8 +42,8 @@ void NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam);
 #ifdef HELLFIRE
 void NetSendCmdMonDmg(BOOL bHiPri, WORD bMon, DWORD dwDam);
 #endif
-void NetSendCmdString(int pmask, const char *pszStr);
+void NetSendCmdString(int pmask, const char* pszStr);
 void delta_close_portal(int pnum);
-DWORD ParseCmd(int pnum, TCmd *pCmd);
+DWORD ParseCmd(int pnum, TCmd* pCmd);
 
 #endif /* __MSG_H__ */

@@ -12,7 +12,7 @@ extern MissileStruct missile[MAXMISSILES];
 extern int nummissiles;
 extern BOOL MissilePreFlag;
 
-void GetDamageAmt(int i, int *mind, int *maxd);
+void GetDamageAmt(int i, int* mind, int* maxd);
 int GetSpellLevel(int id, int sn);
 void DeleteMissile(int mi, int i);
 BOOL MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, BOOLEAN shift);

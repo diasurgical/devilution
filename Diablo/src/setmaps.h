@@ -10,6 +10,6 @@ int ObjIndex(int x, int y);
 void LoadSetMap();
 
 /* rdata */
-extern const char *const quest_level_names[];
+extern const char* const quest_level_names[];
 
 #endif /* __SETMAPS_H__ */

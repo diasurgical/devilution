@@ -1,6 +1,6 @@
-__declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
+__declspec(naked) void drawTopArchesUpperScreen(BYTE* pBuff)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edx
 		push	edi
@@ -741,7 +741,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edx, esi
 		and		edx, 2
 		add		esi, edx
-	// loc_4637C0:
+            // loc_4637C0:
 		sub		edi, 320h
 		add		edi, ebp
 		sub		ebp, 2
@@ -876,7 +876,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edx, esi
 		and		edx, 2
 		add		esi, edx
-	// loc_4638F1:
+            // loc_4638F1:
 		sub		edi, 320h
 		add		edi, ebp
 		add		ebp, 2
@@ -1198,7 +1198,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edx, esi
 		and		edx, 2
 		add		esi, edx
-	// loc_463BDB:
+            // loc_463BDB:
 		sub		edi, 320h
 		add		edi, ebp
 		sub		ebp, 2
@@ -2300,12 +2300,12 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		pop		edx
 		pop		ebx
 		retn
-	}
+    }
 }
 
-__declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
+__declspec(naked) void drawBottomArchesUpperScreen(BYTE* pBuff, DWORD* pMask)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edi
 		push	esi
@@ -3457,12 +3457,12 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		pop		edi
 		pop		ebx
 		retn
-	}
+    }
 }
 
-__declspec(naked) void drawUpperScreen(BYTE *pBuff)
+__declspec(naked) void drawUpperScreen(BYTE* pBuff)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edx
 		push	edi
@@ -4643,12 +4643,12 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		pop		edx
 		pop		ebx
 		retn
-	}
+    }
 }
 
-__declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
+__declspec(naked) void drawTopArchesLowerScreen(BYTE* pBuff)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edx
 		push	edi
@@ -5465,7 +5465,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		edx, esi
 		and		edx, 2
 		add		esi, edx
-	// loc_466780:
+            // loc_466780:
 		sub		edi, 320h
 		add		edi, ebp
 		sub		ebp, 2
@@ -5623,7 +5623,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		edx, esi
 		and		edx, 2
 		add		esi, edx
-	// loc_4668F8:
+            // loc_4668F8:
 		sub		edi, 320h
 		add		edi, ebp
 		add		ebp, 2
@@ -5999,7 +5999,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		edx, esi
 		and		edx, 2
 		add		esi, edx
-	// loc_466C80:
+            // loc_466C80:
 		sub		edi, 320h
 		add		edi, ebp
 		sub		ebp, 2
@@ -6289,7 +6289,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		sub		edi, 320h
 		sub		edx, 2
 		jge		loc_466EC1
-	// loc_466F3F:
+            // loc_466F3F:
 		mov		edx, 2
 		mov		eax, edi
 		sub		eax, gpBufEnd
@@ -6630,7 +6630,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		sub		edi, 320h
 		sub		edx, 2
 		jge		loc_467240
-	// loc_4672BE:
+            // loc_4672BE:
 		mov		edx, 8
 	loc_4672C3:
 		cmp		edi, gpBufEnd
@@ -7347,12 +7347,12 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		pop		edx
 		pop		ebx
 		retn
-	}
+    }
 }
 
-__declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
+__declspec(naked) void drawBottomArchesLowerScreen(BYTE* pBuff, DWORD* pMask)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edi
 		push	esi
@@ -8812,12 +8812,12 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		pop		edi
 		pop		ebx
 		retn
-	}
+    }
 }
 
-__declspec(naked) void drawLowerScreen(BYTE *pBuff)
+__declspec(naked) void drawLowerScreen(BYTE* pBuff)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edx
 		push	edi
@@ -10196,12 +10196,12 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		pop		edx
 		pop		ebx
 		retn
-	}
+    }
 }
 
-__declspec(naked) void world_draw_black_tile(BYTE *pBuff)
+__declspec(naked) void world_draw_black_tile(BYTE* pBuff)
 {
-	__asm {
+    __asm {
 		push	ebx
 		push	edx
 		push	edi
@@ -10247,5 +10247,5 @@ __declspec(naked) void world_draw_black_tile(BYTE *pBuff)
 		pop		edx
 		pop		ebx
 		retn
-	}
+    }
 }

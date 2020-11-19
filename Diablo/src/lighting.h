@@ -16,7 +16,7 @@ extern int numvision;
 extern char lightmax;
 extern BOOL dolighting;
 extern int visionid;
-extern BYTE *pLightTbl;
+extern BYTE* pLightTbl;
 extern BOOL lightflag;
 
 void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum);
