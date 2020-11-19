@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\all.h" />
+    <ClInclude Include="..\..\src\appfat.h" />
+    <ClInclude Include="..\..\src\automap.h" />
+    <ClInclude Include="..\..\src\capture.h" />
+    <ClInclude Include="..\..\src\codec.h" />
+    <ClInclude Include="..\..\src\control.h" />
+    <ClInclude Include="..\..\src\cursor.h" />
+    <ClInclude Include="..\..\src\dead.h" />
+    <ClInclude Include="..\..\src\debug.h" />
+    <ClInclude Include="..\..\src\diablo.h" />
+    <ClInclude Include="..\..\src\doom.h" />
+    <ClInclude Include="..\..\src\drlg_l1.h" />
+    <ClInclude Include="..\..\src\drlg_l2.h" />
+    <ClInclude Include="..\..\src\drlg_l3.h" />
+    <ClInclude Include="..\..\src\drlg_l4.h" />
+    <ClInclude Include="..\..\src\dthread.h" />
+    <ClInclude Include="..\..\src\dx.h" />
+    <ClInclude Include="..\..\src\effects.h" />
+    <ClInclude Include="..\..\src\encrypt.h" />
+    <ClInclude Include="..\..\src\engine.h" />
+    <ClInclude Include="..\..\src\error.h" />
+    <ClInclude Include="..\..\src\fault.h" />
+    <ClInclude Include="..\..\src\gamemenu.h" />
+    <ClInclude Include="..\..\src\gendung.h" />
+    <ClInclude Include="..\..\src\gmenu.h" />
+    <ClInclude Include="..\..\src\help.h" />
+    <ClInclude Include="..\..\src\init.h" />
+    <ClInclude Include="..\..\src\interfac.h" />
+    <ClInclude Include="..\..\src\inv.h" />
+    <ClInclude Include="..\..\src\itemdat.h" />
+    <ClInclude Include="..\..\src\items.h" />
+    <ClInclude Include="..\..\src\lighting.h" />
+    <ClInclude Include="..\..\src\list.h" />
+    <ClInclude Include="..\..\src\loadsave.h" />
+    <ClInclude Include="..\..\src\logging.h" />
+    <ClInclude Include="..\..\src\mainmenu.h" />
+    <ClInclude Include="..\..\src\minitext.h" />
+    <ClInclude Include="..\..\src\misdat.h" />
+    <ClInclude Include="..\..\src\missiles.h" />
+    <ClInclude Include="..\..\src\monstdat.h" />
+    <ClInclude Include="..\..\src\monster.h" />
+    <ClInclude Include="..\..\src\movie.h" />
+    <ClInclude Include="..\..\src\mpqapi.h" />
+    <ClInclude Include="..\..\src\msg.h" />
+    <ClInclude Include="..\..\src\msgcmd.h" />
+    <ClInclude Include="..\..\src\multi.h" />
+    <ClInclude Include="..\..\src\nthread.h" />
+    <ClInclude Include="..\..\src\objdat.h" />
+    <ClInclude Include="..\..\src\objects.h" />
+    <ClInclude Include="..\..\src\pack.h" />
+    <ClInclude Include="..\..\src\palette.h" />
+    <ClInclude Include="..\..\src\path.h" />
+    <ClInclude Include="..\..\src\pfile.h" />
+    <ClInclude Include="..\..\src\player.h" />
+    <ClInclude Include="..\..\src\plrmsg.h" />
+    <ClInclude Include="..\..\src\portal.h" />
+    <ClInclude Include="..\..\src\quests.h" />
+    <ClInclude Include="..\..\src\render.h" />
+    <ClInclude Include="..\..\src\restrict.h" />
+    <ClInclude Include="..\..\src\res\resource.h" />
+    <ClInclude Include="..\..\src\scrollrt.h" />
+    <ClInclude Include="..\..\src\setmaps.h" />
+    <ClInclude Include="..\..\src\sha.h" />
+    <ClInclude Include="..\..\src\sound.h" />
+    <ClInclude Include="..\..\src\spelldat.h" />
+    <ClInclude Include="..\..\src\spells.h" />
+    <ClInclude Include="..\..\src\stores.h" />
+    <ClInclude Include="..\..\src\sync.h" />
+    <ClInclude Include="..\..\src\textdat.h" />
+    <ClInclude Include="..\..\src\themes.h" />
+    <ClInclude Include="..\..\src\tmsg.h" />
+    <ClInclude Include="..\..\src\town.h" />
+    <ClInclude Include="..\..\src\towners.h" />
+    <ClInclude Include="..\..\src\track.h" />
+    <ClInclude Include="..\..\src\trigs.h" />
+    <ClInclude Include="..\..\src\types.h" />
+    <ClInclude Include="..\..\src\wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\appfat.cpp" />
+    <ClCompile Include="..\..\src\automap.cpp" />
+    <ClCompile Include="..\..\src\capture.cpp" />
+    <ClCompile Include="..\..\src\codec.cpp" />
+    <ClCompile Include="..\..\src\control.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cursor.cpp" />
+    <ClCompile Include="..\..\src\dead.cpp" />
+    <ClCompile Include="..\..\src\debug.cpp" />
+    <ClCompile Include="..\..\src\diablo.cpp" />
+    <ClCompile Include="..\..\src\doom.cpp" />
+    <ClCompile Include="..\..\src\drlg_l1.cpp" />
+    <ClCompile Include="..\..\src\drlg_l2.cpp" />
+    <ClCompile Include="..\..\src\drlg_l3.cpp" />
+    <ClCompile Include="..\..\src\drlg_l4.cpp" />
+    <ClCompile Include="..\..\src\dthread.cpp" />
+    <ClCompile Include="..\..\src\dx.cpp" />
+    <ClCompile Include="..\..\src\effects.cpp" />
+    <ClCompile Include="..\..\src\encrypt.cpp" />
+    <ClCompile Include="..\..\src\engine.cpp" />
+    <ClCompile Include="..\..\src\error.cpp" />
+    <ClCompile Include="..\..\src\fault.cpp" />
+    <ClCompile Include="..\..\src\gamemenu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gendung.cpp" />
+    <ClCompile Include="..\..\src\gmenu.cpp" />
+    <ClCompile Include="..\..\src\help.cpp" />
+    <ClCompile Include="..\..\src\init.cpp" />
+    <ClCompile Include="..\..\src\interfac.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\inv.cpp" />
+    <ClCompile Include="..\..\src\itemdat.cpp" />
+    <ClCompile Include="..\..\src\items.cpp" />
+    <ClCompile Include="..\..\src\lighting.cpp" />
+    <ClCompile Include="..\..\src\loadsave.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\logging.cpp" />
+    <ClCompile Include="..\..\src\mainmenu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\minitext.cpp" />
+    <ClCompile Include="..\..\src\misdat.cpp" />
+    <ClCompile Include="..\..\src\missiles.cpp" />
+    <ClCompile Include="..\..\src\monstdat.cpp" />
+    <ClCompile Include="..\..\src\monster.cpp" />
+    <ClCompile Include="..\..\src\movie.cpp" />
+    <ClCompile Include="..\..\src\mpqapi.cpp" />
+    <ClCompile Include="..\..\src\msg.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\msgcmd.cpp" />
+    <ClCompile Include="..\..\src\multi.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\nthread.cpp" />
+    <ClCompile Include="..\..\src\objdat.cpp" />
+    <ClCompile Include="..\..\src\objects.cpp" />
+    <ClCompile Include="..\..\src\pack.cpp" />
+    <ClCompile Include="..\..\src\palette.cpp" />
+    <ClCompile Include="..\..\src\path.cpp" />
+    <ClCompile Include="..\..\src\pfile.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\player.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\plrmsg.cpp" />
+    <ClCompile Include="..\..\src\portal.cpp" />
+    <ClCompile Include="..\..\src\quests.cpp" />
+    <ClCompile Include="..\..\src\render.cpp" />
+    <ClCompile Include="..\..\src\restrict.cpp" />
+    <ClCompile Include="..\..\src\scrollrt.cpp" />
+    <ClCompile Include="..\..\src\setmaps.cpp" />
+    <ClCompile Include="..\..\src\sha.cpp" />
+    <ClCompile Include="..\..\src\sound.cpp" />
+    <ClCompile Include="..\..\src\spelldat.cpp" />
+    <ClCompile Include="..\..\src\spells.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\src\stores.cpp" />
+    <ClCompile Include="..\..\src\sync.cpp" />
+    <ClCompile Include="..\..\src\textdat.cpp" />
+    <ClCompile Include="..\..\src\themes.cpp" />
+    <ClCompile Include="..\..\src\tmsg.cpp" />
+    <ClCompile Include="..\..\src\town.cpp" />
+    <ClCompile Include="..\..\src\towners.cpp" />
+    <ClCompile Include="..\..\src\track.cpp" />
+    <ClCompile Include="..\..\src\trigs.cpp" />
+    <ClCompile Include="..\..\src\wave.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\src\res\Diablo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\src\res\Diablo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DiabloUI\build\vs2019\DiabloUI.vcxproj">
+      <Project>{86f1f9a4-b3a4-4e8e-b9f0-4c4f57c4c7f9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ThirdParty\libpk\build\vs2019\pk.vcxproj">
+      <Project>{aa15215b-1905-4762-82a2-d4a19c747faf}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ThirdParty\libstorm\build\vs2019\storm.vcxproj">
+      <Project>{e2997b72-530d-4f2f-811a-f3d28ff33fd5}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{1ead1600-2478-422c-a6f5-9e612169e0e7}</ProjectGuid>
+    <RootNamespace>Diablo</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)intermediate\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\bin\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)intermediate\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>RGBMODE;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\ThirdParty\libstorm\include;$(ProjectDir)..\..\..\ThirdParty\libpk\include;$(ProjectDir)..\..\..\DiabloUI\include;$(ProjectDir)..\..\..\Shared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>RGBMODE;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\ThirdParty\libstorm\include;$(ProjectDir)..\..\..\ThirdParty\libpk\include;$(ProjectDir)..\..\..\DiabloUI\include;$(ProjectDir)..\..\..\Shared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>RGBMODE;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\ThirdParty\libstorm\include;$(ProjectDir)..\..\..\ThirdParty\libpk\include;$(ProjectDir)..\..\..\DiabloUI\include;$(ProjectDir)..\..\..\Shared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>RGBMODE;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\ThirdParty\libstorm\include;$(ProjectDir)..\..\..\ThirdParty\libpk\include;$(ProjectDir)..\..\..\DiabloUI\include;$(ProjectDir)..\..\..\Shared\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

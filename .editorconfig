@@ -1,11 +1,17 @@
+##################################################################
+# For more info on EditorConfig check out https://EditorConfig.org
+##################################################################
+
 root = true
 
-[*]
-indent_style = tab
-end_of_line = crlf
-charset = utf-8
+# Code files
+[*.{c,cc,cpp,h,hh,hpp, cs}]
 trim_trailing_whitespace = true
-insert_final_newline = true
+indent_style = space
+indent_size = 4
+charset = utf-8
+tab_width = 4
 
-[*.sh]
-end_of_line = lf
+# C/C++ Standard requires an empty line at the end of header files
+[*.{h,hh,hpp}]
+insert_final_newline = true

@@ -1,9 +1,59 @@
-BasedOnStyle: webkit
-AlignTrailingComments: true
-AllowShortBlocksOnASingleLine: true
-AllowShortFunctionsOnASingleLine: None
-PointerAlignment: Right
-AlignConsecutiveAssignments: true
-TabWidth: 4
-UseTab: ForIndentation
+# Full manual is at https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+---
+BasedOnStyle: Microsoft
+
+IndentWidth:     4
+UseTab:          Never
+
 SortIncludes: false
+
+IndentCaseLabels: true
+AccessModifierOffset: -4
+
+NamespaceIndentation: All
+
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+BreakConstructorInitializersBeforeComma: true
+BreakConstructorInitializers: BeforeColon
+
+BinPackParameters: false
+BinPackArguments: true
+
+# This applies to () [] <>
+AlignAfterOpenBracket: AlwaysBreak
+
+BraceWrapping:
+  AfterClass:      true
+  AfterControlStatement: true
+  AfterEnum:       true
+  AfterFunction:   true
+  AfterNamespace:  true
+  AfterObjCDeclaration: false
+  AfterStruct:     true
+  AfterUnion:      true
+  BeforeCatch:     true
+  BeforeElse:      true
+  IndentBraces:    false
+BreakBeforeBinaryOperators: None
+BreakBeforeBraces: Custom
+
+# Template delcaration is on it's own line
+AlwaysBreakTemplateDeclarations: true
+
+# Arguable but IMHO pointer is part of the type
+PointerAlignment: Left
+
+SpaceAfterTemplateKeyword: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles:  false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
