@@ -56,7 +56,7 @@ void play_movie(const char *pszMovie, BOOL user_can_close)
 }
 
 /**
- * @brief Input handeler for use during vidoe playback.
+ * @brief Input handler for use during video playback.
  * @see WNDPROC
  */
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
