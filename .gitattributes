@@ -1,0 +1,37 @@
+# Default behavior is always what git thinks is the correct line ending for the platform being used.
+* text=auto
+
+# Always normalize code to native line endings on checkout.
+*.asm     text
+*.inc     text
+
+*.c       text
+*.cc      text
+*.cpp     text
+
+*.h       text
+*.hh      text
+*.hpp     text
+
+*.cs      text diff=csharp
+*.xaml    text
+*.tt      text
+*.ps1     text
+*.cmd     text
+*.msbuild text
+*.md      text
+
+# Visual Studio generated files always have CRLF line endings on checkout.
+*.sln     text eol=crlf
+*.csproj  text eol=crlf
+*.vcxproj text eol=crlf
+*.filters text eol=crlf
+
+# Files that we know for sure are binary and should not be modified.
+*.png binary
+*.jpg binary
+*.bmp binary
+*.tga binary
+*.ico binary
+*.cur binary
+*.sdf binary

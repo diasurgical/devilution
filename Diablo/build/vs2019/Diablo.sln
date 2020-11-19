@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Diablo", "Diablo.vcxproj", "{1EAD1600-2478-422C-A6F5-9E612169E0E7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pk", "..\..\..\ThirdParty\libpk\build\vs2019\pk.vcxproj", "{AA15215B-1905-4762-82A2-D4A19C747FAF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "storm", "..\..\..\ThirdParty\libstorm\build\vs2019\storm.vcxproj", "{E2997B72-530D-4F2F-811A-F3D28FF33FD5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DiabloUI", "..\..\..\DiabloUI\build\vs2019\DiabloUI.vcxproj", "{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{EE1BBFE9-682E-4A02-8E36-9E86ECB0EA26}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Debug|x64.ActiveCfg = Debug|x64
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Debug|x64.Build.0 = Debug|x64
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Debug|x86.ActiveCfg = Debug|Win32
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Debug|x86.Build.0 = Debug|Win32
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Release|x64.ActiveCfg = Release|x64
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Release|x64.Build.0 = Release|x64
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Release|x86.ActiveCfg = Release|Win32
+		{1EAD1600-2478-422C-A6F5-9E612169E0E7}.Release|x86.Build.0 = Release|Win32
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Debug|x64.ActiveCfg = Debug|x64
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Debug|x64.Build.0 = Debug|x64
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Debug|x86.ActiveCfg = Debug|Win32
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Debug|x86.Build.0 = Debug|Win32
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Release|x64.ActiveCfg = Release|x64
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Release|x64.Build.0 = Release|x64
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Release|x86.ActiveCfg = Release|Win32
+		{AA15215B-1905-4762-82A2-D4A19C747FAF}.Release|x86.Build.0 = Release|Win32
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Debug|x64.ActiveCfg = Debug|x64
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Debug|x64.Build.0 = Debug|x64
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Debug|x86.ActiveCfg = Debug|Win32
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Debug|x86.Build.0 = Debug|Win32
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Release|x64.ActiveCfg = Release|x64
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Release|x64.Build.0 = Release|x64
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Release|x86.ActiveCfg = Release|Win32
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5}.Release|x86.Build.0 = Release|Win32
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Debug|x64.ActiveCfg = Debug|x64
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Debug|x64.Build.0 = Debug|x64
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Debug|x86.ActiveCfg = Debug|Win32
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Debug|x86.Build.0 = Debug|Win32
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Release|x64.ActiveCfg = Release|x64
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Release|x64.Build.0 = Release|x64
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Release|x86.ActiveCfg = Release|Win32
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA15215B-1905-4762-82A2-D4A19C747FAF} = {EE1BBFE9-682E-4A02-8E36-9E86ECB0EA26}
+		{E2997B72-530D-4F2F-811A-F3D28FF33FD5} = {EE1BBFE9-682E-4A02-8E36-9E86ECB0EA26}
+		{86F1F9A4-B3A4-4E8E-B9F0-4C4F57C4C7F9} = {EE1BBFE9-682E-4A02-8E36-9E86ECB0EA26}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B9B52E5-CA00-450E-A7CE-281B361395F5}
+	EndGlobalSection
+EndGlobal
