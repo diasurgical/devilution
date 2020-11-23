@@ -3064,7 +3064,7 @@ void OperateBook(int pnum, int i)
 		return;
 
 	if (setlvlnum == SL_BONECHAMB) {
-		plr[myplr]._pMemSpells |= SPELLBITS(SPL_GUARDIAN);
+		plr[myplr]._pMemSpells |= SPELLBIT(SPL_GUARDIAN);
 		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < MAX_SPELL_LEVEL)
 			plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
 		quests[Q_SCHAMB]._qactive = QUEST_DONE;
@@ -3758,7 +3758,7 @@ void OperateShrine(int pnum, int i, int sType)
 			}
 			do {
 				r = random_(0, MAX_SPELLS);
-			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << r)));
+			} while (!(plr[pnum]._pMemSpells & SPELLBIT(r + 1)));
 			if (plr[pnum]._pSplLvl[r] >= 2)
 				plr[pnum]._pSplLvl[r] -= 2;
 			else
@@ -3789,7 +3789,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= SPELLBITS(SPL_FIREBOLT);
+		plr[pnum]._pMemSpells |= SPELLBIT(SPL_FIREBOLT);
 		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
 		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < MAX_SPELL_LEVEL)
@@ -3922,7 +3922,7 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_SACRED:
 		if (deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= SPELLBITS(SPL_CBOLT);
+		plr[pnum]._pMemSpells |= SPELLBIT(SPL_CBOLT);
 		if (plr[pnum]._pSplLvl[SPL_CBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
 		if (plr[pnum]._pSplLvl[SPL_CBOLT] < MAX_SPELL_LEVEL)
@@ -4025,7 +4025,7 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= SPELLBITS(SPL_HBOLT);
+		plr[pnum]._pMemSpells |= SPELLBIT(SPL_HBOLT);
 		if (plr[pnum]._pSplLvl[SPL_HBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
 		if (plr[pnum]._pSplLvl[SPL_HBOLT] < MAX_SPELL_LEVEL)

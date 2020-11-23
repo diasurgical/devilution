@@ -819,17 +819,17 @@ void CreatePlayer(int pnum, char c)
 	plr[pnum]._pInfraFlag = FALSE;
 
 	if (c == PC_WARRIOR) {
-		plr[pnum]._pAblSpells = SPELLBITS(SPL_REPAIR);
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_REPAIR);
 #ifndef SPAWN
 	} else if (c == PC_ROGUE) {
-		plr[pnum]._pAblSpells = SPELLBITS(SPL_DISARM);
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_DISARM);
 	} else if (c == PC_SORCERER) {
-		plr[pnum]._pAblSpells = SPELLBITS(SPL_RECHARGE);
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_RECHARGE);
 #endif
 	}
 
 	if (c == PC_SORCERER) {
-		plr[pnum]._pMemSpells = SPELLBITS(SPL_FIREBOLT);
+		plr[pnum]._pMemSpells = SPELLBIT(SPL_FIREBOLT);
 	} else {
 		plr[pnum]._pMemSpells = 0;
 	}
@@ -1123,19 +1123,19 @@ void InitPlayer(int pnum, BOOL FirstTime)
 	}
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
-		plr[pnum]._pAblSpells = 1 << (SPL_REPAIR - 1); // BUGFIX: apply SPELLBITS
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_REPAIR);
 #ifndef SPAWN
 	} else if (plr[pnum]._pClass == PC_ROGUE) {
-		plr[pnum]._pAblSpells = 1 << (SPL_DISARM - 1);  // BUGFIX: apply SPELLBITS
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_DISARM);
 	} else if (plr[pnum]._pClass == PC_SORCERER) {
-		plr[pnum]._pAblSpells = 1 << (SPL_RECHARGE - 1);  // BUGFIX: apply SPELLBITS
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_RECHARGE);
 #ifdef HELLFIRE
 	} else if (plr[pnum]._pClass == PC_MONK) {
-		plr[pnum]._pAblSpells = USPELLBITS(SPL_SEARCH);
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_SEARCH);
 	} else if (plr[pnum]._pClass == PC_BARD) {
-		plr[pnum]._pAblSpells = 1 << (SPL_IDENTIFY - 1);  // BUGFIX: apply SPELLBITS
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_IDENTIFY);
 	} else if (plr[pnum]._pClass == PC_BARBARIAN) {
-		plr[pnum]._pAblSpells = 1 << (SPL_BLODBOIL - 1);  // BUGFIX: apply SPELLBITS
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_BLODBOIL);
 #endif
 #endif
 	}
@@ -3269,7 +3269,7 @@ BOOL PM_DoSpell(int pnum)
 		if (!plr[pnum]._pSplFrom) {
 			if (plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
 				if (!(plr[pnum]._pScrlSpells
-				        & USPELLBITS(plr[pnum]._pRSpell))) {
+				        & SPELLBIT(plr[pnum]._pRSpell))) {
 					plr[pnum]._pRSpell = SPL_INVALID;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 					force_redraw = 255;
@@ -3278,7 +3278,7 @@ BOOL PM_DoSpell(int pnum)
 
 			if (plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
 				if (!(plr[pnum]._pISpells
-				        & USPELLBITS(plr[pnum]._pRSpell))) {
+				        & SPELLBIT(plr[pnum]._pRSpell))) {
 					plr[pnum]._pRSpell = SPL_INVALID;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 					force_redraw = 255;
@@ -3780,7 +3780,7 @@ void ValidatePlayer()
 
 	for (b = 1; b < MAX_SPELLS; b++) {
 		if (spelldata[b].sBookLvl != -1) {
-			msk |= SPELLBITS(b);
+			msk |= SPELLBIT(b);
 			if (plr[myplr]._pSplLvl[b] > MAX_SPELL_LEVEL)
 				plr[myplr]._pSplLvl[b] = MAX_SPELL_LEVEL;
 		}
