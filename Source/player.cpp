@@ -829,7 +829,7 @@ void CreatePlayer(int pnum, char c)
 	}
 
 	if (c == PC_SORCERER) {
-		plr[pnum]._pMemSpells = 1;
+		plr[pnum]._pMemSpells = (__int64)1 << (SPL_FIREBOLT - 1);
 	} else {
 		plr[pnum]._pMemSpells = 0;
 	}

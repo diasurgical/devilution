@@ -3743,7 +3743,7 @@ void OperateShrine(int pnum, int i, int sType)
 		spell = 1;
 		spells = plr[pnum]._pMemSpells;
 		for (j = 0; j < MAX_SPELLS; j++) {
-			if (spell & spells)
+			if (spells & spell)
 				cnt++;
 			spell <<= 1;
 		}
@@ -3757,7 +3757,7 @@ void OperateShrine(int pnum, int i, int sType)
 				spell <<= 1;
 			}
 			do {
-				r = random_(0, 37);
+				r = random_(0, MAX_SPELLS);
 			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << r)));
 			if (plr[pnum]._pSplLvl[r] >= 2)
 				plr[pnum]._pSplLvl[r] -= 2;

@@ -3618,7 +3618,7 @@ void DoRecharge(int pnum, int cii)
 	} else {
 		pi = &p->InvBody[cii];
 	}
-	if (pi->_itype == ITYPE_STAFF && pi->_iSpell) {
+	if (pi->_itype == ITYPE_STAFF && pi->_iSpell != SPL_NULL) {
 		r = spelldata[pi->_iSpell].sBookLvl;
 		r = random_(38, p->_pLevel / r) + 1;
 		RechargeItem(pi, r);
