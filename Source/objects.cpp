@@ -3749,7 +3749,7 @@ void OperateShrine(int pnum, int i, int sType)
 		}
 		if (cnt > 1) {
 			spell = 1;
-			for (j = 1; j <= MAX_SPELLS; j++) { //
+			for (j = SPL_FIREBOLT; j <= MAX_SPELLS; j++) { // BUGFIX: < MAX_SPELLS, there is no spell with MAX_SPELLS index
 				if (plr[pnum]._pMemSpells & spell) {
 					if (plr[pnum]._pSplLvl[j] < MAX_SPELL_LEVEL)
 						plr[pnum]._pSplLvl[j]++;
