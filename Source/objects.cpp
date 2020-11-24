@@ -3743,7 +3743,7 @@ void OperateShrine(int pnum, int i, int sType)
 		spell = 1;
 		spells = plr[pnum]._pMemSpells;
 		for (j = 0; j < MAX_SPELLS; j++) {
-			if (spells & spell)
+			if (spell & spells)
 				cnt++;
 			spell <<= 1;
 		}
