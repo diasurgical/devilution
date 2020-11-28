@@ -1657,7 +1657,7 @@ void missiles_spec_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char
 	int av;
 
 	av = 0;
-	if (!mienemy) {
+	if (mienemy == 0) {
 		if (plr[id]._pClass == PC_ROGUE)
 			av += (plr[id]._pLevel - 1) >> 2;
 		else if (plr[id]._pClass == PC_WARRIOR || plr[id]._pClass == PC_BARD)
@@ -1715,7 +1715,7 @@ void missiles_warp(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._miVar1 = 0;
 	missile[mi]._mix = tx;
 	missile[mi]._miy = ty;
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_WARP);
 }
 
@@ -1738,7 +1738,7 @@ void missiles_rune_explosion(int mi, int sx, int sy, int dx, int dy, int midir, 
 {
 	int i, dmg;
 
-	if (!mienemy || mienemy == 2) {
+	if (mienemy == 0 || mienemy == 2) {
 		missile[mi]._midam = 2 * (plr[id]._pLevel + random_(60, 10) + random_(60, 10)) + 4;
 		for (i = missile[mi]._mispllvl; i > 0; i--) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
@@ -1769,7 +1769,7 @@ void missiles_immo_1(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!mienemy) {
+	if (mienemy == 0) {
 		missile[mi]._midam = 2 * (plr[id]._pLevel + random_(60, 10) + random_(60, 10)) + 4;
 		for (i = missile[mi]._mispllvl; i > 0; i--) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
@@ -1802,7 +1802,7 @@ void missiles_immo_2(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!mienemy) {
+	if (mienemy == 0) {
 		i = missile[mi]._mispllvl + 16;
 		if (i > 50) {
 			i = 50;
@@ -1848,7 +1848,7 @@ void missiles_433040(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 {
 	int lvl;
 
-	if (!mienemy && id != -1) {
+	if (mienemy == 0 && id != -1) {
 		missile[mi]._midam = 0;
 		if (2 * (id > 0))
 			lvl = plr[id]._pLevel;
@@ -1896,7 +1896,7 @@ void missiles_magi(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 void missiles_ring(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_FIRERING);
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
@@ -1930,7 +1930,7 @@ void missiles_search(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 	else
 		lvl = 1;
 	missile[mi]._mirange = lvl + 10 * missile[mi]._mispllvl + 245;
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_SEARCH);
 
 	for (i = 0; i < nummissiles; i++) {
@@ -1951,7 +1951,7 @@ void missiles_search(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 
 void missiles_cbolt_arrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	if (!mienemy) {
+	if (mienemy == 0) {
 		if (id == myplr) {
 			missile[mi]._mirnd = random_(63, 15) + 1;
 		} else {
@@ -2007,7 +2007,7 @@ void AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!mienemy) {
+	if (mienemy == 0) {
 #ifdef HELLFIRE
 		int av = 32;
 
@@ -2051,7 +2051,7 @@ void AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!mienemy) {
+	if (mienemy == 0) {
 		av = 32;
 		if (plr[id]._pIFlags & ISPL_RNDARROWVEL) {
 			av = random_(64, 32) + 16;
@@ -2146,7 +2146,7 @@ void AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 		missile[mi]._mix = sx + r1;
 		missile[mi]._miy = sy + r2;
 #endif
-		if (!mienemy)
+		if (mienemy == 0)
 			UseMana(id, SPL_RNDTELEPORT);
 	} else {
 		pn = dObject[dx][dy] - 1;
@@ -2295,7 +2295,7 @@ void AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!mienemy) {
+	if (mienemy == 0) {
 		missile[mi]._midam = 2 * (plr[id]._pLevel + random_(60, 10) + random_(60, 10)) + 4;
 		for (i = missile[mi]._mispllvl; i > 0; i--) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
@@ -2320,7 +2320,7 @@ void AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 
 void AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	if (!dam && !mienemy)
+	if (!dam && mienemy == 0)
 		UseMana(id, SPL_LIGHTNING);
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
@@ -2494,7 +2494,7 @@ void AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 {
 	int i;
 
-	if (!mienemy) {
+	if (mienemy == 0) {
 		if (id != -1) {
 			missile[mi]._midam = 0;
 			for (i = 0; i <= plr[id]._pLevel; i++) {
@@ -2518,7 +2518,7 @@ void AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 {
 	int i;
 
-	if (!mienemy) {
+	if (mienemy == 0) {
 		if (id != -1) {
 			missile[mi]._midam = 0;
 			for (i = 0; i <= plr[id]._pLevel; i++) {
@@ -2542,7 +2542,7 @@ void AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._miVar1 = plr[id]._pHitPoints;
 	missile[mi]._miVar2 = plr[id]._pHPBase;
 	missile[mi]._miVar8 = -1;
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_MANASHIELD);
 #ifndef HELLFIRE
 	if (id == myplr)
@@ -2731,7 +2731,7 @@ void AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
-	if (!mienemy) {
+	if (mienemy == 0) {
 		UseMana(id, SPL_FLARE);
 		plr[id]._pHitPoints -= 320;
 		plr[id]._pHPBase -= 320;
@@ -2891,7 +2891,7 @@ void AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
 	missile[mi]._miVar1 = plr[id]._pHitPoints;
 	missile[mi]._miVar2 = plr[id]._pHPBase;
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_ETHEREALIZE);
 }
 
@@ -3070,7 +3070,7 @@ void AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 		missile[mi]._mirange += missile[mi]._mirange >> 3;
 	}
 	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_INFRA);
 }
 
@@ -3098,7 +3098,7 @@ void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 		for (k = missile[mi]._mispllvl; k > 0; k--) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
-		if (!mienemy)
+		if (mienemy == 0)
 			UseMana(id, SPL_NOVA);
 	} else {
 		missile[mi]._midam = ((DWORD)currlevel >> 1) + random_(66, 3) + random_(66, 3) + random_(66, 3);
@@ -3240,7 +3240,7 @@ void AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 		dy += YDirAdd[midir];
 	}
 	GetMissileVel(mi, sx, sy, dx, dy, 32);
-	if (!mienemy)
+	if (mienemy == 0)
 		UseMana(id, SPL_FLAME);
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
@@ -3349,7 +3349,7 @@ void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char miene
 	missile[mi]._miVar4 = dx;
 	missile[mi]._miVar5 = dy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
-	if (!mienemy) {
+	if (mienemy == 0) {
 		UseMana(id, SPL_BONESPIRIT);
 		plr[id]._pHitPoints -= 384;
 		plr[id]._pHPBase -= 384;
