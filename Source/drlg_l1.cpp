@@ -27,11 +27,11 @@ int IsUberLeverActivated;
 int UberDiabloMonsterIndex;
 #endif
 /** Specifies whether to generate a vertical room at position 1 in the Cathedral. */
-int VR1;
+BOOL VR1;
 /** Specifies whether to generate a vertical room at position 2 in the Cathedral. */
-int VR2;
+BOOL VR2;
 /** Specifies whether to generate a vertical room at position 3 in the Cathedral. */
-int VR3;
+BOOL VR3;
 /** Contains the contents of the single player quest DUN file. */
 BYTE *L5pSetPiece;
 
@@ -2046,7 +2046,7 @@ static void DRLG_L5Subs()
 
 	for (y = 0; y < DMAXY; y++) {
 		for (x = 0; x < DMAXX; x++) {
-			if (!random_(0, 4)) {
+			if (random_(0, 4) == 0) {
 				BYTE c = L5BTYPES[dungeon[x][y]];
 
 				if (c && !L5dflags[x][y]) {
@@ -2162,13 +2162,13 @@ static void L5FillChambers()
 	if (currlevel == 24) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
-			if (!VR1 && VR2 && VR3 && random_(0, 2))
+			if (!VR1 && VR2 && VR3 && random_(0, 2) != 0)
 				c = 2;
-			if (VR1 && VR2 && !VR3 && random_(0, 2))
+			if (VR1 && VR2 && !VR3 && random_(0, 2) != 0)
 				c = 0;
 
 			if (VR1 && !VR2 && VR3) {
-				if (random_(0, 2))
+				if (random_(0, 2) != 0)
 					c = 0;
 				else
 					c = 2;
@@ -2190,13 +2190,13 @@ static void L5FillChambers()
 			}
 		} else {
 			c = 1;
-			if (!HR1 && HR2 && HR3 && random_(0, 2))
+			if (!HR1 && HR2 && HR3 && random_(0, 2) != 0)
 				c = 2;
-			if (HR1 && HR2 && !HR3 && random_(0, 2))
+			if (HR1 && HR2 && !HR3 && random_(0, 2) != 0)
 				c = 0;
 
 			if (HR1 && !HR2 && HR3) {
-				if (random_(0, 2))
+				if (random_(0, 2) != 0)
 					c = 0;
 				else
 					c = 2;
@@ -2221,13 +2221,13 @@ static void L5FillChambers()
 	if (currlevel == 21) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
-			if (!VR1 && VR2 && VR3 && random_(0, 2))
+			if (!VR1 && VR2 && VR3 && random_(0, 2) != 0)
 				c = 2;
-			if (VR1 && VR2 && !VR3 && random_(0, 2))
+			if (VR1 && VR2 && !VR3 && random_(0, 2) != 0)
 				c = 0;
 
 			if (VR1 && !VR2 && VR3) {
-				if (random_(0, 2))
+				if (random_(0, 2) != 0)
 					c = 0;
 				else
 					c = 2;
@@ -2281,13 +2281,13 @@ static void L5FillChambers()
 	if (L5setloadflag) {
 		if (VR1 || VR2 || VR3) {
 			c = 1;
-			if (!VR1 && VR2 && VR3 && random_(0, 2))
+			if (!VR1 && VR2 && VR3 && random_(0, 2) != 0)
 				c = 2;
-			if (VR1 && VR2 && !VR3 && random_(0, 2))
+			if (VR1 && VR2 && !VR3 && random_(0, 2) != 0)
 				c = 0;
 
 			if (VR1 && !VR2 && VR3) {
-				if (random_(0, 2))
+				if (random_(0, 2) != 0)
 					c = 0;
 				else
 					c = 2;
@@ -2309,13 +2309,13 @@ static void L5FillChambers()
 			}
 		} else {
 			c = 1;
-			if (!HR1 && HR2 && HR3 && random_(0, 2))
+			if (!HR1 && HR2 && HR3 && random_(0, 2) != 0)
 				c = 2;
-			if (HR1 && HR2 && !HR3 && random_(0, 2))
+			if (HR1 && HR2 && !HR3 && random_(0, 2) != 0)
 				c = 0;
 
 			if (HR1 && !HR2 && HR3) {
-				if (random_(0, 2))
+				if (random_(0, 2) != 0)
 					c = 0;
 				else
 					c = 2;

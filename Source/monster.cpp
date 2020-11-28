@@ -3352,11 +3352,11 @@ BOOL M_CallWalk(int i, int md)
 
 	mdtemp = md;
 	ok = DirOK(i, md);
-	if (random_(101, 2))
+	if (random_(101, 2) != 0)
 		ok = ok || (md = left[mdtemp], DirOK(i, md)) || (md = right[mdtemp], DirOK(i, md));
 	else
 		ok = ok || (md = right[mdtemp], DirOK(i, md)) || (md = left[mdtemp], DirOK(i, md));
-	if (random_(102, 2))
+	if (random_(102, 2) != 0)
 		ok = ok
 		    || (md = right[right[mdtemp]], DirOK(i, md))
 		    || (md = left[left[mdtemp]], DirOK(i, md));
@@ -3401,7 +3401,7 @@ BOOL M_CallWalk2(int i, int md)
 
 	mdtemp = md;
 	ok = DirOK(i, md);     // Can we continue in the same direction
-	if (random_(101, 2)) { // Randomly go left or right
+	if (random_(101, 2) != 0) { // Randomly go left or right
 		ok = ok || (mdtemp = left[md], DirOK(i, left[md])) || (mdtemp = right[md], DirOK(i, right[md]));
 	} else {
 		ok = ok || (mdtemp = right[md], DirOK(i, right[md])) || (mdtemp = left[md], DirOK(i, left[md]));
@@ -3876,7 +3876,7 @@ void MAI_Sneak(int i)
 					md = GetDirection(Monst->_mx, Monst->_my, plr[Monst->_menemy]._pownerx, plr[Monst->_menemy]._pownery);
 				md = opposite[md];
 				if (Monst->MType->mtype == MT_UNSEEN) {
-					if (random_(112, 2))
+					if (random_(112, 2) != 0)
 						md = left[md];
 					else
 						md = right[md];

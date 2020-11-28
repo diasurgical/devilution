@@ -1564,7 +1564,7 @@ void missiles_steal_pots(int mi, int sx, int sy, int dx, int dy, int midir, char
 					for (si = 0; si < MAXBELTITEMS; si++) {
 						ii = -1;
 						if (plr[pnum].SpdList[si]._itype == ITYPE_MISC) {
-							if (random_(205, 2)) {
+							if (random_(205, 2) != 0) {
 								switch (plr[pnum].SpdList[si]._iMiscId) {
 								case IMISC_FULLHEAL:
 									ii = ItemMiscIdIdx(IMISC_HEAL);
@@ -1577,7 +1577,7 @@ void missiles_steal_pots(int mi, int sx, int sy, int dx, int dy, int midir, char
 									ii = ItemMiscIdIdx(IMISC_MANA);
 									break;
 								case IMISC_REJUV:
-									if (random_(205, 2)) {
+									if (random_(205, 2) != 0) {
 										ii = ItemMiscIdIdx(IMISC_MANA);
 									} else {
 										ii = ItemMiscIdIdx(IMISC_HEAL);
@@ -3225,7 +3225,7 @@ void AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	missile[mi]._mityoff = missile[midir]._mityoff;
 	missile[mi]._mirange = missile[mi]._miVar2 + 20;
 	missile[mi]._mlid = AddLight(sx, sy, 1);
-	if (!mienemy) {
+	if (mienemy == 0) {
 		i = random_(79, plr[id]._pLevel) + random_(79, 2);
 		missile[mi]._midam = 8 * i + 16 + ((8 * i + 16) >> 1);
 	} else {

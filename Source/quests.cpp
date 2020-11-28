@@ -147,7 +147,7 @@ void InitQuests()
 
 	if (gbMaxPlayers == 1) {
 		SetRndSeed(glSeedTbl[15]);
-		if (random_(0, 2))
+		if (random_(0, 2) != 0)
 			quests[Q_PWATER]._qactive = QUEST_NOTAVAIL;
 		else
 			quests[Q_SKELKING]._qactive = QUEST_NOTAVAIL;

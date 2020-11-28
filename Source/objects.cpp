@@ -1308,7 +1308,7 @@ void AddSCambBook(int i)
 
 void AddChest(int i, int t)
 {
-	if (!random_(147, 2))
+	if (random_(147, 2) == 0)
 		object[i]._oAnimFrame += 3;
 	object[i]._oRndSeed = GetRndSeed();
 	switch (t) {
@@ -1455,7 +1455,7 @@ void AddShrine(int i)
 	} while (!slist[val]);
 
 	object[i]._oVar1 = val;
-	if (random_(150, 2)) {
+	if (random_(150, 2) != 0) {
 		object[i]._oAnimFrame = 12;
 		object[i]._oAnimLen = 22;
 	}
@@ -4290,7 +4290,7 @@ void OperateSkelBook(int pnum, int i, DIABOOL sendmsg)
 		object[i]._oAnimFrame += 2;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
-			if (random_(161, 5))
+			if (random_(161, 5) != 0)
 				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_SCROLL, sendmsg, FALSE);
 			else
 				CreateTypeItem(object[i]._ox, object[i]._oy, FALSE, ITYPE_MISC, IMISC_BOOK, sendmsg, FALSE);

@@ -3190,7 +3190,7 @@ BOOL PM_DoBlock(int pnum)
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 
-		if (!random_(3, 10)) {
+		if (random_(3, 10) == 0) {
 			ShieldDur(pnum);
 		}
 		return TRUE;
@@ -3343,7 +3343,7 @@ BOOL PM_DoGotHit(int pnum)
 #endif
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
-		if (random_(3, 4)) {
+		if (random_(3, 4) != 0) {
 			ArmorDur(pnum);
 		}
 
