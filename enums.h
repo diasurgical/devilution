@@ -2309,6 +2309,15 @@ typedef enum mienemy_type {
 	TARGET_BOTH     = 2,
 } mienemy_type;
 
+/*
+Looks like someone treated hex values as binary, so 0x10 came after 0x01, that's why we have 1 and 16, they did the same thing with affix_item_type
+*/
+typedef enum goodorevil {
+	GOE_ANY  = 0x00,
+	GOE_EVIL = 0x01,
+	GOE_GOOD = 0x10,
+};
+
  /*
  First 5 bits store level
  6th bit stores onlygood flag

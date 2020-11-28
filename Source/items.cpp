@@ -2460,7 +2460,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 	}
 	preidx = -1;
 	sufidx = -1;
-	goe = 0;
+	goe = GOE_ANY;
 	if (!onlygood && random_(0, 3) != 0)
 		onlygood = TRUE;
 	if (pre == 0) {
@@ -2499,7 +2499,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		for (j = 0; PL_Suffix[j].PLPower != -1; j++) {
 			if (PL_Suffix[j].PLIType & flgs
 			    && PL_Suffix[j].PLMinLvl >= minlvl && PL_Suffix[j].PLMinLvl <= maxlvl
-			    && (goe | PL_Suffix[j].PLGOE) != 0x11
+			    && (goe | PL_Suffix[j].PLGOE) != (GOE_GOOD | GOE_EVIL)
 			    && (!onlygood || PL_Suffix[j].PLOk)) {
 				l[nl] = j;
 				nl++;
