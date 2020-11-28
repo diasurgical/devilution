@@ -1941,7 +1941,7 @@ void Obj_Circle(int i)
 			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 			if (quests[Q_BETRAYER]._qactive == QUEST_ACTIVE)
 				quests[Q_BETRAYER]._qvar1 = 4;
-			AddMissile(plr[myplr]._px, plr[myplr]._py, 35, 46, plr[myplr]._pdir, MIS_RNDTELEPORT, 0, myplr, 0, 0);
+			AddMissile(plr[myplr]._px, plr[myplr]._py, 35, 46, plr[myplr]._pdir, MIS_RNDTELEPORT, TARGET_MONSTERS, myplr, 0, 0);
 			track_repeat_walk(FALSE);
 			sgbMouseDown = CLICK_NONE;
 			ReleaseCapture();
@@ -2095,7 +2095,7 @@ void Obj_Trap(int i)
 			}
 			if (!deltaload) {
 				dir = GetDirection(sx, sy, dx, dy);
-				AddMissile(sx, sy, dx, dy, dir, object[i]._oVar3, 1, -1, 0, 0);
+				AddMissile(sx, sy, dx, dy, dir, object[i]._oVar3, TARGET_PLAYERS, -1, 0, 0);
 				PlaySfxLoc(IS_TRAP, object[oti]._ox, object[oti]._oy);
 			}
 			object[oti]._oTrapFlag = FALSE;
@@ -3050,7 +3050,7 @@ void OperateBook(int pnum, int i)
 			}
 			if (do_add_missile) {
 				object[dObject[35][36] - 1]._oVar5++;
-				AddMissile(plr[pnum]._px, plr[pnum]._py, dx, dy, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);
+				AddMissile(plr[pnum]._px, plr[pnum]._py, dx, dy, plr[pnum]._pdir, MIS_RNDTELEPORT, TARGET_MONSTERS, pnum, 0, 0);
 				missile_added = TRUE;
 				do_add_missile = FALSE;
 			}
@@ -3078,7 +3078,7 @@ void OperateBook(int pnum, int i)
 		    object[i]._oy - 4,
 		    plr[myplr]._pdir,
 		    MIS_GUARDIAN,
-		    0,
+		    TARGET_MONSTERS,
 		    myplr,
 		    0,
 		    0);
@@ -3222,7 +3222,7 @@ void OperateChest(int pnum, int i, DIABOOL sendmsg)
 					mtype = MIS_ARROW;
 #endif
 				}
-				AddMissile(object[i]._ox, object[i]._oy, plr[pnum]._px, plr[pnum]._py, mdir, mtype, 1, -1, 0, 0);
+				AddMissile(object[i]._ox, object[i]._oy, plr[pnum]._px, plr[pnum]._py, mdir, mtype, TARGET_PLAYERS, -1, 0, 0);
 				object[i]._oTrapFlag = FALSE;
 			}
 			if (pnum == myplr)
@@ -4138,7 +4138,7 @@ void OperateShrine(int pnum, int i, int sType)
 		    plr[myplr]._py,
 		    plr[myplr]._pdir,
 		    MIS_FIREWALL,
-		    1,
+		    TARGET_PLAYERS,
 		    0,
 		    2 * currlevel + 2,
 		    0);
@@ -4188,7 +4188,7 @@ void OperateShrine(int pnum, int i, int sType)
 		    plr[myplr]._py,
 		    plr[myplr]._pdir,
 		    MIS_FLASH,
-		    1,
+		    TARGET_PLAYERS,
 		    0,
 		    3 * currlevel + 2,
 		    0);
@@ -4207,7 +4207,7 @@ void OperateShrine(int pnum, int i, int sType)
 		    plr[myplr]._py,
 		    plr[myplr]._pdir,
 		    MIS_TOWN,
-		    1,
+		    TARGET_PLAYERS,
 		    0,
 		    0,
 		    0);

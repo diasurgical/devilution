@@ -2303,6 +2303,12 @@ typedef enum placeflag {
 	PLACE_UNIQUE  = 4,
 } placeflag;
 
+typedef enum mienemy_type {
+	TARGET_MONSTERS = 0,
+	TARGET_PLAYERS  = 1,
+	TARGET_BOTH     = 2,
+} mienemy_type;
+
  /*
  First 5 bits store level
  6th bit stores onlygood flag

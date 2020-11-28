@@ -2069,7 +2069,7 @@ static DWORD On_AWAKEGOLEM(TCmd *pCmd, int pnum)
 			}
 		}
 		if (addGolem)
-			AddMissile(plr[pnum]._px, plr[pnum]._py, p->_mx, p->_my, p->_mdir, MIS_GOLEM, 0, pnum, 0, 1);
+			AddMissile(plr[pnum]._px, plr[pnum]._py, p->_mx, p->_my, p->_mdir, MIS_GOLEM, TARGET_MONSTERS, pnum, 0, 1);
 	}
 
 	return sizeof(*p);
@@ -2582,7 +2582,7 @@ static DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
 {
 	TCmdLocParam2 *p = (TCmdLocParam2 *)pCmd;
 	if (gbBufferMsgs != 1) {
-		AddMissile(p->x, p->y, p->wParam1, p->wParam2, 0, MIS_HIVEEXP2, 0, pnum, 0, 0);
+		AddMissile(p->x, p->y, p->wParam1, p->wParam2, 0, MIS_HIVEEXP2, TARGET_MONSTERS, pnum, 0, 0);
 		town_4751C6();
 	}
 	return sizeof(*p);
