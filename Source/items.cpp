@@ -1489,7 +1489,7 @@ void CreatePlrItems(int p)
 
 #ifdef HELLFIRE
 	case PC_MONK:
-		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 36);
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_SHORTSTAFF);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
@@ -1498,10 +1498,10 @@ void CreatePlrItems(int p)
 		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
 	case PC_BARD:
-		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 37);
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_BARDSWORD);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
-		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], 38);
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], IDI_BARDDAGGER);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
@@ -1510,10 +1510,10 @@ void CreatePlrItems(int p)
 		GetPlrHandSeed(&plr[p].SpdList[1]);
 		break;
 	case PC_BARBARIAN:
-		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 139);
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], 139); // TODO: add more enums to items
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
-		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], 2);
+		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], IDI_WARRSHLD);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
