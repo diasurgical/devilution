@@ -462,7 +462,7 @@ void SearchAutomapItem()
 
 	for (i = x1; i < x2; i++) {
 		for (j = y1; j < y2; j++) {
-			if (dItem[i][j] != 0){
+			if (dItem[i][j] != 0) {
 				px = i - 2 * AutoMapXOfs - ViewX;
 				py = j - 2 * AutoMapYOfs - ViewY;
 

@@ -176,7 +176,7 @@ void FillSolidBlockTbls()
 		break;
 	case DTYPE_CATHEDRAL:
 #ifdef HELLFIRE
-		if ( currlevel < 17 )
+		if (currlevel < 17)
 			pSBFile = LoadFileInMem("Levels\\L1Data\\L1.SOL", &dwTiles);
 		else
 			pSBFile = LoadFileInMem("NLevels\\L5Data\\L5.SOL", &dwTiles);
@@ -189,7 +189,7 @@ void FillSolidBlockTbls()
 		break;
 	case DTYPE_CAVES:
 #ifdef HELLFIRE
-		if ( currlevel < 17 )
+		if (currlevel < 17)
 			pSBFile = LoadFileInMem("Levels\\L3Data\\L3.SOL", &dwTiles);
 		else
 			pSBFile = LoadFileInMem("NLevels\\L6Data\\L6.SOL", &dwTiles);

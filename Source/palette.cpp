@@ -305,8 +305,6 @@ void palette_update_crypt()
 		system_palette[i].peGreen = col.peGreen;
 		system_palette[i].peBlue = col.peBlue;
 
-
-
 		dword_6E2D58 = 0;
 	} else {
 		dword_6E2D58++;

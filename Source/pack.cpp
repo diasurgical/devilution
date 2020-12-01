@@ -9,7 +9,8 @@
 #ifndef HELLFIRE
 static
 #endif
-void PackItem(PkItemStruct *id, ItemStruct *is)
+    void
+    PackItem(PkItemStruct *id, ItemStruct *is)
 {
 	if (is->_itype == ITYPE_NONE) {
 		id->idx = 0xFFFF;
@@ -136,7 +137,8 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 #ifndef HELLFIRE
 static
 #endif
-void UnPackItem(PkItemStruct *is, ItemStruct *id)
+    void
+    UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	if (is->idx == 0xFFFF) {
 		id->_itype = ITYPE_NONE;

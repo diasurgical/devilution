@@ -1575,7 +1575,8 @@ void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 }
 
 #ifdef HELLFIRE
-void town_4751C6(){
+void town_4751C6()
+{
 	dPiece[78][60] = 0x48a;
 	dPiece[79][60] = 0x48b;
 	dPiece[78][61] = 0x48c;
@@ -1625,7 +1626,8 @@ void town_4751C6(){
 	SetTownMicros();
 }
 
-void town_475379(){
+void town_475379()
+{
 	dPiece[78][60] = 0x48a;
 	dPiece[79][60] = 0x4eb;
 	dPiece[78][61] = 0x4ec;
@@ -1675,7 +1677,8 @@ void town_475379(){
 	SetTownMicros();
 }
 
-void town_47552C(){
+void town_47552C()
+{
 	dPiece[36][21] = 0x52b;
 	dPiece[37][21] = 0x52c;
 	dPiece[36][22] = 0x52d;
@@ -1689,7 +1692,8 @@ void town_47552C(){
 	SetTownMicros();
 }
 
-void town_475595(){
+void town_475595()
+{
 	dPiece[36][21] = 0x533;
 	dPiece[37][21] = 0x534;
 	dPiece[36][22] = 0x535;
@@ -1739,16 +1743,13 @@ void T_Pass3()
 	if (gbMaxPlayers == 1) {
 #endif
 #ifdef HELLFIRE
-		if(quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
-		|| quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10)
-		{
+		if (quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
+		    || quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10) {
 			town_4751C6();
-		}
-		else
-		{
+		} else {
 			town_475379();
 		}
-		if ( quests[Q_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21] )
+		if (quests[Q_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21])
 			town_475595();
 		else
 			town_47552C();
@@ -1788,18 +1789,14 @@ void T_Pass3()
 		}
 	}
 #ifdef HELLFIRE
-	else
-	{
-		if(quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
-		|| quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10)
-		{
+	else {
+		if (quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
+		    || quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10) {
 			town_4751C6();
-		}
-		else
-		{
+		} else {
 			town_475379();
 		}
-		if ( quests[Q_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21] )
+		if (quests[Q_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21])
 			town_475595();
 		else
 			town_47552C();

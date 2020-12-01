@@ -1395,7 +1395,7 @@ void M_Enemy(int i)
 			continue;
 		if (!(Monst->_mFlags & MFLAG_GOLEM)
 		    && ((abs(monster[mi]._mx - Monst->_mx) >= 2 || abs(monster[mi]._my - Monst->_my) >= 2) && !M_Ranged(i)
-		           || (!(Monst->_mFlags & MFLAG_GOLEM) && !(monster[mi]._mFlags & MFLAG_GOLEM)))) {
+		        || (!(Monst->_mFlags & MFLAG_GOLEM) && !(monster[mi]._mFlags & MFLAG_GOLEM)))) {
 			continue;
 		}
 		sameroom = dTransVal[Monst->_mx][Monst->_my] == dTransVal[monster[mi]._mx][monster[mi]._my];
@@ -2738,7 +2738,7 @@ BOOL M_DoRSpAttack(int i)
 #ifdef HELLFIRE
 		if (Monsters[i].Snds[3][0] != 0)
 #endif
-		PlayEffect(i, 3);
+			PlayEffect(i, 3);
 	}
 
 	if (monster[i]._mAi == AI_MEGA && monster[i]._mAnimFrame == 3) {
@@ -4295,11 +4295,11 @@ void MAI_Scav(int i)
 								continue;
 							done = dDead[Monst->_mx + x][Monst->_my + y] != 0
 							    && LineClearF(
-							           CheckNoSolid,
-							           Monst->_mx,
-							           Monst->_my,
-							           Monst->_mx + x,
-							           Monst->_my + y);
+							        CheckNoSolid,
+							        Monst->_mx,
+							        Monst->_my,
+							        Monst->_mx + x,
+							        Monst->_my + y);
 						}
 					}
 					x--;
@@ -4312,11 +4312,11 @@ void MAI_Scav(int i)
 								continue;
 							done = dDead[Monst->_mx + x][Monst->_my + y] != 0
 							    && LineClearF(
-							           CheckNoSolid,
-							           Monst->_mx,
-							           Monst->_my,
-							           Monst->_mx + x,
-							           Monst->_my + y);
+							        CheckNoSolid,
+							        Monst->_mx,
+							        Monst->_my,
+							        Monst->_mx + x,
+							        Monst->_my + y);
 						}
 					}
 					x++;
@@ -4365,7 +4365,7 @@ void MAI_Garg(int i)
 		return;
 	}
 
-	if (Monst->_mhitpoints<Monst->_mmaxhp>> 1 && !(Monst->_mFlags & MFLAG_NOHEAL))
+	if (Monst->_mhitpoints<Monst->_mmaxhp> > 1 && !(Monst->_mFlags & MFLAG_NOHEAL))
 		Monst->_mgoal = MGOAL_RETREAT;
 	if (Monst->_mgoal == MGOAL_RETREAT) {
 		if (abs(dx) >= Monst->_mint + 2 || abs(dy) >= Monst->_mint + 2) {
@@ -4754,8 +4754,8 @@ void MAI_Rhino(int i)
 					v = random_(134, 100);
 					if (v >= 2 * Monst->_mint + 33
 					    && (Monst->_mVar1 != MM_WALK && Monst->_mVar1 != MM_WALK2 && Monst->_mVar1 != MM_WALK3
-					           || Monst->_mVar2
-					           || v >= 2 * Monst->_mint + 83)) {
+					        || Monst->_mVar2
+					        || v >= 2 * Monst->_mint + 83)) {
 						M_StartDelay(i, random_(135, 10) + 10);
 					} else {
 						M_CallWalk(i, md);

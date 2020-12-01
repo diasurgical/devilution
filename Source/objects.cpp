@@ -1977,9 +1977,9 @@ void Obj_Door(int i)
 		dx = object[i]._ox;
 		dy = object[i]._oy;
 		dok = dMonster[dx][dy] == 0;
-		dok = dok HFAND (dItem[dx][dy] == 0);
-		dok = dok HFAND (dDead[dx][dy] == 0);
-		dok = dok HFAND (dPlayer[dx][dy] == 0);
+		dok = dok HFAND(dItem[dx][dy] == 0);
+		dok = dok HFAND(dDead[dx][dy] == 0);
+		dok = dok HFAND(dPlayer[dx][dy] == 0);
 		object[i]._oSelFlag = 2;
 		object[i]._oVar4 = dok ? 1 : 2;
 		object[i]._oMissFlag = TRUE;
@@ -2409,40 +2409,40 @@ void DoorSet(int oi, int dx, int dy)
 #ifdef HELLFIRE
 	if (currlevel < 17) {
 #endif
-	if (pn == 43)
-		ObjSetMicro(dx, dy, 392);
-	if (pn == 45)
-		ObjSetMicro(dx, dy, 394);
-	if (pn == 50 && object[oi]._otype == OBJ_L1LDOOR)
-		ObjSetMicro(dx, dy, 411);
-	if (pn == 50 && object[oi]._otype == OBJ_L1RDOOR)
-		ObjSetMicro(dx, dy, 412);
-	if (pn == 54)
-		ObjSetMicro(dx, dy, 397);
-	if (pn == 55)
-		ObjSetMicro(dx, dy, 398);
-	if (pn == 61)
-		ObjSetMicro(dx, dy, 399);
-	if (pn == 67)
-		ObjSetMicro(dx, dy, 400);
-	if (pn == 68)
-		ObjSetMicro(dx, dy, 401);
-	if (pn == 69)
-		ObjSetMicro(dx, dy, 403);
-	if (pn == 70)
-		ObjSetMicro(dx, dy, 404);
-	if (pn == 72)
-		ObjSetMicro(dx, dy, 406);
-	if (pn == 212)
-		ObjSetMicro(dx, dy, 407);
-	if (pn == 354)
-		ObjSetMicro(dx, dy, 409);
-	if (pn == 355)
-		ObjSetMicro(dx, dy, 410);
-	if (pn == 411)
-		ObjSetMicro(dx, dy, 396);
-	if (pn == 412)
-		ObjSetMicro(dx, dy, 396);
+		if (pn == 43)
+			ObjSetMicro(dx, dy, 392);
+		if (pn == 45)
+			ObjSetMicro(dx, dy, 394);
+		if (pn == 50 && object[oi]._otype == OBJ_L1LDOOR)
+			ObjSetMicro(dx, dy, 411);
+		if (pn == 50 && object[oi]._otype == OBJ_L1RDOOR)
+			ObjSetMicro(dx, dy, 412);
+		if (pn == 54)
+			ObjSetMicro(dx, dy, 397);
+		if (pn == 55)
+			ObjSetMicro(dx, dy, 398);
+		if (pn == 61)
+			ObjSetMicro(dx, dy, 399);
+		if (pn == 67)
+			ObjSetMicro(dx, dy, 400);
+		if (pn == 68)
+			ObjSetMicro(dx, dy, 401);
+		if (pn == 69)
+			ObjSetMicro(dx, dy, 403);
+		if (pn == 70)
+			ObjSetMicro(dx, dy, 404);
+		if (pn == 72)
+			ObjSetMicro(dx, dy, 406);
+		if (pn == 212)
+			ObjSetMicro(dx, dy, 407);
+		if (pn == 354)
+			ObjSetMicro(dx, dy, 409);
+		if (pn == 355)
+			ObjSetMicro(dx, dy, 410);
+		if (pn == 411)
+			ObjSetMicro(dx, dy, 396);
+		if (pn == 412)
+			ObjSetMicro(dx, dy, 396);
 #ifdef HELLFIRE
 	} else {
 		if (pn == 75)
@@ -2564,14 +2564,14 @@ void OperateL1RDoor(int pnum, int oi, DIABOOL sendflag)
 #ifdef HELLFIRE
 		if (currlevel < 17) {
 #endif
-		if (object[oi]._oVar2 != 50) {
-			ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
-		} else {
-			if (dPiece[xp - 1][yp] == 396)
-				ObjSetMicro(xp - 1, yp, 411);
-			else
-				ObjSetMicro(xp - 1, yp, 50);
-		}
+			if (object[oi]._oVar2 != 50) {
+				ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
+			} else {
+				if (dPiece[xp - 1][yp] == 396)
+					ObjSetMicro(xp - 1, yp, 411);
+				else
+					ObjSetMicro(xp - 1, yp, 50);
+			}
 #ifdef HELLFIRE
 		} else {
 			if (object[oi]._oVar2 != 86) {
@@ -2672,14 +2672,14 @@ void OperateL1LDoor(int pnum, int oi, DIABOOL sendflag)
 #ifdef HELLFIRE
 		if (currlevel < 17) {
 #endif
-		if (object[oi]._oVar2 != 50) {
-			ObjSetMicro(xp, yp - 1, object[oi]._oVar2);
-		} else {
-			if (dPiece[xp][yp - 1] == 396)
-				ObjSetMicro(xp, yp - 1, 412);
-			else
-				ObjSetMicro(xp, yp - 1, 50);
-		}
+			if (object[oi]._oVar2 != 50) {
+				ObjSetMicro(xp, yp - 1, object[oi]._oVar2);
+			} else {
+				if (dPiece[xp][yp - 1] == 396)
+					ObjSetMicro(xp, yp - 1, 412);
+				else
+					ObjSetMicro(xp, yp - 1, 50);
+			}
 #ifdef HELLFIRE
 		} else {
 			if (object[oi]._oVar2 != 86) {
@@ -2729,8 +2729,8 @@ void OperateL2RDoor(int pnum, int oi, DIABOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND (dItem[xp][yp] == 0);
-	dok = dok HFAND (dDead[xp][yp] == 0);
+	dok = dok HFAND(dItem[xp][yp] == 0);
+	dok = dok HFAND(dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2774,8 +2774,8 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND (dItem[xp][yp] == 0);
-	dok = dok HFAND (dDead[xp][yp] == 0);
+	dok = dok HFAND(dItem[xp][yp] == 0);
+	dok = dok HFAND(dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2820,8 +2820,8 @@ void OperateL3RDoor(int pnum, int oi, DIABOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND (dItem[xp][yp] == 0);
-	dok = dok HFAND (dDead[xp][yp] == 0);
+	dok = dok HFAND(dItem[xp][yp] == 0);
+	dok = dok HFAND(dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2866,8 +2866,8 @@ void OperateL3LDoor(int pnum, int oi, DIABOOL sendflag)
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
 	dok = dMonster[xp][yp] == 0;
-	dok = dok HFAND (dItem[xp][yp] == 0);
-	dok = dok HFAND (dDead[xp][yp] == 0);
+	dok = dok HFAND(dItem[xp][yp] == 0);
+	dok = dok HFAND(dDead[xp][yp] == 0);
 	if (dok) {
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -5262,13 +5262,13 @@ void GetObjectStr(int i)
 	case OBJ_BARREL:
 	case OBJ_BARRELEX:
 #ifdef HELLFIRE
-		if (currlevel > 16 && currlevel < 21) // for hive levels
-			strcpy(infostr, "Pod"); //Then a barrel is called a pod
+		if (currlevel > 16 && currlevel < 21)      // for hive levels
+			strcpy(infostr, "Pod");                //Then a barrel is called a pod
 		else if (currlevel > 20 && currlevel < 25) // for crypt levels
-			strcpy(infostr, "Urn"); //Then a barrel is called an urn
+			strcpy(infostr, "Urn");                //Then a barrel is called an urn
 		else
 #endif
-		strcpy(infostr, "Barrel");
+			strcpy(infostr, "Barrel");
 		break;
 	case OBJ_SKELBOOK:
 		strcpy(infostr, "Skeleton Tome");

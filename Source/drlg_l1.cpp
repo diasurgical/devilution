@@ -566,288 +566,285 @@ void drlg_l1_crypt_lavafloor()
 {
 	int i, j;
 
-	for ( j = 1; j < 40; j++ )
-	{
-		for ( i = 1; i < 40; i++ )
-		{
-			switch ( dungeon[i][j] )
-			{
+	for (j = 1; j < 40; j++) {
+		for (i = 1; i < 40; i++) {
+			switch (dungeon[i][j]) {
 			case 5:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 7:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 8:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 9:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 10:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 11:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 12:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 14:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 15:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 17:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 95:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 96:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 208;
 				break;
 			case 116:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 118:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 119:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 120:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 121:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 122:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 211;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 212;
 				break;
 			case 123:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 125:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 126:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 128:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 133:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 135:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 136:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 137:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 213;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 214;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 138:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 139:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 215;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 216;
 				break;
 			case 140:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 217;
 				break;
 			case 142:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 143:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 213;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 214;
 				break;
 			case 145:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 213;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 214;
 				break;
 			case 150:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 217;
 				break;
 			case 152:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 153:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 154:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 155:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 205;
 				break;
 			case 156:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 157:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 217;
 				break;
 			case 159:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 160:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 206;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 207;
 				break;
 			case 162:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 209;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 210;
 				break;
 			case 167:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 209;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 210;
 				break;
 			case 187:
-				if ( dungeon[i][j - 1] == 13 )
+				if (dungeon[i][j - 1] == 13)
 					dungeon[i][j - 1] = 208;
 				break;
 			case 185:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 186:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 203;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 204;
 				break;
 			case 192:
-				if ( dungeon[i - 1][j] == 13 )
+				if (dungeon[i - 1][j] == 13)
 					dungeon[i - 1][j] = 209;
-				if ( dungeon[i - 1][j - 1] == 13 )
+				if (dungeon[i - 1][j - 1] == 13)
 					dungeon[i - 1][j - 1] = 210;
 				break;
 			}
@@ -2527,15 +2524,15 @@ static void DRLG_L5DirtFix()
 	} else {
 		for (j = 0; j < DMAXY - 1; j++) {
 			for (i = 0; i < DMAXX - 1; i++) {
-				if ( dungeon[i][j] == 19 )
+				if (dungeon[i][j] == 19)
 					dungeon[i][j] = 83;
-				if ( dungeon[i][j] == 21 )
+				if (dungeon[i][j] == 21)
 					dungeon[i][j] = 85;
-				if ( dungeon[i][j] == 23 )
+				if (dungeon[i][j] == 23)
 					dungeon[i][j] = 87;
-				if ( dungeon[i][j] == 24 )
+				if (dungeon[i][j] == 24)
 					dungeon[i][j] = 88;
-				if ( dungeon[i][j] == 18 )
+				if (dungeon[i][j] == 18)
 					dungeon[i][j] = 82;
 			}
 		}
@@ -2645,82 +2642,64 @@ static void DRLG_L5(int entry)
 			}
 #ifdef HELLFIRE
 		} else if (entry == 0) {
-			if ( currlevel < 21 )
-			{
-				if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+			if (currlevel < 21) {
+				if (DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
 					doneflag = 0;
-				if ( DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+				if (DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
 					doneflag = 0;
-			}
-			else if ( currlevel == 21 )
-			{
-				if ( DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 0, -1, 6) < 0 )
+			} else if (currlevel == 21) {
+				if (DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 0, -1, 6) < 0)
 					doneflag = 0;
-				if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+				if (DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
 					doneflag = 0;
 				ViewY++;
-			}
-			else
-			{
-				if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+			} else {
+				if (DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
 					doneflag = 0;
-				if ( currlevel != 24 )
-				{
-					if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+				if (currlevel != 24) {
+					if (DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
 						doneflag = 0;
 				}
 				ViewY++;
 			}
-		} else if ( entry == 1 ) {
-			if ( currlevel < 21 )
-			{
-				if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
+		} else if (entry == 1) {
+			if (currlevel < 21) {
+				if (DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0)
 					doneflag = 0;
-				if ( DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+				if (DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0)
 					doneflag = 0;
 				ViewY--;
-			}
-			else if ( currlevel == 21 )
-			{
-				if ( DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 0, -1, 6) < 0 )
+			} else if (currlevel == 21) {
+				if (DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 0, -1, 6) < 0)
 					doneflag = 0;
-				if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+				if (DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0)
 					doneflag = 0;
 				ViewY += 3;
-			}
-			else
-			{
-				if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+			} else {
+				if (DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
 					doneflag = 0;
-				if ( currlevel != 24 )
-				{
-					if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+				if (currlevel != 24) {
+					if (DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0)
 						doneflag = 0;
 				}
 				ViewY += 3;
 			}
 		} else {
-			if ( currlevel < 21 )
-			{
-				if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
+			if (currlevel < 21) {
+				if (DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0)
 					doneflag = 0;
-				if ( DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+				if (DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
 					doneflag = 0;
-			}
-			else if ( currlevel == 21 )
-			{
-				if ( DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 1, -1, 6) < 0 )
+			} else if (currlevel == 21) {
+				if (DRLG_PlaceMiniSet(L5STAIRSTOWN, 1, 1, 0, 0, 1, -1, 6) < 0)
 					doneflag = 0;
-				if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+				if (DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
 					doneflag = 0;
-			}
-			else
-			{
-				if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0 )
+			} else {
+				if (DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
 					doneflag = 0;
-				if ( currlevel != 24 )
-				{
-					if ( DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0 )
+				if (currlevel != 24) {
+					if (DRLG_PlaceMiniSet(L5STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
 						doneflag = 0;
 				}
 			}
@@ -2763,12 +2742,9 @@ static void DRLG_L5(int entry)
 	}
 
 #ifdef HELLFIRE
-	if ( currlevel < 21 )
-	{
+	if (currlevel < 21) {
 		DRLG_L5Subs();
-	}
-	else
-	{
+	} else {
 		drlg_l1_crypt_pattern1(10);
 		drlg_l1_crypt_rndset(byte_48A1B4, 95);
 		drlg_l1_crypt_rndset(byte_48A1B8, 95);
@@ -2776,8 +2752,7 @@ static void DRLG_L5(int entry)
 		drlg_l1_crypt_rndset(byte_48A1C8, 100);
 		drlg_l1_crypt_rndset(byte_48A1E0, 60);
 		drlg_l1_crypt_lavafloor();
-		switch ( currlevel )
-		{
+		switch (currlevel) {
 		case 21:
 			drlg_l1_crypt_pattern2(30);
 			drlg_l1_crypt_pattern3(15);
@@ -2875,24 +2850,20 @@ void CreateL5Dungeon(DWORD rseed, int entry)
 	DRLG_FreeL1SP();
 
 #ifdef HELLFIRE
-	if ( currlevel < 17 )
+	if (currlevel < 17)
 		DRLG_InitL1Vals();
 	else
 		DRLG_InitL5Vals();
 
 	DRLG_SetPC();
 
-	for ( j = dminy; j < dmaxy; j++ )
-	{
-		for ( i = dminx; i < dmaxx; i++ )
-		{
-			if ( dPiece[i][j] == 290 )
-			{
+	for (j = dminy; j < dmaxy; j++) {
+		for (i = dminx; i < dmaxx; i++) {
+			if (dPiece[i][j] == 290) {
 				UberRow = i;
 				UberCol = j;
 			}
-			if ( dPiece[i][j] == 317 )
-			{
+			if (dPiece[i][j] == 317) {
 				CornerStone.x = i;
 				CornerStone.y = j;
 			}

@@ -11,7 +11,6 @@
 #define SHA1CircularShift(bits, word) \
 	(((word) << (bits)) | ((word) >> (32 - (bits))))
 
-
 SHA1Context sgSHA1[3];
 
 static void SHA1Init(SHA1Context *context)

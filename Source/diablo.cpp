@@ -874,7 +874,7 @@ static BOOL LeftMouseDown(int wParam)
 	if (doomflag) {
 		doom_close();
 		return FALSE;
-	} 
+	}
 
 	if (spselflag) {
 		SetSpell();
@@ -919,7 +919,6 @@ static BOOL LeftMouseDown(int wParam)
 		if (pcurs > CURSOR_HAND && pcurs < CURSOR_FIRSTITEM)
 			NewCursor(CURSOR_HAND);
 	}
-	
 
 	return FALSE;
 }
@@ -1686,7 +1685,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 void LoadLvlGFX()
 {
-	assert(! pDungeonCels);
+	assert(!pDungeonCels);
 
 	switch (leveltype) {
 	case DTYPE_TOWN:
@@ -1756,7 +1755,7 @@ void LoadLvlGFX()
 
 void LoadAllGFX()
 {
-	assert(! pSpeedCels);
+	assert(!pSpeedCels);
 	pSpeedCels = DiabloAllocPtr(0x100000);
 	IncProgress();
 	IncProgress();
@@ -1782,7 +1781,7 @@ void CreateLevel(int lvldir)
 		InitL1Triggers();
 		Freeupstairs();
 #ifdef HELLFIRE
-		if(currlevel < 21) {
+		if (currlevel < 21) {
 			LoadRndLvlPal(1);
 		} else {
 			LoadRndLvlPal(5);
@@ -1803,7 +1802,7 @@ void CreateLevel(int lvldir)
 		InitL3Triggers();
 		Freeupstairs();
 #ifdef HELLFIRE
-		if(currlevel < 17) {
+		if (currlevel < 17) {
 			LoadRndLvlPal(3);
 		} else {
 			LoadRndLvlPal(6);
@@ -1922,7 +1921,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 				InitObjects();
 				InitItems();
 #ifdef HELLFIRE
-				if ( currlevel < 17 )
+				if (currlevel < 17)
 #endif
 					CreateThemeRooms();
 				glMid3Seed[currlevel] = GetRndSeed();
@@ -1967,7 +1966,7 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 			ResyncMPQuests();
 #ifndef SPAWN
 	} else {
-		assert(! pSpeedCels);
+		assert(!pSpeedCels);
 		pSpeedCels = DiabloAllocPtr(0x100000);
 		LoadSetMap();
 		IncProgress();
@@ -2036,21 +2035,18 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 	}
 
 #ifdef HELLFIRE
-	if ( currlevel >= 21 )
-	{
-		if ( currlevel == 21 )
-		{
+	if (currlevel >= 21) {
+		if (currlevel == 21) {
 			items_427ABA(CornerStone.x, CornerStone.y);
 		}
-		if ( quests[Q_NAKRUL]._qactive == QUEST_DONE && currlevel == 24 )
-		{
+		if (quests[Q_NAKRUL]._qactive == QUEST_DONE && currlevel == 24) {
 			objects_454BA8();
 		}
 	}
 #endif
 
 #ifdef HELLFIRE
-	if ( currlevel >= 17 )
+	if (currlevel >= 17)
 		music_start(currlevel > 20 ? TMUSIC_L5 : TMUSIC_L6);
 	else
 		music_start(leveltype);
@@ -2189,13 +2185,13 @@ static PlayerStruct *get_plr_mem(PlayerStruct *p)
 	r = malloc(rand() & 0x7FFF);
 	pPlayer = (PlayerStruct *)malloc(sizeof(PlayerStruct) * MAX_PLRS);
 
-	if(r != NULL) {
+	if (r != NULL) {
 		free(r);
 	}
-	if(pPlayer == NULL) {
+	if (pPlayer == NULL) {
 		return p;
 	}
-	if(p != NULL) {
+	if (p != NULL) {
 		memcpy(pPlayer, p, sizeof(PlayerStruct) * MAX_PLRS);
 		free(p);
 	}
@@ -2207,7 +2203,7 @@ void alloc_plr()
 {
 	plr = get_plr_mem(NULL);
 
-	if(plr == NULL) {
+	if (plr == NULL) {
 		app_fatal("Unable to initialize memory");
 	}
 

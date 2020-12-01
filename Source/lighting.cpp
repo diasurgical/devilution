@@ -568,7 +568,7 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 #endif
 	}
 
-	mult = xoff + 8*yoff;
+	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < max_x; x++) {
 			radius_block = lightblock[mult][y][x];

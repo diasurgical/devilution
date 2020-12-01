@@ -323,7 +323,7 @@ const PLStruct PL_Prefix[] = {
 
 /** Contains the data related to each item suffix. */
 const PLStruct PL_Suffix[] = {
-	// clang-format off
+// clang-format off
 	// PLName,          PLPower,       PLParam1, PLParam2, PLMinLvl, PLIType,                                                         PLGOE, PLDouble, PLOk,  PLMinVal, PLMaxVal, PLMultVal
 #ifdef HELLFIRE
 	{  "quality",       IPL_DAMMOD,           1,        2,        2,                       PLT_WEAP | PLT_STAFF | PLT_BOW           ,     0, FALSE,    TRUE,       100,      200,         2 },

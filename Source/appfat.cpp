@@ -519,7 +519,7 @@ static void FreeDlg()
 #ifdef HELLFIRE
 __declspec(naked)
 #endif
-void __cdecl app_fatal(const char *pszFmt, ...)
+    void __cdecl app_fatal(const char *pszFmt, ...)
 {
 	va_list va;
 
