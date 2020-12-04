@@ -4365,7 +4365,7 @@ void MAI_Garg(int i)
 		return;
 	}
 
-	if (Monst->_mhitpoints<Monst->_mmaxhp> > 1 && !(Monst->_mFlags & MFLAG_NOHEAL))
+	if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1) && !(Monst->_mFlags & MFLAG_NOHEAL))
 		Monst->_mgoal = MGOAL_RETREAT;
 	if (Monst->_mgoal == MGOAL_RETREAT) {
 		if (abs(dx) >= Monst->_mint + 2 || abs(dy) >= Monst->_mint + 2) {

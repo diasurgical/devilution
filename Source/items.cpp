@@ -5212,7 +5212,7 @@ void SpawnBoy(int lvl)
 {
 	int itype;
 
-	if (boylevel<lvl> > 1 || boyitem._itype == ITYPE_NONE) {
+	if (boylevel < (lvl >> 1) || boyitem._itype == ITYPE_NONE) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
