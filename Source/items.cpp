@@ -729,7 +729,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 			maxd += itm->_iMaxDam;
 
 			if (itm->_iSpell != SPL_NULL) {
-				spl |= (unsigned __int64)1 << (itm->_iSpell - 1);
+				spl |= SPELLBIT(itm->_iSpell);
 			}
 
 			if (itm->_iMagical == ITEM_QUALITY_NORMAL || itm->_iIdentified) {
@@ -908,7 +908,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	// check if the current RSplType is a valid/allowed spell
 	if (plr[p]._pRSplType == RSPLTYPE_CHARGES
-	    && !(spl & ((unsigned __int64)1 << (plr[p]._pRSpell - 1)))) {
+	    && !(spl & SPELLBIT(plr[p]._pRSpell))) {
 		plr[p]._pRSpell = SPL_INVALID;
 		plr[p]._pRSplType = RSPLTYPE_INVALID;
 		force_redraw = 255;
@@ -1156,18 +1156,18 @@ void CalcPlrScrolls(int p)
 	for (i = 0; i < plr[p]._pNumInv; i++) {
 		if (plr[p].InvList[i]._itype != ITYPE_NONE && (plr[p].InvList[i]._iMiscId == IMISC_SCROLL || plr[p].InvList[i]._iMiscId == IMISC_SCROLLT)) {
 			if (plr[p].InvList[i]._iStatFlag)
-				plr[p]._pScrlSpells |= (__int64)1 << (plr[p].InvList[i]._iSpell - 1);
+				plr[p]._pScrlSpells |= SPELLBIT(plr[p].InvList[i]._iSpell);
 		}
 	}
 
 	for (j = 0; j < MAXBELTITEMS; j++) {
 		if (plr[p].SpdList[j]._itype != ITYPE_NONE && (plr[p].SpdList[j]._iMiscId == IMISC_SCROLL || plr[p].SpdList[j]._iMiscId == IMISC_SCROLLT)) {
 			if (plr[p].SpdList[j]._iStatFlag)
-				plr[p]._pScrlSpells |= (__int64)1 << (plr[p].SpdList[j]._iSpell - 1);
+				plr[p]._pScrlSpells |= SPELLBIT(plr[p].SpdList[j]._iSpell);
 		}
 	}
 	if (plr[p]._pRSplType == RSPLTYPE_SCROLL) {
-		if (!(plr[p]._pScrlSpells & 1 << (plr[p]._pRSpell - 1))) {
+		if (!(plr[p]._pScrlSpells & 1 << (plr[p]._pRSpell - 1))) { // BUGFIX: apply SPELLBIT macro
 			plr[p]._pRSpell = SPL_INVALID;
 			plr[p]._pRSplType = RSPLTYPE_INVALID;
 			force_redraw = 255;
@@ -1181,7 +1181,7 @@ void CalcPlrStaff(int p)
 	if (plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
 	    && plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag
 	    && plr[p].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
-		plr[p]._pISpells |= (__int64)1 << (plr[p].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
+		plr[p]._pISpells |= SPELLBIT(plr[p].InvBody[INVLOC_HAND_LEFT]._iSpell);
 	}
 }
 
@@ -4683,8 +4683,8 @@ void UseItem(int p, int Mid, int spl)
 		}
 		break;
 	case IMISC_BOOK:
-		plr[p]._pMemSpells |= (__int64)1 << (spl - 1);
-		if (plr[p]._pSplLvl[spl] < 15)
+		plr[p]._pMemSpells |= SPELLBIT(spl);
+		if (plr[p]._pSplLvl[spl] < MAX_SPELL_LEVEL)
 			plr[p]._pSplLvl[spl]++;
 		plr[p]._pMana += spelldata[spl].sManaCost << 6;
 		if (plr[p]._pMana > plr[p]._pMaxMana)

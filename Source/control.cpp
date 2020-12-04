@@ -675,7 +675,7 @@ void ToggleSpell(int slot)
 		break;
 	}
 
-	if (spells & (__int64)1 << (plr[myplr]._pSplHotKey[slot] - 1)) {
+	if (spells & SPELLBIT(plr[myplr]._pSplHotKey[slot])) {
 		plr[myplr]._pRSpell = plr[myplr]._pSplHotKey[slot];
 		plr[myplr]._pRSplType = plr[myplr]._pSplTHotKey[slot];
 		force_redraw = 255;
@@ -2462,13 +2462,13 @@ char GetSBookTrans(int ii, BOOL townok)
 		return RSPLTYPE_SKILL;
 #endif
 	st = RSPLTYPE_SPELL;
-	if (plr[myplr]._pISpells & (__int64)1 << (ii - 1)) {
+	if (plr[myplr]._pISpells & SPELLBIT(ii)) {
 		st = RSPLTYPE_CHARGES;
 	}
 #ifdef HELLFIRE
-	if (plr[myplr]._pAblSpells & (__int64)1 << (ii - 1)) {
+	if (plr[myplr]._pAblSpells & SPELLBIT(ii)) {
 #else
-	if (plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64)
+	if (plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64) - use SPELLBIT(ii) macro
 #endif
 		st = RSPLTYPE_SKILL;
 	}
@@ -2506,7 +2506,7 @@ void DrawSpellBook()
 	yp = 55 + SCREEN_Y;
 	for (i = 1; i < 8; i++) {
 		sn = SpellPages[sbooktab][i - 1];
-		if (sn != -1 && spl & (__int64)1 << (sn - 1)) {
+		if (sn != -1 && spl & SPELLBIT(sn)) {
 			st = GetSBookTrans(sn, TRUE);
 			SetSpellTrans(st);
 			DrawSpellCel(RIGHT_PANEL_X + 11, yp, pSBkIconCels, SpellITbl[sn], 37);
@@ -2560,12 +2560,12 @@ void CheckSBook()
 	if (MouseX >= RIGHT_PANEL + 11 && MouseX < RIGHT_PANEL + 48 && MouseY >= 18 && MouseY < 314) {
 		sn = SpellPages[sbooktab][(MouseY - 18) / 43];
 		spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
-		if (sn != -1 && spl & (__int64)1 << (sn - 1)) {
+		if (sn != -1 && spl & SPELLBIT(sn)) {
 			st = RSPLTYPE_SPELL;
-			if (plr[myplr]._pISpells & (__int64)1 << (sn - 1)) {
+			if (plr[myplr]._pISpells & SPELLBIT(sn)) {
 				st = RSPLTYPE_CHARGES;
 			}
-			if (plr[myplr]._pAblSpells & (__int64)1 << (sn - 1)) {
+			if (plr[myplr]._pAblSpells & SPELLBIT(sn)) {
 				st = RSPLTYPE_SKILL;
 			}
 			plr[myplr]._pRSpell = sn;

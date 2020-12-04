@@ -3064,8 +3064,8 @@ void OperateBook(int pnum, int i)
 		return;
 
 	if (setlvlnum == SL_BONECHAMB) {
-		plr[myplr]._pMemSpells |= ((__int64)1 << (SPL_GUARDIAN - 1));
-		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15)
+		plr[myplr]._pMemSpells |= SPELLBIT(SPL_GUARDIAN);
+		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < MAX_SPELL_LEVEL)
 			plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
 		quests[Q_SCHAMB]._qactive = QUEST_DONE;
 		if (!deltaload)
@@ -3743,22 +3743,22 @@ void OperateShrine(int pnum, int i, int sType)
 		spell = 1;
 		spells = plr[pnum]._pMemSpells;
 		for (j = 0; j < MAX_SPELLS; j++) {
-			if (spells & spell)
+			if (spell & spells)
 				cnt++;
 			spell <<= 1;
 		}
 		if (cnt > 1) {
 			spell = 1;
-			for (j = 1; j <= MAX_SPELLS; j++) {
+			for (j = SPL_FIREBOLT; j <= MAX_SPELLS; j++) { // BUGFIX: < MAX_SPELLS, there is no spell with MAX_SPELLS index
 				if (plr[pnum]._pMemSpells & spell) {
-					if (plr[pnum]._pSplLvl[j] < 15)
+					if (plr[pnum]._pSplLvl[j] < MAX_SPELL_LEVEL)
 						plr[pnum]._pSplLvl[j]++;
 				}
 				spell <<= 1;
 			}
 			do {
 				r = random_(0, MAX_SPELLS);
-			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << r)));
+			} while (!(plr[pnum]._pMemSpells & SPELLBIT(r + 1)));
 			if (plr[pnum]._pSplLvl[r] >= 2)
 				plr[pnum]._pSplLvl[r] -= 2;
 			else
@@ -3789,10 +3789,10 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_FIREBOLT - 1);
-		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
+		plr[pnum]._pMemSpells |= SPELLBIT(SPL_FIREBOLT);
+		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
-		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
+		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
 		t = plr[pnum]._pMaxManaBase / 10;
 		v1 = plr[pnum]._pMana - plr[pnum]._pManaBase;
@@ -3922,10 +3922,10 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_SACRED:
 		if (deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_CBOLT - 1);
-		if (plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
+		plr[pnum]._pMemSpells |= SPELLBIT(SPL_CBOLT);
+		if (plr[pnum]._pSplLvl[SPL_CBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
-		if (plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
+		if (plr[pnum]._pSplLvl[SPL_CBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
 		t = plr[pnum]._pMaxManaBase / 10;
 		v1 = plr[pnum]._pMana - plr[pnum]._pManaBase;
@@ -4025,10 +4025,10 @@ void OperateShrine(int pnum, int i, int sType)
 			return;
 		if (pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_HBOLT - 1);
-		if (plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
+		plr[pnum]._pMemSpells |= SPELLBIT(SPL_HBOLT);
+		if (plr[pnum]._pSplLvl[SPL_HBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
-		if (plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
+		if (plr[pnum]._pSplLvl[SPL_HBOLT] < MAX_SPELL_LEVEL)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
 		t = plr[pnum]._pMaxManaBase / 10;
 		v1 = plr[pnum]._pMana - plr[pnum]._pManaBase;
