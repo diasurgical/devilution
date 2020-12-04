@@ -236,7 +236,7 @@ void gmenu_draw()
 #ifdef HELLFIRE
 		ticks = GetTickCount();
 		if ((int)(ticks - LogoAnim_tick) > 25) {
-		    LogoAnim_frame++;
+			LogoAnim_frame++;
 			if (LogoAnim_frame > 16)
 				LogoAnim_frame = 1;
 			LogoAnim_tick = ticks;

@@ -108,6 +108,7 @@ int StrengthTbl[NUM_CLASSES] = {
 };
 /** Maps from player_class to starting stat in magic. */
 int MagicTbl[NUM_CLASSES] = {
+	// clang-format off
 	10,
 	15,
 	35,
@@ -116,6 +117,7 @@ int MagicTbl[NUM_CLASSES] = {
 	20,
 	 0,
 #endif
+	// clang-format on
 };
 /** Maps from player_class to starting stat in dexterity. */
 int DexterityTbl[NUM_CLASSES] = {
@@ -162,6 +164,7 @@ const char *const ClassStrTblOld[] = {
 };
 /** Maps from player_class to maximum stats. */
 int MaxStats[NUM_CLASSES][4] = {
+	// clang-format off
 	{ 250,  50,  60, 100 },
 	{  55,  70, 250,  80 },
 	{  45, 250,  85,  80 },
@@ -170,6 +173,7 @@ int MaxStats[NUM_CLASSES][4] = {
 	{ 120, 120, 120, 100 },
 	{ 255,   0,  55, 150 },
 #endif
+	// clang-format on
 };
 /** Specifies the experience point limit of each level. */
 int ExpLvlsTbl[MAXCHARLEVEL] = {
@@ -2082,9 +2086,9 @@ void DropHalfPlayersGold(int pnum)
 	for (i = 0; i < MAXBELTITEMS && hGold > 0; i++) {
 		if (plr[pnum].SpdList[i]._itype == ITYPE_GOLD &&
 #ifndef HELLFIRE
-			plr[pnum].SpdList[i]._ivalue != GOLD_MAX_LIMIT) {
+		    plr[pnum].SpdList[i]._ivalue != GOLD_MAX_LIMIT) {
 #else
-			plr[pnum].SpdList[i]._ivalue != MaxGold) {
+		    plr[pnum].SpdList[i]._ivalue != MaxGold) {
 #endif
 			if (hGold < plr[pnum].SpdList[i]._ivalue) {
 				plr[pnum].SpdList[i]._ivalue -= hGold;
@@ -2137,9 +2141,9 @@ void DropHalfPlayersGold(int pnum)
 		for (i = 0; i < plr[pnum]._pNumInv && hGold > 0; i++) {
 			if (plr[pnum].InvList[i]._itype == ITYPE_GOLD &&
 #ifndef HELLFIRE
-				plr[pnum].InvList[i]._ivalue != GOLD_MAX_LIMIT) {
+			    plr[pnum].InvList[i]._ivalue != GOLD_MAX_LIMIT) {
 #else
-				plr[pnum].InvList[i]._ivalue != MaxGold) {
+			    plr[pnum].InvList[i]._ivalue != MaxGold) {
 #endif
 				if (hGold < plr[pnum].InvList[i]._ivalue) {
 					plr[pnum].InvList[i]._ivalue -= hGold;
@@ -3848,7 +3852,7 @@ void ProcessPlayers()
 				break;
 			default:
 #endif
-			PlaySFX(sfxdnum);
+				PlaySFX(sfxdnum);
 #ifdef HELLFIRE
 			}
 #endif
@@ -4703,7 +4707,7 @@ void PlayDungMsgs()
 			sfxdnum = PS_MAGE92;
 		} else
 #endif
-		if (plr[myplr]._pClass == PC_MONK) {
+		    if (plr[myplr]._pClass == PC_MONK) {
 			sfxdnum = PS_MONK92;
 		}
 #ifndef SPAWN

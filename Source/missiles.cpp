@@ -1045,13 +1045,13 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 				if (dMonster[mx][my] < 0
 				    && monster[-(dMonster[mx][my] + 1)]._mmode == MM_STONE
 				    && MonsterMHit(
-				           missile[i]._misource,
-				           -(dMonster[mx][my] + 1),
-				           mindam,
-				           maxdam,
-				           missile[i]._midist,
-				           missile[i]._mitype,
-				           shift)) {
+				        missile[i]._misource,
+				        -(dMonster[mx][my] + 1),
+				        mindam,
+				        maxdam,
+				        missile[i]._midist,
+				        missile[i]._mitype,
+				        shift)) {
 					if (!nodel)
 						missile[i]._mirange = 0;
 					missile[i]._miHitFlag = TRUE;
@@ -1060,13 +1060,13 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			if (dPlayer[mx][my] > 0
 			    && dPlayer[mx][my] - 1 != missile[i]._misource
 			    && Plr2PlrMHit(
-			           missile[i]._misource,
-			           dPlayer[mx][my] - 1,
-			           mindam,
-			           maxdam,
-			           missile[i]._midist,
-			           missile[i]._mitype,
-			           shift)) {
+			        missile[i]._misource,
+			        dPlayer[mx][my] - 1,
+			        mindam,
+			        maxdam,
+			        missile[i]._midist,
+			        missile[i]._mitype,
+			        shift)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
 				missile[i]._miHitFlag = TRUE;
@@ -1082,14 +1082,14 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			}
 			if (dPlayer[mx][my] > 0
 			    && PlayerMHit(
-			           dPlayer[mx][my] - 1,
-			           missile[i]._misource,
-			           missile[i]._midist,
-			           mindam,
-			           maxdam,
-			           missile[i]._mitype,
-			           shift,
-			           0)) {
+			        dPlayer[mx][my] - 1,
+			        missile[i]._misource,
+			        missile[i]._midist,
+			        mindam,
+			        maxdam,
+			        missile[i]._mitype,
+			        shift,
+			        0)) {
 				if (!nodel)
 					missile[i]._mirange = 0;
 				missile[i]._miHitFlag = TRUE;
@@ -3119,7 +3119,7 @@ void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 #ifndef SPAWN
 			PS_ROGUE70,
 			PS_MAGE70,
-			PS_MAGE70,  // BUGFIX: PS_MONK70?
+			PS_MAGE70, // BUGFIX: PS_MONK70?
 			PS_ROGUE70,
 #else
 			0,
@@ -3883,12 +3883,12 @@ void MI_Fireball(int i)
 			}
 			if (missile[i]._miyvel > 0
 			    && (TransList[dTransVal[mx + 1][my]] && nSolidTable[dPiece[mx + 1][my]]
-			           || TransList[dTransVal[mx - 1][my]] && nSolidTable[dPiece[mx - 1][my]])) {
+			        || TransList[dTransVal[mx - 1][my]] && nSolidTable[dPiece[mx - 1][my]])) {
 				missile[i]._miyoff -= 32;
 			}
 			if (missile[i]._mixvel > 0
 			    && (TransList[dTransVal[mx][my + 1]] && nSolidTable[dPiece[mx][my + 1]]
-			           || TransList[dTransVal[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])) {
+			        || TransList[dTransVal[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])) {
 				missile[i]._mixoff -= 32;
 			}
 			missile[i]._mimfnum = 0;
@@ -4094,12 +4094,12 @@ void mi_immolation(int i)
 			}
 			if (missile[i]._miyvel > 0
 			    && (TransList[dTransVal[mx + 1][my]] && nSolidTable[dPiece[mx + 1][my]]
-			           || TransList[dTransVal[mx - 1][my]] && nSolidTable[dPiece[mx - 1][my]])) {
+			        || TransList[dTransVal[mx - 1][my]] && nSolidTable[dPiece[mx - 1][my]])) {
 				missile[i]._miyoff -= 32;
 			}
 			if (missile[i]._mixvel > 0
 			    && (TransList[dTransVal[mx][my + 1]] && nSolidTable[dPiece[mx][my + 1]]
-			           || TransList[dTransVal[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])) {
+			        || TransList[dTransVal[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])) {
 				missile[i]._mixoff -= 32;
 			}
 			missile[i]._mimfnum = 0;

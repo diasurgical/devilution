@@ -120,29 +120,29 @@ void InitQuests()
 	for (z = 0; z < MAXQUESTS; z++) {
 		if (gbMaxPlayers > 1 && !(questlist[z]._qflags & QUEST_ANY))
 			continue;
-			quests[z]._qtype = questlist[z]._qdtype;
-			if (gbMaxPlayers > 1) {
-				quests[z]._qlevel = questlist[z]._qdmultlvl;
-				if (!delta_quest_inited(initiatedQuests)) {
-					quests[z]._qactive = QUEST_INIT;
-					quests[z]._qvar1 = 0;
-					quests[z]._qlog = FALSE;
-				}
-				initiatedQuests++;
-			} else {
+		quests[z]._qtype = questlist[z]._qdtype;
+		if (gbMaxPlayers > 1) {
+			quests[z]._qlevel = questlist[z]._qdmultlvl;
+			if (!delta_quest_inited(initiatedQuests)) {
 				quests[z]._qactive = QUEST_INIT;
-				quests[z]._qlevel = questlist[z]._qdlvl;
 				quests[z]._qvar1 = 0;
 				quests[z]._qlog = FALSE;
 			}
+			initiatedQuests++;
+		} else {
+			quests[z]._qactive = QUEST_INIT;
+			quests[z]._qlevel = questlist[z]._qdlvl;
+			quests[z]._qvar1 = 0;
+			quests[z]._qlog = FALSE;
+		}
 
-			quests[z]._qslvl = questlist[z]._qslvl;
-			quests[z]._qtx = 0;
-			quests[z]._qty = 0;
-			quests[z]._qidx = z;
-			quests[z]._qlvltype = questlist[z]._qlvlt;
-			quests[z]._qvar2 = 0;
-			quests[z]._qmsg = questlist[z]._qdmsg;
+		quests[z]._qslvl = questlist[z]._qslvl;
+		quests[z]._qtx = 0;
+		quests[z]._qty = 0;
+		quests[z]._qidx = z;
+		quests[z]._qlvltype = questlist[z]._qlvlt;
+		quests[z]._qvar2 = 0;
+		quests[z]._qmsg = questlist[z]._qdmsg;
 	}
 
 	if (gbMaxPlayers == 1) {

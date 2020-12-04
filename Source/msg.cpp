@@ -54,7 +54,7 @@ static void msg_pre_packet()
 
 	i = -1;
 	for (TMegaPkt *pkt = sgpMegaPkt; pkt != NULL; pkt = pkt->pNext) {
-		BYTE * data = pkt->data;
+		BYTE *data = pkt->data;
 		int spaceLeft = sizeof(pkt->data);
 		while (spaceLeft != pkt->dwSpaceLeft) {
 			if (*data == FAKE_CMD_SETID) {
@@ -317,12 +317,12 @@ static void DeltaImportJunk(BYTE *src)
 #endif
 			src += sizeof(DPortal);
 			SetPortalStats(
-				i,
-				TRUE,
-				sgJunk.portal[i].x,
-				sgJunk.portal[i].y,
-				sgJunk.portal[i].level,
-				sgJunk.portal[i].ltype);
+			    i,
+			    TRUE,
+			    sgJunk.portal[i].x,
+			    sgJunk.portal[i].y,
+			    sgJunk.portal[i].level,
+			    sgJunk.portal[i].ltype);
 		}
 	}
 
@@ -500,14 +500,14 @@ void delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 	if (gbMaxPlayers == 1)
 		return;
 
-		sgbDeltaChanged = TRUE;
-		DMonsterStr *pD = &sgLevels[bLevel].monster[pnum];
-		pD->_mx = pG->_mx;
-		pD->_my = pG->_my;
-		pD->_mactive = UCHAR_MAX;
-		pD->_menemy = pG->_menemy;
-		pD->_mdir = pG->_mdir;
-		pD->_mhitpoints = pG->_mhitpoints;
+	sgbDeltaChanged = TRUE;
+	DMonsterStr *pD = &sgLevels[bLevel].monster[pnum];
+	pD->_mx = pG->_mx;
+	pD->_my = pG->_my;
+	pD->_mactive = UCHAR_MAX;
+	pD->_menemy = pG->_menemy;
+	pD->_mdir = pG->_mdir;
+	pD->_mhitpoints = pG->_mhitpoints;
 }
 
 void delta_leave_sync(BYTE bLevel)
@@ -618,10 +618,10 @@ static void delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 	TCmdPItem *pD = sgLevels[bLevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != CMD_WALKXY
-			&& pD->bCmd != 0xFF
-			&& pD->wIndx == pI->wIndx
-			&& pD->wCI == pI->wCI
-			&& pD->dwSeed == pI->dwSeed) {
+		    && pD->bCmd != 0xFF
+		    && pD->wIndx == pI->wIndx
+		    && pD->wCI == pI->wCI
+		    && pD->dwSeed == pI->dwSeed) {
 			if (pD->bCmd == CMD_ACK_PLRINFO)
 				return;
 			app_fatal("Trying to drop a floor item?");
@@ -665,10 +665,10 @@ void DeltaAddItem(int ii)
 	TCmdPItem *pD = sgLevels[currlevel].item;
 	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd != 0xFF
-			&& pD->wIndx == item[ii].IDidx
-			&& pD->wCI == item[ii]._iCreateInfo
-			&& pD->dwSeed == item[ii]._iSeed
-			&& (pD->bCmd == CMD_WALKXY || pD->bCmd == CMD_STAND)) {
+		    && pD->wIndx == item[ii].IDidx
+		    && pD->wCI == item[ii]._iCreateInfo
+		    && pD->dwSeed == item[ii]._iSeed
+		    && (pD->bCmd == CMD_WALKXY || pD->bCmd == CMD_STAND)) {
 			return;
 		}
 	}
@@ -772,9 +772,9 @@ void DeltaLoadLevel()
 		if (sgLevels[currlevel].item[i].bCmd != 0xFF) {
 			if (sgLevels[currlevel].item[i].bCmd == CMD_WALKXY) {
 				ii = FindGetItem(
-					sgLevels[currlevel].item[i].wIndx,
-					sgLevels[currlevel].item[i].wCI,
-					sgLevels[currlevel].item[i].dwSeed);
+				    sgLevels[currlevel].item[i].wIndx,
+				    sgLevels[currlevel].item[i].wCI,
+				    sgLevels[currlevel].item[i].dwSeed);
 				if (ii != -1) {
 					if (dItem[item[ii]._ix][item[ii]._iy] == ii + 1)
 						dItem[item[ii]._ix][item[ii]._iy] = 0;
@@ -787,23 +787,23 @@ void DeltaLoadLevel()
 				itemactive[numitems] = ii;
 				if (sgLevels[currlevel].item[i].wIndx == IDI_EAR) {
 					RecreateEar(
-						ii,
-						sgLevels[currlevel].item[i].wCI,
-						sgLevels[currlevel].item[i].dwSeed,
-						sgLevels[currlevel].item[i].bId,
-						sgLevels[currlevel].item[i].bDur,
-						sgLevels[currlevel].item[i].bMDur,
-						sgLevels[currlevel].item[i].bCh,
-						sgLevels[currlevel].item[i].bMCh,
-						sgLevels[currlevel].item[i].wValue,
-						sgLevels[currlevel].item[i].dwBuff);
+					    ii,
+					    sgLevels[currlevel].item[i].wCI,
+					    sgLevels[currlevel].item[i].dwSeed,
+					    sgLevels[currlevel].item[i].bId,
+					    sgLevels[currlevel].item[i].bDur,
+					    sgLevels[currlevel].item[i].bMDur,
+					    sgLevels[currlevel].item[i].bCh,
+					    sgLevels[currlevel].item[i].bMCh,
+					    sgLevels[currlevel].item[i].wValue,
+					    sgLevels[currlevel].item[i].dwBuff);
 				} else {
 					RecreateItem(
-						ii,
-						sgLevels[currlevel].item[i].wIndx,
-						sgLevels[currlevel].item[i].wCI,
-						sgLevels[currlevel].item[i].dwSeed,
-						sgLevels[currlevel].item[i].wValue);
+					    ii,
+					    sgLevels[currlevel].item[i].wIndx,
+					    sgLevels[currlevel].item[i].wCI,
+					    sgLevels[currlevel].item[i].dwSeed,
+					    sgLevels[currlevel].item[i].wValue);
 					if (sgLevels[currlevel].item[i].bId)
 						item[ii]._iIdentified = TRUE;
 					item[ii]._iDurability = sgLevels[currlevel].item[i].bDur;
@@ -1472,7 +1472,8 @@ static DWORD On_GETITEM(TCmd *pCmd, int pnum)
 					if (currlevel != p->bLevel) {
 						ii = SyncPutItem(myplr, plr[myplr]._px, plr[myplr]._py, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
 #ifdef HELLFIRE
-							, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+						    ,
+						    p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
 #endif
 						);
 						if (ii != -1)
@@ -1538,7 +1539,8 @@ static DWORD On_AGETITEM(TCmd *pCmd, int pnum)
 					if (currlevel != p->bLevel) {
 						int ii = SyncPutItem(myplr, plr[myplr]._px, plr[myplr]._py, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
 #ifdef HELLFIRE
-							, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+						    ,
+						    p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
 #endif
 						);
 						if (ii != -1)
@@ -1583,7 +1585,8 @@ static DWORD On_PUTITEM(TCmd *pCmd, int pnum)
 		else
 			ii = SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
 #ifdef HELLFIRE
-				, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+			    ,
+			    p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
 #endif
 			);
 		if (ii != -1) {
@@ -1610,7 +1613,8 @@ static DWORD On_SYNCPUTITEM(TCmd *pCmd, int pnum)
 	else if (currlevel == plr[pnum].plrlevel) {
 		int ii = SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
 #ifdef HELLFIRE
-			, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+		    ,
+		    p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
 #endif
 		);
 		if (ii != -1) {
@@ -1638,7 +1642,8 @@ static DWORD On_RESPAWNITEM(TCmd *pCmd, int pnum)
 		if (currlevel == plr[pnum].plrlevel && pnum != myplr) {
 			SyncPutItem(pnum, p->x, p->y, p->wIndx, p->wCI, p->dwSeed, p->bId, p->bDur, p->bMDur, p->bCh, p->bMCh, p->wValue, p->dwBuff
 #ifdef HELLFIRE
-				, p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
+			    ,
+			    p->wToHit, p->wMaxDam, p->bMinStr, p->bMinMag, p->bMinDex, p->bAC
 #endif
 			);
 		}
