@@ -900,7 +900,7 @@ static BOOL DRLG_L3FillRoom(int x1, int y1, int x2, int y2)
 static void DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 {
 	int blksizex, blksizey, x1, y1, x2, y2;
-	BOOL contflag;
+	int contflag;
 
 	blksizex = random_(0, 2) + 3;
 	blksizey = random_(0, 2) + 3;
@@ -964,16 +964,16 @@ static void DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 
 	if (DRLG_L3FillRoom(x1, y1, x2, y2) == TRUE) {
 		contflag = random_(0, 4);
-		if (contflag && dir != 2) {
+		if (contflag != 0 && dir != 2) {
 			DRLG_L3CreateBlock(x1, y1, blksizey, 0);
 		}
-		if (contflag && dir != 3) {
+		if (contflag != 0 && dir != 3) {
 			DRLG_L3CreateBlock(x2, y1, blksizex, 1);
 		}
-		if (contflag && dir != 0) {
+		if (contflag != 0 && dir != 0) {
 			DRLG_L3CreateBlock(x1, y2, blksizey, 2);
 		}
-		if (contflag && dir != 1) {
+		if (contflag != 0 && dir != 1) {
 			DRLG_L3CreateBlock(x1, y1, blksizex, 3);
 		}
 	}

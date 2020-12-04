@@ -3048,10 +3048,10 @@ BOOL PM_DoAttack(int pnum)
 		}
 
 		if (plr[pnum]._pIFlags & ISPL_FIREDAM) {
-			AddMissile(dx, dy, 1, 0, 0, MIS_WEAPEXP, 0, pnum, 0, 0);
+			AddMissile(dx, dy, 1, 0, 0, MIS_WEAPEXP, TARGET_MONSTERS, pnum, 0, 0);
 		}
 		if (plr[pnum]._pIFlags & ISPL_LIGHTDAM) {
-			AddMissile(dx, dy, 2, 0, 0, MIS_WEAPEXP, 0, pnum, 0, 0);
+			AddMissile(dx, dy, 2, 0, 0, MIS_WEAPEXP, TARGET_MONSTERS, pnum, 0, 0);
 		}
 
 		didhit = FALSE;
@@ -3122,7 +3122,7 @@ BOOL PM_DoRangeAttack(int pnum)
 		    plr[pnum]._pVar2,
 		    plr[pnum]._pdir,
 		    mistype,
-		    0,
+		    TARGET_MONSTERS,
 		    pnum,
 		    4,
 		    0);
@@ -3194,7 +3194,7 @@ BOOL PM_DoBlock(int pnum)
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 
-		if (!random_(3, 10)) {
+		if (random_(3, 10) == 0) {
 			ShieldDur(pnum);
 		}
 		return TRUE;
@@ -3270,7 +3270,7 @@ BOOL PM_DoSpell(int pnum)
 		    0,
 		    plr[pnum]._pVar4);
 
-		if (!plr[pnum]._pSplFrom) {
+		if (plr[pnum]._pSplFrom == 0) {
 			if (plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
 				if (!(plr[pnum]._pScrlSpells
 				        & (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))) {
@@ -3347,7 +3347,7 @@ BOOL PM_DoGotHit(int pnum)
 #endif
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
-		if (random_(3, 4)) {
+		if (random_(3, 4) != 0) {
 			ArmorDur(pnum);
 		}
 

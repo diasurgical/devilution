@@ -576,13 +576,13 @@ void AddInitItems()
 		item[i]._iSeed = GetRndSeed();
 		SetRndSeed(item[i]._iSeed);
 #ifdef HELLFIRE
-		if (random_(12, 2))
+		if (random_(12, 2) != 0)
 			GetItemAttrs(i, IDI_HEAL, curlv);
 		else
 			GetItemAttrs(i, IDI_MANA, curlv);
 		item[i]._iCreateInfo = curlv - CF_PREGEN;
 #else
-		if (random_(12, 2))
+		if (random_(12, 2) != 0)
 			GetItemAttrs(i, IDI_HEAL, currlevel);
 		else
 			GetItemAttrs(i, IDI_MANA, currlevel);
@@ -1818,7 +1818,7 @@ void GetStaffSpell(int i, int lvl, BOOL onlygood)
 	char istr[64];
 
 #ifndef HELLFIRE
-	if (!random_(17, 4)) {
+	if (random_(17, 4) == 0) {
 		GetItemPower(i, lvl >> 1, lvl, PLT_STAFF, onlygood);
 	} else
 #endif
@@ -2455,21 +2455,21 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 	pre = random_(23, 4);
 	post = random_(23, 3);
 	if (pre != 0 && post == 0) {
-		if (random_(23, 2))
+		if (random_(23, 2) != 0)
 			post = 1;
 		else
 			pre = 0;
 	}
 	preidx = -1;
 	sufidx = -1;
-	goe = 0;
-	if (!onlygood && random_(0, 3))
+	goe = GOE_ANY;
+	if (!onlygood && random_(0, 3) != 0)
 		onlygood = TRUE;
-	if (!pre) {
+	if (pre == 0) {
 		nt = 0;
 		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
 			if (flgs & PL_Prefix[j].PLIType) {
-				if (PL_Prefix[j].PLMinLvl >= minlvl && PL_Prefix[j].PLMinLvl <= maxlvl && (!onlygood || PL_Prefix[j].PLOk) && (flgs != 256 || PL_Prefix[j].PLPower != 15)) {
+				if (PL_Prefix[j].PLMinLvl >= minlvl && PL_Prefix[j].PLMinLvl <= maxlvl && (!onlygood || PL_Prefix[j].PLOk) && (flgs != PLT_STAFF || PL_Prefix[j].PLPower != IPL_CHARGES)) {
 					l[nt] = j;
 					nt++;
 					if (PL_Prefix[j].PLDouble) {
@@ -2501,7 +2501,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		for (j = 0; PL_Suffix[j].PLPower != -1; j++) {
 			if (PL_Suffix[j].PLIType & flgs
 			    && PL_Suffix[j].PLMinLvl >= minlvl && PL_Suffix[j].PLMinLvl <= maxlvl
-			    && (goe | PL_Suffix[j].PLGOE) != 0x11
+			    && (goe | PL_Suffix[j].PLGOE) != (GOE_GOOD | GOE_EVIL)
 			    && (!onlygood || PL_Suffix[j].PLOk)) {
 				l[nl] = j;
 				nl++;
@@ -3077,12 +3077,12 @@ void SetupAllUseful(int ii, int iseed, int lvl)
 		break;
 	}
 #else
-	if (random_(34, 2))
+	if (random_(34, 2) != 0)
 		idx = IDI_HEAL;
 	else
 		idx = IDI_MANA;
 
-	if (lvl > 1 && !random_(34, 3))
+	if (lvl > 1 && random_(34, 3) == 0)
 		idx = IDI_PORTAL;
 #endif
 

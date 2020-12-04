@@ -147,7 +147,7 @@ void InitQuests()
 
 	if (gbMaxPlayers == 1) {
 		SetRndSeed(glSeedTbl[15]);
-		if (random_(0, 2))
+		if (random_(0, 2) != 0)
 			quests[Q_PWATER]._qactive = QUEST_NOTAVAIL;
 		else
 			quests[Q_SKELKING]._qactive = QUEST_NOTAVAIL;
@@ -201,7 +201,7 @@ void CheckQuests()
 		quests[Q_BETRAYER]._qty = 2 * quests[Q_BETRAYER]._qty + 16;
 		rportx = quests[Q_BETRAYER]._qtx;
 		rporty = quests[Q_BETRAYER]._qty;
-		AddMissile(rportx, rporty, rportx, rporty, 0, MIS_RPORTAL, 0, myplr, 0, 0);
+		AddMissile(rportx, rporty, rportx, rporty, 0, MIS_RPORTAL, TARGET_MONSTERS, myplr, 0, 0);
 		quests[Q_BETRAYER]._qvar2 = 1;
 		if (quests[Q_BETRAYER]._qactive == QUEST_ACTIVE) {
 			quests[Q_BETRAYER]._qvar1 = 3;
@@ -214,7 +214,7 @@ void CheckQuests()
 	    && quests[Q_BETRAYER]._qvar2 == 4) {
 		rportx = 35;
 		rporty = 32;
-		AddMissile(rportx, rporty, rportx, rporty, 0, MIS_RPORTAL, 0, myplr, 0, 0);
+		AddMissile(rportx, rporty, rportx, rporty, 0, MIS_RPORTAL, TARGET_MONSTERS, myplr, 0, 0);
 		quests[Q_BETRAYER]._qvar2 = 3;
 	}
 
@@ -423,7 +423,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		quests[Q_BETRAYER]._qvar1 = 7;
 		quests[Q_BETRAYER]._qvar2 = 4;
 		quests[Q_DIABLO]._qactive = QUEST_ACTIVE;
-		AddMissile(35, 32, 35, 32, 0, MIS_RPORTAL, 0, myplr, 0, 0);
+		AddMissile(35, 32, 35, 32, 0, MIS_RPORTAL, TARGET_MONSTERS, myplr, 0, 0);
 		if (plr[myplr]._pClass == PC_WARRIOR) {
 			sfxdnum = PS_WARR83;
 		} else if (plr[myplr]._pClass == PC_ROGUE) {

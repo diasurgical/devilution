@@ -1989,7 +1989,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 #else
 	if (Monst->MType->mtype >= MT_NACID && Monst->MType->mtype <= MT_XACID)
 #endif
-		AddMissile(Monst->_mx, Monst->_my, 0, 0, 0, MIS_ACIDPUD, 1, i, Monst->_mint + 1, 0);
+		AddMissile(Monst->_mx, Monst->_my, 0, 0, 0, MIS_ACIDPUD, TARGET_PLAYERS, i, Monst->_mint + 1, 0);
 }
 
 void M2MStartKill(int i, int mid)
@@ -2045,7 +2045,7 @@ void M2MStartKill(int i, int mid)
 	CheckQuestKill(mid, TRUE);
 	M_FallenFear(monster[mid]._mx, monster[mid]._my);
 	if (monster[mid].MType->mtype >= MT_NACID && monster[mid].MType->mtype <= MT_XACID)
-		AddMissile(monster[mid]._mx, monster[mid]._my, 0, 0, 0, MIS_ACIDPUD, 1, mid, monster[mid]._mint + 1, 0);
+		AddMissile(monster[mid]._mx, monster[mid]._my, 0, 0, 0, MIS_ACIDPUD, TARGET_PLAYERS, mid, monster[mid]._mint + 1, 0);
 }
 
 void M_StartKill(int i, int pnum)
@@ -2680,7 +2680,7 @@ BOOL M_DoRAttack(int i)
 				    monster[i]._menemyy,
 				    monster[i]._mdir,
 				    monster[i]._mVar1,
-				    1,
+				    TARGET_PLAYERS,
 				    i,
 				    monster[i]._mVar2,
 				    0);
@@ -2731,7 +2731,7 @@ BOOL M_DoRSpAttack(int i)
 		    monster[i]._menemyy,
 		    monster[i]._mdir,
 		    monster[i]._mVar1,
-		    1,
+		    TARGET_PLAYERS,
 		    i,
 		    monster[i]._mVar3,
 		    0);
@@ -3352,11 +3352,11 @@ BOOL M_CallWalk(int i, int md)
 
 	mdtemp = md;
 	ok = DirOK(i, md);
-	if (random_(101, 2))
+	if (random_(101, 2) != 0)
 		ok = ok || (md = left[mdtemp], DirOK(i, md)) || (md = right[mdtemp], DirOK(i, md));
 	else
 		ok = ok || (md = right[mdtemp], DirOK(i, md)) || (md = left[mdtemp], DirOK(i, md));
-	if (random_(102, 2))
+	if (random_(102, 2) != 0)
 		ok = ok
 		    || (md = right[right[mdtemp]], DirOK(i, md))
 		    || (md = left[left[mdtemp]], DirOK(i, md));
@@ -3401,7 +3401,7 @@ BOOL M_CallWalk2(int i, int md)
 
 	mdtemp = md;
 	ok = DirOK(i, md);     // Can we continue in the same direction
-	if (random_(101, 2)) { // Randomly go left or right
+	if (random_(101, 2) != 0) { // Randomly go left or right
 		ok = ok || (mdtemp = left[md], DirOK(i, left[md])) || (mdtemp = right[md], DirOK(i, right[md]));
 	} else {
 		ok = ok || (mdtemp = right[md], DirOK(i, right[md])) || (mdtemp = left[md], DirOK(i, left[md]));
@@ -3705,7 +3705,7 @@ void MAI_Bat(int i)
 			M_CallWalk(i, opposite[md]);
 			Monst->_mgoalvar1++;
 		} else {
-			if (random_(108, 2))
+			if (random_(108, 2) != 0)
 				M_CallWalk(i, left[md]);
 			else
 				M_CallWalk(i, right[md]);
@@ -3736,7 +3736,7 @@ void MAI_Bat(int i)
 		Monst->_mgoal = MGOAL_RETREAT;
 		Monst->_mgoalvar1 = 0;
 		if (Monst->MType->mtype == MT_FAMILIAR) {
-			AddMissile(Monst->_menemyx, Monst->_menemyy, Monst->_menemyx + 1, 0, -1, MIS_LIGHTNING, 1, i, random_(109, 10) + 1, 0);
+			AddMissile(Monst->_menemyx, Monst->_menemyy, Monst->_menemyx + 1, 0, -1, MIS_LIGHTNING, TARGET_PLAYERS, i, random_(109, 10) + 1, 0);
 		}
 	}
 
@@ -3876,7 +3876,7 @@ void MAI_Sneak(int i)
 					md = GetDirection(Monst->_mx, Monst->_my, plr[Monst->_menemy]._pownerx, plr[Monst->_menemy]._pownery);
 				md = opposite[md];
 				if (Monst->MType->mtype == MT_UNSEEN) {
-					if (random_(112, 2))
+					if (random_(112, 2) != 0)
 						md = left[md];
 					else
 						md = right[md];
@@ -4904,8 +4904,8 @@ void MAI_Counselor(int i)
 				} else if (Monst->_mVar1 == MM_DELAY
 				    || random_(105, 100) < 2 * Monst->_mint + 20) {
 					M_StartRAttack(i, -1, 0);
-					AddMissile(Monst->_mx, Monst->_my, 0, 0, Monst->_mdir, MIS_FLASH, 1, i, 4, 0);
-					AddMissile(Monst->_mx, Monst->_my, 0, 0, Monst->_mdir, MIS_FLASH2, 1, i, 4, 0);
+					AddMissile(Monst->_mx, Monst->_my, 0, 0, Monst->_mdir, MIS_FLASH, TARGET_PLAYERS, i, 4, 0);
+					AddMissile(Monst->_mx, Monst->_my, 0, 0, Monst->_mdir, MIS_FLASH2, TARGET_PLAYERS, i, 4, 0);
 				} else
 					M_StartDelay(i, random_(105, 10) + 2 * (5 - Monst->_mint));
 			}
