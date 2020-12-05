@@ -2701,9 +2701,9 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 	assert(ttbl != NULL);
 
 	for (i = 1; i <= nCel; i++) {
-		pFrameTable = (DWORD *)&p[4 * i];
-		dst = &p[pFrameTable[0] + 10];
-		nDataSize = CelGetFrameSize(p, i) - 10;
+		pFrameTable = (DWORD *)p;
+		dst = &p[SwapLE32(pFrameTable[i]) + 10];
+		nDataSize = SwapLE32(pFrameTable[i + 1]) - SwapLE32(pFrameTable[i]) - 10;
 		while (nDataSize) {
 			width = *dst++;
 			nDataSize--;
@@ -2718,10 +2718,9 @@ void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 				} else {
 					nDataSize -= width;
 					assert(nDataSize >= 0);
-					while (width) {
+					while (width--) {
 						*dst = ttbl[*dst];
 						dst++;
-						width--;
 					}
 				}
 			}
