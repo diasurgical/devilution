@@ -623,6 +623,34 @@ BOOL S_StartSPBuy()
 
 BOOL SmithSellOk(int i)
 {
+#ifdef HELLFIRE
+	ItemStruct *pI;
+
+	if (i >= 0) {
+		pI = &plr[myplr].InvList[i];
+	} else {
+		pI = &plr[myplr].SpdList[-(i + 1)];
+	}
+
+	if (pI->_itype == ITYPE_NONE)
+		return FALSE;
+
+	if (pI->_iMiscId > IMISC_OILFIRST && pI->_iMiscId < IMISC_OILLAST)
+		return TRUE;
+
+	if (pI->_itype == ITYPE_MISC)
+		return FALSE;
+	if (pI->_itype == ITYPE_GOLD)
+		return FALSE;
+	if (pI->_itype == ITYPE_MEAT)
+		return FALSE;
+	if (pI->_itype == ITYPE_STAFF && pI->_iSpell != SPL_NULL)
+		return FALSE;
+	if (pI->_iClass == ICLASS_QUEST)
+		return FALSE;
+	if (pI->IDidx == IDI_LAZSTAFF)
+		return FALSE;
+#else
 	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
 		return FALSE;
 	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
@@ -635,6 +663,7 @@ BOOL SmithSellOk(int i)
 		return FALSE;
 	if (plr[myplr].InvList[i].IDidx == IDI_LAZSTAFF)
 		return FALSE;
+#endif
 
 	return TRUE;
 }
