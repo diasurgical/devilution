@@ -13,12 +13,13 @@ void Decrypt(DWORD *castBlock, DWORD size, DWORD key)
 	DWORD seed, i;
 
 	seed = 0xEEEEEEEE;
-	for (i = 0; i < (size >> 2); i++) {
+	i = size >> 2;
+	while (i--) {
 		seed += hashtable[4][(key & 0xFF)];
 		*castBlock ^= seed + key;
 		seed += *castBlock + (seed << 5) + 3;
-		key = ((~key << 0x15) + 0x11111111) | (key >> 0x0B);
 		castBlock++;
+		key = (((key << 0x15) ^ 0xFFE00000) + 0x11111111) | (key >> 0x0B);
 	}
 }
 
@@ -27,13 +28,14 @@ void Encrypt(DWORD *castBlock, DWORD size, DWORD key)
 	DWORD seed, i, ch;
 
 	seed = 0xEEEEEEEE;
-	for (i = 0; i < (size >> 2); i++) {
+	i = size >> 2;
+	while (i--) {
 		ch = *castBlock;
 		seed += hashtable[4][(key & 0xFF)];
 		*castBlock ^= seed + key;
-		seed += ch + (seed << 5) + 3;
-		key = ((~key << 0x15) + 0x11111111) | (key >> 0x0B);
 		castBlock++;
+		seed += ch + (seed << 5) + 3;
+		key = ((key << 0x15) ^ 0xFFE00000) + 0x11111111 | (key >> 0x0B);
 	}
 }
 
