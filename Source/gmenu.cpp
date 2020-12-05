@@ -269,23 +269,25 @@ void gmenu_draw()
 
 static void gmenu_left_right(BOOL isRight)
 {
-	int step;
+	int step, steps;
 
-	if (sgpCurrItem->dwFlags & GMENU_SLIDER) {
-		step = sgpCurrItem->dwFlags & 0xFFF;
-		if (isRight) {
-			if (step == (int)(sgpCurrItem->dwFlags & 0xFFF000) >> 12)
-				return;
-			step++;
-		} else {
-			if (!step)
-				return;
-			step--;
-		}
-		sgpCurrItem->dwFlags &= 0xFFFFF000;
-		sgpCurrItem->dwFlags |= step;
-		sgpCurrItem->fnMenu(FALSE);
+	if (!(sgpCurrItem->dwFlags & GMENU_SLIDER))
+		return;
+
+	step = sgpCurrItem->dwFlags & 0xFFF;
+	steps = (int)(sgpCurrItem->dwFlags & 0xFFF000) >> 12;
+	if (isRight) {
+		if (step == steps)
+			return;
+		step++;
+	} else {
+		if (!step)
+			return;
+		step--;
 	}
+	sgpCurrItem->dwFlags &= 0xFFFFF000;
+	sgpCurrItem->dwFlags |= step;
+	sgpCurrItem->fnMenu(FALSE);
 }
 
 BOOL gmenu_presskeys(int vkey)
