@@ -2524,7 +2524,16 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		}
 	}
 	if (!control_WriteStringToBuffer((BYTE *)item[i]._iIName)) {
+#ifdef HELLFIRE
+		int aii = item[i].IDidx;
+		if (AllItemsList[aii].iSName)
+			strcpy(item[i]._iIName, AllItemsList[aii].iSName);
+		else
+			item[i]._iName[0] = 0;
+#else
 		strcpy(item[i]._iIName, AllItemsList[item[i].IDidx].iSName);
+#endif
+
 		if (preidx != -1) {
 			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
 			strcpy(item[i]._iIName, istr);
