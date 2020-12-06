@@ -5654,7 +5654,7 @@ void MI_Bonespirit(int i)
 			ChangeLight(missile[i]._mlid, cx, cy, 8);
 		}
 		if (missile[i]._mirange == 0) {
-			SetMissDir(i, DIR_OMNI);
+			SetMissDir(i, 8);
 			missile[i]._mirange = 7;
 		}
 		PutMissile(i);

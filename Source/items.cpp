@@ -2643,7 +2643,7 @@ int RndItem(int m)
 			ril[ri] = i;
 			ri++;
 		}
-		if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl
+		if (AllItemsList[i].iRnd != IDROP_NEVER && monster[m].mLevel >= AllItemsList[i].iMinMLvl
 #ifdef HELLFIRE
 		    && ri < 512
 #endif
@@ -2676,7 +2676,7 @@ int RndUItem(int m)
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		okflag = TRUE;
-		if (!AllItemsList[i].iRnd)
+		if (AllItemsList[i].iRnd == IDROP_NEVER)
 			okflag = FALSE;
 		if (m != -1) {
 			if (monster[m].mLevel < AllItemsList[i].iMinMLvl)
@@ -2728,9 +2728,9 @@ int RndAllItems()
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 #ifdef HELLFIRE
-		if (AllItemsList[i].iRnd && 2 * curlv >= AllItemsList[i].iMinMLvl && ri < 512) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER && 2 * curlv >= AllItemsList[i].iMinMLvl && ri < 512) {
 #else
-		if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER && 2 * currlevel >= AllItemsList[i].iMinMLvl) {
 #endif
 			ril[ri] = i;
 			ri++;
@@ -2757,7 +2757,7 @@ int RndTypeItems(int itype, int imid)
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		okflag = TRUE;
-		if (!AllItemsList[i].iRnd)
+		if (AllItemsList[i].iRnd == IDROP_NEVER)
 			okflag = FALSE;
 #ifdef HELLFIRE
 		if (lvl << 1 < AllItemsList[i].iMinMLvl)
@@ -4820,18 +4820,18 @@ int RndSmithItem(int lvl)
 
 	ri = 0;
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl
 #ifdef HELLFIRE
-		if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl && ri < 512) {
-#else
-		if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+		    && ri < 512
 #endif
+		) {
 			ril[ri] = i;
 			ri++;
+			if (AllItemsList[i].iRnd == IDROP_DOUBLE
 #ifdef HELLFIRE
-			if (AllItemsList[i].iRnd == IDROP_DOUBLE && ri < 512) {
-#else
-			if (AllItemsList[i].iRnd == IDROP_DOUBLE) {
+			    && ri < 512
 #endif
+			) {
 				ril[ri] = i;
 				ri++;
 			}
@@ -4944,7 +4944,7 @@ int RndPremiumItem(int minlvl, int maxlvl)
 
 	ri = 0;
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
-		if (AllItemsList[i].iRnd) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER) {
 			if (PremiumItemOk(i)) {
 #ifdef HELLFIRE
 				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl && ri < 512) {
@@ -5093,11 +5093,12 @@ int RndWitchItem(int lvl)
 
 	ri = 0;
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl
 #ifdef HELLFIRE
-		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl && ri < 512) {
-#else
-		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+		    && ri < 512
 #endif
+		) {
+
 			ril[ri] = i;
 			ri++;
 		}
@@ -5204,11 +5205,11 @@ int RndBoyItem(int lvl)
 
 	ri = 0;
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl
 #ifdef HELLFIRE
-		if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl && ri < 512) {
-#else
-		if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+		    && ri < 512
 #endif
+		) {
 			ril[ri] = i;
 			ri++;
 		}
@@ -5321,11 +5322,11 @@ int RndHealerItem(int lvl)
 
 	ri = 0;
 	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+		if (AllItemsList[i].iRnd != IDROP_NEVER && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl
 #ifdef HELLFIRE
-		if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl && ri < 512) {
-#else
-		if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+		    && ri < 512
 #endif
+		) {
 			ril[ri] = i;
 			ri++;
 		}
