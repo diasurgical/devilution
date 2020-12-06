@@ -2229,13 +2229,19 @@ void miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 void AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, pn, k, j, tx, ty;
+#ifndef HELLFIRE
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+#endif
 
 	missile[mi]._miDelFlag = TRUE;
 	for (i = 0; i < 6; i++) {
 		k = CrawlNum[i];
 		pn = k + 2;
+#ifdef HELLFIRE
+		for (j = CrawlTable[k]; j > 0; j--) { // BUGFIX: should cast to BYTE or CrawlTable header will be wrong
+#else
 		for (j = (BYTE)CrawlTable[k]; j > 0; j--) {
+#endif
 			tx = dx + CrawlTable[pn - 1];
 			ty = dy + CrawlTable[pn];
 			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
