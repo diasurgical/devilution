@@ -281,7 +281,7 @@ static void gmenu_left_right(BOOL isRight)
 			return;
 		step++;
 	} else {
-		if (!step)
+		if (step == 0)
 			return;
 		step--;
 	}
