@@ -229,11 +229,15 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->_pManaBase = pPack->pManaBase;
 	pPlayer->_pMemSpells = pPack->pMemSpells;
 
-	for (i = 0; i < 37; i++) // Should be MAX_SPELLS but set to 37 to make save games compatible
-		pPlayer->_pSplLvl[i] = pPack->pSplLvl[i];
 #ifdef HELLFIRE
+	for (i = 0; i <= 36; i++) // Should be MAX_SPELLS-1 but set to 36 to make save games compatible
+		pPlayer->_pSplLvl[i] = pPack->pSplLvl[i];
+	char *p = pPack->pSplLvl2;
 	for (i = 37; i < 47; i++)
-		pPlayer->_pSplLvl[i] = pPack->pSplLvl2[i - 37];
+		pPlayer->_pSplLvl[i] = p[i - 37];
+#else
+	for (i = 0; i < MAX_SPELLS; i++)
+		pPlayer->_pSplLvl[i] = pPack->pSplLvl[i];
 #endif
 
 	pki = &pPack->InvBody[0];
