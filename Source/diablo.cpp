@@ -457,10 +457,11 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 		NetClose();
 #ifndef HELLFIRE
 		pfile_create_player_description(0, 0);
-	} while (gbRunGameResult);
 #else
-	} while (gbMaxPlayers == 1 || !gbRunGameResult);
+		if (gbMaxPlayers == 1)
+			break;
 #endif
+	} while (gbRunGameResult);
 
 	SNetDestroy();
 	return gbRunGameResult;
