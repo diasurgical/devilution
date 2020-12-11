@@ -1264,7 +1264,7 @@ static void PressKey(int vkey)
 /**
  * @internal `return` must be used instead of `break` to be bin exact as C++
  */
-static void PressChar(int vkey)
+static void PressChar(WPARAM vkey)
 {
 	if (gmenu_is_active() || control_talk_last_key(vkey) || sgnTimeoutCurs != CURSOR_NONE || deathflag) {
 		return;
