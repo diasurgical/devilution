@@ -287,22 +287,34 @@ void MakeSpeedCels()
 
 	for (y = 0; y < MAXDUNY; y++) {
 		for (x = 0; x < MAXDUNX; x++) {
-			for (i = 0; i < blocks; i++) {
-				pMap = &dpiece_defs_map_2[x][y];
-				mt = pMap->mt[i];
+			pMap = &dpiece_defs_map_2[x][y];
+			for (j = 0; j < blocks; j++) {
+				mt = pMap->mt[j];
 				if (mt) {
-					level_frame_count[pMap->mt[i] & 0xFFF]++;
-					level_frame_types[pMap->mt[i] & 0xFFF] = mt & 0x7000;
+					level_frame_count[pMap->mt[j] & 0xFFF]++;
+					level_frame_types[pMap->mt[j] & 0xFFF] = mt & 0x7000;
 				}
 			}
 		}
 	}
 
+#if defined HELLFIRE and defined USE_ASM
+	__asm {
+		mov		ebx, pDungeonCels
+		mov		eax, [ebx]
+		mov		nDataSize, eax
+	}
+#else
 	pFrameTable = (DWORD *)pDungeonCels;
 	nDataSize = pFrameTable[0];
+#endif
 	nlevel_frames = nDataSize & 0xFFFF;
 
+#ifdef HELLFIRE
+	for (i = 0; i < nlevel_frames; i++) {
+#else
 	for (i = 1; i < nlevel_frames; i++) {
+#endif
 		z = i;
 #ifdef USE_ASM
 		__asm {
@@ -324,8 +336,10 @@ void MakeSpeedCels()
 
 	if (leveltype == DTYPE_HELL) {
 		for (i = 0; i < nlevel_frames; i++) {
+#ifndef HELLFIRE
 			if (i == 0)
 				level_frame_count[0] = 0;
+#endif
 			z = i;
 			blood_flag = TRUE;
 			if (level_frame_count[i] != 0) {
