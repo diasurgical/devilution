@@ -1068,9 +1068,8 @@ void CheckInvPaste(int pnum, int mx, int my)
 		if (r == SLOTXY_CHEST_LAST) {
 			if ((sx & 1) == 0)
 				i -= 14;
-			if ((sy & 1) == 0) {
+			if ((sy & 1) == 0)
 				j -= 14;
-			}
 		}
 		if (r == SLOTXY_INV_LAST && (sy & 1) == 0)
 			j += 14;
@@ -1229,7 +1228,11 @@ void CheckInvPaste(int pnum, int mx, int my)
 	case ILOC_ONEHAND:
 		if (r <= SLOTXY_HAND_LEFT_LAST) {
 			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE) {
-				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass != plr[pnum].HoldItem._iClass) {
+				if ((plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass != plr[pnum].HoldItem._iClass)
+#ifdef HELLFIRE
+				    || (plr[pnum]._pClass == PC_BARD && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON && plr[pnum].HoldItem._iClass == ICLASS_WEAPON)
+#endif
+				) {
 					NetSendCmdChItem(FALSE, INVLOC_HAND_LEFT);
 					plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
 				} else {
@@ -1238,7 +1241,11 @@ void CheckInvPaste(int pnum, int mx, int my)
 				}
 				break;
 			}
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass != plr[pnum].HoldItem._iClass) {
+			if ((plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass != plr[pnum].HoldItem._iClass)
+#ifdef HELLFIRE
+			    || (plr[pnum]._pClass == PC_BARD && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON && plr[pnum].HoldItem._iClass == ICLASS_WEAPON)
+#endif
+			) {
 				NetSendCmdChItem(FALSE, INVLOC_HAND_LEFT);
 				cn = SwapItem(&plr[pnum].InvBody[INVLOC_HAND_LEFT], &plr[pnum].HoldItem);
 				break;
@@ -1249,8 +1256,16 @@ void CheckInvPaste(int pnum, int mx, int my)
 			break;
 		}
 		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE) {
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
-				if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass != plr[pnum].HoldItem._iClass) {
+			if ((plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND)
+#ifdef HELLFIRE
+			    || (plr[pnum]._pClass == PC_BARBARIAN && (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SWORD || plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_MACE))
+#endif
+			) {
+				if ((plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE || plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass != plr[pnum].HoldItem._iClass)
+#ifdef HELLFIRE
+				    || (plr[pnum]._pClass == PC_BARD && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON && plr[pnum].HoldItem._iClass == ICLASS_WEAPON)
+#endif
+				) {
 					NetSendCmdChItem(FALSE, INVLOC_HAND_RIGHT);
 					plr[pnum].InvBody[INVLOC_HAND_RIGHT] = plr[pnum].HoldItem;
 					break;
@@ -1259,14 +1274,22 @@ void CheckInvPaste(int pnum, int mx, int my)
 				cn = SwapItem(&plr[pnum].InvBody[INVLOC_HAND_LEFT], &plr[pnum].HoldItem);
 				break;
 			}
+#ifdef HELLFIRE
+			NetSendCmdChItem(FALSE, INVLOC_HAND_LEFT);
+#else
 			NetSendCmdDelItem(FALSE, INVLOC_HAND_LEFT);
 			NetSendCmdChItem(FALSE, INVLOC_HAND_RIGHT);
+#endif
 			SwapItem(&plr[pnum].InvBody[INVLOC_HAND_RIGHT], &plr[pnum].InvBody[INVLOC_HAND_LEFT]);
 			cn = SwapItem(&plr[pnum].InvBody[INVLOC_HAND_RIGHT], &plr[pnum].HoldItem);
 			break;
 		}
 
-		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == plr[pnum].HoldItem._iClass) {
+		if ((plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == plr[pnum].HoldItem._iClass)
+#ifdef HELLFIRE
+		    && !(plr[pnum]._pClass == PC_BARD && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON && plr[pnum].HoldItem._iClass == ICLASS_WEAPON)
+#endif
+		) {
 			NetSendCmdChItem(FALSE, INVLOC_HAND_LEFT);
 			cn = SwapItem(&plr[pnum].InvBody[INVLOC_HAND_LEFT], &plr[pnum].HoldItem);
 			break;
@@ -1352,11 +1375,11 @@ void CheckInvPaste(int pnum, int mx, int my)
 					plr[pnum].InvList[il]._iCurs = ICURS_GOLD_LARGE;
 					// BUGFIX: incorrect values here are leftover from beta
 					if (plr[pnum].HoldItem._ivalue >= GOLD_MEDIUM_LIMIT)
-						cn = 18;
+						cn = ICURS_GOLD_LARGE + CURSOR_FIRSTITEM;
 					else if (plr[pnum].HoldItem._ivalue <= GOLD_SMALL_LIMIT)
-						cn = 16;
+						cn = ICURS_GOLD_SMALL + CURSOR_FIRSTITEM;
 					else
-						cn = 17;
+						cn = ICURS_GOLD_MEDIUM + CURSOR_FIRSTITEM;
 				}
 			} else {
 				il = plr[pnum]._pNumInv;
@@ -1371,6 +1394,10 @@ void CheckInvPaste(int pnum, int mx, int my)
 						plr[pnum].InvList[il]._iCurs = ICURS_GOLD_SMALL;
 					else
 						plr[pnum].InvList[il]._iCurs = ICURS_GOLD_MEDIUM;
+#ifdef HELLFIRE
+				} else {
+					plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_LARGE;
+#endif
 				}
 			}
 		} else {
@@ -1435,11 +1462,11 @@ void CheckInvPaste(int pnum, int mx, int my)
 
 						// BUGFIX: incorrect values here are leftover from beta
 						if (plr[pnum].HoldItem._ivalue >= GOLD_MEDIUM_LIMIT)
-							cn = 18;
+							cn = ICURS_GOLD_LARGE + CURSOR_FIRSTITEM;
 						else if (plr[pnum].HoldItem._ivalue <= GOLD_SMALL_LIMIT)
-							cn = 16;
+							cn = ICURS_GOLD_SMALL + CURSOR_FIRSTITEM;
 						else
-							cn = 17;
+							cn = ICURS_GOLD_MEDIUM + CURSOR_FIRSTITEM;
 					}
 				} else {
 					plr[pnum]._pGold += plr[pnum].HoldItem._ivalue;
