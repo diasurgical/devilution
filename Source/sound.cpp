@@ -126,6 +126,7 @@ static BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	LPVOID buf1, buf2;
 	DWORD size1, size2;
 	BOOL rv;
+	HRESULT error_code;
 
 	if (DSB->Restore() != DS_OK)
 		return FALSE;
@@ -135,9 +136,11 @@ static BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	WOpenFile(sound_file->sound_path, &file, FALSE);
 	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, FILE_BEGIN);
 
-	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
+	error_code = DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0);
+	if (error_code == DS_OK) {
 		WReadFile(file, buf1, size1);
-		if (DSB->Unlock(buf1, size1, buf2, size2) == DS_OK)
+		error_code = DSB->Unlock(buf1, size1, buf2, size2);
+		if (error_code == DS_OK)
 			rv = TRUE;
 	}
 
