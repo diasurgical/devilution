@@ -828,7 +828,7 @@ static BOOL TryIconCurs()
 		if (pcursinvitem != -1)
 			DoOil(myplr, pcursinvitem);
 		else
-			SetCursor_(CURSOR_HAND);
+			NewCursor(CURSOR_HAND);
 		return TRUE;
 	}
 
