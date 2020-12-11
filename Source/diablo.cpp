@@ -595,17 +595,14 @@ static void diablo_reload_process(HINSTANCE hInstance)
 			}
 			hWnd = hPrev;
 		}
-		while (1) {
+		do {
 			GetWindowThreadProcessId(hWnd, &dwProcessId);
 			if (dwProcessId == plMap[1]) {
 				SetForegroundWindow(hWnd);
 				break;
 			}
 			hWnd = GetWindow(hWnd, GW_HWNDNEXT);
-			if (hWnd == NULL) {
-				break;
-			}
-		}
+		} while (hWnd != NULL);
 		UnmapViewOfFile(plMap);
 		CloseHandle(hMap);
 		ExitProcess(0);
