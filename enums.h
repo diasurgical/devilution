@@ -2316,7 +2316,7 @@ typedef enum goodorevil {
 	GOE_ANY  = 0x00,
 	GOE_EVIL = 0x01,
 	GOE_GOOD = 0x10,
-};
+} goodorevil;
 
 /*
  First 5 bits store level
