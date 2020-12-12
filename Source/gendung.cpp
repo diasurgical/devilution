@@ -298,7 +298,7 @@ void MakeSpeedCels()
 		}
 	}
 
-#if defined HELLFIRE and defined USE_ASM
+#if defined HELLFIRE && defined USE_ASM
 	__asm {
 		mov		ebx, pDungeonCels
 		mov		eax, [ebx]
