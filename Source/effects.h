@@ -17,7 +17,6 @@ void PlayEffect(int i, int mode);
 void PlaySFX(int psfx);
 void PlaySfxLoc(int psfx, int x, int y);
 void sound_stop();
-void sfx_stop();
 void sound_update();
 void effects_cleanup_sfx();
 void sound_init();

@@ -44,7 +44,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 BOOL PressEscKey();
 LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-void PressKey(int vkey);
 void LoadGameLevel(BOOL firstflag, int lvldir);
 void game_loop(BOOL bStartup);
 void diablo_color_cyc_logic();

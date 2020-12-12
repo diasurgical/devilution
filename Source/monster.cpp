@@ -2955,7 +2955,7 @@ void M_Teleport(int i)
 		return;
 #else
 		app_fatal("M_Teleport: Invalid monster %d", i);
-#endif;
+#endif
 
 	done = FALSE;
 

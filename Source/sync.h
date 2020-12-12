@@ -8,7 +8,6 @@
 
 DWORD sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen);
 DWORD sync_update(int pnum, const BYTE *pbBuf);
-void sync_monster(int pnum, const TSyncMonster *p);
 void sync_init();
 
 #endif /* __SYNC_H__ */
