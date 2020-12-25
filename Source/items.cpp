@@ -724,9 +724,9 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 		ItemStruct *itm = &plr[p].InvBody[i];
 		if (itm->_itype != ITYPE_NONE && itm->_iStatFlag) {
 
-			tac += itm->_iAC;
 			mind += itm->_iMinDam;
 			maxd += itm->_iMaxDam;
+			tac += itm->_iAC;
 
 			if (itm->_iSpell != SPL_NULL) {
 				spl |= SPELLBIT(itm->_iSpell);
@@ -736,14 +736,16 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 				bdam += itm->_iPLDam;
 				btohit += itm->_iPLToHit;
 				if (itm->_iPLAC) {
-					int tmpac = itm->_iPLAC * itm->_iAC / 100;
+					int tmpac = itm->_iAC;
+					tmpac *= itm->_iPLAC;
+					tmpac /= 100;
 					if (tmpac == 0)
 						tmpac = 1;
 					bac += tmpac;
 				}
 				iflgs |= itm->_iFlags;
 #ifdef HELLFIRE
-				pDamAcFlags |= plr[p].pDamAcFlags;
+				pDamAcFlags |= itm->_iDamAcFlags;
 #endif
 				sadd += itm->_iPLStr;
 				madd += itm->_iPLMag;
@@ -781,10 +783,8 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 #ifdef HELLFIRE
 		if (plr[p]._pClass == PC_MONK) {
-			if (plr[p]._pLevel >> 1 >= 1)
-				mind = plr[p]._pLevel >> 1;
-			if (maxd <= plr[p]._pLevel)
-				maxd = plr[p]._pLevel;
+			mind = max(mind, plr[p]._pLevel >> 1);
+			maxd = max(maxd, plr[p]._pLevel);
 		}
 #endif
 	}
@@ -825,11 +825,10 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	if (plr[p]._pLightRad != lrad && p == myplr) {
 		ChangeLightRadius(plr[p]._plid, lrad);
 
-		pvid = plr[p]._pvid;
-		if (lrad >= 10) {
-			ChangeVisionRadius(pvid, lrad);
+		if (lrad < 10) {
+			ChangeVisionRadius(plr[p]._pvid, 10);
 		} else {
-			ChangeVisionRadius(pvid, 10);
+			ChangeVisionRadius(plr[p]._pvid, lrad);
 		}
 
 		plr[p]._pLightRad = lrad;
@@ -908,7 +907,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	// check if the current RSplType is a valid/allowed spell
 	if (plr[p]._pRSplType == RSPLTYPE_CHARGES
-	    && !(spl & SPELLBIT(plr[p]._pRSpell))) {
+	    && !(plr[p]._pISpells & SPELLBIT(plr[p]._pRSpell))) {
 		plr[p]._pRSpell = SPL_INVALID;
 		plr[p]._pRSplType = RSPLTYPE_INVALID;
 		force_redraw = 255;
@@ -940,24 +939,36 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	if (mr > MAXRESIST)
 		mr = MAXRESIST;
+#ifdef HELLFIRE
+	else if (mr < 0)
+		mr = 0;
+#endif
 	plr[p]._pMagResist = mr;
 
 	if (fr > MAXRESIST)
 		fr = MAXRESIST;
+#ifdef HELLFIRE
+	else if (fr < 0)
+		fr = 0;
+#endif
 	plr[p]._pFireResist = fr;
 
 	if (lr > MAXRESIST)
 		lr = MAXRESIST;
+#ifdef HELLFIRE
+	else if (lr < 0)
+		lr = 0;
+#endif
 	plr[p]._pLghtResist = lr;
 
 	if (plr[p]._pClass == PC_WARRIOR) {
-		vadd *= 2;
+		vadd <<= 1;
 	}
 #ifdef HELLFIRE
-	if (plr[p]._pClass == PC_BARBARIAN) {
-		vadd *= 3;
-	}
-	if (plr[p]._pClass == PC_ROGUE || plr[p]._pClass == PC_MONK || plr[p]._pClass == PC_BARD) {
+	else if (plr[p]._pClass == PC_BARBARIAN) {
+		vadd += vadd;
+		vadd += (vadd >> 2);
+	} else if (plr[p]._pClass == PC_ROGUE || plr[p]._pClass == PC_MONK || plr[p]._pClass == PC_BARD) {
 #else
 	if (plr[p]._pClass == PC_ROGUE) {
 #endif
@@ -966,7 +977,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	ihp += (vadd << 6);
 
 	if (plr[p]._pClass == PC_SORCERER) {
-		madd *= 2;
+		madd <<= 1;
 	}
 #ifdef HELLFIRE
 	if (plr[p]._pClass == PC_ROGUE || plr[p]._pClass == PC_MONK) {
@@ -977,7 +988,7 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 #ifdef HELLFIRE
 	else if (plr[p]._pClass == PC_BARD) {
-		madd += madd >> 2 + madd >> 1;
+		madd += (madd >> 2) + (madd >> 1);
 	}
 #endif
 	imana += (madd << 6);
