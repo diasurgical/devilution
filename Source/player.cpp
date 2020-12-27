@@ -4725,17 +4725,17 @@ void PlayDungMsgs()
 }
 
 #ifdef HELLFIRE
-int player_45EFA1(int i)
+int get_max_strength(int i)
 {
 	return MaxStats[i][ATTRIB_STR];
 }
 
-int player_45EFAB(int i)
+int get_max_magic(int i)
 {
 	return MaxStats[i][ATTRIB_MAG];
 }
 
-int player_45EFB5(int i)
+int get_max_dexterity(int i)
 {
 	return MaxStats[i][ATTRIB_DEX];
 }
