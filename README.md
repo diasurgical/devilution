@@ -1,7 +1,7 @@
 [![Build Status](https://circleci.com/gh/diasurgical/devilution.svg?style=svg)](https://circleci.com/gh/diasurgical/devilution)
 [![Build Status](https://www.travis-ci.com/diasurgical/devilution.svg?branch=master)](https://www.travis-ci.com/diasurgical/devilution)
-[![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
-[![Build status](https://img.shields.io/github/downloads/diasurgical/devilution/total.svg)](https://github.com/diasurgical/devilution/releases)
+[![Build status](https://ci.appveyor.com/api/projects/status/ce9wnf46gqqk6prp?svg=true)](https://ci.appveyor.com/project/AJenbo/devilution)
+[![Downloads](https://img.shields.io/github/downloads/diasurgical/devilution/total.svg)](https://github.com/diasurgical/devilution/releases)
 [![github stars](https://img.shields.io/github/stars/diasurgical/devilution.svg)](https://github.com/diasurgical/devilution/stargazers)
 
 ![Discord Channel](https://avatars3.githubusercontent.com/u/1965106?s=16&v=4) [Discord Chat Channel](https://discord.gg/YQKCAYQ)
