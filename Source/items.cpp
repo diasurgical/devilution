@@ -5272,8 +5272,14 @@ void WitchBookLevel(int ii)
 
 void SpawnWitch(int lvl)
 {
-	int i, iCnt;
+	int i, j, iCnt;
 	int idata, maxlvl;
+
+	j = 3;
+#ifdef HELLFIRE
+	iCnt = random_(51, 15) + 10;
+	int books = random_(3, 4);
+#endif
 
 	GetItemAttrs(0, IDI_MANA, 1);
 	witchitem[0] = item[0];
@@ -5287,9 +5293,31 @@ void SpawnWitch(int lvl)
 	witchitem[2] = item[0];
 	witchitem[2]._iCreateInfo = lvl;
 	witchitem[2]._iStatFlag = TRUE;
-	iCnt = random_(51, 8) + 10;
 
-	for (i = 3; i < iCnt; i++) {
+#ifdef HELLFIRE
+	int bCnt;
+	for (i = 114, bCnt = 0; i <= 117 && bCnt < books; ++i) {
+		if (WitchItemOk(i)
+		    && lvl >= AllItemsList[i].iMinMLvl) {
+			item[0]._iSeed = GetRndSeed();
+			SetRndSeed(item[0]._iSeed);
+			volatile int junk = random_(0, 1);
+
+			GetItemAttrs(0, i, lvl);
+			witchitem[j] = item[0];
+			witchitem[j]._iCreateInfo = lvl | CF_WITCH;
+			witchitem[j]._iIdentified = TRUE;
+			WitchBookLevel(j);
+			witchitem[j]._iStatFlag = StoreStatOk(&witchitem[j]);
+			j++;
+			bCnt++;
+		}
+	}
+#else
+	iCnt = random_(51, 8) + 10;
+#endif
+
+	for (i = j; i < iCnt; i++) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
@@ -5306,7 +5334,7 @@ void SpawnWitch(int lvl)
 #else
 				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, TRUE);
 #endif
-		} while (item[0]._iIvalue > 140000);
+		} while (item[0]._iIvalue > WITCH_MAX_VALUE);
 		witchitem[i] = item[0];
 		witchitem[i]._iCreateInfo = lvl | CF_WITCH;
 		witchitem[i]._iIdentified = TRUE;
@@ -5314,7 +5342,7 @@ void SpawnWitch(int lvl)
 		witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
 	}
 
-	for (i = iCnt; i < 20; i++)
+	for (i = iCnt; i < WITCH_ITEMS; i++)
 		witchitem[i]._itype = ITYPE_NONE;
 
 	SortWitch();
