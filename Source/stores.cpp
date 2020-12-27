@@ -156,19 +156,19 @@ void DrawSTextBack()
 
 void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int val)
 {
-	int xx, yy;
 	int len, width, off, i, k, s;
+	int xx, yy;
 	BYTE c;
 	char valstr[32];
 
 	s = SStringY[y] + stext[y]._syoff;
-	if (stextsize)
+	if (stextsize != 0)
 		xx = PANEL_X + 32;
 	else
 		xx = PANEL_X + 352;
 	off = xx + x + PitchTbl[s + 44 + SCREEN_Y];
 	len = strlen(str);
-	if (stextsize)
+	if (stextsize != 0)
 		yy = 577;
 	else
 		yy = 257;
@@ -187,7 +187,7 @@ void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int v
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
 		k += fontkern[c] + 1;
-		if (c && k <= yy) {
+		if (c != 0 && k <= yy) {
 			PrintChar(off, c, col);
 		}
 		off += fontkern[c] + 1;
@@ -195,10 +195,11 @@ void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int v
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
 		off = PitchTbl[s + 44 + SCREEN_Y] + PANEL_X + 592 - x;
-		for (i = strlen(valstr) - 1; i >= 0; i--) {
+		len = strlen(valstr);
+		for (i = len - 1; i >= 0; i--) {
 			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
 			off -= fontkern[c] + 1;
-			if (c) {
+			if (c != 0) {
 				PrintChar(off, c, col);
 			}
 		}
