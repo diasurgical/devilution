@@ -22,6 +22,40 @@ jobs:
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../status.sh
           .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Diablo 1.09b"
+  spawn_109b_diff:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          set -e
+          wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          mv comparer-config/spawn.toml comparer-config.toml
+          echo '#!/bin/sh' | sudo tee /bin/wine
+          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
+          sudo chmod +x /bin/wine
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e SPAWN=1 diasurgical/riivaaja:stable
+          ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
+          docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../spawn-status.sh
+          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Spawn 1.09b"
+  hellfire_101_diff:
+    machine: true
+    steps:
+      - checkout
+      - run: |
+          set -e
+          wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
+          mv comparer-config/hellfire.toml comparer-config.toml
+          echo '#!/bin/sh' | sudo tee /bin/wine
+          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
+          sudo chmod +x /bin/wine
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e HELLFIRE=1 diasurgical/riivaaja:stable
+          dd if=/dev/zero bs=1 count=3072 of=hellfire.exe
+          dd if=Diablo.exe >> hellfire.exe
+          ./devilution-comparer generate-full hellfire.exe --no-mem-disp --truncate-to-original
+          docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../hellfire-status.sh
+          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Hellfire 1.01"
   linux:
     docker:
       - image: debian:stretch-backports
@@ -38,4 +72,6 @@ workflows:
     jobs:
       - diablo_109b
       - diablo_109b_diff
+      - spawn_109b_diff
+      - hellfire_101_diff
       - linux
