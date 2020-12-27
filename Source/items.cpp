@@ -5344,6 +5344,31 @@ void SpawnBoy(int lvl)
 {
 	int itype;
 
+#ifdef HELLFIRE
+	int ivalue;
+	int count = 0;
+
+	int strength = get_max_strength(plr[myplr]._pClass);
+	int dexterity = get_max_dexterity(plr[myplr]._pClass);
+	int magic = get_max_magic(plr[myplr]._pClass);
+	int pc = plr[myplr]._pClass;
+
+	if (strength < plr[myplr]._pStrength) {
+		strength = plr[myplr]._pStrength;
+	}
+	strength *= 1.2;
+
+	if (dexterity < plr[myplr]._pDexterity) {
+		dexterity = plr[myplr]._pDexterity;
+	}
+	dexterity *= 1.2;
+
+	if (magic < plr[myplr]._pMagic) {
+		magic = plr[myplr]._pMagic;
+	}
+	magic *= 1.2;
+#endif
+
 	if (boylevel < (lvl >> 1) || boyitem._itype == ITYPE_NONE) {
 		do {
 			item[0]._iSeed = GetRndSeed();
@@ -5352,10 +5377,87 @@ void SpawnBoy(int lvl)
 			GetItemAttrs(0, itype, lvl);
 #ifdef HELLFIRE
 			GetItemBonus(0, itype, lvl, 2 * lvl, TRUE, TRUE);
+
+			ivalue = 0;
+
+			int itemType = item[0]._itype;
+
+			switch (itemType) {
+			case ITYPE_LARMOR:
+			case ITYPE_MARMOR:
+			case ITYPE_HARMOR:
+				ivalue = get_armor_max_value(myplr);
+				break;
+			case ITYPE_SHIELD:
+				ivalue = get_shield_max_value(myplr);
+				break;
+			case ITYPE_AXE:
+				ivalue = get_axe_max_value(myplr);
+				break;
+			case ITYPE_BOW:
+				ivalue = get_bow_max_value(myplr);
+				break;
+			case ITYPE_MACE:
+				ivalue = get_mace_max_value(myplr);
+				break;
+			case ITYPE_SWORD:
+				ivalue = get_sword_max_value(myplr);
+				break;
+			case ITYPE_HELM:
+				ivalue = get_helm_max_value(myplr);
+				break;
+			case ITYPE_STAFF:
+				ivalue = get_staff_max_value(myplr);
+				break;
+			case ITYPE_RING:
+				ivalue = get_ring_max_value(myplr);
+				break;
+			case ITYPE_AMULET:
+				ivalue = get_amulet_max_value(myplr);
+				break;
+			}
+			ivalue *= 0.8;
+
+			count++;
+
+			if (count < 200) {
+				switch (pc) {
+				case PC_WARRIOR:
+					if (itemType == ITYPE_BOW || itemType == ITYPE_STAFF)
+						ivalue = INT_MAX;
+					break;
+				case PC_ROGUE:
+					if (itemType == ITYPE_SWORD || itemType == ITYPE_STAFF || itemType == ITYPE_AXE || itemType == ITYPE_MACE || itemType == ITYPE_SHIELD)
+						ivalue = INT_MAX;
+					break;
+				case PC_SORCERER:
+					if (itemType == ITYPE_STAFF || itemType == ITYPE_AXE || itemType == ITYPE_BOW || itemType == ITYPE_MACE)
+						ivalue = INT_MAX;
+					break;
+				case PC_MONK:
+					if (itemType == ITYPE_BOW || itemType == ITYPE_MARMOR || itemType == ITYPE_SHIELD || itemType == ITYPE_MACE)
+						ivalue = INT_MAX;
+					break;
+				case PC_BARD:
+					if (itemType == ITYPE_AXE || itemType == ITYPE_MACE || itemType == ITYPE_STAFF)
+						ivalue = INT_MAX;
+					break;
+				case PC_BARBARIAN:
+					if (itemType == ITYPE_BOW || itemType == ITYPE_STAFF)
+						ivalue = INT_MAX;
+					break;
+				}
+			}
+		} while ((item[0]._iIvalue > BOY_MAX_VALUE
+		             || item[0]._iMinStr > strength
+		             || item[0]._iMinMag > magic
+		             || item[0]._iMinDex > dexterity
+		             || item[0]._iIvalue < ivalue)
+		    && count < 250);
 #else
 			GetItemBonus(0, itype, lvl, 2 * lvl, TRUE);
+		} while (item[0]._iIvalue > BOY_MAX_VALUE);
 #endif
-		} while (item[0]._iIvalue > 90000);
 		boyitem = item[0];
 		boyitem._iCreateInfo = lvl | CF_BOY;
 		boyitem._iIdentified = TRUE;
