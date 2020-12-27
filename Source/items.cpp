@@ -4562,9 +4562,17 @@ void UseItem(int p, int Mid, int spl)
 	case IMISC_MEAT:
 		j = plr[p]._pMaxHP >> 8;
 		l = ((j >> 1) + random_(39, j)) << 6;
+#ifdef HELLFIRE
+		if (plr[p]._pClass == PC_WARRIOR || plr[p]._pClass == PC_BARBARIAN)
+#else
 		if (plr[p]._pClass == PC_WARRIOR)
-			l *= 2;
+#endif
+			l <<= 1;
+#ifdef HELLFIRE
+		if (plr[p]._pClass == PC_ROGUE || plr[p]._pClass == PC_MONK || plr[p]._pClass == PC_BARD)
+#else
 		if (plr[p]._pClass == PC_ROGUE)
+#endif
 			l += l >> 1;
 		plr[p]._pHitPoints += l;
 		if (plr[p]._pHitPoints > plr[p]._pMaxHP)
@@ -4583,8 +4591,12 @@ void UseItem(int p, int Mid, int spl)
 		j = plr[p]._pMaxMana >> 8;
 		l = ((j >> 1) + random_(40, j)) << 6;
 		if (plr[p]._pClass == PC_SORCERER)
-			l *= 2;
+			l <<= 1;
+#ifdef HELLFIRE
+		if (plr[p]._pClass == PC_ROGUE || plr[p]._pClass == PC_MONK || plr[p]._pClass == PC_BARD)
+#else
 		if (plr[p]._pClass == PC_ROGUE)
+#endif
 			l += l >> 1;
 		if (!(plr[p]._pIFlags & ISPL_NOMANA)) {
 			plr[p]._pMana += l;
@@ -4608,18 +4620,32 @@ void UseItem(int p, int Mid, int spl)
 		break;
 	case IMISC_ELIXMAG:
 		ModifyPlrMag(p, 1);
+#ifdef HELLFIRE
+		plr[p]._pMana = plr[p]._pMaxMana;
+		plr[p]._pManaBase = plr[p]._pMaxManaBase;
+		drawmanaflag = TRUE;
+#endif
 		break;
 	case IMISC_ELIXDEX:
 		ModifyPlrDex(p, 1);
 		break;
 	case IMISC_ELIXVIT:
 		ModifyPlrVit(p, 1);
+#ifdef HELLFIRE
+		plr[p]._pHitPoints = plr[p]._pMaxHP;
+		plr[p]._pHPBase = plr[p]._pMaxHPBase;
+		drawhpflag = TRUE;
+#endif
 		break;
 	case IMISC_REJUV:
 		j = plr[p]._pMaxHP >> 8;
 		l = ((j >> 1) + random_(39, j)) << 6;
+#ifdef HELLFIRE
+		if (plr[p]._pClass == PC_WARRIOR || plr[p]._pClass == PC_BARBARIAN)
+#else
 		if (plr[p]._pClass == PC_WARRIOR)
-			l *= 2;
+#endif
+			l <<= 1;
 		if (plr[p]._pClass == PC_ROGUE)
 			l += l >> 1;
 		plr[p]._pHitPoints += l;
@@ -4632,7 +4658,7 @@ void UseItem(int p, int Mid, int spl)
 		j = plr[p]._pMaxMana >> 8;
 		l = ((j >> 1) + random_(40, j)) << 6;
 		if (plr[p]._pClass == PC_SORCERER)
-			l *= 2;
+			l <<= 1;
 		if (plr[p]._pClass == PC_ROGUE)
 			l += l >> 1;
 		if (!(plr[p]._pIFlags & ISPL_NOMANA)) {
@@ -4729,7 +4755,7 @@ void UseItem(int p, int Mid, int spl)
 		if (!invflag) {
 			invflag = TRUE;
 		}
-		SetCursor_(CURSOR_OIL);
+		NewCursor(CURSOR_OIL);
 		break;
 #endif
 	case IMISC_SPECELIX:
@@ -4743,31 +4769,31 @@ void UseItem(int p, int Mid, int spl)
 		plr[p]._pTSpell = SPL_RUNEFIRE;
 		plr[p]._pTSplType = RSPLTYPE_INVALID;
 		if (p == myplr)
-			SetCursor_(CURSOR_TELEPORT);
+			NewCursor(CURSOR_TELEPORT);
 		break;
 	case IMISC_RUNEL:
 		plr[p]._pTSpell = SPL_RUNELIGHT;
 		plr[p]._pTSplType = RSPLTYPE_INVALID;
 		if (p == myplr)
-			SetCursor_(CURSOR_TELEPORT);
+			NewCursor(CURSOR_TELEPORT);
 		break;
 	case IMISC_GR_RUNEL:
 		plr[p]._pTSpell = SPL_RUNENOVA;
 		plr[p]._pTSplType = RSPLTYPE_INVALID;
 		if (p == myplr)
-			SetCursor_(CURSOR_TELEPORT);
+			NewCursor(CURSOR_TELEPORT);
 		break;
 	case IMISC_GR_RUNEF:
 		plr[p]._pTSpell = SPL_RUNEIMMOLAT;
 		plr[p]._pTSplType = RSPLTYPE_INVALID;
 		if (p == myplr)
-			SetCursor_(CURSOR_TELEPORT);
+			NewCursor(CURSOR_TELEPORT);
 		break;
 	case IMISC_RUNES:
 		plr[p]._pTSpell = SPL_RUNESTONE;
 		plr[p]._pTSplType = RSPLTYPE_INVALID;
 		if (p == myplr)
-			SetCursor_(CURSOR_TELEPORT);
+			NewCursor(CURSOR_TELEPORT);
 		break;
 #endif
 	}
