@@ -1063,6 +1063,12 @@ BOOL WitchRechargeOk(int i)
 	    && plr[myplr].InvList[i]._iCharges != plr[myplr].InvList[i]._iMaxCharges) {
 		rv = TRUE;
 	}
+#ifdef HELLFIRE
+	if ((plr[myplr].InvList[i]._iMiscId == IMISC_UNIQUE || plr[myplr].InvList[i]._iMiscId == IMISC_STAFF)
+	    && plr[myplr].InvList[i]._iCharges < plr[myplr].InvList[i]._iMaxCharges) {
+		rv = TRUE;
+	}
+#endif
 	return rv;
 }
 
