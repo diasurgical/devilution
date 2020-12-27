@@ -330,7 +330,7 @@ int premiumlvladd[SMITH_PREMIUM_ITEMS] = {
 };
 
 #ifdef HELLFIRE
-int items_4231CA(int i)
+int get_ring_max_value(int i)
 {
 	int j, res;
 
@@ -347,7 +347,7 @@ int items_4231CA(int i)
 	return res;
 }
 
-int items_423230(int i)
+int get_bow_max_value(int i)
 {
 	int j, res;
 
@@ -364,7 +364,7 @@ int items_423230(int i)
 	return res;
 }
 
-int items_423296(int i)
+int get_staff_max_value(int i)
 {
 	int j, res;
 
@@ -381,7 +381,7 @@ int items_423296(int i)
 	return res;
 }
 
-int items_4232FC(int i)
+int get_sword_max_value(int i)
 {
 	int j, res;
 
@@ -398,7 +398,7 @@ int items_4232FC(int i)
 	return res;
 }
 
-int items_423362(int i)
+int get_helm_max_value(int i)
 {
 	int j, res;
 
@@ -415,7 +415,7 @@ int items_423362(int i)
 	return res;
 }
 
-int items_4233C8(int i)
+int get_shield_max_value(int i)
 {
 	int j, res;
 
@@ -432,7 +432,7 @@ int items_4233C8(int i)
 	return res;
 }
 
-int items_42342E(int i)
+int get_armor_max_value(int i)
 {
 	int j, res;
 
@@ -453,7 +453,7 @@ int items_42342E(int i)
 	return res;
 }
 
-int items_4234B2(int i)
+int get_mace_max_value(int i)
 {
 	int j, res;
 
@@ -470,7 +470,7 @@ int items_4234B2(int i)
 	return res;
 }
 
-int items_423518(int i)
+int get_amulet_max_value(int i)
 {
 	int j, res;
 
@@ -487,7 +487,7 @@ int items_423518(int i)
 	return res;
 }
 
-int items_42357E(int i)
+int get_axe_max_value(int i)
 {
 	int j, res;
 
@@ -4971,6 +4971,31 @@ static void SpawnOnePremium(int i, int plvl)
 	ItemStruct holditem;
 
 	holditem = item[0];
+
+#ifdef HELLFIRE
+	int ivalue;
+	int count = 0;
+
+	int strength = get_max_strength(plr[myplr]._pClass);
+	int dexterity = get_max_dexterity(plr[myplr]._pClass);
+	int magic = get_max_magic(plr[myplr]._pClass);
+
+	if (strength < plr[myplr]._pStrength) {
+		strength = plr[myplr]._pStrength;
+	}
+	strength *= 1.2;
+
+	if (dexterity < plr[myplr]._pDexterity) {
+		dexterity = plr[myplr]._pDexterity;
+	}
+	dexterity *= 1.2;
+
+	if (magic < plr[myplr]._pMagic) {
+		magic = plr[myplr]._pMagic;
+	}
+	magic *= 1.2;
+#endif
+
 	if (plvl > 30)
 		plvl = 30;
 	if (plvl < 1)
@@ -4981,11 +5006,59 @@ static void SpawnOnePremium(int i, int plvl)
 		itype = RndPremiumItem(plvl >> 2, plvl) - 1;
 		GetItemAttrs(0, itype, plvl);
 #ifdef HELLFIRE
-		GetItemBonus(0, itype, plvl >> 1, plvl, TRUE, FALSE);
+		GetItemBonus(0, itype, plvl >> 1, plvl, TRUE, noSpells);
 #else
 		GetItemBonus(0, itype, plvl >> 1, plvl, TRUE);
 #endif
+
+#ifdef HELLFIRE
+		ivalue = 0;
+		switch (item[0]._itype) {
+		case ITYPE_LARMOR:
+		case ITYPE_MARMOR:
+		case ITYPE_HARMOR:
+			ivalue = get_armor_max_value(myplr);
+			break;
+		case ITYPE_SHIELD:
+			ivalue = get_shield_max_value(myplr);
+			break;
+		case ITYPE_AXE:
+			ivalue = get_axe_max_value(myplr);
+			break;
+		case ITYPE_BOW:
+			ivalue = get_bow_max_value(myplr);
+			break;
+		case ITYPE_MACE:
+			ivalue = get_mace_max_value(myplr);
+			break;
+		case ITYPE_SWORD:
+			ivalue = get_sword_max_value(myplr);
+			break;
+		case ITYPE_HELM:
+			ivalue = get_helm_max_value(myplr);
+			break;
+		case ITYPE_STAFF:
+			ivalue = get_staff_max_value(myplr);
+			break;
+		case ITYPE_RING:
+			ivalue = get_ring_max_value(myplr);
+			break;
+		case ITYPE_AMULET:
+			ivalue = get_amulet_max_value(myplr);
+			break;
+		}
+		ivalue *= 0.8;
+
+		count++;
+	} while ((item[0]._iIvalue > SMITH_MAX_PREMIUM_VALUE
+	             || item[0]._iMinStr > strength
+	             || item[0]._iMinMag > magic
+	             || item[0]._iMinDex > dexterity
+	             || item[0]._iIvalue < ivalue)
+	    && count < 150);
+#else
 	} while (item[0]._iIvalue > SMITH_MAX_PREMIUM_VALUE);
+#endif
 	premiumitem[i] = item[0];
 	premiumitem[i]._iCreateInfo = plvl | CF_SMITHPREMIUM;
 	premiumitem[i]._iIdentified = TRUE;

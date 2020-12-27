@@ -2823,52 +2823,52 @@ addr = 0x42319C
 size = 0x2E
 
 [[func]]
-name = "items_4231CA"
+name = "get_ring_max_value"
 addr = 0x4231CA
 size = 0x66
 
 [[func]]
-name = "items_423230"
+name = "get_bow_max_value"
 addr = 0x423230
 size = 0x66
 
 [[func]]
-name = "items_423296"
+name = "get_staff_max_value"
 addr = 0x423296
 size = 0x66
 
 [[func]]
-name = "items_4232FC"
+name = "get_sword_max_value"
 addr = 0x4232FC
 size = 0x66
 
 [[func]]
-name = "items_423362"
+name = "get_helm_max_value"
 addr = 0x423362
 size = 0x66
 
 [[func]]
-name = "items_4233C8"
+name = "get_shield_max_value"
 addr = 0x4233C8
 size = 0x66
 
 [[func]]
-name = "items_42342E"
+name = "get_armor_max_value"
 addr = 0x42342E
 size = 0x84
 
 [[func]]
-name = "items_4234B2"
+name = "get_mace_max_value"
 addr = 0x4234B2
 size = 0x66
 
 [[func]]
-name = "items_423518"
+name = "get_amulet_max_value"
 addr = 0x423518
 size = 0x66
 
 [[func]]
-name = "items_42357E"
+name = "get_axe_max_value"
 addr = 0x42357E
 size = 0x66
 
@@ -8048,17 +8048,17 @@ addr = 0x45EB94
 size = 0x40D
 
 [[func]]
-name = "player_45EFA1"
+name = "get_max_strength"
 addr = 0x45EFA1
 size = 0xA
 
 [[func]]
-name = "player_45EFAB"
+name = "get_max_magic"
 addr = 0x45EFAB
 size = 0xA
 
 [[func]]
-name = "player_45EFB5"
+name = "get_max_dexterity"
 addr = 0x45EFB5
 size = 0xA
 
