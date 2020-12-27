@@ -63,8 +63,9 @@ jobs:
       - checkout
       - run: apt-get update -y
       - run: apt-get install -y mingw-w64 make
-      - run: make
-      - run: make debug
+      - run: make -j2
+      - run: make clean
+      - run: make debug -j2
 
 workflows:
   version: 2
