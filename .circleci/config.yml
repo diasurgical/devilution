@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run: apt-get update -y
-      - run: apt-get install -y mingw-w64
+      - run: apt-get install -y mingw-w64 make
       - run: make
       - run: make debug
 
