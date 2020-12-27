@@ -3,65 +3,22 @@ jobs:
   diablo_109b:
     docker:
       - image: diasurgical/riivaaja:stable
-    working_directory: ~/repo
     steps:
       - checkout
       - run: make -f MakefileVC
-  diablo_109b_diff:
+  linux:
     docker:
-      - image: diasurgical/riivaaja:stable
-    environment:
-      MAKE_BUILD: pdb
-    working_directory: ~/repo
+      - image: debian:stretch-backports
     steps:
       - checkout
-      - run: make -f MakefileVC
-      - run: wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-      - run: tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-      - run: mv comparer-config/diablo.toml comparer-config.toml
-      - run: ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
-      - run: ../status.sh
-      - run: .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Diablo 1.09b"
-  spawn_109b_diff:
-    docker:
-      - image: diasurgical/riivaaja:stable
-    environment:
-      MAKE_BUILD: pdb
-      SPAWN: 1
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: make -f MakefileVC
-      - run: wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-      - run: tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-      - run: mv comparer-config/spawn.toml comparer-config.toml
-      - run: ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
-      - run: ../spawn-status.sh
-      - run: .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Spawn 1.09b"
-  hellfire_101_diff:
-    docker:
-      - image: diasurgical/riivaaja:stable
-    environment:
-      MAKE_BUILD: pdb
-      HELLFIRE: 1
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run: make -f MakefileVC
-      - run: wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.4.0/devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-      - run: tar xf devilution-comparer-v0.4.0-x86_64-unknown-linux-gnu.tar.xz
-      - run: dd if=/dev/zero bs=1 count=3072 of=hellfire.exe
-      - run: dd if=Diablo.exe >> hellfire.exe
-      - run: mv comparer-config/hellfire.toml comparer-config.toml
-      - run: ./devilution-comparer generate-full hellfire.exe --no-mem-disp --truncate-to-original
-      - run: ../hellfire-status.sh
-      - run: .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Hellfire 1.01"
+      - run: apt-get update -y
+      - run: apt-get install -y mingw-w64
+      - run: make
+      - run: make debug
 
 workflows:
   version: 2
   testflow:
     jobs:
       - diablo_109b
-      - diablo_109b_diff
-      - spawn_109b_diff
-      - hellfire_101_diff
+      - linux
