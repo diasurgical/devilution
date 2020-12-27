@@ -972,7 +972,15 @@ BOOL WitchSellOk(int i)
 
 	if (pI->_itype == ITYPE_MISC)
 		rv = TRUE;
+#ifdef HELLFIRE
+	if (pI->_iMiscId > 29 && pI->_iMiscId < 41)
+		rv = FALSE;
+	if (pI->_iClass == ICLASS_QUEST)
+		rv = FALSE;
+	if (pI->_itype == ITYPE_STAFF && pI->_iSpell != SPL_NULL)
+#else
 	if (pI->_itype == ITYPE_STAFF)
+#endif
 		rv = TRUE;
 	if (pI->IDidx >= IDI_FIRSTQUEST && pI->IDidx <= IDI_LASTQUEST)
 		rv = FALSE;
