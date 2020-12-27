@@ -21,7 +21,7 @@ jobs:
           docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja:stable
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../status.sh
-          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Diablo 1.09b"
+          .circleci/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Diablo 1.09b"
   spawn_109b_diff:
     machine: true
     steps:
@@ -37,7 +37,7 @@ jobs:
           docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb -e SPAWN=1 diasurgical/riivaaja:stable
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp --truncate-to-original
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../spawn-status.sh
-          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Spawn 1.09b"
+          .circleci/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Spawn 1.09b"
   hellfire_101_diff:
     machine: true
     steps:
@@ -55,7 +55,7 @@ jobs:
           dd if=Diablo.exe >> hellfire.exe
           ./devilution-comparer generate-full hellfire.exe --no-mem-disp --truncate-to-original
           docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../hellfire-status.sh
-          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Hellfire 1.01"
+          .circleci/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK "Hellfire 1.01"
   linux:
     docker:
       - image: debian:stretch-backports

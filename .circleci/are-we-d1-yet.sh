@@ -30,12 +30,13 @@ WEBHOOK_DATA='{
   "avatar_url": "https://www.saaves.com/storage/brochure/logo-circleci-icon1583764538.png",
   "embeds": [ {
     "author": {
-      "name": "'"$3"' #'"$CIRCLE_WORKFLOW_JOB_ID"' (Build #'"$CIRCLE_BUILD_NUM"')",
+      "name": "'"$3"' (Build #'"$CIRCLE_BUILD_NUM"')",
       "url": "'"$CIRCLE_BUILD_URL"'",
       "icon_url": "https://www.saaves.com/storage/brochure/logo-circleci-icon1583764538.png"
     },
     "title": "['"\`${CIRCLE_SHA1:0:7}\`"'] '"$COMMIT_SUBJECT"'",
-    "url": "'"https://github.com/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_USERNAME/commit/$CIRCLE_SHA1"'",
+    "url": "'"https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1"'",
+    "description": "'"$CREDITS"'",
     "fields": [
       {
         "name": "Binary accuracy",
