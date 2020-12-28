@@ -218,10 +218,9 @@ static void mpqapi_alloc_block(int block_offset, int block_size)
 
 static int mpqapi_find_free_block(int size, int *block_size)
 {
-	_BLOCKENTRY *pBlockTbl;
 	int result;
 
-	pBlockTbl = sgpBlockTbl;
+	_BLOCKENTRY *pBlockTbl = sgpBlockTbl;
 	for (int i = 2048; i--; pBlockTbl++) {
 		if (pBlockTbl->offset == 0)
 			continue;
