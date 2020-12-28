@@ -4059,7 +4059,7 @@ void MakePlrPath(int pnum, int xx, int yy, BOOL endspace)
 
 void CheckPlrSpell()
 {
-	BOOL addflag;
+	BOOL addflag = FALSE;
 	int rspell, sd, sl;
 
 	if ((DWORD)myplr >= MAX_PLRS) {
@@ -4076,6 +4076,14 @@ void CheckPlrSpell()
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			PlaySFX(PS_MAGE34);
 #endif
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			PlaySFX(PS_MONK34);
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			PlaySFX(PS_ROGUE34);
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			PlaySFX(PS_WARR34);
+#endif
 		}
 		return;
 	}
@@ -4089,22 +4097,31 @@ void CheckPlrSpell()
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			PlaySFX(PS_MAGE27);
 #endif
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			PlaySFX(PS_MONK27);
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			PlaySFX(PS_ROGUE27);
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			PlaySFX(PS_WARR27);
+#endif
 		}
 		return;
 	}
 
-	if (pcurs != CURSOR_HAND
-	    || MouseY >= PANEL_TOP
-	    || (chrflag && MouseX < SPANEL_WIDTH || invflag && MouseX > RIGHT_PANEL)
-	        && rspell != SPL_HEAL
-	        && rspell != SPL_IDENTIFY
-	        && rspell != SPL_REPAIR
-	        && rspell != SPL_INFRA
-	        && rspell != SPL_RECHARGE) {
+	if (pcurs != CURSOR_HAND)
+		return;
+
+	if (((MouseY >= PANEL_TOP)
+	        || (chrflag && MouseX < SPANEL_WIDTH) || (invflag && MouseX > RIGHT_PANEL))
+	        && ((MouseY >= PANEL_TOP) || (
+				rspell != SPL_HEAL &&
+				rspell != SPL_IDENTIFY &&
+				rspell != SPL_REPAIR &&
+				rspell != SPL_INFRA && rspell != SPL_RECHARGE))) {
 		return;
 	}
 
-	addflag = FALSE;
 	switch (plr[myplr]._pRSplType) {
 	case RSPLTYPE_SKILL:
 	case RSPLTYPE_SPELL:
@@ -4119,7 +4136,11 @@ void CheckPlrSpell()
 	}
 
 	if (addflag) {
-		if (plr[myplr]._pRSpell == SPL_FIREWALL) {
+		if (plr[myplr]._pRSpell == SPL_FIREWALL
+#ifdef HELLFIRE
+		    || plr[myplr]._pRSpell == SPL_LIGHTWALL
+#endif
+		) {
 			sd = GetDirection(plr[myplr]._px, plr[myplr]._py, cursmx, cursmy);
 			sl = GetSpellLevel(myplr, plr[myplr]._pRSpell);
 			NetSendCmdLocParam3(TRUE, CMD_SPELLXYD, cursmx, cursmy, plr[myplr]._pRSpell, sd, sl);
@@ -4144,6 +4165,14 @@ void CheckPlrSpell()
 			PlaySFX(PS_ROGUE35);
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			PlaySFX(PS_MAGE35);
+#endif
+#ifdef HELLFIRE
+		} else if (plr[myplr]._pClass == PC_MONK) {
+			PlaySFX(PS_MONK35);
+		} else if (plr[myplr]._pClass == PC_BARD) {
+			PlaySFX(PS_ROGUE35);
+		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
+			PlaySFX(PS_WARR35);
 #endif
 		}
 	}
