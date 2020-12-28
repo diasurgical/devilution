@@ -219,31 +219,34 @@ static void mpqapi_alloc_block(int block_offset, int block_size)
 static int mpqapi_find_free_block(int size, int *block_size)
 {
 	_BLOCKENTRY *pBlockTbl;
-	int i, result;
+	int result;
 
 	pBlockTbl = sgpBlockTbl;
-	i = 2048;
-	while (1) {
-		i--;
-		if (pBlockTbl->offset && !pBlockTbl->flags && !pBlockTbl->sizefile && (DWORD)pBlockTbl->sizealloc >= size)
-			break;
-		pBlockTbl++;
-		if (!i) {
-			*block_size = size;
-			result = sgdwMpqOffset;
-			sgdwMpqOffset += size;
-			return result;
-		}
+	for (int i = 2048; i--; pBlockTbl++) {
+		if (pBlockTbl->offset == 0)
+			continue;
+		if (pBlockTbl->flags != 0)
+			continue;
+		if (pBlockTbl->sizefile != 0)
+			continue;
+		if ((DWORD)pBlockTbl->sizealloc < size)
+			continue;
+
+		result = pBlockTbl->offset;
+		*block_size = size;
+		pBlockTbl->offset += size;
+		pBlockTbl->sizealloc -= size;
+
+		if (pBlockTbl->sizealloc == 0)
+			memset(pBlockTbl, 0, sizeof(*pBlockTbl));
+
+		return result;
+
 	}
 
-	result = pBlockTbl->offset;
 	*block_size = size;
-	pBlockTbl->offset += size;
-	pBlockTbl->sizealloc -= size;
-
-	if (!pBlockTbl->sizealloc)
-		memset(pBlockTbl, 0, sizeof(*pBlockTbl));
-
+	result = sgdwMpqOffset;
+	sgdwMpqOffset += size;
 	return result;
 }
 
