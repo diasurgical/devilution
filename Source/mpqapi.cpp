@@ -157,24 +157,26 @@ void mpqapi_store_creation_time(const char *pszArchive, DWORD dwChar)
 
 static _BLOCKENTRY *mpqapi_new_block(int *block_index)
 {
-	_BLOCKENTRY *blockEntry;
-	DWORD i;
+	_BLOCKENTRY *blockEntry = sgpBlockTbl;
 
-	blockEntry = sgpBlockTbl;
+	for (DWORD i = 0; i < 2048; i++, blockEntry++) {
+		if (blockEntry->offset != 0)
+			continue;
+		if (blockEntry->sizealloc != 0)
+			continue;
+		if (blockEntry->flags != 0)
+			continue;
+		if (blockEntry->sizefile != 0)
+			continue;
 
-	i = 0;
-	while (blockEntry->offset || blockEntry->sizealloc || blockEntry->flags || blockEntry->sizefile) {
-		i++;
-		blockEntry++;
-		if (i >= 2048) {
-			app_fatal("Out of free block entries");
-			return NULL;
-		}
+		if (block_index)
+			*block_index = i;
+
+		return blockEntry;
 	}
-	if (block_index)
-		*block_index = i;
 
-	return blockEntry;
+	app_fatal("Out of free block entries");
+	return NULL;
 }
 
 static void mpqapi_alloc_block(int block_offset, int block_size)
