@@ -247,16 +247,24 @@ static int mpqapi_find_free_block(int size, int *block_size)
 	return result;
 }
 
-static int mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
+static int mpqapi_get_hash_index(int index, int hash_a, int hash_b, int locale)
 {
-	int idx, i;
+	DWORD idx, i;
 
 	i = 2048;
 	for (idx = index & 0x7FF; sgpHashTbl[idx].block != -1; idx = (idx + 1) & 0x7FF) {
-		if (!i--)
+		if (i-- == 0)
 			break;
-		if (sgpHashTbl[idx].hashcheck[0] == hash_a && sgpHashTbl[idx].hashcheck[1] == hash_b && sgpHashTbl[idx].lcid == locale && sgpHashTbl[idx].block != -2)
-			return idx;
+		if (sgpHashTbl[idx].hashcheck[0] != hash_a)
+			continue;
+		if (sgpHashTbl[idx].hashcheck[1] != hash_b)
+			continue;
+		if (sgpHashTbl[idx].lcid != locale)
+			continue;
+		if (sgpHashTbl[idx].block != -2)
+			continue;
+
+		return idx;
 	}
 
 	return -1;
