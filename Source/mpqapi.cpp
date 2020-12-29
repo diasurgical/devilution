@@ -265,7 +265,7 @@ static int mpqapi_get_hash_index(int index, int hash_a, int hash_b, int locale)
 			continue;
 		if (sgpHashTbl[idx].lcid != locale)
 			continue;
-		if (sgpHashTbl[idx].block != -2)
+		if (sgpHashTbl[idx].block == -2)
 			continue;
 
 		return idx;
