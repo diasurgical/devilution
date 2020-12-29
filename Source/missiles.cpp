@@ -958,8 +958,11 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 #endif
 )
 {
-	int tac, resper, dam, blk, blkper, hper, hit;
+	int dam, blk, blkper, hper, hit, resper;
 
+#ifdef HELLFIRE
+	*blocked = false;
+#endif
 	if (plr[p]._pInvincible) {
 		return FALSE;
 	}
@@ -968,7 +971,7 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 		return FALSE;
 	}
 
-	if (plr[p]._pSpellFlags & 1 && !missiledata[mtype].mType) {
+	if (plr[p]._pSpellFlags & 1 && missiledata[mtype].mType == 0) {
 		return FALSE;
 	}
 
@@ -988,7 +991,7 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 		break;
 	}
 	hper = random_(69, 100);
-	if (!missiledata[mtype].mType) {
+	if (missiledata[mtype].mType == 0) {
 		hit = plr[pnum]._pIBonusToHit
 		    + plr[pnum]._pLevel
 		    - (dist * dist >> 1)
@@ -998,7 +1001,11 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 		    + plr[pnum]._pDexterity + 50;
 		if (plr[pnum]._pClass == PC_ROGUE)
 			hit += 20;
+#ifdef HELLFIRE
+		if (plr[pnum]._pClass == PC_WARRIOR || plr[pnum]._pClass == PC_BARD)
+#else
 		if (plr[pnum]._pClass == PC_WARRIOR)
+#endif
 			hit += 10;
 	} else {
 		hit = plr[pnum]._pMagic
@@ -1007,6 +1014,10 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 		    + 50;
 		if (plr[pnum]._pClass == PC_SORCERER)
 			hit += 20;
+#ifdef HELLFIRE
+		else if (plr[pnum]._pClass == PC_BARD)
+			hit += 10;
+#endif
 	}
 	if (hit < 5)
 		hit = 5;
@@ -1033,38 +1044,48 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 			dam = plr[p]._pHitPoints / 3;
 		} else {
 			dam = mindam + random_(70, maxdam - mindam + 1);
-			if (!missiledata[mtype].mType)
+			if (missiledata[mtype].mType == 0)
 				dam += plr[pnum]._pIBonusDamMod + plr[pnum]._pDamageMod + dam * plr[pnum]._pIBonusDam / 100;
 			if (!shift)
 				dam <<= 6;
 		}
-		if (missiledata[mtype].mType)
+		if (missiledata[mtype].mType != 0)
 			dam >>= 1;
 		if (resper > 0) {
+			dam -= (dam * resper) / 100;
 			if (pnum == myplr)
-				NetSendCmdDamage(TRUE, p, dam - resper * dam / 100);
+				NetSendCmdDamage(TRUE, p, dam);
 			if (plr[pnum]._pClass == PC_WARRIOR) {
-				tac = PS_WARR69;
+				PlaySfxLoc(PS_WARR69, plr[pnum]._px, plr[pnum]._py);
 #ifndef SPAWN
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
-				tac = PS_ROGUE69;
+				PlaySfxLoc(PS_ROGUE69, plr[pnum]._px, plr[pnum]._py);
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
-				tac = PS_MAGE69;
+				PlaySfxLoc(PS_MAGE69, plr[pnum]._px, plr[pnum]._py);
 #endif
-			} else {
-				return TRUE;
+#ifdef HELLFIRE
+			} else if (plr[pnum]._pClass == PC_MONK) {
+				PlaySfxLoc(PS_MONK69, plr[pnum]._px, plr[pnum]._py);
+			} else if (plr[pnum]._pClass == PC_BARD) {
+				PlaySfxLoc(PS_ROGUE69, plr[pnum]._px, plr[pnum]._py);
+			} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+				PlaySfxLoc(PS_WARR69, plr[pnum]._px, plr[pnum]._py);
+#endif
 			}
-			PlaySfxLoc(tac, plr[pnum]._px, plr[pnum]._py);
+			return TRUE;
 		} else {
 			if (blkper < blk) {
 				StartPlrBlock(p, GetDirection(plr[p]._px, plr[p]._py, plr[pnum]._px, plr[pnum]._py));
+#ifdef HELLFIRE
+				*blocked = true;
+#endif
 			} else {
 				if (pnum == myplr)
 					NetSendCmdDamage(TRUE, p, dam);
 				StartPlrHit(p, dam, FALSE);
 			}
+			return TRUE;
 		}
-		return TRUE;
 	}
 	return FALSE;
 }
