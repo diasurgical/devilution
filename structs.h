@@ -626,7 +626,11 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	unsigned char mHit2;
 	unsigned char mMinDamage2;
 	unsigned char mMaxDamage2;
+#ifdef HELLFIRE
+	char mArmorClass;
+#else
 	unsigned char mArmorClass;
+#endif
 	char falign_CB;
 	unsigned short mMagicRes;
 	int mtalkmsg;
