@@ -951,7 +951,12 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 	return FALSE;
 }
 
-BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, BOOLEAN shift)
+BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, BOOLEAN shift
+#ifdef HELLFIRE
+    ,
+    BOOLEAN *blocked
+#endif
+)
 {
 	int tac, resper, dam, blk, blkper, hper, hit;
 
@@ -1068,10 +1073,19 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 {
 	int oi;
 #ifdef HELLFIRE
+	int dir, mAnimFAmt;
 	BOOLEAN blocked;
-#endif
 
+	if (i >= MAXMISSILES || i < 0)
+		return;
+	if (mx >= MAXDUNX || mx < 0)
+		return;
+	if (my >= MAXDUNY || my < 0)
+		return;
+	if (missile[i]._micaster != TARGET_BOTH && missile[i]._misource != -1) {
+#else
 	if (missile[i]._miAnimType != MFILE_FIREWAL && missile[i]._misource != -1) {
+#endif
 		if (missile[i]._micaster == TARGET_MONSTERS) {
 			if (dMonster[mx][my] > 0) {
 				if (MonsterMHit(
@@ -1111,9 +1125,28 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			        maxdam,
 			        missile[i]._midist,
 			        missile[i]._mitype,
-			        shift)) {
-				if (!nodel)
-					missile[i]._mirange = 0;
+			        shift
+#ifdef HELLFIRE
+			        ,
+			        &blocked
+#endif
+			        )) {
+#ifdef HELLFIRE
+				if (blocked) {
+					dir = missile[i]._mimfnum + (random_(10, 2) ? 1 : -1);
+					mAnimFAmt = misfiledata[missile[i]._miAnimType].mAnimFAmt;
+					if (dir < 0)
+						dir = mAnimFAmt - 1;
+					else if (dir > mAnimFAmt)
+						dir = 0;
+
+					SetMissDir(i, dir);
+				} else
+#endif
+				{
+					if (!nodel)
+						missile[i]._mirange = 0;
+				}
 				missile[i]._miHitFlag = TRUE;
 			}
 		} else {
@@ -1140,14 +1173,32 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			        &blocked
 #endif
 			        )) {
-				if (!nodel)
-					missile[i]._mirange = 0;
+#ifdef HELLFIRE
+				if (blocked) {
+					dir = missile[i]._mimfnum + (random_(10, 2) ? 1 : -1);
+					mAnimFAmt = misfiledata[missile[i]._miAnimType].mAnimFAmt;
+					if (dir < 0)
+						dir = mAnimFAmt - 1;
+					else if (dir > mAnimFAmt)
+						dir = 0;
+
+					SetMissDir(i, dir);
+				} else
+#endif
+				{
+					if (!nodel)
+						missile[i]._mirange = 0;
+				}
 				missile[i]._miHitFlag = TRUE;
 			}
 		}
 	} else {
 		if (dMonster[mx][my] > 0) {
+#ifdef HELLFIRE
+			if (missile[i]._micaster == TARGET_BOTH) {
+#else
 			if (missile[i]._miAnimType == MFILE_FIREWAL) {
+#endif
 				if (MonsterMHit(
 				        missile[i]._misource,
 				        dMonster[mx][my] - 1,
@@ -1169,12 +1220,26 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 		if (dPlayer[mx][my] > 0
 		    && PlayerMHit(dPlayer[mx][my] - 1, -1, missile[i]._midist, mindam, maxdam, missile[i]._mitype, shift, missile[i]._miAnimType == MFILE_FIREWAL
 #ifdef HELLFIRE
-		        ,
+		            || missile[i]._miAnimType == MFILE_LGHNING,
 		        &blocked
 #endif
 		        )) {
-			if (!nodel)
-				missile[i]._mirange = 0;
+#ifdef HELLFIRE
+			if (blocked) {
+				dir = missile[i]._mimfnum + (random_(10, 2) ? 1 : -1);
+				mAnimFAmt = misfiledata[missile[i]._miAnimType].mAnimFAmt;
+				if (dir < 0)
+					dir = mAnimFAmt - 1;
+				else if (dir > mAnimFAmt)
+					dir = 0;
+
+				SetMissDir(i, dir);
+			} else
+#endif
+			{
+				if (!nodel)
+					missile[i]._mirange = 0;
+			}
 			missile[i]._miHitFlag = TRUE;
 		}
 	}
