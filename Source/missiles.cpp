@@ -752,9 +752,17 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 	return TRUE;
 }
 
-BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEAN shift, int earflag)
+BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEAN shift, int earflag
+#ifdef HELLFIRE
+    ,
+    BOOLEAN *blocked
+#endif
+)
 {
 	int hit, hper, tac, dam, blk, blkper, resper;
+#ifdef HELLFIRE
+	*blocked = false;
+#endif
 
 	if (plr[pnum]._pHitPoints >> 6 <= 0) {
 		return FALSE;
@@ -764,7 +772,7 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 		return FALSE;
 	}
 
-	if (plr[pnum]._pSpellFlags & 1 && !missiledata[mtype].mType) {
+	if (plr[pnum]._pSpellFlags & 1 && missiledata[mtype].mType == 0) {
 		return FALSE;
 	}
 
@@ -773,7 +781,7 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 	if (debug_mode_dollar_sign || debug_mode_key_inverted_v)
 		hit = 1000;
 #endif
-	if (!missiledata[mtype].mType) {
+	if (missiledata[mtype].mType == 0) {
 		tac = plr[pnum]._pIAC + plr[pnum]._pIBonusAC + plr[pnum]._pDexterity / 5;
 		if (m != -1) {
 			hper = monster[m].mHit
@@ -814,7 +822,7 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 	if (mtype == MIS_ACIDPUD)
 		blk = 100;
 	if (m != -1)
-		blkper = plr[pnum]._pBaseToBlk + (plr[pnum]._pLevel << 1) - (monster[m].mLevel << 1) + plr[pnum]._pDexterity;
+		blkper = plr[pnum]._pBaseToBlk + plr[pnum]._pDexterity - ((monster[m].mLevel - plr[pnum]._pLevel) << 1);
 	else
 		blkper = plr[pnum]._pBaseToBlk + plr[pnum]._pDexterity;
 	if (blkper < 0)
@@ -845,19 +853,37 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 			if (shift == FALSE) {
 
 				dam = (mind << 6) + random_(75, (maxd - mind + 1) << 6);
-				if (m == -1 && plr[pnum]._pIFlags & ISPL_ABSHALFTRAP)
-					dam >>= 1;
+#ifndef HELLFIRE
+				if (m == -1)
+#endif
+					if (plr[pnum]._pIFlags & ISPL_ABSHALFTRAP)
+						dam >>= 1;
 				dam += (plr[pnum]._pIGetHit << 6);
 			} else {
 				dam = mind + random_(75, maxd - mind + 1);
-				if (m == -1 && plr[pnum]._pIFlags & ISPL_ABSHALFTRAP)
-					dam >>= 1;
+#ifndef HELLFIRE
+				if (m == -1)
+#endif
+					if (plr[pnum]._pIFlags & ISPL_ABSHALFTRAP)
+						dam >>= 1;
 				dam += plr[pnum]._pIGetHit;
 			}
 
 			if (dam < 64)
 				dam = 64;
 		}
+#ifdef HELLFIRE
+		if (blk < blkper) {
+			if (m != -1) {
+				tac = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[m]._mx, monster[m]._my);
+			} else {
+				tac = plr[pnum]._pdir;
+			}
+			*blocked = true;
+			StartPlrBlock(pnum, tac);
+			return TRUE;
+		}
+#endif
 		if (resper > 0) {
 
 			dam = dam - dam * resper / 100;
@@ -881,10 +907,20 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 				} else if (plr[pnum]._pClass == PC_SORCERER) {
 					PlaySfxLoc(PS_MAGE69, plr[pnum]._px, plr[pnum]._py);
 #endif
+#ifdef HELLFIRE
+				} else if (plr[pnum]._pClass == PC_MONK) {
+					PlaySfxLoc(PS_MONK69, plr[pnum]._px, plr[pnum]._py);
+				} else if (plr[pnum]._pClass == PC_BARD) {
+					PlaySfxLoc(PS_ROGUE69, plr[pnum]._px, plr[pnum]._py);
+				} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+					PlaySfxLoc(PS_WARR69, plr[pnum]._px, plr[pnum]._py);
+#endif
 				}
 				drawhpflag = TRUE;
 			}
+			return TRUE;
 		} else {
+#ifndef HELLFIRE
 			if (blk < blkper) {
 				if (m != -1) {
 					tac = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[m]._mx, monster[m]._my);
@@ -892,7 +928,9 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 					tac = plr[pnum]._pdir;
 				}
 				StartPlrBlock(pnum, tac);
-			} else {
+			} else
+#endif
+			{
 				if (pnum == myplr) {
 					plr[pnum]._pHitPoints -= dam;
 					plr[pnum]._pHPBase -= dam;
@@ -907,8 +945,8 @@ BOOL PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, BOOLEA
 					StartPlrHit(pnum, dam, FALSE);
 				}
 			}
+			return TRUE;
 		}
-		return TRUE;
 	}
 	return FALSE;
 }
@@ -1029,6 +1067,9 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, BOOLEAN nodel)
 {
 	int oi;
+#ifdef HELLFIRE
+	BOOLEAN blocked;
+#endif
 
 	if (missile[i]._miAnimType != MFILE_FIREWAL && missile[i]._misource != -1) {
 		if (missile[i]._micaster == TARGET_MONSTERS) {
@@ -1093,7 +1134,12 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			        maxdam,
 			        missile[i]._mitype,
 			        shift,
-			        0)) {
+			        0
+#ifdef HELLFIRE
+			        ,
+			        &blocked
+#endif
+			        )) {
 				if (!nodel)
 					missile[i]._mirange = 0;
 				missile[i]._miHitFlag = TRUE;
@@ -1121,7 +1167,12 @@ void CheckMissileCol(int i, int mindam, int maxdam, BOOL shift, int mx, int my, 
 			}
 		}
 		if (dPlayer[mx][my] > 0
-		    && PlayerMHit(dPlayer[mx][my] - 1, -1, missile[i]._midist, mindam, maxdam, missile[i]._mitype, shift, missile[i]._miAnimType == MFILE_FIREWAL)) {
+		    && PlayerMHit(dPlayer[mx][my] - 1, -1, missile[i]._midist, mindam, maxdam, missile[i]._mitype, shift, missile[i]._miAnimType == MFILE_FIREWAL
+#ifdef HELLFIRE
+		        ,
+		        &blocked
+#endif
+		        )) {
 			if (!nodel)
 				missile[i]._mirange = 0;
 			missile[i]._miHitFlag = TRUE;
