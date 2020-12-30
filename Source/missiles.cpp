@@ -4644,8 +4644,8 @@ void MI_Lightctrl(int i)
 				    && monster[missile[i]._misource].MType->mtype >= MT_STORM
 				    && monster[missile[i]._misource].MType->mtype <= MT_MAEL) {
 					AddMissile(
-					    mx,
-					    my,
+					    missile[i]._mix,
+					    missile[i]._miy,
 					    missile[i]._misx,
 					    missile[i]._misy,
 					    i,
@@ -4656,8 +4656,8 @@ void MI_Lightctrl(int i)
 					    missile[i]._mispllvl);
 				} else {
 					AddMissile(
-					    mx,
-					    my,
+					    missile[i]._mix,
+					    missile[i]._miy,
 					    missile[i]._misx,
 					    missile[i]._misy,
 					    i,
@@ -4669,8 +4669,8 @@ void MI_Lightctrl(int i)
 				}
 			} else {
 				AddMissile(
-				    mx,
-				    my,
+				    missile[i]._mix,
+				    missile[i]._miy,
 				    missile[i]._misx,
 				    missile[i]._misy,
 				    i,
