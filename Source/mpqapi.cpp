@@ -242,7 +242,6 @@ static int mpqapi_find_free_block(int size, int *block_size)
 			memset(pBlockTbl, 0, sizeof(*pBlockTbl));
 
 		return result;
-
 	}
 
 	*block_size = size;
@@ -442,19 +441,16 @@ static BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, 
 {
 	DWORD *sectoroffsettable;
 	DWORD destsize, num_bytes, block_size, nNumberOfBytesToWrite;
-	const BYTE *src;
-	const char *tmp, *str_ptr;
+	const char *tmp;
 	int i, j;
 
-	str_ptr = pszName;
-	src = pbData;
-	while ((tmp = strchr(str_ptr, ':'))) {
-		str_ptr = tmp + 1;
+	while ((tmp = strchr(pszName, ':'))) {
+		pszName = tmp + 1;
 	}
-	while ((tmp = strchr(str_ptr, '\\'))) {
-		str_ptr = tmp + 1;
+	while ((tmp = strchr(pszName, '\\'))) {
+		pszName = tmp + 1;
 	}
-	Hash(str_ptr, 3);
+	Hash(pszName, 3);
 	num_bytes = (dwLen + 4095) >> 12;
 	nNumberOfBytesToWrite = 4 * num_bytes + 4;
 	pBlk->offset = mpqapi_find_free_block(dwLen + nNumberOfBytesToWrite, &pBlk->sizealloc);
@@ -472,8 +468,8 @@ static BOOL mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, 
 		len = dwLen;
 		if (dwLen >= 4096)
 			len = 4096;
-		memcpy(mpq_buf, src, len);
-		src += len;
+		memcpy(mpq_buf, pbData, len);
+		pbData += len;
 		len = PkwareCompress(mpq_buf, len);
 		if (j == 0) {
 			nNumberOfBytesToWrite = 4 * num_bytes + 4;
