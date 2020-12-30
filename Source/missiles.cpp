@@ -2423,14 +2423,26 @@ void AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 {
 	int i;
 
-	missile[mi]._midam = (random_(53, 10) + random_(53, 10) + plr[id]._pLevel + 2) << 4;
+#ifdef HELLFIRE
+	missile[mi]._midam = (random_(53, 10) + random_(53, 10) + 2 + (id > 0) ? plr[id]._pLevel : currlevel); // BUGFIX: missing parenthesis around ternary
+#else
+	missile[mi]._midam = (random_(53, 10) + random_(53, 10) + 2 + plr[id]._pLevel);
+#endif
+	missile[mi]._midam <<= 4;
 	missile[mi]._midam >>= 1;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	missile[mi]._mirange = 10;
 	i = missile[mi]._mispllvl;
+	missile[mi]._mirange = 10;
+#ifndef HELLFIRE
 	if (i > 0)
-		missile[mi]._mirange = 10 * (i + 1);
-	missile[mi]._mirange += (plr[id]._pISplDur * missile[mi]._mirange) >> 7;
+#endif
+		missile[mi]._mirange *= i + 1;
+#ifdef HELLFIRE
+	if (mienemy != TARGET_MONSTERS || id < 0)
+		missile[mi]._mirange += currlevel;
+	else
+#endif
+		missile[mi]._mirange += (plr[id]._pISplDur * missile[mi]._mirange) >> 7;
 	missile[mi]._mirange <<= 4;
 	missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
 	missile[mi]._miVar2 = 0;
