@@ -1705,46 +1705,48 @@ void missiles_steal_pots(int mi, int sx, int sy, int dx, int dy, int midir, char
 					for (si = 0; si < MAXBELTITEMS; si++) {
 						ii = -1;
 						if (plr[pnum].SpdList[si]._itype == ITYPE_MISC) {
-							if (random_(205, 2) != 0) {
-								switch (plr[pnum].SpdList[si]._iMiscId) {
-								case IMISC_FULLHEAL:
-									ii = ItemMiscIdIdx(IMISC_HEAL);
-									break;
-								case IMISC_HEAL:
-								case IMISC_MANA:
-									RemoveSpdBarItem(pnum, si);
-									continue;
-								case IMISC_FULLMANA:
+							if (random_(205, 2) == 0)
+								continue;
+							switch (plr[pnum].SpdList[si]._iMiscId) {
+							case IMISC_FULLHEAL:
+								ii = ItemMiscIdIdx(IMISC_HEAL);
+								break;
+							case IMISC_HEAL:
+							case IMISC_MANA:
+								RemoveSpdBarItem(pnum, si);
+								continue;
+							case IMISC_FULLMANA:
+								ii = ItemMiscIdIdx(IMISC_MANA);
+								break;
+							case IMISC_REJUV:
+								if (random_(205, 2) != 0) {
 									ii = ItemMiscIdIdx(IMISC_MANA);
-									break;
-								case IMISC_REJUV:
-									if (random_(205, 2) != 0) {
-										ii = ItemMiscIdIdx(IMISC_MANA);
-									} else {
-										ii = ItemMiscIdIdx(IMISC_HEAL);
-									}
+								} else {
 									ii = ItemMiscIdIdx(IMISC_HEAL);
+								}
+								ii = ItemMiscIdIdx(IMISC_HEAL);
+								break;
+							case IMISC_FULLREJUV:
+								switch (random_(205, 3)) {
+								case 0:
+									ii = ItemMiscIdIdx(IMISC_FULLMANA);
 									break;
-								case IMISC_FULLREJUV:
-									switch (random_(205, 3)) {
-									case 0:
-										ii = ItemMiscIdIdx(IMISC_FULLMANA);
-										break;
-									case 1:
-										ii = ItemMiscIdIdx(IMISC_FULLHEAL);
-										break;
-									default:
-										ii = ItemMiscIdIdx(IMISC_REJUV);
-										break;
-									}
+								case 1:
+									ii = ItemMiscIdIdx(IMISC_FULLHEAL);
+									break;
+								default:
+									ii = ItemMiscIdIdx(IMISC_REJUV);
 									break;
 								}
+								break;
+							default:
+								continue;
 							}
 						}
 						if (ii != -1) {
 							SetPlrHandItem(&plr[pnum].HoldItem, ii);
 							GetPlrHandSeed(&plr[pnum].HoldItem);
-							plr[pnum].HoldItem._iStatFlag = 1;
+							plr[pnum].HoldItem._iStatFlag = TRUE;
 							plr[pnum].SpdList[si] = plr[pnum].HoldItem;
 						}
 						if (!hasPlayedSFX) {
