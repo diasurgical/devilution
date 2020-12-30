@@ -4294,40 +4294,40 @@ void mi_light_arrow(int i)
 				    && monster[missile[i]._misource].MType->mtype >= MT_STORM
 				    && monster[missile[i]._misource].MType->mtype <= MT_MAEL) {
 					AddMissile(
-					    mx,
-					    my,
+					    missile[i]._mix,
+					    missile[i]._miy,
 					    missile[i]._misx,
 					    missile[i]._misy,
 					    i,
 					    MIS_LIGHTNING2,
 					    missile[i]._micaster,
 					    missile[i]._misource,
-					    dam,
+					    missile[i]._midam,
 					    missile[i]._mispllvl);
 				} else {
 					AddMissile(
-					    mx,
-					    my,
+					    missile[i]._mix,
+					    missile[i]._miy,
 					    missile[i]._misx,
 					    missile[i]._misy,
 					    i,
 					    MIS_LIGHTNING,
 					    missile[i]._micaster,
 					    missile[i]._misource,
-					    dam,
+					    missile[i]._midam,
 					    missile[i]._mispllvl);
 				}
 			} else {
 				AddMissile(
-				    mx,
-				    my,
+				    missile[i]._mix,
+				    missile[i]._miy,
 				    missile[i]._misx,
 				    missile[i]._misy,
 				    i,
 				    MIS_LIGHTNING,
 				    missile[i]._micaster,
 				    missile[i]._misource,
-				    dam,
+				    missile[i]._midam,
 				    missile[i]._mispllvl);
 			}
 			missile[i]._miVar1 = missile[i]._mix;
