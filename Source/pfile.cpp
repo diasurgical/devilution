@@ -777,20 +777,33 @@ void pfile_rename_temp_to_perm()
 void pfile_write_save_file(const char *pszName, BYTE *pbData, DWORD dwLen, DWORD qwLen)
 {
 	DWORD save_num;
+#ifndef HELLFIRE
 	char FileName[MAX_PATH];
 
 	pfile_strcpy(FileName, pszName);
+#endif
 	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
 	{
 		char password[16] = PASSWORD_SINGLE;
+#ifdef HELLFIRE
+		DWORD size = 16;
+		if (gbMaxPlayers > 1)
+			GetComputerName(password, &size);
+#else
 		if (gbMaxPlayers > 1)
 			strcpy(password, PASSWORD_MULTI);
+#endif
 
 		codec_encode(pbData, dwLen, qwLen, password);
 	}
 	if (!pfile_open_archive(FALSE, save_num))
+#ifdef HELLFIRE
+		app_fatal("Unable to write to save file archive");
+	mpqapi_write_file(pszName, pbData, qwLen);
+#else
 		app_fatal("Unable to write so save file archive");
 	mpqapi_write_file(FileName, pbData, qwLen);
+#endif
 	pfile_flush(TRUE, save_num);
 }
 
