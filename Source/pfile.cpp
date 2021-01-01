@@ -192,8 +192,14 @@ static void pfile_encode_hero(const PkPlayerStruct *pPack)
 	DWORD packed_len;
 	char password[16] = PASSWORD_SINGLE;
 
+#ifdef HELLFIRE
+	DWORD size = 161;
+	if (gbMaxPlayers > 1)
+		GetComputerName(password, &size);
+#else
 	if (gbMaxPlayers > 1)
 		strcpy(password, PASSWORD_MULTI);
+#endif
 
 	packed_len = codec_get_encoded_len(sizeof(*pPack));
 	packed = (BYTE *)DiabloAllocPtr(packed_len);
