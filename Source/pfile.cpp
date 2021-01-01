@@ -497,14 +497,56 @@ BOOL pfile_archive_contains_game(HANDLE hsArchive, DWORD save_num)
 {
 	HANDLE file;
 
+#ifdef HELLFIRE
+	DWORD read, size;
+	BOOL ret = FALSE;
+	gbLoadGame = FALSE;
+#endif
+
 	if (gbMaxPlayers != 1)
 		return FALSE;
 
 	if (!SFileOpenFileEx(hsArchive, "game", 0, &file))
 		return FALSE;
 
+#ifdef HELLFIRE
+	DWORD dwlen = SFileGetFileSize(file, NULL);
+	if (!dwlen)
+		app_fatal("Invalid save file");
+
+	BYTE *ptr = DiabloAllocPtr(dwlen + 8);
+	BYTE *buf = ptr + 4;
+
+	if (SFileReadFile(file, buf, dwlen, &read, NULL)) {
+		if (read == dwlen) {
+			char password[16] = PASSWORD_SINGLE;
+			size = 16;
+			if (gbMaxPlayers > 1)
+				GetComputerName(password, &size);
+			gbLoadGame = TRUE;
+			if (codec_decode(buf, dwlen, password)) {
+				int magic = *buf << 24;
+				buf++;
+				magic |= *buf << 16;
+				buf++;
+				magic |= *buf << 8;
+				buf++;
+				magic |= *buf;
+				if (magic == 'HELF') {
+					ret = TRUE;
+				}
+			}
+		}
+	}
+
+	if (ptr)
+		mem_free_dbg(ptr);
+	SFileCloseFile(file);
+	return ret;
+#else
 	SFileCloseFile(file);
 	return TRUE;
+#endif
 }
 
 BOOL __stdcall pfile_ui_set_class_stats(unsigned int player_class_nr, _uidefaultstats *class_stats)
