@@ -114,12 +114,7 @@ static void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num)
 	char *s;
 	char path[MAX_PATH];
 
-#ifdef SPAWN
-	fmt = "\\share_%d.sv";
-
-	if (gbMaxPlayers <= 1)
-		fmt = "\\spawn%d.sv";
-#elif defined(HELLFIRE)
+#ifdef HELLFIRE
 	if (gbMaxPlayers > 1) {
 		if (!hellfire)
 			fmt = "\\dlinfo_%d.drv";
@@ -133,10 +128,17 @@ static void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num)
 		else
 			fmt = "\\single_%d.hsv";
 #else
+#ifdef SPAWN
+	fmt = "\\share_%d.sv";
+
+	if (gbMaxPlayers <= 1)
+		fmt = "\\spawn%d.sv";
+#else
 	fmt = "\\multi_%d.sv";
 
 	if (gbMaxPlayers <= 1)
 		fmt = "\\single_%d.sv";
+#endif
 #endif
 
 		// BUGFIX: ignores dwBufSize and uses MAX_PATH instead
@@ -562,14 +564,14 @@ BOOL __stdcall pfile_get_file_name(DWORD lvl, char *dst)
 			return FALSE;
 		fmt = "hero";
 	} else {
-		if (lvl < 17)
+		if (lvl < NUMLEVELS)
 			fmt = "perml%02d";
-		else if (lvl < 34) {
-			lvl -= 17;
+		else if (lvl < NUMLEVELS * 2) {
+			lvl -= NUMLEVELS;
 			fmt = "perms%02d";
-		} else if (lvl == 34)
+		} else if (lvl == NUMLEVELS * 2)
 			fmt = "game";
-		else if (lvl == 35)
+		else if (lvl == NUMLEVELS * 2 + 1)
 			fmt = "hero";
 		else
 			return FALSE;
