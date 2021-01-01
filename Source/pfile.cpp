@@ -180,12 +180,17 @@ static BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 	if (!SFileOpenFileEx(archive, "hero", 0, &file)) {
 		return FALSE;
 	} else {
+		buf = NULL;
 		BOOL ret = FALSE;
 		char password[16] = PASSWORD_SINGLE;
 		nSize = 16;
 
 		if (gbMaxPlayers > 1)
+#ifdef HELLFIRE
+			GetComputerName(password, &nSize);
+#else
 			strcpy(password, PASSWORD_MULTI);
+#endif
 
 		dwlen = SFileGetFileSize(file, NULL);
 		if (dwlen) {
@@ -194,6 +199,7 @@ static BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 			if (SFileReadFile(file, buf, dwlen, &read, NULL)) {
 				decoded = TRUE;
 				read = codec_decode(buf, dwlen, password);
+#ifndef HELLFIRE
 				if (!read && gbMaxPlayers > 1) {
 					GetComputerName(password, &nSize);
 					if (SFileSetFilePointer(file, 0, NULL, FILE_BEGIN) || !SFileReadFile(file, buf, dwlen, &read, NULL))
@@ -201,14 +207,15 @@ static BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 					else
 						read = codec_decode(buf, dwlen, password);
 				}
+#endif
 				if (decoded && read == sizeof(*pPack)) {
 					memcpy(pPack, buf, sizeof(*pPack));
 					ret = TRUE;
 				}
 			}
-			if (buf)
-				mem_free_dbg(buf);
 		}
+		if (buf)
+			mem_free_dbg(buf);
 		SFileCloseFile(file);
 		return ret;
 	}
