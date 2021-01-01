@@ -40,7 +40,11 @@ static
 	}
 }
 
+#ifdef HELLFIRE
+void PackPlayer(PkPlayerStruct *pPack, int pnum)
+#else
 void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
+#endif
 {
 	PlayerStruct *pPlayer;
 	int i;
@@ -73,11 +77,15 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pPack->pMaxManaBase = pPlayer->_pMaxManaBase;
 	pPack->pMemSpells = pPlayer->_pMemSpells;
 
-	for (i = 0; i < 37; i++) // Should be MAX_SPELLS but set to 37 to make save games compatible
-		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
 #ifdef HELLFIRE
+	for (i = 0; i <= 36; i++) // Should be MAX_SPELLS-1 but set to 36 to make save games compatible	
+		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
+	char *p = pPack->pSplLvl2;
 	for (i = 37; i < 47; i++)
-		pPack->pSplLvl2[i - 37] = pPlayer->_pSplLvl[i];
+		p[i - 37] = pPlayer->_pSplLvl[i];
+#else
+	for (i = 0; i < MAX_SPELLS; i++)
+		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
 #endif
 
 	pki = &pPack->InvBody[0];

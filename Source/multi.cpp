@@ -620,7 +620,11 @@ static void multi_send_pinfo(int pnum, char cmd)
 {
 	PkPlayerStruct pkplr;
 
+#ifdef HELLFIRE
+	PackPlayer(&pkplr, myplr);
+#else
 	PackPlayer(&pkplr, myplr, TRUE);
+#endif
 	dthread_send_delta(pnum, cmd, &pkplr, sizeof(pkplr));
 }
 
