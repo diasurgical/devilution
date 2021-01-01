@@ -16,7 +16,11 @@
 #endif
 
 /** List of character names for the character selection screen. */
+#ifdef HELLFIRE
+static char hero_names[MAX_CHARACTERS + 1][PLR_NAME_LEN];
+#else
 static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
+#endif
 BOOL gbValidSaveFile;
 
 static void pfile_check_available_space(char *pszDir)
@@ -428,6 +432,7 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uihero
 	BOOL showFixedMsg;
 
 	memset(hero_names, 0, sizeof(hero_names));
+#ifndef HELLFIRE
 	if (gbMaxPlayers > 1) {
 		for (i = 0, save_num = 0; i < MAX_CHARACTERS && save_num < MAX_CHARACTERS; i++) {
 			struct _OFSTRUCT ReOpenBuff;
@@ -441,11 +446,7 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uihero
 				continue;
 			if (!SRegLoadString("Diablo\\Converted", s, 0, NewFileName, sizeof(NewFileName))) {
 				while (save_num < MAX_CHARACTERS) {
-#ifdef HELLFIRE
-					pfile_get_save_path(NewFileName, sizeof(NewFileName), save_num++, TRUE);
-#else
 					pfile_get_save_path(NewFileName, sizeof(NewFileName), save_num++);
-#endif
 					if (OpenFile(NewFileName, &ReOpenBuff, OF_EXIST) == HFILE_ERROR) {
 						if (CopyFile(FileName, NewFileName, TRUE)) {
 							DWORD attrib;
@@ -462,6 +463,7 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uihero
 			}
 		}
 	}
+#endif
 
 	showFixedMsg = TRUE;
 	for (i = 0; i < MAX_CHARACTERS; i++) {
