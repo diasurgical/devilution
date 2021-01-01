@@ -819,48 +819,58 @@ BYTE *pfile_read(const char *pszName, DWORD *pdwLen)
 	HANDLE archive, save;
 	BYTE *buf;
 
+#ifndef HELLFIRE
 	pfile_strcpy(FileName, pszName);
+#endif
 	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
 	archive = pfile_open_save_archive(NULL, save_num);
 	if (archive == NULL)
 		app_fatal("Unable to open save file archive");
 
+#ifdef HELLFIRE
+	if (!SFileOpenFileEx(archive, pszName, 0, &save))
+#else
 	if (!SFileOpenFileEx(archive, FileName, 0, &save))
+#endif
 		app_fatal("Unable to open save file");
 
 	*pdwLen = SFileGetFileSize(save, NULL);
 	if (*pdwLen == 0)
 		app_fatal("Invalid save file");
 
-	buf = (BYTE *)DiabloAllocPtr(*pdwLen);
+	buf = DiabloAllocPtr(*pdwLen);
 	if (!SFileReadFile(save, buf, *pdwLen, &nread, NULL))
 		app_fatal("Unable to read save file");
 	SFileCloseFile(save);
 	pfile_SFileCloseArchive(archive);
 
+	char password[16] = PASSWORD_SINGLE;
+	DWORD nSize = 16;
+
+	if (gbMaxPlayers > 1)
+#ifdef HELLFIRE
+		GetComputerName(password, &nSize);
 	{
-		char password[16] = PASSWORD_SINGLE;
-		DWORD nSize = 16;
+		{
+#else
+		strcpy(password, PASSWORD_MULTI);
 
-		if (gbMaxPlayers > 1)
-			strcpy(password, PASSWORD_MULTI);
+	*pdwLen = codec_decode(buf, *pdwLen, password);
+	if (*pdwLen == 0) {
+		// BUGFIFX: *pdwLen has already been overwritten with zero and the savefile has been closed
+		// there is no way this can work correctly
+		if (gbMaxPlayers > 1) {
+			GetComputerName(password, &nSize);
+			if (SFileSetFilePointer(save, 0, NULL, FILE_BEGIN))
+				app_fatal("Unable to read save file");
 
-		*pdwLen = codec_decode(buf, *pdwLen, password);
-		if (*pdwLen == 0) {
-			// BUGFIFX: *pdwLen has already been overwritten with zero and the savefile has been closed
-			// there is no way this can work correctly
-			if (gbMaxPlayers > 1) {
-				GetComputerName(password, &nSize);
-				if (SFileSetFilePointer(save, 0, NULL, FILE_BEGIN))
-					app_fatal("Unable to read save file");
-
-				if (!SFileReadFile(save, buf, *pdwLen, &nread, NULL))
-					app_fatal("Unable to read save file");
-				*pdwLen = codec_decode(buf, *pdwLen, password);
-			}
-			if (*pdwLen == 0)
-				app_fatal("Invalid save file");
+			if (!SFileReadFile(save, buf, *pdwLen, &nread, NULL))
+				app_fatal("Unable to read save file");
+#endif
+			*pdwLen = codec_decode(buf, *pdwLen, password);
 		}
+		if (*pdwLen == 0)
+			app_fatal("Invalid save file");
 	}
 	return buf;
 }
