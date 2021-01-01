@@ -99,28 +99,50 @@ static char *GetSaveDirectory(char *dst, int dst_size, DWORD save_num)
 	return _strlwr(dst);
 }
 
+#ifdef HELLFIRE
+static void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num, BOOL hellfire)
+#else
 static void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num)
+#endif
 {
+	const char *fmt;
 	DWORD plen;
 	char *s;
 	char path[MAX_PATH];
+
 #ifdef SPAWN
-	const char *fmt = "\\share_%d.sv";
+	fmt = "\\share_%d.sv";
 
 	if (gbMaxPlayers <= 1)
 		fmt = "\\spawn%d.sv";
+#elif defined(HELLFIRE)
+	if (gbMaxPlayers > 1) {
+		if (!hellfire)
+			fmt = "\\dlinfo_%d.drv";
+		else
+			fmt = "\\hrinfo_%d.drv";
+
+		plen = GetWindowsDirectory(pszBuf, MAX_PATH);
+	} else {
+		if (!hellfire)
+			fmt = "\\single_%d.sv";
+		else
+			fmt = "\\single_%d.hsv";
 #else
-	const char *fmt = "\\multi_%d.sv";
+	fmt = "\\multi_%d.sv";
 
 	if (gbMaxPlayers <= 1)
 		fmt = "\\single_%d.sv";
 #endif
 
-	// BUGFIX: ignores dwBufSize and uses MAX_PATH instead
-	plen = GetModuleFileName(ghInst, pszBuf, MAX_PATH);
-	s = strrchr(pszBuf, '\\');
-	if (s)
-		*s = '\0';
+		// BUGFIX: ignores dwBufSize and uses MAX_PATH instead
+		plen = GetModuleFileName(ghInst, pszBuf, MAX_PATH);
+		s = strrchr(pszBuf, '\\');
+		if (s)
+			*s = '\0';
+#ifdef HELLFIRE
+	}
+#endif
 
 	if (!plen)
 		app_fatal("Unable to get save directory");
@@ -213,8 +235,13 @@ static BOOL pfile_open_archive(BOOL update, DWORD save_num)
 {
 	char FileName[MAX_PATH];
 
+#ifdef HELLFIRE
+	pfile_get_save_path(FileName, sizeof(FileName), save_num, TRUE);
+	if (OpenMPQ(FileName, gbMaxPlayers > 1, save_num))
+#else
 	pfile_get_save_path(FileName, sizeof(FileName), save_num);
 	if (OpenMPQ(FileName, FALSE, save_num))
+#endif
 		return TRUE;
 
 	if (update && gbMaxPlayers > 1)
@@ -226,7 +253,12 @@ static void pfile_flush(BOOL is_single_player, DWORD save_num)
 {
 	char FileName[MAX_PATH];
 
+#ifdef HELLFIRE
+	pfile_get_save_path(FileName, sizeof(FileName), save_num, TRUE);
+#else
 	pfile_get_save_path(FileName, sizeof(FileName), save_num);
+#endif
+
 	mpqapi_flush_and_close(FileName, is_single_player, save_num);
 }
 
@@ -238,7 +270,11 @@ static HANDLE pfile_open_save_archive(BOOL *showFixedMsg, DWORD save_num)
 	char SrcStr[MAX_PATH];
 	HANDLE archive;
 
+#ifdef HELLFIRE
+	pfile_get_save_path(SrcStr, sizeof(SrcStr), save_num, TRUE);
+#else
 	pfile_get_save_path(SrcStr, sizeof(SrcStr), save_num);
+#endif
 	if (SFileOpenArchive(SrcStr, 0x7000, FS_PC, &archive))
 		return archive;
 	return NULL;
@@ -405,7 +441,11 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uihero
 				continue;
 			if (!SRegLoadString("Diablo\\Converted", s, 0, NewFileName, sizeof(NewFileName))) {
 				while (save_num < MAX_CHARACTERS) {
+#ifdef HELLFIRE
+					pfile_get_save_path(NewFileName, sizeof(NewFileName), save_num++, TRUE);
+#else
 					pfile_get_save_path(NewFileName, sizeof(NewFileName), save_num++);
+#endif
 					if (OpenFile(NewFileName, &ReOpenBuff, OF_EXIST) == HFILE_ERROR) {
 						if (CopyFile(FileName, NewFileName, TRUE)) {
 							DWORD attrib;
@@ -544,7 +584,11 @@ BOOL __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 	save_num = pfile_get_save_num_from_name(hero_info->name);
 	if (save_num < MAX_CHARACTERS) {
 		hero_names[save_num][0] = '\0';
+#ifdef HELLFIRE
+		pfile_get_save_path(FileName, sizeof(FileName), save_num, TRUE);
+#else
 		pfile_get_save_path(FileName, sizeof(FileName), save_num);
+#endif
 		DeleteFile(FileName);
 	}
 	return TRUE;
