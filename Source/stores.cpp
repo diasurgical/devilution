@@ -21,11 +21,7 @@ int stextsmax;
 int InStoreFlag; /** current frame # for the pentagram selector */
 ItemStruct storehold[48];
 int gossipstart;
-#ifdef HELLFIRE
-ItemStruct witchitem[25];
-#else
-ItemStruct witchitem[20];
-#endif
+ItemStruct witchitem[WITCH_ITEMS];
 BOOL stextscrl;
 int numpremium;
 ItemStruct healitem[20];
