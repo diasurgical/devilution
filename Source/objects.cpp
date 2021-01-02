@@ -737,7 +737,7 @@ void LoadMapObjects(BYTE *pMap, int startx, int starty, int x1, int y1, int w, i
 	InitObjFlag = TRUE;
 
 	lm = pMap;
-	rw = lm[0];
+	rw = *lm;
 	lm += 2;
 	rh = *lm;
 	mapoff = (rw * rh + 1) * 2;
@@ -749,7 +749,7 @@ void LoadMapObjects(BYTE *pMap, int startx, int starty, int x1, int y1, int w, i
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
 			if (*lm) {
-				type = lm[0];
+				type = *lm;
 				AddObject(ObjTypeConv[type], startx + 16 + i, starty + 16 + j);
 				oi = ObjIndex(startx + 16 + i, starty + 16 + j);
 				SetObjMapRange(oi, x1, y1, x1 + w, y1 + h, leveridx);

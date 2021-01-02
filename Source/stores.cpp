@@ -98,7 +98,7 @@ void InitStores()
 	numpremium = 0;
 	premiumlevel = 1;
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < SMITH_PREMIUM_ITEMS; i++)
 		premiumitem[i]._itype = ITYPE_NONE;
 
 	boyitem._itype = ITYPE_NONE;
@@ -592,7 +592,7 @@ BOOL S_StartSPBuy()
 	int i;
 
 	storenumh = 0;
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < SMITH_PREMIUM_ITEMS; i++) {
 		if (premiumitem[i]._itype != ITYPE_NONE)
 			storenumh++;
 	}
