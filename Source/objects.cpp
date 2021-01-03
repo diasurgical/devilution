@@ -5041,25 +5041,49 @@ void SyncL1Doors(int i)
 		object[i]._oMissFlag = FALSE;
 		return;
 	}
+#ifdef HELLFIRE
+	else
+#endif
+		object[i]._oMissFlag = TRUE;
 
 	x = object[i]._ox;
 	y = object[i]._oy;
-	object[i]._oMissFlag = TRUE;
 	object[i]._oSelFlag = 2;
-	if (object[i]._otype == OBJ_L1LDOOR) {
-		if (object[i]._oVar1 == 214)
-			ObjSetMicro(x, y, 408);
-		else
-			ObjSetMicro(x, y, 393);
-		dSpecial[x][y] = 7;
-		objects_set_door_piece(x - 1, y);
-		y--;
+#ifdef HELLFIRE
+	if (currlevel < 17) {
+#endif
+		if (object[i]._otype == OBJ_L1LDOOR) {
+			if (object[i]._oVar1 == 214)
+				ObjSetMicro(x, y, 408);
+			else
+				ObjSetMicro(x, y, 393);
+			dSpecial[x][y] = 7;
+			objects_set_door_piece(x - 1, y);
+			y--;
+		} else {
+			ObjSetMicro(x, y, 395);
+#ifdef HELLFIRE
+			if (currlevel < 17)
+#endif
+				dSpecial[x][y] = 8;
+			objects_set_door_piece(x, y - 1);
+			x--;
+		}
+#ifdef HELLFIRE
 	} else {
-		ObjSetMicro(x, y, 395);
-		dSpecial[x][y] = 8;
-		objects_set_door_piece(x, y - 1);
-		x--;
+		if (object[i]._otype == OBJ_L1LDOOR) {
+			ObjSetMicro(x, y, 206);
+			dSpecial[x][y] = 1;
+			objects_set_door_piece(x - 1, y);
+			y--;
+		} else {
+			ObjSetMicro(x, y, 209);
+			dSpecial[x][y] = 2;
+			objects_set_door_piece(x, y - 1);
+			x--;
+		}
 	}
+#endif
 	DoorSet(i, x, y);
 }
 
