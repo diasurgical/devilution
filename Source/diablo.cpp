@@ -456,7 +456,7 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 		run_game_loop(uMsg);
 		NetClose();
 #ifndef HELLFIRE
-		pfile_create_player_description(0, 0);
+		pfile_create_player_description(NULL, 0);
 #else
 		if (gbMaxPlayers == 1)
 			break;
