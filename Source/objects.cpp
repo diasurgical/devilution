@@ -5210,13 +5210,14 @@ void SyncObjectAnim(int o)
 void GetObjectStr(int i)
 {
 	switch (object[i]._otype) {
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		strcpy(infostr, "Crucified Skeleton");
+		break;
 	case OBJ_LEVER:
 	case OBJ_FLAMELVR:
 		strcpy(infostr, "Lever");
-		break;
-	case OBJ_CHEST1:
-	case OBJ_TCHEST1:
-		strcpy(infostr, "Small Chest");
 		break;
 	case OBJ_L1LDOOR:
 	case OBJ_L1RDOOR:
@@ -5246,7 +5247,10 @@ void GetObjectStr(int i)
 	case OBJ_BOOK2R:
 		strcpy(infostr, "Mythical Book");
 		break;
-
+	case OBJ_CHEST1:
+	case OBJ_TCHEST1:
+		strcpy(infostr, "Small Chest");
+		break;
 	case OBJ_CHEST2:
 	case OBJ_TCHEST2:
 		strcpy(infostr, "Chest");
@@ -5256,39 +5260,34 @@ void GetObjectStr(int i)
 	case OBJ_SIGNCHEST:
 		strcpy(infostr, "Large Chest");
 		break;
-	case OBJ_CRUX1:
-	case OBJ_CRUX2:
-	case OBJ_CRUX3:
-		strcpy(infostr, "Crucified Skeleton");
-		break;
 	case OBJ_SARC:
 		strcpy(infostr, "Sarcophagus");
 		break;
 	case OBJ_BOOKSHELF:
 		strcpy(infostr, "Bookshelf");
 		break;
+	case OBJ_BOOKCASEL:
+	case OBJ_BOOKCASER:
+		strcpy(infostr, "Bookcase");
+		break;
 	case OBJ_BARREL:
 	case OBJ_BARRELEX:
 #ifdef HELLFIRE
-		if (currlevel > 16 && currlevel < 21)      // for hive levels
-			strcpy(infostr, "Pod");                //Then a barrel is called a pod
-		else if (currlevel > 20 && currlevel < 25) // for crypt levels
-			strcpy(infostr, "Urn");                //Then a barrel is called an urn
+		if (currlevel >= 17 && currlevel <= 20)      // for hive levels
+			strcpy(infostr, "Pod");                  //Then a barrel is called a pod
+		else if (currlevel >= 21 && currlevel <= 24) // for crypt levels
+			strcpy(infostr, "Urn");                  //Then a barrel is called an urn
 		else
 #endif
 			strcpy(infostr, "Barrel");
-		break;
-	case OBJ_SKELBOOK:
-		strcpy(infostr, "Skeleton Tome");
 		break;
 	case OBJ_SHRINEL:
 	case OBJ_SHRINER:
 		sprintf(tempstr, "%s Shrine", shrinestrs[object[i]._oVar1]);
 		strcpy(infostr, tempstr);
 		break;
-	case OBJ_BOOKCASEL:
-	case OBJ_BOOKCASER:
-		strcpy(infostr, "Bookcase");
+	case OBJ_SKELBOOK:
+		strcpy(infostr, "Skeleton Tome");
 		break;
 	case OBJ_BOOKSTAND:
 		strcpy(infostr, "Library Book");
@@ -5305,15 +5304,15 @@ void GetObjectStr(int i)
 	case OBJ_BLOODBOOK:
 		strcpy(infostr, "Book of Blood");
 		break;
-	case OBJ_PEDISTAL:
-		strcpy(infostr, "Pedestal of Blood");
-		break;
 	case OBJ_PURIFYINGFTN:
 		strcpy(infostr, "Purifying Spring");
 		break;
 	case OBJ_ARMORSTAND:
 	case OBJ_WARARMOR:
 		strcpy(infostr, "Armor");
+		break;
+	case OBJ_WARWEAP:
+		strcpy(infostr, "Weapon Rack");
 		break;
 	case OBJ_GOATSHRINE:
 		strcpy(infostr, "Goat Shrine");
@@ -5330,10 +5329,12 @@ void GetObjectStr(int i)
 	case OBJ_STEELTOME:
 		strcpy(infostr, "Steel Tome");
 		break;
+	case OBJ_PEDISTAL:
+		strcpy(infostr, "Pedestal of Blood");
+		break;
 	case OBJ_STORYBOOK:
 		strcpy(infostr, StoryBookName[object[i]._oVar3]);
 		break;
-	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
 		strcpy(infostr, "Weapon Rack");
 		break;
