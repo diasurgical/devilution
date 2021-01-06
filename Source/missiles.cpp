@@ -5539,7 +5539,7 @@ void MI_Blodboil(int i)
 #ifndef SPAWN
 				PS_ROGUE72,
 				PS_MAGE72,
-				PS_MAGE72, // BUGFIX: should be PS_MONK72?
+				PS_MAGE72,
 				PS_ROGUE72,
 #else
 				0,
@@ -5569,7 +5569,7 @@ void MI_Blodboil(int i)
 #ifndef SPAWN
 				PS_ROGUE72,
 				PS_MAGE72,
-				PS_MAGE72, // BUGFIX: should be PS_MONK72?
+				PS_MAGE72,
 				PS_ROGUE72,
 #else
 				0,
