@@ -391,7 +391,7 @@ static char pfile_get_player_class(unsigned int player_class_nr)
 	return pc_class;
 }
 
-static BYTE game_2_ui_class(const PlayerStruct *p) // game_2_ui_class
+static BYTE game_2_ui_class(const PlayerStruct *p)
 {
 	BYTE uiclass;
 	if (p->_pClass == PC_WARRIOR)

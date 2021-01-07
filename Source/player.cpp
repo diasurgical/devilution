@@ -4387,7 +4387,7 @@ void ModifyPlrStr(int p, int l)
 	CalcPlrInv(p, TRUE);
 
 	if (p == myplr) {
-		NetSendCmdParam1(FALSE, CMD_SETSTR, plr[p]._pBaseStr); //60
+		NetSendCmdParam1(FALSE, CMD_SETSTR, plr[p]._pBaseStr);
 	}
 }
 
