@@ -2593,7 +2593,7 @@ void GetItemBonus(int i, int idata, int minlvl, int maxlvl, BOOL onlygood)
 				GetStaffSpell(i, maxlvl, onlygood);
 #ifdef HELLFIRE
 			else
-				GetItemPower(i, minlvl, maxlvl, 0x100, onlygood);
+				GetItemPower(i, minlvl, maxlvl, PLT_STAFF, onlygood);
 #endif
 			break;
 		case ITYPE_RING:
@@ -5277,7 +5277,7 @@ void SpawnWitch(int lvl)
 
 	j = 3;
 #ifdef HELLFIRE
-	iCnt = random_(51, 15) + 10;
+	iCnt = random_(51, WITCH_ITEMS - 10) + 10;
 	int books = random_(3, 4);
 #endif
 

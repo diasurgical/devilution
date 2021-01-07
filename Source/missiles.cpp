@@ -404,7 +404,7 @@ int GetDirection16(int x1, int y1, int x2, int y2)
 	my = abs(y2 - y1);
 	if (my > 15)
 		my = 15;
-	md = Dirs[my][mx];
+	md = Dirs[my][mx]; // BUGFIX, md can be 99, leading to an OOB read
 	if (x1 > x2) {
 		if (y1 > y2)
 			md = urtoll[md];
