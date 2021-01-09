@@ -3979,7 +3979,7 @@ void MAI_Fallen(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS) {
-#if HELLFIRE
+#ifdef HELLFIRE
 		return;
 #else
 		app_fatal("MAI_Fallen: Invalid monster %d", i);
