@@ -3755,8 +3755,8 @@ void ValidatePlayer()
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (plr[myplr].InvList[i]._itype == ITYPE_GOLD) {
 #ifdef HELLFIRE
-			if (plr[myplr].InvList[i]._ivalue > auricGold) { // BUGFIX: change to MaxGold? Why would auricGold be used here?
-				plr[myplr].InvList[i]._ivalue = auricGold;   // BUGFIX: change to MaxGold? Why would auricGold be used here?
+			if (plr[myplr].InvList[i]._ivalue > auricGold) {
+				plr[myplr].InvList[i]._ivalue = auricGold;
 #else
 			if (plr[myplr].InvList[i]._ivalue > GOLD_MAX_LIMIT) {
 				plr[myplr].InvList[i]._ivalue = GOLD_MAX_LIMIT;
