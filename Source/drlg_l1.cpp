@@ -2641,7 +2641,7 @@ static void DRLG_L5(int entry)
 				}
 			}
 #ifdef HELLFIRE
-		} else if (entry == 0) {
+		} else if (entry == ENTRY_MAIN) {
 			if (currlevel < 21) {
 				if (DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, TRUE, -1, 0) < 0)
 					doneflag = FALSE;
@@ -2662,7 +2662,7 @@ static void DRLG_L5(int entry)
 				}
 				ViewY++;
 			}
-		} else if (entry == 1) {
+		} else if (entry == ENTRY_PREV) {
 			if (currlevel < 21) {
 				if (DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, FALSE, -1, 0) < 0)
 					doneflag = FALSE;
