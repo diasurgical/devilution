@@ -734,6 +734,9 @@ void CreatePlayer(int pnum, char c)
 	int hp, mana;
 	int i;
 
+#ifdef HELLFIRE
+	memset(&plr[pnum], 0, sizeof(PlayerStruct));
+#endif
 	ClearPlrRVars(&plr[pnum]);
 	SetRndSeed(GetTickCount());
 
@@ -773,10 +776,22 @@ void CreatePlayer(int pnum, char c)
 	plr[pnum]._pStatPts = 0;
 	plr[pnum].pTownWarps = 0;
 	plr[pnum].pDungMsgs = 0;
+#ifdef HELLFIRE
+	plr[pnum].pDungMsgs2 = 0;
+#endif
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pDiabloKillLevel = 0;
+#ifdef HELLFIRE
+	plr[pnum].pDifficulty = DIFF_NORMAL;
+#endif
 
-	if (c == PC_ROGUE) {
+#ifdef HELLFIRE
+	if (plr[pnum]._pClass == PC_MONK) {
+		plr[pnum]._pDamageMod = (plr[pnum]._pStrength + plr[pnum]._pDexterity) * plr[pnum]._pLevel / 150;
+	} else if (plr[pnum]._pClass == PC_ROGUE || plr[pnum]._pClass == PC_BARD) {
+#else
+	if (plr[pnum]._pClass == PC_ROGUE) {
+#endif
 		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
 	} else {
 		plr[pnum]._pDamageMod = plr[pnum]._pStrength * plr[pnum]._pLevel / 100;
@@ -784,41 +799,64 @@ void CreatePlayer(int pnum, char c)
 
 	plr[pnum]._pBaseToBlk = ToBlkTbl[c];
 
-	plr[pnum]._pHitPoints = (val + 10) << 6;
-	if (c == PC_WARRIOR) {
-		plr[pnum]._pHitPoints *= 2;
+	plr[pnum]._pHitPoints = (plr[pnum]._pVitality + 10) << 6;
+	if (plr[pnum]._pClass == PC_WARRIOR
+#ifdef HELLFIRE
+	    || plr[pnum]._pClass == PC_BARBARIAN
+#endif
+	) {
+		plr[pnum]._pHitPoints <<= 1;
+#ifdef HELLFIRE
+	} else if (plr[pnum]._pClass == PC_ROGUE || plr[pnum]._pClass == PC_MONK || plr[pnum]._pClass == PC_BARD) {
+#else
 	}
-	if (c == PC_ROGUE) {
+	if (plr[pnum]._pClass == PC_ROGUE == PC_ROGUE) {
+#endif
 		plr[pnum]._pHitPoints += plr[pnum]._pHitPoints >> 1;
 	}
 
-	hp = plr[pnum]._pHitPoints;
-	plr[pnum]._pMaxHP = hp;
-	plr[pnum]._pHPBase = hp;
-	plr[pnum]._pMaxHPBase = hp;
+	plr[pnum]._pMaxHP = plr[pnum]._pHitPoints;
+	plr[pnum]._pHPBase = plr[pnum]._pHitPoints;
+	plr[pnum]._pMaxHPBase = plr[pnum]._pHitPoints;
 
 	plr[pnum]._pMana = plr[pnum]._pMagic << 6;
-	if (c == PC_SORCERER) {
-		plr[pnum]._pMana *= 2;
+	if (plr[pnum]._pClass == PC_SORCERER) {
+		plr[pnum]._pMana <<= 1;
+#ifdef HELLFIRE
+	} else if (plr[pnum]._pClass == PC_BARD) {
+		plr[pnum]._pMana += plr[pnum]._pMana * 3 / 4;
+	} else if (plr[pnum]._pClass == PC_ROGUE
+	    || plr[pnum]._pClass == PC_MONK) {
+#else
 	}
-	if (c == PC_ROGUE) {
+	if (plr[pnum]._pClass == PC_ROGUE) {
+#endif
 		plr[pnum]._pMana += plr[pnum]._pMana >> 1;
 	}
 
-	mana = plr[pnum]._pMana;
-	plr[pnum]._pMaxMana = mana;
-	plr[pnum]._pManaBase = mana;
-	plr[pnum]._pMaxManaBase = mana;
+	plr[pnum]._pMaxMana = plr[pnum]._pMana;
+	plr[pnum]._pManaBase = plr[pnum]._pMana;
+	plr[pnum]._pMaxManaBase = plr[pnum]._pMana;
 
 	plr[pnum]._pLevel = 1;
-	plr[pnum]._pMaxLvl = 1;
+	plr[pnum]._pMaxLvl = plr[pnum]._pLevel;
 	plr[pnum]._pExperience = 0;
-	plr[pnum]._pMaxExp = 0;
+	plr[pnum]._pMaxExp = plr[pnum]._pExperience;
 	plr[pnum]._pNextExper = ExpLvlsTbl[1];
 	plr[pnum]._pArmorClass = 0;
-	plr[pnum]._pMagResist = 0;
-	plr[pnum]._pFireResist = 0;
-	plr[pnum]._pLghtResist = 0;
+#ifdef HELLFIRE
+	if (plr[pnum]._pClass == PC_BARBARIAN) {
+		plr[pnum]._pMagResist = 1;
+		plr[pnum]._pFireResist = 1;
+		plr[pnum]._pLghtResist = 1;
+	} else {
+#endif
+		plr[pnum]._pMagResist = 0;
+		plr[pnum]._pFireResist = 0;
+		plr[pnum]._pLghtResist = 0;
+#ifdef HELLFIRE
+	}
+#endif
 	plr[pnum]._pLightRad = 10;
 	plr[pnum]._pInfraFlag = FALSE;
 
@@ -829,6 +867,14 @@ void CreatePlayer(int pnum, char c)
 		plr[pnum]._pAblSpells = SPELLBIT(SPL_DISARM);
 	} else if (c == PC_SORCERER) {
 		plr[pnum]._pAblSpells = SPELLBIT(SPL_RECHARGE);
+#endif
+#ifdef HELLFIRE
+	} else if (c == PC_MONK) {
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_SEARCH);
+	} else if (c == PC_BARD) {
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_IDENTIFY);
+	} else if (c == PC_BARBARIAN) {
+		plr[pnum]._pAblSpells = SPELLBIT(SPL_BLODBOIL);
 #endif
 	}
 
@@ -862,6 +908,14 @@ void CreatePlayer(int pnum, char c)
 	} else if (c == PC_SORCERER) {
 		plr[pnum]._pgfxnum = ANIM_ID_STAFF;
 #endif
+#ifdef HELLFIRE
+	} else if (c == PC_MONK) {
+		plr[pnum]._pgfxnum = ANIM_ID_STAFF;
+	} else if (c == PC_BARD) {
+		plr[pnum]._pgfxnum = ANIM_ID_SWORD_SHIELD;
+	} else if (c == PC_BARBARIAN) {
+		plr[pnum]._pgfxnum = ANIM_ID_SWORD_SHIELD;
+#endif
 	}
 
 	for (i = 0; i < NUMLEVELS; i++) {
@@ -878,6 +932,9 @@ void CreatePlayer(int pnum, char c)
 #ifndef HELLFIRE
 	plr[pnum].pBattleNet = FALSE;
 	plr[pnum].pManaShield = FALSE;
+#else
+	plr[pnum].pDamAcFlags = 0;
+	plr[pnum].wReflection = 0;
 #endif
 
 	InitDungMsgs(pnum);
@@ -4114,11 +4171,7 @@ void CheckPlrSpell()
 
 	if (((MouseY >= PANEL_TOP)
 	        || (chrflag && MouseX < SPANEL_WIDTH) || (invflag && MouseX > RIGHT_PANEL))
-	        && ((MouseY >= PANEL_TOP) || (
-				rspell != SPL_HEAL &&
-				rspell != SPL_IDENTIFY &&
-				rspell != SPL_REPAIR &&
-				rspell != SPL_INFRA && rspell != SPL_RECHARGE))) {
+	    && ((MouseY >= PANEL_TOP) || (rspell != SPL_HEAL && rspell != SPL_IDENTIFY && rspell != SPL_REPAIR && rspell != SPL_INFRA && rspell != SPL_RECHARGE))) {
 		return;
 	}
 
