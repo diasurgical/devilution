@@ -3085,7 +3085,7 @@ BOOL PlrHitObj(int pnum, int mx, int my)
 BOOL PM_DoAttack(int pnum)
 {
 	int frame, dir, dx, dy, m;
-	BOOL didhit;
+	BOOL didhit = FALSE;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoAttack: illegal player %d", pnum);
@@ -3109,9 +3109,8 @@ BOOL PM_DoAttack(int pnum)
 	}
 
 	if (plr[pnum]._pAnimFrame == plr[pnum]._pAFNum) {
-		dir = plr[pnum]._pdir;
-		dx = plr[pnum]._px + offset_x[dir];
-		dy = plr[pnum]._py + offset_y[dir];
+		dx = plr[pnum]._px + offset_x[plr[pnum]._pdir];
+		dy = plr[pnum]._py + offset_y[plr[pnum]._pdir];
 
 		if (dMonster[dx][dy] != 0) {
 			if (dMonster[dx][dy] > 0) {
@@ -3125,14 +3124,19 @@ BOOL PM_DoAttack(int pnum)
 			}
 		}
 
-		if (plr[pnum]._pIFlags & ISPL_FIREDAM) {
-			AddMissile(dx, dy, 1, 0, 0, MIS_WEAPEXP, TARGET_MONSTERS, pnum, 0, 0);
-		}
-		if (plr[pnum]._pIFlags & ISPL_LIGHTDAM) {
-			AddMissile(dx, dy, 2, 0, 0, MIS_WEAPEXP, TARGET_MONSTERS, pnum, 0, 0);
-		}
+#ifdef HELLFIRE
+		if (!(plr[pnum]._pIFlags & ISPL_FIREDAM) || !(plr[pnum]._pIFlags & ISPL_LIGHTDAM))
+#endif
+			if (plr[pnum]._pIFlags & ISPL_FIREDAM) {
+				AddMissile(dx, dy, 1, 0, 0, MIS_WEAPEXP, TARGET_MONSTERS, pnum, 0, 0);
+			}
+#ifdef HELLFIRE
+			else
+#endif
+			    if (plr[pnum]._pIFlags & ISPL_LIGHTDAM) {
+				AddMissile(dx, dy, 2, 0, 0, MIS_WEAPEXP, TARGET_MONSTERS, pnum, 0, 0);
+			}
 
-		didhit = FALSE;
 		if (dMonster[dx][dy]) {
 			m = dMonster[dx][dy];
 			if (dMonster[dx][dy] > 0) {
@@ -3152,6 +3156,34 @@ BOOL PM_DoAttack(int pnum)
 		} else if (dObject[dx][dy] > 0) {
 			didhit = PlrHitObj(pnum, dx, dy);
 		}
+#ifdef HELLFIRE
+		if ((plr[pnum]._pClass == PC_MONK
+		        && (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_STAFF))
+		    || (plr[pnum]._pClass == PC_BARD
+		        && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SWORD && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SWORD)
+		    || (plr[pnum]._pClass == PC_BARBARIAN
+		        && (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_AXE || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_AXE
+		            || (((plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_MACE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND)
+		                    || (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_MACE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iLoc == ILOC_TWOHAND)
+		                    || (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SWORD && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND)
+		                    || (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SWORD && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iLoc == ILOC_TWOHAND))
+		                && !(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD || plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD))))) {
+			dx = plr[pnum]._px + offset_x[(plr[pnum]._pdir + 1) % 8];
+			dy = plr[pnum]._py + offset_y[(plr[pnum]._pdir + 1) % 8];
+			m = ((dMonster[dx][dy] > 0) ? dMonster[dx][dy] : -dMonster[dx][dy]) - 1;
+			if (dMonster[dx][dy] != 0 && !CanTalkToMonst(m) && monster[m]._moldx == dx && monster[m]._moldy == dy) {
+				if (PlrHitMonst(-pnum, m))
+					didhit = TRUE;
+			}
+			dx = plr[pnum]._px + offset_x[(plr[pnum]._pdir + 7) % 8];
+			dy = plr[pnum]._py + offset_y[(plr[pnum]._pdir + 7) % 8];
+			m = ((dMonster[dx][dy] > 0) ? dMonster[dx][dy] : -dMonster[dx][dy]) - 1;
+			if (dMonster[dx][dy] != 0 && !CanTalkToMonst(m) && monster[m]._moldx == dx && monster[m]._moldy == dy) {
+				if (PlrHitMonst(-pnum, m))
+					didhit = TRUE;
+			}
+		}
+#endif
 
 		if (didhit && WeaponDur(pnum, 30)) {
 			StartStand(pnum, plr[pnum]._pdir);
