@@ -2791,6 +2791,11 @@ BOOL PlrHitMonst(int pnum, int m)
 {
 	BOOL rv, ret;
 	int hit, hper, mind, maxd, ddp, dam, skdam, phanditype, tmac;
+	hper = 0;
+#ifdef HELLFIRE
+	ret = FALSE;
+	BOOL adjacentDamage = FALSE;
+#endif
 
 	if ((DWORD)m >= MAXMONSTERS) {
 		app_fatal("PlrHitMonst: illegal monster %d", m);
@@ -2808,6 +2813,17 @@ BOOL PlrHitMonst(int pnum, int m)
 		return FALSE;
 	}
 
+#ifdef HELLFIRE
+	if (pnum < 0) {
+		adjacentDamage = TRUE;
+		pnum = -pnum;
+		if (plr[pnum]._pLevel > 20)
+			hper -= 30;
+		else
+			hper -= (35 - plr[pnum]._pLevel) * 2;
+	}
+#endif
+
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PlrHitMonst: illegal player %d", pnum);
 	}
@@ -2819,8 +2835,27 @@ BOOL PlrHitMonst(int pnum, int m)
 		hit = 0;
 	}
 
-	tmac = monster[m].mArmorClass - plr[pnum]._pIEnAc;
-	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - tmac;
+	tmac = monster[m].mArmorClass;
+#ifdef HELLFIRE
+	if (plr[pnum]._pIEnAc > 0) {
+		int _pIEnAc = plr[pnum]._pIEnAc - 1;
+		if (_pIEnAc > 0)
+			tmac >>= _pIEnAc;
+		else
+			tmac -= tmac >> 2;
+
+		if (plr[pnum]._pClass == PC_BARBARIAN) {
+			tmac -= monster[m].mArmorClass / 8;
+		}
+
+		if (tmac < 0)
+			tmac = 0;
+	}
+#else
+	tmac -= plr[pnum]._pIEnAc;
+#endif
+
+	hper += (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - tmac;
 	if (plr[pnum]._pClass == PC_WARRIOR) {
 		hper += 20;
 	}
@@ -2840,15 +2875,29 @@ BOOL PlrHitMonst(int pnum, int m)
 #else
 	if (hit < hper) {
 #endif
+#ifdef HELLFIRE
+		if (plr[pnum]._pIFlags & ISPL_FIREDAM && plr[pnum]._pIFlags & ISPL_LIGHTDAM) {
+			int midam = plr[pnum]._pIFMinDam + random_(3, plr[pnum]._pIFMaxDam - plr[pnum]._pIFMinDam);
+			AddMissile(plr[pnum]._px, plr[pnum]._py, plr[pnum]._pVar1, plr[pnum]._pVar2, plr[pnum]._pdir, MIS_SPECARROW, TARGET_MONSTERS, pnum, midam, 0);
+		}
+#endif
 		mind = plr[pnum]._pIMinDam;
 		maxd = plr[pnum]._pIMaxDam;
 		dam = random_(5, maxd - mind + 1) + mind;
 		dam += dam * plr[pnum]._pIBonusDam / 100;
-		dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod;
-		if (plr[pnum]._pClass == PC_WARRIOR) {
+		dam += plr[pnum]._pIBonusDamMod;
+#ifdef HELLFIRE
+		int dam2 = dam << 6;
+#endif
+		dam += plr[pnum]._pDamageMod;
+		if (plr[pnum]._pClass == PC_WARRIOR
+#ifdef HELLFIRE
+		    || plr[pnum]._pClass == PC_BARBARIAN
+#endif
+		) {
 			ddp = plr[pnum]._pLevel;
 			if (random_(6, 100) < ddp) {
-				dam *= 2;
+				dam <<= 1;
 			}
 		}
 
@@ -2865,7 +2914,10 @@ BOOL PlrHitMonst(int pnum, int m)
 			if (phanditype == ITYPE_SWORD) {
 				dam -= dam >> 1;
 			}
-			if (phanditype == ITYPE_MACE) {
+#ifdef HELLFIRE
+			else
+#endif
+			    if (phanditype == ITYPE_MACE) {
 				dam += dam >> 1;
 			}
 			break;
@@ -2873,7 +2925,10 @@ BOOL PlrHitMonst(int pnum, int m)
 			if (phanditype == ITYPE_MACE) {
 				dam -= dam >> 1;
 			}
-			if (phanditype == ITYPE_SWORD) {
+#ifdef HELLFIRE
+			else
+#endif
+			    if (phanditype == ITYPE_SWORD) {
 				dam += dam >> 1;
 			}
 			break;
@@ -2883,8 +2938,46 @@ BOOL PlrHitMonst(int pnum, int m)
 			dam *= 3;
 		}
 
+#ifdef HELLFIRE
+		if (plr[pnum].pDamAcFlags & 0x01 && random_(6, 100) < 5) {
+			dam *= 3;
+		}
+
+		if (plr[pnum].pDamAcFlags & 0x10 && monster[m].MType->mtype != MT_DIABLO && monster[m]._uniqtype == 0 && random_(6, 100) < 10) {
+			monster_43C785(m);
+		}
+#endif
+
 		dam <<= 6;
+#ifdef HELLFIRE
+		if (plr[pnum].pDamAcFlags & 0x08) {
+			int r = random_(6, 201);
+			if (r >= 100)
+				r = 100 + (r - 100) * 5;
+			dam = dam * r / 100;
+		}
+
+		if (adjacentDamage)
+			dam >>= 2;
+#endif
+
 		if (pnum == myplr) {
+#ifdef HELLFIRE
+			if (plr[pnum].pDamAcFlags & 0x04) {
+				dam2 += plr[pnum]._pIGetHit << 6;
+				if (dam2 >= 0) {
+					if (plr[pnum]._pHitPoints > dam2) {
+						plr[pnum]._pHitPoints -= dam2;
+						plr[pnum]._pHPBase -= dam2;
+					} else {
+						dam2 = (1 << 6);
+						plr[pnum]._pHPBase -= plr[pnum]._pHitPoints - dam2;
+						plr[pnum]._pHitPoints = dam2;
+					}
+				}
+				dam <<= 1;
+			}
+#endif
 			monster[m]._mhitpoints -= dam;
 		}
 
