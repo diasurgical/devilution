@@ -3029,7 +3029,11 @@ BOOL PlrHitPlr(int pnum, char p)
 			dam += (dam * plr[pnum]._pIBonusDam) / 100;
 			dam += plr[pnum]._pIBonusDamMod + plr[pnum]._pDamageMod;
 
-			if (plr[pnum]._pClass == PC_WARRIOR) {
+			if (plr[pnum]._pClass == PC_WARRIOR
+#ifdef HELLFIRE
+			    || plr[pnum]._pClass == PC_BARBARIAN
+#endif
+			) {
 				lvl = plr[pnum]._pLevel;
 				if (random_(6, 100) < lvl) {
 					dam <<= 1;
