@@ -3172,11 +3172,45 @@ BOOL PM_DoAttack(int pnum)
 BOOL PM_DoRangeAttack(int pnum)
 {
 	int origFrame, mistype;
+#ifdef HELLFIRE
+	int j = 0;
+	int k = 0;
+#endif
+	int xoff = 0;
+	int yoff = 0;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("PM_DoRangeAttack: illegal player %d", pnum);
 	}
 
+#ifdef HELLFIRE
+	if (plr[pnum]._pAnimFrame == plr[pnum]._pAFNum)
+		j = 1;
+
+	if (plr[pnum]._pIFlags & ISPL_MULT_ARROWS && plr[pnum]._pAnimFrame == plr[pnum]._pAFNum + 2) {
+		j = 2;
+		k = 1;
+	}
+
+	for (int i = 0; i < j; i++) {
+		switch (k) {
+		case 0:
+			break;
+		case 1:
+			int fanoffset = i == 0 ? -1 : 1;
+			int xoffset = plr[pnum]._pVar1 - plr[pnum]._px;
+			int yoffset = plr[pnum]._pVar2 - plr[pnum]._py;
+			if (xoffset < 0)
+				yoff = fanoffset;
+			if (xoffset > 0)
+				yoff = -fanoffset;
+			if (yoffset < 0)
+				xoff = -fanoffset;
+			if (yoffset > 0)
+				xoff = fanoffset;
+			break;
+		}
+#else
 	origFrame = plr[pnum]._pAnimFrame;
 	if (plr[pnum]._pIFlags & ISPL_QUICKATTACK && origFrame == 1) {
 		plr[pnum]._pAnimFrame++;
@@ -3186,6 +3220,7 @@ BOOL PM_DoRangeAttack(int pnum)
 	}
 
 	if (plr[pnum]._pAnimFrame == plr[pnum]._pAFNum) {
+#endif
 		mistype = MIS_ARROW;
 		if (plr[pnum]._pIFlags & ISPL_FIRE_ARROWS) {
 			mistype = MIS_FARROW;
@@ -3193,19 +3228,46 @@ BOOL PM_DoRangeAttack(int pnum)
 		if (plr[pnum]._pIFlags & ISPL_LIGHT_ARROWS) {
 			mistype = MIS_LARROW;
 		}
-		AddMissile(
-		    plr[pnum]._px,
-		    plr[pnum]._py,
-		    plr[pnum]._pVar1,
-		    plr[pnum]._pVar2,
-		    plr[pnum]._pdir,
-		    mistype,
-		    TARGET_MONSTERS,
-		    pnum,
-		    4,
-		    0);
+#ifdef HELLFIRE
+		if (plr[pnum]._pIFlags & ISPL_FIRE_ARROWS && plr[pnum]._pIFlags & ISPL_LIGHT_ARROWS) {
+			int dmg = plr[pnum]._pIFMinDam + random_(3, plr[pnum]._pIFMaxDam - plr[pnum]._pIFMinDam);
+			mistype = MIS_SPECARROW;
 
+			AddMissile(
+			    plr[pnum]._px,
+			    plr[pnum]._py,
+			    plr[pnum]._pVar1 + xoff,
+			    plr[pnum]._pVar2 + yoff,
+			    plr[pnum]._pdir,
+			    mistype,
+			    TARGET_MONSTERS,
+			    pnum,
+			    dmg,
+			    0);
+		} else {
+#endif
+			AddMissile(
+			    plr[pnum]._px,
+			    plr[pnum]._py,
+			    plr[pnum]._pVar1 + xoff,
+			    plr[pnum]._pVar2 + yoff,
+			    plr[pnum]._pdir,
+			    mistype,
+			    TARGET_MONSTERS,
+			    pnum,
+			    4,
+			    0);
+#ifdef HELLFIRE
+			if (i == 0) {
+				if (k == 0)
+					PlaySfxLoc(PS_BFIRE, plr[pnum]._px, plr[pnum]._py);
+				else
+					PlaySfxLoc(IS_STING1, plr[pnum]._px, plr[pnum]._py);
+			}
+		}
+#else
 		PlaySfxLoc(PS_BFIRE, plr[pnum]._px, plr[pnum]._py);
+#endif
 
 		if (WeaponDur(pnum, 40)) {
 			StartStand(pnum, plr[pnum]._pdir);
