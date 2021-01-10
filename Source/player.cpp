@@ -4062,16 +4062,26 @@ BOOL PosOkPlayer(int pnum, int x, int y)
 	DWORD p;
 	char bv;
 
+#ifndef HELLFIRE
 	PosOK = FALSE;
-	if (x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && !SolidLoc(x, y) && dPiece[x][y]) {
-
+	if (x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && !SolidLoc(x, y) && dPiece[x][y] != 0) {
+#else
+	if (dPiece[x][y] == 0)
+		return FALSE;
+	if (SolidLoc(x, y))
+		return FALSE;
+#endif
 		if (dPlayer[x][y] != 0) {
 			if (dPlayer[x][y] > 0) {
 				p = dPlayer[x][y] - 1;
 			} else {
 				p = -(dPlayer[x][y] + 1);
 			}
-			if (p != pnum && p < MAX_PLRS && plr[p]._pHitPoints != 0) {
+			if (p != pnum
+#ifndef HELLFIRE
+			    && p < MAX_PLRS
+#endif
+			    && plr[p]._pHitPoints != 0) {
 				return FALSE;
 			}
 		}
@@ -4099,11 +4109,13 @@ BOOL PosOkPlayer(int pnum, int x, int y)
 			}
 		}
 
+#ifndef HELLFIRE
 		PosOK = TRUE;
 	}
 
 	if (!PosOK)
 		return FALSE;
+#endif
 	return TRUE;
 }
 
