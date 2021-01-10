@@ -1923,24 +1923,41 @@ void StartPlrHit(int pnum, int dam, BOOL forcehit)
 	} else if (plr[pnum]._pClass == PC_SORCERER) {
 		PlaySfxLoc(PS_MAGE69, plr[pnum]._px, plr[pnum]._py);
 #endif
+#ifdef HELLFIRE
+	} else if (plr[pnum]._pClass == PC_MONK) {
+		PlaySfxLoc(PS_MONK69, plr[pnum]._px, plr[pnum]._py);
+	} else if (plr[pnum]._pClass == PC_BARD) {
+		PlaySfxLoc(PS_ROGUE69, plr[pnum]._px, plr[pnum]._py);
+	} else if (plr[pnum]._pClass == PC_BARBARIAN) {
+		PlaySfxLoc(PS_WARR69, plr[pnum]._px, plr[pnum]._py);
+#endif
 	}
 
 	drawhpflag = TRUE;
-	if (dam >> 6 >= plr[pnum]._pLevel || forcehit) {
-		pd = plr[pnum]._pdir;
-
-		if (!(plr[pnum]._pGFXLoad & PFILE_HIT)) {
-			LoadPlrGFX(pnum, PFILE_HIT);
+#ifdef HELLFIRE
+	if (plr[pnum]._pClass == PC_BARBARIAN) {
+		if (dam >> 6 < plr[pnum]._pLevel + plr[pnum]._pLevel / 4 && !forcehit) {
+			return;
 		}
-		NewPlrAnim(pnum, plr[pnum]._pHAnim[pd], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
-
-		plr[pnum]._pmode = PM_GOTHIT;
-		FixPlayerLocation(pnum, pd);
-		plr[pnum]._pVar8 = 1;
-		FixPlrWalkTags(pnum);
-		dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
-		SetPlayerOld(pnum);
+	} else
+#endif
+	    if (dam >> 6 < plr[pnum]._pLevel && !forcehit) {
+		return;
 	}
+
+	pd = plr[pnum]._pdir;
+
+	if (!(plr[pnum]._pGFXLoad & PFILE_HIT)) {
+		LoadPlrGFX(pnum, PFILE_HIT);
+	}
+	NewPlrAnim(pnum, plr[pnum]._pHAnim[pd], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
+
+	plr[pnum]._pmode = PM_GOTHIT;
+	FixPlayerLocation(pnum, pd);
+	plr[pnum]._pVar8 = 1;
+	FixPlrWalkTags(pnum);
+	dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
+	SetPlayerOld(pnum);
 }
 
 void RespawnDeadItem(ItemStruct *itm, int x, int y)
