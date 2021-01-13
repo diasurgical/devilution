@@ -1751,21 +1751,33 @@ void M_StartHit(int i, int pnum, int dam)
 		monster[i].mWhoHit |= 1 << pnum;
 	if (pnum == myplr) {
 		delta_monster_hp(i, monster[i]._mhitpoints, currlevel);
+#ifdef HELLFIRE
+		NetSendCmdMonDmg(FALSE, i, dam);
+#else
 		NetSendCmdParam2(FALSE, CMD_MONSTDAMAGE, i, dam);
+#endif
 	}
 	PlayEffect(i, 1);
 	if (monster[i].MType->mtype >= MT_SNEAK && monster[i].MType->mtype <= MT_ILLWEAV || dam >> 6 >= monster[i].mLevel + 3) {
 		if (pnum >= 0) {
-			monster[i]._mFlags &= ~MFLAG_TARGETS_MONSTER;
 			monster[i]._menemy = pnum;
 			monster[i]._menemyx = plr[pnum]._pfutx;
 			monster[i]._menemyy = plr[pnum]._pfuty;
+			monster[i]._mFlags &= ~MFLAG_TARGETS_MONSTER;
 			monster[i]._mdir = M_GetDir(i);
 		}
 		if (monster[i].MType->mtype == MT_BLINK) {
 			M_Teleport(i);
-		} else if (monster[i].MType->mtype >= MT_NSCAV && monster[i].MType->mtype <= MT_YSCAV) {
+		} else if ((monster[i].MType->mtype >= MT_NSCAV && monster[i].MType->mtype <= MT_YSCAV)
+#ifdef HELLFIRE
+		    || monster[i].MType->mtype == MT_GRAVEDIG
+#endif
+		) {
 			monster[i]._mgoal = MGOAL_NORMAL;
+#ifdef HELLFIRE
+			monster[i]._mgoalvar1 = 0;
+			monster[i]._mgoalvar2 = 0;
+#endif
 		}
 		if (monster[i]._mmode != MM_STONE) {
 			NewMonsterAnim(i, monster[i].MType->Anims[MA_GOTHIT], monster[i]._mdir);
@@ -1776,6 +1788,8 @@ void M_StartHit(int i, int pnum, int dam)
 			monster[i]._my = monster[i]._moldy;
 			monster[i]._mfutx = monster[i]._moldx;
 			monster[i]._mfuty = monster[i]._moldy;
+			monster[i]._moldx = monster[i]._mx;
+			monster[i]._moldy = monster[i]._my;
 			M_CheckEFlag(i);
 			M_ClearSquares(i);
 			dMonster[monster[i]._mx][monster[i]._my] = i + 1;
