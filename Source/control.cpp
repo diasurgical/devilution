@@ -2498,6 +2498,14 @@ void DrawSpellBook()
 	if (sbooktab < 5)
 		CelDraw(RIGHT_PANEL_X + 61 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 61);
 #else
+	// BUGFIX: rendering of page 3 and page 4 buttons are both off-by-one pixel.
+	// The fix would look as follows:
+	//
+	//    int sx = RIGHT_PANEL_X + 76 * sbooktab + 7;
+	//    if (sbooktab == 2 || sbooktab == 3) {
+	//       sx++;
+	//    }
+	//    CelDraw(sx, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 76);
 	CelDraw(RIGHT_PANEL_X + 76 * sbooktab + 7, 348 + SCREEN_Y, pSBkBtnCel, sbooktab + 1, 76);
 #endif
 
