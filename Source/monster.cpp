@@ -1352,7 +1352,7 @@ void M_Enemy(int i)
 	int mi, pnum;
 	int dist, best_dist;
 	int _menemy;
-	BOOL sameroom, bestsameroom;
+	DIABOOL sameroom, bestsameroom;
 	MonsterStruct *Monst;
 	BYTE enemyx, enemyy;
 
@@ -1360,14 +1360,28 @@ void M_Enemy(int i)
 	best_dist = -1;
 	bestsameroom = 0;
 	Monst = &monster[i];
-	if (!(Monst->_mFlags & MFLAG_GOLEM)) {
+	if (
+#ifdef HELLFIRE
+	    Monst->_mFlags & MFLAG_BERSERK ||
+#endif
+	    !(Monst->_mFlags & MFLAG_GOLEM)) {
 		for (pnum = 0; pnum < MAX_PLRS; pnum++) {
-			if (!plr[pnum].plractive || currlevel != plr[pnum].plrlevel || plr[pnum]._pLvlChanging || (plr[pnum]._pHitPoints == 0 && gbMaxPlayers != 1))
+			if (!plr[pnum].plractive || currlevel != plr[pnum].plrlevel || plr[pnum]._pLvlChanging
+#ifdef HELLFIRE
+			    || ((plr[pnum]._pHitPoints >> 6) == 0)
+#else
+			    || (plr[pnum]._pHitPoints == 0 && gbMaxPlayers != 1)
+#endif
+			)
 				continue;
+#ifdef HELLFIRE
+			sameroom = (dTransVal[Monst->_mx][Monst->_my] == dTransVal[plr[pnum]._px][plr[pnum]._py]);
+#else
 			if (dTransVal[Monst->_mx][Monst->_my] == dTransVal[plr[pnum]._px][plr[pnum]._py])
 				sameroom = TRUE;
 			else
 				sameroom = FALSE;
+#endif
 			if (abs(Monst->_mx - plr[pnum]._px) > abs(Monst->_my - plr[pnum]._py))
 				dist = Monst->_mx - plr[pnum]._px;
 			else
@@ -1389,13 +1403,25 @@ void M_Enemy(int i)
 		mi = monstactive[j];
 		if (mi == i)
 			continue;
+#ifdef HELLFIRE
+		if (!((monster[mi]._mhitpoints >> 6) > 0))
+			continue;
+#endif
 		if (monster[mi]._mx == 1 && monster[mi]._my == 0)
 			continue;
 		if (M_Talker(mi) && monster[mi].mtalkmsg)
 			continue;
-		if (!(Monst->_mFlags & MFLAG_GOLEM)
-		    && ((abs(monster[mi]._mx - Monst->_mx) >= 2 || abs(monster[mi]._my - Monst->_my) >= 2) && !M_Ranged(i)
-		        || (!(Monst->_mFlags & MFLAG_GOLEM) && !(monster[mi]._mFlags & MFLAG_GOLEM)))) {
+		if ((!(Monst->_mFlags & MFLAG_GOLEM)
+#ifdef HELLFIRE
+		        && !(Monst->_mFlags & MFLAG_BERSERK)
+#endif
+		        && (abs(monster[mi]._mx - Monst->_mx) >= 2 || abs(monster[mi]._my - Monst->_my) >= 2)
+		        && !M_Ranged(i))
+		    || (!(Monst->_mFlags & MFLAG_GOLEM)
+#ifdef HELLFIRE
+		        && !(Monst->_mFlags & MFLAG_BERSERK)
+#endif
+		        && !(monster[mi]._mFlags & MFLAG_GOLEM))) {
 			continue;
 		}
 		sameroom = dTransVal[Monst->_mx][Monst->_my] == dTransVal[monster[mi]._mx][monster[mi]._my];
