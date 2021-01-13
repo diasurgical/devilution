@@ -3148,7 +3148,7 @@ void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL send
 		idx = RndTypeItems(itype, imisc);
 #endif
 	else
-		idx = 0;
+		idx = IDI_GOLD;
 
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
