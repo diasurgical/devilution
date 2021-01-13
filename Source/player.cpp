@@ -810,7 +810,7 @@ void CreatePlayer(int pnum, char c)
 	} else if (plr[pnum]._pClass == PC_ROGUE || plr[pnum]._pClass == PC_MONK || plr[pnum]._pClass == PC_BARD) {
 #else
 	}
-	if (plr[pnum]._pClass == PC_ROGUE == PC_ROGUE) {
+	if (plr[pnum]._pClass == PC_ROGUE) {
 #endif
 		plr[pnum]._pHitPoints += plr[pnum]._pHitPoints >> 1;
 	}
