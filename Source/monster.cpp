@@ -5094,7 +5094,7 @@ void MAI_Garbud(int i)
 
 void MAI_Zhar(int i)
 {
-	int mx, my, _mx, _my, md;
+	int mx, my, md;
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
@@ -5118,12 +5118,12 @@ void MAI_Zhar(int i)
 	}
 
 	if (dFlags[mx][my] & BFLAG_VISIBLE) {
-		_mx = Monst->_mx - Monst->_menemyx;
-		_my = Monst->_my - Monst->_menemyy;
-		if (abs(_mx) > abs(_my))
-			abs(_mx);
+		mx = Monst->_mx - Monst->_menemyx;
+		my = Monst->_my - Monst->_menemyy;
+		if (abs(mx) > abs(my))
+			abs(mx);
 		else
-			abs(_my);
+			abs(my);
 #ifndef SPAWN
 		if (Monst->mtalkmsg == TEXT_ZHAR2) {
 			if (!effect_is_playing(USFX_ZHAR2) && Monst->_mgoal == MGOAL_TALKING) {
@@ -5150,7 +5150,11 @@ void MAI_SnotSpil(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_SnotSpil: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	if (monster[i]._mmode != MM_STAND) {
