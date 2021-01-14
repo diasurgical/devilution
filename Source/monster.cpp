@@ -2511,10 +2511,18 @@ void M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 	BOOL ret;
 
 	if ((DWORD)mid >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_TryM2MHit: Invalid monster %d", mid);
+#endif
 	}
 	if (monster[mid].MType == NULL)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_TryM2MHit: Monster %d \"%s\" MType NULL", mid, monster[mid].mName);
+#endif
 	if (monster[mid]._mhitpoints >> 6 > 0 && (monster[mid].MType->mtype != MT_ILLWEAV || monster[mid]._mgoal != MGOAL_RETREAT)) {
 		int hit = random_(4, 100);
 		if (monster[mid]._mmode == MM_STONE)
