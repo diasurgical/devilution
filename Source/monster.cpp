@@ -1917,18 +1917,30 @@ void SpawnLoot(int i, BOOL sendmsg)
 void M2MStartHit(int mid, int i, int dam)
 {
 	if ((DWORD)mid >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("Invalid monster %d getting hit by monster", mid);
+#endif
 	}
 
 	if (monster[mid].MType == NULL) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("Monster %d \"%s\" getting hit by monster: MType NULL", mid, monster[mid].mName);
+#endif
 	}
 
 	if (i >= 0)
 		monster[i].mWhoHit |= 1 << i;
 
 	delta_monster_hp(mid, monster[mid]._mhitpoints, currlevel);
+#ifdef HELLFIRE
+	NetSendCmdMonDmg(FALSE, mid, dam);
+#else
 	NetSendCmdParam2(FALSE, CMD_MONSTDAMAGE, mid, dam);
+#endif
 	PlayEffect(mid, 1);
 
 	if (monster[mid].MType->mtype >= MT_SNEAK && monster[mid].MType->mtype <= MT_ILLWEAV || dam >> 6 >= monster[mid].mLevel + 3) {
@@ -1937,8 +1949,16 @@ void M2MStartHit(int mid, int i, int dam)
 
 		if (monster[mid].MType->mtype == MT_BLINK) {
 			M_Teleport(mid);
-		} else if (monster[mid].MType->mtype >= MT_NSCAV && monster[mid].MType->mtype <= MT_YSCAV) {
+		} else if (monster[mid].MType->mtype >= MT_NSCAV && monster[mid].MType->mtype <= MT_YSCAV
+#ifdef HELLFIRE
+		    || monster[mid].MType->mtype == MT_GRAVEDIG
+#endif
+		) {
 			monster[mid]._mgoal = MGOAL_NORMAL;
+#ifdef HELLFIRE
+			monster[mid]._mgoalvar1 = 0;
+			monster[mid]._mgoalvar2 = 0;
+#endif
 		}
 
 		if (monster[mid]._mmode != MM_STONE) {
@@ -1953,6 +1973,8 @@ void M2MStartHit(int mid, int i, int dam)
 			monster[mid]._my = monster[mid]._moldy;
 			monster[mid]._mfutx = monster[mid]._moldx;
 			monster[mid]._mfuty = monster[mid]._moldy;
+			monster[mid]._moldx = monster[mid]._mx;
+			monster[mid]._moldy = monster[mid]._my;
 			M_CheckEFlag(mid);
 			M_ClearSquares(mid);
 			dMonster[monster[mid]._mx][monster[mid]._my] = mid + 1;
