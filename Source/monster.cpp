@@ -2059,13 +2059,26 @@ void M2MStartKill(int i, int mid)
 	int md;
 
 	if ((DWORD)i >= MAXMONSTERS) {
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M2MStartKill: Invalid monster (attacker) %d", i);
+#endif
 	}
+#ifdef HELLFIRE
+	if ((DWORD)mid >= MAXMONSTERS) {
+		return;
+#else
 	if ((DWORD)i >= MAXMONSTERS) { /// BUGFIX: should check `mid`
 		app_fatal("M2MStartKill: Invalid monster (killed) %d", mid);
+#endif
 	}
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M2MStartKill: Monster %d \"%s\" MType NULL", mid, monster[mid].mName);
+#endif
 
 	delta_kill_monster(mid, monster[mid]._mx, monster[mid]._my, currlevel);
 	NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[mid]._mx, monster[mid]._my, mid);
@@ -2078,14 +2091,20 @@ void M2MStartKill(int i, int mid)
 	monster[mid]._mhitpoints = 0;
 	SetRndSeed(monster[mid]._mRndSeed);
 
+#ifdef HELLFIRE
+	SpawnLoot(mid, TRUE);
+#else
 	if (mid >= MAX_PLRS)
 		SpawnItem(mid, monster[mid]._mx, monster[mid]._my, TRUE);
+#endif
 
 	if (monster[mid].MType->mtype == MT_DIABLO)
 		M_DiabloDeath(mid, TRUE);
 	else
+#ifndef HELLFIRE
 		PlayEffect(i, 2);
 
+#endif
 	PlayEffect(mid, 2);
 
 	md = (monster[i]._mdir - 4) & 7;
@@ -2099,8 +2118,10 @@ void M2MStartKill(int i, int mid)
 	monster[mid]._myoff = 0;
 	monster[mid]._mx = monster[mid]._moldx;
 	monster[mid]._my = monster[mid]._moldy;
-	monster[mid]._mfutx = monster[mid]._moldx;
-	monster[mid]._mfuty = monster[mid]._moldy;
+	monster[mid]._mfutx = monster[mid]._mx;
+	monster[mid]._mfuty = monster[mid]._my;
+	monster[mid]._moldx = monster[mid]._mx;
+	monster[mid]._moldy = monster[mid]._my;
 	M_CheckEFlag(mid);
 	M_ClearSquares(mid);
 	dMonster[monster[mid]._mx][monster[mid]._my] = mid + 1;
@@ -2108,6 +2129,10 @@ void M2MStartKill(int i, int mid)
 	M_FallenFear(monster[mid]._mx, monster[mid]._my);
 	if (monster[mid].MType->mtype >= MT_NACID && monster[mid].MType->mtype <= MT_XACID)
 		AddMissile(monster[mid]._mx, monster[mid]._my, 0, 0, 0, MIS_ACIDPUD, TARGET_PLAYERS, mid, monster[mid]._mint + 1, 0);
+
+#ifdef HELLFIRE
+	M_StartStand(i, monster[i]._mdir);
+#endif
 }
 
 void M_StartKill(int i, int pnum)
