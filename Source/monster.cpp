@@ -120,14 +120,14 @@ void (*AiProc[])(int i) = {
 	&MAI_Lachdanan,
 	&MAI_Warlord,
 #ifdef HELLFIRE
-	&mai_ranged_441680,
-	&mai_ranged_44168B,
-	&mai_horkdemon,
-	&mai_ranged_441649,
-	&mai_ranged_441654,
-	&mai_ranged_44165F,
-	&mai_ranged_44166A,
-	&mai_roundranged_441EA0
+	&MAI_Firebat,
+	&MAI_Torchant,
+	&MAI_HorkDemon,
+	&MAI_Lich,
+	&MAI_ArchLich,
+	&MAI_Psychorb,
+	&MAI_Necromorb,
+	&MAI_BoneDemon
 #endif
 };
 
@@ -4304,22 +4304,22 @@ void MAI_Succ(int i)
 }
 
 #ifdef HELLFIRE
-void mai_ranged_441649(int i)
+void MAI_Lich(int i)
 {
 	MAI_Ranged(i, MIS_LICH, FALSE);
 }
 
-void mai_ranged_441654(int i)
+void MAI_ArchLich(int i)
 {
 	MAI_Ranged(i, MIS_ARCHLICH, FALSE);
 }
 
-void mai_ranged_44165F(int i)
+void MAI_Psychorb(int i)
 {
 	MAI_Ranged(i, MIS_PSYCHORB, FALSE);
 }
 
-void mai_ranged_44166A(int i)
+void MAI_Necromorb(int i)
 {
 	MAI_Ranged(i, MIS_NECROMORB, FALSE);
 }
@@ -4331,12 +4331,12 @@ void MAI_AcidUniq(int i)
 }
 
 #ifdef HELLFIRE
-void mai_ranged_441680(int i)
+void MAI_Firebat(int i)
 {
 	MAI_Ranged(i, MIS_FIREBOLT, FALSE);
 }
 
-void mai_ranged_44168B(int i)
+void MAI_Torchant(int i)
 {
 	MAI_Ranged(i, MIS_FIREBALL, FALSE);
 }
@@ -4577,7 +4577,7 @@ void MAI_Storm(int i)
 }
 
 #ifdef HELLFIRE
-void mai_roundranged_441EA0(int i)
+void MAI_BoneDemon(int i)
 {
 	MAI_RoundRanged(i, MIS_BONEDEMON, TRUE, 4, 0);
 }
@@ -4891,7 +4891,7 @@ void MAI_Rhino(int i)
 }
 
 #ifdef HELLFIRE
-void mai_horkdemon(int i)
+void MAI_HorkDemon(int i)
 {
 	MonsterStruct *Monst;
 	int fx, fy, mx, my, md, v, dist;
