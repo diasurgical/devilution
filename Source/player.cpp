@@ -1513,7 +1513,7 @@ void PM_ChangeOffset(int pnum)
 	PM_ChangeLightOff(pnum);
 }
 
-void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int sdir)
+void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int sdir) //For starting to walk upleft, up, or upright
 {
 	int px, py;
 
@@ -1583,7 +1583,7 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 	}
 }
 
-void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir, int sdir)
+void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir, int sdir) //For starting to walk downleft, down, or downright
 {
 	int px, py;
 
@@ -1615,10 +1615,10 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	dPlayer[plr[pnum]._px][plr[pnum]._py] = -1 - pnum;
 	plr[pnum]._pVar1 = plr[pnum]._px;
 	plr[pnum]._pVar2 = plr[pnum]._py;
-	plr[pnum]._px = px;
+	plr[pnum]._px = px; //Player player is immediately given a new tile position
 	plr[pnum]._py = py;
 	dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
-	plr[pnum]._pxoff = xoff;
+	plr[pnum]._pxoff = xoff; //Since the player is immediately given a new tile position, it's given a render offset corresponding to their previous tile position
 	plr[pnum]._pyoff = yoff;
 
 	ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
@@ -1662,7 +1662,7 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	}
 }
 
-void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir, int sdir)
+void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir, int sdir) //For starting to walk left or right
 {
 	int px, py, x, y;
 
@@ -1698,7 +1698,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	plr[pnum]._pVar4 = x;
 	plr[pnum]._pVar5 = y;
 	dFlags[x][y] |= BFLAG_PLAYERLR;
-	plr[pnum]._pxoff = xoff;
+	plr[pnum]._pxoff = xoff; //As with StarWalk2(), player is immediately rendered based on a new tile position, so the player gets an offset value corresponding with their previous tile position
 	plr[pnum]._pyoff = yoff;
 
 	if (leveltype != DTYPE_TOWN) {
@@ -2473,7 +2473,7 @@ BOOL PM_DoStand(int pnum)
 	return FALSE;
 }
 
-BOOL PM_DoWalk(int pnum)
+BOOL PM_DoWalk(int pnum) //Movement towards upleft, up, and upright
 {
 	int anim_len;
 	BOOL rv;
@@ -2545,7 +2545,7 @@ BOOL PM_DoWalk(int pnum)
 	return rv;
 }
 
-BOOL PM_DoWalk2(int pnum)
+BOOL PM_DoWalk2(int pnum) //Movement towards downleft, down, and downright
 {
 	int anim_len;
 	BOOL rv;
@@ -2613,7 +2613,7 @@ BOOL PM_DoWalk2(int pnum)
 	return rv;
 }
 
-BOOL PM_DoWalk3(int pnum)
+BOOL PM_DoWalk3(int pnum) //Movement towards left and right
 {
 	int anim_len;
 	BOOL rv;

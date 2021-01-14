@@ -188,28 +188,28 @@ typedef struct PlayerStruct {
 	int destParam3;
 	int destParam4;
 	int plrlevel;
-	int _px;
-	int _py;
-	int _pfutx;
-	int _pfuty;
-	int _ptargx;
-	int _ptargy;
-	int _pownerx;
-	int _pownery;
-	int _poldx;
-	int _poldy;
-	int _pxoff;
-	int _pyoff;
-	int _pxvel;
-	int _pyvel;
-	int _pdir;
-	int _nextdir;
-	int _pgfxnum;
+	int _px;      //Tile (X) position of player
+	int _py;      //Tile (Y) position of player
+	int _pfutx;   //Future (X) position of player. Defined at start of walking animation
+	int _pfuty;   //Future (Y) position of player. Defined at start of walking animation
+	int _ptargx;  //Target (X) position for player during pathfinding. This indicates the final tile player should stand on at the end of the entire path. Defined at the start of pathfinding.
+	int _ptargy;  //Target (Y) position for player during pathfinding. This indicates the final tile player should stand on at the end of the entire path. Defined at the start of pathfinding.
+	int _pownerx; //X position which is equal to the player position whenever they do input (or maybe only when starting pathfinding). This is only referenced by enemy AI for an enemy called "SNEAK"
+	int _pownery; //Y position which is equal to the player position whenever they do input (or maybe only when starting pathfinding). This is only referenced by enemy AI for an enemy called "SNEAK"
+	int _poldx;   //Player's old X position. Set by a lot of code when player moves. Only referenced during FixPlrWalkTags() which is called by a lot of movement-related code
+	int _poldy;   //Player's old Y position. Set by a lot of code when player moves. Only referenced during FixPlrWalkTags() which is called by a lot of movement-related code
+	int _pxoff;   //X offset render (basically, the player's sub-tile position)
+	int _pyoff;   //Y offset render (basically, the player's sub-tile position)
+	int _pxvel;   //Player's X velocity while walking. Indirectly applied to _pxoff via _pvar6
+	int _pyvel;   //Player's Y velocity while walking. Indirectly applied to _pyoff via _pvar7
+	int _pdir;    //Facing of the player (0..7 starting from DIR_S)
+	int _nextdir; //Unused
+	int _pgfxnum; //Defines what variant of the sprite the player is using. Lower values define weapon (starting with ANIM_ID_UNARMED) and higher values define armour (starting with ANIM_ID_LIGHT_ARMOR)
 	unsigned char *_pAnimData;
-	int _pAnimDelay;
-	int _pAnimCnt;
-	int _pAnimLen;
-	int _pAnimFrame;
+	int _pAnimDelay; //By default, all animations advance by one frame for each tick. This value lets you set by how many ticks each frame should get delayed (apparently the last frame of an animation is only ever one tick long)
+	int _pAnimCnt;   //Increases by one each gameplay tick, counting how close we are to _pAnimDelay
+	int _pAnimLen;   //Quantity of frames in animation
+	int _pAnimFrame; //Current frame we're at in the animation. Always starts at 1?
 	int _pAnimWidth;
 	int _pAnimWidth2;
 	int _peflag;
@@ -226,9 +226,9 @@ typedef struct PlayerStruct {
 	int _pSBkSpell;
 	char _pSBkSplType;
 	char _pSplLvl[64];
-	unsigned __int64 _pMemSpells;
-	unsigned __int64 _pAblSpells;
-	unsigned __int64 _pScrlSpells;
+	unsigned __int64 _pMemSpells;  //Ownership of spells (1 bit is one spell). This references a database which includes all spells and abilities
+	unsigned __int64 _pAblSpells;  //Ownership of abilities (1 bit is one spell)
+	unsigned __int64 _pScrlSpells; //Ownership of spells/skills via scrolls
 	UCHAR _pSpellFlags;
 	int _pSplHotKey[4];
 	char _pSplTHotKey[4];
@@ -236,7 +236,7 @@ typedef struct PlayerStruct {
 	BOOLEAN _pBlockFlag;
 	BOOLEAN _pInvincible;
 	char _pLightRad;
-	BOOLEAN _pLvlChanging;
+	BOOLEAN _pLvlChanging; //Set to true when the player starts loading another level, and set to false as the player finishes loading
 	char _pName[PLR_NAME_LEN];
 	// plr_class enum value.
 	// TODO: this could very well be `enum plr_class _pClass`
@@ -277,40 +277,40 @@ typedef struct PlayerStruct {
 	char _pLghtResist;
 	int _pGold;
 	BOOL _pInfraFlag;
-	int _pVar1;
-	int _pVar2;
-	int _pVar3;
-	int _pVar4;
-	int _pVar5;
-	int _pVar6;
-	int _pVar7;
-	int _pVar8;
+	int _pVar1; //Used for referring to X position of player when finishing moving one tile (also used to define target coordinates for spells and ranged attacks)
+	int _pVar2; //Used for referring to Y position of player when finishing moving one tile (also used to define target coordinates for spells and ranged attacks)
+	int _pVar3; //Player's direction when ending movement. Also used for defining direction of SPL_FIREWALL spell when casting it.
+	int _pVar4; //Used for storing X position of a tile which should have its BFLAG_PLAYERLR flag removed after walking. When starting to walk the game places the player in the dPlayer array -1 in the Y coordinate, and uses BFLAG_PLAYERLR to check if it should be using -1 to the Y coordinate when rendering the player (also used for storing the level of a spell when the player casts it)
+	int _pVar5; //Used for storing Y position of a tile which should have its BFLAG_PLAYERLR flag removed after walking. When starting to walk the game places the player in the dPlayer array -1 in the Y coordinate, and uses BFLAG_PLAYERLR to check if it should be using -1 to the Y coordinate when rendering the player (also used for storing the level of a spell when the player casts it)
+	int _pVar6; //Same as _pxoff but contains the value in a higher range
+	int _pVar7; //Same as _pyoff but contains the value in a higher range
+	int _pVar8; //Used for counting how close we are to reaching the next tile when walking (usually counts up to the 8, which is equal to animation length of walk animation). Also used for stalling the appearance of the options screen after dying in singleplayer
 	BOOLEAN _pLvlVisited[NUMLEVELS];
 	BOOLEAN _pSLvlVisited[NUMLEVELS]; // only 10 used
 	int _pGFXLoad;
-	unsigned char *_pNAnim[8];
+	unsigned char *_pNAnim[8]; //Stand animation
 	int _pNFrames;
 	int _pNWidth;
-	unsigned char *_pWAnim[8];
+	unsigned char *_pWAnim[8]; //Walk animation
 	int _pWFrames;
 	int _pWWidth;
-	unsigned char *_pAAnim[8];
+	unsigned char *_pAAnim[8]; //Attack animation
 	int _pAFrames;
 	int _pAWidth;
 	int _pAFNum;
-	unsigned char *_pLAnim[8];
-	unsigned char *_pFAnim[8];
-	unsigned char *_pTAnim[8];
+	unsigned char *_pLAnim[8]; //Lightning spell cast animation
+	unsigned char *_pFAnim[8]; //Fire spell cast animation
+	unsigned char *_pTAnim[8]; //Generic spell cast animation
 	int _pSFrames;
 	int _pSWidth;
 	int _pSFNum;
-	unsigned char *_pHAnim[8];
+	unsigned char *_pHAnim[8]; //Getting hit animation
 	int _pHFrames;
 	int _pHWidth;
-	unsigned char *_pDAnim[8];
+	unsigned char *_pDAnim[8]; //Death animation
 	int _pDFrames;
 	int _pDWidth;
-	unsigned char *_pBAnim[8];
+	unsigned char *_pBAnim[8]; //Block animation
 	int _pBFrames;
 	int _pBWidth;
 	ItemStruct InvBody[NUM_INVLOC];
@@ -326,7 +326,7 @@ typedef struct PlayerStruct {
 	int _pIBonusToHit;
 	int _pIBonusAC;
 	int _pIBonusDamMod;
-	unsigned __int64 _pISpells;
+	unsigned __int64 _pISpells; //Ownership of spells/skills via charged staff
 	int _pIFlags;
 	int _pIGetHit;
 	char _pISplLvlAdd;
@@ -347,13 +347,13 @@ typedef struct PlayerStruct {
 	unsigned char pBattleNet;
 #endif
 	BOOLEAN pManaShield;
-	char bReserved[3];
+	char bReserved[3]; //Unused
 	short wReflection;
-	short wReserved[7];
+	short wReserved[7]; //Unused
 	DWORD pDiabloKillLevel;
 	int pDifficulty;
 	int pDamAcFlags;
-	int dwReserved[5];
+	int dwReserved[5]; //Unused
 	unsigned char *_pNData;
 	unsigned char *_pWData;
 	unsigned char *_pAData;
@@ -363,7 +363,7 @@ typedef struct PlayerStruct {
 	unsigned char *_pHData;
 	unsigned char *_pDData;
 	unsigned char *_pBData;
-	void *pReserved;
+	void *pReserved; //Unused
 } PlayerStruct;
 
 //////////////////////////////////////////////////
@@ -415,20 +415,20 @@ typedef struct ChainStruct {
 } ChainStruct;
 
 typedef struct MissileStruct {
-	int _mitype;
-	int _mix;
-	int _miy;
-	int _mixoff;
-	int _miyoff;
-	int _mixvel;
-	int _miyvel;
-	int _misx;
-	int _misy;
-	int _mitxoff;
-	int _mityoff;
-	int _mimfnum;
+	int _mitype;  //Type of projectile (arrow, firebolt, town portal, etc)
+	int _mix;     //The current X tile position of the missile
+	int _miy;     //The current Y tile position of the missile
+	int _mixoff;  //Current X render offset for the missile (essentially sub-tile position)
+	int _miyoff;  //Current Y render offset for the missile (essentially sub-tile position)
+	int _mixvel;  //X velocity of missile. This gets added onto _mitxoff each gameplay tick
+	int _miyvel;  //Y velocity of missile. This gets added onto _mityoff each gameplay tick
+	int _misx;    //Initial X position for missile
+	int _misy;    //Initial Y position for missile
+	int _mitxoff; //How far missile has travelled in its lifespan along the X axis. mix/miy/mxoff/myoff get updated every gameplay tick based on this
+	int _mityoff; //How far missile has travelled in its lifespan along the Y axis. mix/miy/mxoff/myoff get updated every gameplay tick based on this
+	int _mimfnum; //The direction of the missile (0..8 starting from DIR_S)
 	int _mispllvl;
-	BOOL _miDelFlag;
+	BOOL _miDelFlag; //If true, this missile will get deleted. Missiles are deleted at the start and end of ProcessMissiles()
 	BYTE _miAnimType;
 	int _miAnimFlags;
 	unsigned char *_miAnimData;
@@ -443,12 +443,12 @@ typedef struct MissileStruct {
 	BOOL _miLightFlag;
 	BOOL _miPreFlag;
 	int _miUniqTrans;
-	int _mirange;
+	int _mirange; //Total range the missile will travel. This ticks down by 1 each gameplay tick, and if _mirange reaches 0 then _miDelFlag turns true
 	int _misource;
 	int _micaster;
 	int _midam;
 	BOOL _miHitFlag;
-	int _midist;
+	int _midist; //Used for arrows to measure distance travelled (goes up 1 each gameplay tick). Higher value is a penalty for accuracy calculation when hitting enemy
 	int _mlid;
 	int _mirnd;
 	int _miVar1;
@@ -571,26 +571,26 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _mgoalvar3;
 	int field_18;
 	unsigned char _pathcount;
-	int _mx;
-	int _my;
-	int _mfutx;
-	int _mfuty;
-	int _moldx;
-	int _moldy;
-	int _mxoff;
-	int _myoff;
-	int _mxvel;
-	int _myvel;
-	int _mdir;
-	int _menemy;
-	unsigned char _menemyx;
-	unsigned char _menemyy;
-	short falign_52; // probably _mAFNum (unused)
+	int _mx;                //Tile X coordinate for monster
+	int _my;                //Tile Y coordinate for monster
+	int _mfutx;             //Future tile X position for monster. Set when starting movement
+	int _mfuty;             //Future tile Y position for monster. Set when starting movement
+	int _moldx;             //Monster's old X position
+	int _moldy;             //Monster's old Y position
+	int _mxoff;             //X render offset for monster. Used during movement
+	int _myoff;             //Y render offset for monster. Used during movement
+	int _mxvel;             //X velocity to apply to offset per gameplay tick during movement
+	int _myvel;             //Y velocity to apply to offset per gameplay tick during movement
+	int _mdir;              //Direction the monster is facing
+	int _menemy;            //The player the monster is targeting. The value corresponds to an entry in the plr array. Behaviour changes if MFLAG_TARGETS_MONSTER is true, then this corresponds to an entry in the monster array
+	unsigned char _menemyx; //X coordinate of enemy (usually correspond's to the enemy's futx value)
+	unsigned char _menemyy; //Y coordinate of enemy (usually correspond's to the enemy's futy value)
+	short falign_52;        // probably _mAFNum (unused)
 	unsigned char *_mAnimData;
-	int _mAnimDelay;
-	int _mAnimCnt;
-	int _mAnimLen;
-	int _mAnimFrame;
+	int _mAnimDelay; //Duration of each frame
+	int _mAnimCnt;   //Value for measuring progress through current frame
+	int _mAnimLen;   //Length of animation
+	int _mAnimFrame; //Current animation frame
 	BOOL _meflag;
 	BOOL _mDelFlag;
 	int _mVar1;
@@ -598,9 +598,9 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _mVar3;
 	int _mVar4;
 	int _mVar5;
-	int _mVar6;
-	int _mVar7;
-	int _mVar8;
+	int _mVar6; //Used as _mxoff but with a higher range so that we can correctly apply velocities of a smaller number
+	int _mVar7; //Used as _myoff but with a higher range so that we can correctly apply velocities of a smaller number
+	int _mVar8; //Value used to measure progress for moving from one tile to another
 	int _mmaxhp;
 	int _mhitpoints;
 	unsigned char _mAi;
@@ -1123,13 +1123,13 @@ typedef struct TNQ {
 typedef struct TownerStruct {
 	int _tmode;
 	int _ttype;
-	int _tx;
-	int _ty;
-	int _txoff;
-	int _tyoff;
-	int _txvel;
-	int _tyvel;
-	int _tdir;
+	int _tx;    //X tile position of NPC
+	int _ty;    //Y tile position of NPC
+	int _txoff; //X render offset (not used)
+	int _tyoff; //Y render offset (not used)
+	int _txvel; //X velocity during movement (not used)
+	int _tyvel; //Y velocity during movement (not used)
+	int _tdir;  //Facing of NPC (not used)
 	unsigned char *_tAnimData;
 	int _tAnimDelay;
 	int _tAnimCnt;
@@ -1190,8 +1190,8 @@ typedef struct QuestTalkData {
 //////////////////////////////////////////////////
 
 typedef struct ScrollStruct {
-	int _sxoff;
-	int _syoff;
+	int _sxoff; //X offset when rendering camera position. This usually corresponds to a negative version of plr[myplr]._pxoff
+	int _syoff; //Y offset when rendering camera position. This usually corresponds to a negative version of plr[myplr]._pyoff
 	int _sdx;
 	int _sdy;
 	int _sdir;
