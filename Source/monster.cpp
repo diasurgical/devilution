@@ -4685,7 +4685,11 @@ void MAI_Golum(int i)
 	BOOL have_enemy, ok;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Golum: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	if (Monst->_mx == 1 && Monst->_my == 0) {
@@ -4715,10 +4719,7 @@ void MAI_Golum(int i)
 	_mey = my - monster[_menemy]._mfuty;
 	md = GetDirection(mx, my, monster[_menemy]._mx, monster[_menemy]._my);
 	monster[i]._mdir = md;
-	if (abs(_mex) >= 2 || abs(_mey) >= 2) {
-		if (have_enemy && MAI_Path(i))
-			return;
-	} else if (have_enemy) {
+	if (abs(_mex) < 2 && abs(_mey) < 2 && have_enemy) {
 		_menemy = monster[i]._menemy;
 		monster[i]._menemyx = monster[_menemy]._mx;
 		monster[i]._menemyy = monster[_menemy]._my;
@@ -4738,22 +4739,24 @@ void MAI_Golum(int i)
 		return;
 	}
 
+	if (have_enemy && MAI_Path(i))
+		return;
+
 	monster[i]._pathcount++;
 	if (monster[i]._pathcount > 8)
 		monster[i]._pathcount = 5;
 
 	ok = M_CallWalk(i, plr[i]._pdir);
-	if (!ok) {
-		md = (md - 1) & 7;
-		for (j = 0; j < 8 && !ok; j++) {
-			md = (md + 1) & 7;
-			ok = DirOK(i, md);
-		}
-		if (!ok) {
-			return;
-		}
-		M_WalkDir(i, md);
+	if (ok)
+		return;
+
+	md = (md - 1) & 7;
+	for (j = 0; j < 8 && !ok; j++) {
+		md = (md + 1) & 7;
+		ok = DirOK(i, md);
 	}
+	if (ok)
+		M_WalkDir(i, md);
 }
 
 void MAI_SkelKing(int i)
