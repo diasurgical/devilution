@@ -1513,6 +1513,9 @@ void PM_ChangeOffset(int pnum)
 	PM_ChangeLightOff(pnum);
 }
 
+/**
+ * @brief Starting a move action towards NW, N, or NE
+ */
 void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int sdir)
 {
 	int px, py;
@@ -1583,6 +1586,9 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 	}
 }
 
+/**
+ * @brief Starting a move action towards SW, S, or SE
+ */
 void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir, int sdir)
 {
 	int px, py;
@@ -1615,10 +1621,10 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	dPlayer[plr[pnum]._px][plr[pnum]._py] = -1 - pnum;
 	plr[pnum]._pVar1 = plr[pnum]._px;
 	plr[pnum]._pVar2 = plr[pnum]._py;
-	plr[pnum]._px = px;
+	plr[pnum]._px = px; // Move player to the next tile to maintain correct render order
 	plr[pnum]._py = py;
 	dPlayer[plr[pnum]._px][plr[pnum]._py] = pnum + 1;
-	plr[pnum]._pxoff = xoff;
+	plr[pnum]._pxoff = xoff; // Offset player sprite to align with their previous tile position
 	plr[pnum]._pyoff = yoff;
 
 	ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
@@ -1662,6 +1668,9 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	}
 }
 
+/**
+ * @brief Starting a move action towards W or E
+ */
 void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir, int sdir)
 {
 	int px, py, x, y;
@@ -1698,7 +1707,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	plr[pnum]._pVar4 = x;
 	plr[pnum]._pVar5 = y;
 	dFlags[x][y] |= BFLAG_PLAYERLR;
-	plr[pnum]._pxoff = xoff;
+	plr[pnum]._pxoff = xoff; // Offset player sprite to align with their previous tile position
 	plr[pnum]._pyoff = yoff;
 
 	if (leveltype != DTYPE_TOWN) {
@@ -2473,6 +2482,9 @@ BOOL PM_DoStand(int pnum)
 	return FALSE;
 }
 
+/**
+ * @brief Movement towards NW, N, and NE
+ */
 BOOL PM_DoWalk(int pnum)
 {
 	int anim_len;
@@ -2545,6 +2557,9 @@ BOOL PM_DoWalk(int pnum)
 	return rv;
 }
 
+/**
+ * @brief Movement towards SW, S, and SE
+ */
 BOOL PM_DoWalk2(int pnum)
 {
 	int anim_len;
@@ -2613,6 +2628,9 @@ BOOL PM_DoWalk2(int pnum)
 	return rv;
 }
 
+/**
+ * @brief Movement towards W and E
+ */
 BOOL PM_DoWalk3(int pnum)
 {
 	int anim_len;
