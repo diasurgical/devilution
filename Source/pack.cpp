@@ -78,7 +78,7 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pPack->pMemSpells = pPlayer->_pMemSpells;
 
 #ifdef HELLFIRE
-	for (i = 0; i <= 36; i++) // Should be MAX_SPELLS-1 but set to 36 to make save games compatible	
+	for (i = 0; i <= 36; i++) // Should be MAX_SPELLS-1 but set to 36 to make save games compatible
 		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
 	char *p = pPack->pSplLvl2;
 	for (i = 37; i < 47; i++)
@@ -120,7 +120,7 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	}
 
 #ifdef HELLFIRE
-	pPack->wReflection = pPlayer->wReflection;
+	pPack->wReflections = pPlayer->wReflections;
 	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
 	pPack->pDifficulty = pPlayer->pDifficulty;
 	pPack->pDamAcFlags = pPlayer->pDamAcFlags;
@@ -288,7 +288,7 @@ void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 
 	CalcPlrInv(pnum, FALSE);
 #ifdef HELLFIRE
-	pPlayer->wReflection = pPack->wReflection;
+	pPlayer->wReflections = pPack->wReflections;
 #endif
 	pPlayer->pTownWarps = 0;
 	pPlayer->pDungMsgs = 0;

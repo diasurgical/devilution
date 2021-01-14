@@ -704,7 +704,7 @@ void ClearPlrRVars(PlayerStruct *p)
 	p->bReserved[2] = 0;
 
 #ifndef HELLFIRE
-	p->wReflection = 0;
+	p->wReflections = 0;
 #endif
 	p->wReserved[0] = 0;
 	p->wReserved[1] = 0;
@@ -934,7 +934,7 @@ void CreatePlayer(int pnum, char c)
 	plr[pnum].pManaShield = FALSE;
 #else
 	plr[pnum].pDamAcFlags = 0;
-	plr[pnum].wReflection = 0;
+	plr[pnum].wReflections = 0;
 #endif
 
 	InitDungMsgs(pnum);
