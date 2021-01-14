@@ -4766,7 +4766,11 @@ void MAI_SkelKing(int i)
 	int dist, v, md;
 
 	if ((DWORD)i >= MAXMONSTERS)
-		app_fatal("MAI_SkelKing: Invalid monster %d", i);
+#ifdef HELLFIRE
+		return;
+#else
+		app_fatal("MAI_SkelKing: Invalid monster %d",i);
+#endif
 	Monst = &monster[i];
 	if (Monst->_mmode == MM_STAND && Monst->_msquelch != 0) {
 		fx = Monst->_menemyx;
