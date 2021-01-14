@@ -4981,7 +4981,11 @@ void MAI_Counselor(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Counselor: Invalid monster %d", i);
+#endif
 	if (monster[i]._mmode == MM_STAND && monster[i]._msquelch != 0) {
 		Monst = &monster[i];
 		fx = Monst->_menemyx;
