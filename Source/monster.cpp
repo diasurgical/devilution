@@ -4457,7 +4457,11 @@ void MAI_Garg(int i)
 	int mx, my, dx, dy, md;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Garg: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	dx = Monst->_mx - Monst->_lastx;
@@ -4477,8 +4481,11 @@ void MAI_Garg(int i)
 		return;
 	}
 
-	if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1) && !(Monst->_mFlags & MFLAG_NOHEAL))
-		Monst->_mgoal = MGOAL_RETREAT;
+	if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1))
+#ifndef HELLFIRE
+		if (!(Monst->_mFlags & MFLAG_NOHEAL))
+#endif
+			Monst->_mgoal = MGOAL_RETREAT;
 	if (Monst->_mgoal == MGOAL_RETREAT) {
 		if (abs(dx) >= Monst->_mint + 2 || abs(dy) >= Monst->_mint + 2) {
 			Monst->_mgoal = MGOAL_NORMAL;
