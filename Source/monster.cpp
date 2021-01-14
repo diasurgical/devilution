@@ -4346,7 +4346,6 @@ void MAI_Scav(int i)
 {
 	BOOL done;
 	int x, y;
-	int _mx, _my;
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
@@ -4356,8 +4355,6 @@ void MAI_Scav(int i)
 		app_fatal("MAI_Scav: Invalid monster %d", i);
 #endif
 	Monst = &monster[i];
-	_mx = Monst->_mx;
-	_my = Monst->_my;
 	done = FALSE;
 	if (monster[i]._mmode != MM_STAND)
 		return;
@@ -4373,9 +4370,25 @@ void MAI_Scav(int i)
 		Monst->_mgoalvar3--;
 		if (dDead[Monst->_mx][Monst->_my] != 0) {
 			M_StartEat(i);
-			if (!(Monst->_mFlags & MFLAG_NOHEAL))
+			if (!(Monst->_mFlags & MFLAG_NOHEAL)) {
+#ifdef HELLFIRE
+				int mMaxHP = Monst->MType->mMaxHP << 6;
+				if (gbMaxPlayers == 1)
+					mMaxHP >>= 1;
+				Monst->_mhitpoints += mMaxHP >> 3;
+				if (Monst->_mhitpoints > mMaxHP)
+					Monst->_mhitpoints = mMaxHP;
+				if (Monst->_mmaxhp < Monst->_mhitpoints)
+					Monst->_mmaxhp = Monst->_mhitpoints;
+				if (Monst->_mgoalvar3 <= 0 || Monst->_mhitpoints == mMaxHP)
+					dDead[Monst->_mx][Monst->_my] = 0;
+			}
+			if (Monst->_mhitpoints == Monst->_mmaxhp) {
+#else
 				Monst->_mhitpoints += 64;
+			}
 			if (Monst->_mhitpoints >= (Monst->_mmaxhp >> 1) + (Monst->_mmaxhp >> 2)) {
+#endif
 				Monst->_mgoal = MGOAL_NORMAL;
 				Monst->_mgoalvar1 = 0;
 				Monst->_mgoalvar2 = 0;
@@ -4430,7 +4443,11 @@ void MAI_Scav(int i)
 			}
 		}
 	}
+#ifdef HELLFIRE
+	else
+#else
 	if (Monst->_mmode == MM_STAND)
+#endif
 		MAI_SkelSd(i);
 }
 
