@@ -2556,12 +2556,20 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	int blk, blkper;
 	int dam, mdam;
 	int newx, newy;
-	int j, misnum, ms_num, cur_ms_num, new_hp;
+	int j, misnum, ms_num, cur_ms_num, new_hp, dir, ac;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_TryH2HHit: Invalid monster %d", i);
+#endif
 	if (monster[i].MType == NULL)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("M_TryH2HHit: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+#endif
 	if (monster[i]._mFlags & MFLAG_TARGETS_MONSTER) {
 		M_TryM2MHit(i, pnum, Hit, MinDam, MaxDam);
 		return;
@@ -2578,11 +2586,17 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	if (debug_mode_dollar_sign || debug_mode_key_inverted_v)
 		hper = 1000;
 #endif
+	ac = plr[pnum]._pIBonusAC + plr[pnum]._pIAC;
+#ifdef HELLFIRE
+	if (plr[pnum].pDamAcFlags & 0x20 && monster[i].MData->mMonstClass == MC_DEMON)
+		ac += 40;
+	if (plr[pnum].pDamAcFlags & 0x40 && monster[i].MData->mMonstClass == MC_UNDEAD)
+		ac += 20;
+#endif
 	hit = Hit
 	    + 2 * (monster[i].mLevel - plr[pnum]._pLevel)
 	    + 30
-	    - plr[pnum]._pIBonusAC
-	    - plr[pnum]._pIAC
+	    - ac
 	    - plr[pnum]._pDexterity / 5;
 	if (hit < 15)
 		hit = 15;
@@ -2608,7 +2622,26 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	if (hper >= hit)
 		return;
 	if (blkper < blk) {
-		StartPlrBlock(pnum, GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mx, monster[i]._my));
+		dir = GetDirection(plr[pnum]._px, plr[pnum]._py, monster[i]._mx, monster[i]._my);
+		StartPlrBlock(pnum, dir);
+#ifdef HELLFIRE
+		if (pnum == myplr && plr[pnum].wReflections > 0) {
+			plr[pnum].wReflections--;
+			dam = random_(99, (MaxDam - MinDam + 1) << 6) + (MinDam << 6);
+			dam += plr[pnum]._pIGetHit << 6;
+			if (dam < 64)
+				dam = 64;
+			mdam = dam * (0.01 * (random_(100, 10) + 20));
+			monster[i]._mhitpoints -= mdam;
+			dam -= mdam;
+			if (dam < 0)
+				dam = 0;
+			if (monster[i]._mhitpoints >> 6 <= 0)
+				M_StartKill(i, pnum);
+			else
+				M_StartHit(i, pnum, mdam);
+		}
+#endif
 		return;
 	}
 	if (monster[i].MType->mtype == MT_YZOMBIE && pnum == myplr) {
@@ -2624,20 +2657,21 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 				ms_num = misnum;
 		}
 		if (plr[pnum]._pMaxHP > 64) {
-			if (plr[pnum]._pMaxHPBase > 64) {
-				new_hp = plr[pnum]._pMaxHP - 64;
-				plr[pnum]._pMaxHP = new_hp;
-				if (plr[pnum]._pHitPoints > new_hp) {
-					plr[pnum]._pHitPoints = new_hp;
+#ifndef HELLFIRE
+			if (plr[pnum]._pMaxHPBase > 64)
+#endif
+			{
+				plr[pnum]._pMaxHP -= 64;
+				if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
+					plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
 					if (cur_ms_num >= 0)
-						missile[cur_ms_num]._miVar1 = new_hp;
+						missile[cur_ms_num]._miVar1 = plr[pnum]._pHitPoints;
 				}
-				new_hp = plr[pnum]._pMaxHPBase - 64;
-				plr[pnum]._pMaxHPBase = new_hp;
-				if (plr[pnum]._pHPBase > new_hp) {
-					plr[pnum]._pHPBase = new_hp;
+				plr[pnum]._pMaxHPBase -= 64;
+				if (plr[pnum]._pHPBase > plr[pnum]._pMaxHPBase) {
+					plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 					if (cur_ms_num >= 0)
-						missile[cur_ms_num]._miVar2 = new_hp;
+						missile[cur_ms_num]._miVar2 = plr[pnum]._pHPBase;
 				}
 			}
 		}
@@ -2647,6 +2681,20 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	if (dam < 64)
 		dam = 64;
 	if (pnum == myplr) {
+#ifdef HELLFIRE
+		if (plr[pnum].wReflections > 0) {
+			plr[pnum].wReflections--;
+			mdam = dam * (0.01 * (random_(100, 10) + 20));
+			monster[i]._mhitpoints -= mdam;
+			dam -= mdam;
+			if (dam < 0)
+				dam = 0;
+			if (monster[i]._mhitpoints >> 6 <= 0)
+				M_StartKill(i, pnum);
+			else
+				M_StartHit(i, pnum, mdam);
+		}
+#endif
 		plr[pnum]._pHitPoints -= dam;
 		plr[pnum]._pHPBase -= dam;
 	}
@@ -2666,6 +2714,9 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	}
 	if (plr[pnum]._pHitPoints >> 6 <= 0) {
 		SyncPlrKill(pnum, 0);
+#ifdef HELLFIRE
+		M_StartStand(i, monster[i]._mdir);
+#endif
 		return;
 	}
 	StartPlrHit(pnum, dam, FALSE);

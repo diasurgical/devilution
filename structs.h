@@ -348,7 +348,7 @@ typedef struct PlayerStruct {
 #endif
 	BOOLEAN pManaShield;
 	char bReserved[3];
-	short wReflection;
+	WORD wReflections;
 	short wReserved[7];
 	DWORD pDiabloKillLevel;
 	int pDifficulty;
@@ -1500,7 +1500,7 @@ typedef struct PkPlayerStruct {
 #endif
 	BOOLEAN pManaShield;
 	char bReserved[3];
-	short wReflection;
+	WORD wReflections;
 	short wReserved2;
 	char pSplLvl2[10]; // Hellfire spells
 	short wReserved8;
