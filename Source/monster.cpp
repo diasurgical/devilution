@@ -6461,7 +6461,11 @@ void TalktoMonster(int i)
 void SpawnGolum(int i, int x, int y, int mi)
 {
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("SpawnGolum: Invalid monster %d", i);
+#endif
 
 	dMonster[x][y] = i + 1;
 	monster[i]._mx = x;
@@ -6471,13 +6475,13 @@ void SpawnGolum(int i, int x, int y, int mi)
 	monster[i]._moldx = x;
 	monster[i]._moldy = y;
 	monster[i]._pathcount = 0;
-	monster[i]._mFlags |= MFLAG_GOLEM;
-	monster[i].mArmorClass = 25;
 	monster[i]._mmaxhp = 2 * (320 * missile[mi]._mispllvl + plr[i]._pMaxMana / 3);
 	monster[i]._mhitpoints = monster[i]._mmaxhp;
+	monster[i].mArmorClass = 25;
 	monster[i].mHit = 5 * (missile[mi]._mispllvl + 8) + 2 * plr[i]._pLevel;
 	monster[i].mMinDamage = 2 * (missile[mi]._mispllvl + 4);
 	monster[i].mMaxDamage = 2 * (missile[mi]._mispllvl + 8);
+	monster[i]._mFlags |= MFLAG_GOLEM;
 	M_StartSpStand(i, 0);
 	M_Enemy(i);
 	if (i == myplr) {
