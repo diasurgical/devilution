@@ -417,6 +417,9 @@ static void multi_begin_timeout()
 	}
 }
 
+/**
+ * @brief This always returns true when playing in singleplayer
+ */
 int multi_handle_delta()
 {
 	int i;

@@ -347,13 +347,13 @@ typedef struct PlayerStruct {
 	unsigned char pBattleNet;
 #endif
 	BOOLEAN pManaShield;
-	char bReserved[3]; //Unused
+	char bReserved[3];
 	short wReflection;
-	short wReserved[7]; //Unused
+	short wReserved[7];
 	DWORD pDiabloKillLevel;
 	int pDifficulty;
 	int pDamAcFlags;
-	int dwReserved[5]; //Unused
+	int dwReserved[5];
 	unsigned char *_pNData;
 	unsigned char *_pWData;
 	unsigned char *_pAData;
@@ -363,7 +363,7 @@ typedef struct PlayerStruct {
 	unsigned char *_pHData;
 	unsigned char *_pDData;
 	unsigned char *_pBData;
-	void *pReserved; //Unused
+	void *pReserved;
 } PlayerStruct;
 
 //////////////////////////////////////////////////

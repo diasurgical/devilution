@@ -27,7 +27,7 @@ BOOL gbGameLoopStartup;
 BOOL gbRunGame;
 BOOL gbRunGameResult;
 BOOL zoomflag;
-BOOL gbProcessPlayers;
+BOOL gbProcessPlayers; //gbProcessPlayers is only set to false when Diablo dies otherwise it's always true
 BOOL gbLoadGame;
 HINSTANCE ghInst;
 int DebugMonsters[10];
@@ -2078,7 +2078,7 @@ static void game_logic()
 		CheckCursMove();
 		track_process();
 	}
-	if (gbProcessPlayers) { //gbProcessPlayers is only set to false when Diablo dies, otherwise it's true
+	if (gbProcessPlayers) {
 		ProcessPlayers();
 	}
 	if (leveltype != DTYPE_TOWN) {
@@ -2129,14 +2129,14 @@ static void timeout_cursor(BOOL bTimeout)
 	}
 }
 
-void game_loop(BOOL bStartup) //bStartup is only true during the very first gameplay tick in the session
+void game_loop(BOOL bStartup) //bStartup is only set to true during the very first gameplay tick in the session
 {
 	int i;
 
 	i = bStartup ? 60 : 3;
 
 	while (i--) {
-		if (!multi_handle_delta()) { //multi_handle_delta() always returns true in singleplayer
+		if (!multi_handle_delta()) {
 			timeout_cursor(TRUE);
 			break;
 		} else {
