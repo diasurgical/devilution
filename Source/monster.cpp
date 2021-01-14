@@ -4600,7 +4600,11 @@ void MAI_RR2(int i, int mistype, int dam)
 	int dist, v, md;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_RR2: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	mx = Monst->_mx - Monst->_menemyx;
