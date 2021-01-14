@@ -5098,7 +5098,11 @@ void MAI_Zhar(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Zhar: Invalid monster %d", i);
+#endif
 
 	Monst = &monster[i];
 	if (monster[i]._mmode != MM_STAND) {
