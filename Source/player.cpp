@@ -2473,7 +2473,10 @@ BOOL PM_DoStand(int pnum)
 	return FALSE;
 }
 
-BOOL PM_DoWalk(int pnum) //Movement towards upleft, up, and upright
+/**
+ * @brief Movement towards NW, N, and NE
+ */
+BOOL PM_DoWalk(int pnum)
 {
 	int anim_len;
 	BOOL rv;
