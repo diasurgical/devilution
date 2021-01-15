@@ -4820,7 +4820,7 @@ void MAI_SkelKing(int i)
 #ifdef HELLFIRE
 		return;
 #else
-		app_fatal("MAI_SkelKing: Invalid monster %d",i);
+		app_fatal("MAI_SkelKing: Invalid monster %d", i);
 #endif
 	Monst = &monster[i];
 	if (Monst->_mmode == MM_STAND && Monst->_msquelch != 0) {
@@ -4889,7 +4889,11 @@ void MAI_Rhino(int i)
 	int v, dist, md;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Rhino: Invalid monster %d", i);
+#endif
 	Monst = &monster[i];
 	if (Monst->_mmode == MM_STAND && Monst->_msquelch != 0) {
 		fx = Monst->_menemyx;
@@ -4927,8 +4931,8 @@ void MAI_Rhino(int i)
 				if (AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_RHINO, Monst->_menemy, i, 0, 0) != -1) {
 					if (Monst->MData->snd_special)
 						PlayEffect(i, 3);
-					Monst->_mmode = MM_CHARGE;
 					dMonster[Monst->_mx][Monst->_my] = -1 - i;
+					Monst->_mmode = MM_CHARGE;
 				}
 			} else {
 				if (abs(mx) >= 2 || abs(my) >= 2) {
