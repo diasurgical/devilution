@@ -5328,7 +5328,11 @@ void MAI_Lazhelp(int i)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MAI_Lazhelp: Invalid monster %d", i);
+#endif
 	if (monster[i]._mmode != MM_STAND)
 		return;
 
@@ -5342,8 +5346,8 @@ void MAI_Lazhelp(int i)
 			if (quests[Q_BETRAYER]._qvar1 <= 5) {
 				Monst->_mgoal = MGOAL_INQUIRING;
 			} else {
-				Monst->mtalkmsg = 0;
 				Monst->_mgoal = MGOAL_NORMAL;
+				Monst->mtalkmsg = 0;
 			}
 		} else
 			Monst->_mgoal = MGOAL_NORMAL;
