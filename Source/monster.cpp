@@ -5661,7 +5661,11 @@ BOOL DirOK(int i, int mdir)
 	int mcount, mi;
 
 	if ((DWORD)i >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return FALSE;
+#else
 		app_fatal("DirOK: Invalid monster %d", i);
+#endif
 	fx = monster[i]._mx + offset_x[mdir];
 	fy = monster[i]._my + offset_y[mdir];
 	if (fy < 0 || fy >= MAXDUNY || fx < 0 || fx >= MAXDUNX || !PosOkMonst(i, fx, fy))
@@ -5669,16 +5673,13 @@ BOOL DirOK(int i, int mdir)
 	if (mdir == DIR_E) {
 		if (SolidLoc(fx, fy + 1) || dFlags[fx][fy + 1] & BFLAG_MONSTLR)
 			return FALSE;
-	}
-	if (mdir == DIR_W) {
+	} else if (mdir == DIR_W) {
 		if (SolidLoc(fx + 1, fy) || dFlags[fx + 1][fy] & BFLAG_MONSTLR)
 			return FALSE;
-	}
-	if (mdir == DIR_N) {
+	} else if (mdir == DIR_N) {
 		if (SolidLoc(fx + 1, fy) || SolidLoc(fx, fy + 1))
 			return FALSE;
-	}
-	if (mdir == DIR_S)
+	} else if (mdir == DIR_S)
 		if (SolidLoc(fx - 1, fy) || SolidLoc(fx, fy - 1))
 			return FALSE;
 	if (monster[i].leaderflag == 1) {

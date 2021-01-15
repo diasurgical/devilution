@@ -5360,7 +5360,7 @@ size = 0x6A
 [[func]]
 name = "DirOK"
 addr = 0x443C02
-size = 0x1FF
+size = 0x1F6
 
 [[func]]
 name = "PosOkMissile"
