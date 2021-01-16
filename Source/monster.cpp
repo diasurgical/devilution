@@ -6015,6 +6015,15 @@ void PrintMonstHistory(int mt)
 			minHP = 1;
 		if (maxHP < 1)
 			maxHP = 1;
+#ifdef HELLFIRE
+		if (gnDifficulty == DIFF_NIGHTMARE) {
+			minHP = 3 * minHP + (gbMaxPlayers == 1 ? 50 : 100);
+			maxHP = 3 * maxHP + (gbMaxPlayers == 1 ? 50 : 100);
+		} else if (gnDifficulty == DIFF_HELL) {
+			minHP = 4 * minHP + (gbMaxPlayers == 1 ? 100 : 200);
+			maxHP = 4 * maxHP + (gbMaxPlayers == 1 ? 100 : 200);
+		}
+#else
 		if (gnDifficulty == DIFF_NIGHTMARE) {
 			minHP = 3 * minHP + 1;
 			maxHP = 3 * maxHP + 1;
@@ -6023,6 +6032,7 @@ void PrintMonstHistory(int mt)
 			minHP = 4 * minHP + 3;
 			maxHP = 4 * maxHP + 3;
 		}
+#endif
 		sprintf(tempstr, "Hit Points : %i-%i", minHP, maxHP);
 		AddPanelString(tempstr, TRUE);
 	}
