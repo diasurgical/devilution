@@ -5730,6 +5730,7 @@ BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2)
 	int d;
 	int xincD, yincD, dincD, dincH;
 	int tmp;
+	BOOL done = FALSE;
 
 	xorg = x1;
 	yorg = y1;
@@ -5748,16 +5749,16 @@ BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2)
 		}
 		if (dy > 0) {
 			d = 2 * dy - dx;
-			dincH = 2 * (dy - dx);
 			dincD = 2 * dy;
+			dincH = 2 * (dy - dx);
 			yincD = 1;
 		} else {
 			d = 2 * dy + dx;
-			dincH = 2 * (dx + dy);
 			dincD = 2 * dy;
+			dincH = 2 * (dx + dy);
 			yincD = -1;
 		}
-		while (x1 != x2 || y1 != y2) {
+		while (!done && (x1 != x2 || y1 != y2)) {
 			if ((d <= 0) ^ (yincD < 0)) {
 				d += dincD;
 			} else {
@@ -5765,8 +5766,7 @@ BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2)
 				y1 += yincD;
 			}
 			x1++;
-			if ((x1 != xorg || y1 != yorg) && !Clear(x1, y1))
-				break;
+			done = ((x1 != xorg || y1 != yorg) && !Clear(x1, y1));
 		}
 	} else {
 		if (dy < 0) {
@@ -5781,16 +5781,16 @@ BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2)
 		}
 		if (dx > 0) {
 			d = 2 * dx - dy;
-			dincH = 2 * (dx - dy);
 			dincD = 2 * dx;
+			dincH = 2 * (dx - dy);
 			xincD = 1;
 		} else {
 			d = 2 * dx + dy;
-			dincH = 2 * (dy + dx);
 			dincD = 2 * dx;
+			dincH = 2 * (dy + dx);
 			xincD = -1;
 		}
-		while (y1 != y2 || x1 != x2) {
+		while (!done && (y1 != y2 || x1 != x2)) {
 			if ((d <= 0) ^ (xincD < 0)) {
 				d += dincD;
 			} else {
@@ -5798,8 +5798,7 @@ BOOL LineClearF(BOOL (*Clear)(int, int), int x1, int y1, int x2, int y2)
 				x1 += xincD;
 			}
 			y1++;
-			if ((y1 != yorg || x1 != xorg) && !Clear(x1, y1))
-				break;
+			done = ((y1 != yorg || x1 != xorg) && !Clear(x1, y1));
 		}
 	}
 	return x1 == x2 && y1 == y2;
