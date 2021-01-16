@@ -6107,13 +6107,21 @@ void MissToMonst(int i, int x, int y)
 	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMISSILES)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MissToMonst: Invalid missile %d", i);
+#endif
 
 	Miss = &missile[i];
 	m = Miss->_misource;
 
 	if ((DWORD)m >= MAXMONSTERS)
+#ifdef HELLFIRE
+		return;
+#else
 		app_fatal("MissToMonst: Invalid monster %d", m);
+#endif
 
 	Monst = &monster[m];
 	oldx = Miss->_mix;
