@@ -703,7 +703,7 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int bosspacksize)
 
 	Monst = &monster[nummonsters];
 	count = 0;
-	Uniq = UniqMonst + uniqindex;
+	Uniq = &UniqMonst[uniqindex];
 
 	if ((uniquetrans + 19) << 8 >= LIGHTSIZE) {
 		return;
@@ -2073,7 +2073,7 @@ void M2MStartKill(int i, int mid)
 		app_fatal("M2MStartKill: Invalid monster (killed) %d", mid);
 #endif
 	}
-	if (monster[i].MType == NULL)
+	if (monster[i].MType == NULL) /// BUGFIX: should check `mid`
 #ifdef HELLFIRE
 		return;
 #else
@@ -2094,7 +2094,7 @@ void M2MStartKill(int i, int mid)
 #ifdef HELLFIRE
 	SpawnLoot(mid, TRUE);
 #else
-	if (mid >= MAX_PLRS)
+	if (mid >= MAX_PLRS) // Golems should not spawn loot
 		SpawnItem(mid, monster[mid]._mx, monster[mid]._my, TRUE);
 #endif
 
@@ -2320,13 +2320,13 @@ BOOL M_DoStand(int i)
 
 	if ((DWORD)i >= MAXMONSTERS)
 #ifdef HELLFIRE
-		return 0;
+		return FALSE;
 #else
 		app_fatal("M_DoStand: Invalid monster %d", i);
 #endif
 	if (monster[i].MType == NULL)
 #ifdef HELLFIRE
-		return 0;
+		return FALSE;
 #else
 		app_fatal("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 #endif
@@ -4423,7 +4423,7 @@ void MAI_Scav(int i)
 			M_StartEat(i);
 			if (!(Monst->_mFlags & MFLAG_NOHEAL)) {
 #ifdef HELLFIRE
-				int mMaxHP = Monst->MType->mMaxHP << 6;
+				int mMaxHP = Monst->MType->mMaxHP << 6; // BUGFIX use _mmaxhp or we loose health when difficulty isn't normal
 				if (gbMaxPlayers == 1)
 					mMaxHP >>= 1;
 				Monst->_mhitpoints += mMaxHP >> 3;
@@ -6212,14 +6212,14 @@ BOOL PosOkMonst(int i, int x, int y)
 			ret = FALSE;
 	}
 
-	if (ret && dMissile[x][y] && i >= 0) {
+	if (ret && dMissile[x][y] != 0 && i >= 0) {
 		mi = dMissile[x][y];
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
 				fire = TRUE;
 			} else {
 				for (j = 0; j < nummissiles; j++) {
-					if (missile[missileactive[j]]._mitype == MIS_FIREWALL)
+					if (missile[missileactive[j]]._mitype == MIS_FIREWALL) // BUGFIX: Check missile x/y
 						fire = TRUE;
 				}
 			}
@@ -6300,14 +6300,14 @@ BOOL PosOkMonst2(int i, int x, int y)
 			ret = FALSE;
 	}
 
-	if (ret && dMissile[x][y] && i >= 0) {
+	if (ret && dMissile[x][y] != 0 && i >= 0) {
 		mi = dMissile[x][y];
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
 				fire = TRUE;
 			} else {
 				for (j = 0; j < nummissiles; j++) {
-					if (missile[missileactive[j]]._mitype == MIS_FIREWALL)
+					if (missile[missileactive[j]]._mitype == MIS_FIREWALL) // BUGFIX: Check missile x/y
 						fire = TRUE;
 				}
 			}
@@ -6373,16 +6373,13 @@ BOOL PosOkMonst3(int i, int x, int y)
 				fire = TRUE;
 			} else {
 				for (j = 0; j < nummissiles; j++) {
-					mi = missileactive[j];
-					if (missile[mi]._mitype == MIS_FIREWALL) {
+					if (missile[missileactive[j]]._mitype == MIS_FIREWALL) // BUGFIX: Check missile x/y
 						fire = TRUE;
-					}
 				}
 			}
 		}
-		if (fire && (!(monster[i].mMagicRes & IMMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO)) {
+		if (fire && (!(monster[i].mMagicRes & IMMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
 			ret = FALSE;
-		}
 	}
 #endif
 

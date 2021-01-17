@@ -1778,7 +1778,7 @@ void GetStaffPower(int i, int lvl, int bs, BOOL onlygood)
 	preidx = -1;
 	if (tmp == 0 || onlygood) {
 		nl = 0;
-		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
+		for (j = 0; PL_Prefix[j].PLPower != IPL_INVALID; j++) {
 			if (PL_Prefix[j].PLIType & PLT_STAFF && PL_Prefix[j].PLMinLvl <= lvl) {
 				addok = TRUE;
 				if (onlygood && !PL_Prefix[j].PLOk)
@@ -2478,7 +2478,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 		onlygood = TRUE;
 	if (pre == 0) {
 		nt = 0;
-		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
+		for (j = 0; PL_Prefix[j].PLPower != IPL_INVALID; j++) {
 			if (flgs & PL_Prefix[j].PLIType) {
 				if (PL_Prefix[j].PLMinLvl >= minlvl && PL_Prefix[j].PLMinLvl <= maxlvl && (!onlygood || PL_Prefix[j].PLOk) && (flgs != PLT_STAFF || PL_Prefix[j].PLPower != IPL_CHARGES)) {
 					l[nt] = j;
@@ -2509,7 +2509,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 	}
 	if (post != 0) {
 		nl = 0;
-		for (j = 0; PL_Suffix[j].PLPower != -1; j++) {
+		for (j = 0; PL_Suffix[j].PLPower != IPL_INVALID; j++) {
 			if (PL_Suffix[j].PLIType & flgs
 			    && PL_Suffix[j].PLMinLvl >= minlvl && PL_Suffix[j].PLMinLvl <= maxlvl
 			    && (goe | PL_Suffix[j].PLGOE) != (GOE_GOOD | GOE_EVIL)
