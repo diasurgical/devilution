@@ -2452,7 +2452,7 @@ int InvPutItem(int pnum, int x, int y)
 		xp = cursmx;
 		if (plr[pnum].HoldItem._iCurs == ICURS_RUNE_BOMB && xp >= 79 && xp <= 82 && yp >= 61 && yp <= 64) {
 			NetSendCmdLocParam2(0, CMD_OPENHIVE, plr[pnum]._px, plr[pnum]._py, xx, yy);
-			quests[Q_FARMER]._qactive = 3;
+			quests[Q_FARMER]._qactive = QUEST_DONE;
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, Q_FARMER);
 				return -1;
@@ -2461,7 +2461,7 @@ int InvPutItem(int pnum, int x, int y)
 		}
 		if (plr[pnum].HoldItem.IDidx == IDI_MAPOFDOOM && xp >= 35 && xp <= 38 && yp >= 20 && yp <= 24) {
 			NetSendCmd(FALSE, CMD_OPENCRYPT);
-			quests[Q_GRAVE]._qactive = 3;
+			quests[Q_GRAVE]._qactive = QUEST_DONE;
 			if (gbMaxPlayers != 1) {
 				NetSendCmdQuest(TRUE, Q_GRAVE);
 			}
@@ -2586,8 +2586,8 @@ int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, in
 	if (currlevel == 21 && x == CornerStone.x && y == CornerStone.y) {
 		CornerStone.item = item[ii];
 		InitQTextMsg(296);
-		quests[Q_CORNSTN]._qlog = 0;
-		quests[Q_CORNSTN]._qactive = 3;
+		quests[Q_CORNSTN]._qlog = FALSE;
+		quests[Q_CORNSTN]._qactive = QUEST_DONE;
 	}
 #endif
 	return ii;

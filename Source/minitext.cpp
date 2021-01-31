@@ -5,13 +5,21 @@
  */
 #include "all.h"
 
+/** Current y position of text in px */
 int qtexty;
+/** Pointer to the current text being displayed */
 const char *qtextptr;
+/** Time of last rendering of the text */
 int sgLastScroll;
+/** Specify if the quest dialog window is being shown */
 BOOLEAN qtextflag;
+/** Duplicate of qtextSpd */
 int qtextDelay;
+/** Vertical speed of the scrolling text, see qscroll_spd_tbl */
 int qtextSpd;
+/** Graphics for the medium size font */
 BYTE *pMedTextCels;
+/** Graphics for the window border */
 BYTE *pTextBoxCels;
 
 /** Maps from font index to medtexts.cel frame number. */
@@ -52,12 +60,18 @@ const BYTE mfontkern[56] = {
  */
 int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
+/**
+ * @brief Free the resouces used by the quest dialog window
+ */
 void FreeQuestText()
 {
 	MemFreeDbg(pMedTextCels);
 	MemFreeDbg(pTextBoxCels);
 }
 
+/**
+ * @brief Load the resouces used by the quest dialog window, and initialize it's state
+ */
 void InitQuestText()
 {
 	pMedTextCels = LoadFileInMem("Data\\MedTextS.CEL", NULL);
@@ -65,6 +79,10 @@ void InitQuestText()
 	qtextflag = FALSE;
 }
 
+/**
+ * @brief Start the given naration
+ * @param m Index of narration from the alltext table
+ */
 void InitQTextMsg(int m)
 {
 	if (alltext[m].scrlltxt) {
@@ -79,6 +97,9 @@ void InitQTextMsg(int m)
 	PlaySFX(alltext[m].sfxnr);
 }
 
+/**
+ * @brief Draw the quest dialog window decoration and background
+ */
 void DrawQTextBack()
 {
 	CelDraw(PANEL_X + 24, SCREEN_Y + 327, pTextBoxCels, 1, 591);
@@ -90,6 +111,13 @@ void DrawQTextBack()
 #include "asm_trans_rect.inc"
 }
 
+/**
+ * @brief Print a character
+ * @param sx Back buffer coordinate
+ * @param sy Back buffer coordinate
+ * @param pCelBuff Cel data
+ * @param nCel CEL frame number
+ */
 void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 {
 	BYTE *dst, *pStart, *pEnd, *end;
@@ -207,6 +235,9 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 #endif
 }
 
+/**
+ * @brief Draw the quest dialog window decoration and background
+ */
 void DrawQText()
 {
 	int i, l, w, tx, ty;

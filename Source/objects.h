@@ -24,9 +24,9 @@ void GetRndObjLoc(int randarea, int &xx, int &yy);
 void AddMushPatch();
 void AddSlainHero();
 #ifdef HELLFIRE
-void objects_44D8C5(int ot, int v2, int ox, int oy);
-void objects_44DA68(int a1, int a2);
-void objects_454AF0(int a1, int a2, int a3);
+void AddCryptBook(int ot, int v2, int ox, int oy);
+void AddCryptObject(int a1, int a2);
+void AddNakrulBook(int a1, int a2, int a3);
 #endif
 void AddObject(int ot, int ox, int oy);
 void Obj_Trap(int i);
@@ -45,10 +45,10 @@ void SyncBreakObj(int pnum, int oi);
 void SyncObjectAnim(int o);
 void GetObjectStr(int i);
 #ifdef HELLFIRE
-void operate_lv24_lever();
-void objects_454BA8();
-void objects_rnd_454BEA();
-DIABOOL objects_lv_24_454B04(int s);
+void OperateNakrulLever();
+void SyncNakrulRoom();
+void AddNakrulLeaver();
+DIABOOL OperateNakrulBook(int s);
 #endif
 
 #endif /* __OBJECTS_H__ */

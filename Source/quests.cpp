@@ -716,20 +716,20 @@ void ResyncMPQuests()
 	if (QuestStatus(Q_BETRAYER))
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 #ifdef HELLFIRE
-	if (quests[Q_GRAVE]._qactive == 1 && currlevel == quests[Q_GRAVE]._qlevel - 1) {
-		quests[Q_GRAVE]._qactive = 2;
+	if (quests[Q_GRAVE]._qactive == QUEST_INIT && currlevel == quests[Q_GRAVE]._qlevel - 1) {
+		quests[Q_GRAVE]._qactive = QUEST_ACTIVE;
 		NetSendCmdQuest(TRUE, Q_GRAVE);
 	}
-	if (quests[Q_DEFILER]._qactive == 1 && currlevel == quests[Q_DEFILER]._qlevel - 1) {
-		quests[Q_DEFILER]._qactive = 2;
+	if (quests[Q_DEFILER]._qactive == QUEST_INIT && currlevel == quests[Q_DEFILER]._qlevel - 1) {
+		quests[Q_DEFILER]._qactive = QUEST_ACTIVE;
 		NetSendCmdQuest(TRUE, Q_DEFILER);
 	}
-	if (quests[Q_NAKRUL]._qactive == 1 && currlevel == quests[Q_NAKRUL]._qlevel - 1) {
-		quests[Q_NAKRUL]._qactive = 2;
+	if (quests[Q_NAKRUL]._qactive == QUEST_INIT && currlevel == quests[Q_NAKRUL]._qlevel - 1) {
+		quests[Q_NAKRUL]._qactive = QUEST_ACTIVE;
 		NetSendCmdQuest(TRUE, Q_NAKRUL);
 	}
-	if (quests[Q_JERSEY]._qactive == 1 && currlevel == quests[Q_JERSEY]._qlevel - 1) {
-		quests[Q_JERSEY]._qactive = 2;
+	if (quests[Q_JERSEY]._qactive == QUEST_INIT && currlevel == quests[Q_JERSEY]._qlevel - 1) {
+		quests[Q_JERSEY]._qactive = QUEST_ACTIVE;
 		NetSendCmdQuest(TRUE, Q_JERSEY);
 	}
 #endif

@@ -113,7 +113,7 @@ MissileData missiledata[] = {
 	{  MIS_RUNEIMMOLAT,   &missiles_immolation_rune,  &MI_Rune,           TRUE,      1, MISR_NONE,      MFILE_RUNE,      -1,          -1          },
 	{  MIS_RUNESTONE,     &missiles_stone_rune,       &MI_Rune,           TRUE,      1, MISR_NONE,      MFILE_RUNE,      -1,          -1          },
 	{  MIS_HIVEEXP,       &missiles_rune_explosion,   &mi_hive_explode,   TRUE,      1, MISR_FIRE,      MFILE_BIGEXP,    LS_NESTXPLD, LS_NESTXPLD },
-	{  MIS_HORKDMN,       &missiles_430624,           &missiles_4359A0,   TRUE,      2, MISR_NONE,      MFILE_NULL,      -1,          -1          },
+	{  MIS_HORKDMN,       &missiles_hork_spawn,       &mi_hork_spawn,   TRUE,      2, MISR_NONE,      MFILE_NULL,      -1,          -1          },
 	{  MIS_JESTER,        &missiles_jester,           &MI_Dummy,          FALSE,     2, MISR_NONE,      MFILE_NONE,      -1,          -1          },
 	{  MIS_HIVEEXP2,      &missiles_hive_explosion,   &MI_Dummy,          FALSE,     2, MISR_NONE,      MFILE_NONE,      -1,          -1          },
 	{  MIS_LICH,          &AddFlare,                  &MI_Firebolt,       TRUE,      1, MISR_MAGIC,     MFILE_LICH,      -1,          -1          },

@@ -3379,6 +3379,16 @@ typedef enum item_special_effect {
 	ISPL_ALLRESZERO     = 0x80000000,
 } item_special_effect;
 
+typedef enum item_special_effect_hf {
+    ISPLHF_DEVASTATION  = 0x01,
+    ISPLHF_DECAY        = 0x02,
+    ISPLHF_PERIL        = 0x04,
+    ISPLHF_JESTERS      = 0x08,
+    ISPLHF_DOPPELGANGER = 0x10,
+    ISPLHF_ACDEMON      = 0x20,
+    ISPLHF_ACUNDEAD     = 0x40,
+} item_special_effect_hf;
+
 // Logical equipment locations
 typedef enum inv_body_loc {
 	INVLOC_HEAD       = 0,

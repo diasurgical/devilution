@@ -298,7 +298,7 @@ int ItemInvSnds[] = {
 #endif
 };
 #ifdef HELLFIRE
-char *off_4A5AC4 = "SItem";
+char *CornerStoneRegKey = "SItem";
 #endif
 /** Specifies the current Y-coordinate used for validation of items on ground. */
 int idoppely = 16;
@@ -598,7 +598,7 @@ void AddInitItems()
 }
 
 #ifdef HELLFIRE
-static void items_42390F()
+static void SpawnNote()
 {
 	int x, y, id;
 
@@ -664,7 +664,7 @@ void InitItems()
 			AddInitItems();
 #ifdef HELLFIRE
 		if (currlevel >= 21 && currlevel <= 23)
-			items_42390F();
+			SpawnNote();
 #endif
 	}
 
@@ -2046,7 +2046,7 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		break;
 #ifdef HELLFIRE
 	case IPL_DOPPELGANGER:
-		item[i]._iDamAcFlags |= 16;
+		item[i]._iDamAcFlags |= ISPLHF_DOPPELGANGER;
 		// no break
 #endif
 	case IPL_TOHIT_DAMP:
@@ -2417,23 +2417,23 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iPLMR -= r;
 		break;
 	case IPL_DEVASTATION:
-		item[i]._iDamAcFlags |= 0x01;
+		item[i]._iDamAcFlags |= ISPLHF_DEVASTATION;
 		break;
 	case IPL_DECAY:
-		item[i]._iDamAcFlags |= 0x02;
+		item[i]._iDamAcFlags |= ISPLHF_DECAY;
 		item[i]._iPLDam += r;
 		break;
 	case IPL_PERIL:
-		item[i]._iDamAcFlags |= 0x04;
+		item[i]._iDamAcFlags |= ISPLHF_PERIL;
 		break;
 	case IPL_JESTERS:
-		item[i]._iDamAcFlags |= 0x08;
+		item[i]._iDamAcFlags |= ISPLHF_JESTERS;
 		break;
 	case IPL_ACDEMON:
-		item[i]._iDamAcFlags |= 0x20;
+		item[i]._iDamAcFlags |= ISPLHF_ACDEMON;
 		break;
 	case IPL_ACUNDEAD:
-		item[i]._iDamAcFlags |= 0x40;
+		item[i]._iDamAcFlags |= ISPLHF_ACUNDEAD;
 		break;
 	case IPL_MANATOLIFE:
 		r2 = ((plr[myplr]._pMaxManaBase >> 6) * 50 / 100);
@@ -3244,20 +3244,20 @@ void RecreateEar(int ii, WORD ic, int iseed, int Id, int dur, int mdur, int ch, 
 }
 
 #ifdef HELLFIRE
-void items_427A72()
+void CornerstoneSave()
 {
 	PkItemStruct id;
 	if (CornerStone.activated) {
 		if (CornerStone.item.IDidx >= 0) {
 			PackItem(&id, &CornerStone.item);
-			SRegSaveData(APP_NAME, off_4A5AC4, 0, (BYTE *)&id, 19);
+			SRegSaveData(APP_NAME, CornerStoneRegKey, 0, (BYTE *)&id, 19);
 		} else {
-			SRegSaveData(APP_NAME, off_4A5AC4, 0, (BYTE *)"", 1);
+			SRegSaveData(APP_NAME, CornerStoneRegKey, 0, (BYTE *)"", 1);
 		}
 	}
 }
 
-void items_427ABA(int x, int y)
+void CornerstoneLoad(int x, int y)
 {
 	int i, ii;
 	DWORD dwSize;
@@ -3280,7 +3280,7 @@ void items_427ABA(int x, int y)
 		dItem[x][y] = 0;
 	}
 	dwSize = 0;
-	if (SRegLoadData(APP_NAME, off_4A5AC4, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize)) {
+	if (SRegLoadData(APP_NAME, CornerStoneRegKey, 0, (BYTE *)&PkSItem, sizeof(PkSItem), &dwSize)) {
 		if (dwSize == sizeof(PkSItem)) {
 			ii = itemavail[0];
 			dItem[x][y] = ii + 1;

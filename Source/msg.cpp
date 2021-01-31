@@ -2583,9 +2583,9 @@ static DWORD On_REFLECT(TCmd *pCmd, int pnum)
 static DWORD On_NAKRUL(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1) {
-		operate_lv24_lever();
+		OperateNakrulLever();
 		IsUberRoomOpened = 1;
-		quests[Q_NAKRUL]._qactive = 3;
+		quests[Q_NAKRUL]._qactive = QUEST_DONE;
 		monster_some_crypt();
 	}
 	return sizeof(*pCmd);
@@ -2596,7 +2596,7 @@ static DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
 	TCmdLocParam2 *p = (TCmdLocParam2 *)pCmd;
 	if (gbBufferMsgs != 1) {
 		AddMissile(p->x, p->y, p->wParam1, p->wParam2, 0, MIS_HIVEEXP2, TARGET_MONSTERS, pnum, 0, 0);
-		town_4751C6();
+		TownOpenHive();
 	}
 	return sizeof(*p);
 }
@@ -2604,7 +2604,7 @@ static DWORD On_OPENHIVE(TCmd *pCmd, int pnum)
 static DWORD On_OPENCRYPT(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1) {
-		town_475595();
+		TownOpenGrave();
 		InitTownTriggers();
 		if (currlevel == 0)
 			PlaySFX(IS_SARC);

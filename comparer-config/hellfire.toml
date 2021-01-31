@@ -2898,7 +2898,7 @@ addr = 0x4237E7
 size = 0x128
 
 [[func]]
-name = "items_42390F"
+name = "SpawnNote"
 addr = 0x42390F
 size = 0x56
 
@@ -3138,12 +3138,12 @@ addr = 0x427939
 size = 0x139
 
 [[func]]
-name = "items_427A72"
+name = "CornerstoneSave"
 addr = 0x427A72
 size = 0x48
 
 [[func]]
-name = "items_427ABA"
+name = "CornerstoneLoad"
 addr = 0x427ABA
 size = 0x114
 
@@ -3953,7 +3953,7 @@ addr = 0x4303A8
 size = 0x27C
 
 [[func]]
-name = "missiles_430624"
+name = "missiles_hork_spawn"
 addr = 0x430624
 size = 0x3D
 
@@ -4398,7 +4398,7 @@ addr = 0x4358C1
 size = 0xDF
 
 [[func]]
-name = "missiles_4359A0"
+name = "mi_hork_spawn"
 addr = 0x4359A0
 size = 0x138
 
@@ -4808,7 +4808,7 @@ addr = 0x43C735
 size = 0x50
 
 [[func]]
-name = "monster_43C785"
+name = "AddDoppelganger"
 addr = 0x43C785
 size = 0xEC
 
@@ -6653,7 +6653,7 @@ addr = 0x44D093
 size = 0xD8
 
 [[func]]
-name = "objects_add_lv22"
+name = "AddCryptStoryBook"
 addr = 0x44D16B
 size = 0xDE
 
@@ -6728,7 +6728,7 @@ addr = 0x44D89A
 size = 0x2B
 
 [[func]]
-name = "objects_44D8C5"
+name = "AddCryptBook"
 addr = 0x44D8C5
 size = 0x81
 
@@ -6738,7 +6738,7 @@ addr = 0x44D946
 size = 0x122
 
 [[func]]
-name = "objects_44DA68"
+name = "AddCryptObject"
 addr = 0x44DA68
 size = 0x20D
 
@@ -7213,32 +7213,32 @@ addr = 0x45460B
 size = 0x293
 
 [[func]]
-name = "objects_add_lv24"
+name = "AddNakrulGate"
 addr = 0x454963
 size = 0x18D
 
 [[func]]
-name = "objects_454AF0"
+name = "AddNakrulBook"
 addr = 0x454AF0
 size = 0x14
 
 [[func]]
-name = "objects_lv_24_454B04"
+name = "OperateNakrulBook"
 addr = 0x454B04
 size = 0x42
 
 [[func]]
-name = "operate_lv24_lever"
+name = "OperateNakrulLever"
 addr = 0x454B46
 size = 0x62
 
 [[func]]
-name = "objects_454BA8"
+name = "SyncNakrulRoom"
 addr = 0x454BA8
 size = 0x42
 
 [[func]]
-name = "objects_rnd_454BEA"
+name = "AddNakrulLeaver"
 addr = 0x454BEA
 size = 0xD5
 
@@ -9438,22 +9438,22 @@ addr = 0x475155
 size = 0x71
 
 [[func]]
-name = "town_4751C6"
+name = "TownOpenHive"
 addr = 0x4751C6
 size = 0x1B3
 
 [[func]]
-name = "town_475379"
+name = "TownCloseHive"
 addr = 0x475379
 size = 0x1B3
 
 [[func]]
-name = "town_47552C"
+name = "TownCloseGrave"
 addr = 0x47552C
 size = 0x69
 
 [[func]]
-name = "town_475595"
+name = "TownOpenGrave"
 addr = 0x475595
 size = 0x69
 

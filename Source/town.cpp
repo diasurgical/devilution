@@ -1575,7 +1575,7 @@ void T_FillTile(BYTE *P3Tiles, int xx, int yy, int t)
 }
 
 #ifdef HELLFIRE
-void town_4751C6()
+void TownOpenHive()
 {
 	dPiece[78][60] = 0x48a;
 	dPiece[79][60] = 0x48b;
@@ -1626,7 +1626,7 @@ void town_4751C6()
 	SetTownMicros();
 }
 
-void town_475379()
+void TownCloseHive()
 {
 	dPiece[78][60] = 0x48a;
 	dPiece[79][60] = 0x4eb;
@@ -1677,7 +1677,7 @@ void town_475379()
 	SetTownMicros();
 }
 
-void town_47552C()
+void TownCloseGrave()
 {
 	dPiece[36][21] = 0x52b;
 	dPiece[37][21] = 0x52c;
@@ -1692,7 +1692,7 @@ void town_47552C()
 	SetTownMicros();
 }
 
-void town_475595()
+void TownOpenGrave()
 {
 	dPiece[36][21] = 0x533;
 	dPiece[37][21] = 0x534;
@@ -1743,16 +1743,16 @@ void T_Pass3()
 	if (gbMaxPlayers == 1) {
 #endif
 #ifdef HELLFIRE
-		if (quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
-		    || quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10) {
-			town_4751C6();
+		if (quests[Q_FARMER]._qactive == QUEST_DONE || quests[Q_FARMER]._qactive == 10
+		    || quests[Q_JERSEY]._qactive == QUEST_DONE || quests[Q_JERSEY]._qactive == 10) {
+			TownOpenHive();
 		} else {
-			town_475379();
+			TownCloseHive();
 		}
-		if (quests[Q_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21])
-			town_475595();
+		if (quests[Q_GRAVE]._qactive == QUEST_DONE || plr[myplr]._pLvlVisited[21])
+			TownOpenGrave();
 		else
-			town_47552C();
+			TownCloseGrave();
 #endif
 #ifndef SPAWN
 #ifdef HELLFIRE
@@ -1790,16 +1790,16 @@ void T_Pass3()
 	}
 #ifdef HELLFIRE
 	else {
-		if (quests[Q_FARMER]._qactive == 3 || quests[Q_FARMER]._qactive == 10
-		    || quests[Q_JERSEY]._qactive == 3 || quests[Q_JERSEY]._qactive == 10) {
-			town_4751C6();
+		if (quests[Q_FARMER]._qactive == QUEST_DONE || quests[Q_FARMER]._qactive == 10
+		    || quests[Q_JERSEY]._qactive == QUEST_DONE || quests[Q_JERSEY]._qactive == 10) {
+			TownOpenHive();
 		} else {
-			town_475379();
+			TownCloseHive();
 		}
-		if (quests[Q_GRAVE]._qactive == 3 || plr[myplr]._pLvlVisited[21])
-			town_475595();
+		if (quests[Q_GRAVE]._qactive == QUEST_DONE || plr[myplr]._pLvlVisited[21])
+			TownOpenGrave();
 		else
-			town_47552C();
+			TownCloseGrave();
 	}
 #endif
 #endif

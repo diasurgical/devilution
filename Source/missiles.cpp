@@ -1669,7 +1669,7 @@ void missiles_berserk(int mi, int sx, int sy, int dx, int dy, int midir, char mi
 	missile[mi]._miDelFlag = TRUE;
 }
 
-void missiles_430624(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
+void missiles_hork_spawn(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 8);
 	missile[mi]._mirange = 9;
@@ -4100,7 +4100,7 @@ void MI_Fireball(int i)
 }
 
 #ifdef HELLFIRE
-void missiles_4359A0(int i)
+void mi_hork_spawn(int i)
 {
 	int t, j, k, tx, ty, dp;
 

@@ -2036,10 +2036,10 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 #ifdef HELLFIRE
 	if (currlevel >= 21) {
 		if (currlevel == 21) {
-			items_427ABA(CornerStone.x, CornerStone.y);
+			CornerstoneLoad(CornerStone.x, CornerStone.y);
 		}
 		if (quests[Q_NAKRUL]._qactive == QUEST_DONE && currlevel == 24) {
-			objects_454BA8();
+			SyncNakrulRoom();
 		}
 	}
 #endif

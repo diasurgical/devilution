@@ -657,7 +657,7 @@ void monster_some_crypt()
 	if (currlevel == 24 && UberDiabloMonsterIndex >= 0 && UberDiabloMonsterIndex < nummonsters) {
 		mon = &monster[UberDiabloMonsterIndex];
 		PlayEffect(UberDiabloMonsterIndex, 2);
-		quests[Q_NAKRUL]._qlog = 0;
+		quests[Q_NAKRUL]._qlog = FALSE;
 		mon->mArmorClass -= 50;
 		hp = mon->_mmaxhp / 2;
 		mon->mMagicRes = 0;
@@ -1283,7 +1283,7 @@ int AddMonster(int x, int y, int dir, int mtype, BOOL InMap)
 }
 
 #ifdef HELLFIRE
-void monster_43C785(int i)
+void AddDoppelganger(int i)
 {
 	int x, y, d, j, oi, dir, mx, my;
 
@@ -1887,7 +1887,7 @@ void SpawnLoot(int i, BOOL sendmsg)
 	} else if (Monst->mName == UniqMonst[UMT_DEFILER].mName) {
 		if (effect_is_playing(USFX_DEFILER8))
 			stream_stop();
-		quests[Q_DEFILER]._qlog = 0;
+		quests[Q_DEFILER]._qlog = FALSE;
 		SpawnMapOfDoom(Monst->_mx, Monst->_my);
 	} else if (Monst->mName == UniqMonst[UMT_HORKDMN].mName) {
 		if (UseTheoQuest) {
@@ -1902,7 +1902,7 @@ void SpawnLoot(int i, BOOL sendmsg)
 			nSFX = USFX_NAKRUL6;
 		if (effect_is_playing(nSFX))
 			stream_stop();
-		quests[Q_NAKRUL]._qlog = 0;
+		quests[Q_NAKRUL]._qlog = FALSE;
 		UberDiabloMonsterIndex = -2;
 		CreateMagicWeapon(Monst->_mx, Monst->_my, ITYPE_SWORD, ICURS_GREAT_SWORD, FALSE, TRUE);
 		CreateMagicWeapon(Monst->_mx, Monst->_my, ITYPE_STAFF, ICURS_WAR_STAFF, FALSE, TRUE);
@@ -1932,8 +1932,8 @@ void M2MStartHit(int mid, int i, int dam)
 #endif
 	}
 
-	if (i >= 0)
-		monster[i].mWhoHit |= 1 << i;
+	if (i >= 0) // BUGFIX: Missing check for golems `&& i <= MAX_PLRS`
+		monster[i].mWhoHit |= 1 << i; // BUGFIX Should be monster[mid].mWhoHit
 
 	delta_monster_hp(mid, monster[mid]._mhitpoints, currlevel);
 #ifdef HELLFIRE
@@ -2309,7 +2309,7 @@ void M_ChangeLightOffset(int monst)
 
 	_myoff *= (ly >> 3);
 #ifdef HELLFIRE
-	if (monster[monst].mlid)
+	if (monster[monst].mlid != 0)
 #endif
 		ChangeLightOff(monster[monst].mlid, _mxoff, _myoff);
 }
@@ -2588,9 +2588,9 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 #endif
 	ac = plr[pnum]._pIBonusAC + plr[pnum]._pIAC;
 #ifdef HELLFIRE
-	if (plr[pnum].pDamAcFlags & 0x20 && monster[i].MData->mMonstClass == MC_DEMON)
+	if (plr[pnum].pDamAcFlags & ISPLHF_ACDEMON && monster[i].MData->mMonstClass == MC_DEMON)
 		ac += 40;
-	if (plr[pnum].pDamAcFlags & 0x40 && monster[i].MData->mMonstClass == MC_UNDEAD)
+	if (plr[pnum].pDamAcFlags & ISPLHF_ACUNDEAD && monster[i].MData->mMonstClass == MC_UNDEAD)
 		ac += 20;
 #endif
 	hit = Hit

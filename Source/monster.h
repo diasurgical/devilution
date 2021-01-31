@@ -27,7 +27,7 @@ void SetMapMonsters(BYTE *pMap, int startx, int starty);
 void DeleteMonster(int i);
 int AddMonster(int x, int y, int dir, int mtype, BOOL InMap);
 #ifdef HELLFIRE
-void monster_43C785(int i);
+void AddDoppelganger(int i);
 #endif
 BOOL M_Talker(int i);
 void M_StartStand(int i, int md);

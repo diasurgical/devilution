@@ -196,7 +196,7 @@ void gamemenu_save_game(BOOL bActivate)
 	SetCursor_(CURSOR_HAND);
 #ifdef HELLFIRE
 	if (CornerStone.activated) {
-		items_427A72();
+		CornerstoneSave();
 	}
 #endif
 	interface_msg_pump();

@@ -2711,7 +2711,7 @@ BOOL WeaponDur(int pnum, int durrnd)
 	}
 
 #ifdef HELLFIRE
-	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDamAcFlags & 2) {
+	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDamAcFlags & ISPLHF_DECAY) {
 		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iPLDam -= 5;
 		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iPLDam <= -100) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
@@ -2722,7 +2722,7 @@ BOOL WeaponDur(int pnum, int durrnd)
 		CalcPlrInv(pnum, TRUE);
 	}
 
-	if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDamAcFlags & 2) {
+	if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDamAcFlags & ISPLHF_DECAY) {
 		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iPLDam -= 5;
 		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iPLDam <= -100) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT); // BUGFIX: INVLOC_HAND_RIGHT
@@ -2957,18 +2957,18 @@ BOOL PlrHitMonst(int pnum, int m)
 		}
 
 #ifdef HELLFIRE
-		if (plr[pnum].pDamAcFlags & 0x01 && random_(6, 100) < 5) {
+		if (plr[pnum].pDamAcFlags & ISPLHF_DEVASTATION && random_(6, 100) < 5) {
 			dam *= 3;
 		}
 
-		if (plr[pnum].pDamAcFlags & 0x10 && monster[m].MType->mtype != MT_DIABLO && monster[m]._uniqtype == 0 && random_(6, 100) < 10) {
-			monster_43C785(m);
+		if (plr[pnum].pDamAcFlags & ISPLHF_DOPPELGANGER && monster[m].MType->mtype != MT_DIABLO && monster[m]._uniqtype == 0 && random_(6, 100) < 10) {
+			AddDoppelganger(m);
 		}
 #endif
 
 		dam <<= 6;
 #ifdef HELLFIRE
-		if (plr[pnum].pDamAcFlags & 0x08) {
+		if (plr[pnum].pDamAcFlags & ISPLHF_JESTERS) {
 			int r = random_(6, 201);
 			if (r >= 100)
 				r = 100 + (r - 100) * 5;
@@ -2981,7 +2981,7 @@ BOOL PlrHitMonst(int pnum, int m)
 
 		if (pnum == myplr) {
 #ifdef HELLFIRE
-			if (plr[pnum].pDamAcFlags & 0x04) {
+			if (plr[pnum].pDamAcFlags & ISPLHF_PERIL) {
 				dam2 += plr[pnum]._pIGetHit << 6;
 				if (dam2 >= 0) {
 					if (plr[pnum]._pHitPoints > dam2) {
@@ -3488,7 +3488,7 @@ BOOL PM_DoSpell(int pnum)
 		    plr[pnum]._py,
 		    plr[pnum]._pVar1,
 		    plr[pnum]._pVar2,
-		    0,
+		    TARGET_MONSTERS,
 		    plr[pnum]._pVar4);
 
 		if (plr[pnum]._pSplFrom == 0) {
@@ -4946,8 +4946,8 @@ void PlayDungMsgs()
 	} else if (currlevel == 17 && !plr[myplr]._pLvlVisited[17] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs2 & 1)) {
 		sfxdelay = 10;
 		sfxdnum = USFX_DEFILER1;
-		quests[Q_DEFILER]._qactive = 2;
-		quests[Q_DEFILER]._qlog = 1;
+		quests[Q_DEFILER]._qactive = QUEST_ACTIVE;
+		quests[Q_DEFILER]._qlog = TRUE;
 		quests[Q_DEFILER]._qmsg = 286;
 		plr[myplr].pDungMsgs2 |= 1;
 	} else if (currlevel == 19 && !plr[myplr]._pLvlVisited[19] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs2 & 4)) {
