@@ -1,7 +1,8 @@
 /**
  * @file wave.cpp
  *
- * Implementation of functionality for loading fies and processing wave files.
+ * Implementation of functionality for loading and processing wave files.
+
  */
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
