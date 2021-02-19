@@ -1853,8 +1853,8 @@ void M_DiabloDeath(int i, BOOL sendmsg)
 		monster[k]._mVar1 = 0;
 		monster[k]._mx = monster[k]._moldx;
 		monster[k]._my = monster[k]._moldy;
-		monster[k]._mfuty = monster[k]._mx;
-		monster[k]._mfutx = monster[k]._my;
+		monster[k]._mfutx = monster[k]._mx;
+		monster[k]._mfuty = monster[k]._my;
 		monster[k]._moldx = monster[k]._mx; // CODEFIX: useless assignment
 		monster[k]._moldy = monster[k]._my; // CODEFIX: useless assignment
 		M_CheckEFlag(k);
