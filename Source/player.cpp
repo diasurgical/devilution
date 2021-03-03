@@ -1627,6 +1627,7 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 	plr[pnum]._pxoff = xoff; // Offset player sprite to align with their previous tile position
 	plr[pnum]._pyoff = yoff;
 
+	// BUGFIX: missing `if (leveltype != DTYPE_TOWN) {` for call to ChangeLightXY and PM_ChangeLightOff.
 	ChangeLightXY(plr[pnum]._plid, plr[pnum]._px, plr[pnum]._py);
 	PM_ChangeLightOff(pnum);
 
