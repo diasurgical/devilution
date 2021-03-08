@@ -5993,6 +5993,7 @@ void M_FallenFear(int x, int y)
 		    && monster[mi]._mhitpoints >> 6 > 0) {
 			monster[mi]._mgoal = MGOAL_RETREAT;
 			monster[mi]._mgoalvar1 = rundist;
+			// BUGFIX: should be `monster[mi]`, was `monster[i]`.
 			monster[mi]._mdir = GetDirection(x, y, monster[i]._mx, monster[i]._my);
 		}
 	}
