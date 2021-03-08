@@ -34,6 +34,43 @@ const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL
 
 /* data */
 
+// BUGFIX: MWVel velocity values are not rounded consistently. The correct
+// formula for monster walk velocity is calculated as follows (for 16, 32 and 64
+// pixel distances, respectively):
+//
+//    vel16 = (16 << monsterWalkShift) / nframes
+//    vel32 = (32 << monsterWalkShift) / nframes
+//    vel64 = (64 << monsterWalkShift) / nframes
+//
+// The correct monster walk velocity table is as follows:
+//
+//   int MWVel[24][3] = {
+//      { 256, 512, 1024 },
+//      { 128, 256, 512 },
+//      { 85, 171, 341 },
+//      { 64, 128, 256 },
+//      { 51, 102, 205 },
+//      { 43, 85, 171 },
+//      { 37, 73, 146 },
+//      { 32, 64, 128 },
+//      { 28, 57, 114 },
+//      { 26, 51, 102 },
+//      { 23, 47, 93 },
+//      { 21, 43, 85 },
+//      { 20, 39, 79 },
+//      { 18, 37, 73 },
+//      { 17, 34, 68 },
+//      { 16, 32, 64 },
+//      { 15, 30, 60 },
+//      { 14, 28, 57 },
+//      { 13, 27, 54 },
+//      { 13, 26, 51 },
+//      { 12, 24, 49 },
+//      { 12, 23, 47 },
+//      { 11, 22, 45 },
+//      { 11, 21, 43 }
+//   };
+
 /** Maps from monster walk animation frame num to monster velocity. */
 int MWVel[24][3] = {
 	{ 256, 512, 1024 },
