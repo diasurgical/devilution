@@ -1932,7 +1932,7 @@ void M2MStartHit(int mid, int i, int dam)
 #endif
 	}
 
-	if (i >= 0) // BUGFIX: Missing check for golems `&& i <= MAX_PLRS`
+	if (i >= 0) // BUGFIX: Missing check for golems `&& i < MAX_PLRS`
 		monster[i].mWhoHit |= 1 << i; // BUGFIX Should be monster[mid].mWhoHit
 
 	delta_monster_hp(mid, monster[mid]._mhitpoints, currlevel);
@@ -2083,9 +2083,12 @@ void M2MStartKill(int i, int mid)
 	delta_kill_monster(mid, monster[mid]._mx, monster[mid]._my, currlevel);
 	NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[mid]._mx, monster[mid]._my, mid);
 
+	// BUGFIX: missing check for attacking golems `if (0 <= i && i < MAX_PLRS)`.
 	monster[mid].mWhoHit |= 1 << i;
-	if (i < MAX_PLRS)
+	if (i < MAX_PLRS) {
+		// BUGFIX: missing check for target golems `if (mid >= MAX_PLRS)`.
 		AddPlrMonstExper(monster[mid].mLevel, monster[mid].mExp, monster[mid].mWhoHit);
+	}
 
 	monstkills[monster[mid].MType->mtype]++;
 	monster[mid]._mhitpoints = 0;
