@@ -2027,7 +2027,7 @@ void missiles_433040(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 
 	if (mienemy == TARGET_MONSTERS && id != -1) {
 		missile[mi]._midam = 0;
-		if (2 * (id > 0))
+		if (2 * (id > 0)) // BUGFIX, wrong order of operation, this should be `2 * lvl` after the else.
 			lvl = plr[id]._pLevel;
 		else
 			lvl = 1;
@@ -2102,7 +2102,7 @@ void missiles_search(int mi, int sx, int sy, int dx, int dy, int midir, char mie
 	missile[mi]._miVar7 = 0;
 	missile[mi]._miVar8 = 0;
 	AutoMapShowItems = TRUE;
-	if (2 * (id > 0))
+	if (2 * (id > 0)) // BUGFIX, wrong order of operation, this should be `2 * lvl` after the else.
 		lvl = plr[id]._pLevel;
 	else
 		lvl = 1;
@@ -3330,7 +3330,7 @@ void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		tmp <<= 7;
 		plr[id]._pSpellFlags |= 2u;
 		missile[mi]._miVar2 = tmp;
-		if (2 * (id > 0))
+		if (2 * (id > 0)) // BUGFIX, wrong order of operation, this should be `2 * lvl` after the else.
 			lvl = plr[id]._pLevel;
 		else
 			lvl = 1;
@@ -5551,7 +5551,7 @@ void MI_Blodboil(int i)
 			};
 			plr[id]._pSpellFlags &= ~0x2;
 			plr[id]._pSpellFlags |= 4;
-			if (2 * (id > 0))
+			if (2 * (id > 0)) // BUGFIX, wrong order of operation, this should be `2 * lvl` after the else.
 				lvl = plr[id]._pLevel;
 			else
 				lvl = 1;
