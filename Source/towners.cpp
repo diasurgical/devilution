@@ -701,6 +701,7 @@ void ProcessTowners()
 {
 	int i, ao;
 
+	// BUGFIX: should be `i < numtowners`, was `i < NUM_TOWNERS`.
 	for (i = 0; i < NUM_TOWNERS; i++) {
 		switch (towner[i]._ttype) {
 		case TOWN_SMITH:
