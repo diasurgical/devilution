@@ -22,7 +22,7 @@ CornerStoneStruct CornerStone;
 BYTE *itemanims[ITEMTYPES];
 BOOL UniqueItemFlag[128];
 #ifdef HELLFIRE
-int auricGold = 10000;
+int auricGold = GOLD_MAX_LIMIT * 2;
 #endif
 int numitems;
 int gnNumGetRecords;
