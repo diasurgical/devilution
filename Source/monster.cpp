@@ -5502,7 +5502,7 @@ void DeleteMonsterList()
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
-			i = 0; // TODO: check if this should be MAX_PLRS.
+			i = 0; // BUGFIX: should be `i = MAX_PLRS`, was 0 (only pseudo delete golems, their monster array indices are special and should not appear in the available monster index list).
 		} else {
 			i++;
 		}
