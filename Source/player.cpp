@@ -3653,6 +3653,7 @@ void CheckNewPath(int pnum)
 
 					if (x < 2 && y < 2) {
 						ClrPlrPath(pnum);
+						// BUGFIX: missing check for `destAction == ACTION_ATTACKMON` in if-statement of `TalktoMonster` branch.
 						if (monster[i].mtalkmsg && monster[i].mtalkmsg != TEXT_VILE14) {
 							TalktoMonster(i);
 						} else {
