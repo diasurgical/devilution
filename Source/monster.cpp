@@ -4820,7 +4820,7 @@ void MAI_Golum(int i)
 			monster[monster[i]._menemy]._lasty = monster[i]._my;
 			for (j = 0; j < 5; j++) {
 				for (k = 0; k < 5; k++) {
-					_menemy = dMonster[monster[i]._mx + k - 2][monster[i]._my + j - 2];
+					_menemy = dMonster[monster[i]._mx + k - 2][monster[i]._my + j - 2]; // BUGFIX: Check if indexes are between 0 and 112
 					if (_menemy > 0)
 						monster[_menemy]._msquelch = UCHAR_MAX; // BUGFIX: should be `monster[_menemy-1]`, not monster[_menemy].
 				}
