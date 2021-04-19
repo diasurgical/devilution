@@ -2126,19 +2126,19 @@ void Obj_BCrossDamage(int i)
 		SyncPlrKill(myplr, 0);
 	} else {
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			PlaySfxLoc(PS_WARR68, plr[myplr]._px, plr[myplr]._py);
+			PlaySfxLoc(PS_WARR68, plr[myplr]._px, plr[myplr]._py); // CODEFIX: isn't using PlaySfxLoc on myplr equal to just using PlaySFX?
 #ifndef SPAWN
 		} else if (plr[myplr]._pClass == PC_ROGUE) {
-			PlaySfxLoc(PS_ROGUE68, plr[myplr]._px, plr[myplr]._py);
+			PlaySfxLoc(PS_ROGUE68, plr[myplr]._px, plr[myplr]._py); // CODEFIX: isn't using PlaySfxLoc on myplr equal to just using PlaySFX?
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
-			PlaySfxLoc(PS_MAGE68, plr[myplr]._px, plr[myplr]._py);
+			PlaySfxLoc(PS_MAGE68, plr[myplr]._px, plr[myplr]._py); // CODEFIX: isn't using PlaySfxLoc on myplr equal to just using PlaySFX?
 #ifdef HELLFIRE
 		} else if (plr[myplr]._pClass == PC_MONK) {
-			PlaySfxLoc(PS_MONK68, plr[myplr]._px, plr[myplr]._py);
+			PlaySfxLoc(PS_MONK68, plr[myplr]._px, plr[myplr]._py); // CODEFIX: isn't using PlaySfxLoc on myplr equal to just using PlaySFX?
 		} else if (plr[myplr]._pClass == PC_BARD) {
-			PlaySfxLoc(PS_ROGUE68, plr[myplr]._px, plr[myplr]._py);
+			PlaySfxLoc(PS_ROGUE68, plr[myplr]._px, plr[myplr]._py); // CODEFIX: isn't using PlaySfxLoc on myplr equal to just using PlaySFX?
 		} else if (plr[myplr]._pClass == PC_BARBARIAN) {
-			PlaySfxLoc(PS_WARR68, plr[myplr]._px, plr[myplr]._py);
+			PlaySfxLoc(PS_WARR68, plr[myplr]._px, plr[myplr]._py); // CODEFIX: isn't using PlaySfxLoc on myplr equal to just using PlaySFX?
 #endif
 #endif
 		}
@@ -3319,31 +3319,31 @@ void OperateSlainHero(int pnum, int i, DIABOOL sendmsg)
 			if (plr[pnum]._pClass == PC_WARRIOR) {
 				CreateMagicArmor(object[i]._ox, object[i]._oy, ITYPE_HARMOR, ICURS_BREAST_PLATE, FALSE, TRUE);
 #ifndef SPAWN
-				PlaySfxLoc(PS_WARR9, plr[myplr]._px, plr[myplr]._py);
+				PlaySfxLoc(PS_WARR9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
 				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_BOW, ICURS_LONG_WAR_BOW, FALSE, TRUE);
 #ifndef SPAWN
-				PlaySfxLoc(PS_ROGUE9, plr[myplr]._px, plr[myplr]._py);
+				PlaySfxLoc(PS_ROGUE9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
 				CreateSpellBook(object[i]._ox, object[i]._oy, SPL_LIGHTNING, FALSE, TRUE);
 #ifndef SPAWN
-				PlaySfxLoc(PS_MAGE9, plr[myplr]._px, plr[myplr]._py);
+				PlaySfxLoc(PS_MAGE9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 #ifdef HELLFIRE
 			} else if (plr[pnum]._pClass == PC_MONK) {
 				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_STAFF, ICURS_WAR_STAFF, FALSE, TRUE);
-				PlaySfxLoc(PS_MONK9, plr[myplr]._px, plr[myplr]._py);
+				PlaySfxLoc(PS_MONK9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #ifndef SPAWN
 			} else if (plr[pnum]._pClass == PC_BARD) {
 				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_SWORD, ICURS_BASTARD_SWORD, FALSE, TRUE);
-				PlaySfxLoc(PS_ROGUE9, plr[myplr]._px, plr[myplr]._py);
+				PlaySfxLoc(PS_ROGUE9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 			} else if (plr[pnum]._pClass == PC_BARBARIAN) {
 				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_AXE, ICURS_BATTLE_AXE, FALSE, TRUE);
 #ifndef SPAWN
-				PlaySfxLoc(PS_WARR9, plr[myplr]._px, plr[myplr]._py);
+				PlaySfxLoc(PS_WARR9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 #endif
 			}
