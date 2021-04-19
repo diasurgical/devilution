@@ -2078,7 +2078,7 @@ static DWORD On_AWAKEGOLEM(TCmd *pCmd, int pnum)
 			int mi = missileactive[i];
 			if (missile[mi]._mitype == MIS_GOLEM && missile[mi]._misource == pnum) {
 				addGolem = FALSE;
-				// BUGFIX: break, don't need to check the rest
+				// CODEFIX: break, don't need to check the rest
 			}
 		}
 		if (addGolem)
