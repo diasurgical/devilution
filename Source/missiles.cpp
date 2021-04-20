@@ -3070,7 +3070,7 @@ void AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, i
 	missile[mi]._miVar2 = sy;
 	missile[mi]._miVar4 = dx;
 	missile[mi]._miVar5 = dy;
-	if ((monster[id]._mx != 1 || monster[id]._my) && id == myplr)
+	if ((monster[id]._mx != 1 || monster[id]._my != 0) && id == myplr)
 		M_StartKill(id, id);
 	UseMana(id, SPL_GOLEM);
 }
@@ -3690,7 +3690,7 @@ void MI_Golem(int i)
 	char *ct;
 
 	src = missile[i]._misource;
-	if (monster[src]._mx == 1 && !monster[src]._my) {
+	if (monster[src]._mx == 1 && monster[src]._my == 0) {
 		for (l = 0; l < 6; l++) {
 			k = CrawlNum[l];
 			tid = k + 2;
