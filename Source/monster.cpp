@@ -3420,7 +3420,7 @@ BOOL M_DoStone(int i)
 		app_fatal("M_DoStone: Invalid monster %d", i);
 #endif
 
-	if (!monster[i]._mhitpoints) {
+	if (monster[i]._mhitpoints == 0) {
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
 		monster[i]._mDelFlag = TRUE;
 	}
