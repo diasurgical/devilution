@@ -5413,6 +5413,7 @@ void MI_Apoca(int i)
 	exit = FALSE;
 	for (j = missile[i]._miVar2; j < missile[i]._miVar3 && !exit; j++) {
 		for (k = missile[i]._miVar4; k < missile[i]._miVar5 && !exit; k++) {
+			// BUGFIX: was `dMonster[k][j] > MAX_PLRS-1`, should be `dMonster[k][j]-1 >= MAX_PLRS`.
 			if (dMonster[k][j] > MAX_PLRS - 1 && !nSolidTable[dPiece[k][j]]) {
 #ifdef HELLFIRE
 				if (LineClear(missile[i]._mix, missile[i]._miy, k, j)) {
