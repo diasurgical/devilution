@@ -462,6 +462,7 @@ void PutMissile(int i)
 
 	x = missile[i]._mix;
 	y = missile[i]._miy;
+	// BUGFIX: should be `x < 0 || y < 0`, was `x <= 0 || y <= 0`.
 	if (x <= 0 || y <= 0 || x >= MAXDUNX || y >= MAXDUNY)
 		missile[i]._miDelFlag = TRUE;
 	if (!missile[i]._miDelFlag) {
