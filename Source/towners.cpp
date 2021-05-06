@@ -1055,7 +1055,8 @@ else if (t == GetActiveTowner(TOWN_WITCH))
 				InitQTextMsg(TEXT_MUSH12);
 				quests[Q_MUSHROOM]._qactive = QUEST_DONE;
 				towner[t]._tMsgSaid = TRUE;
-				AllItemsList[Item->IDidx].iUsable = TRUE; /// BUGFIX: This will cause the elixier to be usable in the next game
+				AllItemsList[Item->IDidx].iUsable = TRUE; /// BUGFIX: This will cause the elixir to be usable in the next game
+
 			} else if (PlrHasItem(p, IDI_BRAIN, i) != NULL && quests[Q_MUSHROOM]._qvar2 != TEXT_MUSH11) {
 				towner[t]._tbtcnt = 150;
 				towner[t]._tVar1 = p;
