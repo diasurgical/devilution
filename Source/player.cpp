@@ -671,7 +671,7 @@ void SetPlrAnims(int pnum)
 			plr[pnum]._pAFrames = 16;
 			plr[pnum]._pAFNum = 11;
 		} else if (gn == ANIM_ID_SWORD_SHIELD || gn == ANIM_ID_SWORD) {
-			plr[pnum]._pAFrames = 10;
+			plr[pnum]._pAFNum = 10;
 		}
 	} else if (pc == PC_BARBARIAN) {
 		if (gn == ANIM_ID_AXE) {
