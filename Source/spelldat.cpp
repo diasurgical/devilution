@@ -64,7 +64,7 @@ SpellData spelldata[] = {
 	{ SPL_REPAIR,        0, STYPE_MAGIC,     "Item Repair",        "Item Repair",    -1,        -1, FALSE,     TRUE,            -1, IS_CAST6, { MIS_REPAIR,        0,          0 },        0,        0,        40,        80,         0,          0 },
 	{ SPL_RECHARGE,      0, STYPE_MAGIC,     "Staff Recharge",     "Staff Recharge", -1,        -1, FALSE,     TRUE,            -1, IS_CAST6, { MIS_RECHARGE,      0,          0 },        0,        0,        40,        80,         0,          0 },
 	{ SPL_DISARM,        0, STYPE_MAGIC,     "Trap Disarm",        "Trap Disarm",    -1,        -1, FALSE,     FALSE,           -1, IS_CAST6, { MIS_DISARM,        0,          0 },        0,        0,        40,        80,         0,          0 },
-#ifndef HELLFIRE
+#ifndef SPAWN
 	{ SPL_ELEMENT,      35, STYPE_FIRE,      "Elemental",          NULL,              8,         6, FALSE,     FALSE,           68, IS_CAST2, { MIS_ELEMENT,       0,          0 },        2,       20,        20,        60,     10500,        700 },
 #else
 	{ SPL_ELEMENT,      35, STYPE_FIRE,      "Elemental",          NULL,             -1,        -1, FALSE,     FALSE,           68, IS_CAST2, { MIS_ELEMENT,       0,          0 },        2,       20,        20,        60,     10500,        700 },
