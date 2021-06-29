@@ -253,7 +253,7 @@ void LoadGame(BOOL firstflag)
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				dLight[i][j] = BLoad();
+				dLight[i][j] = BLoad(); // BUGFIX: dLight got loaded already
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
@@ -505,7 +505,7 @@ void SaveGame()
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				BSave(dLight[i][j]);
+				BSave(dLight[i][j]); // BUGFIX: dLight got saved already
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
