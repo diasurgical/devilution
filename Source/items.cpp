@@ -580,13 +580,13 @@ void AddInitItems()
 			GetItemAttrs(i, IDI_HEAL, curlv);
 		else
 			GetItemAttrs(i, IDI_MANA, curlv);
-		item[i]._iCreateInfo = curlv - CF_PREGEN;
+		item[i]._iCreateInfo = curlv + CF_PREGEN;
 #else
 		if (random_(12, 2) != 0)
 			GetItemAttrs(i, IDI_HEAL, currlevel);
 		else
 			GetItemAttrs(i, IDI_MANA, currlevel);
-		item[i]._iCreateInfo = currlevel - CF_PREGEN;
+		item[i]._iCreateInfo = currlevel + CF_PREGEN;
 #endif
 		SetupItem(i);
 		item[i]._iAnimFrame = item[i]._iAnimLen;
