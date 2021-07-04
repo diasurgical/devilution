@@ -4470,8 +4470,8 @@ void mi_fire_ring(int i)
 		lvl = currlevel;
 	dmg = 16 * (random_(53, 10) + random_(53, 10) + lvl + 2) >> 1;
 	for (j = CrawlTable[b]; j > 0; j--, k += 2) {
-		tx = missile[i]._miVar1 + CrawlTable[k - 1];
-		ty = missile[i]._miVar2 + CrawlTable[k];
+		tx = missile[i]._miVar1 + CrawlTable[k];
+		ty = missile[i]._miVar2 + CrawlTable[k + 1];
 		if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
 			dp = dPiece[tx][ty];
 			if (!nSolidTable[dp] && dObject[tx][ty] == 0) {
@@ -4501,8 +4501,8 @@ void mi_light_ring(int i)
 		lvl = currlevel;
 	dmg = 16 * (random_(53, 10) + random_(53, 10) + lvl + 2) >> 1;
 	for (j = CrawlTable[b]; j > 0; j--, k += 2) {
-		tx = missile[i]._miVar1 + CrawlTable[k - 1];
-		ty = missile[i]._miVar2 + CrawlTable[k];
+		tx = missile[i]._miVar1 + CrawlTable[k];
+		ty = missile[i]._miVar2 + CrawlTable[k + 1];
 		if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
 			dp = dPiece[tx][ty];
 			if (!nSolidTable[dp] && dObject[tx][ty] == 0) {
