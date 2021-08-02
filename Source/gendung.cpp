@@ -798,7 +798,7 @@ BOOL DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, in
 	xCount = 0;
 	yCount = 0;
 
-	// BUGFIX: change '&&' to '||'
+	// BUGFIX: incorrect out-of-bounds check, should check that `dungeon[xx][y + ii]` is not out-of-bounds in loop.
 	if (x > DMAXX - maxSize && y > DMAXY - maxSize) {
 		return FALSE;
 	}
