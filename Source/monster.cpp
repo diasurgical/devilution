@@ -5566,6 +5566,7 @@ void ProcessMonsters()
 				app_fatal("Illegal enemy monster %d for monster \"%s\"", _menemy, Monst->mName);
 #endif
 			}
+			// BUGFIX: enemy target may be dead at time of access, thus reading garbage data from `monster[Monst->_menemy]._mfutx`.
 			Monst->_lastx = monster[Monst->_menemy]._mfutx;
 			Monst->_menemyx = Monst->_lastx;
 			Monst->_lasty = monster[Monst->_menemy]._mfuty;
@@ -6254,6 +6255,7 @@ BOOL PosOkMonst(int i, int x, int y)
 	}
 
 	if (ret && dMissile[x][y] != 0 && i >= 0) {
+		// BUGFIX: case with multiple missiles being present on (x, y)-coordinate not handled.
 		mi = dMissile[x][y];
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
@@ -6343,6 +6345,7 @@ BOOL PosOkMonst2(int i, int x, int y)
 
 	if (ret && dMissile[x][y] != 0 && i >= 0) {
 		mi = dMissile[x][y];
+		// BUGFIX: case with multiple missiles being present on (x, y)-coordinate not handled.
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
 				fire = TRUE;
@@ -6409,6 +6412,7 @@ BOOL PosOkMonst3(int i, int x, int y)
 	}
 	if (ret && dMissile[x][y] != 0 && i >= 0) {
 		mi = dMissile[x][y];
+		// BUGFIX: case with multiple missiles being present on (x, y)-coordinate not handled.
 		if (mi > 0) {
 			if (missile[mi]._mitype == MIS_FIREWALL) { // BUGFIX: Change 'mi' to 'mi - 1'
 				fire = TRUE;
