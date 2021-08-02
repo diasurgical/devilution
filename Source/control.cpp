@@ -2618,6 +2618,7 @@ void DrawGoldSplit(int amount)
 		PrintGameStr(388, 140, tempstr, COL_WHITE);
 	}
 	if (amount > 0) {
+		// BUGFIX: loop condition should be `tempstr[i] != 0`, not `i < tempstr[i]`.
 		for (i = 0; i < tempstr[i]; i++) {
 			BYTE c = fontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
 			screen_x += fontkern[c] + 1;
