@@ -3735,6 +3735,7 @@ void MI_LArrow(int i)
 		rst = missiledata[missile[i]._mitype].mResist;
 		if (missile[i]._mitype == MIS_LARROW) {
 			if (p != -1) {
+				// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 				mind = plr[p]._pILMinDam;
 				maxd = plr[p]._pILMaxDam;
 			} else {
@@ -3746,6 +3747,7 @@ void MI_LArrow(int i)
 		}
 		if (missile[i]._mitype == MIS_FARROW) {
 			if (p != -1) {
+				// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 				mind = plr[p]._pIFMinDam;
 				maxd = plr[p]._pIFMaxDam;
 			} else {
@@ -3764,9 +3766,11 @@ void MI_LArrow(int i)
 
 		if (p != -1) {
 			if (missile[i]._micaster == TARGET_MONSTERS) {
+				// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 				mind = plr[p]._pIMinDam;
 				maxd = plr[p]._pIMaxDam;
 			} else {
+				// BUGFIX: damage of missile should be encoded in missile struct; monster can be dead before missile arrives.
 				mind = monster[p].mMinDamage;
 				maxd = monster[p].mMaxDamage;
 			}
@@ -3818,9 +3822,11 @@ void MI_Arrow(int i)
 	p = missile[i]._misource;
 	if (p != -1) {
 		if (missile[i]._micaster == TARGET_MONSTERS) {
+			// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 			mind = plr[p]._pIMinDam;
 			maxd = plr[p]._pIMaxDam;
 		} else {
+			// BUGFIX: damage of missile should be encoded in missile struct; monster can be dead before missile arrives.
 			mind = monster[p].mMinDamage;
 			maxd = monster[p].mMaxDamage;
 		}
@@ -3852,9 +3858,11 @@ void MI_Firebolt(int i)
 			if (missile[i]._micaster == TARGET_MONSTERS) {
 				switch (missile[i]._mitype) {
 				case MIS_FIREBOLT:
+					// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 					d = random_(75, 10) + (plr[p]._pMagic >> 3) + missile[i]._mispllvl + 1;
 					break;
 				case MIS_FLARE:
+					// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 					d = 3 * missile[i]._mispllvl - (plr[p]._pMagic >> 3) + (plr[p]._pMagic >> 1);
 					break;
 				case MIS_BONESPIRIT:
@@ -3862,6 +3870,7 @@ void MI_Firebolt(int i)
 					break;
 				}
 			} else {
+				// BUGFIX: damage of missile should be encoded in missile struct; monster can be dead before missile arrives.
 				d = monster[p].mMinDamage + random_(77, monster[p].mMaxDamage - monster[p].mMinDamage + 1);
 			}
 		} else {
@@ -4659,8 +4668,10 @@ void MI_Lightctrl(int i)
 	p = missile[i]._misource;
 	if (p != -1) {
 		if (missile[i]._micaster == TARGET_MONSTERS) {
+			// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 			dam = (random_(79, 2) + random_(79, plr[p]._pLevel) + 2) << 6;
 		} else {
+			// BUGFIX: damage of missile should be encoded in missile struct; monster can be dead before missile arrives.
 			dam = 2 * (monster[p].mMinDamage + random_(80, monster[p].mMaxDamage - monster[p].mMinDamage + 1));
 		}
 	} else {
@@ -5128,10 +5139,12 @@ void MI_Weapexp(int i)
 	missile[i]._mirange--;
 	id = missile[i]._misource;
 	if (missile[i]._miVar2 == 1) {
+		// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 		mind = plr[id]._pIFMinDam;
 		maxd = plr[id]._pIFMaxDam;
 		missiledata[missile[i]._mitype].mResist = MISR_FIRE;
 	} else {
+		// BUGFIX: damage of missile should be encoded in missile struct; player can be dead/have left the game before missile arrives.
 		mind = plr[id]._pILMinDam;
 		maxd = plr[id]._pILMaxDam;
 		missiledata[missile[i]._mitype].mResist = MISR_LIGHTNING;
