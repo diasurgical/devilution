@@ -4020,7 +4020,7 @@ void PrintItemPower(char plidx, ItemStruct *x)
 #else
 		if (x->_iSplLvlAdd == 2)
 			strcpy(tempstr, "spells are increased 2 levels");
-		if (x->_iSplLvlAdd < 1)
+		if (x->_iSplLvlAdd < 1) // BUGFIX: should be `x->_iSplLvlAdd == -1`, not `x->_iSplLvlAdd < 1`.
 #endif
 			strcpy(tempstr, "spells are decreased 1 level");
 #ifdef HELLFIRE
