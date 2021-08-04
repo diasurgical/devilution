@@ -39,6 +39,7 @@ const int snSFX[3][NUM_CLASSES] = {
 /* data */
 /** Specifies the animation frame sequence of a given NPC. */
 char AnimOrder[6][148] = {
+	// BUGFIX: was `15, 5, 1`, should be `15, 16, 1` in Griswold anim.
 	{ 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 	    14, 13, 12, 11, 10, 9, 8, 7, 6, 5,
 	    5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
