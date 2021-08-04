@@ -698,6 +698,13 @@ void Theme_Treasure(int t)
 					CreateRndItem(xp, yp, FALSE, FALSE, TRUE);
 					ItemNoFlippy();
 				}
+				// BUGFIX: the following code is likely not working as intended.
+				//
+				//    `rv == 0` has no effect.
+				//
+				//    `rv >= treasrnd[leveltype - 1] - 2` is not connected to either
+				//    of the item creation branches above, thus the last (unrelated)
+				//    item spawned/dropped on ground would be halved in value.
 				if (rv == 0 || rv >= treasrnd[leveltype - 1] - 2) {
 					i = ItemNoFlippy();
 					if (rv >= treasrnd[leveltype - 1] - 2 && leveltype != DTYPE_CATHEDRAL) {
