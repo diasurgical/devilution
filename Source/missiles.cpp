@@ -683,7 +683,7 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 			hper -= monster[m].mArmorClass;
 			hper -= (dist * dist) >> 1;
 #ifdef HELLFIRE
-			hper -= plr[pnum]._pIEnAc;
+			hper -= plr[pnum]._pIEnAc; // BUGFIX: armor piercing DECREASES hit chance here, probably a 1.04 bug that got fixed in 1.09, go with +=
 #endif
 #ifndef HELLFIRE
 			hper += plr[pnum]._pIEnAc;
