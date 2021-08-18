@@ -2056,7 +2056,7 @@ static DWORD On_KILLGOLEM(TCmd *pCmd, int pnum)
 	else if (pnum != myplr) {
 		if (currlevel == p->wParam1)
 			M_SyncStartKill(pnum, p->x, p->y, pnum);
-		delta_kill_monster(pnum, p->x, p->y, plr[pnum].plrlevel);
+		delta_kill_monster(pnum, p->x, p->y, plr[pnum].plrlevel); // BUGFIX: should be p->wParam1, plrlevel will be incorrect if golem is killed because player changed levels
 	}
 
 	return sizeof(*p);
