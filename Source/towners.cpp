@@ -1275,7 +1275,7 @@ else if (towner[t]._ttype == TOWN_FARMER)
 		case 3:
 			qt = TEXT_FARMER4;
 			SpawnRewardItem(IDI_AURIC, towner[t]._tx + 1, towner[t]._ty);
-			quests[Q_FARMER]._qactive = QUEST_INIT;
+			quests[Q_FARMER]._qactive = 10;
 			quests[Q_FARMER]._qlog = FALSE;
 			t2 = 1;
 			break;
