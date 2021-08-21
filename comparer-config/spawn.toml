@@ -618,7 +618,7 @@ addr = 0x408622
 size = 0x21
 
 [[func]]
-name = "SetDead"
+name = "SyncUniqDead"
 addr = 0x408643
 size = 0x77
 
