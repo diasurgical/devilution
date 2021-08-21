@@ -646,7 +646,7 @@ void LoadLevel()
 			for (i = 0; i < MAXDUNX; i++)
 				dDead[i][j] = BLoad();
 		}
-		SetDead();
+		SyncUniqDead();
 	}
 
 	nummonsters = WLoad();

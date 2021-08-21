@@ -11,6 +11,6 @@ extern int stonendx;
 
 void InitDead();
 void AddDead(int dx, int dy, char dv, int ddir);
-void SetDead();
+void SyncUniqDead();
 
 #endif /* __DEAD_H__ */
