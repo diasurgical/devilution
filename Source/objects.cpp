@@ -3919,6 +3919,7 @@ void OperateShrine(int pnum, int i, int sType)
 			yy = random_(159, MAXDUNY);
 			lv = dPiece[xx][yy];
 			j++;
+			// BUGFIX: should not cast phasing if still on bad tile after max amount of tries.
 			if (j > MAXDUNX * MAXDUNY)
 				break;
 		} while (nSolidTable[lv] || dObject[xx][yy] != 0 || dMonster[xx][yy] != 0);
