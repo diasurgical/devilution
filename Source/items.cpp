@@ -5998,6 +5998,7 @@ BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	for (i = 0; i < gnNumGetRecords; i++) {
 		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
+			// BUGFIX: loot actions for multiple quest items with same seed (e.g. blood stone) performed within less then 6 seconds will be ignored.
 			NextItemRecord(i);
 			i--;
 		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
