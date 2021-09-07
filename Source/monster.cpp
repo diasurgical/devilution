@@ -1264,10 +1264,11 @@ void SetMapMonsters(BYTE *pMap, int startx, int starty)
 	int mtype;
 
 	AddMonsterType(MT_GOLEM, PLACE_SPECIAL);
-	AddMonster(1, 0, 0, 0, FALSE);
-	AddMonster(1, 0, 0, 0, FALSE);
-	AddMonster(1, 0, 0, 0, FALSE);
-	AddMonster(1, 0, 0, 0, FALSE);
+	// See https://github.com/diasurgical/devilutionX/pull/2822
+	AddMonster(1, 0, 0, 0, FALSE); // BUGFIX: add only if setlevel is true
+	AddMonster(1, 0, 0, 0, FALSE); // BUGFIX: add only if setlevel is true
+	AddMonster(1, 0, 0, 0, FALSE); // BUGFIX: add only if setlevel is true
+	AddMonster(1, 0, 0, 0, FALSE); // BUGFIX: add only if setlevel is true
 	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
 		AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, PLACE_UNIQUE);
 		AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, PLACE_UNIQUE);
