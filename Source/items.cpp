@@ -5316,6 +5316,12 @@ void SpawnWitch(int lvl)
 		}
 	}
 #else
+	// BUGFIX: was `random_(51, 8) + 10`, should be `random_(51, 7) + 10`. The
+	// last entry in the witchitem array must have item type ITYPE_NONE
+	// (e.g. required by SortWitch, thus there may be at most 19 items
+	// generated. 3 items are always generated(mana, full mana and town portal),
+	// leaving at most 16 items. `random_(51, 8) + 10` gives a value in range
+	// from 10 to 17, inclusive. In other words, one too many.
 	iCnt = random_(51, 8) + 10;
 #endif
 
