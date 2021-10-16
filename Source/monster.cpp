@@ -4451,7 +4451,7 @@ void MAI_Scav(int i)
 		return;
 	if (Monst->_mhitpoints < (Monst->_mmaxhp >> 1) && Monst->_mgoal != MGOAL_HEALING) {
 		if (Monst->leaderflag != 0) {
-			monster[Monst->leader].packsize--;
+			monster[Monst->leader].packsize--; // BUGFIX Check Monst->leaderflag == 1, to not underflow packsize
 			Monst->leaderflag = 0;
 		}
 		Monst->_mgoal = MGOAL_HEALING;
