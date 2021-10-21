@@ -1,0 +1,23 @@
+name: macOS Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    
+
+jobs:
+  xcode:
+    runs-on: macos-11
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: brew install mingw-w64
+
+      - name: Build
+        run: make -j8
+
+      
