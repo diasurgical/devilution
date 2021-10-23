@@ -2664,6 +2664,9 @@ int RndItem(int m)
 			ril[ri] = i;
 			ri++;
 		}
+		// BUGFIX: ri decremented even for IDROP_NEVER, thus Scroll of Resurrect
+		// (IDI_RESURRECT) decrements ri, unintentionally removing gold drop in
+		// Single Player (gold drop is still valid in Multi Player).
 		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
 			ri--;
 		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
