@@ -706,7 +706,7 @@ void DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible)
 	int nCrawlX, nCrawlY, nLineLen, nTrans;
 	int j, k, v, x1adj, x2adj, y1adj, y2adj;
 
-	if (nXPos >= 0 && nXPos <= MAXDUNX && nYPos >= 0 && nYPos <= MAXDUNY) {
+	if (nXPos >= 0 && nXPos <= MAXDUNX && nYPos >= 0 && nYPos <= MAXDUNY) { // BUGFIX < MAXDUNX/MAXDUNY or OOB
 		if (doautomap) {
 			if (dFlags[nXPos][nYPos] >= 0) {
 				SetAutomapView(nXPos, nXPos); // BUGFIX - second argument should be nYPos
