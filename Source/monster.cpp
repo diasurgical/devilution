@@ -4206,6 +4206,7 @@ void MAI_Fallen(int i)
 			for (x = -rad; x <= rad; x++) {
 				xpos = Monst->_mx + x;
 				ypos = Monst->_my + y;
+				// BUGFIX: should check `xpos` and `ypos` for out-of-bounds, was checking `x` and `y`.
 				if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 					m = dMonster[xpos][ypos];
 					if (m > 0) {
