@@ -1588,14 +1588,14 @@ BOOL ItemSpaceOk(int i, int j)
 			return FALSE;
 	}
 
-	if (dObject[i + 1][j + 1] > 0 && object[dObject[i + 1][j + 1] - 1]._oSelFlag != 0)
+	if (dObject[i + 1][j + 1] > 0 && object[dObject[i + 1][j + 1] - 1]._oSelFlag != 0) /// BUGFIX: check for dObject OOB
 		return FALSE;
 
-	if (dObject[i + 1][j + 1] < 0 && object[-(dObject[i + 1][j + 1] + 1)]._oSelFlag != 0)
+	if (dObject[i + 1][j + 1] < 0 && object[-(dObject[i + 1][j + 1] + 1)]._oSelFlag != 0) /// BUGFIX: check for dObject OOB
 		return FALSE;
 
-	if (dObject[i + 1][j] > 0
-	    && dObject[i][j + 1] > 0
+	if (dObject[i + 1][j] > 0 /// BUGFIX: check for dObject OOB
+	    && dObject[i][j + 1] > 0 /// BUGFIX: check for dObject OOB
 	    && object[dObject[i + 1][j] - 1]._oSelFlag != 0
 	    && object[dObject[i][j + 1] - 1]._oSelFlag != 0) {
 		return FALSE;
