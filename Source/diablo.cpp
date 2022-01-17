@@ -1520,6 +1520,7 @@ static void PressChar(WPARAM vkey)
 		if (debug_mode_key_inverted_v) {
 			sprintf(tempstr, "PX = %i  PY = %i", plr[myplr]._px, plr[myplr]._py);
 			NetSendCmdString(1 << myplr, tempstr);
+			// BUGFIX: out-of-bounds access to dungeon; should be `dungeon[(cursmx-16)/2][(cursmy-16)/2]`, was `dungeon[cursmx][cursmy]`.
 			sprintf(tempstr, "CX = %i  CY = %i  DP = %i", cursmx, cursmy, dungeon[cursmx][cursmy]);
 			NetSendCmdString(1 << myplr, tempstr);
 		}
