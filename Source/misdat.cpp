@@ -8,7 +8,7 @@
 /** Data related to each missile ID. */
 MissileData missiledata[] = {
 	// clang-format off
-	// mName,             mAddProc,                   mProc,              mDraw, mType, mResist,        mFileNum,        miSFX,       mlSFX;
+	// mName,             mAddProc,                   mProc,              mDraw, mType, mResist,        mFileNum,        mlSFX,       miSFX;
 	{  MIS_ARROW,         &AddArrow,                  &MI_Arrow,          TRUE,      0, MISR_NONE,      MFILE_ARROWS,    -1,          -1          },
 	{  MIS_FIREBOLT,      &AddFirebolt,               &MI_Firebolt,       TRUE,      1, MISR_FIRE,      MFILE_FIREBA,    LS_FBOLT1,   LS_FIRIMP2  },
 	{  MIS_GUARDIAN,      &AddGuardian,               &MI_Guardian,       TRUE,      1, MISR_NONE,      MFILE_GUARD,     LS_GUARD,    LS_GUARDLAN },
