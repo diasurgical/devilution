@@ -75,6 +75,9 @@ void GetDamageAmt(int i, int *mind, int *maxd)
 		*mind = -1;
 		*maxd = -1;
 		break;
+#ifdef HELLFIRE
+	case SPL_RUNELIGHT:
+#endif
 	case SPL_LIGHTNING:
 		*mind = 2;
 		*maxd = plr[myplr]._pLevel + 2;
