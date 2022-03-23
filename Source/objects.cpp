@@ -1438,6 +1438,12 @@ void AddShrine(int i)
 #else
 	int j;
 #endif
+
+	// BUGFIX: the seed of shrine objects (object[i]._oRndSeed) was never
+	// initialized. This lead to undefined behaviour, as the shrine object would
+	// use whatever value was present in memory (often the seed of an object with
+	// the same object index of a previous dungeon level).
+
 	object[i]._oPreFlag = TRUE;
 	for (j = 0; j < NUM_SHRINETYPE; j++) {
 		if (currlevel < shrinemin[j] || currlevel > shrinemax[j]) {
