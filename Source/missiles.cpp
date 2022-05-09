@@ -1323,12 +1323,12 @@ void SetMissAnim(int mi, int animtype)
 	int dir = missile[mi]._mimfnum;
 
 	missile[mi]._miAnimType = animtype;
-	missile[mi]._miAnimFlags = misfiledata[animtype].mFlags;
-	missile[mi]._miAnimData = misfiledata[animtype].mAnimData[dir];
-	missile[mi]._miAnimDelay = misfiledata[animtype].mAnimDelay[dir];
-	missile[mi]._miAnimLen = misfiledata[animtype].mAnimLen[dir];
-	missile[mi]._miAnimWidth = misfiledata[animtype].mAnimWidth[dir];
-	missile[mi]._miAnimWidth2 = misfiledata[animtype].mAnimWidth2[dir];
+	missile[mi]._miAnimFlags = misfiledata[animtype].mFlags;            // BUGFIX: buffer overflow for MFILE_NONE (255).
+	missile[mi]._miAnimData = misfiledata[animtype].mAnimData[dir];     // BUGFIX: buffer overflow for MFILE_NONE (255).
+	missile[mi]._miAnimDelay = misfiledata[animtype].mAnimDelay[dir];   // BUGFIX: buffer overflow for MFILE_NONE (255).
+	missile[mi]._miAnimLen = misfiledata[animtype].mAnimLen[dir];       // BUGFIX: buffer overflow for MFILE_NONE (255).
+	missile[mi]._miAnimWidth = misfiledata[animtype].mAnimWidth[dir];   // BUGFIX: buffer overflow for MFILE_NONE (255).
+	missile[mi]._miAnimWidth2 = misfiledata[animtype].mAnimWidth2[dir]; // BUGFIX: buffer overflow for MFILE_NONE (255).
 	missile[mi]._miAnimCnt = 0;
 	missile[mi]._miAnimFrame = 1;
 }
