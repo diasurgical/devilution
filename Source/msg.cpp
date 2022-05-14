@@ -461,6 +461,7 @@ void delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
 	DMonsterStr *pD = &sgLevels[bLevel].monster[mi];
 	pD->_mx = x;
 	pD->_my = y;
+	// BUGFIX: should only sync monster direction if bLevel is same as currlevel.
 	pD->_mdir = monster[mi]._mdir;
 	pD->_mhitpoints = 0;
 }
