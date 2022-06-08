@@ -2020,7 +2020,7 @@ void drlg_l1_crypt_rndset(const BYTE *miniset, int rndper)
 					if (miniset[ii] != 0 && dungeon[xx + sx][yy + sy] != miniset[ii]) {
 						found = FALSE;
 					}
-					if (dflags[xx + sx][yy + sy] != 0) {
+					if (dflags[xx + sx][yy + sy] != 0) { // BUGFIX: Should be L5dflags or it will always be false
 						found = FALSE;
 					}
 					ii++;
@@ -2586,7 +2586,7 @@ static void DRLG_L5CornerFix()
 		for (i = 1; i < DMAXX - 1; i++) {
 			if (!(L5dflags[i][j] & DLRG_PROTECTED) && dungeon[i][j] == 17 && dungeon[i - 1][j] == 13 && dungeon[i][j - 1] == 1) {
 				dungeon[i][j] = 16;
-				L5dflags[i][j - 1] &= DLRG_PROTECTED;
+				L5dflags[i][j - 1] &= DLRG_PROTECTED; // BUGFIX: Should be |= or it will clear all flags
 			}
 			if (dungeon[i][j] == 202 && dungeon[i + 1][j] == 13 && dungeon[i][j + 1] == 1) {
 				dungeon[i][j] = 8;
