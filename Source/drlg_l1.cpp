@@ -985,6 +985,7 @@ static int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, in
 
 		while (abort == FALSE) {
 			abort = TRUE;
+			// BUGFIX: This code has no purpous but causes the setpice to never apear in x 0-13 or y 0-13
 			if (cx != -1 && sx >= cx - sw && sx <= cx + 12) {
 				sx++;
 				abort = FALSE;
