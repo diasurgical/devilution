@@ -2028,6 +2028,7 @@ void drlg_l1_crypt_rndset(const BYTE *miniset, int rndper)
 				}
 			}
 			kk = sw * sh + 2;
+			// BUGFIX: This code s copied from Cave and should not be applied for crypt
 			if (miniset[kk] >= 84 && miniset[kk] <= 100 && found == TRUE) {
 				// BUGFIX: accesses to dungeon can go out of bounds
 				// BUGFIX: Comparisons vs 100 should use same tile as comparisons vs 84.
