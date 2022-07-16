@@ -813,7 +813,7 @@ BOOL DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, in
 		if (xFlag) {
 			for (xx = x; xx < x + maxSize; xx++) {
 				if (dungeon[xx][y + ii] != floor) {
-					if (xx >= minSize) { // BUGFIX: This is comparing absolue to relative, should be `xx - x >= minSize`
+					if (xx >= minSize) { // BUGFIX: This is comparing absolute to relative, should be `xx - x >= minSize`
 						break;
 					}
 					xFlag = FALSE;
@@ -829,7 +829,7 @@ BOOL DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, in
 		if (yFlag) {
 			for (yy = y; yy < y + maxSize; yy++) {
 				if (dungeon[x + ii][yy] != floor) {
-					if (yy >= minSize) { // BUGFIX: This is comparing absolue to relative, should be `yy - y >= minSize`
+					if (yy >= minSize) { // BUGFIX: This is comparing absolute to relative, should be `yy - y >= minSize`
 						break;
 					}
 					yFlag = FALSE;
