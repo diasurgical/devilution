@@ -1766,7 +1766,7 @@ static void DRLG_L2Subs()
 
 	for (y = 0; y < DMAXY; y++) {
 		for (x = 0; x < DMAXX; x++) {
-			if ((x < nSx1 || x > nSx2) && (y < nSy1 || y > nSy2) && random_(0, 4) == 0) {
+			if ((x < nSx1 || x > nSx2) && (y < nSy1 || y > nSy2) && random_(0, 4) == 0) { // BUGFIX: Should be (x < nSx1 || x > nSx2 || y < nSy1 || y >= nSy2)
 				c = BTYPESL2[dungeon[x][y]];
 				if (c != 0) {
 					rv = random_(0, 16);

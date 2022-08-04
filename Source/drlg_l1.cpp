@@ -985,6 +985,7 @@ static int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, in
 
 		while (abort == FALSE) {
 			abort = TRUE;
+			// BUGFIX: This code has no purpose but causes the set piece to never appear in x 0-13 or y 0-13
 			if (cx != -1 && sx >= cx - sw && sx <= cx + 12) {
 				sx++;
 				abort = FALSE;
@@ -2020,13 +2021,14 @@ void drlg_l1_crypt_rndset(const BYTE *miniset, int rndper)
 					if (miniset[ii] != 0 && dungeon[xx + sx][yy + sy] != miniset[ii]) {
 						found = FALSE;
 					}
-					if (dflags[xx + sx][yy + sy] != 0) {
+					if (dflags[xx + sx][yy + sy] != 0) { // BUGFIX: Should be L5dflags or it will always be false
 						found = FALSE;
 					}
 					ii++;
 				}
 			}
 			kk = sw * sh + 2;
+			// BUGFIX: This code is copied from Cave and should not be applied for crypt
 			if (miniset[kk] >= 84 && miniset[kk] <= 100 && found == TRUE) {
 				// BUGFIX: accesses to dungeon can go out of bounds
 				// BUGFIX: Comparisons vs 100 should use same tile as comparisons vs 84.
@@ -2586,7 +2588,7 @@ static void DRLG_L5CornerFix()
 		for (i = 1; i < DMAXX - 1; i++) {
 			if (!(L5dflags[i][j] & DLRG_PROTECTED) && dungeon[i][j] == 17 && dungeon[i - 1][j] == 13 && dungeon[i][j - 1] == 1) {
 				dungeon[i][j] = 16;
-				L5dflags[i][j - 1] &= DLRG_PROTECTED;
+				L5dflags[i][j - 1] &= DLRG_PROTECTED; // BUGFIX: Should be |= or it will clear all flags
 			}
 			if (dungeon[i][j] == 202 && dungeon[i + 1][j] == 13 && dungeon[i][j + 1] == 1) {
 				dungeon[i][j] = 8;
