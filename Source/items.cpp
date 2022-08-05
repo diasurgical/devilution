@@ -2962,6 +2962,7 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, BOOL onlygood,
 void SpawnItem(int m, int x, int y, BOOL sendmsg)
 {
 	int ii, idx;
+	// BUGFIX: onlygood may be used uninitialized in call to SetupAllItems.
 	BOOL onlygood;
 
 	if (monster[m]._uniqtype || ((monster[m].MData->mTreasure & 0x8000) && gbMaxPlayers != 1)) {
