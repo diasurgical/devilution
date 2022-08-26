@@ -115,7 +115,7 @@ And a special thanks to all the support and people who work on this project to m
 [From the beginning until release](docs/CHANGELOG.md)
 
 # Legal
-Devilution is made publicly available and released under the Sustainable Use License (see [LICENCE](LICENCE.md))
+Devilution is made publicly available and released under the Sustainable Use License (see [LICENSE](LICENSE.md))
 
 The source code in this repository is for non-commerical use only. If you use the source code you may not charge others for access to it or any derivative work thereof.
 
