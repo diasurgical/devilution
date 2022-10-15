@@ -5797,6 +5797,7 @@ void MI_Element(int i)
 		if (missile[i]._miVar3 == 1) {
 			missile[i]._miVar3 = 2;
 			missile[i]._mirange = 255;
+			// BUGFIX: should be `mid >= 0`, was `mid > 0`; FindClosest returns -1 if no monster is found.
 			mid = FindClosest(cx, cy, 19);
 			if (mid > 0) {
 				sd = GetDirection8(cx, cy, monster[mid]._mx, monster[mid]._my);
@@ -5849,6 +5850,7 @@ void MI_Bonespirit(int i)
 		if (missile[i]._miVar3 == 1) {
 			missile[i]._miVar3 = 2;
 			missile[i]._mirange = 255;
+			// BUGFIX: should be `mid >= 0`, was `mid > 0`; FindClosest returns -1 if no monster is found.
 			mid = FindClosest(cx, cy, 19);
 			if (mid > 0) {
 				missile[i]._midam = monster[mid]._mhitpoints >> 7;
