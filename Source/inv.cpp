@@ -1634,6 +1634,7 @@ void CheckInvCut(int pnum, int mx, int my)
 		if (pnum == myplr) {
 			PlaySFX(IS_IGRAB);
 			SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			// BUGFIX: should be `my - (cursH >> 1)`, was `MouseY - (cursH >> 1)`.
 			SetCursorPos(mx - (cursW >> 1), MouseY - (cursH >> 1));
 		}
 	}
