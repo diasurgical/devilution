@@ -656,6 +656,7 @@ void ClrAllMonsters()
 		Monst->_mFlags = 0;
 		Monst->_mDelFlag = FALSE;
 		Monst->_menemy = random_(89, gbActivePlayers);
+		// BUGFIX: `Monst->_menemy` may be referencing a player who already left the game, thus reading garbage data from `plr[Monst->_menemy]._pfutx`.
 		Monst->_menemyx = plr[Monst->_menemy]._pfutx;
 		Monst->_menemyy = plr[Monst->_menemy]._pfuty;
 	}
