@@ -1971,6 +1971,13 @@ void LoadGameLevel(BOOL firstflag, int lvldir)
 		LoadSetMap();
 		IncProgress();
 		GetLevelMTypes();
+
+		// BUGFIX: must invoke FillSolidBlockTbls prior to invoking InitMonsters,
+		// as placement of unique monsters in set levels require initialization
+		// of nSolidTable. In particular, InitMonsters -> PlaceQuestMonsters ->
+		// PlaceUniqueMonst -> MonstPlace -> SolidLoc, which requires nSolidTable
+		// to be initialized.
+
 		InitMonsters();
 		InitMissileGFX();
 		InitDead();
