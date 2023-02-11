@@ -731,6 +731,7 @@ void DeltaLoadLevel()
 		for (i = 0; i < nummonsters; i++) {
 			if (sgLevels[currlevel].monster[i]._mx != 0xFF) {
 				M_ClearSquares(i);
+				// BUGFIX: should use `monster[monstactive[i]]`, `not monster[i]`.
 				monster[i]._mx = sgLevels[currlevel].monster[i]._mx;
 				monster[i]._my = sgLevels[currlevel].monster[i]._my;
 				monster[i]._moldx = monster[i]._mx;
