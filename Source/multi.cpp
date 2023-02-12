@@ -229,6 +229,7 @@ static void multi_mon_seeds()
 
 	sgdwGameLoops++;
 	l = _rotr(sgdwGameLoops, 8);
+	// BUGFIX: the monster AI seed is updated each logic tick for all monsters, even dead or non-existent ones.
 	for (i = 0; i < MAXMONSTERS; i++)
 		monster[i]._mAISeed = l + i;
 }
