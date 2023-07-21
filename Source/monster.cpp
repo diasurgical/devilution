@@ -2382,7 +2382,7 @@ BOOL M_DoStand(int i)
 	if (Monst->_mAnimFrame == Monst->_mAnimLen)
 		M_Enemy(i);
 
-	Monst->_mVar2++;
+	Monst->_mVar2++; // BUGFIX: Should have a bound check as this will overflow if a player stays on same level for over 3 years.
 
 	return FALSE;
 }
