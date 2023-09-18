@@ -64,11 +64,11 @@ extern int debug_mode_key_i;
 extern int dbgplr;
 extern int dbgqst;
 extern int dbgmon;
+#endif
 extern int frameflag;
-extern int frameend;
+extern int frames;
 extern int framerate;
 extern int framestart;
-#endif
 extern BOOL FriendlyMode;
 
 #endif /* __DIABLO_H__ */

@@ -77,11 +77,11 @@ int dbgplr;
 int dbgqst;
 int dbgmon;
 int arrowdebug;
+#endif
 int frameflag;
-int frameend;
+int frames;
 int framerate;
 int framestart;
-#endif
 /** Specifies whether players are in non-PvP mode. */
 BOOL FriendlyMode = TRUE;
 /** Default quick messages */
@@ -381,12 +381,11 @@ static void run_game_loop(unsigned int uMsg)
 			bLoop = gbRunGame && nthread_has_500ms_passed(FALSE);
 			SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 			if (!bLoop) {
+				DrawAndBlit();
 				continue;
 			}
 		} else if (!nthread_has_500ms_passed(FALSE)) {
-#ifdef SLEEPFIX
-			Sleep(1);
-#endif
+			DrawAndBlit();
 			continue;
 		}
 		multi_process_network_packets();
@@ -1291,8 +1290,8 @@ static void PressChar(WPARAM vkey)
 		return;
 	case 'F':
 	case 'f':
-		IncreaseGamma();
-		return;
+		EnableFrameCount();
+		break;
 	case 'I':
 	case 'i':
 		if (stextflag == STORE_NONE) {

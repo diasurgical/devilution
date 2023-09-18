@@ -365,9 +365,6 @@ static void init_get_file_info()
 static void init_archives()
 {
 	HANDLE fh;
-#ifdef COPYPROT
-	int result;
-#endif
 	memset(&fileinfo, 0, sizeof(fileinfo));
 	fileinfo.size = sizeof(fileinfo);
 	fileinfo.versionstring = gszVersionNumber;
@@ -375,25 +372,10 @@ static void init_archives()
 	fileinfo.originalarchivefile = diabdat_mpq_path;
 	fileinfo.patcharchivefile = patch_rt_mpq_path;
 	init_get_file_info();
-#ifdef COPYPROT
-	while (1) {
-#endif
 #ifdef SPAWN
 		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\spawn.mpq", "DiabloSpawn", 1000, FS_PC);
 #else
-#ifdef COPYPROT
-	diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
-#else
 	diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_PC);
-#endif
-#endif
-#ifdef COPYPROT
-		if (diabdat_mpq != NULL)
-			break;
-		UiCopyProtError(&result);
-		if (result == COPYPROT_CANCEL)
-			FileErrDlg("diabdat.mpq");
-	}
 #endif
 	if (!WOpenFile("ui_art\\title.pcx", &fh, TRUE))
 #ifdef SPAWN

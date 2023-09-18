@@ -2542,6 +2542,36 @@ static void DrawZoom(int x, int y)
 }
 
 /**
+ * @brief Display the current average FPS over 1 sec
+ */
+static void DrawFPS()
+{
+	DWORD tc, frameend;
+	char String[15];
+	HDC hdc;
+
+	if (frameflag) {
+		const int FpsPow10 = 10;
+		frames++;
+		tc = GetTickCount();
+		frameend = tc - framestart;
+		if (tc - framestart >= 1000) {
+			framestart = tc;
+			framerate = 1000 * FpsPow10 * frames / frameend;
+			frames = 0;
+		}
+
+		if (framerate >= 100 * FpsPow10) {
+			wsprintf(String, "%d FPS", framerate / FpsPow10);
+		} else {
+			wsprintf(String, "%d.%d FPS", framerate / FpsPow10, framerate % FpsPow10);
+		}
+		
+		PrintGameStr(8, 65, String, COL_RED);
+	}
+}
+
+/**
  * @brief Start rendering of screen, town variation
  * @param StartX Center of view in dPiece coordinate
  * @param StartY Center of view in dPiece coordinate
@@ -2720,6 +2750,7 @@ void ScrollView()
 	if (scroll)
 		ScrollInfo._sdir = SDIR_NONE;
 }
+#endif
 
 /**
  * @brief Initialize the FPS meter
@@ -2729,35 +2760,6 @@ void EnableFrameCount()
 	frameflag = frameflag == 0;
 	framestart = GetTickCount();
 }
-
-/**
- * @brief Display the current average FPS over 1 sec
- */
-static void DrawFPS()
-{
-	DWORD tc, frames;
-	char String[12];
-	HDC hdc;
-
-	if (frameflag && gbActive) {
-		frameend++;
-		tc = GetTickCount();
-		frames = tc - framestart;
-		if (tc - framestart >= 1000) {
-			framestart = tc;
-			framerate = 1000 * frameend / frames;
-			frameend = 0;
-		}
-		if (framerate > 99)
-			framerate = 99;
-		wsprintf(String, "%2d", framerate);
-		if (!lpDDSPrimary->GetDC(&hdc)) {
-			TextOut(hdc, 0, 400, String, strlen(String));
-			lpDDSPrimary->ReleaseDC(hdc);
-		}
-	}
-}
-#endif
 
 /**
  * @brief Update part of the screen from the back buffer
@@ -2966,10 +2968,6 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 			DDErrMsg(hDDVal, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
 		}
 	}
-
-#ifdef _DEBUG
-	DrawFPS();
-#endif
 }
 
 /**
@@ -3010,10 +3008,6 @@ void DrawAndBlit()
 	int hgt;
 	BOOL ddsdesc, ctrlPan;
 
-	if (!gbRunGame) {
-		return;
-	}
-
 	if (force_redraw == 255) {
 		drawhpflag = TRUE;
 		drawmanaflag = TRUE;
@@ -3026,8 +3020,6 @@ void DrawAndBlit()
 		ddsdesc = TRUE;
 		ctrlPan = FALSE;
 		hgt = VIEWPORT_HEIGHT;
-	} else {
-		return;
 	}
 
 	force_redraw = 0;
@@ -3038,6 +3030,7 @@ void DrawAndBlit()
 	} else {
 		T_DrawView(ViewX, ViewY);
 	}
+	DrawFPS();
 	if (ctrlPan) {
 		DrawCtrlPan();
 	}
