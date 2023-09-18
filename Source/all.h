@@ -88,4 +88,22 @@ extern "C" {
 }
 #endif
 
+typedef struct TimingInfo {
+	char name[32];
+	double ms;
+	int count;
+} TimingInfo;
+
+extern TimingInfo timings[50];
+
+class FunctionProfiler {
+public:
+    FunctionProfiler(const char *name);
+    ~FunctionProfiler();
+private:
+	char _name[32];
+	unsigned __int64 _frequency;
+	unsigned __int64 _start;
+};
+
 #endif /* __ALL_H__ */

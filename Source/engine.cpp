@@ -192,6 +192,7 @@ void CelBlit(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
  */
 void CelDraw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataSize;
 	BYTE *pRLEBytes;
 
@@ -215,6 +216,7 @@ void CelDraw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
  */
 void CelBlitFrame(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataSize;
 	BYTE *pRLEBytes;
 
@@ -241,6 +243,7 @@ void CelBlitFrame(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
  */
 void CelClippedDraw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 	int nDataStart, nDataSize, nDataCap;
@@ -287,6 +290,7 @@ void CelClippedDraw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Ce
  */
 void CelClippedBlit(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 	int nDataStart, nDataSize, nDataCap;
@@ -682,6 +686,7 @@ void CelBlitLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWid
  */
 void CelDrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataSize;
 	BYTE *pDecodeTo, *pRLEBytes;
 
@@ -713,6 +718,7 @@ void CelDrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
  */
 void CelClippedDrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
@@ -761,6 +767,7 @@ void CelClippedDrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
  */
 void CelClippedBlitLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
@@ -1055,6 +1062,7 @@ void CelBlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
  */
 void CelClippedDrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 	int nDataStart, nDataSize, nDataCap;
@@ -1101,6 +1109,7 @@ void CelClippedDrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
  */
 void CelClippedBlitSafe(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 	int nDataStart, nDataSize, nDataCap;
@@ -1527,6 +1536,7 @@ void CelBlitLightTransSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int 
  */
 void CelDrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
@@ -1575,6 +1585,7 @@ void CelDrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int 
  */
 void CelClippedBlitLightTransSafe(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, nDataCap;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
@@ -2692,6 +2703,8 @@ DWORD LoadFileWithMem(const char *pszName, BYTE *p)
  */
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 {
+	
+		FunctionProfiler profiler("ClxApplyTrans");
 	int i, nDataSize;
 	char width;
 	BYTE *dst;
@@ -3730,6 +3743,7 @@ static void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, in
  */
 void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 	int nDataStart, nDataSize;
@@ -3778,6 +3792,7 @@ void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, 
  */
 void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+		//FunctionProfiler profiler("RenderClxOutline");
 	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
@@ -3827,6 +3842,7 @@ void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
  */
 void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, idx, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
@@ -3885,6 +3901,7 @@ void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
  */
 void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
@@ -3935,6 +3952,7 @@ void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelS
  */
 void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 	int nDataStart, nDataSize;
@@ -3983,6 +4001,7 @@ void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSk
  */
 void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+		//FunctionProfiler profiler("RenderClxOutline");
 	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
@@ -4034,6 +4053,7 @@ void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
  */
 void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, idx, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
@@ -4092,6 +4112,7 @@ void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
  */
 void Cl2DrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DoRenderBackwards");
 	int nDataStart, nDataSize, nSize;
 	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;

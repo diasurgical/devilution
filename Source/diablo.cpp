@@ -94,6 +94,54 @@ const char *const spszMsgTbl[4] = {
 /** INI files variable names for quick message keys */
 const char *const spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
+TimingInfo timings[50];
+
+FunctionProfiler::FunctionProfiler(const char *name)
+{
+	strncpy(_name, name, 31);
+
+	LARGE_INTEGER frequency;
+	if (QueryPerformanceFrequency(&frequency)) {
+		_frequency = frequency.QuadPart;
+	} else {
+		_frequency = 1000;
+	}
+
+	LARGE_INTEGER ticks;
+	if (QueryPerformanceCounter(&ticks)) {
+		_start = ticks.QuadPart;
+	} else {
+		_start = GetTickCount() * _frequency / 1000;
+	}
+}
+
+FunctionProfiler::~FunctionProfiler()
+{
+	LARGE_INTEGER ticks;
+	__int64 now;
+	if (QueryPerformanceCounter(&ticks)) {
+		now = ticks.QuadPart;
+	} else {
+		now = GetTickCount() * _frequency / 1000;
+	}
+	double ms = (double)(now - _start) * 1000.0 / (double)_frequency;
+
+	int index = 0;
+	for (; index < 50; index++) {
+		if (strlen(timings[index].name) == 0) {
+			memcpy(timings[index].name, _name, 32);
+			break;
+		}
+		if (strcmp(timings[index].name, _name) == 0)
+			break;
+	}
+	if (index == 50)
+		return;
+
+	timings[index].ms += ms;
+	timings[index].count++;
+}
+
 static void diablo_parse_flags(char *args)
 {
 	char c;
@@ -189,12 +237,12 @@ static void diablo_parse_flags(char *args)
 		case 'j':
 			/*
 			while(isspace(*args)) {
-				args++;
+			    args++;
 			}
 			i = 0;
 			while(isdigit(*args)) {
-				i = *args + 10 * i - '0';
-				args++;
+			    i = *args + 10 * i - '0';
+			    args++;
 			}
 			debug_mode_key_J_trigger = i;
 		*/
@@ -365,6 +413,7 @@ static void run_game_loop(unsigned int uMsg)
 	gbGameLoopStartup = TRUE;
 	nthread_ignore_mutex(FALSE);
 
+	FunctionProfiler profiler("RunGameLoop");
 	while (gbRunGame) {
 		diablo_color_cyc_logic();
 		if (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
@@ -716,6 +765,28 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	mainmenu_loop();
 	UiDestroy();
 	SaveGamma();
+
+	for (int i = 0; i < 50; i++) {
+		for (int j = i + 1; j < 50; j++) {
+			if (timings[i].ms < timings[j].ms) {
+				TimingInfo temp = timings[i];
+				timings[i] = timings[j];
+				timings[j] = temp;
+			}
+		}
+	}
+
+	FILE *sgpHistFile = fopen("c:\\profile.txt", "wb");
+	if (sgpHistFile != NULL) {
+		fprintf(sgpHistFile, "Hi!\r\n");
+		for (int k = 0; k < 50; k++) {
+			if (strlen(timings[k].name) == 0)
+				break;
+			fprintf(sgpHistFile, "%s: %dms (%d calls)\r\n", timings[k].name, (int)timings[k].ms, timings[k].count);
+		}
+		fprintf(sgpHistFile, "\r\n");
+		fflush(sgpHistFile);
+	}
 
 	if (ghMainWnd) {
 		Sleep(300);
@@ -2135,6 +2206,7 @@ static void timeout_cursor(BOOL bTimeout)
  */
 void game_loop(BOOL bStartup)
 {
+	FunctionProfiler profiler("game_loop");
 	int i;
 
 	i = bStartup ? 60 : 3;

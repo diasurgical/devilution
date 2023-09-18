@@ -250,9 +250,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 133, 59 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 133, 59 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -298,9 +300,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 48, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 48, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -346,9 +350,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 249, 205 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 249, 205 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -394,9 +400,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 205, 60 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 205, 60 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -445,9 +453,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -524,9 +534,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(screen_x, screen_y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(screen_x, screen_y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -572,9 +584,11 @@ void DrawInv()
 #ifdef HELLFIRE
 			if (frame <= 179) {
 #endif
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 133, 160 + SCREEN_Y, pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRed(RIGHT_PANEL_X + 133, 160 + SCREEN_Y, pCursCels2, frame - 179, frame_width, 0, 8, 1);
 			}
 #endif
@@ -648,12 +662,14 @@ void DrawInv()
 #ifdef HELLFIRE
 				if (frame <= 179) {
 #endif
+	///FunctionProfiler profiler("DoRenderBackwards");
 					CelDrawLightRed(
 					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
 					    pCursCels, frame, frame_width, 0, 8, 1);
 #ifdef HELLFIRE
 				} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 					CelDrawLightRed(
 					    InvRect[j + SLOTXY_INV_FIRST].X + SCREEN_X,
 					    InvRect[j + SLOTXY_INV_FIRST].Y + SCREEN_Y - 1,
@@ -711,7 +727,7 @@ void DrawInvBelt()
 				CelClippedDraw(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, pCursCels2, frame - 179, frame_width, 0, 8);
 #endif
 		} else {
-#ifdef HELLFIRE
+	//FunctionProfiler profiler("DoRenderBackwards");
 			if (frame <= 179)
 #endif
 				CelDrawLightRed(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X, InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1, pCursCels, frame, frame_width, 0, 8, 1);

@@ -142,6 +142,7 @@ static void scrollrt_draw_cursor_back_buffer()
  */
 static void scrollrt_draw_cursor_item()
 {
+	//FunctionProfiler profiler("DrawCursor");
 	int i, mx, my, col;
 	BYTE *src, *dst;
 
@@ -206,18 +207,28 @@ static void scrollrt_draw_cursor_item()
 #ifdef HELLFIRE
 		if (pcurs <= 179) {
 #endif
+{
+		//FunctionProfiler profiler("RenderClxOutline");
 			CelBlitOutlineSafe(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
+			
+}
 			if (col != PAL16_RED + 5) {
 				CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8);
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels, pcurs, cursW, 0, 8, 1);
 			}
 #ifdef HELLFIRE
 		} else {
+			{
+		//FunctionProfiler profiler("RenderClxOutline");
 			CelBlitOutlineSafe(col, mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels2, pcurs - 179, cursW, 0, 8);
+			
+			}
 			if (col != PAL16_RED + 5) {
 				CelClippedDrawSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels2, pcurs - 179, cursW, 0, 8);
 			} else {
+	//FunctionProfiler profiler("DoRenderBackwards");
 				CelDrawLightRedSafe(mx + SCREEN_X, my + cursH + SCREEN_Y - 1, pCursCels2, pcurs - 179, cursW, 0, 8, 1);
 			}
 		}
@@ -239,6 +250,7 @@ static void scrollrt_draw_cursor_item()
  */
 void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre)
 {
+	FunctionProfiler profiler("DrawMissile");
 	int i, mx, my, nCel;
 	MissileStruct *m;
 	BYTE *pCelBuff;
@@ -318,6 +330,7 @@ void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre
  */
 void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre)
 {
+		FunctionProfiler profiler("DrawMissile");
 	int i, mx, my, nCel;
 	MissileStruct *m;
 	BYTE *pCelBuff;
@@ -396,6 +409,7 @@ void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, B
  */
 static void DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 {
+	FunctionProfiler profiler("DrawMonster");
 	int nCel;
 	char trans;
 	BYTE *pCelBuff;
@@ -458,6 +472,7 @@ static void DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int Ce
  */
 static void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 {
+		FunctionProfiler profiler("DrawMonster");
 	int nCel;
 	char trans;
 	BYTE *pCelBuff;
@@ -524,6 +539,7 @@ static void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip,
  */
 static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DrawPlayer");
 	int l;
 	DWORD *pFrameTable;
 
@@ -616,6 +632,7 @@ static void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
  */
 static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DrawPlayer");
 	int l;
 	DWORD *pFrameTable;
 
@@ -705,6 +722,7 @@ static void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCel
  */
 void DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL clipped)
 {
+	FunctionProfiler profiler("DrawDeadPlayer");
 	int i, px, py, nCel;
 	PlayerStruct *p;
 	BYTE *pCelBuff;
@@ -751,6 +769,7 @@ void DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL 
  */
 static void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 {
+	//FunctionProfiler profiler("DrawObject");
 	int sx, sy, xx, yy, nCel;
 	char bv;
 	BYTE *pCelBuff;
@@ -798,8 +817,11 @@ static void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
 		return;
 	}
 
-	if (bv == pcursobj)
+	if (bv == pcursobj) {
+		//FunctionProfiler profiler("RenderClxOutline");
 		CelBlitOutline(194, sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
+		
+	}
 	if (object[bv]._oLight) {
 		CelClippedDrawLight(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
 	} else {
@@ -821,6 +843,7 @@ static void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
  */
 static void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 {
+		//FunctionProfiler profiler("DrawObject");
 	int sx, sy, xx, yy, nCel;
 	char bv;
 	BYTE *pCelBuff;
@@ -865,8 +888,11 @@ static void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSki
 		return;
 	}
 
-	if (bv == pcursobj)
+	if (bv == pcursobj) {
+		//FunctionProfiler profiler("RenderClxOutline");
 		CelBlitOutlineSafe(194, sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
+		
+	}
 	if (object[bv]._oLight)
 		CelDrawLightSafe(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
 	else
@@ -887,6 +913,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
  */
 static void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
+	FunctionProfiler profiler("DrawCell");
 	int i, lti_old, cta_old, lpi_old;
 	BYTE *dst;
 	MICROS *pMap;
@@ -904,11 +931,13 @@ static void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int 
 	arch_draw_type = 1;
 	level_cel_block = pMap->mt[0];
 	if (level_cel_block != 0) {
+		FunctionProfiler profiler2("RenderTile");
 		drawLowerScreen(dst);
 	}
 	arch_draw_type = 2;
 	level_cel_block = pMap->mt[1];
 	if (level_cel_block != 0) {
+		FunctionProfiler profiler2("RenderTile");
 		drawLowerScreen(dst + TILE_WIDTH / 2);
 	}
 
@@ -918,10 +947,12 @@ static void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int 
 		dst -= BUFFER_WIDTH * TILE_HEIGHT;
 		level_cel_block = pMap->mt[i];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst);
 		}
 		level_cel_block = pMap->mt[i + 1];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst + TILE_WIDTH / 2);
 		}
 	}
@@ -944,6 +975,7 @@ static void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int 
  */
 static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, BOOL eflag)
 {
+	FunctionProfiler profiler("DrawDungeon");
 	int px, py, nCel, nMon, negMon, p;
 	char bFlag, bDead, bObj, bItem, bPlr, bArch, bMap, negPlr, dd;
 	DeadStruct *pDeadGuy;
@@ -1002,6 +1034,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 		}
 	}
 	if (bItem != 0) {
+		FunctionProfiler profiler("DrawItem");
 		do {
 			pItem = &item[bItem - 1];
 			if (!pItem->_iPostDraw) {
@@ -1036,6 +1069,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 				    || AutoMapShowItems == TRUE
 #endif
 				) {
+		//FunctionProfiler profiler("RenderClxOutline");
 					CelBlitOutlineSafe(181, px, dy, pCelBuff, nCel, pItem->_iAnimWidth, 0, 8);
 				}
 				CelDrawLightSafe(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, 8);
@@ -1140,6 +1174,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 		DrawClippedObject(sx, sy, dx, dy, FALSE, 0, 8);
 	}
 	if (bItem != 0) {
+		FunctionProfiler profiler("DrawItem");
 		do {
 			pItem = &item[bItem - 1];
 			if (pItem->_iPostDraw) {
@@ -1174,6 +1209,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
 				    || AutoMapShowItems == TRUE
 #endif
 				) {
+		//FunctionProfiler profiler("RenderClxOutline");
 					CelBlitOutlineSafe(181, px, dy, pCelBuff, nCel, pItem->_iAnimWidth, 0, 8);
 				}
 				CelDrawLightSafe(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, 8);
@@ -1197,6 +1233,7 @@ static void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, i
  */
 static void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, BOOL eflag)
 {
+	FunctionProfiler profiler("DrawCell");
 	int i, j;
 	BYTE *dst;
 	MICROS *pMap;
@@ -1215,32 +1252,38 @@ static void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, BOOL e
 				arch_draw_type = 2;
 				level_cel_block = pMap->mt[1];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				arch_draw_type = 0;
 				dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				level_cel_block = pMap->mt[3];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				level_cel_block = pMap->mt[5];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				level_cel_block = pMap->mt[7];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				level_cel_block = pMap->mt[9];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				level_cel_block = pMap->mt[11];
 				if (level_cel_block != 0 && leveltype == DTYPE_HELL) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				scrollrt_draw_clipped_dungeon(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, FALSE);
@@ -1271,11 +1314,13 @@ static void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, BOOL e
 				arch_draw_type = 1;
 				level_cel_block = pMap->mt[0];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst);
 				}
 				arch_draw_type = 2;
 				level_cel_block = pMap->mt[1];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawLowerScreen(dst + TILE_WIDTH / 2);
 				}
 				arch_draw_type = 0;
@@ -1283,10 +1328,12 @@ static void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, BOOL e
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 					level_cel_block = pMap->mt[i];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawLowerScreen(dst);
 					}
 					level_cel_block = pMap->mt[i + 1];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawLowerScreen(dst + TILE_WIDTH / 2);
 					}
 				}
@@ -1310,32 +1357,38 @@ static void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, BOOL e
 			arch_draw_type = 1;
 			level_cel_block = pMap->mt[0];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawLowerScreen(dst);
 			}
 			arch_draw_type = 0;
 			dst -= BUFFER_WIDTH * TILE_HEIGHT;
 			level_cel_block = pMap->mt[2];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawLowerScreen(dst);
 			}
 			dst -= BUFFER_WIDTH * TILE_HEIGHT;
 			level_cel_block = pMap->mt[4];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawLowerScreen(dst);
 			}
 			dst -= BUFFER_WIDTH * TILE_HEIGHT;
 			level_cel_block = pMap->mt[6];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawLowerScreen(dst);
 			}
 			dst -= BUFFER_WIDTH * TILE_HEIGHT;
 			level_cel_block = pMap->mt[8];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawLowerScreen(dst);
 			}
 			dst -= BUFFER_WIDTH * TILE_HEIGHT;
 			level_cel_block = pMap->mt[10];
 			if (level_cel_block != 0 && leveltype == DTYPE_HELL) {
+			FunctionProfiler profiler2("RenderTile");
 				drawLowerScreen(dst);
 			}
 			scrollrt_draw_clipped_dungeon(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, FALSE);
@@ -1359,6 +1412,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
  */
 static void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, int CelSkip, int sx, int sy)
 {
+	FunctionProfiler profiler("DrawCell");
 	int lti_old, cta_old, lpi_old;
 	BYTE *dst;
 	MICROS *pMap;
@@ -1377,40 +1431,48 @@ static void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, i
 	case 0:
 		level_cel_block = pMap->mt[2];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst);
 		}
 		level_cel_block = pMap->mt[3];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst + TILE_WIDTH / 2);
 		}
 	case 1:
 		dst -= BUFFER_WIDTH * TILE_HEIGHT;
 		level_cel_block = pMap->mt[4];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst);
 		}
 		level_cel_block = pMap->mt[5];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst + TILE_WIDTH / 2);
 		}
 	case 2:
 		dst -= BUFFER_WIDTH * TILE_HEIGHT;
 		level_cel_block = pMap->mt[6];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst);
 		}
 		level_cel_block = pMap->mt[7];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst + TILE_WIDTH / 2);
 		}
 	case 3:
 		dst -= BUFFER_WIDTH * TILE_HEIGHT;
 		level_cel_block = pMap->mt[8];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst);
 		}
 		level_cel_block = pMap->mt[9];
 		if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 			drawLowerScreen(dst + TILE_WIDTH / 2);
 		}
 		break;
@@ -1439,6 +1501,7 @@ static void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, i
  */
 static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row, int CelSkip, int dx, int dy, BOOL eflag)
 {
+	FunctionProfiler profiler("DrawDungeon");
 	int px, py, nCel, nMon, negMon, p;
 	char bFlag, bDead, bObj, bItem, bPlr, bArch, bMap, negPlr, dd;
 	DeadStruct *pDeadGuy;
@@ -1497,6 +1560,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 		}
 	}
 	if (bItem != 0) {
+		FunctionProfiler profiler("DrawItem");
 		do {
 			pItem = &item[bItem - 1];
 			if (!pItem->_iPostDraw) {
@@ -1531,6 +1595,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 				    || AutoMapShowItems == TRUE
 #endif
 				) {
+		//FunctionProfiler profiler("RenderClxOutline");
 					CelBlitOutlineSafe(181, px, dy, pCelBuff, nCel, pItem->_iAnimWidth, CelSkip, 8);
 				}
 				CelDrawLightSafe(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, CelSkip, 8);
@@ -1643,6 +1708,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 		DrawClippedObject(sx, sy, dx, dy, FALSE, CelSkip, 8);
 	}
 	if (bItem != 0) {
+		FunctionProfiler profiler("DrawItem");
 		do {
 			pItem = &item[bItem - 1];
 			if (pItem->_iPostDraw) {
@@ -1677,6 +1743,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
 				    || AutoMapShowItems == TRUE
 #endif
 				) {
+		//FunctionProfiler profiler("RenderClxOutline");
 					CelBlitOutlineSafe(181, px, dy, pCelBuff, nCel, pItem->_iAnimWidth, CelSkip, 8);
 				}
 				CelDrawLightSafe(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, CelSkip, 8);
@@ -1701,6 +1768,7 @@ static void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int row
  */
 static void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int row, BOOL eflag)
 {
+	FunctionProfiler profiler("DrawCell");
 	int i, j, CelSkip;
 	BYTE *dst;
 	MICROS *pMap;
@@ -1721,6 +1789,7 @@ static void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int 
 					if (row <= i) {
 						level_cel_block = pMap->mt[2 * i + 3];
 						if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 							drawLowerScreen(dst);
 						}
 					}
@@ -1754,10 +1823,12 @@ static void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int 
 					if (row <= i) {
 						level_cel_block = pMap->mt[2 * i + 2];
 						if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 							drawLowerScreen(dst);
 						}
 						level_cel_block = pMap->mt[2 * i + 3];
 						if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 							drawLowerScreen(dst + TILE_WIDTH / 2);
 						}
 					}
@@ -1786,6 +1857,7 @@ static void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int 
 					if (row <= i) {
 						level_cel_block = pMap->mt[2 * i + 2];
 						if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 							drawLowerScreen(dst);
 						}
 					}
@@ -1815,6 +1887,7 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
  */
 static void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, int sy)
 {
+	FunctionProfiler profiler("DrawCell");
 	int i, lti_old, cta_old, lpi_old;
 	BYTE *dst;
 	MICROS *pMap;
@@ -1832,11 +1905,13 @@ static void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap,
 	arch_draw_type = 1;
 	level_cel_block = pMap->mt[0];
 	if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 		drawUpperScreen(dst);
 	}
 	arch_draw_type = 2;
 	level_cel_block = pMap->mt[1];
 	if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 		drawUpperScreen(dst + TILE_WIDTH / 2);
 	}
 
@@ -1846,10 +1921,12 @@ static void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap,
 		if (row >= i) {
 			level_cel_block = pMap->mt[2 * i];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawUpperScreen(dst);
 			}
 			level_cel_block = pMap->mt[2 * i + 1];
 			if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 				drawUpperScreen(dst + TILE_WIDTH / 2);
 			}
 		}
@@ -1875,6 +1952,7 @@ static void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap,
  */
 static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelCap, int dx, int dy, BOOL eflag)
 {
+	FunctionProfiler profiler("DrawDungeon");
 	int px, py, nCel, nMon, negMon, p;
 	char bFlag, bDead, bObj, bItem, bPlr, bArch, bMap, negPlr, dd;
 	DeadStruct *pDeadGuy;
@@ -2128,6 +2206,7 @@ static void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int row, int CelC
  */
 static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int row, BOOL eflag)
 {
+	FunctionProfiler profiler("DrawCell");
 	int i, j, CelCap;
 	BYTE *dst;
 	MICROS *pMap;
@@ -2151,6 +2230,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 					level_cel_block = pMap->mt[1];
 					if (level_cel_block != 0) {
 						arch_draw_type = 2;
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 						arch_draw_type = 0;
 					}
@@ -2159,6 +2239,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 1) {
 					level_cel_block = pMap->mt[3];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2166,6 +2247,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 2) {
 					level_cel_block = pMap->mt[5];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2173,6 +2255,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 3) {
 					level_cel_block = pMap->mt[7];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2198,11 +2281,13 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				arch_draw_type = 1;
 				level_cel_block = pMap->mt[0];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawUpperScreen(dst);
 				}
 				arch_draw_type = 2;
 				level_cel_block = pMap->mt[1];
 				if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 					drawUpperScreen(dst + TILE_HEIGHT);
 				}
 				arch_draw_type = 0;
@@ -2211,10 +2296,12 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 					if (row >= i) {
 						level_cel_block = pMap->mt[2 * i];
 						if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 							drawUpperScreen(dst);
 						}
 						level_cel_block = pMap->mt[2 * i + 1];
 						if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 							drawUpperScreen(dst + TILE_HEIGHT);
 						}
 					}
@@ -2241,6 +2328,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 0) {
 					level_cel_block = pMap->mt[0];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2249,6 +2337,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 1) {
 					level_cel_block = pMap->mt[2];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2256,6 +2345,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 2) {
 					level_cel_block = pMap->mt[4];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2263,6 +2353,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
 				if (row >= 3) {
 					level_cel_block = pMap->mt[6];
 					if (level_cel_block != 0) {
+			FunctionProfiler profiler2("RenderTile");
 						drawUpperScreen(dst);
 					}
 				}
@@ -2281,6 +2372,7 @@ static void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int ro
  */
 static void DrawGame(int x, int y)
 {
+	FunctionProfiler profiler("DrawGame");
 	int i, sx, sy, chunks, blocks;
 
 	ViewDX = SCREEN_WIDTH;
@@ -2344,6 +2436,7 @@ static void DrawGame(int x, int y)
 		break;
 	}
 
+	FunctionProfiler profiler3("DrawTileContent");
 	/// ASSERT: assert(gpBuffer);
 	gpBufEnd = &gpBuffer[PitchTbl[0 + SCREEN_Y]];
 	for (i = 0; i < 4; i++) {
@@ -2578,6 +2671,7 @@ static void DrawFPS()
  */
 void DrawView(int StartX, int StartY)
 {
+	FunctionProfiler profiler("DrawView");
 	if (zoomflag) {
 		DrawGame(StartX, StartY);
 	} else {
@@ -2638,6 +2732,7 @@ void DrawView(int StartX, int StartY)
  */
 void ClearScreenBuffer()
 {
+	FunctionProfiler profiler("ClearScreenBuffer");
 	lock_buf(3);
 
 	assert(gpBuffer);
@@ -2976,6 +3071,7 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
  */
 void scrollrt_draw_game_screen(BOOL draw_cursor)
 {
+	FunctionProfiler profiler("scrollrt_draw_game_screen");
 	int hgt;
 
 	if (force_redraw == 255) {
@@ -3005,6 +3101,7 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
  */
 void DrawAndBlit()
 {
+	FunctionProfiler profiler("DrawAndBlit");
 	int hgt;
 	BOOL ddsdesc, ctrlPan;
 

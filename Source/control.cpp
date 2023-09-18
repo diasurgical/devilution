@@ -1324,6 +1324,8 @@ void InitControlPan()
 	pSpellCels = LoadFileInMem("Data\\SpelIcon.CEL", NULL);
 #endif
 	SetSpellTrans(RSPLTYPE_SKILL);
+	{
+		//FunctionProfiler profiler("DoRenderBackwards");
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", NULL);
 	CelBlitWidth(pBtmBuff, 0, (PANEL_HEIGHT + 16) - 1, PANEL_WIDTH, pStatusPanel, 1, PANEL_WIDTH);
 	MemFreeDbg(pStatusPanel);
@@ -1331,6 +1333,7 @@ void InitControlPan()
 	CelBlitWidth(pLifeBuff, 0, 87, 88, pStatusPanel, 1, 88);
 	CelBlitWidth(pManaBuff, 0, 87, 88, pStatusPanel, 2, 88);
 	MemFreeDbg(pStatusPanel);
+	}
 	talkflag = FALSE;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", NULL);
