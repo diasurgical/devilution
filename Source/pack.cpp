@@ -135,12 +135,12 @@ void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 }
 
 /**
- * Expand a PkItemStruct in to a ItemStruct
+ * Expand a PkItemStruct into an ItemStruct
  *
  * Note: last slot of item[MAXITEMS+1] used as temporary buffer
  * find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
  * @param is The source packed item
- * @param id The distination item
+ * @param id The destination item
  */
 #ifndef HELLFIRE
 static

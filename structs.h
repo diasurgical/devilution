@@ -582,7 +582,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _mxvel;             // Pixel X-velocity while walking. Applied to _mxoff
 	int _myvel;             // Pixel Y-velocity while walking. Applied to _myoff
 	int _mdir;              // Direction faced by monster (direction enum)
-	int _menemy;            // The current target of the mosnter. An index in to either the plr or monster array based on the _meflag value.
+	int _menemy;            // The current target of the monster. An index into either the plr or monster array based on the _meflag value.
 	unsigned char _menemyx; // X-coordinate of enemy (usually correspond's to the enemy's futx value)
 	unsigned char _menemyy; // Y-coordinate of enemy (usually correspond's to the enemy's futy value)
 	short falign_52;        // probably _mAFNum (unused)
