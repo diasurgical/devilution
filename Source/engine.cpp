@@ -2627,7 +2627,7 @@ void mem_free_dbg(void *p)
 }
 
 /**
- * @brief Load a file in to a buffer
+ * @brief Load a file into a buffer
  * @param pszName Path of file
  * @param pdwFileLen Will be set to file size if non-NULL
  * @return Buffer with content of file
@@ -2656,7 +2656,7 @@ BYTE *LoadFileInMem(const char *pszName, DWORD *pdwFileLen)
 }
 
 /**
- * @brief Load a file in to the given buffer
+ * @brief Load a file into the given buffer
  * @param pszName Path of file
  * @param p Target buffer
  * @return Size of file
