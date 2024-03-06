@@ -59,6 +59,9 @@ ifeq ($(SPAWN),1)
 	CFLAGS += /D "SPAWN"
 endif
 
+ifeq ($(V108),1)
+	CFLAGS += /D "V108"
+
 ifeq ($(MAKE_BUILD),pdb)
 ifeq ($(HELLFIRE),1)
 	VC_LINK = $(VC5_LINK)
