@@ -61,6 +61,7 @@ endif
 
 ifeq ($(V108),1)
 	CFLAGS += /D "V108"
+endif
 
 ifeq ($(MAKE_BUILD),pdb)
 ifeq ($(HELLFIRE),1)
