@@ -51,16 +51,16 @@ endif
 CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
+VERSION := 109
+
+CFLAGS += /D "VERSION=$(VERSION)"
+
 ifeq ($(HELLFIRE),1)
 	CFLAGS += /D "HELLFIRE"
 endif
 
 ifeq ($(SPAWN),1)
 	CFLAGS += /D "SPAWN"
-endif
-
-ifeq ($(V108),1)
-	CFLAGS += /D "V108"
 endif
 
 ifeq ($(MAKE_BUILD),pdb)
