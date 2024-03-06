@@ -102,7 +102,11 @@ int path_get_h_cost(int sx, int sy, int dx, int dy)
 	int max = delta_x > delta_y ? delta_x : delta_y;
 
 	// see path_check_equal for why this is times 2
+#if VERSION == 108
+	return min + (2 * max);
+#else
 	return 2 * (min + max);
+#endif
 }
 
 /**
