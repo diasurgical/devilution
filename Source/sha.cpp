@@ -24,6 +24,13 @@ static void SHA1Init(SHA1Context *context)
 	context->state[4] = 0xC3D2E1F0;
 }
 
+// Global Optimizations (/Og) cause the compiler to interpret
+// `SHA1CircularShift(5, A)` as `ror edx, 0x1b`, as if A were an unsigned integer.
+// This results in save files being incompatible between vanilla and MSVC Release builds.
+#if (_MSC_VER >= 1930) && NDEBUG
+#pragma optimize("g", off)
+#endif
+
 static void SHA1ProcessMessageBlock(SHA1Context *context)
 {
 	int i, temp;
@@ -86,6 +93,10 @@ static void SHA1ProcessMessageBlock(SHA1Context *context)
 	context->state[3] += D;
 	context->state[4] += E;
 }
+
+#if (_MSC_VER >= 1930) && NDEBUG
+#pragma optimize("g", on)
+#endif
 
 static void SHA1Input(SHA1Context *context, const char *message_array, int len)
 {
