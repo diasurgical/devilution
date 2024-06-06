@@ -972,6 +972,7 @@ static int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, in
 	sw = miniset[0];
 	sh = miniset[1];
 
+	// BUGFIX: should be `numt = tmin`, was `numt = 1`.
 	if (tmax - tmin == 0)
 		numt = 1;
 	else
