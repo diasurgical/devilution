@@ -797,7 +797,7 @@ void CreatePlayer(int pnum, char c)
 		plr[pnum]._pDamageMod = plr[pnum]._pStrength * plr[pnum]._pLevel / 100;
 	}
 
-	plr[pnum]._pBaseToBlk = ToBlkTbl[c];
+	plr[pnum]._pBaseToBlk = ToBlkTbl[c]; // BUGFIX: _pBaseToBlk not set in player struct if creating a New Game using an existing save file (since CreatePlayer is never invoked in this case).
 
 	plr[pnum]._pHitPoints = (plr[pnum]._pVitality + 10) << 6;
 	if (plr[pnum]._pClass == PC_WARRIOR
