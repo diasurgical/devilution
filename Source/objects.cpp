@@ -3074,7 +3074,7 @@ void OperateBook(int pnum, int i)
 
 	if (setlvlnum == SL_BONECHAMB) {
 		plr[myplr]._pMemSpells |= SPELLBIT(SPL_GUARDIAN);
-		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < MAX_SPELL_LEVEL)
+		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < MAX_SPELL_LEVEL) // BUGFIX: should use plr[myplr] or plr[pnum] consistently, not mix and match. If another connected peer interacts with the Ancient Tome (then pnum!=myplr), and they have Guardian spell level < 15, while the local player has Guardian spell level = 15; then the sanity check is skipped, and the local player gets Guardian spell level 16.
 			plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
 		quests[Q_SCHAMB]._qactive = QUEST_DONE;
 		if (!deltaload)
