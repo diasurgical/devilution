@@ -3324,31 +3324,31 @@ void OperateSlainHero(int pnum, int i, DIABOOL sendmsg)
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
 			if (plr[pnum]._pClass == PC_WARRIOR) {
-				CreateMagicArmor(object[i]._ox, object[i]._oy, ITYPE_HARMOR, ICURS_BREAST_PLATE, FALSE, TRUE);
+				CreateMagicArmor(object[i]._ox, object[i]._oy, ITYPE_HARMOR, ICURS_BREAST_PLATE, FALSE, TRUE); // BUGFIX: item drop never not synced to connected peers, since FALSE is passed as argument instead of sendmsg parameter.
 #ifndef SPAWN
 				PlaySfxLoc(PS_WARR9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
-				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_BOW, ICURS_LONG_WAR_BOW, FALSE, TRUE);
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_BOW, ICURS_LONG_WAR_BOW, FALSE, TRUE); // BUGFIX: item drop never not synced to connected peers, since FALSE is passed as argument instead of sendmsg parameter.
 #ifndef SPAWN
 				PlaySfxLoc(PS_ROGUE9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
-				CreateSpellBook(object[i]._ox, object[i]._oy, SPL_LIGHTNING, FALSE, TRUE);
+				CreateSpellBook(object[i]._ox, object[i]._oy, SPL_LIGHTNING, FALSE, TRUE); // BUGFIX: item drop never not synced to connected peers, since FALSE is passed as argument instead of sendmsg parameter.
 #ifndef SPAWN
 				PlaySfxLoc(PS_MAGE9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 #ifdef HELLFIRE
 			} else if (plr[pnum]._pClass == PC_MONK) {
-				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_STAFF, ICURS_WAR_STAFF, FALSE, TRUE);
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_STAFF, ICURS_WAR_STAFF, FALSE, TRUE); // BUGFIX: item drop never not synced to connected peers, since FALSE is passed as argument instead of sendmsg parameter.
 				PlaySfxLoc(PS_MONK9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #ifndef SPAWN
 			} else if (plr[pnum]._pClass == PC_BARD) {
-				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_SWORD, ICURS_BASTARD_SWORD, FALSE, TRUE);
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_SWORD, ICURS_BASTARD_SWORD, FALSE, TRUE); // BUGFIX: item drop never not synced to connected peers, since FALSE is passed as argument instead of sendmsg parameter.
 				PlaySfxLoc(PS_ROGUE9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
 			} else if (plr[pnum]._pClass == PC_BARBARIAN) {
-				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_AXE, ICURS_BATTLE_AXE, FALSE, TRUE);
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, ITYPE_AXE, ICURS_BATTLE_AXE, FALSE, TRUE); // BUGFIX: item drop never not synced to connected peers, since FALSE is passed as argument instead of sendmsg parameter.
 #ifndef SPAWN
 				PlaySfxLoc(PS_WARR9, plr[myplr]._px, plr[myplr]._py); // CODEFIX: use pnum instead of myplr or use PlaySFX
 #endif
