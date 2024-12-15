@@ -263,7 +263,7 @@ const PLStruct PL_Prefix[] = {
 	{ "Knight's",       IPL_TOHIT_DAMP,        96,      110,       23,                       PLT_WEAP | PLT_STAFF                     ,  GOE_ANY,  TRUE,     TRUE,      6100,     8450,        26 },
 	{ "Master's",       IPL_TOHIT_DAMP,       111,      125,       28,                       PLT_WEAP | PLT_STAFF                     ,  GOE_ANY,  TRUE,     TRUE,      8600,    13000,        30 },
 	{ "Champion's",     IPL_TOHIT_DAMP,       126,      150,       40,                       PLT_WEAP | PLT_STAFF                     ,  GOE_ANY,  TRUE,     TRUE,     15200,    24000,        33 },
-	{ "King's",         IPL_TOHIT_DAMP,       151,      175,       28,                       PLT_WEAP | PLT_STAFF                     ,  GOE_ANY,  TRUE,     TRUE,     24100,    35000,        38 },
+	{ "King's",         IPL_TOHIT_DAMP,       151,      175,       28,                       PLT_WEAP | PLT_STAFF                     ,  GOE_ANY,  TRUE,     TRUE,     24100,    35000,        38 }, // BUGFIX: qlvl (PLMinLvl) should be 60, was 28.
 	{ "Vulnerable",     IPL_ACP_CURSE,         51,      100,        3, PLT_ARMO | PLT_SHLD                                            ,  GOE_ANY,  TRUE,     FALSE,        0,        0,        -3 },
 	{ "Rusted",         IPL_ACP_CURSE,         25,       50,        1, PLT_ARMO | PLT_SHLD                                            ,  GOE_ANY,  TRUE,     FALSE,        0,        0,        -2 },
 	{ "Fine",           IPL_ACP,               20,       30,        1, PLT_ARMO | PLT_SHLD                                            ,  GOE_ANY,  TRUE,     TRUE,        20,      100,         2 },
