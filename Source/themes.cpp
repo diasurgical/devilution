@@ -341,7 +341,7 @@ BOOL SpecialThemeFit(int i, int t)
 		}
 		break;
 	case THEME_TREASURE:
-		rv = treasureFlag;
+		rv = treasureFlag; // BUGFIX: treasureFlag overwrites results from CheckThemeReqs, causing treasure theme to always be valid (regardless of requirements).
 		if (rv) {
 			treasureFlag = FALSE;
 		}
