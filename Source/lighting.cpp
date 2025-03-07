@@ -1003,6 +1003,9 @@ void MakeLightTable()
 					fs = (BYTE)sqrt((8 * l - j) * (8 * l - j) + (8 * k - i) * (8 * k - i));
 					fs += fs < 0 ? -0.5 : 0.5;
 
+					// BUGFIX: This error causes a "jittery" effect when a light source moves.
+					// Swap the addition and multiplication operators to fix the lookup table.
+					// lightblock[j + 8 * i][k][l] = fs;
 					lightblock[j * 8 + i][k][l] = fs;
 				}
 			}
