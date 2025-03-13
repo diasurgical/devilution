@@ -4996,6 +4996,8 @@ void MI_Firemove(int i)
 		if (missile[i]._mix != missile[i]._miVar3 || missile[i]._miy != missile[i]._miVar4) {
 			missile[i]._miVar3 = missile[i]._mix;
 			missile[i]._miVar4 = missile[i]._miy;
+			// BUGFIX: Flame wave gets darker after reaching full height.
+			// ChangeLightXY(missile[i]._mlid, missile[i]._miVar3, missile[i]._miVar4);
 			ChangeLight(missile[i]._mlid, missile[i]._miVar3, missile[i]._miVar4, 8);
 		}
 	} else {
