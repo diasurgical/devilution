@@ -5120,6 +5120,18 @@ void SyncCrux(int i)
 
 void SyncLever(int i)
 {
+	// BUGFIX: when syncing object delta information, special care has to be
+	// taken for Skull Levers on dlvl=16, since all levers in a group must be
+	// pulled before opening the trigger area (refer to the _oVar8 check of
+	// OperateLever). This check is not performed when object delta information
+	// is synced, and as such, if a player walks down to dlvl=16 when another
+	// player is already on dlvl=16 and has opened one Skull Lever (but not all
+	// Skull Levers) of a group, then for the new player entering dlvl=16
+	// (and thus receiving object delta information from the player already
+	// present on the level) would have the lever group trigger activated and
+	// the map changed, even though all Skull Levers of the given group have not
+	// yet been pulled. As such, the map state of these two players will differ
+	// considerably.
 	if (object[i]._oSelFlag == 0)
 		ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
