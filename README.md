@@ -31,7 +31,7 @@ Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 and 6 fo
 ### Building with Visual C++ 6
 - Open the project workspace `Diablo.dsw`, choose `Debug` or `Release`, and then `Build Diablo.exe`.
 
-To build a binary with functions compiled as close as possible to the original, use [Visual C++ 6](https://winworldpc.com/product/visual-c/6x) with Service Pack 5 and the [Processor Pack](https://download.microsoft.com/download/vb60ent/update/6/w9x2kxp/en-us/vcpp5.exe) (**important for proper code generation!**) You will also need [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) with [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip), since the original binary was linked with the older linker from that. Sadly, you cannot use the old linker right out of VC6, so you'll need to link manually or via the `MakefileVC` in the project root.
+To build a binary with functions compiled as close as possible to the original, use Visual C++ 6 with Service Pack 5 and the [Processor Pack](https://download.microsoft.com/download/vb60ent/update/6/w9x2kxp/en-us/vcpp5.exe) (**important for proper code generation!**) You will also need [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) with [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip), since the original binary was linked with the older linker from that. Sadly, you cannot use the old linker right out of VC6, so you'll need to link manually or via the `MakefileVC` in the project root.
 
 ### Building with Visual Studio 2010-2017
 - Open the project solution `Diablo.sln`, choose `Debug` or `Release`, and then `Build Solution`.
