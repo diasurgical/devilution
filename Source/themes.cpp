@@ -137,6 +137,10 @@ BOOL TFit_Obj5(int t)
 			continue;
 		}
 
+		// BUGFIX: the first valid location is always returned, regardless of the
+		// value of the random iteration count (r). This is due to the fact that
+		// found is true when a valid location has been located, and the
+		// (xp, yp)-coordinate is only updated if !found.
 		r--;
 	}
 
