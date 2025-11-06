@@ -2728,11 +2728,13 @@ static void DRLG_L5(int entry)
 			}
 #else
 		} else if (entry == ENTRY_MAIN) {
+			// BUGFIX: missing doneflag check before call to DRLG_PlaceMiniSet. PoC: triggered by (dlvl=2, seed=0x0000007B, quest=Poisoned Water Supply).
 			if (DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, TRUE, -1, 0) < 0)
 				doneflag = FALSE;
 			else if (DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, FALSE, -1, 1) < 0)
 				doneflag = FALSE;
 		} else {
+			// BUGFIX: missing doneflag check before call to DRLG_PlaceMiniSet.
 			if (DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, FALSE, -1, 0) < 0)
 				doneflag = FALSE;
 			else if (DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, TRUE, -1, 1) < 0)
