@@ -2186,7 +2186,7 @@ static void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 		if (nY1 <= 1 && nCurrd == 1) {
 			nCurrd = 3;
 		}
-		if (predungeon[nX1][nY1] == 67 && (nCurrd == 1 || nCurrd == 4)) {
+		if (predungeon[nX1][nY1] == 67 && (nCurrd == 1 || nCurrd == 4)) { /// BUGFIX: 67 is upper left, condition should be 3 (down) instead of 1 (up)
 			nCurrd = 2;
 		}
 		if (predungeon[nX1][nY1] == 66 && (nCurrd == 1 || nCurrd == 2)) {
