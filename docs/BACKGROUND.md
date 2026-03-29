@@ -52,7 +52,7 @@ Primarily "/O1" was used, but there are also peculiarities such as the use of bo
 
 6. The Beta release and the Alpha4 release of Diablo 1 has also proved invaluable resources for cross-validation as the compiler optimization level was not set to release mode for these binaries.
 
-Interestingly, in the process a number of bugs in the original implementation of Diablo 1 were discovered. These have been documented in the source code of Devilution with `// BUGFIX: foo` comments, and have also been detailed in [[6]].
+Interestingly, in the process a number of bugs in the original implementation of Diablo 1 were discovered. These have been documented in the source code of Devilution with `// BUGFIX: foo` comments, and are also tracked in [docs/bugs.md](bugs.md) and [[6]].
 
 To track the progress of the project, the "Binary identical functions" milestone has been used in tandem with an assembly diffing tool developed in Rust (see [[7]], [[8]]).
 
