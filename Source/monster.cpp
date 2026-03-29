@@ -5589,7 +5589,7 @@ void ProcessMonsters()
 				Monst->_msquelch = UCHAR_MAX;
 				Monst->_lastx = plr[Monst->_menemy]._pfutx;
 				Monst->_lasty = plr[Monst->_menemy]._pfuty;
-			} else if (Monst->_msquelch != 0 && Monst->_mAi != MT_DIABLO) { /// BUGFIX: change '_mAi' to 'MType->mtype'
+			} else if (Monst->_msquelch != 0 && Monst->_mAi != MT_DIABLO) { /// BUGFIX: Diablo is supposed to ignore the squelch radius, but this checks the AI id instead of the monster type, so the immunity never applies.
 				Monst->_msquelch--;
 			}
 		}
