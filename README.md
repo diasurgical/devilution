@@ -53,6 +53,7 @@ To compile with MinGW64 on different platforms, refer to the respective document
 
 [Debug Build Features](docs/debug.md)
 | [Compatibility Matrix](docs/compatibility_matrix.md)
+| [Documented Bugs](docs/bugs.md)
 | [Troubleshooting](docs/troubleshooting.md)
 
 # Installing

@@ -66,7 +66,7 @@ void SyncPortals()
 			int lvl = currlevel;
 			if (setlevel)
 				lvl = setlvlnum;
-			if (portal[i].level == lvl)
+			if (portal[i].level == lvl) // BUGFIX: should also check whether both sides are set levels; otherwise a town portal cast in a quest level (for example Chamber of Bone) reappears on the matching normal dungeon level.
 				AddWarpMissile(i, portal[i].x, portal[i].y);
 		}
 	}
