@@ -1000,7 +1000,7 @@ void MakeLightTable()
 		for (i = 0; i < 8; i++) {
 			for (k = 0; k < 16; k++) {
 				for (l = 0; l < 16; l++) {
-					fs = (BYTE)sqrt((8 * l - j) * (8 * l - j) + (8 * k - i) * (8 * k - i));
+					fs = (BYTE)sqrt((8 * l - i) * (8 * l - i) + (8 * k - j) * (8 * k - j));
 					fs += fs < 0 ? -0.5 : 0.5;
 
 					// BUGFIX: This error causes a "jittery" effect when a light source moves.

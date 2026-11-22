@@ -48,7 +48,7 @@ else
 	VC_INC_DIR = $(VC6_INC_DIR)
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
+CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC5_INC_DIR) /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
 VERSION := 109

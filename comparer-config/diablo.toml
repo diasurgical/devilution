@@ -6243,7 +6243,7 @@ addr = 0x441B16
 size = 0x74
 
 [[func]]
-name = "WallTrapLocOk"
+name = "TorchLocOK"
 addr = 0x441B8A
 size = 0x16
 
@@ -6253,7 +6253,7 @@ addr = 0x441BA0
 size = 0xEC
 
 [[func]]
-name = "TorchLocOK"
+name = "WallTrapLocOk"
 addr = 0x441C8C
 size = 0x27
 

@@ -210,7 +210,7 @@ void DrawSLine(int y)
 	int xy, yy, width, line, sy;
 
 	sy = SStringY[y];
-	if (stextsize) {
+	if (stextsize == 1) {
 		xy = SCREENXY(PANEL_LEFT + 26, 25);
 		yy = PitchTbl[sy + 38 + SCREEN_Y] + 26 + PANEL_X;
 		width = 586 / 4;           // BUGFIX: should be 587, not 586

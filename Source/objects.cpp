@@ -1577,17 +1577,9 @@ void AddStoryBook(int i)
 	object[i]._oVar1 = random_(0, 3);
 	if (currlevel == 4)
 		object[i]._oVar2 = StoryText[object[i]._oVar1][0];
-#ifdef HELLFIRE
 	if (currlevel == 8)
-#else
-	else if (currlevel == 8)
-#endif
 		object[i]._oVar2 = StoryText[object[i]._oVar1][1];
-#ifdef HELLFIRE
 	if (currlevel == 12)
-#else
-	else if (currlevel == 12)
-#endif
 		object[i]._oVar2 = StoryText[object[i]._oVar1][2];
 	object[i]._oVar3 = (currlevel >> 2) + 3 * object[i]._oVar1 - 1;
 	object[i]._oAnimFrame = 5 - 2 * object[i]._oVar1;
