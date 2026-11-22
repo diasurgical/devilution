@@ -130,7 +130,7 @@ static BYTE *multi_recv_packet(TBuffer *pBuf, BYTE *body, int *size)
 			src_ptr += chunk_size;
 			*size -= chunk_size;
 		}
-		memcpy(pBuf->bData, src_ptr, (pBuf->bData - src_ptr) + pBuf->dwNextWriteOffset + 1);
+		memmove(pBuf->bData, src_ptr, (pBuf->bData - src_ptr) + pBuf->dwNextWriteOffset + 1);
 		pBuf->dwNextWriteOffset += (pBuf->bData - src_ptr);
 		return body;
 	}
