@@ -8,11 +8,11 @@
 
 /** This will be true if a lava pool has been generated for the level */
 
-BOOLEAN lavapool;
+BOOLEAN lavapool = 0;
 /** unused */
-int abyssx;
-int lockoutcnt;
-BOOLEAN lockout[DMAXX][DMAXY];
+int abyssx = 0;
+int lockoutcnt = 0;
+BOOLEAN lockout[DMAXX][DMAXY] = { 0 };
 
 /**
  * A lookup table for the 16 possible patterns of a 2x2 area,

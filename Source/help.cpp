@@ -5,11 +5,11 @@
  */
 #include "all.h"
 
-int help_select_line;
-int unused_help;
-BOOL helpflag;
-int displayinghelp[22]; /* check, does nothing? */
-int HelpTop;
+int help_select_line = 0;
+int unused_help = 0;
+BOOL helpflag = 0;
+int displayinghelp[22] = { 0 }; /* check, does nothing? */
+int HelpTop = 0;
 
 const char gszHelpText[] = {
 #ifdef SPAWN

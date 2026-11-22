@@ -5,19 +5,19 @@
  */
 #include "all.h"
 
-int missileactive[MAXMISSILES];
-int missileavail[MAXMISSILES];
-MissileStruct missile[MAXMISSILES];
-int nummissiles;
-BOOL ManashieldFlag;
-ChainStruct chain[MAXMISSILES];
-BOOL MissilePreFlag;
-int numchains;
-
 /** Maps from direction to X-offset. */
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 /** Maps from direction to Y-offset. */
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+int missileactive[MAXMISSILES] = { 0 };
+int missileavail[MAXMISSILES] = { 0 };
+MissileStruct missile[MAXMISSILES] = { 0 };
+int nummissiles = 0;
+BOOL ManashieldFlag = 0;
+ChainStruct chain[MAXMISSILES] = { 0 };
+
+BOOL MissilePreFlag = 0;
+int numchains = 0;
 #ifdef HELLFIRE
 int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
 #endif

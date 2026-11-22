@@ -6,14 +6,14 @@
 #ifndef SPAWN
 #include "all.h"
 
-int nSx1;
-int nSy1;
-int nSx2;
-int nSy2;
-int nRoomCnt;
-BYTE predungeon[DMAXX][DMAXY];
-ROOMNODE RoomList[81];
-HALLNODE *pHallList;
+int nSx1 = 0;
+int nSy1 = 0;
+int nSx2 = 0;
+int nSy2 = 0;
+int nRoomCnt = 0;
+BYTE predungeon[DMAXX][DMAXY] = { 0 };
+ROOMNODE RoomList[81] = { 0 };
+HALLNODE *pHallList = NULL;
 
 int Area_Min = 2;
 int Room_Max = 10;

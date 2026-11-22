@@ -7,83 +7,83 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-HWND ghMainWnd;
-DWORD glSeedTbl[NUMLEVELS];
-int gnLevelTypeTbl[NUMLEVELS];
-#ifndef HELLFIRE
-int glEndSeed[NUMLEVELS];
-int glMid1Seed[NUMLEVELS];
-int glMid2Seed[NUMLEVELS];
-int glMid3Seed[NUMLEVELS];
-#else
-int glEndSeed[NUMLEVELS + 1];
-int glMid1Seed[NUMLEVELS + 1];
-int glMid2Seed[NUMLEVELS + 1];
-int glMid3Seed[NUMLEVELS + 1];
-#endif
-int MouseX;
-int MouseY;
-BOOL gbGameLoopStartup;
-BOOL gbRunGame;
-BOOL gbRunGameResult;
-BOOL zoomflag;
-/** Enable updating of player character, set to false once Diablo dies */
-BOOL gbProcessPlayers;
-BOOL gbLoadGame;
-HINSTANCE ghInst;
-int DebugMonsters[10];
-BOOLEAN cineflag;
-int force_redraw;
-BOOL visiondebug;
-/** unused */
-BOOL scrollflag;
-BOOL light4flag;
-BOOL leveldebug;
-BOOL monstdebug;
-/** unused */
-BOOL trigdebug;
-int setseed;
-int debugmonsttypes;
-int PauseMode;
-#ifdef HELLFIRE
-BOOLEAN UseTheoQuest;
-BOOLEAN UseCowFarmer;
-BOOLEAN UseNestArt;
-BOOLEAN UseBardTest;
-BOOLEAN UseBarbarianTest;
-BOOLEAN UseMultiTest;
-#endif
-int sgnTimeoutCurs;
-char sgbMouseDown;
-int color_cycle_timer;
-
-/* rdata */
-
 /**
  * Specifies whether to give the game exclusive access to the
  * screen, as needed for efficient rendering in fullscreen mode.
  */
 BOOL fullscreen = TRUE;
+/** Specifies whether players are in non-PvP mode. */
+BOOL FriendlyMode = TRUE;
+HWND ghMainWnd = 0;
+#ifndef HELLFIRE
+int glEndSeed[NUMLEVELS] = { 0 };
+int glMid1Seed[NUMLEVELS] = { 0 };
+int glMid2Seed[NUMLEVELS] = { 0 };
+int glMid3Seed[NUMLEVELS] = { 0 };
+#else
+int glEndSeed[NUMLEVELS + 1] = { 0 };
+int glMid1Seed[NUMLEVELS + 1] = { 0 };
+int glMid2Seed[NUMLEVELS + 1] = { 0 };
+int glMid3Seed[NUMLEVELS + 1] = { 0 };
+#endif
+int gnLevelTypeTbl[NUMLEVELS] = { 0 };
+int MouseY = 0;
+int MouseX = 0;
+BOOL gbGameLoopStartup = 0;
+DWORD glSeedTbl[NUMLEVELS] = { 0 };
+BOOL gbRunGame = 0;
+BOOL gbRunGameResult = 0;
+BOOL zoomflag = 0;
+/** Enable updating of player character, set to false once Diablo dies */
+BOOL gbProcessPlayers = 0;
+BOOL gbLoadGame = 0;
+HINSTANCE ghInst = 0;
+int DebugMonsters[10] = { 0 };
+BOOLEAN cineflag = 0;
+/** unused */
+BOOL scrollflag = 0;
+int force_redraw = 0;
+BOOL visiondebug = 0;
+BOOL light4flag = 0;
+/** unused */
+BOOL trigdebug = 0;
+BOOL leveldebug = 0;
+BOOL monstdebug = 0;
+int setseed = 0;
+#ifdef HELLFIRE
+BOOLEAN UseTheoQuest = 0;
+BOOLEAN UseCowFarmer = 0;
+BOOLEAN UseNestArt = 0;
+BOOLEAN UseBardTest = 0;
+BOOLEAN UseBarbarianTest = 0;
+BOOLEAN UseMultiTest = 0;
+#endif
+int debugmonsttypes = 0;
+int PauseMode = 0;
+int sgnTimeoutCurs = 0;
+
+/* rdata */
+
+char sgbMouseDown = 0;
 #ifdef _DEBUG
 int showintrodebug = 1;
 int questdebug = -1;
-int debug_mode_key_s;
-int debug_mode_key_w;
-int debug_mode_key_inverted_v;
-int debug_mode_dollar_sign;
-int debug_mode_key_d;
-int debug_mode_key_i;
-int dbgplr;
-int dbgqst;
-int dbgmon;
-int arrowdebug;
-int frameflag;
-int frameend;
-int framerate;
-int framestart;
+int debug_mode_key_s = 0;
+int debug_mode_key_w = 0;
+int debug_mode_key_inverted_v = 0;
+int debug_mode_dollar_sign = 0;
+int debug_mode_key_d = 0;
+int debug_mode_key_i = 0;
+int dbgplr = 0;
+int dbgqst = 0;
+int dbgmon = 0;
+int arrowdebug = 0;
+int frameflag = 0;
+int frameend = 0;
+int framerate = 0;
+int framestart = 0;
 #endif
-/** Specifies whether players are in non-PvP mode. */
-BOOL FriendlyMode = TRUE;
+int color_cycle_timer = 0;
 /** Default quick messages */
 const char *const spszMsgTbl[4] = {
 	"I need help! Come Here!",

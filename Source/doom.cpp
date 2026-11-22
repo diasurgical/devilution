@@ -5,11 +5,11 @@
  */
 #include "all.h"
 
-int doom_quest_time;
-int doom_stars_drawn;
-BYTE *pDoomCel;
-DIABOOL doomflag;
-int DoomQuestState;
+int doom_quest_time = 0;
+int doom_stars_drawn = 0;
+BYTE *pDoomCel = NULL;
+DIABOOL doomflag = 0;
+int DoomQuestState = 0;
 
 /*
 void doom_reset_state()

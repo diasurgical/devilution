@@ -5,20 +5,6 @@
  */
 #include "all.h"
 
-LightListStruct VisionList[MAXVISION];
-BYTE lightactive[MAXLIGHTS];
-LightListStruct LightList[MAXLIGHTS];
-int numlights;
-BYTE lightradius[16][128];
-BOOL dovision;
-int numvision;
-char lightmax;
-BOOL dolighting;
-BYTE lightblock[64][16][16];
-int visionid;
-BYTE *pLightTbl;
-BOOL lightflag;
-
 /**
  * CrawlTable specifies X- and Y-coordinate deltas from a missile target coordinate.
  *
@@ -405,29 +391,6 @@ char CrawlTable[2749] = {
 	-18, -2, 18, -2, -18, 1, 18, 1,
 	-18, -1, 18, -1, -18, 0, 18, 0
 };
-
-/** pCrawlTable maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
-char *pCrawlTable[19] = {
-	CrawlTable,
-	CrawlTable + 3,
-	CrawlTable + 12,
-	CrawlTable + 45,
-	CrawlTable + 94,
-	CrawlTable + 159,
-	CrawlTable + 240,
-	CrawlTable + 337,
-	CrawlTable + 450,
-	CrawlTable + 579,
-	CrawlTable + 724,
-	CrawlTable + 885,
-	CrawlTable + 1062,
-	CrawlTable + 1255,
-	CrawlTable + 1464,
-	CrawlTable + 1689,
-	CrawlTable + 1930,
-	CrawlTable + 2187,
-	CrawlTable + 2460
-};
 /** vCrawlTable specifies the X- Y-coordinate offsets of lighting visions. */
 BYTE vCrawlTable[23][30] = {
 	{ 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0 },
@@ -475,9 +438,46 @@ BYTE byte_49463C[18][18] = {
 	{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3 },
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 }
 };
-
 /** RadiusAdj maps from vCrawlTable index to lighting vision radius adjustment. */
 BYTE RadiusAdj[23] = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0 };
+LightListStruct VisionList[MAXVISION] = { 0 };
+BYTE lightactive[MAXLIGHTS] = { 0 };
+LightListStruct LightList[MAXLIGHTS] = { 0 };
+int numlights = 0;
+BYTE lightradius[16][128] = { 0 };
+BOOL dovision = 0;
+int numvision = 0;
+char lightmax = 0;
+BOOL dolighting = 0;
+
+BYTE lightblock[64][16][16] = { 0 };
+
+/** pCrawlTable maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
+char *pCrawlTable[19] = {
+	CrawlTable,
+	CrawlTable + 3,
+	CrawlTable + 12,
+	CrawlTable + 45,
+	CrawlTable + 94,
+	CrawlTable + 159,
+	CrawlTable + 240,
+	CrawlTable + 337,
+	CrawlTable + 450,
+	CrawlTable + 579,
+	CrawlTable + 724,
+	CrawlTable + 885,
+	CrawlTable + 1062,
+	CrawlTable + 1255,
+	CrawlTable + 1464,
+	CrawlTable + 1689,
+	CrawlTable + 1930,
+	CrawlTable + 2187,
+	CrawlTable + 2460
+};
+int visionid = 0;
+BYTE *pLightTbl = NULL;
+
+BOOL lightflag = 0;
 
 void RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by)
 {

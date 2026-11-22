@@ -5,65 +5,10 @@
  */
 #include "all.h"
 
-int trapid;
-int trapdir;
-BYTE *pObjCels[40];
-char ObjFileList[40];
-int objectactive[MAXOBJECTS];
-/** Specifies the number of active objects. */
-int nobjects;
-int leverid;
-int objectavail[MAXOBJECTS];
-ObjectStruct object[MAXOBJECTS];
-BOOL InitObjFlag;
-int numobjfiles;
-#ifdef HELLFIRE
-int dword_6DE0E0;
-#endif
-
 /** Specifies the X-coordinate delta between barrels. */
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 /** Specifies the Y-coordinate delta between barrels. */
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-/** Maps from shrine_id to shrine name. */
-const char *const shrinestrs[NUM_SHRINETYPE] = {
-	"Mysterious",
-	"Hidden",
-	"Gloomy",
-	"Weird",
-	"Magical",
-	"Stone",
-	"Religious",
-	"Enchanted",
-	"Thaumaturgic",
-	"Fascinating",
-	"Cryptic",
-	"Magical",
-	"Eldritch",
-	"Eerie",
-	"Divine",
-	"Holy",
-	"Sacred",
-	"Spiritual",
-	"Spooky",
-	"Abandoned",
-	"Creepy",
-	"Quiet",
-	"Secluded",
-	"Ornate",
-	"Glimmering",
-	"Tainted",
-#ifdef HELLFIRE
-	"Oily",
-	"Glowing",
-	"Mendicant's",
-	"Sparkling",
-	"Town",
-	"Shimmering",
-	"Solar",
-	"Murphy's",
-#endif
-};
 /** Specifies the minimum dungeon level on which each shrine will appear. */
 char shrinemin[NUM_SHRINETYPE] = {
 	1, // Mysterious
@@ -142,13 +87,6 @@ char shrinemax[NUM_SHRINETYPE] = {
 	MAX_LVLS, // Murphy's
 #endif
 };
-/**
- * Specifies the game type for which each shrine may appear.
- * SHRINETYPE_ANY - 0 - sp & mp
- * SHRINETYPE_SINGLE - 1 - sp only
- * SHRINETYPE_MULTI - 2 - mp only
- */
-
 BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_ANY,    // SHRINE_MYSTERIOUS
 	SHRINETYPE_ANY,    // SHRINE_HIDDEN
@@ -187,6 +125,73 @@ BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_ANY,    // SHRINE_MURPHYS
 #endif
 };
+/** Specifies the speech IDs of each dungeon type narrator book, for each player class. */
+int StoryText[3][3] = {
+	{ TEXT_BOOK11, TEXT_BOOK12, TEXT_BOOK13 },
+	{ TEXT_BOOK21, TEXT_BOOK22, TEXT_BOOK23 },
+	{ TEXT_BOOK31, TEXT_BOOK32, TEXT_BOOK33 }
+};
+int trapid = 0;
+int trapdir = 0;
+BYTE *pObjCels[40] = { 0 };
+char ObjFileList[40] = { 0 };
+int objectactive[MAXOBJECTS] = { 0 };
+#ifdef HELLFIRE
+int dword_6DE0E0 = 0;
+#endif
+
+/** Specifies the number of active objects. */
+int nobjects = 0;
+int leverid = 0;
+/** Maps from shrine_id to shrine name. */
+const char *const shrinestrs[NUM_SHRINETYPE] = {
+	"Mysterious",
+	"Hidden",
+	"Gloomy",
+	"Weird",
+	"Magical",
+	"Stone",
+	"Religious",
+	"Enchanted",
+	"Thaumaturgic",
+	"Fascinating",
+	"Cryptic",
+	"Magical",
+	"Eldritch",
+	"Eerie",
+	"Divine",
+	"Holy",
+	"Sacred",
+	"Spiritual",
+	"Spooky",
+	"Abandoned",
+	"Creepy",
+	"Quiet",
+	"Secluded",
+	"Ornate",
+	"Glimmering",
+	"Tainted",
+#ifdef HELLFIRE
+	"Oily",
+	"Glowing",
+	"Mendicant's",
+	"Sparkling",
+	"Town",
+	"Shimmering",
+	"Solar",
+	"Murphy's",
+#endif
+};
+int objectavail[MAXOBJECTS] = { 0 };
+ObjectStruct object[MAXOBJECTS] = { 0 };
+/**
+ * Specifies the game type for which each shrine may appear.
+ * SHRINETYPE_ANY - 0 - sp & mp
+ * SHRINETYPE_SINGLE - 1 - sp only
+ * SHRINETYPE_MULTI - 2 - mp only
+ */
+
+BOOL InitObjFlag = 0;
 /** Maps from book_id to book name. */
 const char *const StoryBookName[] = {
 	"The Great Conflict",
@@ -208,12 +213,7 @@ const char *const StoryBookName[] = {
 	"A Spellbook",
 #endif
 };
-/** Specifies the speech IDs of each dungeon type narrator book, for each player class. */
-int StoryText[3][3] = {
-	{ TEXT_BOOK11, TEXT_BOOK12, TEXT_BOOK13 },
-	{ TEXT_BOOK21, TEXT_BOOK22, TEXT_BOOK23 },
-	{ TEXT_BOOK31, TEXT_BOOK32, TEXT_BOOK33 }
-};
+int numobjfiles = 0;
 
 void InitObjectGFX()
 {

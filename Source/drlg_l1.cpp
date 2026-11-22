@@ -5,35 +5,38 @@
  */
 #include "all.h"
 
+/**
+ * A lookup table for the 16 possible patterns of a 2x2 area,
+ * where each cell either contains a SW wall or it doesn't.
+ */
+BYTE L5ConvTbl[16] = { 22, 13, 1, 13, 2, 13, 13, 13, 4, 13, 1, 13, 2, 13, 16, 13 };
 /** Represents a tile ID map of twice the size, repeating each tile of the original map in blocks of 4. */
-BYTE L5dungeon[80][80];
-BYTE L5dflags[DMAXX][DMAXY];
+BYTE L5dungeon[80][80] = { 0 };
+BYTE L5dflags[DMAXX][DMAXY] = { 0 };
 /** Specifies whether a single player quest DUN has been loaded. */
-BOOL L5setloadflag;
+BOOL L5setloadflag = 0;
 /** Specifies whether to generate a horizontal room at position 1 in the Cathedral. */
-int HR1;
+int HR1 = 0;
 /** Specifies whether to generate a horizontal room at position 2 in the Cathedral. */
-int HR2;
-/** Specifies whether to generate a horizontal room at position 3 in the Cathedral. */
-int HR3;
+int HR2 = 0;
 #ifdef HELLFIRE
-int UberRow;
-int UberCol;
-int dword_577368;
-int IsUberRoomOpened;
-int UberLeverRow;
-int UberLeverCol;
-int IsUberLeverActivated;
-int UberDiabloMonsterIndex;
+int UberRow = 0;
+int UberCol = 0;
+int dword_577368 = 0;
+int IsUberRoomOpened = 0;
+int UberLeverRow = 0;
+int UberLeverCol = 0;
+int IsUberLeverActivated = 0;
+int UberDiabloMonsterIndex = 0;
 #endif
+/** Specifies whether to generate a horizontal room at position 3 in the Cathedral. */
+int HR3 = 0;
 /** Specifies whether to generate a vertical room at position 1 in the Cathedral. */
-BOOL VR1;
+BOOL VR1 = 0;
 /** Specifies whether to generate a vertical room at position 2 in the Cathedral. */
-BOOL VR2;
+BOOL VR2 = 0;
 /** Specifies whether to generate a vertical room at position 3 in the Cathedral. */
-BOOL VR3;
-/** Contains the contents of the single player quest DUN file. */
-BYTE *L5pSetPiece;
+BOOL VR3 = 0;
 
 /** Contains shadows for 2x2 blocks of base tile IDs in the Cathedral. */
 const ShadowStruct SPATS[37] = {
@@ -497,11 +500,8 @@ BYTE CornerstoneRoomPattern[27] = {
 	// clang-format on
 };
 #endif
-/**
- * A lookup table for the 16 possible patterns of a 2x2 area,
- * where each cell either contains a SW wall or it doesn't.
- */
-BYTE L5ConvTbl[16] = { 22, 13, 1, 13, 2, 13, 13, 13, 4, 13, 1, 13, 2, 13, 16, 13 };
+/** Contains the contents of the single player quest DUN file. */
+BYTE *L5pSetPiece = NULL;
 
 #ifdef HELLFIRE
 void DRLG_InitL5Vals()

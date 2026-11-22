@@ -7,17 +7,17 @@
 #include "../3rdParty/Storm/Source/storm.h"
 
 static CCritSect sgMemCrit;
-CHAR FileName[MAX_PATH];
-char log_buffer[388];
-LPCVOID lpAddress;
-DWORD nNumberOfBytesToWrite;
-
-/* data */
-
 /** Has the log file not yet been created. */
 BOOL log_not_created = TRUE;
 /** Handle to the log file. */
 HANDLE log_file = INVALID_HANDLE_VALUE;
+CHAR FileName[MAX_PATH] = { 0 };
+char log_buffer[388] = { 0 };
+
+/* data */
+
+LPCVOID lpAddress = { 0 };
+DWORD nNumberOfBytesToWrite = 0;
 
 static void log_get_version(VS_FIXEDFILEINFO *file_info)
 {

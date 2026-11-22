@@ -9,16 +9,16 @@
 /**
  * Specifies the current light entry.
  */
-int light_table_index;
-int PitchTbl[1024];
-DWORD sgdwCursWdtOld;
-DWORD sgdwCursX;
-DWORD sgdwCursY;
+int light_table_index = 0;
+int PitchTbl[1024] = { 0 };
+DWORD sgdwCursWdtOld = 0;
+DWORD sgdwCursX = 0;
+DWORD sgdwCursY = 0;
 /**
  * Lower bound of back buffer.
  */
-BYTE *gpBufEnd;
-DWORD sgdwCursHgt;
+BYTE *gpBufEnd = NULL;
+DWORD sgdwCursHgt = 0;
 
 /**
  * Specifies the current MIN block of the level CEL file, as used during rendering of the level tiles.
@@ -26,36 +26,36 @@ DWORD sgdwCursHgt;
  * frameNum  := block & 0x0FFF
  * frameType := block & 0x7000 >> 12
  */
-DWORD level_cel_block;
-DWORD sgdwCursXOld;
-DWORD sgdwCursYOld;
+DWORD level_cel_block = 0;
+DWORD sgdwCursXOld = 0;
+DWORD sgdwCursYOld = 0;
 #ifdef HELLFIRE
-BOOLEAN AutoMapShowItems;
+BOOLEAN AutoMapShowItems = 0;
 #endif
 /**
  * Specifies the type of arches to render.
  */
-char arch_draw_type;
+char arch_draw_type = 0;
 /**
  * Describes the surface being rendered.
  */
-DDSURFACEDESC DDS_desc;
+DDSURFACEDESC DDS_desc = { 0 };
 /**
  * Specifies whether transparency is active for the current CEL file being decoded.
  */
-int cel_transparency_active;
+int cel_transparency_active = 0;
 /**
  * Specifies the current dungeon piece ID of the level, as used during rendering of the level tiles.
  */
-int level_piece_id;
-DWORD sgdwCursWdt;
+int level_piece_id = 0;
+DWORD sgdwCursWdt = 0;
 void (*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
-BYTE sgSaveBack[8192];
+BYTE sgSaveBack[8192] = { 0 };
 /**
  * Specifies the monster_num to render.
  */
-int draw_monster_num;
-DWORD sgdwCursHgtOld;
+int draw_monster_num = 0;
+DWORD sgdwCursHgtOld = 0;
 
 /* data */
 

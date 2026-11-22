@@ -5,10 +5,11 @@
  */
 #include "all.h"
 
-BOOL invflag;
-BYTE *pInvCels;
-BOOL drawsbarflag;
-int sgdwLastTime; // check name
+/** Specifies the starting inventory slots for placement of 2x2 items. */
+int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 };
+BOOL invflag = 0;
+BYTE *pInvCels = NULL;
+BOOL drawsbarflag = 0;
 
 /**
  * Maps from inventory slot to screen position. The inventory slots are
@@ -106,8 +107,7 @@ const InvXY InvRect[] = {
 };
 
 /* data */
-/** Specifies the starting inventory slots for placement of 2x2 items. */
-int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 };
+int sgdwLastTime = 0; // check name
 
 void FreeInvGFX()
 {

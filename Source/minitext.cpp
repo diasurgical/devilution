@@ -6,21 +6,21 @@
 #include "all.h"
 
 /** Current y position of text in px */
-int qtexty;
+int qtexty = 0;
 /** Pointer to the current text being displayed */
-const char *qtextptr;
+const char *qtextptr = NULL;
 /** Time of last rendering of the text */
-int sgLastScroll;
+int sgLastScroll = 0;
 /** Specify if the quest dialog window is being shown */
-BOOLEAN qtextflag;
+BOOLEAN qtextflag = 0;
 /** Duplicate of qtextSpd */
-int qtextDelay;
+int qtextDelay = 0;
 /** Vertical speed of the scrolling text, see qscroll_spd_tbl */
-int qtextSpd;
+int qtextSpd = 0;
 /** Graphics for the medium size font */
-BYTE *pMedTextCels;
+BYTE *pMedTextCels = NULL;
 /** Graphics for the window border */
-BYTE *pTextBoxCels;
+BYTE *pTextBoxCels = NULL;
 
 /** Maps from font index to medtexts.cel frame number. */
 const BYTE mfontframe[128] = {

@@ -6,19 +6,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-/** Contains the audio channels used for playback of sounds. */
-LPDIRECTSOUNDBUFFER DSBs[8];
-LPDIRECTSOUND sglpDS;
-BOOLEAN gbSndInited;
-int sglMusicVolume;
-int sglSoundVolume;
-/** Provides a handle to the dynamic library dsound.dll. */
-HMODULE hDsound_dll;
-/** Specifies whether background music is enabled. */
-HANDLE sghMusic;
-LPDIRECTSOUNDBUFFER sglpDSB;
-
-/* data */
+/* in 1.09b these are named constants (they are in .rdata there) */
+static const char szSoundVolume[] = "Sound Volume";
+static const char szMusicVolume[] = "Music Volume";
 
 BOOLEAN gbMusicOn = TRUE;
 /** Specifies whether sound effects are enabled. */
@@ -27,6 +17,20 @@ BOOLEAN gbSoundOn = TRUE;
 BOOLEAN gbDupSounds = TRUE;
 /** Specifies the active background music track id. */
 int sgnMusicTrack = NUM_MUSIC;
+/** Contains the audio channels used for playback of sounds. */
+LPDIRECTSOUNDBUFFER DSBs[8] = { 0 };
+LPDIRECTSOUND sglpDS = { 0 };
+BOOLEAN gbSndInited = 0;
+int sglMusicVolume = 0;
+
+/* data */
+
+int sglSoundVolume = 0;
+/** Provides a handle to the dynamic library dsound.dll. */
+HMODULE hDsound_dll = 0;
+/** Specifies whether background music is enabled. */
+HANDLE sghMusic = 0;
+LPDIRECTSOUNDBUFFER sglpDSB = { 0 };
 /** Maps from track ID to track name. */
 const char *const sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
@@ -351,10 +355,10 @@ static HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNK
 void snd_init(HWND hWnd)
 {
 	int error_code;
-	snd_get_volume("Sound Volume", &sglSoundVolume);
+	snd_get_volume(szSoundVolume, &sglSoundVolume);
 	gbSoundOn = sglSoundVolume > VOLUME_MIN;
 
-	snd_get_volume("Music Volume", &sglMusicVolume);
+	snd_get_volume(szMusicVolume, &sglMusicVolume);
 	gbMusicOn = sglMusicVolume > VOLUME_MIN;
 
 	error_code = sound_DirectSoundCreate(NULL, &sglpDS, NULL);
@@ -383,8 +387,8 @@ void sound_cleanup()
 
 	if (gbSndInited) {
 		gbSndInited = FALSE;
-		snd_set_volume("Sound Volume", sglSoundVolume);
-		snd_set_volume("Music Volume", sglMusicVolume);
+		snd_set_volume(szSoundVolume, sglSoundVolume);
+		snd_set_volume(szMusicVolume, sglMusicVolume);
 	}
 }
 

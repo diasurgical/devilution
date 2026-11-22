@@ -5,7 +5,7 @@
  */
 #include "all.h"
 
-BYTE *tbuff;
+BYTE *tbuff = NULL;
 
 static char BLoad()
 {

@@ -5,31 +5,6 @@
  */
 #include "all.h"
 
-/** Notes visisted by the path finding algorithm. */
-PATHNODE path_nodes[MAXPATHNODES];
-/** size of the pnode_tblptr stack */
-int gdwCurPathStep;
-/** the number of in-use nodes in path_nodes */
-int gdwCurNodes;
-/**
- * for reconstructing the path after the A* search is done. The longest
- * possible path is actually 24 steps, even though we can fit 25
- */
-int pnode_vals[MAX_PATH_LENGTH];
-/** A linked list of all visited nodes */
-PATHNODE *pnode_ptr;
-/** A stack for recursively searching nodes */
-PATHNODE *pnode_tblptr[MAXPATHNODES];
-/** A linked list of the A* frontier, sorted by distance */
-PATHNODE *path_2_nodes;
-PATHNODE path_unusednodes[MAXPATHNODES];
-
-/** For iterating over the 8 possible movement directions */
-const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
-const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
-
-/* data */
-
 /**
  * each step direction is assigned a number like this:
  *       dx
@@ -40,6 +15,31 @@ const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
  *    1|8 4 7
  */
 char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
+/** Notes visisted by the path finding algorithm. */
+PATHNODE path_nodes[MAXPATHNODES] = { 0 };
+/** size of the pnode_tblptr stack */
+int gdwCurPathStep = 0;
+/**
+ * for reconstructing the path after the A* search is done. The longest
+ * possible path is actually 24 steps, even though we can fit 25
+ */
+int pnode_vals[MAX_PATH_LENGTH] = { 0 };
+/** the number of in-use nodes in path_nodes */
+int gdwCurNodes = 0;
+/** A linked list of all visited nodes */
+PATHNODE *pnode_ptr = NULL;
+/** A stack for recursively searching nodes */
+PATHNODE *pnode_tblptr[MAXPATHNODES] = { 0 };
+/** A linked list of the A* frontier, sorted by distance */
+PATHNODE *path_2_nodes = NULL;
+
+/** For iterating over the 8 possible movement directions */
+const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
+const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
+
+/* data */
+
+PATHNODE path_unusednodes[MAXPATHNODES] = { 0 };
 
 /**
  * find the shortest path from (sx,sy) to (dx,dy), using PosOk(PosOkArg,x,y) to

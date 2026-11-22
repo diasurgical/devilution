@@ -6,26 +6,58 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-/** Tracks which missile files are already loaded */
-int MissileFileFlag;
+/** Maps from monster walk animation frame num to monster velocity. */
+int MWVel[24][3] = {
+	{ 256, 512, 1024 },
+	{ 128, 256, 512 },
+	{ 85, 170, 341 },
+	{ 64, 128, 256 },
+	{ 51, 102, 204 },
+	{ 42, 85, 170 },
+	{ 36, 73, 146 },
+	{ 32, 64, 128 },
+	{ 28, 56, 113 },
+	{ 26, 51, 102 },
+	{ 23, 46, 93 },
+	{ 21, 42, 85 },
+	{ 19, 39, 78 },
+	{ 18, 36, 73 },
+	{ 17, 34, 68 },
+	{ 16, 32, 64 },
+	{ 15, 30, 60 },
+	{ 14, 28, 57 },
+	{ 13, 26, 54 },
+	{ 12, 25, 51 },
+	{ 12, 24, 48 },
+	{ 11, 23, 46 },
+	{ 11, 22, 44 },
+	{ 10, 21, 42 }
+};
 
 // BUGFIX: replace monstkills[MAXMONSTERS] with monstkills[NUM_MTYPES].
-/** Tracks the total number of monsters killed per monster_id. */
-int monstkills[MAXMONSTERS];
-int monstactive[MAXMONSTERS];
-int nummonsters;
-BOOLEAN sgbSaveSoundOn;
-MonsterStruct monster[MAXMONSTERS];
-int totalmonsters;
-CMonster Monsters[MAX_LVLMTYPES];
+/** Maps from monster action to monster animation letter. */
+char animletter[7] = "nwahds";
+/** Maps from direction to a left turn from the direction. */
+int left[8] = { 7, 0, 1, 2, 3, 4, 5, 6 };
+/** Maps from direction to a right turn from the direction. */
+int right[8] = { 1, 2, 3, 4, 5, 6, 7, 0 };
+/** Maps from direction to the opposite direction. */
+int opposite[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
+/** Maps from direction to delta X-offset. */
+int offset_x[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
+/** Maps from direction to delta Y-offset. */
+int offset_y[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+/** Tracks which missile files are already loaded */
+int MissileFileFlag = 0;
 #ifdef HELLFIRE
-int GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
+int GraphicTable[NUMLEVELS][MAX_LVLMTYPES] = { 0 };
 #else
-BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
+BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES] = { 0 };
 #endif
-int monstimgtot;
-int uniquetrans;
-int nummtypes;
+/** Tracks the total number of monsters killed per monster_id. */
+int monstkills[MAXMONSTERS] = { 0 };
+int monstactive[MAXMONSTERS] = { 0 };
+int nummonsters = 0;
 
 /** Maps from walking path step to facing direction. */
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
@@ -71,45 +103,13 @@ const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL
 //      { 11, 21, 43 }
 //   };
 
-/** Maps from monster walk animation frame num to monster velocity. */
-int MWVel[24][3] = {
-	{ 256, 512, 1024 },
-	{ 128, 256, 512 },
-	{ 85, 170, 341 },
-	{ 64, 128, 256 },
-	{ 51, 102, 204 },
-	{ 42, 85, 170 },
-	{ 36, 73, 146 },
-	{ 32, 64, 128 },
-	{ 28, 56, 113 },
-	{ 26, 51, 102 },
-	{ 23, 46, 93 },
-	{ 21, 42, 85 },
-	{ 19, 39, 78 },
-	{ 18, 36, 73 },
-	{ 17, 34, 68 },
-	{ 16, 32, 64 },
-	{ 15, 30, 60 },
-	{ 14, 28, 57 },
-	{ 13, 26, 54 },
-	{ 12, 25, 51 },
-	{ 12, 24, 48 },
-	{ 11, 23, 46 },
-	{ 11, 22, 44 },
-	{ 10, 21, 42 }
-};
-/** Maps from monster action to monster animation letter. */
-char animletter[7] = "nwahds";
-/** Maps from direction to a left turn from the direction. */
-int left[8] = { 7, 0, 1, 2, 3, 4, 5, 6 };
-/** Maps from direction to a right turn from the direction. */
-int right[8] = { 1, 2, 3, 4, 5, 6, 7, 0 };
-/** Maps from direction to the opposite direction. */
-int opposite[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
-/** Maps from direction to delta X-offset. */
-int offset_x[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
-/** Maps from direction to delta Y-offset. */
-int offset_y[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+BOOLEAN sgbSaveSoundOn = 0;
+MonsterStruct monster[MAXMONSTERS] = { 0 };
+int totalmonsters = 0;
+CMonster Monsters[MAX_LVLMTYPES] = { 0 };
+int monstimgtot = 0;
+int uniquetrans = 0;
+int nummtypes = 0;
 
 #ifdef HELLFIRE
 int HorkXAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 }; // CODEFIX: same values as offset_x, remove it and use offset_x instead

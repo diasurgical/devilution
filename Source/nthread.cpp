@@ -6,22 +6,22 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-BYTE sgbNetUpdateRate;
-DWORD gdwMsgLenTbl[MAX_PLRS];
+BYTE sgbNetUpdateRate = 0;
+DWORD gdwMsgLenTbl[MAX_PLRS] = { 0 };
 static CCritSect sgMemCrit;
-DWORD gdwDeltaBytesSec;
-BOOLEAN nthread_should_run;
-DWORD gdwTurnsInTransit;
-int glpMsgTbl[MAX_PLRS];
-unsigned int glpNThreadId;
-char sgbSyncCountdown;
-int turn_upper_bit;
-BOOLEAN sgbTicsOutOfSync;
-char sgbPacketCountdown;
-BOOLEAN sgbThreadIsRunning;
-DWORD gdwLargestMsgSize;
-DWORD gdwNormalMsgSize;
-int last_tick;
+DWORD gdwDeltaBytesSec = 0;
+BOOLEAN nthread_should_run = 0;
+DWORD gdwTurnsInTransit = 0;
+int glpMsgTbl[MAX_PLRS] = { 0 };
+unsigned int glpNThreadId = 0;
+char sgbSyncCountdown = 0;
+int turn_upper_bit = 0;
+BOOLEAN sgbTicsOutOfSync = 0;
+char sgbPacketCountdown = 0;
+BOOLEAN sgbThreadIsRunning = 0;
+DWORD gdwLargestMsgSize = 0;
+DWORD gdwNormalMsgSize = 0;
+int last_tick = 0;
 
 /* data */
 static HANDLE sghThread = INVALID_HANDLE_VALUE;

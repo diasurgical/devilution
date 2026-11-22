@@ -5,8 +5,8 @@
  */
 #include "all.h"
 
-static BYTE plr_msg_slot;
-_plrmsg plr_msgs[PMSG_COUNT];
+static BYTE plr_msg_slot = 0;
+_plrmsg plr_msgs[PMSG_COUNT] = { 0 };
 
 /** Maps from player_num to text colour, as used in chat messages. */
 const char text_color_from_player_num[MAX_PLRS + 1] = { COL_WHITE, COL_WHITE, COL_WHITE, COL_WHITE, COL_GOLD };

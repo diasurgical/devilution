@@ -5,22 +5,6 @@
  */
 #include "all.h"
 
-int qtopline;
-BOOL questlog;
-BYTE *pQLogCel;
-/** Contains the quests of the current game. */
-QuestStruct quests[MAXQUESTS];
-int qline;
-int qlist[MAXQUESTS];
-int numqlines;
-int WaterDone;
-int ReturnLvlX;
-int ReturnLvlY;
-int ReturnLvlT;
-/** current frame # for the quest pentagram selector */
-int questpentframe;
-int ReturnLvl;
-
 /** Contains the data related to each quest_id. */
 QuestData questlist[MAXQUESTS] = {
 	// clang-format off
@@ -63,13 +47,6 @@ char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };
  * which the hover text of the cursor will be visible.
  */
 char questyoff[7] = { 0, 0, -1, -1, -1, -2, -2 };
-const char *const questtrigstr[5] = {
-	"King Leoric's Tomb",
-	"The Chamber of Bone",
-	"Maze",
-	"A Dark Passage",
-	"Unholy Altar"
-};
 /**
  * A quest group containing the three quests the Butcher,
  * Ogden's Sign and Gharbad the Weak, which ensures that exactly
@@ -94,6 +71,29 @@ int QuestGroup3[3] = { Q_MUSHROOM, Q_ZHAR, Q_ANVIL };
  * appears in any single player game.
  */
 int QuestGroup4[2] = { Q_VEIL, Q_WARLORD };
+int qtopline = 0;
+BOOL questlog = 0;
+BYTE *pQLogCel = NULL;
+/** Contains the quests of the current game. */
+QuestStruct quests[MAXQUESTS] = { 0 };
+int qline = 0;
+int qlist[MAXQUESTS] = { 0 };
+
+int numqlines = 0;
+int WaterDone = 0;
+int ReturnLvlY = 0;
+const char *const questtrigstr[5] = {
+	"King Leoric's Tomb",
+	"The Chamber of Bone",
+	"Maze",
+	"A Dark Passage",
+	"Unholy Altar"
+};
+int ReturnLvlX = 0;
+int ReturnLvlT = 0;
+/** current frame # for the quest pentagram selector */
+int questpentframe = 0;
+int ReturnLvl = 0;
 
 void InitQuests()
 {

@@ -10,13 +10,13 @@ BOOL update_seed_check = FALSE;
 #endif
 
 #define DEBUGSEEDS 4096
-int seed_index;
-int level_seeds[NUMLEVELS + 1];
-int seed_table[DEBUGSEEDS];
+int seed_index = 0;
+int level_seeds[NUMLEVELS + 1] = { 0 };
+int seed_table[DEBUGSEEDS] = { 0 };
 
-BYTE *pSquareCel;
-char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
-char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
+BYTE *pSquareCel = NULL;
+char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY] = { 0 };
+char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY] = { 0 };
 
 void LoadDebugGFX()
 {

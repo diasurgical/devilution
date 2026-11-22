@@ -5,64 +5,7 @@
  */
 #include "all.h"
 
-BYTE sgbNextTalkSave;
-BYTE sgbTalkSavePos;
-BYTE *pDurIcons;
-BYTE *pChrButtons;
-BOOL drawhpflag;
-BOOL dropGoldFlag;
-BOOL panbtn[8];
-BOOL chrbtn[4];
-BYTE *pMultiBtns;
-BYTE *pPanelButtons;
-BYTE *pChrPanel;
-BOOL lvlbtndown;
-char sgszTalkSave[8][80];
-int dropGoldValue;
-BOOL drawmanaflag;
-BOOL chrbtnactive;
-char sgszTalkMsg[MAX_SEND_STR_LEN];
-BYTE *pPanelText;
-/** current frame # for the pentagram caret in gold input */
-int nGoldFrame;
-BYTE *pLifeBuff;
-BYTE *pBtmBuff;
-BYTE *pTalkBtns;
-BOOL pstrjust[4];
-int pnumlines;
-BOOL pinfoflag;
-BOOL talkbtndown[3];
-int pSpell;
-BYTE *pManaBuff;
-char infoclr;
-int sgbPlrTalkTbl;
-BYTE *pGBoxBuff;
-BYTE *pSBkBtnCel;
-char tempstr[256];
-BOOLEAN whisper[MAX_PLRS];
-int sbooktab;
-int pSplType;
-/** current frame # for the pentagram caret in chat input */
-int frame;
-int initialDropGoldIndex;
-BOOL talkflag;
-BYTE *pSBkIconCels;
-BOOL sbookflag;
-BOOL chrflag;
-BOOL drawbtnflag;
-BYTE *pSpellBkCel;
-char infostr[256];
-int numpanbtns;
-BYTE *pStatusPanel;
-char panelstr[4][64];
-BOOL panelflag;
-BYTE SplTransTbl[256];
-int initialDropGoldValue;
-BYTE *pSpellCels;
-BOOL panbtndown;
-BYTE *pTalkPanel;
-BOOL spselflag;
-
+BYTE SplTransTbl[256] = { 0 };
 /** Maps from font index to smaltext.cel frame number. */
 const BYTE fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -74,7 +17,6 @@ const BYTE fontframe[128] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 40, 66, 41, 67, 0
 };
-
 /**
  * Maps from smaltext.cel frame number to character width. Note, the
  * character width may be distinct from the frame width, which is 13 for every
@@ -129,7 +71,6 @@ const int lineOffsets[5][5] = {
 	    SCREENXY(177, 457),
 	}
 };
-
 /**
  * Maps ASCII character code to font index, as used by the
  * small, medium and large sized fonts; which corresponds to smaltext.cel,
@@ -155,9 +96,6 @@ const BYTE gbFontTransTbl[256] = {
 	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y',
 	// clang-format on
 };
-
-/* data */
-
 /** Maps from spell_id to spelicon.cel frame number. */
 char SpellITbl[MAX_SPELLS] = {
 #ifdef HELLFIRE
@@ -232,19 +170,6 @@ int PanBtnPos[8][5] = {
 	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, TRUE  }, // friendly fire button
 	// clang-format on
 };
-/** Maps from panel_button_id to hotkey name. */
-const char *const PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
-/** Maps from panel_button_id to panel button description. */
-const char *const PanBtnStr[8] = {
-	"Character Information",
-	"Quests log",
-	"Automap",
-	"Main Menu",
-	"Inventory",
-	"Spell book",
-	"Send Message",
-	"Player Attack"
-};
 /** Maps from attribute_id to the rectangle on screen used for attribute increment buttons. */
 RECT32 ChrBtnsRect[4] = {
 	{ 137, 138, 41, 22 },
@@ -252,7 +177,6 @@ RECT32 ChrBtnsRect[4] = {
 	{ 137, 195, 41, 22 },
 	{ 137, 223, 41, 22 }
 };
-
 /** Maps from spellbook page number and position to spell_id. */
 int SpellPages[6][7] = {
 	{ SPL_NULL, SPL_FIREBOLT, SPL_CBOLT, SPL_HBOLT, SPL_HEAL, SPL_HEALOTHER, SPL_FLAME },
@@ -266,6 +190,81 @@ int SpellPages[6][7] = {
 #endif
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
+BYTE sgbNextTalkSave = 0;
+BYTE sgbTalkSavePos = 0;
+BYTE *pDurIcons = NULL;
+BYTE *pChrButtons = NULL;
+BOOL drawhpflag = 0;
+BOOL dropGoldFlag = 0;
+BOOL panbtn[8] = { 0 };
+BOOL chrbtn[4] = { 0 };
+BYTE *pMultiBtns = NULL;
+BYTE *pPanelButtons = NULL;
+BYTE *pChrPanel = NULL;
+BOOL lvlbtndown = 0;
+char sgszTalkSave[8][80] = { 0 };
+int dropGoldValue = 0;
+BOOL drawmanaflag = 0;
+BOOL chrbtnactive = 0;
+char sgszTalkMsg[MAX_SEND_STR_LEN] = { 0 };
+BYTE *pPanelText = NULL;
+/** current frame # for the pentagram caret in gold input */
+int nGoldFrame = 0;
+BYTE *pLifeBuff = NULL;
+BYTE *pBtmBuff = NULL;
+BYTE *pTalkBtns = NULL;
+BOOL pstrjust[4] = { 0 };
+int pnumlines = 0;
+BOOL pinfoflag = 0;
+BOOL talkbtndown[3] = { 0 };
+int pSpell = 0;
+BYTE *pManaBuff = NULL;
+char infoclr = 0;
+int sgbPlrTalkTbl = 0;
+BYTE *pGBoxBuff = NULL;
+BYTE *pSBkBtnCel = NULL;
+char tempstr[256] = { 0 };
+BOOLEAN whisper[MAX_PLRS] = { 0 };
+int sbooktab = 0;
+int pSplType = 0;
+/** current frame # for the pentagram caret in chat input */
+int frame = 0;
+int initialDropGoldIndex = 0;
+BOOL talkflag = 0;
+BYTE *pSBkIconCels = NULL;
+BOOL sbookflag = 0;
+BOOL chrflag = 0;
+BOOL drawbtnflag = 0;
+BYTE *pSpellBkCel = NULL;
+char infostr[256] = { 0 };
+int numpanbtns = 0;
+BYTE *pStatusPanel = NULL;
+char panelstr[4][64] = { 0 };
+
+BOOL panelflag = 0;
+
+int initialDropGoldValue = 0;
+
+/* data */
+
+BYTE *pSpellCels = NULL;
+BOOL panbtndown = 0;
+/** Maps from panel_button_id to hotkey name. */
+const char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
+/** Maps from panel_button_id to panel button description. */
+const char *PanBtnStr[8] = {
+	"Character Information",
+	"Quests log",
+	"Automap",
+	"Main Menu",
+	"Inventory",
+	"Spell book",
+	"Send Message",
+	"Player Attack"
+};
+BYTE *pTalkPanel = NULL;
+
+BOOL spselflag = 0;
 
 #define SPLICONLENGTH 56
 #define SPLROWICONLS 10

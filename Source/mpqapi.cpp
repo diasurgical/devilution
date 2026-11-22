@@ -6,14 +6,14 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-DWORD sgdwMpqOffset;
-BYTE mpq_buf[4096];
-_HASHENTRY *sgpHashTbl;
+HANDLE sghArchive = INVALID_HANDLE_VALUE;
+DWORD sgdwMpqOffset = 0;
+BYTE mpq_buf[4096] = { 0 };
+_HASHENTRY *sgpHashTbl = NULL;
 /** Has the savegame-file been modified in memory. */
-BOOL save_archive_modified;
-_BLOCKENTRY *sgpBlockTbl;
+BOOL save_archive_modified = 0;
 /** Is the savegame-file currently open. */
-BOOLEAN save_archive_open;
+BOOLEAN save_archive_open = 0;
 
 #define INDEX_ENTRIES 2048
 #define BLOCK_TABLE_SIZE (INDEX_ENTRIES * sizeof(_BLOCKENTRY))
@@ -23,7 +23,7 @@ BOOLEAN save_archive_open;
 
 /* data */
 
-HANDLE sghArchive = INVALID_HANDLE_VALUE;
+_BLOCKENTRY *sgpBlockTbl = NULL;
 
 static void mpqapi_xor_buf(char *pbData)
 {

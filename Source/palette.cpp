@@ -6,24 +6,28 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** Specifies the gamma correction level. */
+int gamma_correction = 100;
+/** Specifies whether the palette has max brightness. */
+BOOLEAN sgbFadedIn = TRUE;
 /** In-memory palette to which gamma corrections are applied. */
-PALETTEENTRY logical_palette[256];
+PALETTEENTRY logical_palette[256] = { 0 };
 /** The active palette of the system. */
-PALETTEENTRY system_palette[256];
-/** The original palette as loaded from file. */
-PALETTEENTRY orig_palette[256];
-int gdwPalEntries;
+PALETTEENTRY system_palette[256] = { 0 };
 
 /* data */
 
-/** Specifies the gamma correction level. */
-int gamma_correction = 100;
+/** The original palette as loaded from file. */
+PALETTEENTRY orig_palette[256] = { 0 };
 #ifndef HELLFIRE
 /** Specifies whether colour cycling is enabled. */
 BOOL color_cycling_enabled = TRUE;
 #endif
-/** Specifies whether the palette has max brightness. */
-BOOLEAN sgbFadedIn = TRUE;
+int gdwPalEntries = 0;
+
+/* named constants in 1.09b (they are in .rdata there) */
+static const char gszGammaCorrection[] = "Gamma Correction";
+static const char gszColorCycling[] = "Color Cycling";
 
 static void palette_update()
 {
@@ -59,9 +63,9 @@ static void ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
 
 void SaveGamma()
 {
-	SRegSaveValue(APP_NAME, "Gamma Correction", 0, gamma_correction);
+	SRegSaveValue(APP_NAME, gszGammaCorrection, 0, gamma_correction);
 #ifndef HELLFIRE
-	SRegSaveValue(APP_NAME, "Color Cycling", FALSE, color_cycling_enabled);
+	SRegSaveValue(APP_NAME, gszColorCycling, FALSE, color_cycling_enabled);
 #endif
 }
 
@@ -71,7 +75,7 @@ static void LoadGamma()
 	int value;
 
 	value = gamma_correction;
-	if (!SRegLoadValue(APP_NAME, "Gamma Correction", 0, &value))
+	if (!SRegLoadValue(APP_NAME, gszGammaCorrection, 0, &value))
 		value = 100;
 	gamma_value = value;
 	if (value < 30) {
@@ -81,7 +85,7 @@ static void LoadGamma()
 	}
 	gamma_correction = gamma_value - gamma_value % 5;
 #ifndef HELLFIRE
-	if (!SRegLoadValue(APP_NAME, "Color Cycling", 0, &value))
+	if (!SRegLoadValue(APP_NAME, gszColorCycling, 0, &value))
 		value = 1;
 	color_cycling_enabled = value;
 #endif
@@ -287,8 +291,8 @@ void palette_update_caves()
 }
 
 #ifdef HELLFIRE
-int dword_6E2D58;
-int dword_6E2D54;
+int dword_6E2D58 = 0;
+int dword_6E2D54 = 0;
 void palette_update_crypt()
 {
 	int i;
@@ -326,8 +330,8 @@ void palette_update_crypt()
 	}
 }
 
-int dword_6E2D5C;
-int dword_6E2D60;
+int dword_6E2D5C = 0;
+int dword_6E2D60 = 0;
 void palette_update_hive()
 {
 	int i;

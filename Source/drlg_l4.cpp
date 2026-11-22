@@ -5,24 +5,24 @@
  */
 #include "all.h"
 
-int diabquad1x;
-int diabquad1y;
-int diabquad2x;
-int diabquad2y;
-int diabquad3x;
-int diabquad3y;
-int diabquad4x;
-int diabquad4y;
+int diabquad1x = 0;
+int diabquad1y = 0;
+int diabquad3x = 0;
+int diabquad3y = 0;
+int diabquad2x = 0;
+int diabquad2y = 0;
+int diabquad4x = 0;
+int diabquad4y = 0;
 #ifndef SPAWN
-BOOL hallok[20];
-int l4holdx;
-int l4holdy;
-int SP4x1;
-int SP4y1;
-int SP4x2;
-int SP4y2;
-BYTE L4dungeon[80][80];
-BYTE dung[20][20];
+BOOL hallok[20] = { 0 };
+int l4holdx = 0;
+int l4holdy = 0;
+int SP4x1 = 0;
+int SP4y1 = 0;
+int SP4x2 = 0;
+int SP4y2 = 0;
+BYTE L4dungeon[80][80] = { 0 };
+BYTE dung[20][20] = { 0 };
 //int dword_52A4DC;
 
 /**

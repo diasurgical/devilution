@@ -53,7 +53,9 @@ typedef struct _WSIZE
 } WSIZE, *PWSIZE;
 
 #ifdef __cplusplus
-static float infinity = std::numeric_limits<float>::infinity();
+// 1.09b: every file including this has its own infinity constant in .rdata, copied at startup
+static const unsigned long infinity_bits = 0x7F800000;
+static float infinity = *(const float *)&infinity_bits;
 
 struct CCritSect {
 	CRITICAL_SECTION m_critsect;

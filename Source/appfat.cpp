@@ -7,11 +7,11 @@
 #include "../3rdParty/Storm/Source/storm.h"
 
 /** Buffer used by GetErrorStr for its return value */
-char sz_error_buf[256];
+char sz_error_buf[256] = { 0 };
 /** Set to true when a fatal error is encountered and the application should shut down. */
-BOOL terminating;
+BOOL terminating = 0;
 /** Thread id of the last callee to FreeDlg(). */
-int cleanup_thread_id;
+int cleanup_thread_id = 0;
 
 // delete overloads the delete operator.
 void __cdecl operator delete(void *ptr)

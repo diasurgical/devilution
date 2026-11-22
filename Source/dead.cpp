@@ -6,9 +6,9 @@
 #include "all.h"
 
 /** unused, this was probably for blood boil/burn */
-int spurtndx;
-DeadStruct dead[MAXDEAD];
-int stonendx;
+int spurtndx = 0;
+DeadStruct dead[MAXDEAD] = { 0 };
+int stonendx = 0;
 
 void InitDead()
 {

@@ -6,54 +6,6 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-int plr_lframe_size;
-int plr_wframe_size;
-BYTE plr_gfx_flag = 0;
-int plr_aframe_size;
-int myplr;
-#ifdef HELLFIRE
-PlayerStruct *plr;
-#else
-PlayerStruct plr[MAX_PLRS];
-#endif
-int plr_fframe_size;
-int plr_qframe_size;
-BOOL deathflag;
-int plr_hframe_size;
-int plr_bframe_size;
-BYTE plr_gfx_bflag = 0;
-int plr_sframe_size;
-int deathdelay;
-int plr_dframe_size;
-
-/** Maps from armor animation to letter used in graphic files. */
-const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
-/** Maps from weapon animation to letter used in graphic files. */
-const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
-/** Maps from player class to letter used in graphic files. */
-const char CharChar[] = {
-	'W',
-	'R',
-	'S',
-#ifdef HELLFIRE
-	'M',
-	'R',
-	'W',
-	0
-};
-const char CharCharHF[] = {
-	'W',
-	'R',
-	'S',
-	'M',
-	'B',
-	'C',
-#endif
-	0
-};
-
-/* data */
-
 /** Specifies the X-coordinate delta from the player start location in Tristram. */
 int plrxoff[9] = { 0, 2, 0, 2, 1, 0, 1, 2, 1 };
 /** Specifies the Y-coordinate delta from the player start location in Tristram. */
@@ -73,6 +25,11 @@ char PlrGFXAnimLens[NUM_CLASSES][11] = {
 	{ 10, 16, 8, 2, 20, 20, 6, 20, 8, 9, 14 },
 #endif
 };
+#ifdef HELLFIRE
+PlayerStruct *plr = NULL;
+#else
+PlayerStruct plr[MAX_PLRS] = { 0 };
+#endif
 /** Maps from player class to player velocity. */
 int PWVel[NUM_CLASSES][3] = {
 	{ 2048, 1024, 512 },
@@ -152,16 +109,6 @@ int ToBlkTbl[NUM_CLASSES] = {
 	30,
 #endif
 };
-const char *const ClassStrTblOld[] = {
-	"Warrior",
-	"Rogue",
-	"Sorceror",
-#ifdef HELLFIRE
-	"Monk",
-	"Bard",
-	"Barbarian",
-#endif
-};
 /** Maps from player_class to maximum stats. */
 int MaxStats[NUM_CLASSES][4] = {
 	// clang-format off
@@ -229,7 +176,36 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 	1310707109,
 	1583495809
 };
-const char *const ClassStrTbl[NUM_CLASSES] = {
+
+/** Maps from armor animation to letter used in graphic files. */
+const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
+/** Maps from weapon animation to letter used in graphic files. */
+const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
+/** Maps from player class to letter used in graphic files. */
+const char CharChar[] = {
+	'W',
+	'R',
+	'S',
+#ifdef HELLFIRE
+	'M',
+	'R',
+	'W',
+	0
+};
+const char CharCharHF[] = {
+	'W',
+	'R',
+	'S',
+	'M',
+	'B',
+	'C',
+#endif
+	0
+};
+
+/* data */
+
+const char *ClassStrTbl[NUM_CLASSES] = {
 	"Warrior",
 	"Rogue",
 	"Sorceror",
@@ -239,6 +215,30 @@ const char *const ClassStrTbl[NUM_CLASSES] = {
 	"Warrior",
 #endif
 };
+int plr_lframe_size = 0;
+int plr_wframe_size = 0;
+BYTE plr_gfx_flag = 0;
+int plr_aframe_size = 0;
+int myplr = 0;
+int plr_fframe_size = 0;
+int plr_qframe_size = 0;
+BOOL deathflag = 0;
+int plr_hframe_size = 0;
+int plr_bframe_size = 0;
+BYTE plr_gfx_bflag = 0;
+const char *const ClassStrTblOld[] = {
+	"Warrior",
+	"Rogue",
+	"Sorceror",
+#ifdef HELLFIRE
+	"Monk",
+	"Bard",
+	"Barbarian",
+#endif
+};
+int plr_sframe_size = 0;
+int deathdelay = 0;
+int plr_dframe_size = 0;
 /** Unused local of PM_ChangeLightOff, originally for computing light radius. */
 BYTE fix[9] = { 0, 0, 3, 3, 3, 6, 6, 6, 8 };
 

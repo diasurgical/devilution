@@ -5,22 +5,22 @@
  */
 #include "all.h"
 
-BYTE *optbar_cel;
-BOOLEAN mouseNavigation;
-BYTE *PentSpin_cel;
-TMenuItem *sgpCurrItem;
-BYTE *BigTGold_cel;
+BYTE *optbar_cel = NULL;
+BOOLEAN mouseNavigation = 0;
+BYTE *PentSpin_cel = NULL;
+TMenuItem *sgpCurrItem = NULL;
+BYTE *BigTGold_cel = NULL;
 #ifdef HELLFIRE
-int LogoAnim_tick;
-BYTE LogoAnim_frame;
+int LogoAnim_tick = 0;
+BYTE LogoAnim_frame = 0;
 #endif
-int PentSpin_tick;
-BYTE PentSpin_frame;
+int PentSpin_tick = 0;
+BYTE PentSpin_frame = 0;
 void (*gmenu_current_option)(TMenuItem *);
-TMenuItem *sgpCurrentMenu;
-BYTE *option_cel;
-BYTE *sgpLogo;
-int sgCurrentMenuIdx;
+TMenuItem *sgpCurrentMenu = NULL;
+BYTE *option_cel = NULL;
+BYTE *sgpLogo = NULL;
+int sgCurrentMenuIdx = 0;
 
 /** Maps from font index to bigtgold.cel frame number. */
 const BYTE lfontframe[] = {

@@ -8,57 +8,6 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #endif
 
-int itemactive[MAXITEMS];
-BOOL uitemflag;
-int itemavail[MAXITEMS];
-ItemStruct curruitem;
-ItemGetRecordStruct itemrecord[MAXITEMS];
-/** Contains the items on ground in the current game. */
-ItemStruct item[MAXITEMS + 1];
-BOOL itemhold[3][3];
-#ifdef HELLFIRE
-CornerStoneStruct CornerStone;
-#endif
-BYTE *itemanims[ITEMTYPES];
-BOOL UniqueItemFlag[128];
-#ifdef HELLFIRE
-int auricGold = GOLD_MAX_LIMIT * 2;
-#endif
-int numitems;
-int gnNumGetRecords;
-
-/* data */
-
-#ifdef HELLFIRE
-int OilLevels[] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
-int OilValues[] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
-int OilMagic[] = {
-	IMISC_OILACC,
-	IMISC_OILMAST,
-	IMISC_OILSHARP,
-	IMISC_OILDEATH,
-	IMISC_OILSKILL,
-	IMISC_OILBSMTH,
-	IMISC_OILFORT,
-	IMISC_OILPERM,
-	IMISC_OILHARD,
-	IMISC_OILIMP,
-};
-char OilNames[10][25] = {
-	"Oil of Accuracy",
-	"Oil of Mastery",
-	"Oil of Sharpness",
-	"Oil of Death",
-	"Oil of Skill",
-	"Blacksmith Oil",
-	"Oil of Fortitude",
-	"Oil of Permanence",
-	"Oil of Hardening",
-	"Oil of Imperviousness"
-};
-int MaxGold = GOLD_MAX_LIMIT;
-#endif
-
 /** Maps from item_cursor_graphic to in-memory item type. */
 BYTE ItemCAnimTbl[] = {
 #ifndef HELLFIRE
@@ -103,54 +52,6 @@ BYTE ItemCAnimTbl[] = {
 	8, 8, 8, 17, 0, 6, 8, 11, 11, 3,
 	3, 1, 6, 6, 6, 1, 8, 6, 11, 3,
 	6, 8, 1, 6, 6, 17, 40, 0, 0
-#endif
-};
-/** Map of item type .cel file names. */
-const char *const ItemDropNames[] = {
-	"Armor2",
-	"Axe",
-	"FBttle",
-	"Bow",
-	"GoldFlip",
-	"Helmut",
-	"Mace",
-	"Shield",
-	"SwrdFlip",
-	"Rock",
-	"Cleaver",
-	"Staff",
-	"Ring",
-	"CrownF",
-	"LArmor",
-	"WShield",
-	"Scroll",
-	"FPlateAr",
-	"FBook",
-	"Food",
-	"FBttleBB",
-	"FBttleDY",
-	"FBttleOR",
-	"FBttleBR",
-	"FBttleBL",
-	"FBttleBY",
-	"FBttleWH",
-	"FBttleDB",
-	"FEar",
-	"FBrain",
-	"FMush",
-	"Innsign",
-	"Bldstn",
-	"Fanvil",
-	"FLazStaf",
-#ifdef HELLFIRE
-	"bombs1",
-	"halfps1",
-	"wholeps1",
-	"runes1",
-	"teddys1",
-	"cows1",
-	"donkys1",
-	"mooses1",
 #endif
 };
 /** Maps of item drop animation length. */
@@ -297,9 +198,6 @@ int ItemInvSnds[] = {
 	IS_ILARM,
 #endif
 };
-#ifdef HELLFIRE
-char *CornerStoneRegKey = "SItem";
-#endif
 /** Specifies the current Y-coordinate used for validation of items on ground. */
 int idoppely = 16;
 /** Maps from Griswold premium item number to a quality level delta as added to the base quality level. */
@@ -328,6 +226,108 @@ int premiumlvladd[SMITH_PREMIUM_ITEMS] = {
 #endif
 	// clang-format on
 };
+int itemactive[MAXITEMS] = { 0 };
+#ifdef HELLFIRE
+CornerStoneStruct CornerStone = { 0 };
+#endif
+BOOL uitemflag = 0;
+int itemavail[MAXITEMS] = { 0 };
+#ifdef HELLFIRE
+int auricGold = GOLD_MAX_LIMIT * 2;
+#endif
+ItemStruct curruitem = { 0 };
+ItemGetRecordStruct itemrecord[MAXITEMS] = { 0 };
+
+/* data */
+
+#ifdef HELLFIRE
+int OilLevels[] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
+int OilValues[] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
+int OilMagic[] = {
+	IMISC_OILACC,
+	IMISC_OILMAST,
+	IMISC_OILSHARP,
+	IMISC_OILDEATH,
+	IMISC_OILSKILL,
+	IMISC_OILBSMTH,
+	IMISC_OILFORT,
+	IMISC_OILPERM,
+	IMISC_OILHARD,
+	IMISC_OILIMP,
+};
+char OilNames[10][25] = {
+	"Oil of Accuracy",
+	"Oil of Mastery",
+	"Oil of Sharpness",
+	"Oil of Death",
+	"Oil of Skill",
+	"Blacksmith Oil",
+	"Oil of Fortitude",
+	"Oil of Permanence",
+	"Oil of Hardening",
+	"Oil of Imperviousness"
+};
+int MaxGold = GOLD_MAX_LIMIT;
+#endif
+
+/** Contains the items on ground in the current game. */
+ItemStruct item[MAXITEMS + 1] = { 0 };
+/** Map of item type .cel file names. */
+const char *const ItemDropNames[] = {
+	"Armor2",
+	"Axe",
+	"FBttle",
+	"Bow",
+	"GoldFlip",
+	"Helmut",
+	"Mace",
+	"Shield",
+	"SwrdFlip",
+	"Rock",
+	"Cleaver",
+	"Staff",
+	"Ring",
+	"CrownF",
+	"LArmor",
+	"WShield",
+	"Scroll",
+	"FPlateAr",
+	"FBook",
+	"Food",
+	"FBttleBB",
+	"FBttleDY",
+	"FBttleOR",
+	"FBttleBR",
+	"FBttleBL",
+	"FBttleBY",
+	"FBttleWH",
+	"FBttleDB",
+	"FEar",
+	"FBrain",
+	"FMush",
+	"Innsign",
+	"Bldstn",
+	"Fanvil",
+	"FLazStaf",
+#ifdef HELLFIRE
+	"bombs1",
+	"halfps1",
+	"wholeps1",
+	"runes1",
+	"teddys1",
+	"cows1",
+	"donkys1",
+	"mooses1",
+#endif
+};
+BOOL itemhold[3][3] = { 0 };
+BYTE *itemanims[ITEMTYPES] = { 0 };
+BOOL UniqueItemFlag[128] = { 0 };
+#ifdef HELLFIRE
+char *CornerStoneRegKey = "SItem";
+#endif
+int numitems = 0;
+int gnNumGetRecords = 0;
 
 #ifdef HELLFIRE
 int get_ring_max_value(int i)

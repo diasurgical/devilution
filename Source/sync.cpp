@@ -5,11 +5,11 @@
  */
 #include "all.h"
 
-WORD sync_word_6AA708[MAXMONSTERS];
-int sgnMonsters;
-WORD sgwLRU[MAXMONSTERS];
-int sgnSyncItem;
-int sgnSyncPInv;
+WORD sync_word_6AA708[MAXMONSTERS] = { 0 };
+int sgnMonsters = 0;
+WORD sgwLRU[MAXMONSTERS] = { 0 };
+int sgnSyncItem = 0;
+int sgnSyncPInv = 0;
 
 static void sync_one_monster()
 {

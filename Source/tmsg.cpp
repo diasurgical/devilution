@@ -5,7 +5,7 @@
  */
 #include "all.h"
 
-static TMsg *sgpTimedMsgHead;
+static TMsg *sgpTimedMsgHead = NULL;
 
 int tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
 {

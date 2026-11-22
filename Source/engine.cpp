@@ -18,19 +18,19 @@
 #endif
 
 /** automap pixel color 8-bit (palette entry) */
-char gbPixelCol;
+char gbPixelCol = 0;
 /** flip - if y < x */
-BOOL gbRotateMap;
+BOOL gbRotateMap = 0;
 /** Seed value before the most recent call to SetRndSeed() */
-int orgseed;
+int orgseed = 0;
 /** Width of sprite being blitted */
-int sgnWidth;
+int sgnWidth = 0;
 /** Current game seed */
-int sglGameSeed;
+int sglGameSeed = 0;
 /** Number of times the current seed has been fetched */
-int SeedCount;
+int SeedCount = 0;
 /** valid - if x/y are in bounds */
-BOOL gbNotInView;
+BOOL gbNotInView = 0;
 
 /**
  * Specifies the increment used in the Borland C/C++ pseudo-random.

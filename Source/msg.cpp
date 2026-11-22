@@ -7,22 +7,22 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-static DWORD sgdwOwnerWait;
-static DWORD sgdwRecvOffset;
-static int sgnCurrMegaPlayer;
-static DLevel sgLevels[NUMLEVELS];
-static BYTE sbLastCmd;
-static TMegaPkt *sgpCurrPkt;
-static BYTE sgRecvBuf[sizeof(DLevel) + 1];
-static BYTE sgbRecvCmd;
-static LocalLevel sgLocals[NUMLEVELS];
-static DJunk sgJunk;
-static TMegaPkt *sgpMegaPkt;
-static BOOLEAN sgbDeltaChanged;
-static BYTE sgbDeltaChunks;
-BOOL deltaload;
-BYTE gbBufferMsgs;
-int dwRecCount;
+static DWORD sgdwOwnerWait = 0;
+static DWORD sgdwRecvOffset = 0;
+static int sgnCurrMegaPlayer = 0;
+static DLevel sgLevels[NUMLEVELS] = { 0 };
+static BYTE sbLastCmd = 0;
+static TMegaPkt *sgpCurrPkt = NULL;
+static BYTE sgRecvBuf[sizeof(DLevel) + 1] = { 0 };
+static BYTE sgbRecvCmd = 0;
+static LocalLevel sgLocals[NUMLEVELS] = { 0 };
+static DJunk sgJunk = { 0 };
+static TMegaPkt *sgpMegaPkt = NULL;
+static BOOLEAN sgbDeltaChanged = 0;
+static BYTE sgbDeltaChunks = 0;
+BOOL deltaload = 0;
+BYTE gbBufferMsgs = 0;
+int dwRecCount = 0;
 
 static void msg_get_next_packet()
 {

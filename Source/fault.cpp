@@ -5,14 +5,17 @@
  */
 #include "all.h"
 
+/* in 1.09b these are named constants (they are in .rdata there) */
+static const char szUnknown[] = "*unknown*";
+
 typedef struct STACK_FRAME {
 	struct STACK_FRAME *pNext;
 	void *pCallRet;
 } STACK_FRAME;
 
-LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
+LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter = { 0 };
 
-int fault_unused;
+int fault_unused = 0;
 
 static void *fault_set_filter(void *unused);
 static LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused);
@@ -96,7 +99,7 @@ static void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMax
 	DWORD numSections, moduleOffset, sectionSize, sectionAddress;
 	int i;
 
-	lstrcpyn(lpModuleName, "*unknown*", iMaxLength);
+	lstrcpyn(lpModuleName, szUnknown, iMaxLength);
 	*sectionNum = 0;
 	*sectionOffset = 0;
 
@@ -108,7 +111,7 @@ static void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMax
 		dosHeader = (PIMAGE_DOS_HEADER)GetModuleHandle(0);
 
 	if (!GetModuleFileName((HMODULE)dosHeader, lpModuleName, iMaxLength)) {
-		lstrcpyn(lpModuleName, "*unknown*", iMaxLength);
+		lstrcpyn(lpModuleName, szUnknown, iMaxLength);
 		return;
 	}
 
@@ -237,7 +240,7 @@ static char *fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSiz
 		if (FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, (LPCVOID)GetModuleHandle("NTDLL.DLL"), dwMessageId, 0, lpString1, nSize, NULL)) {
 			return lpString1;
 		}
-		s = "*unknown*";
+		s = szUnknown;
 		break;
 	}
 	lstrcpyn(lpString1, s, nSize);

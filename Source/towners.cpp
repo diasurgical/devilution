@@ -5,38 +5,6 @@
  */
 #include "all.h"
 
-BOOL storeflag;
-int sgnCowMsg;
-int numtowners;
-DWORD sgdwCowClicks;
-/** unused 0x6AAC28 */
-BOOL bannerflag;
-BOOL boyloadflag;
-BYTE *pCowCels;
-TownerStruct towner[NUM_TOWNERS];
-
-#ifndef SPAWN
-/**
- * Maps from active cow sound effect index and player class to sound
- * effect ID for interacting with cows in Tristram.
- *
- * ref: enum _sfx_id
- * ref: enum plr_class
- */
-const int snSFX[3][NUM_CLASSES] = {
-#ifdef HELLFIRE
-	{ PS_WARR52, PS_ROGUE52, PS_MAGE52, PS_MONK52, 0 }, // BUGFIX: add warrior sounds for barbarian instead of 0 - walk sound
-	{ PS_WARR49, PS_ROGUE49, PS_MAGE49, PS_MONK49, 0 },
-	{ PS_WARR50, PS_ROGUE50, PS_MAGE50, PS_MONK50, 0 },
-#else
-	{ PS_WARR52, PS_ROGUE52, PS_MAGE52 },
-	{ PS_WARR49, PS_ROGUE49, PS_MAGE49 },
-	{ PS_WARR50, PS_ROGUE50, PS_MAGE50 },
-#endif
-};
-#endif
-
-/* data */
 /** Specifies the animation frame sequence of a given NPC. */
 char AnimOrder[6][148] = {
 	// BUGFIX: was `15, 5, 1`, should be `15, 16, 1` in Griswold anim.
@@ -158,6 +126,38 @@ QuestTalkData Qtalklist[] = {
 };
 /** Specifies the active sound effect ID for interacting with cows. */
 int CowPlaying = -1;
+
+#ifndef SPAWN
+/**
+ * Maps from active cow sound effect index and player class to sound
+ * effect ID for interacting with cows in Tristram.
+ *
+ * ref: enum _sfx_id
+ * ref: enum plr_class
+ */
+const int snSFX[3][NUM_CLASSES] = {
+#ifdef HELLFIRE
+	{ PS_WARR52, PS_ROGUE52, PS_MAGE52, PS_MONK52, 0 }, // BUGFIX: add warrior sounds for barbarian instead of 0 - walk sound
+	{ PS_WARR49, PS_ROGUE49, PS_MAGE49, PS_MONK49, 0 },
+	{ PS_WARR50, PS_ROGUE50, PS_MAGE50, PS_MONK50, 0 },
+#else
+	{ PS_WARR52, PS_ROGUE52, PS_MAGE52 },
+	{ PS_WARR49, PS_ROGUE49, PS_MAGE49 },
+	{ PS_WARR50, PS_ROGUE50, PS_MAGE50 },
+#endif
+};
+#endif
+
+/* data */
+BOOL storeflag = 0;
+int sgnCowMsg = 0;
+int numtowners = 0;
+DWORD sgdwCowClicks = 0;
+/** unused 0x6AAC28 */
+BOOL bannerflag = 0;
+BOOL boyloadflag = 0;
+BYTE *pCowCels = NULL;
+TownerStruct towner[NUM_TOWNERS] = { 0 };
 
 static void CowSFX(int pnum)
 {

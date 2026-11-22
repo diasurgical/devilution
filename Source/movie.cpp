@@ -7,9 +7,9 @@
 #include "../3rdParty/Storm/Source/storm.h"
 
 /** Should the movie continue playing. */
-BYTE movie_playing;
+BYTE movie_playing = 0;
 /** Should the movie play in a loop. */
-BOOL loop_movie;
+BOOL loop_movie = 0;
 
 /**
  * @brief Start playback of a given video.

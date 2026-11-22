@@ -6,9 +6,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-static BYTE sgbIsScrolling;
-static DWORD sgdwLastWalk;
-static BOOL sgbIsWalking;
+static BYTE sgbIsScrolling = 0;
+static DWORD sgdwLastWalk = 0;
+static BOOL sgbIsWalking = 0;
 
 void track_process()
 {

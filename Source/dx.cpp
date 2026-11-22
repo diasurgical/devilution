@@ -6,20 +6,20 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-BYTE *sgpBackBuf;
-LPDIRECTDRAW lpDDInterface;
-IDirectDrawPalette *lpDDPalette;
-int sgdwLockCount;
-BYTE *gpBuffer;
-IDirectDrawSurface *lpDDSBackBuf;
-IDirectDrawSurface *lpDDSPrimary;
+BYTE *sgpBackBuf = NULL;
+LPDIRECTDRAW lpDDInterface = { 0 };
+IDirectDrawPalette *lpDDPalette = NULL;
+int sgdwLockCount = 0;
+BYTE *gpBuffer = NULL;
+IDirectDrawSurface *lpDDSBackBuf = NULL;
+IDirectDrawSurface *lpDDSPrimary = NULL;
 #ifdef _DEBUG
-int locktbl[256];
+int locktbl[256] = { 0 };
 #endif
 static CCritSect sgMemCrit;
-char gbBackBuf;
-char gbEmulate;
-HMODULE ghDiabMod;
+char gbBackBuf = 0;
+char gbEmulate = 0;
+HMODULE ghDiabMod = 0;
 
 static void dx_create_back_buffer()
 {

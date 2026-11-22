@@ -7,49 +7,52 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-_SNETVERSIONDATA fileinfo;
+/* in 1.09b these are named constants (they are in .rdata there) */
+static const char szScreenSaveActive[] = "ScreenSaveActive";
+
+char gszVersionNumber[MAX_PATH] = "internal version unknown";
+char gszProductName[MAX_PATH] = "Diablo v1.09";
+_SNETVERSIONDATA fileinfo = { 0 };
 /** True if the game is the current active window */
-int gbActive;
+int gbActive = 0;
 /** Specifies the path to diablo.exe. */
-char diablo_exe_path[MAX_PATH];
+char diablo_exe_path[MAX_PATH] = { 0 };
 /** A handle to an unused MPQ archive. */
-HANDLE hellfire_mpq;
+HANDLE hellfire_mpq = 0;
 /** Specifies the path to patch_rt.mpq. */
-char patch_rt_mpq_path[MAX_PATH];
+char patch_rt_mpq_path[MAX_PATH] = { 0 };
 /** The current input handler function */
-WNDPROC CurrentProc;
+WNDPROC CurrentProc = { 0 };
 /** A handle to the diabdat.mpq archive. */
-HANDLE diabdat_mpq;
+HANDLE diabdat_mpq = 0;
 /** Specifies the path to diabdat.mpq. */
-char diabdat_mpq_path[MAX_PATH];
+char diabdat_mpq_path[MAX_PATH] = { 0 };
 /** A handle to the patch_rt.mpq archive. */
-HANDLE patch_rt_mpq;
-/** Specifies whether the MS Office Shortcut Bar was killed. */
-BOOL killed_mom_parent;
-/** Stores the previous state of the screensaver. */
-BOOLEAN screensaver_enabled_prev;
+HANDLE patch_rt_mpq = 0;
 #ifdef HELLFIRE
-char hellfire_mpq_path[MAX_PATH];
-char hfmonk_mpq_path[MAX_PATH];
-char hfbard_mpq_path[MAX_PATH];
-char hfbarb_mpq_path[MAX_PATH];
-char hfmusic_mpq_path[MAX_PATH];
-char hfvoice_mpq_path[MAX_PATH];
-char hfopt1_mpq_path[MAX_PATH];
-char hfopt2_mpq_path[MAX_PATH];
-HANDLE hfmonk_mpq;
-HANDLE hfbard_mpq;
-HANDLE hfbarb_mpq;
-HANDLE hfmusic_mpq;
-HANDLE hfvoice_mpq;
-HANDLE hfopt1_mpq;
-HANDLE hfopt2_mpq;
+char hellfire_mpq_path[MAX_PATH] = { 0 };
+char hfmonk_mpq_path[MAX_PATH] = { 0 };
+char hfbard_mpq_path[MAX_PATH] = { 0 };
+char hfbarb_mpq_path[MAX_PATH] = { 0 };
+char hfmusic_mpq_path[MAX_PATH] = { 0 };
+char hfvoice_mpq_path[MAX_PATH] = { 0 };
+char hfopt1_mpq_path[MAX_PATH] = { 0 };
+char hfopt2_mpq_path[MAX_PATH] = { 0 };
+HANDLE hfmonk_mpq = 0;
+HANDLE hfbard_mpq = 0;
+HANDLE hfbarb_mpq = 0;
+HANDLE hfmusic_mpq = 0;
+HANDLE hfvoice_mpq = 0;
+HANDLE hfopt1_mpq = 0;
+HANDLE hfopt2_mpq = 0;
 #endif
 
 /* data */
 
-char gszVersionNumber[MAX_PATH] = "internal version unknown";
-char gszProductName[MAX_PATH] = "Diablo v1.09";
+/** Specifies whether the MS Office Shortcut Bar was killed. */
+BOOL killed_mom_parent = 0;
+/** Stores the previous state of the screensaver. */
+BOOLEAN screensaver_enabled_prev = 0;
 
 static void init_run_office(char *dir)
 {
@@ -166,7 +169,7 @@ static void init_disable_screensaver(BOOLEAN disable)
 
 	if (disable) {
 		cbData = 16;
-		success = RegQueryValueEx(phkResult, "ScreenSaveActive", NULL, &Type, (LPBYTE)Data, &cbData);
+		success = RegQueryValueEx(phkResult, szScreenSaveActive, NULL, &Type, (LPBYTE)Data, &cbData);
 		if (success == ERROR_SUCCESS)
 			screensaver_enabled_prev = Data[0] != '0';
 		enabled = FALSE;
@@ -176,7 +179,7 @@ static void init_disable_screensaver(BOOLEAN disable)
 
 	Data[0] = enabled ? '1' : '0';
 	Data[1] = 0;
-	RegSetValueEx(phkResult, "ScreenSaveActive", NULL, REG_SZ, (const BYTE *)Data, 2);
+	RegSetValueEx(phkResult, szScreenSaveActive, NULL, REG_SZ, (const BYTE *)Data, 2);
 	RegCloseKey(phkResult);
 }
 

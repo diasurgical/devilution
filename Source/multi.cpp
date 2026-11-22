@@ -7,37 +7,37 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-BOOLEAN gbSomebodyWonGameKludge;
+BOOLEAN gbSomebodyWonGameKludge = 0;
 #ifdef _DEBUG
-DWORD gdwHistTicks;
+DWORD gdwHistTicks = 0;
 #endif
-TBuffer sgHiPriBuf;
-char szPlayerDescript[128];
-WORD sgwPackPlrOffsetTbl[MAX_PLRS];
-PkPlayerStruct netplr[MAX_PLRS];
-BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS];
-BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS];
-int sgbSentThisCycle;
-BOOL gbShouldValidatePackage;
-BYTE gbActivePlayers;
-BOOLEAN gbGameDestroyed;
-BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
-_gamedata sgGameInitInfo;
-BOOLEAN gbSelectProvider;
-int sglTimeoutStart;
-int sgdwPlayerLeftReasonTbl[MAX_PLRS];
-TBuffer sgLoPriBuf;
-DWORD sgdwGameLoops;
+TBuffer sgHiPriBuf = { 0 };
+char szPlayerDescript[128] = { 0 };
+WORD sgwPackPlrOffsetTbl[MAX_PLRS] = { 0 };
+PkPlayerStruct netplr[MAX_PLRS] = { 0 };
+BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS] = { 0 };
+BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS] = { 0 };
+int sgbSentThisCycle = 0;
+BOOL gbShouldValidatePackage = 0;
+BYTE gbActivePlayers = 0;
+BOOLEAN gbGameDestroyed = 0;
+BOOLEAN sgbSendDeltaTbl[MAX_PLRS] = { 0 };
+_gamedata sgGameInitInfo = { 0 };
+BOOLEAN gbSelectProvider = 0;
+int sglTimeoutStart = 0;
+int sgdwPlayerLeftReasonTbl[MAX_PLRS] = { 0 };
+TBuffer sgLoPriBuf = { 0 };
+DWORD sgdwGameLoops = 0;
 /**
  * Specifies the maximum number of players in a game, where 1
  * represents a single player game and 4 represents a multi player game.
  */
-BYTE gbMaxPlayers;
-BOOLEAN sgbTimeout;
-char szPlayerName[128];
-BYTE gbDeltaSender;
-BOOL sgbNetInited;
-int player_state[MAX_PLRS];
+BYTE gbMaxPlayers = 0;
+BOOLEAN sgbTimeout = 0;
+char szPlayerName[128] = { 0 };
+BYTE gbDeltaSender = 0;
+BOOL sgbNetInited = 0;
+int player_state[MAX_PLRS] = { 0 };
 
 /**
  * Contains the set of supported event types supported by the multiplayer
