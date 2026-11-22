@@ -2073,9 +2073,9 @@ void StartPlayerKill(int pnum, int earflag)
 #endif
 	}
 
-	if (p->_pgfxnum) {
-		p->_pgfxnum = 0;
-		p->_pGFXLoad = 0;
+	if (plr[pnum]._pgfxnum) {
+		plr[pnum]._pgfxnum = 0;
+		plr[pnum]._pGFXLoad = 0;
 		SetPlrAnims(pnum);
 	}
 
@@ -2338,6 +2338,12 @@ void SyncPlrKill(int pnum, int earflag)
 	StartPlayerKill(pnum, earflag);
 }
 
+/* In 1.09b this call goes through a one-line wrapper here (name not known). */
+void j_StartPlayerKill(int pnum, int earflag)
+{
+	StartPlayerKill(pnum, earflag);
+}
+
 void RemovePlrMissiles(int pnum)
 {
 	int i, am;
@@ -2479,6 +2485,12 @@ void StartWarpLvl(int pnum, int pidx)
 }
 
 BOOL PM_DoStand(int pnum)
+{
+	return FALSE;
+}
+
+/* Identical to PM_DoStand; 1.09b keeps one copy there, so it is defined next to it. */
+BOOL PM_DoNewLvl(int pnum)
 {
 	return FALSE;
 }
@@ -3608,11 +3620,6 @@ BOOL PM_DoDeath(int pnum)
 		plr[pnum]._pVar8++;
 	}
 
-	return FALSE;
-}
-
-BOOL PM_DoNewLvl(int pnum)
-{
 	return FALSE;
 }
 

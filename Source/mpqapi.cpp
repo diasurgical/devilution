@@ -107,24 +107,6 @@ BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 		return SetFileAttributes(pszArchive, dwFileAttributesToSet);
 }
 
-void mpqapi_store_default_time(DWORD dwChar)
-{
-	/*
-	DWORD idx;
-	char dst[160];
-
-	if(gbMaxPlayers == 1) {
-		return;
-	}
-
-	/// ASSERT: assert(dwChar < MAX_CHARACTERS);
-	idx = 16 * dwChar;
-	mpqapi_reg_load_modification_time(dst, sizeof(dst));
-	*(DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
-	mpqapi_reg_store_modification_time(dst, sizeof(dst));
-*/
-}
-
 static void mpqapi_store_modified_time(const char *pszArchive, DWORD dwChar)
 {
 	HANDLE handle;
@@ -379,6 +361,12 @@ static BOOL ParseMPQHeader(_FILEHEADER *pHdr, DWORD *pdwNextFileStart)
 static int FetchHandle(const char *pszName)
 {
 	return mpqapi_get_hash_index(Hash(pszName, 0), Hash(pszName, 1), Hash(pszName, 2), 0);
+}
+
+/* In 1.09b this call goes through a one-line wrapper here (name not known). */
+void j_mpqapi_remove_hash_entry(const char *pszName)
+{
+	mpqapi_remove_hash_entry(pszName);
 }
 
 void mpqapi_remove_hash_entry(const char *pszName)
@@ -653,3 +641,23 @@ BOOL mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, DWORD dwChar)
 	CloseMPQ(pszArchive, bFree, dwChar);
 	return ret;
 }
+
+#if defined(_DEBUG) || defined(HELLFIRE)
+void mpqapi_store_default_time(DWORD dwChar)
+{
+	/*
+	DWORD idx;
+	char dst[160];
+
+	if(gbMaxPlayers == 1) {
+		return;
+	}
+
+	/// ASSERT: assert(dwChar < MAX_CHARACTERS);
+	idx = 16 * dwChar;
+	mpqapi_reg_load_modification_time(dst, sizeof(dst));
+	*(DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
+	mpqapi_reg_store_modification_time(dst, sizeof(dst));
+*/
+}
+#endif

@@ -963,6 +963,12 @@ static void RightMouseDown()
 	}
 }
 
+/* In 1.09b this call goes through a one-line wrapper here (name not known). */
+static void j_gmenu_on_mouse_move()
+{
+	gmenu_on_mouse_move();
+}
+
 static void diablo_pause_game()
 {
 	if (gbMaxPlayers <= 1) {
@@ -1609,7 +1615,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
 		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
-		gmenu_on_mouse_move();
+		j_gmenu_on_mouse_move();
 		return 0;
 	case WM_LBUTTONDOWN:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed

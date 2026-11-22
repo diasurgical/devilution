@@ -59,7 +59,8 @@ MissileData missiledata[] = {
 #ifdef HELLFIRE
 	{  MIS_BLODBOIL,      &miss_null_1F,              &MI_Blodboil,       FALSE,     1, MISR_NONE,      MFILE_NONE,      -1,          -1          },
 #else
-	{  MIS_BLODBOIL,      &AddBlodboil,               &MI_Blodboil,       TRUE,      1, MISR_NONE,      MFILE_NONE,      -1,          LS_BLODBOIL },
+	// 1.09b: one function serves both (AddBlodboil only marked the missile deleted); it sits where miss_null_1F is
+	{  MIS_BLODBOIL,      &miss_null_1F,              &MI_Blodboil,       TRUE,      1, MISR_NONE,      MFILE_NONE,      -1,          LS_BLODBOIL },
 #endif
 	{  MIS_APOCA,         &AddApoca,                  &MI_Apoca,          TRUE,      1, MISR_MAGIC,     MFILE_NEWEXP,    LS_APOC,     -1          },
 	{  MIS_REPAIR,        &AddRepair,                 &MI_Dummy,          FALSE,     2, MISR_NONE,      MFILE_NONE,      -1,          -1          },

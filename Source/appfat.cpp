@@ -21,6 +21,14 @@ void __cdecl operator delete(void *ptr)
 	}
 }
 
+#ifndef HELLFIRE
+// Unused, so the linker drops it, but in 1.09b its SMemAlloc reference is the second Storm import.
+void *__cdecl operator new(size_t size)
+{
+	return SMemAlloc(size, "new", -1, 0);
+}
+#endif
+
 #ifdef _DEBUG
 static LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 {
@@ -39,6 +47,7 @@ static LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 }
 #endif
 
+#if defined(_DEBUG) || defined(HELLFIRE)
 void TriggerBreak()
 {
 #ifdef _DEBUG
@@ -55,6 +64,7 @@ void TriggerBreak()
 	SetUnhandledExceptionFilter(pFilter);
 #endif
 }
+#endif
 
 /**
  * @brief Generate a textual message for DirectDraw error codes

@@ -41,6 +41,7 @@ void FixPlrWalkTags(int pnum);
 void RemovePlrFromMap(int pnum);
 void StartPlrHit(int pnum, int dam, BOOL forcehit);
 void StartPlayerKill(int pnum, int earflag);
+void j_StartPlayerKill(int pnum, int earflag);
 void DropHalfPlayersGold(int pnum);
 #ifdef HELLFIRE
 void StripTopGold(int pnum);

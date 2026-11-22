@@ -5,12 +5,15 @@
  *
  * See http://classic.battle.net/info/commands.shtml for a list of commands.
  */
+#include "all.h"
+#include "../3rdParty/Storm/Source/storm.h"
+
 #ifndef HELLFIRE
+
 #include <new>      // for placement new
 #include <stddef.h> // for offsetof
 #include <typeinfo> // for typeid
 
-#include "all.h"
 #include "list.h"
 
 #define COMMAND_LEN 128
@@ -34,7 +37,8 @@ struct EXTERNMESSAGE {
 	void *Delete(DWORD flags);
 };
 
-void *EXTERNMESSAGE::Delete(DWORD flags)
+// inline: in 1.09b it is emitted with the list functions, after its callers
+inline void *EXTERNMESSAGE::Delete(DWORD flags)
 {
 	// BUGFIX: this is already called by m_Link's destructor
 	m_Link.Unlink();

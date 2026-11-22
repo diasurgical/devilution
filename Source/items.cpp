@@ -5017,9 +5017,9 @@ int RndPremiumItem(int minlvl, int maxlvl)
 }
 
 #ifdef HELLFIRE
-static void SpawnOnePremium(int i, int plvl, int myplr, bool noSpells)
+void SpawnOnePremium(int i, int plvl, int myplr, bool noSpells)
 #else
-static void SpawnOnePremium(int i, int plvl)
+void SpawnOnePremium(int i, int plvl)
 #endif
 {
 	int itype;

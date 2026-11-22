@@ -270,7 +270,7 @@ TSnd *sound_file_load(const char *path)
 	if (error_code != DS_OK)
 		DSErrMsg(error_code, 325, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
-	mem_free_dbg((void *)wave_file);
+	j_mem_free_dbg((void *)wave_file);
 	WCloseFile(file);
 
 	return pSnd;

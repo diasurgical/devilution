@@ -1078,6 +1078,12 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
  * @param sx Back buffer coordinate
  * @param sy Back buffer coordinate
  */
+/* In 1.09b InitControlPan calls ClearPanel through this one-line wrapper (name not known). */
+void j_ClearPanel()
+{
+	ClearPanel();
+}
+
 void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int sx, int sy)
 {
 	int nSrcOff, nDstOff, w;
@@ -1361,7 +1367,7 @@ void InitControlPan()
 	chrbtnactive = FALSE;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", NULL);
 	strcpy(infostr, "");
-	ClearPanel();
+	j_ClearPanel();
 	drawhpflag = TRUE;
 	drawmanaflag = TRUE;
 	chrflag = FALSE;

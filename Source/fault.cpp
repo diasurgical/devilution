@@ -14,16 +14,8 @@ LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
 
 int fault_unused;
 
-static void *fault_set_filter(void *unused)
-{
-	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
-	return unused;
-}
-
-static LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused)
-{
-	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
-}
+static void *fault_set_filter(void *unused);
+static LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused);
 
 static LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
 {
@@ -299,6 +291,18 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 	if (lpTopLevelExceptionFilter)
 		return lpTopLevelExceptionFilter(ExceptionInfo);
 	return EXCEPTION_CONTINUE_SEARCH;
+}
+
+/* In 1.09b these two come after the exception filter's helpers. */
+static void *fault_set_filter(void *unused)
+{
+	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
+	return unused;
+}
+
+static LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused)
+{
+	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
 }
 
 LPTOP_LEVEL_EXCEPTION_FILTER fault_get_filter()

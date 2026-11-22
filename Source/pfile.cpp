@@ -765,7 +765,7 @@ void pfile_rename_temp_to_perm()
 		dwIndex++;
 		if (mpqapi_has_file(szTemp)) {
 			if (mpqapi_has_file(szPerm))
-				mpqapi_remove_hash_entry(szPerm);
+				j_mpqapi_remove_hash_entry(szPerm);
 			mpqapi_rename(szTemp, szPerm);
 		}
 	}

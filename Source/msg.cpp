@@ -2132,7 +2132,7 @@ static DWORD On_PLRDEAD(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, p, sizeof(*p));
 	else if (pnum != myplr)
-		StartPlayerKill(pnum, p->wParam1);
+		j_StartPlayerKill(pnum, p->wParam1);
 	else
 		check_update_plr(pnum);
 

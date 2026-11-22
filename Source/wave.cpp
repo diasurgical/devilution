@@ -77,72 +77,45 @@ int WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence)
 	return result;
 }
 
-static void FillMemFile(MEMFILE *pMemFile)
+// 1.09b order: these come after LoadWaveFormat and AllocateMemFile
+static void FreeMemFile(MEMFILE *pMemFile);
+static BOOL ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk);
+static BOOL ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t length);
+static void FillMemFile(MEMFILE *pMemFile);
+static int SeekMemFile(MEMFILE *pMemFile, ULONG lDist, DWORD dwMethod);
+static BOOL ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk);
+
+BOOL LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
 {
-	DWORD to_read;
-	WSetFilePointer(pMemFile->file, pMemFile->offset, NULL, FILE_BEGIN);
-	to_read = pMemFile->end - pMemFile->offset;
-	if (pMemFile->buf_len < to_read)
-		to_read = pMemFile->buf_len;
-	if (to_read)
-		WReadFile(pMemFile->file, pMemFile->buf, to_read);
-	pMemFile->dist = 0;
-	pMemFile->bytes_to_read = to_read;
+	BOOL ret;
+	MEMFILE wave_file;
+
+	AllocateMemFile(hsFile, &wave_file, 0);
+	ret = ReadWaveFile(&wave_file, pwfx, NULL);
+	FreeMemFile(&wave_file);
+	return ret;
+}
+
+void AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
+{
+	DWORD length;
+
+	memset(pMemFile, 0, sizeof(*pMemFile));
+	pMemFile->end = WGetFileSize(hsFile, NULL);
+	length = 4096;
+	if (dwPos > length)
+		length = dwPos;
+	pMemFile->buf_len = length;
+	if (length >= pMemFile->end)
+		length = pMemFile->end;
+	pMemFile->buf_len = length;
+	pMemFile->buf = DiabloAllocPtr(length);
+	pMemFile->file = hsFile;
 }
 
 static void FreeMemFile(MEMFILE *pMemFile)
 {
 	MemFreeDbg(pMemFile->buf);
-}
-
-static BOOL ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t length)
-{
-	while (length) {
-		size_t to_copy;
-		if (!pMemFile->bytes_to_read)
-			FillMemFile(pMemFile);
-		to_copy = pMemFile->bytes_to_read;
-		if (length < to_copy)
-			to_copy = length;
-		if (!to_copy)
-			return FALSE;
-		memcpy(lpBuf, &pMemFile->buf[pMemFile->dist], to_copy);
-		pMemFile->offset += to_copy;
-		pMemFile->dist += to_copy;
-		pMemFile->bytes_to_read -= to_copy;
-		// BUGFIX: lpBuf is not incremented, next read will overwrite data
-		length -= to_copy;
-	}
-	return TRUE;
-}
-
-static int SeekMemFile(MEMFILE *pMemFile, ULONG lDist, DWORD dwMethod)
-{
-	if (lDist < pMemFile->bytes_to_read) {
-		pMemFile->bytes_to_read -= lDist;
-		pMemFile->dist += lDist;
-	} else
-		pMemFile->bytes_to_read = 0;
-	pMemFile->offset += lDist;
-	return pMemFile->offset;
-}
-
-static BOOL ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk)
-{
-	DWORD hdr[2];
-
-	while (1) {
-		if (!ReadMemFile(pMemFile, hdr, sizeof(hdr)))
-			return FALSE;
-		if (hdr[0] == id)
-			break;
-		if (SeekMemFile(pMemFile, hdr[1], FILE_CURRENT) == -1)
-			return FALSE;
-	}
-
-	chunk->dwSize = hdr[1];
-	chunk->dwOffset = SeekMemFile(pMemFile, 0, FILE_CURRENT);
-	return chunk->dwOffset != (DWORD)-1;
 }
 
 static BOOL ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
@@ -176,32 +149,67 @@ static BOOL ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 	return ReadWaveSection(pMemFile, MAKEFOURCC('d', 'a', 't', 'a'), chunk);
 }
 
-BOOL LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
+static BOOL ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t length)
 {
-	BOOL ret;
-	MEMFILE wave_file;
-
-	AllocateMemFile(hsFile, &wave_file, 0);
-	ret = ReadWaveFile(&wave_file, pwfx, NULL);
-	FreeMemFile(&wave_file);
-	return ret;
+	while (length) {
+		size_t to_copy;
+		if (!pMemFile->bytes_to_read)
+			FillMemFile(pMemFile);
+		to_copy = pMemFile->bytes_to_read;
+		if (length < to_copy)
+			to_copy = length;
+		if (!to_copy)
+			return FALSE;
+		memcpy(lpBuf, &pMemFile->buf[pMemFile->dist], to_copy);
+		pMemFile->offset += to_copy;
+		pMemFile->dist += to_copy;
+		pMemFile->bytes_to_read -= to_copy;
+		// BUGFIX: lpBuf is not incremented, next read will overwrite data
+		length -= to_copy;
+	}
+	return TRUE;
 }
 
-void AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
+static void FillMemFile(MEMFILE *pMemFile)
 {
-	DWORD length;
+	DWORD to_read;
+	WSetFilePointer(pMemFile->file, pMemFile->offset, NULL, FILE_BEGIN);
+	to_read = pMemFile->end - pMemFile->offset;
+	if (pMemFile->buf_len < to_read)
+		to_read = pMemFile->buf_len;
+	if (to_read)
+		WReadFile(pMemFile->file, pMemFile->buf, to_read);
+	pMemFile->dist = 0;
+	pMemFile->bytes_to_read = to_read;
+}
 
-	memset(pMemFile, 0, sizeof(*pMemFile));
-	pMemFile->end = WGetFileSize(hsFile, NULL);
-	length = 4096;
-	if (dwPos > length)
-		length = dwPos;
-	pMemFile->buf_len = length;
-	if (length >= pMemFile->end)
-		length = pMemFile->end;
-	pMemFile->buf_len = length;
-	pMemFile->buf = DiabloAllocPtr(length);
-	pMemFile->file = hsFile;
+static int SeekMemFile(MEMFILE *pMemFile, ULONG lDist, DWORD dwMethod)
+{
+	if (lDist < pMemFile->bytes_to_read) {
+		pMemFile->bytes_to_read -= lDist;
+		pMemFile->dist += lDist;
+	} else
+		pMemFile->bytes_to_read = 0;
+	pMemFile->offset += lDist;
+	return pMemFile->offset;
+}
+
+static BOOL ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk)
+{
+	DWORD hdr[2];
+
+	while (1) {
+		if (!ReadMemFile(pMemFile, hdr, sizeof(hdr)))
+			return FALSE;
+		if (hdr[0] == id)
+			break;
+		if (SeekMemFile(pMemFile, hdr[1], FILE_CURRENT) == -1)
+			return FALSE;
+	}
+
+	chunk->dwSize = hdr[1];
+	chunk->dwOffset = SeekMemFile(pMemFile, 0, FILE_CURRENT);
+	return chunk->dwOffset != (DWORD)-1;
 }
 
 BYTE *LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
@@ -214,4 +222,10 @@ BYTE *LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 		return NULL;
 	}
 	return wave_file.buf;
+}
+
+/* In 1.09b this call goes through a one-line wrapper here (name not known). */
+void j_mem_free_dbg(void *p)
+{
+	mem_free_dbg(p);
 }

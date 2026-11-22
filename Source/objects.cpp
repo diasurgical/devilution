@@ -297,17 +297,6 @@ DIABOOL RndLocOk(int xp, int yp)
 	return FALSE;
 }
 
-static DIABOOL WallTrapLocOkK(int xp, int yp)
-{
-	if (dFlags[xp][yp] & BFLAG_POPULATED)
-		return FALSE;
-
-	if (nTrapTable[dPiece[xp][yp]] != FALSE)
-		return TRUE;
-	else
-		return FALSE;
-}
-
 void InitRndLocObj(int min, int max, int objtype)
 {
 	int i, xp, yp, numobjs;
@@ -644,6 +633,17 @@ void AddL2Torches()
 				AddObject(OBJ_TORCHR, i, j - 1);
 		}
 	}
+}
+
+DIABOOL WallTrapLocOkK(int xp, int yp)
+{
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
+		return FALSE;
+
+	if (nTrapTable[dPiece[xp][yp]] != FALSE)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 void AddObjTraps()
@@ -1476,17 +1476,20 @@ void AddBookcase(int i)
 	object[i]._oPreFlag = TRUE;
 }
 
-void AddBookstand(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddBloodFtn(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
 void AddPurifyingFountain(int i)
+{
+	int ox, oy;
+
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	dObject[ox][oy - 1] = -1 - i;
+	dObject[ox - 1][oy] = -1 - i;
+	dObject[ox - 1][oy - 1] = -1 - i;
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+/* Identical to AddPurifyingFountain; 1.09b keeps one copy there, so it is defined next to it. */
+void AddMurkyFountain(int i)
 {
 	int ox, oy;
 
@@ -1505,33 +1508,6 @@ void AddArmorStand(int i)
 		object[i]._oSelFlag = 0;
 	}
 
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddGoatShrine(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddCauldron(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddMurkyFountain(int i)
-{
-	int ox, oy;
-
-	ox = object[i]._ox;
-	oy = object[i]._oy;
-	dObject[ox][oy - 1] = -1 - i;
-	dObject[ox - 1][oy] = -1 - i;
-	dObject[ox - 1][oy - 1] = -1 - i;
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddTearFountain(int i)
-{
 	object[i]._oRndSeed = GetRndSeed();
 }
 
@@ -1555,6 +1531,35 @@ void AddMagicCircle(int i)
 	object[i]._oPreFlag = TRUE;
 	object[i]._oVar6 = 0;
 	object[i]._oVar5 = 1;
+}
+
+/*
+ * The next six have identical code; 1.09b keeps a single copy where AddBrnCross is, so they are
+ * defined together here and the linker's choice of copy does not move it.
+ */
+void AddBookstand(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddBloodFtn(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddGoatShrine(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddCauldron(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddTearFountain(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
 }
 
 void AddBrnCross(int i)

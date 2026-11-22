@@ -41,10 +41,12 @@ void tmsg_add(BYTE *pbMsg, BYTE bLen)
 	*tail = msg;
 }
 
+#if defined(_DEBUG) || defined(HELLFIRE)
 void tmsg_start()
 {
 	assert(!sgpTimedMsgHead);
 }
+#endif
 
 void tmsg_cleanup()
 {

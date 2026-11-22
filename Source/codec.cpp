@@ -14,6 +14,12 @@ typedef struct CodecSignature {
 
 #define BLOCKSIZE 64
 
+/* In 1.09b codec_decode and codec_encode call SHA1Clear through this one-line wrapper (name not known). */
+static void j_SHA1Clear()
+{
+	SHA1Clear();
+}
+
 static void codec_init_key(int unused, const char *pszPassword)
 {
 	int i, ch, n;
@@ -87,10 +93,10 @@ int codec_decode(BYTE *pbSrcDst, DWORD size, const char *pszPassword)
 	}
 
 	size += sig->last_chunk_size - BLOCKSIZE;
-	SHA1Clear();
+	j_SHA1Clear();
 	return size;
 error:
-	SHA1Clear();
+	j_SHA1Clear();
 	return 0;
 }
 
@@ -138,5 +144,5 @@ void codec_encode(BYTE *pbSrcDst, DWORD size, int size_64, const char *pszPasswo
 	sig->unused = 0;
 	sig->checksum = *(DWORD *)&tmp[0];
 	sig->last_chunk_size = last_chunk;
-	SHA1Clear();
+	j_SHA1Clear();
 }

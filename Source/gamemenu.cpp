@@ -5,7 +5,9 @@
  * Implementation of the in-game menu functions.
  */
 #include "all.h"
+#ifdef HELLFIRE
 #include "../3rdParty/Storm/Source/storm.h"
+#endif
 
 #ifdef HELLFIRE
 BOOL jogging_opt = TRUE;
@@ -246,18 +248,18 @@ static void gamemenu_jogging()
 }
 #endif
 
-static void gamemenu_get_gamma()
-{
-	gmenu_slider_steps(&sgOptionsMenu[2], 15);
-	gmenu_slider_set(&sgOptionsMenu[2], 30, 100, UpdateGamma(0));
-}
-
 #ifndef HELLFIRE
 static void gamemenu_get_color_cycling()
 {
 	sgOptionsMenu[3].pszStr = color_cycling_toggle_names[palette_get_color_cycling() & 1];
 }
 #endif
+
+static void gamemenu_get_gamma()
+{
+	gmenu_slider_steps(&sgOptionsMenu[2], 15);
+	gmenu_slider_set(&sgOptionsMenu[2], 30, 100, UpdateGamma(0));
+}
 
 static int gamemenu_slider_gamma()
 {

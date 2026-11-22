@@ -27,7 +27,6 @@ int orgseed;
 int sgnWidth;
 /** Current game seed */
 int sglGameSeed;
-static CCritSect sgMemCrit;
 /** Number of times the current seed has been fetched */
 int SeedCount;
 /** valid - if x/y are in bounds */
@@ -2575,6 +2574,10 @@ int random_(BYTE idx, int v)
 	return GetRndSeed() % v;
 }
 
+/* In 1.09b the critical section's constructor sits here, after random_, so it is defined here. */
+static CCritSect sgMemCrit;
+
+#ifdef HELLFIRE
 /**
  * @brief Unallocate all remaining pointers
  * @param show_cursor unused
@@ -2593,6 +2596,7 @@ void engine_debug_trap(BOOL show_cursor)
 	sgMemCrit.Leave();
 */
 }
+#endif
 
 /**
  * @brief Multithreaded safe malloc

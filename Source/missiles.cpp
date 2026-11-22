@@ -3305,9 +3305,10 @@ void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 	missile[mi]._mirange = 1;
 }
 
+/* Diablo 1.09b has no AddBlodboil of its own: misdat uses miss_null_1F for MIS_BLODBOIL. */
+#ifdef HELLFIRE
 void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-#ifdef HELLFIRE
 	int lvl;
 
 	if (id == -1 || plr[id]._pSpellFlags & 6 || plr[id]._pHitPoints <= plr[id]._pLevel << 6) {
@@ -3343,10 +3344,8 @@ void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		force_redraw = 255;
 		PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id]._px, plr[id]._py);
 	}
-#else
-	missile[mi]._miDelFlag = 1;
-#endif
 }
+#endif
 
 void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
@@ -3679,6 +3678,29 @@ int Sentfire(int i, int sx, int sy)
 
 	return ex;
 }
+
+#if !defined(_DEBUG) && !defined(HELLFIRE)
+/*
+ * In 1.09b the linker folded every empty function into one copy and kept it here,
+ * so no empty function can have come from an object linked before missiles.obj.
+ * Which files these really lived in is not visible in the binary.
+ */
+void TriggerBreak()
+{
+}
+
+void engine_debug_trap(BOOL show_cursor)
+{
+}
+
+void mpqapi_store_default_time(DWORD dwChar)
+{
+}
+
+void tmsg_start()
+{
+}
+#endif
 
 void MI_Dummy(int i)
 {
