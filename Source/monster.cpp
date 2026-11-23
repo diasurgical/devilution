@@ -47,17 +47,15 @@ int opposite[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
 int offset_x[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 /** Maps from direction to delta Y-offset. */
 int offset_y[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
-/** Tracks which missile files are already loaded */
-int MissileFileFlag = 0;
+MonsterStruct monster[MAXMONSTERS];
 #ifdef HELLFIRE
-int GraphicTable[NUMLEVELS][MAX_LVLMTYPES] = { 0 };
+int mleveltypes[NUMLEVELS][MAX_LVLMTYPES];
 #else
-BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES] = { 0 };
+BYTE mleveltypes[NUMLEVELS][MAX_LVLMTYPES];
 #endif
-/** Tracks the total number of monsters killed per monster_id. */
-int monstkills[MAXMONSTERS] = { 0 };
-int monstactive[MAXMONSTERS] = { 0 };
-int nummonsters = 0;
+int nummonsters;
+int totalmonsters;
+int monstactive[MAXMONSTERS];
 
 /** Maps from walking path step to facing direction. */
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
@@ -103,12 +101,14 @@ const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL
 //      { 11, 21, 43 }
 //   };
 
-BOOLEAN sgbSaveSoundOn = 0;
-MonsterStruct monster[MAXMONSTERS] = { 0 };
-int totalmonsters = 0;
-CMonster Monsters[MAX_LVLMTYPES] = { 0 };
-int monstimgtot = 0;
-int uniquetrans = 0;
+int monstimgtot;
+/** Tracks which missile files are already loaded */
+int gfxflags;
+int uniquetrans;
+/** Tracks the total number of monsters killed per monster_id. */
+int monstkills[MAXMONSTERS];
+BOOLEAN sgbSaveSoundOn;
+CMonster Monsters[MAX_LVLMTYPES];
 int nummtypes = 0;
 
 #ifdef HELLFIRE
@@ -200,7 +200,7 @@ void InitLevelMonsters()
 
 	nummtypes = 0;
 	monstimgtot = 0;
-	MissileFileFlag = 0;
+	gfxflags = 0;
 
 	for (i = 0; i < MAX_LVLMTYPES; i++) {
 		Monsters[i].mPlaceFlags = 0;
@@ -407,85 +407,85 @@ void InitMonsterGFX(int monst)
 		MemFreeDbg(Monsters[monst].trans_file);
 	}
 
-	if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1)) {
-		MissileFileFlag |= 1;
+	if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(gfxflags & 1)) {
+		gfxflags |= 1;
 		LoadMissileGFX(MFILE_MAGBALL);
 	}
-	if (mtype >= MT_STORM && mtype <= MT_MAEL && !(MissileFileFlag & 2)) {
-		MissileFileFlag |= 2;
+	if (mtype >= MT_STORM && mtype <= MT_MAEL && !(gfxflags & 2)) {
+		gfxflags |= 2;
 		LoadMissileGFX(MFILE_THINLGHT);
 	}
-	if (mtype == MT_SUCCUBUS && !(MissileFileFlag & 4)) {
-		MissileFileFlag |= 4;
+	if (mtype == MT_SUCCUBUS && !(gfxflags & 4)) {
+		gfxflags |= 4;
 #ifndef HELLFIRE
 		LoadMissileGFX(MFILE_FLARE);
 		LoadMissileGFX(MFILE_FLAREEXP);
 #endif
 	}
 #ifdef HELLFIRE
-	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
-		MissileFileFlag |= 8;
+	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(gfxflags & 8)) {
+		gfxflags |= 8;
 		LoadMissileGFX(MFILE_KRULL);
 	}
-	if ((mtype >= MT_NACID && mtype <= MT_XACID || mtype == MT_SPIDLORD) && !(MissileFileFlag & 0x10)) {
-		MissileFileFlag |= 0x10;
+	if ((mtype >= MT_NACID && mtype <= MT_XACID || mtype == MT_SPIDLORD) && !(gfxflags & 0x10)) {
+		gfxflags |= 0x10;
 		LoadMissileGFX(MFILE_ACIDBF);
 		LoadMissileGFX(MFILE_ACIDSPLA);
 		LoadMissileGFX(MFILE_ACIDPUD);
 	}
 #endif
-	if (mtype == MT_SNOWWICH && !(MissileFileFlag & 0x20)) {
-		MissileFileFlag |= 0x20;
+	if (mtype == MT_SNOWWICH && !(gfxflags & 0x20)) {
+		gfxflags |= 0x20;
 		LoadMissileGFX(MFILE_SCUBMISB);
 		LoadMissileGFX(MFILE_SCBSEXPB);
 	}
-	if (mtype == MT_HLSPWN && !(MissileFileFlag & 0x40)) {
-		MissileFileFlag |= 0x40;
+	if (mtype == MT_HLSPWN && !(gfxflags & 0x40)) {
+		gfxflags |= 0x40;
 		LoadMissileGFX(MFILE_SCUBMISD);
 		LoadMissileGFX(MFILE_SCBSEXPD);
 	}
-	if (mtype == MT_SOLBRNR && !(MissileFileFlag & 0x80)) {
-		MissileFileFlag |= 0x80;
+	if (mtype == MT_SOLBRNR && !(gfxflags & 0x80)) {
+		gfxflags |= 0x80;
 		LoadMissileGFX(MFILE_SCUBMISC);
 		LoadMissileGFX(MFILE_SCBSEXPC);
 	}
 #ifndef HELLFIRE
-	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
-		MissileFileFlag |= 8;
+	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(gfxflags & 8)) {
+		gfxflags |= 8;
 		LoadMissileGFX(MFILE_KRULL);
 	}
-	if (mtype >= MT_NACID && mtype <= MT_XACID && !(MissileFileFlag & 0x10)) {
-		MissileFileFlag |= 0x10;
+	if (mtype >= MT_NACID && mtype <= MT_XACID && !(gfxflags & 0x10)) {
+		gfxflags |= 0x10;
 		LoadMissileGFX(MFILE_ACIDBF);
 		LoadMissileGFX(MFILE_ACIDSPLA);
 		LoadMissileGFX(MFILE_ACIDPUD);
 	}
 #else
-	if (mtype == MT_LICH && !(MissileFileFlag & 0x100)) {
-		MissileFileFlag |= 0x100u;
+	if (mtype == MT_LICH && !(gfxflags & 0x100)) {
+		gfxflags |= 0x100u;
 		LoadMissileGFX(MFILE_LICH);
 		LoadMissileGFX(MFILE_EXORA1);
 	}
-	if (mtype == MT_ARCHLICH && !(MissileFileFlag & 0x200)) {
-		MissileFileFlag |= 0x200u;
+	if (mtype == MT_ARCHLICH && !(gfxflags & 0x200)) {
+		gfxflags |= 0x200u;
 		LoadMissileGFX(MFILE_ARCHLICH);
 		LoadMissileGFX(MFILE_EXYEL2);
 	}
-	if ((mtype == MT_PSYCHORB || mtype == MT_BONEDEMN) && !(MissileFileFlag & 0x400)) {
-		MissileFileFlag |= 0x400u;
+	if ((mtype == MT_PSYCHORB || mtype == MT_BONEDEMN) && !(gfxflags & 0x400)) {
+		gfxflags |= 0x400u;
 		LoadMissileGFX(MFILE_BONEDEMON);
 	}
-	if (mtype == MT_NECRMORB && !(MissileFileFlag & 0x800)) {
-		MissileFileFlag |= 0x800u;
+	if (mtype == MT_NECRMORB && !(gfxflags & 0x800)) {
+		gfxflags |= 0x800u;
 		LoadMissileGFX(MFILE_NECROMORB);
 		LoadMissileGFX(MFILE_EXRED3);
 	}
-	if (mtype == MT_PSYCHORB && !(MissileFileFlag & 0x1000)) {
-		MissileFileFlag |= 0x1000u;
+	if (mtype == MT_PSYCHORB && !(gfxflags & 0x1000)) {
+		gfxflags |= 0x1000u;
 		LoadMissileGFX(MFILE_EXBL2);
 	}
-	if (mtype == MT_BONEDEMN && !(MissileFileFlag & 0x2000)) {
-		MissileFileFlag |= 0x2000u;
+	if (mtype == MT_BONEDEMN && !(gfxflags & 0x2000)) {
+		gfxflags |= 0x2000u;
 		LoadMissileGFX(MFILE_EXBL3);
 	}
 #endif

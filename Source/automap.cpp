@@ -614,11 +614,11 @@ static void DrawAutomapText()
 	int nextline = 20;
 
 	if (gbMaxPlayers > 1) {
-		strcat(strcpy(desc, "game: "), szPlayerName);
+		strcat(strcpy(desc, "game: "), gszGameName);
 		PrintGameStr(8, 20, desc, COL_GOLD);
 		nextline = 35;
-		if (szPlayerDescript[0]) {
-			strcat(strcpy(desc, "password: "), szPlayerDescript);
+		if (gszGamePass[0]) {
+			strcat(strcpy(desc, "password: "), gszGamePass);
 			PrintGameStr(8, 35, desc, COL_GOLD);
 			nextline = 50;
 		}

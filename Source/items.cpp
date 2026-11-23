@@ -226,17 +226,19 @@ int premiumlvladd[SMITH_PREMIUM_ITEMS] = {
 #endif
 	// clang-format on
 };
-int itemactive[MAXITEMS] = { 0 };
+/** Contains the items on ground in the current game. */
+ItemStruct item[MAXITEMS + 1];
 #ifdef HELLFIRE
-CornerStoneStruct CornerStone = { 0 };
+CornerStoneStruct CornerStone;
 #endif
-BOOL uitemflag = 0;
-int itemavail[MAXITEMS] = { 0 };
+int itemactive[MAXITEMS];
+int itemavail[MAXITEMS];
 #ifdef HELLFIRE
 int auricGold = GOLD_MAX_LIMIT * 2;
 #endif
-ItemStruct curruitem = { 0 };
-ItemGetRecordStruct itemrecord[MAXITEMS] = { 0 };
+/** unused */
+int tem;
+ItemGetRecordStruct itemgets[MAXITEMS];
 
 /* data */
 
@@ -270,8 +272,7 @@ char OilNames[10][25] = {
 int MaxGold = GOLD_MAX_LIMIT;
 #endif
 
-/** Contains the items on ground in the current game. */
-ItemStruct item[MAXITEMS + 1] = { 0 };
+BOOL UniqueItemFlag[128];
 /** Map of item type .cel file names. */
 const char *const ItemDropNames[] = {
 	"Armor2",
@@ -320,9 +321,10 @@ const char *const ItemDropNames[] = {
 	"mooses1",
 #endif
 };
-BOOL itemhold[3][3] = { 0 };
-BYTE *itemanims[ITEMTYPES] = { 0 };
-BOOL UniqueItemFlag[128] = { 0 };
+BOOL uitemflag;
+ItemStruct curruitem;
+BOOL itemhold[3][3];
+BYTE *itemanims[ITEMTYPES];
 #ifdef HELLFIRE
 char *CornerStoneRegKey = "SItem";
 #endif
@@ -5987,10 +5989,10 @@ static void NextItemRecord(int i)
 		return;
 	}
 
-	itemrecord[i].dwTimestamp = itemrecord[gnNumGetRecords].dwTimestamp;
-	itemrecord[i].nSeed = itemrecord[gnNumGetRecords].nSeed;
-	itemrecord[i].wCI = itemrecord[gnNumGetRecords].wCI;
-	itemrecord[i].nIndex = itemrecord[gnNumGetRecords].nIndex;
+	itemgets[i].dwTimestamp = itemgets[gnNumGetRecords].dwTimestamp;
+	itemgets[i].nSeed = itemgets[gnNumGetRecords].nSeed;
+	itemgets[i].wCI = itemgets[gnNumGetRecords].wCI;
+	itemgets[i].nIndex = itemgets[gnNumGetRecords].nIndex;
 }
 
 BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
@@ -6001,11 +6003,11 @@ BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
 	dwTicks = GetTickCount();
 
 	for (i = 0; i < gnNumGetRecords; i++) {
-		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
+		if (dwTicks - itemgets[i].dwTimestamp > 6000) {
 			// BUGFIX: loot actions for multiple quest items with same seed (e.g. blood stone) performed within less then 6 seconds will be ignored.
 			NextItemRecord(i);
 			i--;
-		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemgets[i].nSeed && wCI == itemgets[i].wCI && nIndex == itemgets[i].nIndex) {
 			return FALSE;
 		}
 	}
@@ -6023,10 +6025,10 @@ void SetItemRecord(int nSeed, WORD wCI, int nIndex)
 		return;
 	}
 
-	itemrecord[gnNumGetRecords].dwTimestamp = dwTicks;
-	itemrecord[gnNumGetRecords].nSeed = nSeed;
-	itemrecord[gnNumGetRecords].wCI = wCI;
-	itemrecord[gnNumGetRecords].nIndex = nIndex;
+	itemgets[gnNumGetRecords].dwTimestamp = dwTicks;
+	itemgets[gnNumGetRecords].nSeed = nSeed;
+	itemgets[gnNumGetRecords].wCI = wCI;
+	itemgets[gnNumGetRecords].nIndex = nIndex;
 	gnNumGetRecords++;
 }
 
@@ -6038,10 +6040,10 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex)
 	dwTicks = GetTickCount();
 
 	for (i = 0; i < gnNumGetRecords; i++) {
-		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
+		if (dwTicks - itemgets[i].dwTimestamp > 6000) {
 			NextItemRecord(i);
 			i--;
-		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemgets[i].nSeed && wCI == itemgets[i].wCI && nIndex == itemgets[i].nIndex) {
 			NextItemRecord(i);
 			break;
 		}

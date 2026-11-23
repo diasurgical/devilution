@@ -6,9 +6,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-BYTE *sgpBackCel = NULL;
-int sgdwProgress = 0;
-int progress_id = 0;
+BYTE *sgpBackCel;
+int sgdwProgress;
+int progress_id;
 
 /** The colour used for the progress bar as an index into the palette. */
 const BYTE BarColor[3] = { 138, 43, 254 };

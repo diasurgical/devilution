@@ -10,7 +10,7 @@ extern LightListStruct VisionList[MAXVISION];
 extern BYTE lightactive[MAXLIGHTS];
 extern LightListStruct LightList[MAXLIGHTS];
 extern int numlights;
-extern BYTE lightradius[16][128];
+extern BYTE LightLvls[16][128];
 extern BOOL dovision;
 extern int numvision;
 extern char lightmax;

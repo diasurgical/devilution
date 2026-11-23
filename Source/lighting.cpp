@@ -440,17 +440,17 @@ BYTE byte_49463C[18][18] = {
 };
 /** RadiusAdj maps from vCrawlTable index to lighting vision radius adjustment. */
 BYTE RadiusAdj[23] = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0 };
-LightListStruct VisionList[MAXVISION] = { 0 };
-BYTE lightactive[MAXLIGHTS] = { 0 };
-LightListStruct LightList[MAXLIGHTS] = { 0 };
-int numlights = 0;
-BYTE lightradius[16][128] = { 0 };
-BOOL dovision = 0;
-int numvision = 0;
-char lightmax = 0;
-BOOL dolighting = 0;
+LightListStruct LightList[MAXLIGHTS];
+BYTE lightactive[MAXLIGHTS];
+int numlights;
+BOOL dolighting;
+LightListStruct VisionList[MAXVISION];
+int numvision;
+BOOL dovision;
+char lightmax;
+int visionid;
 
-BYTE lightblock[64][16][16] = { 0 };
+BYTE LightLvls[16][128];
 
 /** pCrawlTable maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
 char *pCrawlTable[19] = {
@@ -474,8 +474,8 @@ char *pCrawlTable[19] = {
 	CrawlTable + 2187,
 	CrawlTable + 2460
 };
-int visionid = 0;
-BYTE *pLightTbl = NULL;
+BYTE Dist[64][16][16];
+BYTE *pLightTbl;
 
 BOOL lightflag = 0;
 
@@ -563,19 +563,19 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 #endif
 		dLight[nXPos][nYPos] = 0;
 #ifdef HELLFIRE
-	} else if (dLight[nXPos][nYPos] > lightradius[nRadius][0]) {
-		dLight[nXPos][nYPos] = lightradius[nRadius][0];
+	} else if (dLight[nXPos][nYPos] > LightLvls[nRadius][0]) {
+		dLight[nXPos][nYPos] = LightLvls[nRadius][0];
 #endif
 	}
 
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < max_x; x++) {
-			radius_block = lightblock[mult][y][x];
+			radius_block = Dist[mult][y][x];
 			if (radius_block < 128) {
 				temp_x = nXPos + x;
 				temp_y = nYPos + y;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -588,11 +588,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < max_y; y++) {
 		for (x = 1; x < max_x; x++) {
-			radius_block = lightblock[mult][y + block_y][x + block_x];
+			radius_block = Dist[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos + y;
 				temp_y = nYPos - x;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -605,11 +605,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < max_y; y++) {
 		for (x = 1; x < min_x; x++) {
-			radius_block = lightblock[mult][y + block_y][x + block_x];
+			radius_block = Dist[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos - x;
 				temp_y = nYPos - y;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -622,11 +622,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < min_x; x++) {
-			radius_block = lightblock[mult][y + block_y][x + block_x];
+			radius_block = Dist[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos - y;
 				temp_y = nYPos + x;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -972,10 +972,10 @@ void MakeLightTable()
 	for (j = 0; j < 16; j++) {
 		for (i = 0; i < 128; i++) {
 			if (i > (j + 1) * 8) {
-				lightradius[j][i] = 15;
+				LightLvls[j][i] = 15;
 			} else {
 				fs = (double)15 * i / ((double)8 * (j + 1));
-				lightradius[j][i] = (BYTE)(fs + 0.5);
+				LightLvls[j][i] = (BYTE)(fs + 0.5);
 			}
 		}
 	}
@@ -986,12 +986,12 @@ void MakeLightTable()
 			fa = (sqrt((double)(16 - j))) / 128;
 			fa *= fa;
 			for (i = 0; i < 128; i++) {
-				lightradius[15 - j][i] = 15 - (BYTE)(fa * (double)((128 - i) * (128 - i)));
-				if (lightradius[15 - j][i] > 15)
-					lightradius[15 - j][i] = 0;
-				lightradius[15 - j][i] = lightradius[15 - j][i] - (BYTE)((15 - j) / 2);
-				if (lightradius[15 - j][i] > 15)
-					lightradius[15 - j][i] = 0;
+				LightLvls[15 - j][i] = 15 - (BYTE)(fa * (double)((128 - i) * (128 - i)));
+				if (LightLvls[15 - j][i] > 15)
+					LightLvls[15 - j][i] = 0;
+				LightLvls[15 - j][i] = LightLvls[15 - j][i] - (BYTE)((15 - j) / 2);
+				if (LightLvls[15 - j][i] > 15)
+					LightLvls[15 - j][i] = 0;
 			}
 		}
 	}
@@ -1005,8 +1005,8 @@ void MakeLightTable()
 
 					// BUGFIX: This error causes a "jittery" effect when a light source moves.
 					// Swap the addition and multiplication operators to fix the lookup table.
-					// lightblock[j + 8 * i][k][l] = fs;
-					lightblock[j * 8 + i][k][l] = fs;
+					// Dist[j + 8 * i][k][l] = fs;
+					Dist[j * 8 + i][k][l] = fs;
 				}
 			}
 		}

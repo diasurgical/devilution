@@ -7,35 +7,38 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-BOOLEAN gbSomebodyWonGameKludge = 0;
-#ifdef _DEBUG
-DWORD gdwHistTicks = 0;
-#endif
-TBuffer sgHiPriBuf = { 0 };
-char szPlayerDescript[128] = { 0 };
-WORD sgwPackPlrOffsetTbl[MAX_PLRS] = { 0 };
-PkPlayerStruct netplr[MAX_PLRS] = { 0 };
-BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS] = { 0 };
-BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS] = { 0 };
-int sgbSentThisCycle = 0;
-BOOL gbShouldValidatePackage = 0;
-BYTE gbActivePlayers = 0;
-BOOLEAN gbGameDestroyed = 0;
-BOOLEAN sgbSendDeltaTbl[MAX_PLRS] = { 0 };
-_gamedata sgGameInitInfo = { 0 };
-BOOLEAN gbSelectProvider = 0;
-int sglTimeoutStart = 0;
-int sgdwPlayerLeftReasonTbl[MAX_PLRS] = { 0 };
-TBuffer sgLoPriBuf = { 0 };
-DWORD sgdwGameLoops = 0;
 /**
  * Specifies the maximum number of players in a game, where 1
  * represents a single player game and 4 represents a multi player game.
  */
-BYTE gbMaxPlayers = 0;
-BOOLEAN sgbTimeout = 0;
-char szPlayerName[128] = { 0 };
-BYTE gbDeltaSender = 0;
+BYTE gbMaxPlayers;
+#ifdef _DEBUG
+DWORD gdwHistTicks;
+#endif
+BYTE gbActivePlayers;
+BOOLEAN gbGameDestroyed;
+BOOLEAN gbSelectProvider;
+BYTE gbDeltaSender;
+// uninitialised as in 1.09b: laid out in name-hash order (names from Hellfire)
+BOOLEAN gbSomebodyWonGameKludge;
+char gszGameName[128];
+char gszGamePass[128];
+int sgbSentThisCycle;
+BOOL gbShouldValidatePackage;
+/** unused */
+DWORD sgdwSyncMsgs;
+DWORD sgdwGameLoops;
+WORD sgwPackPlrOffsetTbl[MAX_PLRS];
+PkPlayerStruct sgPackPlr[MAX_PLRS];
+BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS];
+int sgdwPlayerLeftReasonTbl[MAX_PLRS];
+BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
+_gamedata sgGameInitInfo;
+BOOLEAN sgbGameJoiner[MAX_PLRS];
+BOOLEAN sgbTimeout;
+int sglTimeoutStart;
+TBuffer sgLoPriBuf;
+TBuffer sgHiPriBuf;
 BOOL sgbNetInited = 0;
 int player_state[MAX_PLRS] = { 0 };
 
@@ -721,11 +724,11 @@ static void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		gameData = (_gamedata *)pEvt->data;
 		sgGameInitInfo.dwSeed = gameData->dwSeed;
 		sgGameInitInfo.bDiff = gameData->bDiff;
-		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
+		sgbGameJoiner[pEvt->playerid] = TRUE;
 		break;
 	case EVENT_TYPE_PLAYER_LEAVE_GAME:
 		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
-		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
+		sgbGameJoiner[pEvt->playerid] = FALSE;
 
 		LeftReason = 0;
 		if (pEvt->data && pEvt->databytes >= sizeof(DWORD))
@@ -834,7 +837,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		UiData.profilebitmapcallback = (void (*)())UiProfileDraw;
 		UiData.profilecallback = (void (*)())UiProfileCallback;
 		UiData.profilefields = UiProfileGetString();
-		memset(sgbPlayerTurnBitTbl, 0, sizeof(sgbPlayerTurnBitTbl));
+		memset(sgbGameJoiner, 0, sizeof(sgbGameJoiner));
 		gbGameDestroyed = FALSE;
 		memset(sgbPlayerLeftGameTbl, 0, sizeof(sgbPlayerLeftGameTbl));
 		memset(sgdwPlayerLeftReasonTbl, 0, sizeof(sgdwPlayerLeftReasonTbl));
@@ -861,7 +864,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		buffer_init(&sgLoPriBuf);
 		gbShouldValidatePackage = FALSE;
 		sync_init();
-		nthread_start(sgbPlayerTurnBitTbl[myplr]);
+		nthread_start(sgbGameJoiner[myplr]);
 		dthread_start();
 		tmsg_start();
 		sgdwGameLoops = 0;
@@ -873,7 +876,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		multi_send_pinfo(-2, CMD_SEND_PLRINFO);
 		plr[myplr].plractive = TRUE;
 		gbActivePlayers = 1;
-		if (sgbPlayerTurnBitTbl[myplr] == FALSE || msg_wait_resync())
+		if (sgbGameJoiner[myplr] == FALSE || msg_wait_resync())
 			break;
 		NetClose();
 		gbSelectProvider = FALSE;
@@ -885,9 +888,9 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		glSeedTbl[i] = GetRndSeed();
 		gnLevelTypeTbl[i] = InitLevelType(i);
 	}
-	if (!SNetGetGameInfo(GAMEINFO_NAME, szPlayerName, 128, &len))
+	if (!SNetGetGameInfo(GAMEINFO_NAME, gszGameName, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo1");
-	if (!SNetGetGameInfo(GAMEINFO_PASSWORD, szPlayerDescript, 128, &len))
+	if (!SNetGetGameInfo(GAMEINFO_PASSWORD, gszGamePass, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo2");
 
 	return TRUE;
@@ -975,16 +978,16 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 		multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
 	}
 
-	memcpy((char *)&netplr[pnum] + p->wOffset, &p[1], p->wBytes); /* todo: cast? */
+	memcpy((char *)&sgPackPlr[pnum] + p->wOffset, &p[1], p->wBytes); /* todo: cast? */
 	sgwPackPlrOffsetTbl[pnum] += p->wBytes;
-	if (sgwPackPlrOffsetTbl[pnum] != sizeof(*netplr)) {
+	if (sgwPackPlrOffsetTbl[pnum] != sizeof(*sgPackPlr)) {
 		return;
 	}
 
 	sgwPackPlrOffsetTbl[pnum] = 0;
 	multi_player_left_msg(pnum, 0);
 	plr[pnum]._pGFXLoad = 0;
-	UnPackPlayer(&netplr[pnum], pnum, TRUE);
+	UnPackPlayer(&sgPackPlr[pnum], pnum, TRUE);
 
 	if (!recv) {
 #ifdef _DEBUG
@@ -996,7 +999,7 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 	plr[pnum].plractive = TRUE;
 	gbActivePlayers++;
 
-	if (sgbPlayerTurnBitTbl[pnum] != FALSE) {
+	if (sgbGameJoiner[pnum] != FALSE) {
 		szEvent = "Player '%s' (level %d) just joined the game";
 	} else {
 		szEvent = "Player '%s' (level %d) is already in the game";

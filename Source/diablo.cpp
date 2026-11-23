@@ -936,7 +936,7 @@ static void LeftMouseUp()
 	control_release_talk_btn();
 	if (panbtndown)
 		CheckBtnUp();
-	if (chrbtnactive)
+	if (chrbtndown)
 		ReleaseChrBtns();
 	if (lvlbtndown)
 		ReleaseLvlBtn();

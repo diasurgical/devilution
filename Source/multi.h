@@ -7,13 +7,13 @@
 #define __MULTI_H__
 
 extern BOOLEAN gbSomebodyWonGameKludge;
-extern char szPlayerDescript[128];
+extern char gszGamePass[128];
 extern WORD sgwPackPlrOffsetTbl[MAX_PLRS];
 extern BYTE gbActivePlayers;
 extern BOOLEAN gbGameDestroyed;
 extern BOOLEAN gbSelectProvider;
 extern BYTE gbMaxPlayers;
-extern char szPlayerName[128];
+extern char gszGameName[128];
 extern BYTE gbDeltaSender;
 extern int player_state[MAX_PLRS];
 

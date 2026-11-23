@@ -17,20 +17,20 @@
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
 #endif
 
-/** automap pixel color 8-bit (palette entry) */
-char gbPixelCol = 0;
 /** flip - if y < x */
-BOOL gbRotateMap = 0;
-/** Seed value before the most recent call to SetRndSeed() */
-int orgseed = 0;
-/** Width of sprite being blitted */
-int sgnWidth = 0;
-/** Current game seed */
-int sglGameSeed = 0;
-/** Number of times the current seed has been fetched */
-int SeedCount = 0;
+BOOL dlreverse;
+/** automap pixel color 8-bit (palette entry) */
+char dlcolor;
 /** valid - if x/y are in bounds */
-BOOL gbNotInView = 0;
+BOOL dlclipflag;
+/** Width of sprite being blitted */
+int sgnWidth;
+/** Current game seed */
+int sglGameSeed;
+/** Number of times the current seed has been fetched */
+int SeedCount;
+/** Seed value before the most recent call to SetRndSeed() */
+int orgseed;
 
 /**
  * Specifies the increment used in the Borland C/C++ pseudo-random.
@@ -2236,7 +2236,7 @@ void ENG_set_pixel(int sx, int sy, BYTE col)
 }
 
 /**
- * @brief Set the value of a single pixel in the back buffer to that of gbPixelCol, checks bounds
+ * @brief Set the value of a single pixel in the back buffer to that of dlcolor, checks bounds
  * @param sx Back buffer coordinate
  * @param sy Back buffer coordinate
  */
@@ -2246,12 +2246,12 @@ void engine_draw_pixel(int sx, int sy)
 
 	assert(gpBuffer);
 
-	if (gbRotateMap) {
-		if (gbNotInView && (sx < 0 || sx >= SCREEN_HEIGHT + SCREEN_Y || sy < SCREEN_X || sy >= SCREEN_WIDTH + SCREEN_X))
+	if (dlreverse) {
+		if (dlclipflag && (sx < 0 || sx >= SCREEN_HEIGHT + SCREEN_Y || sy < SCREEN_X || sy >= SCREEN_WIDTH + SCREEN_X))
 			return;
 		dst = &gpBuffer[sy + PitchTbl[sx]];
 	} else {
-		if (gbNotInView && (sy < 0 || sy >= SCREEN_HEIGHT + SCREEN_Y || sx < SCREEN_X || sx >= SCREEN_WIDTH + SCREEN_X))
+		if (dlclipflag && (sy < 0 || sy >= SCREEN_HEIGHT + SCREEN_Y || sx < SCREEN_X || sx >= SCREEN_WIDTH + SCREEN_X))
 			return;
 		dst = &gpBuffer[sx + PitchTbl[sy]];
 	}
@@ -2261,13 +2261,13 @@ void engine_draw_pixel(int sx, int sy)
 		mov		edi, dst
 		cmp		edi, gpBufEnd
 		jnb		label1
-		mov		al, gbPixelCol
+		mov		al, dlcolor
 		mov		[edi], al
 	label1:
 	}
 #else
 	if (dst < gpBufEnd)
-		*dst = gbPixelCol;
+		*dst = dlcolor;
 #endif
 }
 
@@ -2305,20 +2305,20 @@ void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 	int sign_x, sign_y, step, i;
 	int x1_, y1_;
 
-	gbPixelCol = col;
+	dlcolor = col;
 
-	gbNotInView = FALSE;
+	dlclipflag = FALSE;
 	if (x0 < 0 + SCREEN_X || x0 >= SCREEN_WIDTH + SCREEN_X) {
-		gbNotInView = TRUE;
+		dlclipflag = TRUE;
 	}
 	if (x1 < 0 + SCREEN_X || x1 >= SCREEN_WIDTH + SCREEN_X) {
-		gbNotInView = TRUE;
+		dlclipflag = TRUE;
 	}
 	if (y0 < 0 + SCREEN_Y || y0 >= PANEL_Y) {
-		gbNotInView = TRUE;
+		dlclipflag = TRUE;
 	}
 	if (y1 < 0 + SCREEN_Y || y1 >= PANEL_Y) {
-		gbNotInView = TRUE;
+		dlclipflag = TRUE;
 	}
 
 	dx = GG_ABSOLUTE(x1, x0, sign_x);
@@ -2334,9 +2334,9 @@ void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 		GG_SWAP(x0, y0);
 		GG_SWAP(x1, y1);
 		GG_SWAP(dx, dy);
-		gbRotateMap = TRUE;
+		dlreverse = TRUE;
 	} else
-		gbRotateMap = FALSE;
+		dlreverse = FALSE;
 	/* note error check for dx==0 should be included here */
 	if (x0 > x1) { /* start from the smaller coordinate */
 		x = x1;
