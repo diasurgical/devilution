@@ -5334,6 +5334,9 @@ void GetObjectStr(int i)
 	case OBJ_BLINDBOOK:
 		strcpy(infostr, "Book of the Blind");
 		break;
+	case OBJ_STEELTOME:
+		strcpy(infostr, "Steel Tome");
+		break;
 	case OBJ_BLOODBOOK:
 		strcpy(infostr, "Book of Blood");
 		break;
@@ -5358,9 +5361,6 @@ void GetObjectStr(int i)
 		break;
 	case OBJ_TEARFTN:
 		strcpy(infostr, "Fountain of Tears");
-		break;
-	case OBJ_STEELTOME:
-		strcpy(infostr, "Steel Tome");
 		break;
 	case OBJ_PEDISTAL:
 		strcpy(infostr, "Pedestal of Blood");

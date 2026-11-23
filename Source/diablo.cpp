@@ -305,6 +305,29 @@ static void diablo_parse_flags(char *args)
 	}
 }
 
+/**
+ * @brief Throw away pending key and mouse messages.
+ * Unused in 1.09b: the linker drops the function, but the imports it references stay (and their order).
+ */
+void FlushMsgs()
+{
+	BOOL bLoop;
+	MSG msg;
+
+	track_repeat_walk(FALSE);
+	sgbMouseDown = CLICK_NONE;
+	ReleaseCapture();
+
+	bLoop = TRUE;
+	while (bLoop) {
+		bLoop = FALSE;
+		while (PeekMessage(&msg, NULL, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
+			bLoop = TRUE;
+		while (PeekMessage(&msg, NULL, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
+			bLoop = TRUE;
+	}
+}
+
 void FreeGameMem()
 {
 	music_stop();

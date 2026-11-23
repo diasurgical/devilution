@@ -30,6 +30,48 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // remains consistent on all systems.
 IDI_ICON1               ICON    DISCARDABLE     "Diablo.ico"
 
+// 1.09b: the version resource comes right after the icon
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2001,5,18,1
+ PRODUCTVERSION 1,0,9,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Blizzard Entertainment\0"
+            VALUE "FileDescription", "Diablo\0"
+            VALUE "FileVersion", "2001, 5, 18, 1\0"
+            VALUE "InternalName", "Diablo\0"
+            VALUE "LegalCopyright", "Copyright © 1996-2001\0"
+            VALUE "OriginalFilename", "Diablo.exe\0"
+            VALUE "ProductName", "Blizzard Entertainment Diablo\0"
+            VALUE "ProductVersion", "1, 0, 9, 2\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -233,46 +275,6 @@ BEGIN
 END
 
 
-#ifndef _MAC
-/////////////////////////////////////////////////////////////////////////////
-//
-// Version
-//
-
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2001,5,18,1
- PRODUCTVERSION 1,0,9,2
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
-#else
- FILEFLAGS 0x0L
-#endif
- FILEOS 0x4L
- FILETYPE 0x1L
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904b0"
-        BEGIN
-            VALUE "CompanyName", "Blizzard Entertainment\0"
-            VALUE "FileDescription", "Diablo\0"
-            VALUE "FileVersion", "2001, 5, 18, 1\0"
-            VALUE "InternalName", "Diablo\0"
-            VALUE "LegalCopyright", "Copyright © 1996-2001\0"
-            VALUE "OriginalFilename", "Diablo.exe\0"
-            VALUE "ProductName", "Blizzard Entertainment Diablo\0"
-            VALUE "ProductVersion", "1, 0, 9, 2\0"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1200
-    END
-END
-
-#endif    // !_MAC
 
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
