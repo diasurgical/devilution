@@ -229,3 +229,67 @@ void j_mem_free_dbg(void *p)
 {
 	mem_free_dbg(p);
 }
+
+#ifndef HELLFIRE
+/*
+ * Unused placeholders (the linker drops them). The linker folds identical functions (/OPT:ICF) and which copy
+ * it keeps depends on all the functions it sees, including unused ones; 1.09b had unused code we do not know.
+ * These 14 stand in for it, so that the C runtime keeps the same copies as in 1.09b.
+ */
+extern "C" int zzdummy0(int a)
+{
+	return a * 13 + 5;
+}
+extern "C" int zzdummy1(int a)
+{
+	return a * 20 + 36;
+}
+extern "C" int zzdummy2(int a)
+{
+	return a * 27 + 67;
+}
+extern "C" int zzdummy3(int a)
+{
+	return a * 34 + 98;
+}
+extern "C" int zzdummy4(int a)
+{
+	return a * 41 + 129;
+}
+extern "C" int zzdummy5(int a)
+{
+	return a * 48 + 160;
+}
+extern "C" int zzdummy6(int a)
+{
+	return a * 55 + 191;
+}
+extern "C" int zzdummy7(int a)
+{
+	return a * 62 + 222;
+}
+extern "C" int zzdummy8(int a)
+{
+	return a * 69 + 253;
+}
+extern "C" int zzdummy9(int a)
+{
+	return a * 76 + 284;
+}
+extern "C" int zzdummy10(int a)
+{
+	return a * 83 + 315;
+}
+extern "C" int zzdummy11(int a)
+{
+	return a * 90 + 346;
+}
+extern "C" int zzdummy12(int a)
+{
+	return a * 97 + 377;
+}
+extern "C" int zzdummy13(int a)
+{
+	return a * 104 + 408;
+}
+#endif

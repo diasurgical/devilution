@@ -137,9 +137,16 @@ else
 	PKWARE_DEP = 3rdParty/PKWare/pkware.lib
 endif
 
+# The linker stamps the exe with the current time; PE_TIMESTAMP=1 writes the time of 1.09b's link instead
+# (2001-05-18 23:10:56 UTC) into the header (offset 0xE8 = e_lfanew + 8).
+ifneq ($(PE_TIMESTAMP),)
+	STAMP_CMD = printf '\000\254\005\073' | dd of=$@ bs=1 seek=232 conv=notrunc 2>/dev/null
+endif
+
 # diablo.res before render.obj: the order of the Rich header entries (resource before the converted OMF object)
 Diablo.exe: main_files diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib $(PKWARE_DEP) $(LINK_DEPS)
 	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(filter-out Source/render.obj,$(OBJS)) diablo.res $(filter Source/render.obj,$(OBJS)) DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib libcmt.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib $(PKWARE)
+	$(STAMP_CMD)
 
 vc5link/link.exe:
 	mkdir -p vc5link

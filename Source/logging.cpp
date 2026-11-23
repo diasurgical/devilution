@@ -19,6 +19,17 @@ char log_buffer[388] = { 0 };
 LPCVOID lpAddress = { 0 };
 DWORD nNumberOfBytesToWrite = 0;
 
+#ifndef HELLFIRE
+/**
+ * Unused (the linker drops it). 1.09b references _vsnprintf before _snprintf in this file, which decides the
+ * order of the two in the CRT; the original function is unknown, this stands in for it.
+ */
+void __cdecl log_vprintf_unused(char *msg, const char *pszFmt, va_list va)
+{
+	_vsnprintf(msg, 0x200, pszFmt, va);
+}
+#endif
+
 static void log_get_version(VS_FIXEDFILEINFO *file_info)
 {
 	DWORD size, len, dwHandle;
