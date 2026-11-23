@@ -14,6 +14,7 @@ extern int MouseY;
 extern BOOL gbRunGame;
 extern BOOL gbRunGameResult;
 extern BOOL svgamode;
+extern const char gszAppName[];
 extern BOOL gbProcessPlayers;
 extern BOOL gbLoadGame;
 extern HINSTANCE ghInst;

@@ -53,6 +53,54 @@ BYTE ItemCAnimTbl[] = {
 	3, 1, 6, 6, 6, 1, 8, 6, 11, 3,
 	6, 8, 1, 6, 6, 17, 40, 0, 0
 #endif
+};
+/** Map of item type .cel file names. */
+char *ItemFiles[] = {
+	"Armor2",
+	"Axe",
+	"FBttle",
+	"Bow",
+	"GoldFlip",
+	"Helmut",
+	"Mace",
+	"Shield",
+	"SwrdFlip",
+	"Rock",
+	"Cleaver",
+	"Staff",
+	"Ring",
+	"CrownF",
+	"LArmor",
+	"WShield",
+	"Scroll",
+	"FPlateAr",
+	"FBook",
+	"Food",
+	"FBttleBB",
+	"FBttleDY",
+	"FBttleOR",
+	"FBttleBR",
+	"FBttleBL",
+	"FBttleBY",
+	"FBttleWH",
+	"FBttleDB",
+	"FEar",
+	"FBrain",
+	"FMush",
+	"Innsign",
+	"Bldstn",
+	"Fanvil",
+	"FLazStaf",
+#ifdef HELLFIRE
+	"bombs1",
+	"halfps1",
+	"wholeps1",
+	"runes1",
+	"teddys1",
+	"cows1",
+	"donkys1",
+	"mooses1",
+#endif
 };
 /** Maps of item drop animation length. */
 BYTE ItemAnimLs[] = {
@@ -273,54 +321,7 @@ int MaxGold = GOLD_MAX_LIMIT;
 #endif
 
 BOOL UniqueItemFlag[128];
-/** Map of item type .cel file names. */
-const char *const ItemDropNames[] = {
-	"Armor2",
-	"Axe",
-	"FBttle",
-	"Bow",
-	"GoldFlip",
-	"Helmut",
-	"Mace",
-	"Shield",
-	"SwrdFlip",
-	"Rock",
-	"Cleaver",
-	"Staff",
-	"Ring",
-	"CrownF",
-	"LArmor",
-	"WShield",
-	"Scroll",
-	"FPlateAr",
-	"FBook",
-	"Food",
-	"FBttleBB",
-	"FBttleDY",
-	"FBttleOR",
-	"FBttleBR",
-	"FBttleBL",
-	"FBttleBY",
-	"FBttleWH",
-	"FBttleDB",
-	"FEar",
-	"FBrain",
-	"FMush",
-	"Innsign",
-	"Bldstn",
-	"Fanvil",
-	"FLazStaf",
-#ifdef HELLFIRE
-	"bombs1",
-	"halfps1",
-	"wholeps1",
-	"runes1",
-	"teddys1",
-	"cows1",
-	"donkys1",
-	"mooses1",
-#endif
-};
+
 BOOL uitemflag;
 ItemStruct curruitem;
 BOOL itemhold[3][3];
@@ -530,7 +531,7 @@ void InitItemGFX()
 	char arglist[64];
 
 	for (i = 0; i < ITEMTYPES; i++) {
-		sprintf(arglist, "Items\\%s.CEL", ItemDropNames[i]);
+		sprintf(arglist, "Items\\%s.CEL", ItemFiles[i]);
 		itemanims[i] = LoadFileInMem(arglist, NULL);
 	}
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));

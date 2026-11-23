@@ -186,7 +186,8 @@ const char *PanBtnStr[8] = {
 	"Player Attack"
 };
 /** Maps from attribute_id to the rectangle on screen used for attribute increment buttons. */
-RECT32 ChrBtnsRect[4] = {
+/** 1.09b: a plain int table (x, y, w, h), so it is not 8-byte aligned like a struct array */
+int ChrBtnPos[4][4] = {
 	{ 137, 138, 41, 22 },
 	{ 137, 166, 41, 22 },
 	{ 137, 195, 41, 22 },
@@ -2254,11 +2255,11 @@ void CheckChrBtns()
 			default:
 				continue;
 			}
-			x = ChrBtnsRect[i].x + ChrBtnsRect[i].w;
-			y = ChrBtnsRect[i].y + ChrBtnsRect[i].h;
-			if (MouseX >= ChrBtnsRect[i].x
+			x = ChrBtnPos[i][0] + ChrBtnPos[i][2];
+			y = ChrBtnPos[i][1] + ChrBtnPos[i][3];
+			if (MouseX >= ChrBtnPos[i][0]
 			    && MouseX <= x
-			    && MouseY >= ChrBtnsRect[i].y
+			    && MouseY >= ChrBtnPos[i][1]
 			    && MouseY <= y) {
 				chrbtn[i] = TRUE;
 				chrbtndown = TRUE;
@@ -2275,10 +2276,10 @@ void ReleaseChrBtns()
 	for (i = 0; i < 4; ++i) {
 		if (chrbtn[i]) {
 			chrbtn[i] = FALSE;
-			if (MouseX >= ChrBtnsRect[i].x
-			    && MouseX <= ChrBtnsRect[i].x + ChrBtnsRect[i].w
-			    && MouseY >= ChrBtnsRect[i].y
-			    && MouseY <= ChrBtnsRect[i].y + ChrBtnsRect[i].h) {
+			if (MouseX >= ChrBtnPos[i][0]
+			    && MouseX <= ChrBtnPos[i][0] + ChrBtnPos[i][2]
+			    && MouseY >= ChrBtnPos[i][1]
+			    && MouseY <= ChrBtnPos[i][1] + ChrBtnPos[i][3]) {
 				switch (i) {
 				case 0:
 					NetSendCmdParam1(TRUE, CMD_ADDSTR, 1);

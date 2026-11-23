@@ -7,8 +7,12 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
+extern char gszProgKey[];
+
 /** 1.09b: space reserved for registration data (unused) */
 char sgszTblSig[128] = "REGISTRATION_TABLE";
+/** 1.09b: a named constant (in .rdata) */
+const char gszAppName[] = GAME_NAME;
 
 /**
  * Specifies whether to give the game exclusive access to the
@@ -96,14 +100,14 @@ int framestart = 0;
 #endif
 int color_cycle_timer = 0;
 /** Default quick messages */
-const char *const spszMsgTbl[4] = {
+char *spszMsgTbl[4] = {
 	"I need help! Come Here!",
 	"Follow me.",
 	"Here's something for you.",
 	"Now you DIE!"
 };
 /** INI files variable names for quick message keys */
-const char *const spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
+char *spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
 static void diablo_parse_flags(char *args)
 {
@@ -116,19 +120,19 @@ static void diablo_parse_flags(char *args)
 		while (isspace(*args)) {
 			args++;
 		}
-		static char de[] = "dd_emulate";
+		static const char de[] = "dd_emulate";
 		if (_strnicmp(de, args, strlen(de)) == 0) {
 			gbUseDDEmulation = TRUE;
 			args += strlen(de);
 			continue;
 		}
-		static char db[] = "dd_backbuf";
+		static const char db[] = "dd_backbuf";
 		if (_strnicmp(db, args, strlen(db)) == 0) {
 			gbForceBackBuf = TRUE;
 			args += strlen(db);
 			continue;
 		}
-		static char ds[] = "ds_noduplicates";
+		static const char ds[] = "ds_noduplicates";
 		if (_strnicmp(ds, args, strlen(ds)) == 0) {
 			gbDupSounds = FALSE;
 			args += strlen(ds);
@@ -671,7 +675,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	if (diablo_find_window("DIABLO"))
 		return 0;
 #endif
-	if (diablo_find_window(GAME_NAME) || !bNoEvent)
+	if (diablo_find_window(gszAppName) || !bNoEvent)
 		return 0;
 
 #ifdef _DEBUG
@@ -704,7 +708,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #ifndef SPAWN
 	{
 		char szValueName[] = "Intro";
-		if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
+		if (!SRegLoadValue(gszProgKey, szValueName, 0, &nData))
 			nData = 1;
 #ifndef HELLFIRE
 		if (nData)
@@ -712,7 +716,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #else
 		play_movie("gendata\\Hellfire.smk", TRUE);
 #endif
-		SRegSaveValue(APP_NAME, szValueName, 0, 0);
+		SRegSaveValue(gszProgKey, szValueName, 0, 0);
 	}
 #endif
 

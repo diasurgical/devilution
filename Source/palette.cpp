@@ -6,6 +6,8 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+extern char gszProgKey[];
+
 /** Specifies the gamma correction level. */
 int gamma_correction = 100;
 /** Specifies whether the palette has max brightness. */
@@ -63,9 +65,9 @@ static void ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
 
 void SaveGamma()
 {
-	SRegSaveValue(APP_NAME, gszGammaCorrection, 0, gamma_correction);
+	SRegSaveValue(gszProgKey, gszGammaCorrection, 0, gamma_correction);
 #ifndef HELLFIRE
-	SRegSaveValue(APP_NAME, gszColorCycling, FALSE, color_cycling_enabled);
+	SRegSaveValue(gszProgKey, gszColorCycling, FALSE, color_cycling_enabled);
 #endif
 }
 
@@ -75,7 +77,7 @@ static void LoadGamma()
 	int value;
 
 	value = gamma_correction;
-	if (!SRegLoadValue(APP_NAME, gszGammaCorrection, 0, &value))
+	if (!SRegLoadValue(gszProgKey, gszGammaCorrection, 0, &value))
 		value = 100;
 	gamma_value = value;
 	if (value < 30) {
@@ -85,7 +87,7 @@ static void LoadGamma()
 	}
 	gamma_correction = gamma_value - gamma_value % 5;
 #ifndef HELLFIRE
-	if (!SRegLoadValue(APP_NAME, gszColorCycling, 0, &value))
+	if (!SRegLoadValue(gszProgKey, gszColorCycling, 0, &value))
 		value = 1;
 	color_cycling_enabled = value;
 #endif

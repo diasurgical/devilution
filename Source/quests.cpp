@@ -85,7 +85,7 @@ BOOL questlog;
 int qspin;
 int qline;
 int numqlines;
-const char *const questtrigstr[5] = {
+char *questtrigstr[5] = {
 	"King Leoric's Tomb",
 	"The Chamber of Bone",
 	"Maze",

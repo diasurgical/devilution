@@ -60,12 +60,12 @@ TMenuItem sgOptionsMenu[] = {
 	// clang-format on
 };
 /** Specifies the menu names for music enabled and disabled. */
-const char *const music_toggle_names[] = {
+static const char *sgszMusic[] = {
 	"Music",
 	"Music Disabled",
 };
 /** Specifies the menu names for sound enabled and disabled. */
-const char *const sound_toggle_names[] = {
+static const char *sgszSound[] = {
 	"Sound",
 	"Sound Disabled",
 };
@@ -78,7 +78,7 @@ char *jogging_title = "Fast Walk";
 #endif
 #ifndef HELLFIRE
 /** Specifies the menu names for colour cycling disabled and enabled. */
-const char *const color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
+static const char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 #endif
 
 static void gamemenu_update_single(TMenuItem *pMenuItems)
@@ -231,12 +231,12 @@ static int gamemenu_slider_music_sound(TMenuItem *menu_item)
 
 static void gamemenu_get_music()
 {
-	gamemenu_sound_music_toggle(music_toggle_names, sgOptionsMenu, sound_get_or_set_music_volume(1));
+	gamemenu_sound_music_toggle(sgszMusic, sgOptionsMenu, sound_get_or_set_music_volume(1));
 }
 
 static void gamemenu_get_sound()
 {
-	gamemenu_sound_music_toggle(sound_toggle_names, &sgOptionsMenu[1], sound_get_or_set_sound_volume(1));
+	gamemenu_sound_music_toggle(sgszSound, &sgOptionsMenu[1], sound_get_or_set_sound_volume(1));
 }
 
 #ifdef HELLFIRE

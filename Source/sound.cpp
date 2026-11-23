@@ -32,7 +32,7 @@ HMODULE hDsound_dll = 0;
 HANDLE sghMusic = 0;
 LPDIRECTSOUNDBUFFER sglpDSB = { 0 };
 /** Maps from track ID to track name. */
-const char *const sgszMusicTracks[NUM_MUSIC] = {
+const char *sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
 	"Music\\sTowne.wav",
 	"Music\\sLvlA.wav",

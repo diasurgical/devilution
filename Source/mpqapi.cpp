@@ -6,6 +6,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** The registry key of the game (1.09b: first in this file's .data) */
+char gszProgKey[] = APP_NAME;
+
 HANDLE sghArchive = INVALID_HANDLE_VALUE;
 DWORD sgdwMpqOffset = 0;
 BYTE mpq_buf[4096] = { 0 };
@@ -50,9 +53,9 @@ static BOOL mpqapi_reg_load_modification_time(char *dst, int size)
 	pszDst = dst;
 	memset(dst, 0, size);
 #ifdef SPAWN
-	if (!SRegLoadData(APP_NAME, "Audio Playback ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
+	if (!SRegLoadData(gszProgKey, "Audio Playback ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
 #else
-	if (!SRegLoadData(APP_NAME, "Video Player ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
+	if (!SRegLoadData(gszProgKey, "Video Player ", 0, (BYTE *)pszDst, size, &nbytes_read)) {
 #endif
 		return FALSE;
 	}
@@ -86,9 +89,9 @@ static BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 	}
 
 #ifdef SPAWN
-	return SRegSaveData(APP_NAME, "Audio Playback ", 0, (BYTE *)pbData, dwLen);
+	return SRegSaveData(gszProgKey, "Audio Playback ", 0, (BYTE *)pbData, dwLen);
 #else
-	return SRegSaveData(APP_NAME, "Video Player ", 0, (BYTE *)pbData, dwLen);
+	return SRegSaveData(gszProgKey, "Video Player ", 0, (BYTE *)pbData, dwLen);
 #endif
 }
 

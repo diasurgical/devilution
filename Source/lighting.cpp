@@ -391,6 +391,29 @@ char CrawlTable[2749] = {
 	-18, -2, 18, -2, -18, 1, 18, 1,
 	-18, -1, 18, -1, -18, 0, 18, 0
 };
+/** pCrawlEntry maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
+char *pCrawlEntry[19] = {
+	CrawlTable,
+	CrawlTable + 3,
+	CrawlTable + 12,
+	CrawlTable + 45,
+	CrawlTable + 94,
+	CrawlTable + 159,
+	CrawlTable + 240,
+	CrawlTable + 337,
+	CrawlTable + 450,
+	CrawlTable + 579,
+	CrawlTable + 724,
+	CrawlTable + 885,
+	CrawlTable + 1062,
+	CrawlTable + 1255,
+	CrawlTable + 1464,
+	CrawlTable + 1689,
+	CrawlTable + 1930,
+	CrawlTable + 2187,
+	CrawlTable + 2460
+};
+
 /** vCrawlTable specifies the X- Y-coordinate offsets of lighting visions. */
 BYTE vCrawlTable[23][30] = {
 	{ 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0 },
@@ -452,28 +475,7 @@ int visionid;
 
 BYTE LightLvls[16][128];
 
-/** pCrawlTable maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
-char *pCrawlTable[19] = {
-	CrawlTable,
-	CrawlTable + 3,
-	CrawlTable + 12,
-	CrawlTable + 45,
-	CrawlTable + 94,
-	CrawlTable + 159,
-	CrawlTable + 240,
-	CrawlTable + 337,
-	CrawlTable + 450,
-	CrawlTable + 579,
-	CrawlTable + 724,
-	CrawlTable + 885,
-	CrawlTable + 1062,
-	CrawlTable + 1255,
-	CrawlTable + 1464,
-	CrawlTable + 1689,
-	CrawlTable + 1930,
-	CrawlTable + 2187,
-	CrawlTable + 2460
-};
+
 BYTE Dist[64][16][16];
 BYTE *pLightTbl;
 

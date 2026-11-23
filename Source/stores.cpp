@@ -67,7 +67,7 @@ char stextscrlubtn = 0;
 
 char stextflag = 0;
 /** Maps from towner IDs to NPC names. */
-const char *const talkname[9] = {
+char *talkname[9] = {
 	"Griswold",
 	"Pepin",
 	"",

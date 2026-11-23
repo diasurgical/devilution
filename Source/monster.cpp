@@ -6,6 +6,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** 1.09b: a named string, first in this file's .data */
+static char sgszInvalidMonstName[] = "Invalid Monster";
+
 /** Maps from monster walk animation frame num to monster velocity. */
 int MWVel[24][3] = {
 	{ 256, 512, 1024 },
@@ -634,7 +637,7 @@ void ClrAllMonsters()
 	for (i = 0; i < MAXMONSTERS; i++) {
 		Monst = &monster[i];
 		ClearMVars(i);
-		Monst->mName = "Invalid Monster";
+		Monst->mName = sgszInvalidMonstName;
 		Monst->_mgoal = 0;
 		Monst->_mmode = MM_STAND;
 		Monst->_mVar1 = 0;

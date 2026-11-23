@@ -15,7 +15,7 @@ int sgLastScroll = 0;
 BOOLEAN qtextflag = 0;
 /** Duplicate of qtextSpd */
 int qtextDelay = 0;
-/** Vertical speed of the scrolling text, see qscroll_spd_tbl */
+/** Vertical speed of the scrolling text, see qtextDelaySpd */
 int qtextSpd = 0;
 /** Graphics for the medium size font */
 BYTE *pMedTextCels = NULL;
@@ -58,7 +58,7 @@ const BYTE mfontkern[56] = {
  * Text scroll speeds. Positive numbers will delay scrolling 1 out of n frames,
  * negative numbers will scroll 1+(-n) pixels.
  */
-int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
+int qtextDelaySpd[10] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
 /**
  * @brief Free the resouces used by the quest dialog window
@@ -90,7 +90,7 @@ void InitQTextMsg(int m)
 		qtextptr = alltext[m].txtstr;
 		qtextflag = TRUE;
 		qtexty = 340 + SCREEN_Y;
-		qtextSpd = qscroll_spd_tbl[alltext[m].txtspd - 1];
+		qtextSpd = qtextDelaySpd[alltext[m].txtspd - 1];
 		qtextDelay = qtextSpd;
 		sgLastScroll = GetTickCount();
 	}
