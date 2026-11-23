@@ -16,6 +16,6 @@ void TalkToTowner(int p, int t);
 
 /* data */
 
-extern QuestTalkData Qtalklist[];
+extern int Qtalklist[][MAXQUESTS];
 
 #endif /* __TOWNERS_H__ */

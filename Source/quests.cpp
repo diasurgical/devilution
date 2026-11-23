@@ -47,6 +47,13 @@ char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };
  * which the hover text of the cursor will be visible.
  */
 char questyoff[7] = { 0, 0, -1, -1, -1, -2, -2 };
+char *questtrigstr[5] = {
+	"King Leoric's Tomb",
+	"The Chamber of Bone",
+	"Maze",
+	"A Dark Passage",
+	"Unholy Altar"
+};
 /**
  * A quest group containing the three quests the Butcher,
  * Ogden's Sign and Gharbad the Weak, which ensures that exactly
@@ -65,12 +72,6 @@ int QuestGroup2[3] = { Q_BLIND, Q_ROCK, Q_BLOOD };
  * two of these three quests appear in any single player game.
  */
 int QuestGroup3[3] = { Q_MUSHROOM, Q_ZHAR, Q_ANVIL };
-/**
- * A quest group containing the two quests Lachdanan and Warlord
- * of Blood, which ensures that exactly one of these two quests
- * appears in any single player game.
- */
-int QuestGroup4[2] = { Q_VEIL, Q_WARLORD };
 /** Contains the quests of the current game. */
 QuestStruct quests[MAXQUESTS];
 int ReturnLvlX;
@@ -85,13 +86,12 @@ BOOL questlog;
 int qspin;
 int qline;
 int numqlines;
-char *questtrigstr[5] = {
-	"King Leoric's Tomb",
-	"The Chamber of Bone",
-	"Maze",
-	"A Dark Passage",
-	"Unholy Altar"
-};
+/**
+ * A quest group containing the two quests Lachdanan and Warlord
+ * of Blood, which ensures that exactly one of these two quests
+ * appears in any single player game.
+ */
+int QuestGroup4[2] = { Q_VEIL, Q_WARLORD };
 int qtopline;
 int qlist[MAXQUESTS];
 int qfade;
@@ -794,10 +794,10 @@ void ResyncQuests()
 		} else {
 			if (quests[Q_MUSHROOM]._qactive == QUEST_ACTIVE) {
 				if (quests[Q_MUSHROOM]._qvar1 >= QS_MUSHGIVEN) {
-					Qtalklist[TOWN_WITCH]._qblkm = -1;
-					Qtalklist[TOWN_HEALER]._qblkm = TEXT_MUSH3;
+					Qtalklist[TOWN_WITCH][Q_MUSHROOM] = -1;
+					Qtalklist[TOWN_HEALER][Q_MUSHROOM] = TEXT_MUSH3;
 				} else if (quests[Q_MUSHROOM]._qvar1 >= QS_BRAINGIVEN) {
-					Qtalklist[TOWN_HEALER]._qblkm = -1;
+					Qtalklist[TOWN_HEALER][Q_MUSHROOM] = -1;
 				}
 			}
 		}

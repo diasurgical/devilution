@@ -21,7 +21,7 @@ void play_movie(const char *pszMovie, BOOL user_can_close)
 	WNDPROC saveProc;
 	HANDLE video_stream;
 
-	if (!gbActive) {
+	if (!bActive) {
 		return;
 	}
 
@@ -37,7 +37,7 @@ void play_movie(const char *pszMovie, BOOL user_can_close)
 	if (video_stream) {
 		MSG Msg;
 		while (video_stream) {
-			if (!gbActive || user_can_close && !movie_playing)
+			if (!bActive || user_can_close && !movie_playing)
 				break;
 			while (PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE)) {
 				if (Msg.message != WM_QUIT) {

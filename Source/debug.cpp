@@ -11,7 +11,12 @@ BOOL update_seed_check = FALSE;
 
 #define DEBUGSEEDS 4096
 int seed_index = 0;
+#ifdef HELLFIRE
 int level_seeds[NUMLEVELS + 1] = { 0 };
+#else
+// BUGFIX: seed_desync_index_set writes level_seeds[NUMLEVELS] (1.09b has only NUMLEVELS entries)
+int level_seeds[NUMLEVELS] = { 0 };
+#endif
 int seed_table[DEBUGSEEDS] = { 0 };
 
 BYTE *pSquareCel = NULL;

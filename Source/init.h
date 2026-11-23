@@ -6,10 +6,10 @@
 #ifndef __INIT_H__
 #define __INIT_H__
 
-extern _SNETVERSIONDATA fileinfo;
-extern int gbActive;
-extern WNDPROC CurrentProc;
-extern HANDLE diabdat_mpq;
+extern _SNETVERSIONDATA gVersion;
+extern int bActive;
+extern WNDPROC sgWndProc;
+extern HANDLE ghsMainArchive;
 #ifdef HELLFIRE
 extern HANDLE hfbard_mpq;
 extern HANDLE hfbarb_mpq;

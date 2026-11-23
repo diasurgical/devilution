@@ -63,7 +63,7 @@ DDSURFACEDESC sgDDSD;
 /* data */
 
 /* used in 1.00 debug */
-const char *const szMonModeAssert[18] = {
+char *szMonModeAssert[18] = {
 	"standing",
 	"walking (1)",
 	"walking (2)",
@@ -84,7 +84,7 @@ const char *const szMonModeAssert[18] = {
 	"talking"
 };
 
-const char *const szPlrModeAssert[12] = {
+char *szPlrModeAssert[12] = {
 	"standing",
 	"walking (1)",
 	"walking (2)",
@@ -2742,7 +2742,7 @@ static void DrawFPS()
 	char String[12];
 	HDC hdc;
 
-	if (frameflag && gbActive) {
+	if (frameflag && bActive) {
 		frameend++;
 		tc = GetTickCount();
 		frames = tc - framestart;
@@ -2848,7 +2848,7 @@ static void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 #ifndef RGBMODE
 				*dst++ = *src++;
 #else
-				PALETTEENTRY pal = system_palette[*src++];
+				PALETTEENTRY pal = sgCurr[*src++];
 				dst[0] = pal.peBlue;
 				dst[1] = pal.peGreen;
 				dst[2] = pal.peRed;
@@ -2880,7 +2880,7 @@ static void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BO
 
 	ysize = dwHgt;
 
-	if (!gbActive || lpDDSPrimary == NULL) {
+	if (!bActive || lpDDSPrimary == NULL) {
 		return;
 	}
 

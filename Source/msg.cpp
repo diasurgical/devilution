@@ -1334,7 +1334,7 @@ static void check_update_plr(int pnum)
 
 static void __cdecl msg_errorf(const char *pszFmt, ...)
 {
-	static DWORD msg_err_timer;
+	static DWORD msg_err_timer = 0;
 	DWORD ticks;
 	char msg[256];
 	va_list va;

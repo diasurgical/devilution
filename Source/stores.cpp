@@ -1498,7 +1498,7 @@ void S_StartTalk()
 #else
 	sn = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
 
@@ -1513,7 +1513,7 @@ void S_StartTalk()
 	sn2 = sn - 2;
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			AddSText(0, sn, TRUE, questlist[i]._qlstr, COL_WHITE, TRUE);
 			sn += la;
 		}
@@ -2726,7 +2726,7 @@ void S_TalkEnter()
 
 	sn = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
 	if (sn > 6) {
@@ -2745,9 +2745,9 @@ void S_TalkEnter()
 	}
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			if (sn == stextsel) {
-				InitQTextMsg(((DWORD *)&Qtalklist[talker])[i]);
+				InitQTextMsg(((DWORD *)Qtalklist[talker])[i]);
 			}
 			sn += la;
 		}

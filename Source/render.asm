@@ -8,7 +8,7 @@ if 0
 else
 _TEXT	SEGMENT BYTE USE32 PUBLIC 'CODE'
 _TEXT	ENDS
-_DATA	SEGMENT DWORD USE32 PUBLIC 'DATA'
+_DATA	SEGMENT BYTE USE32 PUBLIC 'DATA'
 _DATA	ENDS
 CONST	SEGMENT DWORD USE32 PUBLIC 'CONST'
 CONST	ENDS
@@ -77,12 +77,14 @@ PUBLIC	_WorldTbl3x16
 PUBLIC	_WorldTbl17_1
 PUBLIC	_WorldTbl17_2
 PUBLIC	?WallMask@@3PAKA				; WallMask
-_BSS	SEGMENT
-_WorldBoolFlag DD 01H DUP (?)
-_gdwCurrentMask DD 01H DUP (?)
-_gpCelFrame DD	01H DUP (?)
-_gpDrawMask DD	01H DUP (?)
-_BSS	ENDS
+_DATA	SEGMENT
+_WorldBoolFlag DD 00H
+_gdwCurrentMask DD 00H
+	DB	00H					; unused
+_gpCelFrame DD 00H
+_gpDrawMask DD 00H
+	DD	04H DUP (00H)			; unused
+_DATA	ENDS
 _DATA	SEGMENT
 _RightMask DD	0eaaaaaaaH
 	DD	0f5555555H
@@ -116,7 +118,6 @@ _RightMask DD	0eaaaaaaaH
 	DD	0ffffffffH
 	DD	0ffffffffH
 	DD	0ffffffffH
-	ORG $+128
 _LeftMask DD	0aaaaaaabH
 	DD	05555555fH
 	DD	0aaaaaabfH
@@ -149,7 +150,6 @@ _LeftMask DD	0aaaaaaabH
 	DD	0ffffffffH
 	DD	0ffffffffH
 	DD	0ffffffffH
-	ORG $+128
 ?WallMask@@3PAKA DD 0aaaaaaaaH				; WallMask
 	DD	055555555H
 	DD	0aaaaaaaaH
@@ -182,7 +182,6 @@ _LeftMask DD	0aaaaaaabH
 	DD	055555555H
 	DD	0aaaaaaaaH
 	DD	055555555H
-	ORG $+128
 _WorldTbl3x16 DD 00H
 	DD	00H
 	DD	00H
@@ -300,17 +299,17 @@ _TEXT	SEGMENT
 ; Line 12
 	test	al, al
 ; Line 13
-	je	$loc_46316A$37751
+	je	$loc_46316A$37752
 ; Line 14
 	cmp	al, BYTE PTR _lightmax
 ; Line 15
-	je	$loc_4631CA$37752
+	je	$loc_4631CA$37753
 ; Line 16
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 17
 	and	eax, 32768				; 00008000H
 ; Line 18
-	jne	SHORT $loc_4630FE$37753
+	jne	SHORT $loc_4630FE$37754
 ; Line 19
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 20
@@ -340,26 +339,26 @@ _TEXT	SEGMENT
 ; Line 32
 	and	eax, 15					; 0000000fH
 ; Line 33
-	je	$loc_463255$37754
+	je	$loc_463255$37755
 ; Line 34
 	cmp	ax, 1
 ; Line 35
-	je	$loc_4632C5$37755
+	je	$loc_4632C5$37756
 ; Line 36
 	cmp	ax, 2
 ; Line 37
-	je	$loc_463425$37756
+	je	$loc_463425$37757
 ; Line 38
 	cmp	ax, 3
 ; Line 39
-	je	$loc_463698$37757
+	je	$loc_463698$37758
 ; Line 40
 	cmp	ax, 4
 ; Line 41
-	je	$loc_46390B$37758
+	je	$loc_46390B$37759
 ; Line 42
-	jmp	$loc_463AB3$37759
-$loc_4630FE$37753:
+	jmp	$loc_463AB3$37760
+$loc_4630FE$37754:
 ; Line 44
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 45
@@ -388,36 +387,36 @@ $loc_4630FE$37753:
 	shr	eax, 4
 ; Line 57
 	and	eax, 15					; 0000000fH
-$loc_463133$37760:
+$loc_463133$37761:
 ; Line 59
 	cmp	ax, 8
 ; Line 60
-	je	$loc_463C5B$37761
+	je	$loc_463C5B$37762
 ; Line 61
 	cmp	ax, 9
 ; Line 62
-	je	$loc_463CC2$37762
+	je	$loc_463CC2$37763
 ; Line 63
 	cmp	ax, 10					; 0000000aH
 ; Line 64
-	je	$loc_463DA3$37763
+	je	$loc_463DA3$37764
 ; Line 65
 	cmp	ax, 11					; 0000000bH
 ; Line 66
-	je	$loc_463ED8$37764
+	je	$loc_463ED8$37765
 ; Line 67
 	cmp	ax, 12					; 0000000cH
 ; Line 68
-	je	$loc_464011$37765
+	je	$loc_464011$37766
 ; Line 69
-	jmp	$loc_464112$37766
-$loc_46316A$37751:
+	jmp	$loc_464112$37767
+$loc_46316A$37752:
 ; Line 71
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 72
 	and	eax, 32768				; 00008000H
 ; Line 73
-	je	SHORT $loc_46319C$37767
+	je	SHORT $loc_46319C$37768
 ; Line 74
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 75
@@ -436,7 +435,7 @@ $loc_46316A$37751:
 	add	eax, DWORD PTR [esi]
 ; Line 82
 	mov	DWORD PTR _gdwPNum, eax
-$loc_46319C$37767:
+$loc_46319C$37768:
 ; Line 84
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 85
@@ -462,14 +461,14 @@ $loc_46319C$37767:
 ; Line 95
 	add	eax, 8
 ; Line 96
-	jmp	$loc_463133$37760
-$loc_4631CA$37752:
+	jmp	$loc_463133$37761
+$loc_4631CA$37753:
 ; Line 98
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 99
 	and	eax, 32768				; 00008000H
 ; Line 100
-	je	SHORT $loc_4631FC$37768
+	je	SHORT $loc_4631FC$37769
 ; Line 101
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 102
@@ -488,7 +487,7 @@ $loc_4631CA$37752:
 	add	eax, DWORD PTR [esi]
 ; Line 109
 	mov	DWORD PTR _gdwPNum, eax
-$loc_4631FC$37768:
+$loc_4631FC$37769:
 ; Line 111
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 112
@@ -512,38 +511,38 @@ $loc_4631FC$37768:
 ; Line 121
 	and	eax, 7
 ; Line 122
-	je	$loc_46420F$37769
+	je	$loc_46420F$37770
 ; Line 123
 	cmp	ax, 1
 ; Line 124
-	je	$loc_464263$37770
+	je	$loc_464263$37771
 ; Line 125
 	cmp	ax, 2
 ; Line 126
-	je	$loc_464321$37771
+	je	$loc_464321$37772
 ; Line 127
 	cmp	ax, 3
 ; Line 128
-	je	$loc_46440E$37772
+	je	$loc_46440E$37773
 ; Line 129
 	cmp	ax, 4
 ; Line 130
-	je	$loc_4644FB$37773
+	je	$loc_4644FB$37774
 ; Line 131
-	jmp	$loc_4645C7$37774
-$loc_463255$37754:
+	jmp	$loc_4645C7$37775
+$loc_463255$37755:
 ; Line 133
 	push	ebp
 ; Line 134
 	mov	ebp, 16					; 00000010H
-$loc_46325B$37775:
+$loc_46325B$37776:
 ; Line 136
 	cmp	edi, DWORD PTR _glClipY
 ; Line 137
-	jb	SHORT $loc_4632BF$37776
+	jb	SHORT $loc_4632BF$37777
 ; Line 138
 	mov	ecx, 8
-$loc_463268$37777:
+$loc_463268$37778:
 ; Line 140
 	mov	eax, DWORD PTR [esi]
 ; Line 141
@@ -567,16 +566,16 @@ $loc_463268$37777:
 ; Line 150
 	mov	BYTE PTR [edi-1], dl
 ; Line 151
-	jne	SHORT $loc_463268$37777
+	jne	SHORT $loc_463268$37778
 ; Line 152
 	sub	edi, 800				; 00000320H
 ; Line 153
 	cmp	edi, DWORD PTR _glClipY
 ; Line 154
-	jb	SHORT $loc_4632BF$37776
+	jb	SHORT $loc_4632BF$37777
 ; Line 155
 	mov	ecx, 8
-$loc_463299$37778:
+$loc_463299$37779:
 ; Line 157
 	mov	eax, DWORD PTR [esi]
 ; Line 158
@@ -600,19 +599,19 @@ $loc_463299$37778:
 ; Line 167
 	mov	BYTE PTR [edi-2], dl
 ; Line 168
-	jne	SHORT $loc_463299$37778
+	jne	SHORT $loc_463299$37779
 ; Line 169
 	sub	edi, 800				; 00000320H
 ; Line 170
 	dec	ebp
 ; Line 171
-	jne	SHORT $loc_46325B$37775
-$loc_4632BF$37776:
+	jne	SHORT $loc_46325B$37776
+$loc_4632BF$37777:
 ; Line 173
 	pop	ebp
 ; Line 174
-	jmp	$loc_464688$37779
-$loc_4632C5$37755:
+	jmp	$loc_464688$37780
+$loc_4632C5$37756:
 ; Line 176
 	push	ebp
 ; Line 177
@@ -623,10 +622,10 @@ $loc_4632C5$37755:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 180
 	mov	ebp, 32					; 00000020H
-$loc_4632D5$37780:
+$loc_4632D5$37781:
 ; Line 182
 	mov	edx, 32					; 00000020H
-$loc_4632DA$37781:
+$loc_4632DA$37782:
 ; Line 184
 	xor	eax, eax
 ; Line 185
@@ -636,13 +635,13 @@ $loc_4632DA$37781:
 ; Line 187
 	test	al, al
 ; Line 188
-	js	$loc_4633F8$37782
+	js	$loc_4633F8$37783
 ; Line 189
 	sub	edx, eax
 ; Line 190
 	cmp	edi, DWORD PTR _glClipY
 ; Line 191
-	jb	$loc_46341F$37783
+	jb	$loc_46341F$37784
 ; Line 192
 	mov	ecx, eax
 ; Line 193
@@ -652,17 +651,17 @@ $loc_4632DA$37781:
 ; Line 195
 	cmp	eax, DWORD PTR _WorldBoolFlag
 ; Line 196
-	jne	SHORT $loc_463377$37784
+	jne	SHORT $loc_463377$37785
 ; Line 197
 	push	edx
 ; Line 198
 	shr	ecx, 1
 ; Line 199
-	jb	SHORT $loc_463340$37785
+	jb	SHORT $loc_463340$37786
 ; Line 200
 	shr	ecx, 1
 ; Line 201
-	jae	SHORT $loc_46331C$37786
+	jae	SHORT $loc_46331C$37787
 ; Line 202
 	mov	dl, BYTE PTR [esi+1]
 ; Line 203
@@ -673,12 +672,12 @@ $loc_4632DA$37781:
 	mov	BYTE PTR [edi+1], dl
 ; Line 206
 	add	edi, 2
-$loc_46331C$37786:
+$loc_46331C$37787:
 ; Line 208
 	test	cl, cl
 ; Line 209
-	je	SHORT $loc_46333E$37787
-$loc_463320$37788:
+	je	SHORT $loc_46333E$37788
+$loc_463320$37789:
 ; Line 211
 	mov	eax, DWORD PTR [esi]
 ; Line 212
@@ -702,11 +701,11 @@ $loc_463320$37788:
 ; Line 221
 	mov	BYTE PTR [edi-1], dl
 ; Line 222
-	jne	SHORT $loc_463320$37788
-$loc_46333E$37787:
+	jne	SHORT $loc_463320$37789
+$loc_46333E$37788:
 ; Line 224
-	jmp	SHORT $loc_463374$37789
-$loc_463340$37785:
+	jmp	SHORT $loc_463374$37790
+$loc_463340$37786:
 ; Line 226
 	inc	esi
 ; Line 227
@@ -714,7 +713,7 @@ $loc_463340$37785:
 ; Line 228
 	shr	ecx, 1
 ; Line 229
-	jae	SHORT $loc_463353$37790
+	jae	SHORT $loc_463353$37791
 ; Line 230
 	mov	dl, BYTE PTR [esi]
 ; Line 231
@@ -725,12 +724,12 @@ $loc_463340$37785:
 	mov	BYTE PTR [edi], dl
 ; Line 234
 	add	edi, 2
-$loc_463353$37790:
+$loc_463353$37791:
 ; Line 236
 	test	cl, cl
 ; Line 237
-	je	SHORT $loc_463374$37789
-$loc_463357$37791:
+	je	SHORT $loc_463374$37790
+$loc_463357$37792:
 ; Line 239
 	mov	eax, DWORD PTR [esi]
 ; Line 240
@@ -754,23 +753,23 @@ $loc_463357$37791:
 ; Line 249
 	mov	BYTE PTR [edi-2], dl
 ; Line 250
-	jne	SHORT $loc_463357$37791
-$loc_463374$37789:
+	jne	SHORT $loc_463357$37792
+$loc_463374$37790:
 ; Line 252
 	pop	edx
 ; Line 253
-	jmp	SHORT $loc_4633EF$37792
-$loc_463377$37784:
+	jmp	SHORT $loc_4633EF$37793
+$loc_463377$37785:
 ; Line 255
 	push	edx
 ; Line 256
 	shr	ecx, 1
 ; Line 257
-	jb	SHORT $loc_4633B0$37793
+	jb	SHORT $loc_4633B0$37794
 ; Line 258
 	shr	ecx, 1
 ; Line 259
-	jae	SHORT $loc_46338D$37794
+	jae	SHORT $loc_46338D$37795
 ; Line 260
 	mov	dl, BYTE PTR [esi]
 ; Line 261
@@ -781,12 +780,12 @@ $loc_463377$37784:
 	mov	BYTE PTR [edi], dl
 ; Line 264
 	add	edi, 2
-$loc_46338D$37794:
+$loc_46338D$37795:
 ; Line 266
 	test	cl, cl
 ; Line 267
-	je	SHORT $loc_4633AE$37795
-$loc_463391$37796:
+	je	SHORT $loc_4633AE$37796
+$loc_463391$37797:
 ; Line 269
 	mov	eax, DWORD PTR [esi]
 ; Line 270
@@ -810,11 +809,11 @@ $loc_463391$37796:
 ; Line 279
 	mov	BYTE PTR [edi-2], dl
 ; Line 280
-	jne	SHORT $loc_463391$37796
-$loc_4633AE$37795:
+	jne	SHORT $loc_463391$37797
+$loc_4633AE$37796:
 ; Line 282
-	jmp	SHORT $loc_4633EE$37797
-$loc_4633B0$37793:
+	jmp	SHORT $loc_4633EE$37798
+$loc_4633B0$37794:
 ; Line 284
 	mov	dl, BYTE PTR [esi]
 ; Line 285
@@ -828,7 +827,7 @@ $loc_4633B0$37793:
 ; Line 289
 	shr	ecx, 1
 ; Line 290
-	jae	SHORT $loc_4633CC$37798
+	jae	SHORT $loc_4633CC$37799
 ; Line 291
 	mov	dl, BYTE PTR [esi+1]
 ; Line 292
@@ -839,12 +838,12 @@ $loc_4633B0$37793:
 	mov	BYTE PTR [edi+1], dl
 ; Line 295
 	add	edi, 2
-$loc_4633CC$37798:
+$loc_4633CC$37799:
 ; Line 297
 	test	cl, cl
 ; Line 298
-	je	SHORT $loc_4633EE$37797
-$loc_4633D0$37799:
+	je	SHORT $loc_4633EE$37798
+$loc_4633D0$37800:
 ; Line 300
 	mov	eax, DWORD PTR [esi]
 ; Line 301
@@ -868,18 +867,18 @@ $loc_4633D0$37799:
 ; Line 310
 	mov	BYTE PTR [edi-1], dl
 ; Line 311
-	jne	SHORT $loc_4633D0$37799
-$loc_4633EE$37797:
+	jne	SHORT $loc_4633D0$37800
+$loc_4633EE$37798:
 ; Line 313
 	pop	edx
-$loc_4633EF$37792:
+$loc_4633EF$37793:
 ; Line 315
 	test	edx, edx
 ; Line 316
-	je	SHORT $loc_463404$37800
+	je	SHORT $loc_463404$37801
 ; Line 317
-	jmp	$loc_4632DA$37781
-$loc_4633F8$37782:
+	jmp	$loc_4632DA$37782
+$loc_4633F8$37783:
 ; Line 319
 	neg	al
 ; Line 320
@@ -887,8 +886,8 @@ $loc_4633F8$37782:
 ; Line 321
 	sub	edx, eax
 ; Line 322
-	jne	$loc_4632DA$37781
-$loc_463404$37800:
+	jne	$loc_4632DA$37782
+$loc_463404$37801:
 ; Line 324
 	mov	eax, DWORD PTR _WorldBoolFlag
 ; Line 325
@@ -902,13 +901,13 @@ $loc_463404$37800:
 ; Line 329
 	dec	ebp
 ; Line 330
-	jne	$loc_4632D5$37780
-$loc_46341F$37783:
+	jne	$loc_4632D5$37781
+$loc_46341F$37784:
 ; Line 332
 	pop	ebp
 ; Line 333
-	jmp	$loc_464688$37779
-$loc_463425$37756:
+	jmp	$loc_464688$37780
+$loc_463425$37757:
 ; Line 335
 	push	ebp
 ; Line 336
@@ -917,11 +916,11 @@ $loc_463425$37756:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 338
 	mov	ebp, 30					; 0000001eH
-$loc_463432$37801:
+$loc_463432$37802:
 ; Line 340
 	cmp	edi, DWORD PTR _glClipY
 ; Line 341
-	jb	$loc_463692$37802
+	jb	$loc_463692$37803
 ; Line 342
 	add	edi, ebp
 ; Line 343
@@ -937,7 +936,7 @@ $loc_463432$37801:
 ; Line 348
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 349
-	je	SHORT $loc_4634D2$37803
+	je	SHORT $loc_4634D2$37804
 ; Line 350
 	mov	edx, ecx
 ; Line 351
@@ -947,11 +946,11 @@ $loc_463432$37801:
 ; Line 353
 	shr	ecx, 1
 ; Line 354
-	jb	SHORT $loc_463499$37804
+	jb	SHORT $loc_463499$37805
 ; Line 355
 	shr	ecx, 1
 ; Line 356
-	jae	SHORT $loc_463475$37805
+	jae	SHORT $loc_463475$37806
 ; Line 357
 	mov	dl, BYTE PTR [esi+1]
 ; Line 358
@@ -962,12 +961,12 @@ $loc_463432$37801:
 	mov	BYTE PTR [edi+1], dl
 ; Line 361
 	add	edi, 2
-$loc_463475$37805:
+$loc_463475$37806:
 ; Line 363
 	test	cl, cl
 ; Line 364
-	je	SHORT $loc_463497$37806
-$loc_463479$37807:
+	je	SHORT $loc_463497$37807
+$loc_463479$37808:
 ; Line 366
 	mov	eax, DWORD PTR [esi]
 ; Line 367
@@ -991,11 +990,11 @@ $loc_463479$37807:
 ; Line 376
 	mov	BYTE PTR [edi-1], dl
 ; Line 377
-	jne	SHORT $loc_463479$37807
-$loc_463497$37806:
+	jne	SHORT $loc_463479$37808
+$loc_463497$37807:
 ; Line 379
-	jmp	SHORT $loc_4634CD$37808
-$loc_463499$37804:
+	jmp	SHORT $loc_4634CD$37809
+$loc_463499$37805:
 ; Line 381
 	inc	esi
 ; Line 382
@@ -1003,7 +1002,7 @@ $loc_463499$37804:
 ; Line 383
 	shr	ecx, 1
 ; Line 384
-	jae	SHORT $loc_4634AC$37809
+	jae	SHORT $loc_4634AC$37810
 ; Line 385
 	mov	dl, BYTE PTR [esi]
 ; Line 386
@@ -1014,12 +1013,12 @@ $loc_463499$37804:
 	mov	BYTE PTR [edi], dl
 ; Line 389
 	add	edi, 2
-$loc_4634AC$37809:
+$loc_4634AC$37810:
 ; Line 391
 	test	cl, cl
 ; Line 392
-	je	SHORT $loc_4634CD$37808
-$loc_4634B0$37810:
+	je	SHORT $loc_4634CD$37809
+$loc_4634B0$37811:
 ; Line 394
 	mov	eax, DWORD PTR [esi]
 ; Line 395
@@ -1043,11 +1042,11 @@ $loc_4634B0$37810:
 ; Line 404
 	mov	BYTE PTR [edi-2], dl
 ; Line 405
-	jne	SHORT $loc_4634B0$37810
-$loc_4634CD$37808:
+	jne	SHORT $loc_4634B0$37811
+$loc_4634CD$37809:
 ; Line 407
 	jmp	NEAR PTR $+130
-$loc_4634D2$37803:
+$loc_4634D2$37804:
 ; Line 409
 	mov	edx, ecx
 ; Line 410
@@ -1057,11 +1056,11 @@ $loc_4634D2$37803:
 ; Line 412
 	shr	ecx, 1
 ; Line 413
-	jb	SHORT $loc_463511$37811
+	jb	SHORT $loc_463511$37812
 ; Line 414
 	shr	ecx, 1
 ; Line 415
-	jae	SHORT $loc_4634EE$37812
+	jae	SHORT $loc_4634EE$37813
 ; Line 416
 	mov	dl, BYTE PTR [esi]
 ; Line 417
@@ -1072,12 +1071,12 @@ $loc_4634D2$37803:
 	mov	BYTE PTR [edi], dl
 ; Line 420
 	add	edi, 2
-$loc_4634EE$37812:
+$loc_4634EE$37813:
 ; Line 422
 	test	cl, cl
 ; Line 423
-	je	SHORT $loc_46350F$37813
-$loc_4634F2$37814:
+	je	SHORT $loc_46350F$37814
+$loc_4634F2$37815:
 ; Line 425
 	mov	eax, DWORD PTR [esi]
 ; Line 426
@@ -1101,11 +1100,11 @@ $loc_4634F2$37814:
 ; Line 435
 	mov	BYTE PTR [edi-2], dl
 ; Line 436
-	jne	SHORT $loc_4634F2$37814
-$loc_46350F$37813:
+	jne	SHORT $loc_4634F2$37815
+$loc_46350F$37814:
 ; Line 438
-	jmp	SHORT $loc_46354F$37815
-$loc_463511$37811:
+	jmp	SHORT $loc_46354F$37816
+$loc_463511$37812:
 ; Line 440
 	mov	dl, BYTE PTR [esi]
 ; Line 441
@@ -1119,7 +1118,7 @@ $loc_463511$37811:
 ; Line 445
 	shr	ecx, 1
 ; Line 446
-	jae	SHORT $loc_46352D$37816
+	jae	SHORT $loc_46352D$37817
 ; Line 447
 	mov	dl, BYTE PTR [esi+1]
 ; Line 448
@@ -1130,12 +1129,12 @@ $loc_463511$37811:
 	mov	BYTE PTR [edi+1], dl
 ; Line 451
 	add	edi, 2
-$loc_46352D$37816:
+$loc_46352D$37817:
 ; Line 453
 	test	cl, cl
 ; Line 454
-	je	SHORT $loc_46354F$37815
-$loc_463531$37817:
+	je	SHORT $loc_46354F$37816
+$loc_463531$37818:
 ; Line 456
 	mov	eax, DWORD PTR [esi]
 ; Line 457
@@ -1159,21 +1158,21 @@ $loc_463531$37817:
 ; Line 466
 	mov	BYTE PTR [edi-1], dl
 ; Line 467
-	jne	SHORT $loc_463531$37817
-$loc_46354F$37815:
+	jne	SHORT $loc_463531$37818
+$loc_46354F$37816:
 ; Line 469
 	sub	edi, 800				; 00000320H
 ; Line 470
 	sub	ebp, 2
 ; Line 471
-	jge	$loc_463432$37801
+	jge	$loc_463432$37802
 ; Line 472
 	mov	ebp, 2
-$loc_463563$37818:
+$loc_463563$37819:
 ; Line 474
 	cmp	edi, DWORD PTR _glClipY
 ; Line 475
-	jb	$loc_463692$37802
+	jb	$loc_463692$37803
 ; Line 476
 	add	edi, ebp
 ; Line 477
@@ -1189,7 +1188,7 @@ $loc_463563$37818:
 ; Line 482
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 483
-	je	SHORT $loc_463603$37819
+	je	SHORT $loc_463603$37820
 ; Line 484
 	mov	edx, ecx
 ; Line 485
@@ -1199,11 +1198,11 @@ $loc_463563$37818:
 ; Line 487
 	shr	ecx, 1
 ; Line 488
-	jb	SHORT $loc_4635CA$37820
+	jb	SHORT $loc_4635CA$37821
 ; Line 489
 	shr	ecx, 1
 ; Line 490
-	jae	SHORT $loc_4635A6$37821
+	jae	SHORT $loc_4635A6$37822
 ; Line 491
 	mov	dl, BYTE PTR [esi+1]
 ; Line 492
@@ -1214,12 +1213,12 @@ $loc_463563$37818:
 	mov	BYTE PTR [edi+1], dl
 ; Line 495
 	add	edi, 2
-$loc_4635A6$37821:
+$loc_4635A6$37822:
 ; Line 497
 	test	cl, cl
 ; Line 498
-	je	SHORT $loc_4635C8$37822
-$loc_4635AA$37823:
+	je	SHORT $loc_4635C8$37823
+$loc_4635AA$37824:
 ; Line 500
 	mov	eax, DWORD PTR [esi]
 ; Line 501
@@ -1243,11 +1242,11 @@ $loc_4635AA$37823:
 ; Line 510
 	mov	BYTE PTR [edi-1], dl
 ; Line 511
-	jne	SHORT $loc_4635AA$37823
-$loc_4635C8$37822:
+	jne	SHORT $loc_4635AA$37824
+$loc_4635C8$37823:
 ; Line 513
-	jmp	SHORT $loc_4635FE$37824
-$loc_4635CA$37820:
+	jmp	SHORT $loc_4635FE$37825
+$loc_4635CA$37821:
 ; Line 515
 	inc	esi
 ; Line 516
@@ -1255,7 +1254,7 @@ $loc_4635CA$37820:
 ; Line 517
 	shr	ecx, 1
 ; Line 518
-	jae	SHORT $loc_4635DD$37825
+	jae	SHORT $loc_4635DD$37826
 ; Line 519
 	mov	dl, BYTE PTR [esi]
 ; Line 520
@@ -1266,12 +1265,12 @@ $loc_4635CA$37820:
 	mov	BYTE PTR [edi], dl
 ; Line 523
 	add	edi, 2
-$loc_4635DD$37825:
+$loc_4635DD$37826:
 ; Line 525
 	test	cl, cl
 ; Line 526
-	je	SHORT $loc_4635FE$37824
-$loc_4635E1$37826:
+	je	SHORT $loc_4635FE$37825
+$loc_4635E1$37827:
 ; Line 528
 	mov	eax, DWORD PTR [esi]
 ; Line 529
@@ -1295,11 +1294,11 @@ $loc_4635E1$37826:
 ; Line 538
 	mov	BYTE PTR [edi-2], dl
 ; Line 539
-	jne	SHORT $loc_4635E1$37826
-$loc_4635FE$37824:
+	jne	SHORT $loc_4635E1$37827
+$loc_4635FE$37825:
 ; Line 541
 	jmp	NEAR PTR $+130
-$loc_463603$37819:
+$loc_463603$37820:
 ; Line 543
 	mov	edx, ecx
 ; Line 544
@@ -1309,11 +1308,11 @@ $loc_463603$37819:
 ; Line 546
 	shr	ecx, 1
 ; Line 547
-	jb	SHORT $loc_463642$37827
+	jb	SHORT $loc_463642$37828
 ; Line 548
 	shr	ecx, 1
 ; Line 549
-	jae	SHORT $loc_46361F$37828
+	jae	SHORT $loc_46361F$37829
 ; Line 550
 	mov	dl, BYTE PTR [esi]
 ; Line 551
@@ -1324,12 +1323,12 @@ $loc_463603$37819:
 	mov	BYTE PTR [edi], dl
 ; Line 554
 	add	edi, 2
-$loc_46361F$37828:
+$loc_46361F$37829:
 ; Line 556
 	test	cl, cl
 ; Line 557
-	je	SHORT $loc_463640$37829
-$loc_463623$37830:
+	je	SHORT $loc_463640$37830
+$loc_463623$37831:
 ; Line 559
 	mov	eax, DWORD PTR [esi]
 ; Line 560
@@ -1353,11 +1352,11 @@ $loc_463623$37830:
 ; Line 569
 	mov	BYTE PTR [edi-2], dl
 ; Line 570
-	jne	SHORT $loc_463623$37830
-$loc_463640$37829:
+	jne	SHORT $loc_463623$37831
+$loc_463640$37830:
 ; Line 572
-	jmp	SHORT $loc_463680$37831
-$loc_463642$37827:
+	jmp	SHORT $loc_463680$37832
+$loc_463642$37828:
 ; Line 574
 	mov	dl, BYTE PTR [esi]
 ; Line 575
@@ -1371,7 +1370,7 @@ $loc_463642$37827:
 ; Line 579
 	shr	ecx, 1
 ; Line 580
-	jae	SHORT $loc_46365E$37832
+	jae	SHORT $loc_46365E$37833
 ; Line 581
 	mov	dl, BYTE PTR [esi+1]
 ; Line 582
@@ -1382,12 +1381,12 @@ $loc_463642$37827:
 	mov	BYTE PTR [edi+1], dl
 ; Line 585
 	add	edi, 2
-$loc_46365E$37832:
+$loc_46365E$37833:
 ; Line 587
 	test	cl, cl
 ; Line 588
-	je	SHORT $loc_463680$37831
-$loc_463662$37833:
+	je	SHORT $loc_463680$37832
+$loc_463662$37834:
 ; Line 590
 	mov	eax, DWORD PTR [esi]
 ; Line 591
@@ -1411,8 +1410,8 @@ $loc_463662$37833:
 ; Line 600
 	mov	BYTE PTR [edi-1], dl
 ; Line 601
-	jne	SHORT $loc_463662$37833
-$loc_463680$37831:
+	jne	SHORT $loc_463662$37834
+$loc_463680$37832:
 ; Line 603
 	sub	edi, 800				; 00000320H
 ; Line 604
@@ -1420,13 +1419,13 @@ $loc_463680$37831:
 ; Line 605
 	cmp	ebp, 32					; 00000020H
 ; Line 606
-	jne	$loc_463563$37818
-$loc_463692$37802:
+	jne	$loc_463563$37819
+$loc_463692$37803:
 ; Line 608
 	pop	ebp
 ; Line 609
-	jmp	$loc_464688$37779
-$loc_463698$37757:
+	jmp	$loc_464688$37780
+$loc_463698$37758:
 ; Line 611
 	push	ebp
 ; Line 612
@@ -1435,11 +1434,11 @@ $loc_463698$37757:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 614
 	mov	ebp, 30					; 0000001eH
-$loc_4636A5$37834:
+$loc_4636A5$37835:
 ; Line 616
 	cmp	edi, DWORD PTR _glClipY
 ; Line 617
-	jb	$loc_463905$37835
+	jb	$loc_463905$37836
 ; Line 618
 	mov	ecx, 32					; 00000020H
 ; Line 619
@@ -1453,15 +1452,15 @@ $loc_4636A5$37834:
 ; Line 623
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 624
-	je	SHORT $loc_463743$37836
+	je	SHORT $loc_463743$37837
 ; Line 625
 	shr	ecx, 1
 ; Line 626
-	jb	SHORT $loc_463703$37837
+	jb	SHORT $loc_463703$37838
 ; Line 627
 	shr	ecx, 1
 ; Line 628
-	jae	SHORT $loc_4636DF$37838
+	jae	SHORT $loc_4636DF$37839
 ; Line 629
 	mov	dl, BYTE PTR [esi+1]
 ; Line 630
@@ -1472,12 +1471,12 @@ $loc_4636A5$37834:
 	mov	BYTE PTR [edi+1], dl
 ; Line 633
 	add	edi, 2
-$loc_4636DF$37838:
+$loc_4636DF$37839:
 ; Line 635
 	test	cl, cl
 ; Line 636
-	je	SHORT $loc_463701$37839
-$loc_4636E3$37840:
+	je	SHORT $loc_463701$37840
+$loc_4636E3$37841:
 ; Line 638
 	mov	eax, DWORD PTR [esi]
 ; Line 639
@@ -1501,11 +1500,11 @@ $loc_4636E3$37840:
 ; Line 648
 	mov	BYTE PTR [edi-1], dl
 ; Line 649
-	jne	SHORT $loc_4636E3$37840
-$loc_463701$37839:
+	jne	SHORT $loc_4636E3$37841
+$loc_463701$37840:
 ; Line 651
-	jmp	SHORT $loc_463737$37841
-$loc_463703$37837:
+	jmp	SHORT $loc_463737$37842
+$loc_463703$37838:
 ; Line 653
 	inc	esi
 ; Line 654
@@ -1513,7 +1512,7 @@ $loc_463703$37837:
 ; Line 655
 	shr	ecx, 1
 ; Line 656
-	jae	SHORT $loc_463716$37842
+	jae	SHORT $loc_463716$37843
 ; Line 657
 	mov	dl, BYTE PTR [esi]
 ; Line 658
@@ -1524,12 +1523,12 @@ $loc_463703$37837:
 	mov	BYTE PTR [edi], dl
 ; Line 661
 	add	edi, 2
-$loc_463716$37842:
+$loc_463716$37843:
 ; Line 663
 	test	cl, cl
 ; Line 664
-	je	SHORT $loc_463737$37841
-$loc_46371A$37843:
+	je	SHORT $loc_463737$37842
+$loc_46371A$37844:
 ; Line 666
 	mov	eax, DWORD PTR [esi]
 ; Line 667
@@ -1553,8 +1552,8 @@ $loc_46371A$37843:
 ; Line 676
 	mov	BYTE PTR [edi-2], dl
 ; Line 677
-	jne	SHORT $loc_46371A$37843
-$loc_463737$37841:
+	jne	SHORT $loc_46371A$37844
+$loc_463737$37842:
 ; Line 679
 	mov	edx, esi
 ; Line 680
@@ -1563,15 +1562,15 @@ $loc_463737$37841:
 	add	esi, edx
 ; Line 682
 	jmp	NEAR PTR $+130
-$loc_463743$37836:
+$loc_463743$37837:
 ; Line 684
 	shr	ecx, 1
 ; Line 685
-	jb	SHORT $loc_46377B$37844
+	jb	SHORT $loc_46377B$37845
 ; Line 686
 	shr	ecx, 1
 ; Line 687
-	jae	SHORT $loc_463758$37845
+	jae	SHORT $loc_463758$37846
 ; Line 688
 	mov	dl, BYTE PTR [esi]
 ; Line 689
@@ -1582,12 +1581,12 @@ $loc_463743$37836:
 	mov	BYTE PTR [edi], dl
 ; Line 692
 	add	edi, 2
-$loc_463758$37845:
+$loc_463758$37846:
 ; Line 694
 	test	cl, cl
 ; Line 695
-	je	SHORT $loc_463779$37846
-$loc_46375C$37847:
+	je	SHORT $loc_463779$37847
+$loc_46375C$37848:
 ; Line 697
 	mov	eax, DWORD PTR [esi]
 ; Line 698
@@ -1611,11 +1610,11 @@ $loc_46375C$37847:
 ; Line 707
 	mov	BYTE PTR [edi-2], dl
 ; Line 708
-	jne	SHORT $loc_46375C$37847
-$loc_463779$37846:
+	jne	SHORT $loc_46375C$37848
+$loc_463779$37847:
 ; Line 710
-	jmp	SHORT $loc_4637B9$37848
-$loc_46377B$37844:
+	jmp	SHORT $loc_4637B9$37849
+$loc_46377B$37845:
 ; Line 712
 	mov	dl, BYTE PTR [esi]
 ; Line 713
@@ -1629,7 +1628,7 @@ $loc_46377B$37844:
 ; Line 717
 	shr	ecx, 1
 ; Line 718
-	jae	SHORT $loc_463797$37849
+	jae	SHORT $loc_463797$37850
 ; Line 719
 	mov	dl, BYTE PTR [esi+1]
 ; Line 720
@@ -1640,12 +1639,12 @@ $loc_46377B$37844:
 	mov	BYTE PTR [edi+1], dl
 ; Line 723
 	add	edi, 2
-$loc_463797$37849:
+$loc_463797$37850:
 ; Line 725
 	test	cl, cl
 ; Line 726
-	je	SHORT $loc_4637B9$37848
-$loc_46379B$37850:
+	je	SHORT $loc_4637B9$37849
+$loc_46379B$37851:
 ; Line 728
 	mov	eax, DWORD PTR [esi]
 ; Line 729
@@ -1669,8 +1668,8 @@ $loc_46379B$37850:
 ; Line 738
 	mov	BYTE PTR [edi-1], dl
 ; Line 739
-	jne	SHORT $loc_46379B$37850
-$loc_4637B9$37848:
+	jne	SHORT $loc_46379B$37851
+$loc_4637B9$37849:
 ; Line 741
 	mov	edx, esi
 ; Line 742
@@ -1684,14 +1683,14 @@ $loc_4637B9$37848:
 ; Line 747
 	sub	ebp, 2
 ; Line 748
-	jge	$loc_4636A5$37834
+	jge	$loc_4636A5$37835
 ; Line 749
 	mov	ebp, 2
-$loc_4637D6$37851:
+$loc_4637D6$37852:
 ; Line 751
 	cmp	edi, DWORD PTR _glClipY
 ; Line 752
-	jb	$loc_463905$37835
+	jb	$loc_463905$37836
 ; Line 753
 	mov	ecx, 32					; 00000020H
 ; Line 754
@@ -1705,15 +1704,15 @@ $loc_4637D6$37851:
 ; Line 758
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 759
-	je	SHORT $loc_463874$37852
+	je	SHORT $loc_463874$37853
 ; Line 760
 	shr	ecx, 1
 ; Line 761
-	jb	SHORT $loc_463834$37853
+	jb	SHORT $loc_463834$37854
 ; Line 762
 	shr	ecx, 1
 ; Line 763
-	jae	SHORT $loc_463810$37854
+	jae	SHORT $loc_463810$37855
 ; Line 764
 	mov	dl, BYTE PTR [esi+1]
 ; Line 765
@@ -1724,12 +1723,12 @@ $loc_4637D6$37851:
 	mov	BYTE PTR [edi+1], dl
 ; Line 768
 	add	edi, 2
-$loc_463810$37854:
+$loc_463810$37855:
 ; Line 770
 	test	cl, cl
 ; Line 771
-	je	SHORT $loc_463832$37855
-$loc_463814$37856:
+	je	SHORT $loc_463832$37856
+$loc_463814$37857:
 ; Line 773
 	mov	eax, DWORD PTR [esi]
 ; Line 774
@@ -1753,11 +1752,11 @@ $loc_463814$37856:
 ; Line 783
 	mov	BYTE PTR [edi-1], dl
 ; Line 784
-	jne	SHORT $loc_463814$37856
-$loc_463832$37855:
+	jne	SHORT $loc_463814$37857
+$loc_463832$37856:
 ; Line 786
-	jmp	SHORT $loc_463868$37857
-$loc_463834$37853:
+	jmp	SHORT $loc_463868$37858
+$loc_463834$37854:
 ; Line 788
 	inc	esi
 ; Line 789
@@ -1765,7 +1764,7 @@ $loc_463834$37853:
 ; Line 790
 	shr	ecx, 1
 ; Line 791
-	jae	SHORT $loc_463847$37858
+	jae	SHORT $loc_463847$37859
 ; Line 792
 	mov	dl, BYTE PTR [esi]
 ; Line 793
@@ -1776,12 +1775,12 @@ $loc_463834$37853:
 	mov	BYTE PTR [edi], dl
 ; Line 796
 	add	edi, 2
-$loc_463847$37858:
+$loc_463847$37859:
 ; Line 798
 	test	cl, cl
 ; Line 799
-	je	SHORT $loc_463868$37857
-$loc_46384B$37859:
+	je	SHORT $loc_463868$37858
+$loc_46384B$37860:
 ; Line 801
 	mov	eax, DWORD PTR [esi]
 ; Line 802
@@ -1805,8 +1804,8 @@ $loc_46384B$37859:
 ; Line 811
 	mov	BYTE PTR [edi-2], dl
 ; Line 812
-	jne	SHORT $loc_46384B$37859
-$loc_463868$37857:
+	jne	SHORT $loc_46384B$37860
+$loc_463868$37858:
 ; Line 814
 	mov	edx, esi
 ; Line 815
@@ -1815,15 +1814,15 @@ $loc_463868$37857:
 	add	esi, edx
 ; Line 817
 	jmp	NEAR PTR $+130
-$loc_463874$37852:
+$loc_463874$37853:
 ; Line 819
 	shr	ecx, 1
 ; Line 820
-	jb	SHORT $loc_4638AC$37860
+	jb	SHORT $loc_4638AC$37861
 ; Line 821
 	shr	ecx, 1
 ; Line 822
-	jae	SHORT $loc_463889$37861
+	jae	SHORT $loc_463889$37862
 ; Line 823
 	mov	dl, BYTE PTR [esi]
 ; Line 824
@@ -1834,12 +1833,12 @@ $loc_463874$37852:
 	mov	BYTE PTR [edi], dl
 ; Line 827
 	add	edi, 2
-$loc_463889$37861:
+$loc_463889$37862:
 ; Line 829
 	test	cl, cl
 ; Line 830
-	je	SHORT $loc_4638AA$37862
-$loc_46388D$37863:
+	je	SHORT $loc_4638AA$37863
+$loc_46388D$37864:
 ; Line 832
 	mov	eax, DWORD PTR [esi]
 ; Line 833
@@ -1863,11 +1862,11 @@ $loc_46388D$37863:
 ; Line 842
 	mov	BYTE PTR [edi-2], dl
 ; Line 843
-	jne	SHORT $loc_46388D$37863
-$loc_4638AA$37862:
+	jne	SHORT $loc_46388D$37864
+$loc_4638AA$37863:
 ; Line 845
-	jmp	SHORT $loc_4638EA$37864
-$loc_4638AC$37860:
+	jmp	SHORT $loc_4638EA$37865
+$loc_4638AC$37861:
 ; Line 847
 	mov	dl, BYTE PTR [esi]
 ; Line 848
@@ -1881,7 +1880,7 @@ $loc_4638AC$37860:
 ; Line 852
 	shr	ecx, 1
 ; Line 853
-	jae	SHORT $loc_4638C8$37865
+	jae	SHORT $loc_4638C8$37866
 ; Line 854
 	mov	dl, BYTE PTR [esi+1]
 ; Line 855
@@ -1892,12 +1891,12 @@ $loc_4638AC$37860:
 	mov	BYTE PTR [edi+1], dl
 ; Line 858
 	add	edi, 2
-$loc_4638C8$37865:
+$loc_4638C8$37866:
 ; Line 860
 	test	cl, cl
 ; Line 861
-	je	SHORT $loc_4638EA$37864
-$loc_4638CC$37866:
+	je	SHORT $loc_4638EA$37865
+$loc_4638CC$37867:
 ; Line 863
 	mov	eax, DWORD PTR [esi]
 ; Line 864
@@ -1921,8 +1920,8 @@ $loc_4638CC$37866:
 ; Line 873
 	mov	BYTE PTR [edi-1], dl
 ; Line 874
-	jne	SHORT $loc_4638CC$37866
-$loc_4638EA$37864:
+	jne	SHORT $loc_4638CC$37867
+$loc_4638EA$37865:
 ; Line 876
 	mov	edx, esi
 ; Line 877
@@ -1938,13 +1937,13 @@ $loc_4638EA$37864:
 ; Line 883
 	cmp	ebp, 32					; 00000020H
 ; Line 884
-	jne	$loc_4637D6$37851
-$loc_463905$37835:
+	jne	$loc_4637D6$37852
+$loc_463905$37836:
 ; Line 886
 	pop	ebp
 ; Line 887
-	jmp	$loc_464688$37779
-$loc_46390B$37758:
+	jmp	$loc_464688$37780
+$loc_46390B$37759:
 ; Line 889
 	push	ebp
 ; Line 890
@@ -1953,11 +1952,11 @@ $loc_46390B$37758:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 892
 	mov	ebp, 30					; 0000001eH
-$loc_463918$37867:
+$loc_463918$37868:
 ; Line 894
 	cmp	edi, DWORD PTR _glClipY
 ; Line 895
-	jb	$loc_463AAD$37868
+	jb	$loc_463AAD$37869
 ; Line 896
 	add	edi, ebp
 ; Line 897
@@ -1973,7 +1972,7 @@ $loc_463918$37867:
 ; Line 902
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 903
-	je	SHORT $loc_4639B8$37869
+	je	SHORT $loc_4639B8$37870
 ; Line 904
 	mov	edx, ecx
 ; Line 905
@@ -1983,11 +1982,11 @@ $loc_463918$37867:
 ; Line 907
 	shr	ecx, 1
 ; Line 908
-	jb	SHORT $loc_46397F$37870
+	jb	SHORT $loc_46397F$37871
 ; Line 909
 	shr	ecx, 1
 ; Line 910
-	jae	SHORT $loc_46395B$37871
+	jae	SHORT $loc_46395B$37872
 ; Line 911
 	mov	dl, BYTE PTR [esi+1]
 ; Line 912
@@ -1998,12 +1997,12 @@ $loc_463918$37867:
 	mov	BYTE PTR [edi+1], dl
 ; Line 915
 	add	edi, 2
-$loc_46395B$37871:
+$loc_46395B$37872:
 ; Line 917
 	test	cl, cl
 ; Line 918
-	je	SHORT $loc_46397D$37872
-$loc_46395F$37873:
+	je	SHORT $loc_46397D$37873
+$loc_46395F$37874:
 ; Line 920
 	mov	eax, DWORD PTR [esi]
 ; Line 921
@@ -2027,11 +2026,11 @@ $loc_46395F$37873:
 ; Line 930
 	mov	BYTE PTR [edi-1], dl
 ; Line 931
-	jne	SHORT $loc_46395F$37873
-$loc_46397D$37872:
+	jne	SHORT $loc_46395F$37874
+$loc_46397D$37873:
 ; Line 933
-	jmp	SHORT $loc_4639B3$37874
-$loc_46397F$37870:
+	jmp	SHORT $loc_4639B3$37875
+$loc_46397F$37871:
 ; Line 935
 	inc	esi
 ; Line 936
@@ -2039,7 +2038,7 @@ $loc_46397F$37870:
 ; Line 937
 	shr	ecx, 1
 ; Line 938
-	jae	SHORT $loc_463992$37875
+	jae	SHORT $loc_463992$37876
 ; Line 939
 	mov	dl, BYTE PTR [esi]
 ; Line 940
@@ -2050,12 +2049,12 @@ $loc_46397F$37870:
 	mov	BYTE PTR [edi], dl
 ; Line 943
 	add	edi, 2
-$loc_463992$37875:
+$loc_463992$37876:
 ; Line 945
 	test	cl, cl
 ; Line 946
-	je	SHORT $loc_4639B3$37874
-$loc_463996$37876:
+	je	SHORT $loc_4639B3$37875
+$loc_463996$37877:
 ; Line 948
 	mov	eax, DWORD PTR [esi]
 ; Line 949
@@ -2079,11 +2078,11 @@ $loc_463996$37876:
 ; Line 958
 	mov	BYTE PTR [edi-2], dl
 ; Line 959
-	jne	SHORT $loc_463996$37876
-$loc_4639B3$37874:
+	jne	SHORT $loc_463996$37877
+$loc_4639B3$37875:
 ; Line 961
 	jmp	NEAR PTR $+130
-$loc_4639B8$37869:
+$loc_4639B8$37870:
 ; Line 963
 	mov	edx, ecx
 ; Line 964
@@ -2093,11 +2092,11 @@ $loc_4639B8$37869:
 ; Line 966
 	shr	ecx, 1
 ; Line 967
-	jb	SHORT $loc_4639F7$37877
+	jb	SHORT $loc_4639F7$37878
 ; Line 968
 	shr	ecx, 1
 ; Line 969
-	jae	SHORT $loc_4639D4$37878
+	jae	SHORT $loc_4639D4$37879
 ; Line 970
 	mov	dl, BYTE PTR [esi]
 ; Line 971
@@ -2108,12 +2107,12 @@ $loc_4639B8$37869:
 	mov	BYTE PTR [edi], dl
 ; Line 974
 	add	edi, 2
-$loc_4639D4$37878:
+$loc_4639D4$37879:
 ; Line 976
 	test	cl, cl
 ; Line 977
-	je	SHORT $loc_4639F5$37879
-$loc_4639D8$37880:
+	je	SHORT $loc_4639F5$37880
+$loc_4639D8$37881:
 ; Line 979
 	mov	eax, DWORD PTR [esi]
 ; Line 980
@@ -2137,11 +2136,11 @@ $loc_4639D8$37880:
 ; Line 989
 	mov	BYTE PTR [edi-2], dl
 ; Line 990
-	jne	SHORT $loc_4639D8$37880
-$loc_4639F5$37879:
+	jne	SHORT $loc_4639D8$37881
+$loc_4639F5$37880:
 ; Line 992
-	jmp	SHORT $loc_463A35$37881
-$loc_4639F7$37877:
+	jmp	SHORT $loc_463A35$37882
+$loc_4639F7$37878:
 ; Line 994
 	mov	dl, BYTE PTR [esi]
 ; Line 995
@@ -2155,7 +2154,7 @@ $loc_4639F7$37877:
 ; Line 999
 	shr	ecx, 1
 ; Line 1000
-	jae	SHORT $loc_463A13$37882
+	jae	SHORT $loc_463A13$37883
 ; Line 1001
 	mov	dl, BYTE PTR [esi+1]
 ; Line 1002
@@ -2166,12 +2165,12 @@ $loc_4639F7$37877:
 	mov	BYTE PTR [edi+1], dl
 ; Line 1005
 	add	edi, 2
-$loc_463A13$37882:
+$loc_463A13$37883:
 ; Line 1007
 	test	cl, cl
 ; Line 1008
-	je	SHORT $loc_463A35$37881
-$loc_463A17$37883:
+	je	SHORT $loc_463A35$37882
+$loc_463A17$37884:
 ; Line 1010
 	mov	eax, DWORD PTR [esi]
 ; Line 1011
@@ -2195,24 +2194,24 @@ $loc_463A17$37883:
 ; Line 1020
 	mov	BYTE PTR [edi-1], dl
 ; Line 1021
-	jne	SHORT $loc_463A17$37883
-$loc_463A35$37881:
+	jne	SHORT $loc_463A17$37884
+$loc_463A35$37882:
 ; Line 1023
 	sub	edi, 800				; 00000320H
 ; Line 1024
 	sub	ebp, 2
 ; Line 1025
-	jge	$loc_463918$37867
+	jge	$loc_463918$37868
 ; Line 1026
 	mov	ebp, 8
-$loc_463A49$37884:
+$loc_463A49$37885:
 ; Line 1028
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1029
-	jb	SHORT $loc_463AAD$37868
+	jb	SHORT $loc_463AAD$37869
 ; Line 1030
 	mov	ecx, 8
-$loc_463A56$37885:
+$loc_463A56$37886:
 ; Line 1032
 	mov	eax, DWORD PTR [esi]
 ; Line 1033
@@ -2236,16 +2235,16 @@ $loc_463A56$37885:
 ; Line 1042
 	mov	BYTE PTR [edi-1], dl
 ; Line 1043
-	jne	SHORT $loc_463A56$37885
+	jne	SHORT $loc_463A56$37886
 ; Line 1044
 	sub	edi, 800				; 00000320H
 ; Line 1045
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1046
-	jb	SHORT $loc_463AAD$37868
+	jb	SHORT $loc_463AAD$37869
 ; Line 1047
 	mov	ecx, 8
-$loc_463A87$37886:
+$loc_463A87$37887:
 ; Line 1049
 	mov	eax, DWORD PTR [esi]
 ; Line 1050
@@ -2269,19 +2268,19 @@ $loc_463A87$37886:
 ; Line 1059
 	mov	BYTE PTR [edi-2], dl
 ; Line 1060
-	jne	SHORT $loc_463A87$37886
+	jne	SHORT $loc_463A87$37887
 ; Line 1061
 	sub	edi, 800				; 00000320H
 ; Line 1062
 	dec	ebp
 ; Line 1063
-	jne	SHORT $loc_463A49$37884
-$loc_463AAD$37868:
+	jne	SHORT $loc_463A49$37885
+$loc_463AAD$37869:
 ; Line 1065
 	pop	ebp
 ; Line 1066
-	jmp	$loc_464688$37779
-$loc_463AB3$37759:
+	jmp	$loc_464688$37780
+$loc_463AB3$37760:
 ; Line 1068
 	push	ebp
 ; Line 1069
@@ -2290,11 +2289,11 @@ $loc_463AB3$37759:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1071
 	mov	ebp, 30					; 0000001eH
-$loc_463AC0$37887:
+$loc_463AC0$37888:
 ; Line 1073
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1074
-	jb	$loc_463C55$37888
+	jb	$loc_463C55$37889
 ; Line 1075
 	mov	ecx, 32					; 00000020H
 ; Line 1076
@@ -2308,15 +2307,15 @@ $loc_463AC0$37887:
 ; Line 1080
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1081
-	je	SHORT $loc_463B5E$37889
+	je	SHORT $loc_463B5E$37890
 ; Line 1082
 	shr	ecx, 1
 ; Line 1083
-	jb	SHORT $loc_463B1E$37890
+	jb	SHORT $loc_463B1E$37891
 ; Line 1084
 	shr	ecx, 1
 ; Line 1085
-	jae	SHORT $loc_463AFA$37891
+	jae	SHORT $loc_463AFA$37892
 ; Line 1086
 	mov	dl, BYTE PTR [esi+1]
 ; Line 1087
@@ -2327,12 +2326,12 @@ $loc_463AC0$37887:
 	mov	BYTE PTR [edi+1], dl
 ; Line 1090
 	add	edi, 2
-$loc_463AFA$37891:
+$loc_463AFA$37892:
 ; Line 1092
 	test	cl, cl
 ; Line 1093
-	je	SHORT $loc_463B1C$37892
-$loc_463AFE$37893:
+	je	SHORT $loc_463B1C$37893
+$loc_463AFE$37894:
 ; Line 1095
 	mov	eax, DWORD PTR [esi]
 ; Line 1096
@@ -2356,11 +2355,11 @@ $loc_463AFE$37893:
 ; Line 1105
 	mov	BYTE PTR [edi-1], dl
 ; Line 1106
-	jne	SHORT $loc_463AFE$37893
-$loc_463B1C$37892:
+	jne	SHORT $loc_463AFE$37894
+$loc_463B1C$37893:
 ; Line 1108
-	jmp	SHORT $loc_463B52$37894
-$loc_463B1E$37890:
+	jmp	SHORT $loc_463B52$37895
+$loc_463B1E$37891:
 ; Line 1110
 	inc	esi
 ; Line 1111
@@ -2368,7 +2367,7 @@ $loc_463B1E$37890:
 ; Line 1112
 	shr	ecx, 1
 ; Line 1113
-	jae	SHORT $loc_463B31$37895
+	jae	SHORT $loc_463B31$37896
 ; Line 1114
 	mov	dl, BYTE PTR [esi]
 ; Line 1115
@@ -2379,12 +2378,12 @@ $loc_463B1E$37890:
 	mov	BYTE PTR [edi], dl
 ; Line 1118
 	add	edi, 2
-$loc_463B31$37895:
+$loc_463B31$37896:
 ; Line 1120
 	test	cl, cl
 ; Line 1121
-	je	SHORT $loc_463B52$37894
-$loc_463B35$37896:
+	je	SHORT $loc_463B52$37895
+$loc_463B35$37897:
 ; Line 1123
 	mov	eax, DWORD PTR [esi]
 ; Line 1124
@@ -2408,8 +2407,8 @@ $loc_463B35$37896:
 ; Line 1133
 	mov	BYTE PTR [edi-2], dl
 ; Line 1134
-	jne	SHORT $loc_463B35$37896
-$loc_463B52$37894:
+	jne	SHORT $loc_463B35$37897
+$loc_463B52$37895:
 ; Line 1136
 	mov	edx, esi
 ; Line 1137
@@ -2418,15 +2417,15 @@ $loc_463B52$37894:
 	add	esi, edx
 ; Line 1139
 	jmp	NEAR PTR $+130
-$loc_463B5E$37889:
+$loc_463B5E$37890:
 ; Line 1141
 	shr	ecx, 1
 ; Line 1142
-	jb	SHORT $loc_463B96$37897
+	jb	SHORT $loc_463B96$37898
 ; Line 1143
 	shr	ecx, 1
 ; Line 1144
-	jae	SHORT $loc_463B73$37898
+	jae	SHORT $loc_463B73$37899
 ; Line 1145
 	mov	dl, BYTE PTR [esi]
 ; Line 1146
@@ -2437,12 +2436,12 @@ $loc_463B5E$37889:
 	mov	BYTE PTR [edi], dl
 ; Line 1149
 	add	edi, 2
-$loc_463B73$37898:
+$loc_463B73$37899:
 ; Line 1151
 	test	cl, cl
 ; Line 1152
-	je	SHORT $loc_463B94$37899
-$loc_463B77$37900:
+	je	SHORT $loc_463B94$37900
+$loc_463B77$37901:
 ; Line 1154
 	mov	eax, DWORD PTR [esi]
 ; Line 1155
@@ -2466,11 +2465,11 @@ $loc_463B77$37900:
 ; Line 1164
 	mov	BYTE PTR [edi-2], dl
 ; Line 1165
-	jne	SHORT $loc_463B77$37900
-$loc_463B94$37899:
+	jne	SHORT $loc_463B77$37901
+$loc_463B94$37900:
 ; Line 1167
-	jmp	SHORT $loc_463BD4$37901
-$loc_463B96$37897:
+	jmp	SHORT $loc_463BD4$37902
+$loc_463B96$37898:
 ; Line 1169
 	mov	dl, BYTE PTR [esi]
 ; Line 1170
@@ -2484,7 +2483,7 @@ $loc_463B96$37897:
 ; Line 1174
 	shr	ecx, 1
 ; Line 1175
-	jae	SHORT $loc_463BB2$37902
+	jae	SHORT $loc_463BB2$37903
 ; Line 1176
 	mov	dl, BYTE PTR [esi+1]
 ; Line 1177
@@ -2495,12 +2494,12 @@ $loc_463B96$37897:
 	mov	BYTE PTR [edi+1], dl
 ; Line 1180
 	add	edi, 2
-$loc_463BB2$37902:
+$loc_463BB2$37903:
 ; Line 1182
 	test	cl, cl
 ; Line 1183
-	je	SHORT $loc_463BD4$37901
-$loc_463BB6$37903:
+	je	SHORT $loc_463BD4$37902
+$loc_463BB6$37904:
 ; Line 1185
 	mov	eax, DWORD PTR [esi]
 ; Line 1186
@@ -2524,8 +2523,8 @@ $loc_463BB6$37903:
 ; Line 1195
 	mov	BYTE PTR [edi-1], dl
 ; Line 1196
-	jne	SHORT $loc_463BB6$37903
-$loc_463BD4$37901:
+	jne	SHORT $loc_463BB6$37904
+$loc_463BD4$37902:
 ; Line 1198
 	mov	edx, esi
 ; Line 1199
@@ -2539,17 +2538,17 @@ $loc_463BD4$37901:
 ; Line 1204
 	sub	ebp, 2
 ; Line 1205
-	jge	$loc_463AC0$37887
+	jge	$loc_463AC0$37888
 ; Line 1206
 	mov	ebp, 8
-$loc_463BF1$37904:
+$loc_463BF1$37905:
 ; Line 1208
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1209
-	jb	SHORT $loc_463C55$37888
+	jb	SHORT $loc_463C55$37889
 ; Line 1210
 	mov	ecx, 8
-$loc_463BFE$37905:
+$loc_463BFE$37906:
 ; Line 1212
 	mov	eax, DWORD PTR [esi]
 ; Line 1213
@@ -2573,16 +2572,16 @@ $loc_463BFE$37905:
 ; Line 1222
 	mov	BYTE PTR [edi-1], dl
 ; Line 1223
-	jne	SHORT $loc_463BFE$37905
+	jne	SHORT $loc_463BFE$37906
 ; Line 1224
 	sub	edi, 800				; 00000320H
 ; Line 1225
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1226
-	jb	SHORT $loc_463C55$37888
+	jb	SHORT $loc_463C55$37889
 ; Line 1227
 	mov	ecx, 8
-$loc_463C2F$37906:
+$loc_463C2F$37907:
 ; Line 1229
 	mov	eax, DWORD PTR [esi]
 ; Line 1230
@@ -2606,29 +2605,29 @@ $loc_463C2F$37906:
 ; Line 1239
 	mov	BYTE PTR [edi-2], dl
 ; Line 1240
-	jne	SHORT $loc_463C2F$37906
+	jne	SHORT $loc_463C2F$37907
 ; Line 1241
 	sub	edi, 800				; 00000320H
 ; Line 1242
 	dec	ebp
 ; Line 1243
-	jne	SHORT $loc_463BF1$37904
-$loc_463C55$37888:
+	jne	SHORT $loc_463BF1$37905
+$loc_463C55$37889:
 ; Line 1245
 	pop	ebp
 ; Line 1246
-	jmp	$loc_464688$37779
-$loc_463C5B$37761:
+	jmp	$loc_464688$37780
+$loc_463C5B$37762:
 ; Line 1248
 	mov	edx, 16					; 00000010H
-$loc_463C60$37907:
+$loc_463C60$37908:
 ; Line 1250
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1251
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1252
 	mov	ecx, 8
-$loc_463C71$37908:
+$loc_463C71$37909:
 ; Line 1254
 	mov	eax, DWORD PTR [esi]
 ; Line 1255
@@ -2650,16 +2649,16 @@ $loc_463C71$37908:
 ; Line 1263
 	dec	ecx
 ; Line 1264
-	jne	SHORT $loc_463C71$37908
+	jne	SHORT $loc_463C71$37909
 ; Line 1265
 	sub	edi, 800				; 00000320H
 ; Line 1266
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1267
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1268
 	mov	ecx, 8
-$loc_463C9F$37909:
+$loc_463C9F$37910:
 ; Line 1270
 	mov	eax, DWORD PTR [esi]
 ; Line 1271
@@ -2677,16 +2676,16 @@ $loc_463C9F$37909:
 ; Line 1277
 	dec	ecx
 ; Line 1278
-	jne	SHORT $loc_463C9F$37909
+	jne	SHORT $loc_463C9F$37910
 ; Line 1279
 	sub	edi, 800				; 00000320H
 ; Line 1280
 	dec	edx
 ; Line 1281
-	jne	SHORT $loc_463C60$37907
+	jne	SHORT $loc_463C60$37908
 ; Line 1282
-	jmp	$loc_464688$37779
-$loc_463CC2$37762:
+	jmp	$loc_464688$37780
+$loc_463CC2$37763:
 ; Line 1284
 	push	ebp
 ; Line 1285
@@ -2697,10 +2696,10 @@ $loc_463CC2$37762:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1288
 	mov	ebp, 32					; 00000020H
-$loc_463CD2$37910:
+$loc_463CD2$37911:
 ; Line 1290
 	mov	edx, 32					; 00000020H
-$loc_463CD7$37911:
+$loc_463CD7$37912:
 ; Line 1292
 	xor	eax, eax
 ; Line 1293
@@ -2710,13 +2709,13 @@ $loc_463CD7$37911:
 ; Line 1295
 	test	al, al
 ; Line 1296
-	js	$loc_463D76$37912
+	js	$loc_463D76$37913
 ; Line 1297
 	sub	edx, eax
 ; Line 1298
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1299
-	jb	$loc_463D9D$37913
+	jb	$loc_463D9D$37914
 ; Line 1300
 	mov	ecx, eax
 ; Line 1301
@@ -2726,11 +2725,11 @@ $loc_463CD7$37911:
 ; Line 1303
 	cmp	eax, DWORD PTR _WorldBoolFlag
 ; Line 1304
-	jne	SHORT $loc_463D36$37914
+	jne	SHORT $loc_463D36$37915
 ; Line 1305
 	shr	ecx, 1
 ; Line 1306
-	jae	SHORT $loc_463D0D$37915
+	jae	SHORT $loc_463D0D$37916
 ; Line 1307
 	inc	esi
 ; Line 1308
@@ -2738,14 +2737,14 @@ $loc_463CD7$37911:
 ; Line 1309
 	test	ecx, ecx
 ; Line 1310
-	je	SHORT $loc_463D6D$37916
+	je	SHORT $loc_463D6D$37917
 ; Line 1311
-	jmp	SHORT $loc_463D46$37917
-$loc_463D0D$37915:
+	jmp	SHORT $loc_463D46$37918
+$loc_463D0D$37916:
 ; Line 1313
 	shr	ecx, 1
 ; Line 1314
-	jae	SHORT $loc_463D1D$37918
+	jae	SHORT $loc_463D1D$37919
 ; Line 1315
 	inc	esi
 ; Line 1316
@@ -2761,8 +2760,8 @@ $loc_463D0D$37915:
 ; Line 1321
 	test	ecx, ecx
 ; Line 1322
-	je	SHORT $loc_463D6D$37916
-$loc_463D1D$37918:
+	je	SHORT $loc_463D6D$37917
+$loc_463D1D$37919:
 ; Line 1324
 	mov	eax, DWORD PTR [esi]
 ; Line 1325
@@ -2784,14 +2783,14 @@ $loc_463D1D$37918:
 ; Line 1333
 	dec	ecx
 ; Line 1334
-	jne	SHORT $loc_463D1D$37918
+	jne	SHORT $loc_463D1D$37919
 ; Line 1335
-	jmp	SHORT $loc_463D6D$37916
-$loc_463D36$37914:
+	jmp	SHORT $loc_463D6D$37917
+$loc_463D36$37915:
 ; Line 1337
 	shr	ecx, 1
 ; Line 1338
-	jae	SHORT $loc_463D46$37917
+	jae	SHORT $loc_463D46$37918
 ; Line 1339
 	mov	al, BYTE PTR [esi]
 ; Line 1340
@@ -2803,14 +2802,14 @@ $loc_463D36$37914:
 ; Line 1343
 	test	ecx, ecx
 ; Line 1344
-	je	SHORT $loc_463D6D$37916
+	je	SHORT $loc_463D6D$37917
 ; Line 1345
-	jmp	SHORT $loc_463D0D$37915
-$loc_463D46$37917:
+	jmp	SHORT $loc_463D0D$37916
+$loc_463D46$37918:
 ; Line 1347
 	shr	ecx, 1
 ; Line 1348
-	jae	SHORT $loc_463D58$37919
+	jae	SHORT $loc_463D58$37920
 ; Line 1349
 	mov	al, BYTE PTR [esi]
 ; Line 1350
@@ -2822,8 +2821,8 @@ $loc_463D46$37917:
 ; Line 1353
 	test	ecx, ecx
 ; Line 1354
-	je	SHORT $loc_463D6D$37916
-$loc_463D58$37919:
+	je	SHORT $loc_463D6D$37917
+$loc_463D58$37920:
 ; Line 1356
 	mov	eax, DWORD PTR [esi]
 ; Line 1357
@@ -2841,15 +2840,15 @@ $loc_463D58$37919:
 ; Line 1363
 	dec	ecx
 ; Line 1364
-	jne	SHORT $loc_463D58$37919
-$loc_463D6D$37916:
+	jne	SHORT $loc_463D58$37920
+$loc_463D6D$37917:
 ; Line 1366
 	test	edx, edx
 ; Line 1367
-	je	SHORT $loc_463D82$37920
+	je	SHORT $loc_463D82$37921
 ; Line 1368
-	jmp	$loc_463CD7$37911
-$loc_463D76$37912:
+	jmp	$loc_463CD7$37912
+$loc_463D76$37913:
 ; Line 1370
 	neg	al
 ; Line 1371
@@ -2857,8 +2856,8 @@ $loc_463D76$37912:
 ; Line 1372
 	sub	edx, eax
 ; Line 1373
-	jne	$loc_463CD7$37911
-$loc_463D82$37920:
+	jne	$loc_463CD7$37912
+$loc_463D82$37921:
 ; Line 1375
 	mov	eax, DWORD PTR _WorldBoolFlag
 ; Line 1376
@@ -2872,24 +2871,24 @@ $loc_463D82$37920:
 ; Line 1380
 	dec	ebp
 ; Line 1381
-	jne	$loc_463CD2$37910
-$loc_463D9D$37913:
+	jne	$loc_463CD2$37911
+$loc_463D9D$37914:
 ; Line 1383
 	pop	ebp
 ; Line 1384
-	jmp	$loc_464688$37779
-$loc_463DA3$37763:
+	jmp	$loc_464688$37780
+$loc_463DA3$37764:
 ; Line 1386
 	xor	eax, eax
 ; Line 1387
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1388
 	mov	edx, 30					; 0000001eH
-$loc_463DAF$37921:
+$loc_463DAF$37922:
 ; Line 1390
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1391
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1392
 	add	edi, edx
 ; Line 1393
@@ -2905,11 +2904,11 @@ $loc_463DAF$37921:
 ; Line 1398
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1399
-	je	SHORT $loc_463E04$37922
+	je	SHORT $loc_463E04$37923
 ; Line 1400
 	shr	ecx, 2
 ; Line 1401
-	jae	SHORT $loc_463DEB$37923
+	jae	SHORT $loc_463DEB$37924
 ; Line 1402
 	mov	ax, WORD PTR [esi+2]
 ; Line 1403
@@ -2925,8 +2924,8 @@ $loc_463DAF$37921:
 ; Line 1408
 	test	ecx, ecx
 ; Line 1409
-	je	SHORT $loc_463E2E$37924
-$loc_463DEB$37923:
+	je	SHORT $loc_463E2E$37925
+$loc_463DEB$37924:
 ; Line 1411
 	mov	eax, DWORD PTR [esi]
 ; Line 1412
@@ -2948,14 +2947,14 @@ $loc_463DEB$37923:
 ; Line 1420
 	dec	ecx
 ; Line 1421
-	jne	SHORT $loc_463DEB$37923
+	jne	SHORT $loc_463DEB$37924
 ; Line 1422
-	jmp	SHORT $loc_463E2E$37924
-$loc_463E04$37922:
+	jmp	SHORT $loc_463E2E$37925
+$loc_463E04$37923:
 ; Line 1424
 	shr	ecx, 2
 ; Line 1425
-	jae	SHORT $loc_463E19$37925
+	jae	SHORT $loc_463E19$37926
 ; Line 1426
 	mov	ax, WORD PTR [esi+2]
 ; Line 1427
@@ -2967,8 +2966,8 @@ $loc_463E04$37922:
 ; Line 1430
 	test	ecx, ecx
 ; Line 1431
-	je	SHORT $loc_463E2E$37924
-$loc_463E19$37925:
+	je	SHORT $loc_463E2E$37925
+$loc_463E19$37926:
 ; Line 1433
 	mov	eax, DWORD PTR [esi]
 ; Line 1434
@@ -2986,21 +2985,21 @@ $loc_463E19$37925:
 ; Line 1440
 	dec	ecx
 ; Line 1441
-	jne	SHORT $loc_463E19$37925
-$loc_463E2E$37924:
+	jne	SHORT $loc_463E19$37926
+$loc_463E2E$37925:
 ; Line 1443
 	sub	edi, 800				; 00000320H
 ; Line 1444
 	sub	edx, 2
 ; Line 1445
-	jge	$loc_463DAF$37921
+	jge	$loc_463DAF$37922
 ; Line 1446
 	mov	edx, 2
-$loc_463E42$37926:
+$loc_463E42$37927:
 ; Line 1448
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1449
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1450
 	add	edi, edx
 ; Line 1451
@@ -3016,11 +3015,11 @@ $loc_463E42$37926:
 ; Line 1456
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1457
-	je	SHORT $loc_463E97$37927
+	je	SHORT $loc_463E97$37928
 ; Line 1458
 	shr	ecx, 2
 ; Line 1459
-	jae	SHORT $loc_463E7E$37928
+	jae	SHORT $loc_463E7E$37929
 ; Line 1460
 	mov	ax, WORD PTR [esi+2]
 ; Line 1461
@@ -3036,8 +3035,8 @@ $loc_463E42$37926:
 ; Line 1466
 	test	ecx, ecx
 ; Line 1467
-	je	SHORT $loc_463EC1$37929
-$loc_463E7E$37928:
+	je	SHORT $loc_463EC1$37930
+$loc_463E7E$37929:
 ; Line 1469
 	mov	eax, DWORD PTR [esi]
 ; Line 1470
@@ -3059,14 +3058,14 @@ $loc_463E7E$37928:
 ; Line 1478
 	dec	ecx
 ; Line 1479
-	jne	SHORT $loc_463E7E$37928
+	jne	SHORT $loc_463E7E$37929
 ; Line 1480
-	jmp	SHORT $loc_463EC1$37929
-$loc_463E97$37927:
+	jmp	SHORT $loc_463EC1$37930
+$loc_463E97$37928:
 ; Line 1482
 	shr	ecx, 2
 ; Line 1483
-	jae	SHORT $loc_463EAC$37930
+	jae	SHORT $loc_463EAC$37931
 ; Line 1484
 	mov	ax, WORD PTR [esi+2]
 ; Line 1485
@@ -3078,8 +3077,8 @@ $loc_463E97$37927:
 ; Line 1488
 	test	ecx, ecx
 ; Line 1489
-	je	SHORT $loc_463EC1$37929
-$loc_463EAC$37930:
+	je	SHORT $loc_463EC1$37930
+$loc_463EAC$37931:
 ; Line 1491
 	mov	eax, DWORD PTR [esi]
 ; Line 1492
@@ -3097,8 +3096,8 @@ $loc_463EAC$37930:
 ; Line 1498
 	dec	ecx
 ; Line 1499
-	jne	SHORT $loc_463EAC$37930
-$loc_463EC1$37929:
+	jne	SHORT $loc_463EAC$37931
+$loc_463EC1$37930:
 ; Line 1501
 	sub	edi, 800				; 00000320H
 ; Line 1502
@@ -3106,10 +3105,10 @@ $loc_463EC1$37929:
 ; Line 1503
 	cmp	edx, 32					; 00000020H
 ; Line 1504
-	jne	$loc_463E42$37926
+	jne	$loc_463E42$37927
 ; Line 1505
-	jmp	$loc_464688$37779
-$loc_463ED8$37764:
+	jmp	$loc_464688$37780
+$loc_463ED8$37765:
 ; Line 1507
 	push	ebp
 ; Line 1508
@@ -3118,11 +3117,11 @@ $loc_463ED8$37764:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1510
 	mov	edx, 30					; 0000001eH
-$loc_463EE5$37931:
+$loc_463EE5$37932:
 ; Line 1512
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1513
-	jb	$loc_46400B$37932
+	jb	$loc_46400B$37933
 ; Line 1514
 	mov	ecx, 32					; 00000020H
 ; Line 1515
@@ -3138,12 +3137,12 @@ $loc_463EE5$37931:
 ; Line 1520
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1521
-	je	SHORT $loc_463F3A$37933
+	je	SHORT $loc_463F3A$37934
 ; Line 1522
 	shr	ecx, 2
 ; Line 1523
-	je	SHORT $loc_463F26$37934
-$loc_463F0F$37935:
+	je	SHORT $loc_463F26$37935
+$loc_463F0F$37936:
 ; Line 1525
 	mov	eax, DWORD PTR [esi]
 ; Line 1526
@@ -3165,12 +3164,12 @@ $loc_463F0F$37935:
 ; Line 1534
 	dec	ecx
 ; Line 1535
-	jne	SHORT $loc_463F0F$37935
-$loc_463F26$37934:
+	jne	SHORT $loc_463F0F$37936
+$loc_463F26$37935:
 ; Line 1537
 	and	ebp, 2
 ; Line 1538
-	je	SHORT $loc_463F64$37936
+	je	SHORT $loc_463F64$37937
 ; Line 1539
 	mov	ax, WORD PTR [esi]
 ; Line 1540
@@ -3184,13 +3183,13 @@ $loc_463F26$37934:
 ; Line 1544
 	inc	edi
 ; Line 1545
-	jmp	SHORT $loc_463F64$37936
-$loc_463F3A$37933:
+	jmp	SHORT $loc_463F64$37937
+$loc_463F3A$37934:
 ; Line 1547
 	shr	ecx, 2
 ; Line 1548
-	je	SHORT $loc_463F54$37937
-$loc_463F3F$37938:
+	je	SHORT $loc_463F54$37938
+$loc_463F3F$37939:
 ; Line 1550
 	mov	eax, DWORD PTR [esi]
 ; Line 1551
@@ -3208,12 +3207,12 @@ $loc_463F3F$37938:
 ; Line 1557
 	dec	ecx
 ; Line 1558
-	jne	SHORT $loc_463F3F$37938
-$loc_463F54$37937:
+	jne	SHORT $loc_463F3F$37939
+$loc_463F54$37938:
 ; Line 1560
 	and	ebp, 2
 ; Line 1561
-	je	SHORT $loc_463F64$37936
+	je	SHORT $loc_463F64$37937
 ; Line 1562
 	mov	ax, WORD PTR [esi]
 ; Line 1563
@@ -3222,7 +3221,7 @@ $loc_463F54$37937:
 	mov	BYTE PTR [edi], al
 ; Line 1565
 	add	edi, 2
-$loc_463F64$37936:
+$loc_463F64$37937:
 ; Line 1567
 	sub	edi, 800				; 00000320H
 ; Line 1568
@@ -3230,14 +3229,14 @@ $loc_463F64$37936:
 ; Line 1569
 	sub	edx, 2
 ; Line 1570
-	jge	$loc_463EE5$37931
+	jge	$loc_463EE5$37932
 ; Line 1571
 	mov	edx, 2
-$loc_463F7A$37939:
+$loc_463F7A$37940:
 ; Line 1573
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1574
-	jb	$loc_46400B$37932
+	jb	$loc_46400B$37933
 ; Line 1575
 	mov	ecx, 32					; 00000020H
 ; Line 1576
@@ -3251,12 +3250,12 @@ $loc_463F7A$37939:
 ; Line 1580
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1581
-	je	SHORT $loc_463FCD$37940
+	je	SHORT $loc_463FCD$37941
 ; Line 1582
 	shr	ecx, 2
 ; Line 1583
-	je	SHORT $loc_463FB9$37941
-$loc_463FA2$37942:
+	je	SHORT $loc_463FB9$37942
+$loc_463FA2$37943:
 ; Line 1585
 	mov	eax, DWORD PTR [esi]
 ; Line 1586
@@ -3278,12 +3277,12 @@ $loc_463FA2$37942:
 ; Line 1594
 	dec	ecx
 ; Line 1595
-	jne	SHORT $loc_463FA2$37942
-$loc_463FB9$37941:
+	jne	SHORT $loc_463FA2$37943
+$loc_463FB9$37942:
 ; Line 1597
 	and	ebp, 2
 ; Line 1598
-	je	SHORT $loc_463FF7$37943
+	je	SHORT $loc_463FF7$37944
 ; Line 1599
 	mov	ax, WORD PTR [esi]
 ; Line 1600
@@ -3297,13 +3296,13 @@ $loc_463FB9$37941:
 ; Line 1604
 	inc	edi
 ; Line 1605
-	jmp	SHORT $loc_463FF7$37943
-$loc_463FCD$37940:
+	jmp	SHORT $loc_463FF7$37944
+$loc_463FCD$37941:
 ; Line 1607
 	shr	ecx, 2
 ; Line 1608
-	je	SHORT $loc_463FE7$37944
-$loc_463FD2$37945:
+	je	SHORT $loc_463FE7$37945
+$loc_463FD2$37946:
 ; Line 1610
 	mov	eax, DWORD PTR [esi]
 ; Line 1611
@@ -3321,12 +3320,12 @@ $loc_463FD2$37945:
 ; Line 1617
 	dec	ecx
 ; Line 1618
-	jne	SHORT $loc_463FD2$37945
-$loc_463FE7$37944:
+	jne	SHORT $loc_463FD2$37946
+$loc_463FE7$37945:
 ; Line 1620
 	and	ebp, 2
 ; Line 1621
-	je	SHORT $loc_463FF7$37943
+	je	SHORT $loc_463FF7$37944
 ; Line 1622
 	mov	ax, WORD PTR [esi]
 ; Line 1623
@@ -3335,7 +3334,7 @@ $loc_463FE7$37944:
 	mov	BYTE PTR [edi], al
 ; Line 1625
 	add	edi, 2
-$loc_463FF7$37943:
+$loc_463FF7$37944:
 ; Line 1627
 	sub	edi, 800				; 00000320H
 ; Line 1628
@@ -3345,24 +3344,24 @@ $loc_463FF7$37943:
 ; Line 1630
 	cmp	edx, 32					; 00000020H
 ; Line 1631
-	jne	$loc_463F7A$37939
-$loc_46400B$37932:
+	jne	$loc_463F7A$37940
+$loc_46400B$37933:
 ; Line 1633
 	pop	ebp
 ; Line 1634
-	jmp	$loc_464688$37779
-$loc_464011$37765:
+	jmp	$loc_464688$37780
+$loc_464011$37766:
 ; Line 1636
 	xor	eax, eax
 ; Line 1637
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1638
 	mov	edx, 30					; 0000001eH
-$loc_46401D$37946:
+$loc_46401D$37947:
 ; Line 1640
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1641
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1642
 	add	edi, edx
 ; Line 1643
@@ -3378,11 +3377,11 @@ $loc_46401D$37946:
 ; Line 1648
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1649
-	je	SHORT $loc_464072$37947
+	je	SHORT $loc_464072$37948
 ; Line 1650
 	shr	ecx, 2
 ; Line 1651
-	jae	SHORT $loc_464059$37948
+	jae	SHORT $loc_464059$37949
 ; Line 1652
 	mov	ax, WORD PTR [esi+2]
 ; Line 1653
@@ -3398,8 +3397,8 @@ $loc_46401D$37946:
 ; Line 1658
 	test	ecx, ecx
 ; Line 1659
-	je	SHORT $loc_46409C$37949
-$loc_464059$37948:
+	je	SHORT $loc_46409C$37950
+$loc_464059$37949:
 ; Line 1661
 	mov	eax, DWORD PTR [esi]
 ; Line 1662
@@ -3421,14 +3420,14 @@ $loc_464059$37948:
 ; Line 1670
 	dec	ecx
 ; Line 1671
-	jne	SHORT $loc_464059$37948
+	jne	SHORT $loc_464059$37949
 ; Line 1672
-	jmp	SHORT $loc_46409C$37949
-$loc_464072$37947:
+	jmp	SHORT $loc_46409C$37950
+$loc_464072$37948:
 ; Line 1674
 	shr	ecx, 2
 ; Line 1675
-	jae	SHORT $loc_464087$37950
+	jae	SHORT $loc_464087$37951
 ; Line 1676
 	mov	ax, WORD PTR [esi+2]
 ; Line 1677
@@ -3440,8 +3439,8 @@ $loc_464072$37947:
 ; Line 1680
 	test	ecx, ecx
 ; Line 1681
-	je	SHORT $loc_46409C$37949
-$loc_464087$37950:
+	je	SHORT $loc_46409C$37950
+$loc_464087$37951:
 ; Line 1683
 	mov	eax, DWORD PTR [esi]
 ; Line 1684
@@ -3459,24 +3458,24 @@ $loc_464087$37950:
 ; Line 1690
 	dec	ecx
 ; Line 1691
-	jne	SHORT $loc_464087$37950
-$loc_46409C$37949:
+	jne	SHORT $loc_464087$37951
+$loc_46409C$37950:
 ; Line 1693
 	sub	edi, 800				; 00000320H
 ; Line 1694
 	sub	edx, 2
 ; Line 1695
-	jge	$loc_46401D$37946
+	jge	$loc_46401D$37947
 ; Line 1696
 	mov	edx, 8
-$loc_4640B0$37951:
+$loc_4640B0$37952:
 ; Line 1698
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1699
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1700
 	mov	ecx, 8
-$loc_4640C1$37952:
+$loc_4640C1$37953:
 ; Line 1702
 	mov	eax, DWORD PTR [esi]
 ; Line 1703
@@ -3498,16 +3497,16 @@ $loc_4640C1$37952:
 ; Line 1711
 	dec	ecx
 ; Line 1712
-	jne	SHORT $loc_4640C1$37952
+	jne	SHORT $loc_4640C1$37953
 ; Line 1713
 	sub	edi, 800				; 00000320H
 ; Line 1714
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1715
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1716
 	mov	ecx, 8
-$loc_4640EF$37953:
+$loc_4640EF$37954:
 ; Line 1718
 	mov	eax, DWORD PTR [esi]
 ; Line 1719
@@ -3525,16 +3524,16 @@ $loc_4640EF$37953:
 ; Line 1725
 	dec	ecx
 ; Line 1726
-	jne	SHORT $loc_4640EF$37953
+	jne	SHORT $loc_4640EF$37954
 ; Line 1727
 	sub	edi, 800				; 00000320H
 ; Line 1728
 	dec	edx
 ; Line 1729
-	jne	SHORT $loc_4640B0$37951
+	jne	SHORT $loc_4640B0$37952
 ; Line 1730
-	jmp	$loc_464688$37779
-$loc_464112$37766:
+	jmp	$loc_464688$37780
+$loc_464112$37767:
 ; Line 1732
 	push	ebp
 ; Line 1733
@@ -3543,11 +3542,11 @@ $loc_464112$37766:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1735
 	mov	edx, 30					; 0000001eH
-$loc_46411F$37954:
+$loc_46411F$37955:
 ; Line 1737
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1738
-	jb	$loc_464209$37955
+	jb	$loc_464209$37956
 ; Line 1739
 	mov	ecx, 32					; 00000020H
 ; Line 1740
@@ -3563,12 +3562,12 @@ $loc_46411F$37954:
 ; Line 1745
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1746
-	je	SHORT $loc_464174$37956
+	je	SHORT $loc_464174$37957
 ; Line 1747
 	shr	ecx, 2
 ; Line 1748
-	je	SHORT $loc_464160$37957
-$loc_464149$37958:
+	je	SHORT $loc_464160$37958
+$loc_464149$37959:
 ; Line 1750
 	mov	eax, DWORD PTR [esi]
 ; Line 1751
@@ -3590,12 +3589,12 @@ $loc_464149$37958:
 ; Line 1759
 	dec	ecx
 ; Line 1760
-	jne	SHORT $loc_464149$37958
-$loc_464160$37957:
+	jne	SHORT $loc_464149$37959
+$loc_464160$37958:
 ; Line 1762
 	and	ebp, 2
 ; Line 1763
-	je	SHORT $loc_46419E$37959
+	je	SHORT $loc_46419E$37960
 ; Line 1764
 	mov	ax, WORD PTR [esi]
 ; Line 1765
@@ -3609,13 +3608,13 @@ $loc_464160$37957:
 ; Line 1769
 	inc	edi
 ; Line 1770
-	jmp	SHORT $loc_46419E$37959
-$loc_464174$37956:
+	jmp	SHORT $loc_46419E$37960
+$loc_464174$37957:
 ; Line 1772
 	shr	ecx, 2
 ; Line 1773
-	je	SHORT $loc_46418E$37960
-$loc_464179$37961:
+	je	SHORT $loc_46418E$37961
+$loc_464179$37962:
 ; Line 1775
 	mov	eax, DWORD PTR [esi]
 ; Line 1776
@@ -3633,12 +3632,12 @@ $loc_464179$37961:
 ; Line 1782
 	dec	ecx
 ; Line 1783
-	jne	SHORT $loc_464179$37961
-$loc_46418E$37960:
+	jne	SHORT $loc_464179$37962
+$loc_46418E$37961:
 ; Line 1785
 	and	ebp, 2
 ; Line 1786
-	je	SHORT $loc_46419E$37959
+	je	SHORT $loc_46419E$37960
 ; Line 1787
 	mov	ax, WORD PTR [esi]
 ; Line 1788
@@ -3647,7 +3646,7 @@ $loc_46418E$37960:
 	mov	BYTE PTR [edi], al
 ; Line 1790
 	add	edi, 2
-$loc_46419E$37959:
+$loc_46419E$37960:
 ; Line 1792
 	sub	edi, 800				; 00000320H
 ; Line 1793
@@ -3655,17 +3654,17 @@ $loc_46419E$37959:
 ; Line 1794
 	sub	edx, 2
 ; Line 1795
-	jge	$loc_46411F$37954
+	jge	$loc_46411F$37955
 ; Line 1796
 	mov	edx, 8
-$loc_4641B4$37962:
+$loc_4641B4$37963:
 ; Line 1798
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1799
-	jb	SHORT $loc_464209$37955
+	jb	SHORT $loc_464209$37956
 ; Line 1800
 	mov	ecx, 8
-$loc_4641C1$37963:
+$loc_4641C1$37964:
 ; Line 1802
 	mov	eax, DWORD PTR [esi]
 ; Line 1803
@@ -3687,16 +3686,16 @@ $loc_4641C1$37963:
 ; Line 1811
 	dec	ecx
 ; Line 1812
-	jne	SHORT $loc_4641C1$37963
+	jne	SHORT $loc_4641C1$37964
 ; Line 1813
 	sub	edi, 800				; 00000320H
 ; Line 1814
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1815
-	jb	SHORT $loc_464209$37955
+	jb	SHORT $loc_464209$37956
 ; Line 1816
 	mov	ecx, 8
-$loc_4641EB$37964:
+$loc_4641EB$37965:
 ; Line 1818
 	mov	eax, DWORD PTR [esi]
 ; Line 1819
@@ -3714,31 +3713,31 @@ $loc_4641EB$37964:
 ; Line 1825
 	dec	ecx
 ; Line 1826
-	jne	SHORT $loc_4641EB$37964
+	jne	SHORT $loc_4641EB$37965
 ; Line 1827
 	sub	edi, 800				; 00000320H
 ; Line 1828
 	dec	edx
 ; Line 1829
-	jne	SHORT $loc_4641B4$37962
-$loc_464209$37955:
+	jne	SHORT $loc_4641B4$37963
+$loc_464209$37956:
 ; Line 1831
 	pop	ebp
 ; Line 1832
-	jmp	$loc_464688$37779
-$loc_46420F$37769:
+	jmp	$loc_464688$37780
+$loc_46420F$37770:
 ; Line 1834
 	mov	edx, 16					; 00000010H
 ; Line 1835
 	xor	eax, eax
-$loc_464216$37965:
+$loc_464216$37966:
 ; Line 1837
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1838
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1839
 	mov	ecx, 8
-$loc_464227$37966:
+$loc_464227$37967:
 ; Line 1841
 	mov	BYTE PTR [edi+1], al
 ; Line 1842
@@ -3748,16 +3747,16 @@ $loc_464227$37966:
 ; Line 1844
 	dec	ecx
 ; Line 1845
-	jne	SHORT $loc_464227$37966
+	jne	SHORT $loc_464227$37967
 ; Line 1846
 	sub	edi, 800				; 00000320H
 ; Line 1847
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1848
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1849
 	mov	ecx, 8
-$loc_46424A$37967:
+$loc_46424A$37968:
 ; Line 1851
 	mov	BYTE PTR [edi], al
 ; Line 1852
@@ -3767,16 +3766,16 @@ $loc_46424A$37967:
 ; Line 1854
 	dec	ecx
 ; Line 1855
-	jne	SHORT $loc_46424A$37967
+	jne	SHORT $loc_46424A$37968
 ; Line 1856
 	sub	edi, 800				; 00000320H
 ; Line 1857
 	dec	edx
 ; Line 1858
-	jne	SHORT $loc_464216$37965
+	jne	SHORT $loc_464216$37966
 ; Line 1859
-	jmp	$loc_464688$37779
-$loc_464263$37770:
+	jmp	$loc_464688$37780
+$loc_464263$37771:
 ; Line 1861
 	push	ebp
 ; Line 1862
@@ -3787,10 +3786,10 @@ $loc_464263$37770:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1865
 	mov	ebp, 32					; 00000020H
-$loc_464273$37968:
+$loc_464273$37969:
 ; Line 1867
 	mov	edx, 32					; 00000020H
-$loc_464278$37969:
+$loc_464278$37970:
 ; Line 1869
 	xor	eax, eax
 ; Line 1870
@@ -3800,13 +3799,13 @@ $loc_464278$37969:
 ; Line 1872
 	test	al, al
 ; Line 1873
-	js	SHORT $loc_4642F4$37970
+	js	SHORT $loc_4642F4$37971
 ; Line 1874
 	sub	edx, eax
 ; Line 1875
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1876
-	jb	$loc_46431B$37971
+	jb	$loc_46431B$37972
 ; Line 1877
 	mov	ecx, eax
 ; Line 1878
@@ -3818,26 +3817,26 @@ $loc_464278$37969:
 ; Line 1881
 	cmp	eax, DWORD PTR _WorldBoolFlag
 ; Line 1882
-	jne	SHORT $loc_4642C7$37972
+	jne	SHORT $loc_4642C7$37973
 ; Line 1883
 	xor	eax, eax
 ; Line 1884
 	shr	ecx, 1
 ; Line 1885
-	jae	SHORT $loc_4642AD$37973
+	jae	SHORT $loc_4642AD$37974
 ; Line 1886
 	inc	edi
 ; Line 1887
 	test	ecx, ecx
 ; Line 1888
-	je	SHORT $loc_4642EE$37974
+	je	SHORT $loc_4642EE$37975
 ; Line 1889
-	jmp	SHORT $loc_4642D6$37975
-$loc_4642AD$37973:
+	jmp	SHORT $loc_4642D6$37976
+$loc_4642AD$37974:
 ; Line 1891
 	shr	ecx, 1
 ; Line 1892
-	jae	SHORT $loc_4642B9$37976
+	jae	SHORT $loc_4642B9$37977
 ; Line 1893
 	inc	edi
 ; Line 1894
@@ -3847,8 +3846,8 @@ $loc_4642AD$37973:
 ; Line 1896
 	test	ecx, ecx
 ; Line 1897
-	je	SHORT $loc_4642EE$37974
-$loc_4642B9$37976:
+	je	SHORT $loc_4642EE$37975
+$loc_4642B9$37977:
 ; Line 1899
 	mov	BYTE PTR [edi+1], al
 ; Line 1900
@@ -3858,16 +3857,16 @@ $loc_4642B9$37976:
 ; Line 1902
 	dec	ecx
 ; Line 1903
-	jne	SHORT $loc_4642B9$37976
+	jne	SHORT $loc_4642B9$37977
 ; Line 1904
-	jmp	SHORT $loc_4642EE$37974
-$loc_4642C7$37972:
+	jmp	SHORT $loc_4642EE$37975
+$loc_4642C7$37973:
 ; Line 1906
 	xor	eax, eax
 ; Line 1907
 	shr	ecx, 1
 ; Line 1908
-	jae	SHORT $loc_4642D6$37975
+	jae	SHORT $loc_4642D6$37976
 ; Line 1909
 	mov	BYTE PTR [edi], al
 ; Line 1910
@@ -3875,14 +3874,14 @@ $loc_4642C7$37972:
 ; Line 1911
 	test	ecx, ecx
 ; Line 1912
-	je	SHORT $loc_4642EE$37974
+	je	SHORT $loc_4642EE$37975
 ; Line 1913
-	jmp	SHORT $loc_4642AD$37973
-$loc_4642D6$37975:
+	jmp	SHORT $loc_4642AD$37974
+$loc_4642D6$37976:
 ; Line 1915
 	shr	ecx, 1
 ; Line 1916
-	jae	SHORT $loc_4642E3$37977
+	jae	SHORT $loc_4642E3$37978
 ; Line 1917
 	mov	BYTE PTR [edi], al
 ; Line 1918
@@ -3890,8 +3889,8 @@ $loc_4642D6$37975:
 ; Line 1919
 	test	ecx, ecx
 ; Line 1920
-	je	SHORT $loc_4642EE$37974
-$loc_4642E3$37977:
+	je	SHORT $loc_4642EE$37975
+$loc_4642E3$37978:
 ; Line 1922
 	mov	BYTE PTR [edi], al
 ; Line 1923
@@ -3901,15 +3900,15 @@ $loc_4642E3$37977:
 ; Line 1925
 	dec	ecx
 ; Line 1926
-	jne	SHORT $loc_4642E3$37977
-$loc_4642EE$37974:
+	jne	SHORT $loc_4642E3$37978
+$loc_4642EE$37975:
 ; Line 1928
 	test	edx, edx
 ; Line 1929
-	je	SHORT $loc_464300$37978
+	je	SHORT $loc_464300$37979
 ; Line 1930
-	jmp	SHORT $loc_464278$37969
-$loc_4642F4$37970:
+	jmp	SHORT $loc_464278$37970
+$loc_4642F4$37971:
 ; Line 1932
 	neg	al
 ; Line 1933
@@ -3917,8 +3916,8 @@ $loc_4642F4$37970:
 ; Line 1934
 	sub	edx, eax
 ; Line 1935
-	jne	$loc_464278$37969
-$loc_464300$37978:
+	jne	$loc_464278$37970
+$loc_464300$37979:
 ; Line 1937
 	mov	eax, DWORD PTR _WorldBoolFlag
 ; Line 1938
@@ -3932,24 +3931,24 @@ $loc_464300$37978:
 ; Line 1942
 	dec	ebp
 ; Line 1943
-	jne	$loc_464273$37968
-$loc_46431B$37971:
+	jne	$loc_464273$37969
+$loc_46431B$37972:
 ; Line 1945
 	pop	ebp
 ; Line 1946
-	jmp	$loc_464688$37779
-$loc_464321$37771:
+	jmp	$loc_464688$37780
+$loc_464321$37772:
 ; Line 1948
 	xor	eax, eax
 ; Line 1949
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1950
 	mov	edx, 30					; 0000001eH
-$loc_46432D$37979:
+$loc_46432D$37980:
 ; Line 1952
 	cmp	edi, DWORD PTR _glClipY
 ; Line 1953
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 1954
 	add	edi, edx
 ; Line 1955
@@ -3965,13 +3964,13 @@ $loc_46432D$37979:
 ; Line 1960
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 1961
-	je	SHORT $loc_46436F$37980
+	je	SHORT $loc_46436F$37981
 ; Line 1962
 	xor	eax, eax
 ; Line 1963
 	shr	ecx, 2
 ; Line 1964
-	jae	SHORT $loc_464361$37981
+	jae	SHORT $loc_464361$37982
 ; Line 1965
 	inc	edi
 ; Line 1966
@@ -3981,8 +3980,8 @@ $loc_46432D$37979:
 ; Line 1968
 	test	ecx, ecx
 ; Line 1969
-	je	SHORT $loc_46438A$37982
-$loc_464361$37981:
+	je	SHORT $loc_46438A$37983
+$loc_464361$37982:
 ; Line 1971
 	mov	BYTE PTR [edi+1], al
 ; Line 1972
@@ -3992,16 +3991,16 @@ $loc_464361$37981:
 ; Line 1974
 	dec	ecx
 ; Line 1975
-	jne	SHORT $loc_464361$37981
+	jne	SHORT $loc_464361$37982
 ; Line 1976
-	jmp	SHORT $loc_46438A$37982
-$loc_46436F$37980:
+	jmp	SHORT $loc_46438A$37983
+$loc_46436F$37981:
 ; Line 1978
 	xor	eax, eax
 ; Line 1979
 	shr	ecx, 2
 ; Line 1980
-	jae	SHORT $loc_46437F$37983
+	jae	SHORT $loc_46437F$37984
 ; Line 1981
 	mov	BYTE PTR [edi], al
 ; Line 1982
@@ -4009,8 +4008,8 @@ $loc_46436F$37980:
 ; Line 1983
 	test	ecx, ecx
 ; Line 1984
-	je	SHORT $loc_46438A$37982
-$loc_46437F$37983:
+	je	SHORT $loc_46438A$37983
+$loc_46437F$37984:
 ; Line 1986
 	mov	BYTE PTR [edi], al
 ; Line 1987
@@ -4020,26 +4019,26 @@ $loc_46437F$37983:
 ; Line 1989
 	dec	ecx
 ; Line 1990
-	jne	SHORT $loc_46437F$37983
-$loc_46438A$37982:
+	jne	SHORT $loc_46437F$37984
+$loc_46438A$37983:
 ; Line 1992
 	sub	edi, 800				; 00000320H
 ; Line 1993
 	test	edx, edx
 ; Line 1994
-	je	SHORT $loc_464399$37984
+	je	SHORT $loc_464399$37985
 ; Line 1995
 	sub	edx, 2
 ; Line 1996
-	jmp	SHORT $loc_46432D$37979
-$loc_464399$37984:
+	jmp	SHORT $loc_46432D$37980
+$loc_464399$37985:
 ; Line 1998
 	mov	edx, 2
-$loc_46439E$37985:
+$loc_46439E$37986:
 ; Line 2000
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2001
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2002
 	add	edi, edx
 ; Line 2003
@@ -4055,13 +4054,13 @@ $loc_46439E$37985:
 ; Line 2008
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2009
-	je	SHORT $loc_4643E0$37986
+	je	SHORT $loc_4643E0$37987
 ; Line 2010
 	xor	eax, eax
 ; Line 2011
 	shr	ecx, 2
 ; Line 2012
-	jae	SHORT $loc_4643D2$37987
+	jae	SHORT $loc_4643D2$37988
 ; Line 2013
 	inc	edi
 ; Line 2014
@@ -4071,8 +4070,8 @@ $loc_46439E$37985:
 ; Line 2016
 	test	ecx, ecx
 ; Line 2017
-	je	SHORT $loc_4643FB$37988
-$loc_4643D2$37987:
+	je	SHORT $loc_4643FB$37989
+$loc_4643D2$37988:
 ; Line 2019
 	mov	BYTE PTR [edi+1], al
 ; Line 2020
@@ -4082,16 +4081,16 @@ $loc_4643D2$37987:
 ; Line 2022
 	dec	ecx
 ; Line 2023
-	jne	SHORT $loc_4643D2$37987
+	jne	SHORT $loc_4643D2$37988
 ; Line 2024
-	jmp	SHORT $loc_4643FB$37988
-$loc_4643E0$37986:
+	jmp	SHORT $loc_4643FB$37989
+$loc_4643E0$37987:
 ; Line 2026
 	xor	eax, eax
 ; Line 2027
 	shr	ecx, 2
 ; Line 2028
-	jae	SHORT $loc_4643F0$37989
+	jae	SHORT $loc_4643F0$37990
 ; Line 2029
 	mov	BYTE PTR [edi], al
 ; Line 2030
@@ -4099,8 +4098,8 @@ $loc_4643E0$37986:
 ; Line 2031
 	test	ecx, ecx
 ; Line 2032
-	je	SHORT $loc_4643FB$37988
-$loc_4643F0$37989:
+	je	SHORT $loc_4643FB$37989
+$loc_4643F0$37990:
 ; Line 2034
 	mov	BYTE PTR [edi], al
 ; Line 2035
@@ -4110,8 +4109,8 @@ $loc_4643F0$37989:
 ; Line 2037
 	dec	ecx
 ; Line 2038
-	jne	SHORT $loc_4643F0$37989
-$loc_4643FB$37988:
+	jne	SHORT $loc_4643F0$37990
+$loc_4643FB$37989:
 ; Line 2040
 	sub	edi, 800				; 00000320H
 ; Line 2041
@@ -4119,21 +4118,21 @@ $loc_4643FB$37988:
 ; Line 2042
 	cmp	edx, 32					; 00000020H
 ; Line 2043
-	jne	SHORT $loc_46439E$37985
+	jne	SHORT $loc_46439E$37986
 ; Line 2044
-	jmp	$loc_464688$37779
-$loc_46440E$37772:
+	jmp	$loc_464688$37780
+$loc_46440E$37773:
 ; Line 2046
 	xor	eax, eax
 ; Line 2047
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2048
 	mov	edx, 30					; 0000001eH
-$loc_46441A$37990:
+$loc_46441A$37991:
 ; Line 2050
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2051
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2052
 	mov	ecx, 32					; 00000020H
 ; Line 2053
@@ -4147,13 +4146,13 @@ $loc_46441A$37990:
 ; Line 2057
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2058
-	je	SHORT $loc_46445A$37991
+	je	SHORT $loc_46445A$37992
 ; Line 2059
 	xor	eax, eax
 ; Line 2060
 	shr	ecx, 2
 ; Line 2061
-	jae	SHORT $loc_46444C$37992
+	jae	SHORT $loc_46444C$37993
 ; Line 2062
 	inc	edi
 ; Line 2063
@@ -4163,8 +4162,8 @@ $loc_46441A$37990:
 ; Line 2065
 	test	ecx, ecx
 ; Line 2066
-	je	SHORT $loc_464475$37993
-$loc_46444C$37992:
+	je	SHORT $loc_464475$37994
+$loc_46444C$37993:
 ; Line 2068
 	mov	BYTE PTR [edi+1], al
 ; Line 2069
@@ -4174,16 +4173,16 @@ $loc_46444C$37992:
 ; Line 2071
 	dec	ecx
 ; Line 2072
-	jne	SHORT $loc_46444C$37992
+	jne	SHORT $loc_46444C$37993
 ; Line 2073
-	jmp	SHORT $loc_464475$37993
-$loc_46445A$37991:
+	jmp	SHORT $loc_464475$37994
+$loc_46445A$37992:
 ; Line 2075
 	xor	eax, eax
 ; Line 2076
 	shr	ecx, 2
 ; Line 2077
-	jae	SHORT $loc_46446A$37994
+	jae	SHORT $loc_46446A$37995
 ; Line 2078
 	mov	BYTE PTR [edi], al
 ; Line 2079
@@ -4191,8 +4190,8 @@ $loc_46445A$37991:
 ; Line 2080
 	test	ecx, ecx
 ; Line 2081
-	je	SHORT $loc_464475$37993
-$loc_46446A$37994:
+	je	SHORT $loc_464475$37994
+$loc_46446A$37995:
 ; Line 2083
 	mov	BYTE PTR [edi], al
 ; Line 2084
@@ -4202,28 +4201,28 @@ $loc_46446A$37994:
 ; Line 2086
 	dec	ecx
 ; Line 2087
-	jne	SHORT $loc_46446A$37994
-$loc_464475$37993:
+	jne	SHORT $loc_46446A$37995
+$loc_464475$37994:
 ; Line 2089
 	sub	edi, 800				; 00000320H
 ; Line 2090
 	test	edx, edx
 ; Line 2091
-	je	SHORT $loc_464486$37995
+	je	SHORT $loc_464486$37996
 ; Line 2092
 	add	edi, edx
 ; Line 2093
 	sub	edx, 2
 ; Line 2094
-	jmp	SHORT $loc_46441A$37990
-$loc_464486$37995:
+	jmp	SHORT $loc_46441A$37991
+$loc_464486$37996:
 ; Line 2096
 	mov	edx, 2
-$loc_46448B$37996:
+$loc_46448B$37997:
 ; Line 2098
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2099
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2100
 	mov	ecx, 32					; 00000020H
 ; Line 2101
@@ -4237,13 +4236,13 @@ $loc_46448B$37996:
 ; Line 2105
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2106
-	je	SHORT $loc_4644CB$37997
+	je	SHORT $loc_4644CB$37998
 ; Line 2107
 	xor	eax, eax
 ; Line 2108
 	shr	ecx, 2
 ; Line 2109
-	jae	SHORT $loc_4644BD$37998
+	jae	SHORT $loc_4644BD$37999
 ; Line 2110
 	inc	edi
 ; Line 2111
@@ -4253,8 +4252,8 @@ $loc_46448B$37996:
 ; Line 2113
 	test	ecx, ecx
 ; Line 2114
-	je	SHORT $loc_4644E6$37999
-$loc_4644BD$37998:
+	je	SHORT $loc_4644E6$38000
+$loc_4644BD$37999:
 ; Line 2116
 	mov	BYTE PTR [edi+1], al
 ; Line 2117
@@ -4264,16 +4263,16 @@ $loc_4644BD$37998:
 ; Line 2119
 	dec	ecx
 ; Line 2120
-	jne	SHORT $loc_4644BD$37998
+	jne	SHORT $loc_4644BD$37999
 ; Line 2121
-	jmp	SHORT $loc_4644E6$37999
-$loc_4644CB$37997:
+	jmp	SHORT $loc_4644E6$38000
+$loc_4644CB$37998:
 ; Line 2123
 	xor	eax, eax
 ; Line 2124
 	shr	ecx, 2
 ; Line 2125
-	jae	SHORT $loc_4644DB$38000
+	jae	SHORT $loc_4644DB$38001
 ; Line 2126
 	mov	BYTE PTR [edi], al
 ; Line 2127
@@ -4281,8 +4280,8 @@ $loc_4644CB$37997:
 ; Line 2128
 	test	ecx, ecx
 ; Line 2129
-	je	SHORT $loc_4644E6$37999
-$loc_4644DB$38000:
+	je	SHORT $loc_4644E6$38000
+$loc_4644DB$38001:
 ; Line 2131
 	mov	BYTE PTR [edi], al
 ; Line 2132
@@ -4292,8 +4291,8 @@ $loc_4644DB$38000:
 ; Line 2134
 	dec	ecx
 ; Line 2135
-	jne	SHORT $loc_4644DB$38000
-$loc_4644E6$37999:
+	jne	SHORT $loc_4644DB$38001
+$loc_4644E6$38000:
 ; Line 2137
 	sub	edi, 800				; 00000320H
 ; Line 2138
@@ -4303,21 +4302,21 @@ $loc_4644E6$37999:
 ; Line 2140
 	cmp	edx, 32					; 00000020H
 ; Line 2141
-	jne	SHORT $loc_46448B$37996
+	jne	SHORT $loc_46448B$37997
 ; Line 2142
-	jmp	$loc_464688$37779
-$loc_4644FB$37773:
+	jmp	$loc_464688$37780
+$loc_4644FB$37774:
 ; Line 2144
 	xor	eax, eax
 ; Line 2145
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2146
 	mov	edx, 30					; 0000001eH
-$loc_464507$38001:
+$loc_464507$38002:
 ; Line 2148
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2149
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2150
 	add	edi, edx
 ; Line 2151
@@ -4333,13 +4332,13 @@ $loc_464507$38001:
 ; Line 2156
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2157
-	je	SHORT $loc_464549$38002
+	je	SHORT $loc_464549$38003
 ; Line 2158
 	xor	eax, eax
 ; Line 2159
 	shr	ecx, 2
 ; Line 2160
-	jae	SHORT $loc_46453B$38003
+	jae	SHORT $loc_46453B$38004
 ; Line 2161
 	inc	edi
 ; Line 2162
@@ -4349,8 +4348,8 @@ $loc_464507$38001:
 ; Line 2164
 	test	ecx, ecx
 ; Line 2165
-	je	SHORT $loc_464564$38004
-$loc_46453B$38003:
+	je	SHORT $loc_464564$38005
+$loc_46453B$38004:
 ; Line 2167
 	mov	BYTE PTR [edi+1], al
 ; Line 2168
@@ -4360,16 +4359,16 @@ $loc_46453B$38003:
 ; Line 2170
 	dec	ecx
 ; Line 2171
-	jne	SHORT $loc_46453B$38003
+	jne	SHORT $loc_46453B$38004
 ; Line 2172
-	jmp	SHORT $loc_464564$38004
-$loc_464549$38002:
+	jmp	SHORT $loc_464564$38005
+$loc_464549$38003:
 ; Line 2174
 	xor	eax, eax
 ; Line 2175
 	shr	ecx, 2
 ; Line 2176
-	jae	SHORT $loc_464559$38005
+	jae	SHORT $loc_464559$38006
 ; Line 2177
 	mov	BYTE PTR [edi], al
 ; Line 2178
@@ -4377,8 +4376,8 @@ $loc_464549$38002:
 ; Line 2179
 	test	ecx, ecx
 ; Line 2180
-	je	SHORT $loc_464564$38004
-$loc_464559$38005:
+	je	SHORT $loc_464564$38005
+$loc_464559$38006:
 ; Line 2182
 	mov	BYTE PTR [edi], al
 ; Line 2183
@@ -4388,31 +4387,31 @@ $loc_464559$38005:
 ; Line 2185
 	dec	ecx
 ; Line 2186
-	jne	SHORT $loc_464559$38005
-$loc_464564$38004:
+	jne	SHORT $loc_464559$38006
+$loc_464564$38005:
 ; Line 2188
 	sub	edi, 800				; 00000320H
 ; Line 2189
 	test	edx, edx
 ; Line 2190
-	je	SHORT $loc_464573$38006
+	je	SHORT $loc_464573$38007
 ; Line 2191
 	sub	edx, 2
 ; Line 2192
-	jmp	SHORT $loc_464507$38001
-$loc_464573$38006:
+	jmp	SHORT $loc_464507$38002
+$loc_464573$38007:
 ; Line 2194
 	mov	edx, 8
 ; Line 2195
 	xor	eax, eax
-$loc_46457A$38007:
+$loc_46457A$38008:
 ; Line 2197
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2198
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2199
 	mov	ecx, 8
-$loc_46458B$38008:
+$loc_46458B$38009:
 ; Line 2201
 	mov	BYTE PTR [edi+1], al
 ; Line 2202
@@ -4422,16 +4421,16 @@ $loc_46458B$38008:
 ; Line 2204
 	dec	ecx
 ; Line 2205
-	jne	SHORT $loc_46458B$38008
+	jne	SHORT $loc_46458B$38009
 ; Line 2206
 	sub	edi, 800				; 00000320H
 ; Line 2207
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2208
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2209
 	mov	ecx, 8
-$loc_4645AE$38009:
+$loc_4645AE$38010:
 ; Line 2211
 	mov	BYTE PTR [edi], al
 ; Line 2212
@@ -4441,27 +4440,27 @@ $loc_4645AE$38009:
 ; Line 2214
 	dec	ecx
 ; Line 2215
-	jne	SHORT $loc_4645AE$38009
+	jne	SHORT $loc_4645AE$38010
 ; Line 2216
 	sub	edi, 800				; 00000320H
 ; Line 2217
 	dec	edx
 ; Line 2218
-	jne	SHORT $loc_46457A$38007
+	jne	SHORT $loc_46457A$38008
 ; Line 2219
-	jmp	$loc_464688$37779
-$loc_4645C7$37774:
+	jmp	$loc_464688$37780
+$loc_4645C7$37775:
 ; Line 2221
 	xor	eax, eax
 ; Line 2222
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2223
 	mov	edx, 30					; 0000001eH
-$loc_4645D3$38010:
+$loc_4645D3$38011:
 ; Line 2225
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2226
-	jb	$loc_464688$37779
+	jb	$loc_464688$37780
 ; Line 2227
 	mov	ecx, 32					; 00000020H
 ; Line 2228
@@ -4475,13 +4474,13 @@ $loc_4645D3$38010:
 ; Line 2232
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 2233
-	je	SHORT $loc_464613$38011
+	je	SHORT $loc_464613$38012
 ; Line 2234
 	xor	eax, eax
 ; Line 2235
 	shr	ecx, 2
 ; Line 2236
-	jae	SHORT $loc_464605$38012
+	jae	SHORT $loc_464605$38013
 ; Line 2237
 	inc	edi
 ; Line 2238
@@ -4491,8 +4490,8 @@ $loc_4645D3$38010:
 ; Line 2240
 	test	ecx, ecx
 ; Line 2241
-	je	SHORT $loc_46462E$38013
-$loc_464605$38012:
+	je	SHORT $loc_46462E$38014
+$loc_464605$38013:
 ; Line 2243
 	mov	BYTE PTR [edi+1], al
 ; Line 2244
@@ -4502,16 +4501,16 @@ $loc_464605$38012:
 ; Line 2246
 	dec	ecx
 ; Line 2247
-	jne	SHORT $loc_464605$38012
+	jne	SHORT $loc_464605$38013
 ; Line 2248
-	jmp	SHORT $loc_46462E$38013
-$loc_464613$38011:
+	jmp	SHORT $loc_46462E$38014
+$loc_464613$38012:
 ; Line 2250
 	xor	eax, eax
 ; Line 2251
 	shr	ecx, 2
 ; Line 2252
-	jae	SHORT $loc_464623$38014
+	jae	SHORT $loc_464623$38015
 ; Line 2253
 	mov	BYTE PTR [edi], al
 ; Line 2254
@@ -4519,8 +4518,8 @@ $loc_464613$38011:
 ; Line 2255
 	test	ecx, ecx
 ; Line 2256
-	je	SHORT $loc_46462E$38013
-$loc_464623$38014:
+	je	SHORT $loc_46462E$38014
+$loc_464623$38015:
 ; Line 2258
 	mov	BYTE PTR [edi], al
 ; Line 2259
@@ -4530,33 +4529,33 @@ $loc_464623$38014:
 ; Line 2261
 	dec	ecx
 ; Line 2262
-	jne	SHORT $loc_464623$38014
-$loc_46462E$38013:
+	jne	SHORT $loc_464623$38015
+$loc_46462E$38014:
 ; Line 2264
 	sub	edi, 800				; 00000320H
 ; Line 2265
 	test	edx, edx
 ; Line 2266
-	je	SHORT $loc_46463F$38015
+	je	SHORT $loc_46463F$38016
 ; Line 2267
 	add	edi, edx
 ; Line 2268
 	sub	edx, 2
 ; Line 2269
-	jmp	SHORT $loc_4645D3$38010
-$loc_46463F$38015:
+	jmp	SHORT $loc_4645D3$38011
+$loc_46463F$38016:
 ; Line 2271
 	mov	edx, 8
 ; Line 2272
 	xor	eax, eax
-$loc_464646$38016:
+$loc_464646$38017:
 ; Line 2274
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2275
-	jb	SHORT $loc_464688$37779
+	jb	SHORT $loc_464688$37780
 ; Line 2276
 	mov	ecx, 8
-$loc_464653$38017:
+$loc_464653$38018:
 ; Line 2278
 	mov	BYTE PTR [edi+1], al
 ; Line 2279
@@ -4566,16 +4565,16 @@ $loc_464653$38017:
 ; Line 2281
 	dec	ecx
 ; Line 2282
-	jne	SHORT $loc_464653$38017
+	jne	SHORT $loc_464653$38018
 ; Line 2283
 	sub	edi, 800				; 00000320H
 ; Line 2284
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2285
-	jb	SHORT $loc_464688$37779
+	jb	SHORT $loc_464688$37780
 ; Line 2286
 	mov	ecx, 8
-$loc_464672$38018:
+$loc_464672$38019:
 ; Line 2288
 	mov	BYTE PTR [edi], al
 ; Line 2289
@@ -4585,16 +4584,16 @@ $loc_464672$38018:
 ; Line 2291
 	dec	ecx
 ; Line 2292
-	jne	SHORT $loc_464672$38018
+	jne	SHORT $loc_464672$38019
 ; Line 2293
 	sub	edi, 800				; 00000320H
 ; Line 2294
 	dec	edx
 ; Line 2295
-	jne	SHORT $loc_464646$38016
+	jne	SHORT $loc_464646$38017
 ; Line 2296
-	jmp	SHORT $loc_464688$37779
-$loc_464688$37779:
+	jmp	SHORT $loc_464688$37780
+$loc_464688$37780:
 ; Line 2298
 	pop	esi
 ; Line 2299
@@ -4633,17 +4632,17 @@ _TEXT	SEGMENT
 ; Line 2317
 	test	al, al
 ; Line 2318
-	je	$loc_4647A2$38023
+	je	$loc_4647A2$38024
 ; Line 2319
 	cmp	al, BYTE PTR _lightmax
 ; Line 2320
-	je	$loc_464802$38024
+	je	$loc_464802$38025
 ; Line 2321
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 2322
 	and	eax, 32768				; 00008000H
 ; Line 2323
-	jne	SHORT $loc_464736$38025
+	jne	SHORT $loc_464736$38026
 ; Line 2324
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 2325
@@ -4673,28 +4672,28 @@ _TEXT	SEGMENT
 ; Line 2337
 	and	eax, 15					; 0000000fH
 ; Line 2338
-	je	$loc_46488D$38026
+	je	$loc_46488D$38027
 ; Line 2339
-	je	$loc_464FBC$38027
+	je	$loc_464FBC$38028
 ; Line 2340
 	cmp	ax, 1
 ; Line 2341
-	je	$loc_4648D5$38028
+	je	$loc_4648D5$38029
 ; Line 2342
 	cmp	ax, 2
 ; Line 2343
-	je	$loc_464964$38029
+	je	$loc_464964$38030
 ; Line 2344
 	cmp	ax, 3
 ; Line 2345
-	je	$loc_464A30$38030
+	je	$loc_464A30$38031
 ; Line 2346
 	cmp	ax, 4
 ; Line 2347
-	je	$loc_464AFE$38031
+	je	$loc_464AFE$38032
 ; Line 2348
-	jmp	$loc_464BBC$38032
-$loc_464736$38025:
+	jmp	$loc_464BBC$38033
+$loc_464736$38026:
 ; Line 2350
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 2351
@@ -4723,36 +4722,36 @@ $loc_464736$38025:
 	shr	eax, 4
 ; Line 2363
 	and	eax, 15					; 0000000fH
-$loc_46476B$38033:
+$loc_46476B$38034:
 ; Line 2365
 	cmp	ax, 8
 ; Line 2366
-	je	$loc_464C7A$38034
+	je	$loc_464C7A$38035
 ; Line 2367
 	cmp	ax, 9
 ; Line 2368
-	je	$loc_464CC1$38035
+	je	$loc_464CC1$38036
 ; Line 2369
 	cmp	ax, 10					; 0000000aH
 ; Line 2370
-	je	$loc_464D4B$38036
+	je	$loc_464D4B$38037
 ; Line 2371
 	cmp	ax, 11					; 0000000bH
 ; Line 2372
-	je	$loc_464DE3$38037
+	je	$loc_464DE3$38038
 ; Line 2373
 	cmp	ax, 12					; 0000000cH
 ; Line 2374
-	je	$loc_464E7D$38038
+	je	$loc_464E7D$38039
 ; Line 2375
-	jmp	$loc_464F19$38039
-$loc_4647A2$38023:
+	jmp	$loc_464F19$38040
+$loc_4647A2$38024:
 ; Line 2377
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 2378
 	and	eax, 32768				; 00008000H
 ; Line 2379
-	je	SHORT $loc_4647D4$38040
+	je	SHORT $loc_4647D4$38041
 ; Line 2380
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 2381
@@ -4771,7 +4770,7 @@ $loc_4647A2$38023:
 	add	eax, DWORD PTR [esi]
 ; Line 2388
 	mov	DWORD PTR _gdwPNum, eax
-$loc_4647D4$38040:
+$loc_4647D4$38041:
 ; Line 2390
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 2391
@@ -4797,14 +4796,14 @@ $loc_4647D4$38040:
 ; Line 2401
 	add	eax, 8
 ; Line 2402
-	jmp	$loc_46476B$38033
-$loc_464802$38024:
+	jmp	$loc_46476B$38034
+$loc_464802$38025:
 ; Line 2404
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 2405
 	and	eax, 32768				; 00008000H
 ; Line 2406
-	je	SHORT $loc_464834$38041
+	je	SHORT $loc_464834$38042
 ; Line 2407
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 2408
@@ -4823,7 +4822,7 @@ $loc_464802$38024:
 	add	eax, DWORD PTR [esi]
 ; Line 2415
 	mov	DWORD PTR _gdwPNum, eax
-$loc_464834$38041:
+$loc_464834$38042:
 ; Line 2417
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 2418
@@ -4847,33 +4846,33 @@ $loc_464834$38041:
 ; Line 2427
 	and	eax, 7
 ; Line 2428
-	je	$loc_464FBC$38027
+	je	$loc_464FBC$38028
 ; Line 2429
 	cmp	ax, 1
 ; Line 2430
-	je	$loc_465002$38042
+	je	$loc_465002$38043
 ; Line 2431
 	cmp	ax, 2
 ; Line 2432
-	je	$loc_465091$38043
+	je	$loc_465091$38044
 ; Line 2433
 	cmp	ax, 3
 ; Line 2434
-	je	$loc_465117$38044
+	je	$loc_465117$38045
 ; Line 2435
 	cmp	ax, 4
 ; Line 2436
-	je	$loc_46519D$38045
+	je	$loc_46519D$38046
 ; Line 2437
-	jmp	$loc_465232$38046
-$loc_46488D$38026:
+	jmp	$loc_465232$38047
+$loc_46488D$38027:
 ; Line 2439
 	mov	edx, 32					; 00000020H
-$loc_464892$38047:
+$loc_464892$38048:
 ; Line 2441
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2442
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2443
 	push	edx
 ; Line 2444
@@ -4882,7 +4881,7 @@ $loc_464892$38047:
 	mov	edx, DWORD PTR [eax]
 ; Line 2446
 	mov	ecx, 32					; 00000020H
-$loc_4648AB$38049:
+$loc_4648AB$38050:
 ; Line 2448
 	mov	al, BYTE PTR [esi]
 ; Line 2449
@@ -4890,18 +4889,18 @@ $loc_4648AB$38049:
 ; Line 2450
 	shl	edx, 1
 ; Line 2451
-	jae	SHORT $loc_4648B5$38050
+	jae	SHORT $loc_4648B5$38051
 ; Line 2452
 	xlat
 ; Line 2453
 	mov	BYTE PTR [edi], al
-$loc_4648B5$38050:
+$loc_4648B5$38051:
 ; Line 2455
 	inc	edi
 ; Line 2456
 	dec	ecx
 ; Line 2457
-	jne	SHORT $loc_4648AB$38049
+	jne	SHORT $loc_4648AB$38050
 ; Line 2458
 	pop	edx
 ; Line 2459
@@ -4915,13 +4914,13 @@ $loc_4648B5$38050:
 ; Line 2463
 	dec	edx
 ; Line 2464
-	jne	SHORT $loc_464892$38047
+	jne	SHORT $loc_464892$38048
 ; Line 2465
-	jmp	$loc_4652C1$38048
-$loc_4648D5$38028:
+	jmp	$loc_4652C1$38049
+$loc_4648D5$38029:
 ; Line 2467
 	mov	ecx, 32					; 00000020H
-$loc_4648DA$38051:
+$loc_4648DA$38052:
 ; Line 2469
 	push	ecx
 ; Line 2470
@@ -4932,7 +4931,7 @@ $loc_4648DA$38051:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 2473
 	mov	edx, 32					; 00000020H
-$loc_4648EC$38052:
+$loc_4648EC$38053:
 ; Line 2475
 	xor	eax, eax
 ; Line 2476
@@ -4942,20 +4941,20 @@ $loc_4648EC$38052:
 ; Line 2478
 	test	al, al
 ; Line 2479
-	js	SHORT $loc_464927$38053
+	js	SHORT $loc_464927$38054
 ; Line 2480
 	sub	edx, eax
 ; Line 2481
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2482
-	jb	$loc_4652C0$38054
+	jb	$loc_4652C0$38055
 ; Line 2483
 	mov	ecx, eax
 ; Line 2484
 	push	edx
 ; Line 2485
 	mov	edx, DWORD PTR _gdwCurrentMask
-$loc_46490C$38055:
+$loc_46490C$38056:
 ; Line 2487
 	mov	al, BYTE PTR [esi]
 ; Line 2488
@@ -4963,18 +4962,18 @@ $loc_46490C$38055:
 ; Line 2489
 	shl	edx, 1
 ; Line 2490
-	jae	SHORT $loc_464916$38056
+	jae	SHORT $loc_464916$38057
 ; Line 2491
 	xlat
 ; Line 2492
 	mov	BYTE PTR [edi], al
-$loc_464916$38056:
+$loc_464916$38057:
 ; Line 2494
 	inc	edi
 ; Line 2495
 	dec	ecx
 ; Line 2496
-	jne	SHORT $loc_46490C$38055
+	jne	SHORT $loc_46490C$38056
 ; Line 2497
 	mov	DWORD PTR _gdwCurrentMask, edx
 ; Line 2498
@@ -4982,10 +4981,10 @@ $loc_464916$38056:
 ; Line 2499
 	test	edx, edx
 ; Line 2500
-	je	SHORT $loc_464944$38057
+	je	SHORT $loc_464944$38058
 ; Line 2501
-	jmp	SHORT $loc_4648EC$38052
-$loc_464927$38053:
+	jmp	SHORT $loc_4648EC$38053
+$loc_464927$38054:
 ; Line 2503
 	neg	al
 ; Line 2504
@@ -4995,7 +4994,7 @@ $loc_464927$38053:
 ; Line 2506
 	and	ecx, 31					; 0000001fH
 ; Line 2507
-	je	SHORT $loc_464940$38058
+	je	SHORT $loc_464940$38059
 ; Line 2508
 	push	eax
 ; Line 2509
@@ -5006,12 +5005,12 @@ $loc_464927$38053:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 2512
 	pop	eax
-$loc_464940$38058:
+$loc_464940$38059:
 ; Line 2514
 	sub	edx, eax
 ; Line 2515
-	jne	SHORT $loc_4648EC$38052
-$loc_464944$38057:
+	jne	SHORT $loc_4648EC$38053
+$loc_464944$38058:
 ; Line 2517
 	pop	ecx
 ; Line 2518
@@ -5025,17 +5024,17 @@ $loc_464944$38057:
 ; Line 2522
 	dec	ecx
 ; Line 2523
-	jne	$loc_4648DA$38051
+	jne	$loc_4648DA$38052
 ; Line 2524
-	jmp	$loc_4652C1$38048
-$loc_464964$38029:
+	jmp	$loc_4652C1$38049
+$loc_464964$38030:
 ; Line 2526
 	mov	edx, 30					; 0000001eH
-$loc_464969$38059:
+$loc_464969$38060:
 ; Line 2528
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2529
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2530
 	add	edi, edx
 ; Line 2531
@@ -5045,7 +5044,7 @@ $loc_464969$38059:
 ; Line 2533
 	shr	ecx, 2
 ; Line 2534
-	jae	SHORT $loc_46499E$38060
+	jae	SHORT $loc_46499E$38061
 ; Line 2535
 	mov	ax, WORD PTR [esi+2]
 ; Line 2536
@@ -5065,8 +5064,8 @@ $loc_464969$38059:
 ; Line 2543
 	test	ecx, ecx
 ; Line 2544
-	je	SHORT $loc_4649BB$38061
-$loc_46499E$38060:
+	je	SHORT $loc_4649BB$38062
+$loc_46499E$38061:
 ; Line 2546
 	mov	eax, DWORD PTR [esi]
 ; Line 2547
@@ -5094,21 +5093,21 @@ $loc_46499E$38060:
 ; Line 2558
 	dec	ecx
 ; Line 2559
-	jne	SHORT $loc_46499E$38060
-$loc_4649BB$38061:
+	jne	SHORT $loc_46499E$38061
+$loc_4649BB$38062:
 ; Line 2561
 	sub	edi, 800				; 00000320H
 ; Line 2562
 	sub	edx, 2
 ; Line 2563
-	jge	SHORT $loc_464969$38059
+	jge	SHORT $loc_464969$38060
 ; Line 2564
 	mov	edx, 2
-$loc_4649CB$38062:
+$loc_4649CB$38063:
 ; Line 2566
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2567
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2568
 	add	edi, edx
 ; Line 2569
@@ -5118,7 +5117,7 @@ $loc_4649CB$38062:
 ; Line 2571
 	shr	ecx, 2
 ; Line 2572
-	jae	SHORT $loc_464A00$38063
+	jae	SHORT $loc_464A00$38064
 ; Line 2573
 	mov	ax, WORD PTR [esi+2]
 ; Line 2574
@@ -5138,8 +5137,8 @@ $loc_4649CB$38062:
 ; Line 2581
 	test	ecx, ecx
 ; Line 2582
-	je	SHORT $loc_464A1D$38064
-$loc_464A00$38063:
+	je	SHORT $loc_464A1D$38065
+$loc_464A00$38064:
 ; Line 2584
 	mov	eax, DWORD PTR [esi]
 ; Line 2585
@@ -5167,8 +5166,8 @@ $loc_464A00$38063:
 ; Line 2596
 	dec	ecx
 ; Line 2597
-	jne	SHORT $loc_464A00$38063
-$loc_464A1D$38064:
+	jne	SHORT $loc_464A00$38064
+$loc_464A1D$38065:
 ; Line 2599
 	sub	edi, 800				; 00000320H
 ; Line 2600
@@ -5176,19 +5175,19 @@ $loc_464A1D$38064:
 ; Line 2601
 	cmp	edx, 32					; 00000020H
 ; Line 2602
-	jne	SHORT $loc_4649CB$38062
+	jne	SHORT $loc_4649CB$38063
 ; Line 2603
-	jmp	$loc_4652C1$38048
-$loc_464A30$38030:
+	jmp	$loc_4652C1$38049
+$loc_464A30$38031:
 ; Line 2605
 	push	ebp
 ; Line 2606
 	mov	edx, 30					; 0000001eH
-$loc_464A36$38065:
+$loc_464A36$38066:
 ; Line 2608
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2609
-	jb	$loc_464AF8$38066
+	jb	$loc_464AF8$38067
 ; Line 2610
 	mov	ecx, 32					; 00000020H
 ; Line 2611
@@ -5198,8 +5197,8 @@ $loc_464A36$38065:
 ; Line 2613
 	shr	ecx, 2
 ; Line 2614
-	je	SHORT $loc_464A6D$38067
-$loc_464A50$38068:
+	je	SHORT $loc_464A6D$38068
+$loc_464A50$38069:
 ; Line 2616
 	mov	eax, DWORD PTR [esi]
 ; Line 2617
@@ -5227,12 +5226,12 @@ $loc_464A50$38068:
 ; Line 2628
 	dec	ecx
 ; Line 2629
-	jne	SHORT $loc_464A50$38068
-$loc_464A6D$38067:
+	jne	SHORT $loc_464A50$38069
+$loc_464A6D$38068:
 ; Line 2631
 	and	ebp, 2
 ; Line 2632
-	je	SHORT $loc_464A88$38069
+	je	SHORT $loc_464A88$38070
 ; Line 2633
 	mov	ax, WORD PTR [esi]
 ; Line 2634
@@ -5249,7 +5248,7 @@ $loc_464A6D$38067:
 	mov	WORD PTR [edi], ax
 ; Line 2640
 	add	edi, 2
-$loc_464A88$38069:
+$loc_464A88$38070:
 ; Line 2642
 	sub	edi, 800				; 00000320H
 ; Line 2643
@@ -5257,14 +5256,14 @@ $loc_464A88$38069:
 ; Line 2644
 	sub	edx, 2
 ; Line 2645
-	jge	SHORT $loc_464A36$38065
+	jge	SHORT $loc_464A36$38066
 ; Line 2646
 	mov	edx, 2
-$loc_464A9A$38070:
+$loc_464A9A$38071:
 ; Line 2648
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2649
-	jb	SHORT $loc_464AF8$38066
+	jb	SHORT $loc_464AF8$38067
 ; Line 2650
 	mov	ecx, 32					; 00000020H
 ; Line 2651
@@ -5274,8 +5273,8 @@ $loc_464A9A$38070:
 ; Line 2653
 	shr	ecx, 2
 ; Line 2654
-	je	SHORT $loc_464ACD$38071
-$loc_464AB0$38072:
+	je	SHORT $loc_464ACD$38072
+$loc_464AB0$38073:
 ; Line 2656
 	mov	eax, DWORD PTR [esi]
 ; Line 2657
@@ -5303,12 +5302,12 @@ $loc_464AB0$38072:
 ; Line 2668
 	dec	ecx
 ; Line 2669
-	jne	SHORT $loc_464AB0$38072
-$loc_464ACD$38071:
+	jne	SHORT $loc_464AB0$38073
+$loc_464ACD$38072:
 ; Line 2671
 	and	ebp, 2
 ; Line 2672
-	je	SHORT $loc_464AE8$38073
+	je	SHORT $loc_464AE8$38074
 ; Line 2673
 	mov	ax, WORD PTR [esi]
 ; Line 2674
@@ -5325,7 +5324,7 @@ $loc_464ACD$38071:
 	mov	WORD PTR [edi], ax
 ; Line 2680
 	add	edi, 2
-$loc_464AE8$38073:
+$loc_464AE8$38074:
 ; Line 2682
 	sub	edi, 800				; 00000320H
 ; Line 2683
@@ -5335,20 +5334,20 @@ $loc_464AE8$38073:
 ; Line 2685
 	cmp	edx, 32					; 00000020H
 ; Line 2686
-	jne	SHORT $loc_464A9A$38070
-$loc_464AF8$38066:
+	jne	SHORT $loc_464A9A$38071
+$loc_464AF8$38067:
 ; Line 2688
 	pop	ebp
 ; Line 2689
-	jmp	$loc_4652C1$38048
-$loc_464AFE$38031:
+	jmp	$loc_4652C1$38049
+$loc_464AFE$38032:
 ; Line 2691
 	mov	edx, 30					; 0000001eH
-$loc_464B03$38074:
+$loc_464B03$38075:
 ; Line 2693
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2694
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2695
 	add	edi, edx
 ; Line 2696
@@ -5358,7 +5357,7 @@ $loc_464B03$38074:
 ; Line 2698
 	shr	ecx, 2
 ; Line 2699
-	jae	SHORT $loc_464B38$38075
+	jae	SHORT $loc_464B38$38076
 ; Line 2700
 	mov	ax, WORD PTR [esi+2]
 ; Line 2701
@@ -5378,8 +5377,8 @@ $loc_464B03$38074:
 ; Line 2708
 	test	ecx, ecx
 ; Line 2709
-	je	SHORT $loc_464B55$38076
-$loc_464B38$38075:
+	je	SHORT $loc_464B55$38077
+$loc_464B38$38076:
 ; Line 2711
 	mov	eax, DWORD PTR [esi]
 ; Line 2712
@@ -5407,14 +5406,14 @@ $loc_464B38$38075:
 ; Line 2723
 	dec	ecx
 ; Line 2724
-	jne	SHORT $loc_464B38$38075
-$loc_464B55$38076:
+	jne	SHORT $loc_464B38$38076
+$loc_464B55$38077:
 ; Line 2726
 	sub	edi, 800				; 00000320H
 ; Line 2727
 	sub	edx, 2
 ; Line 2728
-	jge	SHORT $loc_464B03$38074
+	jge	SHORT $loc_464B03$38075
 ; Line 2729
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 2730
@@ -5423,11 +5422,11 @@ $loc_464B55$38076:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 2732
 	mov	edx, 16					; 00000010H
-$loc_464B72$38077:
+$loc_464B72$38078:
 ; Line 2734
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2735
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2736
 	push	edx
 ; Line 2737
@@ -5442,7 +5441,7 @@ $loc_464B72$38077:
 	and	eax, 2
 ; Line 2742
 	add	esi, eax
-$loc_464B92$38078:
+$loc_464B92$38079:
 ; Line 2744
 	mov	al, BYTE PTR [esi]
 ; Line 2745
@@ -5450,18 +5449,18 @@ $loc_464B92$38078:
 ; Line 2746
 	shl	edx, 1
 ; Line 2747
-	jae	SHORT $loc_464B9C$38079
+	jae	SHORT $loc_464B9C$38080
 ; Line 2748
 	xlat
 ; Line 2749
 	mov	BYTE PTR [edi], al
-$loc_464B9C$38079:
+$loc_464B9C$38080:
 ; Line 2751
 	inc	edi
 ; Line 2752
 	dec	ecx
 ; Line 2753
-	jne	SHORT $loc_464B92$38078
+	jne	SHORT $loc_464B92$38079
 ; Line 2754
 	pop	edx
 ; Line 2755
@@ -5475,19 +5474,19 @@ $loc_464B9C$38079:
 ; Line 2759
 	dec	edx
 ; Line 2760
-	jne	SHORT $loc_464B72$38077
+	jne	SHORT $loc_464B72$38078
 ; Line 2761
-	jmp	$loc_4652C1$38048
-$loc_464BBC$38032:
+	jmp	$loc_4652C1$38049
+$loc_464BBC$38033:
 ; Line 2763
 	push	ebp
 ; Line 2764
 	mov	edx, 30					; 0000001eH
-$loc_464BC2$38080:
+$loc_464BC2$38081:
 ; Line 2766
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2767
-	jb	$loc_464C74$38081
+	jb	$loc_464C74$38082
 ; Line 2768
 	mov	ecx, 32					; 00000020H
 ; Line 2769
@@ -5497,8 +5496,8 @@ $loc_464BC2$38080:
 ; Line 2771
 	shr	ecx, 2
 ; Line 2772
-	je	SHORT $loc_464BF9$38082
-$loc_464BDC$38083:
+	je	SHORT $loc_464BF9$38083
+$loc_464BDC$38084:
 ; Line 2774
 	mov	eax, DWORD PTR [esi]
 ; Line 2775
@@ -5526,12 +5525,12 @@ $loc_464BDC$38083:
 ; Line 2786
 	dec	ecx
 ; Line 2787
-	jne	SHORT $loc_464BDC$38083
-$loc_464BF9$38082:
+	jne	SHORT $loc_464BDC$38084
+$loc_464BF9$38083:
 ; Line 2789
 	and	ebp, 2
 ; Line 2790
-	je	SHORT $loc_464C14$38084
+	je	SHORT $loc_464C14$38085
 ; Line 2791
 	mov	ax, WORD PTR [esi]
 ; Line 2792
@@ -5548,7 +5547,7 @@ $loc_464BF9$38082:
 	mov	WORD PTR [edi], ax
 ; Line 2798
 	add	edi, 2
-$loc_464C14$38084:
+$loc_464C14$38085:
 ; Line 2800
 	sub	edi, 800				; 00000320H
 ; Line 2801
@@ -5556,7 +5555,7 @@ $loc_464C14$38084:
 ; Line 2802
 	sub	edx, 2
 ; Line 2803
-	jge	SHORT $loc_464BC2$38080
+	jge	SHORT $loc_464BC2$38081
 ; Line 2804
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 2805
@@ -5565,11 +5564,11 @@ $loc_464C14$38084:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 2807
 	mov	edx, 16					; 00000010H
-$loc_464C33$38085:
+$loc_464C33$38086:
 ; Line 2809
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2810
-	jb	SHORT $loc_464C74$38081
+	jb	SHORT $loc_464C74$38082
 ; Line 2811
 	push	edx
 ; Line 2812
@@ -5578,7 +5577,7 @@ $loc_464C33$38085:
 	mov	edx, DWORD PTR [eax]
 ; Line 2814
 	mov	ecx, 32					; 00000020H
-$loc_464C48$38086:
+$loc_464C48$38087:
 ; Line 2816
 	mov	al, BYTE PTR [esi]
 ; Line 2817
@@ -5586,18 +5585,18 @@ $loc_464C48$38086:
 ; Line 2818
 	shl	edx, 1
 ; Line 2819
-	jae	SHORT $loc_464C52$38087
+	jae	SHORT $loc_464C52$38088
 ; Line 2820
 	xlat
 ; Line 2821
 	mov	BYTE PTR [edi], al
-$loc_464C52$38087:
+$loc_464C52$38088:
 ; Line 2823
 	inc	edi
 ; Line 2824
 	dec	ecx
 ; Line 2825
-	jne	SHORT $loc_464C48$38086
+	jne	SHORT $loc_464C48$38087
 ; Line 2826
 	mov	ebp, esi
 ; Line 2827
@@ -5617,20 +5616,20 @@ $loc_464C52$38087:
 ; Line 2834
 	dec	edx
 ; Line 2835
-	jne	SHORT $loc_464C33$38085
-$loc_464C74$38081:
+	jne	SHORT $loc_464C33$38086
+$loc_464C74$38082:
 ; Line 2837
 	pop	ebp
 ; Line 2838
-	jmp	$loc_4652C1$38048
-$loc_464C7A$38034:
+	jmp	$loc_4652C1$38049
+$loc_464C7A$38035:
 ; Line 2840
 	mov	edx, 32					; 00000020H
-$loc_464C7F$38088:
+$loc_464C7F$38089:
 ; Line 2842
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2843
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2844
 	push	edx
 ; Line 2845
@@ -5639,7 +5638,7 @@ $loc_464C7F$38088:
 	mov	edx, DWORD PTR [eax]
 ; Line 2847
 	mov	ecx, 32					; 00000020H
-$loc_464C98$38089:
+$loc_464C98$38090:
 ; Line 2849
 	mov	al, BYTE PTR [esi]
 ; Line 2850
@@ -5647,16 +5646,16 @@ $loc_464C98$38089:
 ; Line 2851
 	shl	edx, 1
 ; Line 2852
-	jae	SHORT $loc_464CA1$38090
+	jae	SHORT $loc_464CA1$38091
 ; Line 2853
 	mov	BYTE PTR [edi], al
-$loc_464CA1$38090:
+$loc_464CA1$38091:
 ; Line 2855
 	inc	edi
 ; Line 2856
 	dec	ecx
 ; Line 2857
-	jne	SHORT $loc_464C98$38089
+	jne	SHORT $loc_464C98$38090
 ; Line 2858
 	pop	edx
 ; Line 2859
@@ -5670,13 +5669,13 @@ $loc_464CA1$38090:
 ; Line 2863
 	dec	edx
 ; Line 2864
-	jne	SHORT $loc_464C7F$38088
+	jne	SHORT $loc_464C7F$38089
 ; Line 2865
-	jmp	$loc_4652C1$38048
-$loc_464CC1$38035:
+	jmp	$loc_4652C1$38049
+$loc_464CC1$38036:
 ; Line 2867
 	mov	ecx, 32					; 00000020H
-$loc_464CC6$38091:
+$loc_464CC6$38092:
 ; Line 2869
 	push	ecx
 ; Line 2870
@@ -5687,7 +5686,7 @@ $loc_464CC6$38091:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 2873
 	mov	edx, 32					; 00000020H
-$loc_464CD8$38092:
+$loc_464CD8$38093:
 ; Line 2875
 	xor	eax, eax
 ; Line 2876
@@ -5697,20 +5696,20 @@ $loc_464CD8$38092:
 ; Line 2878
 	test	al, al
 ; Line 2879
-	js	SHORT $loc_464D12$38093
+	js	SHORT $loc_464D12$38094
 ; Line 2880
 	sub	edx, eax
 ; Line 2881
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2882
-	jb	$loc_4652C0$38054
+	jb	$loc_4652C0$38055
 ; Line 2883
 	push	edx
 ; Line 2884
 	mov	edx, DWORD PTR _gdwCurrentMask
 ; Line 2885
 	mov	ecx, eax
-$loc_464CF8$38094:
+$loc_464CF8$38095:
 ; Line 2887
 	mov	al, BYTE PTR [esi]
 ; Line 2888
@@ -5718,16 +5717,16 @@ $loc_464CF8$38094:
 ; Line 2889
 	shl	edx, 1
 ; Line 2890
-	jae	SHORT $loc_464D01$38095
+	jae	SHORT $loc_464D01$38096
 ; Line 2891
 	mov	BYTE PTR [edi], al
-$loc_464D01$38095:
+$loc_464D01$38096:
 ; Line 2893
 	inc	edi
 ; Line 2894
 	dec	ecx
 ; Line 2895
-	jne	SHORT $loc_464CF8$38094
+	jne	SHORT $loc_464CF8$38095
 ; Line 2896
 	mov	DWORD PTR _gdwCurrentMask, edx
 ; Line 2897
@@ -5735,10 +5734,10 @@ $loc_464D01$38095:
 ; Line 2898
 	test	edx, edx
 ; Line 2899
-	je	SHORT $loc_464D2F$38096
+	je	SHORT $loc_464D2F$38097
 ; Line 2900
-	jmp	SHORT $loc_464CD8$38092
-$loc_464D12$38093:
+	jmp	SHORT $loc_464CD8$38093
+$loc_464D12$38094:
 ; Line 2902
 	neg	al
 ; Line 2903
@@ -5748,19 +5747,19 @@ $loc_464D12$38093:
 ; Line 2905
 	and	ecx, 31					; 0000001fH
 ; Line 2906
-	je	SHORT $loc_464D2B$38097
+	je	SHORT $loc_464D2B$38098
 ; Line 2907
 	mov	ebx, DWORD PTR _gdwCurrentMask
 ; Line 2908
 	shl	ebx, cl
 ; Line 2909
 	mov	DWORD PTR _gdwCurrentMask, ebx
-$loc_464D2B$38097:
+$loc_464D2B$38098:
 ; Line 2911
 	sub	edx, eax
 ; Line 2912
-	jne	SHORT $loc_464CD8$38092
-$loc_464D2F$38096:
+	jne	SHORT $loc_464CD8$38093
+$loc_464D2F$38097:
 ; Line 2914
 	pop	ecx
 ; Line 2915
@@ -5774,17 +5773,17 @@ $loc_464D2F$38096:
 ; Line 2919
 	dec	ecx
 ; Line 2920
-	jne	SHORT $loc_464CC6$38091
+	jne	SHORT $loc_464CC6$38092
 ; Line 2921
-	jmp	$loc_4652C1$38048
-$loc_464D4B$38036:
+	jmp	$loc_4652C1$38049
+$loc_464D4B$38037:
 ; Line 2923
 	mov	edx, 30					; 0000001eH
-$loc_464D50$38098:
+$loc_464D50$38099:
 ; Line 2925
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2926
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2927
 	add	edi, edx
 ; Line 2928
@@ -5794,7 +5793,7 @@ $loc_464D50$38098:
 ; Line 2930
 	shr	ecx, 2
 ; Line 2931
-	jae	SHORT $loc_464D7B$38099
+	jae	SHORT $loc_464D7B$38100
 ; Line 2932
 	mov	ax, WORD PTR [esi+2]
 ; Line 2933
@@ -5806,8 +5805,8 @@ $loc_464D50$38098:
 ; Line 2936
 	test	ecx, ecx
 ; Line 2937
-	je	SHORT $loc_464D88$38100
-$loc_464D7B$38099:
+	je	SHORT $loc_464D88$38101
+$loc_464D7B$38100:
 ; Line 2939
 	mov	eax, DWORD PTR [esi]
 ; Line 2940
@@ -5819,21 +5818,21 @@ $loc_464D7B$38099:
 ; Line 2943
 	lea	edi, DWORD PTR [edi+4]
 ; Line 2944
-	jne	SHORT $loc_464D7B$38099
-$loc_464D88$38100:
+	jne	SHORT $loc_464D7B$38100
+$loc_464D88$38101:
 ; Line 2946
 	sub	edi, 800				; 00000320H
 ; Line 2947
 	sub	edx, 2
 ; Line 2948
-	jge	SHORT $loc_464D50$38098
+	jge	SHORT $loc_464D50$38099
 ; Line 2949
 	mov	edx, 2
-$loc_464D98$38101:
+$loc_464D98$38102:
 ; Line 2951
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2952
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 2953
 	add	edi, edx
 ; Line 2954
@@ -5843,7 +5842,7 @@ $loc_464D98$38101:
 ; Line 2956
 	shr	ecx, 2
 ; Line 2957
-	jae	SHORT $loc_464DC3$38102
+	jae	SHORT $loc_464DC3$38103
 ; Line 2958
 	mov	ax, WORD PTR [esi+2]
 ; Line 2959
@@ -5855,8 +5854,8 @@ $loc_464D98$38101:
 ; Line 2962
 	lea	edi, DWORD PTR [edi+2]
 ; Line 2963
-	je	SHORT $loc_464DD0$38103
-$loc_464DC3$38102:
+	je	SHORT $loc_464DD0$38104
+$loc_464DC3$38103:
 ; Line 2965
 	mov	eax, DWORD PTR [esi]
 ; Line 2966
@@ -5868,8 +5867,8 @@ $loc_464DC3$38102:
 ; Line 2969
 	dec	ecx
 ; Line 2970
-	jne	SHORT $loc_464DC3$38102
-$loc_464DD0$38103:
+	jne	SHORT $loc_464DC3$38103
+$loc_464DD0$38104:
 ; Line 2972
 	sub	edi, 800				; 00000320H
 ; Line 2973
@@ -5877,19 +5876,19 @@ $loc_464DD0$38103:
 ; Line 2974
 	cmp	edx, 32					; 00000020H
 ; Line 2975
-	jne	SHORT $loc_464D98$38101
+	jne	SHORT $loc_464D98$38102
 ; Line 2976
-	jmp	$loc_4652C1$38048
-$loc_464DE3$38037:
+	jmp	$loc_4652C1$38049
+$loc_464DE3$38038:
 ; Line 2978
 	push	ebp
 ; Line 2979
 	mov	edx, 30					; 0000001eH
-$loc_464DE9$38104:
+$loc_464DE9$38105:
 ; Line 2981
 	cmp	edi, DWORD PTR _glClipY
 ; Line 2982
-	jb	$loc_464E77$38105
+	jb	$loc_464E77$38106
 ; Line 2983
 	mov	ecx, 32					; 00000020H
 ; Line 2984
@@ -5899,8 +5898,8 @@ $loc_464DE9$38104:
 ; Line 2986
 	shr	ecx, 2
 ; Line 2987
-	je	SHORT $loc_464E10$38106
-$loc_464E03$38107:
+	je	SHORT $loc_464E10$38107
+$loc_464E03$38108:
 ; Line 2989
 	mov	eax, DWORD PTR [esi]
 ; Line 2990
@@ -5912,12 +5911,12 @@ $loc_464E03$38107:
 ; Line 2993
 	dec	ecx
 ; Line 2994
-	jne	SHORT $loc_464E03$38107
-$loc_464E10$38106:
+	jne	SHORT $loc_464E03$38108
+$loc_464E10$38107:
 ; Line 2996
 	and	ebp, 2
 ; Line 2997
-	je	SHORT $loc_464E21$38108
+	je	SHORT $loc_464E21$38109
 ; Line 2998
 	mov	ax, WORD PTR [esi]
 ; Line 2999
@@ -5926,7 +5925,7 @@ $loc_464E10$38106:
 	mov	WORD PTR [edi], ax
 ; Line 3001
 	add	edi, 2
-$loc_464E21$38108:
+$loc_464E21$38109:
 ; Line 3003
 	sub	edi, 800				; 00000320H
 ; Line 3004
@@ -5934,14 +5933,14 @@ $loc_464E21$38108:
 ; Line 3005
 	sub	edx, 2
 ; Line 3006
-	jge	SHORT $loc_464DE9$38104
+	jge	SHORT $loc_464DE9$38105
 ; Line 3007
 	mov	edx, 2
-$loc_464E33$38109:
+$loc_464E33$38110:
 ; Line 3009
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3010
-	jb	SHORT $loc_464E77$38105
+	jb	SHORT $loc_464E77$38106
 ; Line 3011
 	mov	ecx, 32					; 00000020H
 ; Line 3012
@@ -5951,8 +5950,8 @@ $loc_464E33$38109:
 ; Line 3014
 	shr	ecx, 2
 ; Line 3015
-	je	SHORT $loc_464E56$38110
-$loc_464E49$38111:
+	je	SHORT $loc_464E56$38111
+$loc_464E49$38112:
 ; Line 3017
 	mov	eax, DWORD PTR [esi]
 ; Line 3018
@@ -5964,12 +5963,12 @@ $loc_464E49$38111:
 ; Line 3021
 	dec	ecx
 ; Line 3022
-	jne	SHORT $loc_464E49$38111
-$loc_464E56$38110:
+	jne	SHORT $loc_464E49$38112
+$loc_464E56$38111:
 ; Line 3024
 	and	ebp, 2
 ; Line 3025
-	je	SHORT $loc_464E67$38112
+	je	SHORT $loc_464E67$38113
 ; Line 3026
 	mov	ax, WORD PTR [esi]
 ; Line 3027
@@ -5978,7 +5977,7 @@ $loc_464E56$38110:
 	mov	WORD PTR [edi], ax
 ; Line 3029
 	add	edi, 2
-$loc_464E67$38112:
+$loc_464E67$38113:
 ; Line 3031
 	sub	edi, 800				; 00000320H
 ; Line 3032
@@ -5988,20 +5987,20 @@ $loc_464E67$38112:
 ; Line 3034
 	cmp	edx, 32					; 00000020H
 ; Line 3035
-	jne	SHORT $loc_464E33$38109
-$loc_464E77$38105:
+	jne	SHORT $loc_464E33$38110
+$loc_464E77$38106:
 ; Line 3037
 	pop	ebp
 ; Line 3038
-	jmp	$loc_4652C1$38048
-$loc_464E7D$38038:
+	jmp	$loc_4652C1$38049
+$loc_464E7D$38039:
 ; Line 3040
 	mov	edx, 30					; 0000001eH
-$loc_464E82$38113:
+$loc_464E82$38114:
 ; Line 3042
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3043
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3044
 	add	edi, edx
 ; Line 3045
@@ -6011,7 +6010,7 @@ $loc_464E82$38113:
 ; Line 3047
 	shr	ecx, 2
 ; Line 3048
-	jae	SHORT $loc_464EAD$38114
+	jae	SHORT $loc_464EAD$38115
 ; Line 3049
 	mov	ax, WORD PTR [esi+2]
 ; Line 3050
@@ -6023,8 +6022,8 @@ $loc_464E82$38113:
 ; Line 3053
 	test	ecx, ecx
 ; Line 3054
-	je	SHORT $loc_464EBA$38115
-$loc_464EAD$38114:
+	je	SHORT $loc_464EBA$38116
+$loc_464EAD$38115:
 ; Line 3056
 	mov	eax, DWORD PTR [esi]
 ; Line 3057
@@ -6036,14 +6035,14 @@ $loc_464EAD$38114:
 ; Line 3060
 	dec	ecx
 ; Line 3061
-	jne	SHORT $loc_464EAD$38114
-$loc_464EBA$38115:
+	jne	SHORT $loc_464EAD$38115
+$loc_464EBA$38116:
 ; Line 3063
 	sub	edi, 800				; 00000320H
 ; Line 3064
 	sub	edx, 2
 ; Line 3065
-	jge	SHORT $loc_464E82$38113
+	jge	SHORT $loc_464E82$38114
 ; Line 3066
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 3067
@@ -6052,11 +6051,11 @@ $loc_464EBA$38115:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 3069
 	mov	edx, 16					; 00000010H
-$loc_464ED7$38116:
+$loc_464ED7$38117:
 ; Line 3071
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3072
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3073
 	push	edx
 ; Line 3074
@@ -6065,7 +6064,7 @@ $loc_464ED7$38116:
 	mov	edx, DWORD PTR [eax]
 ; Line 3076
 	mov	ecx, 32					; 00000020H
-$loc_464EF0$38117:
+$loc_464EF0$38118:
 ; Line 3078
 	mov	al, BYTE PTR [esi]
 ; Line 3079
@@ -6073,16 +6072,16 @@ $loc_464EF0$38117:
 ; Line 3080
 	shl	edx, 1
 ; Line 3081
-	jae	SHORT $loc_464EF9$38118
+	jae	SHORT $loc_464EF9$38119
 ; Line 3082
 	mov	BYTE PTR [edi], al
-$loc_464EF9$38118:
+$loc_464EF9$38119:
 ; Line 3084
 	inc	edi
 ; Line 3085
 	dec	ecx
 ; Line 3086
-	jne	SHORT $loc_464EF0$38117
+	jne	SHORT $loc_464EF0$38118
 ; Line 3087
 	pop	edx
 ; Line 3088
@@ -6096,19 +6095,19 @@ $loc_464EF9$38118:
 ; Line 3092
 	dec	edx
 ; Line 3093
-	jne	SHORT $loc_464ED7$38116
+	jne	SHORT $loc_464ED7$38117
 ; Line 3094
-	jmp	$loc_4652C1$38048
-$loc_464F19$38039:
+	jmp	$loc_4652C1$38049
+$loc_464F19$38040:
 ; Line 3096
 	push	ebp
 ; Line 3097
 	mov	edx, 30					; 0000001eH
-$loc_464F1F$38119:
+$loc_464F1F$38120:
 ; Line 3099
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3100
-	jb	$loc_464FB6$38120
+	jb	$loc_464FB6$38121
 ; Line 3101
 	mov	ecx, 32					; 00000020H
 ; Line 3102
@@ -6118,8 +6117,8 @@ $loc_464F1F$38119:
 ; Line 3104
 	shr	ecx, 2
 ; Line 3105
-	je	SHORT $loc_464F46$38121
-$loc_464F39$38122:
+	je	SHORT $loc_464F46$38122
+$loc_464F39$38123:
 ; Line 3107
 	mov	eax, DWORD PTR [esi]
 ; Line 3108
@@ -6131,12 +6130,12 @@ $loc_464F39$38122:
 ; Line 3111
 	dec	ecx
 ; Line 3112
-	jne	SHORT $loc_464F39$38122
-$loc_464F46$38121:
+	jne	SHORT $loc_464F39$38123
+$loc_464F46$38122:
 ; Line 3114
 	and	ebp, 2
 ; Line 3115
-	je	SHORT $loc_464F57$38123
+	je	SHORT $loc_464F57$38124
 ; Line 3116
 	mov	ax, WORD PTR [esi]
 ; Line 3117
@@ -6145,7 +6144,7 @@ $loc_464F46$38121:
 	mov	WORD PTR [edi], ax
 ; Line 3119
 	add	edi, 2
-$loc_464F57$38123:
+$loc_464F57$38124:
 ; Line 3121
 	sub	edi, 800				; 00000320H
 ; Line 3122
@@ -6153,7 +6152,7 @@ $loc_464F57$38123:
 ; Line 3123
 	sub	edx, 2
 ; Line 3124
-	jge	SHORT $loc_464F1F$38119
+	jge	SHORT $loc_464F1F$38120
 ; Line 3125
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 3126
@@ -6162,11 +6161,11 @@ $loc_464F57$38123:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 3128
 	mov	edx, 16					; 00000010H
-$loc_464F76$38124:
+$loc_464F76$38125:
 ; Line 3130
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3131
-	jb	SHORT $loc_464FB6$38120
+	jb	SHORT $loc_464FB6$38121
 ; Line 3132
 	push	edx
 ; Line 3133
@@ -6175,7 +6174,7 @@ $loc_464F76$38124:
 	mov	edx, DWORD PTR [eax]
 ; Line 3135
 	mov	ecx, 32					; 00000020H
-$loc_464F8B$38125:
+$loc_464F8B$38126:
 ; Line 3137
 	mov	al, BYTE PTR [esi]
 ; Line 3138
@@ -6183,16 +6182,16 @@ $loc_464F8B$38125:
 ; Line 3139
 	shl	edx, 1
 ; Line 3140
-	jae	SHORT $loc_464F94$38126
+	jae	SHORT $loc_464F94$38127
 ; Line 3141
 	mov	BYTE PTR [edi], al
-$loc_464F94$38126:
+$loc_464F94$38127:
 ; Line 3143
 	inc	edi
 ; Line 3144
 	dec	ecx
 ; Line 3145
-	jne	SHORT $loc_464F8B$38125
+	jne	SHORT $loc_464F8B$38126
 ; Line 3146
 	mov	ebp, esi
 ; Line 3147
@@ -6212,20 +6211,20 @@ $loc_464F94$38126:
 ; Line 3154
 	dec	edx
 ; Line 3155
-	jne	SHORT $loc_464F76$38124
-$loc_464FB6$38120:
+	jne	SHORT $loc_464F76$38125
+$loc_464FB6$38121:
 ; Line 3157
 	pop	ebp
 ; Line 3158
-	jmp	$loc_4652C1$38048
-$loc_464FBC$38027:
+	jmp	$loc_4652C1$38049
+$loc_464FBC$38028:
 ; Line 3160
 	mov	edx, 32					; 00000020H
-$loc_464FC1$38127:
+$loc_464FC1$38128:
 ; Line 3162
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3163
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3164
 	push	edx
 ; Line 3165
@@ -6236,20 +6235,20 @@ $loc_464FC1$38127:
 	xor	eax, eax
 ; Line 3168
 	mov	ecx, 32					; 00000020H
-$loc_464FDC$38128:
+$loc_464FDC$38129:
 ; Line 3170
 	shl	edx, 1
 ; Line 3171
-	jae	SHORT $loc_464FE2$38129
+	jae	SHORT $loc_464FE2$38130
 ; Line 3172
 	mov	BYTE PTR [edi], al
-$loc_464FE2$38129:
+$loc_464FE2$38130:
 ; Line 3174
 	inc	edi
 ; Line 3175
 	dec	ecx
 ; Line 3176
-	jne	SHORT $loc_464FDC$38128
+	jne	SHORT $loc_464FDC$38129
 ; Line 3177
 	pop	edx
 ; Line 3178
@@ -6263,13 +6262,13 @@ $loc_464FE2$38129:
 ; Line 3182
 	dec	edx
 ; Line 3183
-	jne	SHORT $loc_464FC1$38127
+	jne	SHORT $loc_464FC1$38128
 ; Line 3184
-	jmp	$loc_4652C1$38048
-$loc_465002$38042:
+	jmp	$loc_4652C1$38049
+$loc_465002$38043:
 ; Line 3186
 	mov	ecx, 32					; 00000020H
-$loc_465007$38130:
+$loc_465007$38131:
 ; Line 3188
 	push	ecx
 ; Line 3189
@@ -6280,7 +6279,7 @@ $loc_465007$38130:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 3192
 	mov	edx, 32					; 00000020H
-$loc_465019$38131:
+$loc_465019$38132:
 ; Line 3194
 	xor	eax, eax
 ; Line 3195
@@ -6290,13 +6289,13 @@ $loc_465019$38131:
 ; Line 3197
 	test	al, al
 ; Line 3198
-	js	SHORT $loc_465054$38132
+	js	SHORT $loc_465054$38133
 ; Line 3199
 	sub	edx, eax
 ; Line 3200
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3201
-	jb	$loc_4652C0$38054
+	jb	$loc_4652C0$38055
 ; Line 3202
 	push	edx
 ; Line 3203
@@ -6307,20 +6306,20 @@ $loc_465019$38131:
 	add	esi, ecx
 ; Line 3206
 	xor	eax, eax
-$loc_46503D$38133:
+$loc_46503D$38134:
 ; Line 3208
 	shl	edx, 1
 ; Line 3209
-	jae	SHORT $loc_465043$38134
+	jae	SHORT $loc_465043$38135
 ; Line 3210
 	mov	BYTE PTR [edi], al
-$loc_465043$38134:
+$loc_465043$38135:
 ; Line 3212
 	inc	edi
 ; Line 3213
 	dec	ecx
 ; Line 3214
-	jne	SHORT $loc_46503D$38133
+	jne	SHORT $loc_46503D$38134
 ; Line 3215
 	mov	DWORD PTR _gdwCurrentMask, edx
 ; Line 3216
@@ -6328,10 +6327,10 @@ $loc_465043$38134:
 ; Line 3217
 	test	edx, edx
 ; Line 3218
-	je	SHORT $loc_465071$38135
+	je	SHORT $loc_465071$38136
 ; Line 3219
-	jmp	SHORT $loc_465019$38131
-$loc_465054$38132:
+	jmp	SHORT $loc_465019$38132
+$loc_465054$38133:
 ; Line 3221
 	neg	al
 ; Line 3222
@@ -6341,19 +6340,19 @@ $loc_465054$38132:
 ; Line 3224
 	and	ecx, 31					; 0000001fH
 ; Line 3225
-	je	SHORT $loc_46506D$38136
+	je	SHORT $loc_46506D$38137
 ; Line 3226
 	mov	ebx, DWORD PTR _gdwCurrentMask
 ; Line 3227
 	shl	ebx, cl
 ; Line 3228
 	mov	DWORD PTR _gdwCurrentMask, ebx
-$loc_46506D$38136:
+$loc_46506D$38137:
 ; Line 3230
 	sub	edx, eax
 ; Line 3231
-	jne	SHORT $loc_465019$38131
-$loc_465071$38135:
+	jne	SHORT $loc_465019$38132
+$loc_465071$38136:
 ; Line 3233
 	pop	ecx
 ; Line 3234
@@ -6367,19 +6366,19 @@ $loc_465071$38135:
 ; Line 3238
 	dec	ecx
 ; Line 3239
-	jne	$loc_465007$38130
+	jne	$loc_465007$38131
 ; Line 3240
-	jmp	$loc_4652C1$38048
-$loc_465091$38043:
+	jmp	$loc_4652C1$38049
+$loc_465091$38044:
 ; Line 3242
 	mov	edx, 30					; 0000001eH
 ; Line 3243
 	xor	eax, eax
-$loc_465098$38137:
+$loc_465098$38138:
 ; Line 3245
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3246
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3247
 	add	edi, edx
 ; Line 3248
@@ -6389,7 +6388,7 @@ $loc_465098$38137:
 ; Line 3250
 	shr	ecx, 2
 ; Line 3251
-	jae	SHORT $loc_4650BC$38138
+	jae	SHORT $loc_4650BC$38139
 ; Line 3252
 	mov	WORD PTR [edi], ax
 ; Line 3253
@@ -6397,8 +6396,8 @@ $loc_465098$38137:
 ; Line 3254
 	test	ecx, ecx
 ; Line 3255
-	je	SHORT $loc_4650C4$38139
-$loc_4650BC$38138:
+	je	SHORT $loc_4650C4$38140
+$loc_4650BC$38139:
 ; Line 3257
 	mov	DWORD PTR [edi], eax
 ; Line 3258
@@ -6406,26 +6405,26 @@ $loc_4650BC$38138:
 ; Line 3259
 	dec	ecx
 ; Line 3260
-	jne	SHORT $loc_4650BC$38138
-$loc_4650C4$38139:
+	jne	SHORT $loc_4650BC$38139
+$loc_4650C4$38140:
 ; Line 3262
 	sub	edi, 800				; 00000320H
 ; Line 3263
 	test	edx, edx
 ; Line 3264
-	je	SHORT $loc_4650D3$38140
+	je	SHORT $loc_4650D3$38141
 ; Line 3265
 	sub	edx, 2
 ; Line 3266
-	jmp	SHORT $loc_465098$38137
-$loc_4650D3$38140:
+	jmp	SHORT $loc_465098$38138
+$loc_4650D3$38141:
 ; Line 3268
 	mov	edx, 2
-$loc_4650D8$38141:
+$loc_4650D8$38142:
 ; Line 3270
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3271
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3272
 	add	edi, edx
 ; Line 3273
@@ -6435,7 +6434,7 @@ $loc_4650D8$38141:
 ; Line 3275
 	shr	ecx, 2
 ; Line 3276
-	jae	SHORT $loc_4650FC$38142
+	jae	SHORT $loc_4650FC$38143
 ; Line 3277
 	mov	WORD PTR [edi], ax
 ; Line 3278
@@ -6443,8 +6442,8 @@ $loc_4650D8$38141:
 ; Line 3279
 	test	ecx, ecx
 ; Line 3280
-	je	SHORT $loc_465104$38143
-$loc_4650FC$38142:
+	je	SHORT $loc_465104$38144
+$loc_4650FC$38143:
 ; Line 3282
 	mov	DWORD PTR [edi], eax
 ; Line 3283
@@ -6452,8 +6451,8 @@ $loc_4650FC$38142:
 ; Line 3284
 	dec	ecx
 ; Line 3285
-	jne	SHORT $loc_4650FC$38142
-$loc_465104$38143:
+	jne	SHORT $loc_4650FC$38143
+$loc_465104$38144:
 ; Line 3287
 	sub	edi, 800				; 00000320H
 ; Line 3288
@@ -6461,19 +6460,19 @@ $loc_465104$38143:
 ; Line 3289
 	cmp	edx, 32					; 00000020H
 ; Line 3290
-	jne	SHORT $loc_4650D8$38141
+	jne	SHORT $loc_4650D8$38142
 ; Line 3291
-	jmp	$loc_4652C1$38048
-$loc_465117$38044:
+	jmp	$loc_4652C1$38049
+$loc_465117$38045:
 ; Line 3293
 	mov	edx, 30					; 0000001eH
 ; Line 3294
 	xor	eax, eax
-$loc_46511E$38144:
+$loc_46511E$38145:
 ; Line 3296
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3297
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3298
 	mov	ecx, 32					; 00000020H
 ; Line 3299
@@ -6481,7 +6480,7 @@ $loc_46511E$38144:
 ; Line 3300
 	shr	ecx, 2
 ; Line 3301
-	jae	SHORT $loc_465140$38145
+	jae	SHORT $loc_465140$38146
 ; Line 3302
 	mov	WORD PTR [edi], ax
 ; Line 3303
@@ -6489,8 +6488,8 @@ $loc_46511E$38144:
 ; Line 3304
 	test	ecx, ecx
 ; Line 3305
-	je	SHORT $loc_465148$38146
-$loc_465140$38145:
+	je	SHORT $loc_465148$38147
+$loc_465140$38146:
 ; Line 3307
 	mov	DWORD PTR [edi], eax
 ; Line 3308
@@ -6498,28 +6497,28 @@ $loc_465140$38145:
 ; Line 3309
 	dec	ecx
 ; Line 3310
-	jne	SHORT $loc_465140$38145
-$loc_465148$38146:
+	jne	SHORT $loc_465140$38146
+$loc_465148$38147:
 ; Line 3312
 	sub	edi, 800				; 00000320H
 ; Line 3313
 	test	edx, edx
 ; Line 3314
-	je	SHORT $loc_465159$38147
+	je	SHORT $loc_465159$38148
 ; Line 3315
 	add	edi, edx
 ; Line 3316
 	sub	edx, 2
 ; Line 3317
-	jmp	SHORT $loc_46511E$38144
-$loc_465159$38147:
+	jmp	SHORT $loc_46511E$38145
+$loc_465159$38148:
 ; Line 3319
 	mov	edx, 2
-$loc_46515E$38148:
+$loc_46515E$38149:
 ; Line 3321
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3322
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3323
 	mov	ecx, 32					; 00000020H
 ; Line 3324
@@ -6527,7 +6526,7 @@ $loc_46515E$38148:
 ; Line 3325
 	shr	ecx, 2
 ; Line 3326
-	jae	SHORT $loc_465180$38149
+	jae	SHORT $loc_465180$38150
 ; Line 3327
 	mov	WORD PTR [edi], ax
 ; Line 3328
@@ -6535,8 +6534,8 @@ $loc_46515E$38148:
 ; Line 3329
 	test	ecx, ecx
 ; Line 3330
-	je	SHORT $loc_465188$38150
-$loc_465180$38149:
+	je	SHORT $loc_465188$38151
+$loc_465180$38150:
 ; Line 3332
 	mov	DWORD PTR [edi], eax
 ; Line 3333
@@ -6544,8 +6543,8 @@ $loc_465180$38149:
 ; Line 3334
 	dec	ecx
 ; Line 3335
-	jne	SHORT $loc_465180$38149
-$loc_465188$38150:
+	jne	SHORT $loc_465180$38150
+$loc_465188$38151:
 ; Line 3337
 	sub	edi, 800				; 00000320H
 ; Line 3338
@@ -6555,19 +6554,19 @@ $loc_465188$38150:
 ; Line 3340
 	cmp	edx, 32					; 00000020H
 ; Line 3341
-	jne	SHORT $loc_46515E$38148
+	jne	SHORT $loc_46515E$38149
 ; Line 3342
-	jmp	$loc_4652C1$38048
-$loc_46519D$38045:
+	jmp	$loc_4652C1$38049
+$loc_46519D$38046:
 ; Line 3344
 	mov	edx, 30					; 0000001eH
 ; Line 3345
 	xor	eax, eax
-$loc_4651A4$38151:
+$loc_4651A4$38152:
 ; Line 3347
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3348
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3349
 	add	edi, edx
 ; Line 3350
@@ -6577,7 +6576,7 @@ $loc_4651A4$38151:
 ; Line 3352
 	shr	ecx, 2
 ; Line 3353
-	jae	SHORT $loc_4651C8$38152
+	jae	SHORT $loc_4651C8$38153
 ; Line 3354
 	mov	WORD PTR [edi], ax
 ; Line 3355
@@ -6585,8 +6584,8 @@ $loc_4651A4$38151:
 ; Line 3356
 	test	ecx, ecx
 ; Line 3357
-	je	SHORT $loc_4651D0$38153
-$loc_4651C8$38152:
+	je	SHORT $loc_4651D0$38154
+$loc_4651C8$38153:
 ; Line 3359
 	mov	DWORD PTR [edi], eax
 ; Line 3360
@@ -6594,19 +6593,19 @@ $loc_4651C8$38152:
 ; Line 3361
 	dec	ecx
 ; Line 3362
-	jne	SHORT $loc_4651C8$38152
-$loc_4651D0$38153:
+	jne	SHORT $loc_4651C8$38153
+$loc_4651D0$38154:
 ; Line 3364
 	sub	edi, 800				; 00000320H
 ; Line 3365
 	test	edx, edx
 ; Line 3366
-	je	SHORT $loc_4651DF$38154
+	je	SHORT $loc_4651DF$38155
 ; Line 3367
 	sub	edx, 2
 ; Line 3368
-	jmp	SHORT $loc_4651A4$38151
-$loc_4651DF$38154:
+	jmp	SHORT $loc_4651A4$38152
+$loc_4651DF$38155:
 ; Line 3370
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 3371
@@ -6615,11 +6614,11 @@ $loc_4651DF$38154:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 3373
 	mov	edx, 16					; 00000010H
-$loc_4651F1$38155:
+$loc_4651F1$38156:
 ; Line 3375
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3376
-	jb	$loc_4652C1$38048
+	jb	$loc_4652C1$38049
 ; Line 3377
 	push	edx
 ; Line 3378
@@ -6630,20 +6629,20 @@ $loc_4651F1$38155:
 	xor	eax, eax
 ; Line 3381
 	mov	ecx, 32					; 00000020H
-$loc_46520C$38156:
+$loc_46520C$38157:
 ; Line 3383
 	shl	edx, 1
 ; Line 3384
-	jae	SHORT $loc_465212$38157
+	jae	SHORT $loc_465212$38158
 ; Line 3385
 	mov	BYTE PTR [edi], al
-$loc_465212$38157:
+$loc_465212$38158:
 ; Line 3387
 	inc	edi
 ; Line 3388
 	dec	ecx
 ; Line 3389
-	jne	SHORT $loc_46520C$38156
+	jne	SHORT $loc_46520C$38157
 ; Line 3390
 	pop	edx
 ; Line 3391
@@ -6657,15 +6656,15 @@ $loc_465212$38157:
 ; Line 3395
 	dec	edx
 ; Line 3396
-	jne	SHORT $loc_4651F1$38155
+	jne	SHORT $loc_4651F1$38156
 ; Line 3397
-	jmp	$loc_4652C1$38048
-$loc_465232$38046:
+	jmp	$loc_4652C1$38049
+$loc_465232$38047:
 ; Line 3399
 	mov	edx, 30					; 0000001eH
 ; Line 3400
 	xor	eax, eax
-$loc_465239$38158:
+$loc_465239$38159:
 ; Line 3402
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3403
@@ -6677,7 +6676,7 @@ $loc_465239$38158:
 ; Line 3406
 	shr	ecx, 2
 ; Line 3407
-	jae	SHORT $loc_46525B$38159
+	jae	SHORT $loc_46525B$38160
 ; Line 3408
 	mov	WORD PTR [edi], ax
 ; Line 3409
@@ -6685,8 +6684,8 @@ $loc_465239$38158:
 ; Line 3410
 	test	ecx, ecx
 ; Line 3411
-	je	SHORT $loc_465263$38160
-$loc_46525B$38159:
+	je	SHORT $loc_465263$38161
+$loc_46525B$38160:
 ; Line 3413
 	mov	DWORD PTR [edi], eax
 ; Line 3414
@@ -6694,21 +6693,21 @@ $loc_46525B$38159:
 ; Line 3415
 	dec	ecx
 ; Line 3416
-	jne	SHORT $loc_46525B$38159
-$loc_465263$38160:
+	jne	SHORT $loc_46525B$38160
+$loc_465263$38161:
 ; Line 3418
 	sub	edi, 800				; 00000320H
 ; Line 3419
 	test	edx, edx
 ; Line 3420
-	je	SHORT $loc_465274$38161
+	je	SHORT $loc_465274$38162
 ; Line 3421
 	add	edi, edx
 ; Line 3422
 	sub	edx, 2
 ; Line 3423
-	jmp	SHORT $loc_465239$38158
-$loc_465274$38161:
+	jmp	SHORT $loc_465239$38159
+$loc_465274$38162:
 ; Line 3425
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 3426
@@ -6717,11 +6716,11 @@ $loc_465274$38161:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 3428
 	mov	edx, 16					; 00000010H
-$loc_465286$38162:
+$loc_465286$38163:
 ; Line 3430
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3431
-	jb	SHORT $loc_4652C1$38048
+	jb	SHORT $loc_4652C1$38049
 ; Line 3432
 	push	edx
 ; Line 3433
@@ -6732,20 +6731,20 @@ $loc_465286$38162:
 	xor	eax, eax
 ; Line 3436
 	mov	ecx, 32					; 00000020H
-$loc_46529D$38163:
+$loc_46529D$38164:
 ; Line 3438
 	shl	edx, 1
 ; Line 3439
-	jae	SHORT $loc_4652A3$38164
+	jae	SHORT $loc_4652A3$38165
 ; Line 3440
 	mov	BYTE PTR [edi], al
-$loc_4652A3$38164:
+$loc_4652A3$38165:
 ; Line 3442
 	inc	edi
 ; Line 3443
 	dec	ecx
 ; Line 3444
-	jne	SHORT $loc_46529D$38163
+	jne	SHORT $loc_46529D$38164
 ; Line 3445
 	pop	edx
 ; Line 3446
@@ -6759,13 +6758,13 @@ $loc_4652A3$38164:
 ; Line 3450
 	dec	edx
 ; Line 3451
-	jne	SHORT $loc_465286$38162
+	jne	SHORT $loc_465286$38163
 ; Line 3452
-	jmp	SHORT $loc_4652C1$38048
-$loc_4652C0$38054:
+	jmp	SHORT $loc_4652C1$38049
+$loc_4652C0$38055:
 ; Line 3454
 	pop	eax
-$loc_4652C1$38048:
+$loc_4652C1$38049:
 ; Line 3456
 	pop	esi
 ; Line 3457
@@ -6799,22 +6798,22 @@ _TEXT	SEGMENT
 ; Line 3471
 	test	edx, edx
 ; Line 3472
-	je	$loc_465372$38167
+	je	$loc_465372$38168
 ; Line 3473
 	mov	dl, BYTE PTR _gbPartialTrans
 ; Line 3474
 	cmp	dl, 0
 ; Line 3475
-	jne	SHORT $loc_4652EC$38168
+	jne	SHORT $loc_4652EC$38169
 ; Line 3476
 	call	?drawTopArchesUpperScreen@@YIXPAE@Z	; drawTopArchesUpperScreen
 ; Line 3477
-	jmp	$loc_465F33$38169
-$loc_4652EC$38168:
+	jmp	$loc_465F33$38170
+$loc_4652EC$38169:
 ; Line 3479
 	cmp	dl, 1
 ; Line 3480
-	jne	SHORT $loc_46532F$38170
+	jne	SHORT $loc_46532F$38171
 ; Line 3481
 	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 3482
@@ -6822,14 +6821,14 @@ $loc_4652EC$38168:
 ; Line 3483
 	cmp	al, 1
 ; Line 3484
-	je	SHORT $loc_465307$38171
+	je	SHORT $loc_465307$38172
 ; Line 3485
 	cmp	al, 3
 ; Line 3486
-	je	SHORT $loc_465307$38171
+	je	SHORT $loc_465307$38172
 ; Line 3487
-	jmp	SHORT $loc_46532F$38170
-$loc_465307$38171:
+	jmp	SHORT $loc_46532F$38171
+$loc_465307$38172:
 ; Line 3489
 	mov	edx, OFFSET FLAT:_LeftMask
 ; Line 3490
@@ -6837,11 +6836,11 @@ $loc_465307$38171:
 ; Line 3491
 	call	?drawBottomArchesUpperScreen@@YIXPAEPAK@Z ; drawBottomArchesUpperScreen
 ; Line 3492
-	jmp	$loc_465F33$38169
+	jmp	$loc_465F33$38170
 ; Line 3493
 	cmp	al, 4
 ; Line 3494
-	jne	SHORT $loc_46532F$38170
+	jne	SHORT $loc_46532F$38171
 ; Line 3495
 	mov	edx, OFFSET FLAT:_RightMask
 ; Line 3496
@@ -6849,12 +6848,12 @@ $loc_465307$38171:
 ; Line 3497
 	call	?drawBottomArchesUpperScreen@@YIXPAEPAK@Z ; drawBottomArchesUpperScreen
 ; Line 3498
-	jmp	$loc_465F33$38169
-$loc_46532F$38170:
+	jmp	$loc_465F33$38170
+$loc_46532F$38171:
 ; Line 3500
 	cmp	dl, 2
 ; Line 3501
-	jne	SHORT $loc_465372$38167
+	jne	SHORT $loc_465372$38168
 ; Line 3502
 	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 3503
@@ -6862,14 +6861,14 @@ $loc_46532F$38170:
 ; Line 3504
 	cmp	al, 2
 ; Line 3505
-	je	SHORT $loc_46534A$38172
+	je	SHORT $loc_46534A$38173
 ; Line 3506
 	cmp	al, 3
 ; Line 3507
-	je	SHORT $loc_46534A$38172
+	je	SHORT $loc_46534A$38173
 ; Line 3508
-	jmp	SHORT $loc_465372$38167
-$loc_46534A$38172:
+	jmp	SHORT $loc_465372$38168
+$loc_46534A$38173:
 ; Line 3510
 	mov	edx, OFFSET FLAT:_RightMask
 ; Line 3511
@@ -6877,11 +6876,11 @@ $loc_46534A$38172:
 ; Line 3512
 	call	?drawBottomArchesUpperScreen@@YIXPAEPAK@Z ; drawBottomArchesUpperScreen
 ; Line 3513
-	jmp	$loc_465F33$38169
+	jmp	$loc_465F33$38170
 ; Line 3514
 	cmp	al, 4
 ; Line 3515
-	jne	SHORT $loc_465372$38167
+	jne	SHORT $loc_465372$38168
 ; Line 3516
 	mov	edx, OFFSET FLAT:_LeftMask
 ; Line 3517
@@ -6889,8 +6888,8 @@ $loc_46534A$38172:
 ; Line 3518
 	call	?drawBottomArchesUpperScreen@@YIXPAEPAK@Z ; drawBottomArchesUpperScreen
 ; Line 3519
-	jmp	$loc_465F33$38169
-$loc_465372$38167:
+	jmp	$loc_465F33$38170
+$loc_465372$38168:
 ; Line 3521
 	mov	edi, OFFSET FLAT:_SpeedFrameTbl
 ; Line 3522
@@ -6902,17 +6901,17 @@ $loc_465372$38167:
 ; Line 3525
 	test	al, al
 ; Line 3526
-	je	$loc_465474$38173
+	je	$loc_465474$38174
 ; Line 3527
 	cmp	al, BYTE PTR _lightmax
 ; Line 3528
-	je	$loc_4654D4$38174
+	je	$loc_4654D4$38175
 ; Line 3529
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 3530
 	and	eax, 32768				; 00008000H
 ; Line 3531
-	jne	SHORT $loc_46540A$38175
+	jne	SHORT $loc_46540A$38176
 ; Line 3532
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 3533
@@ -6940,26 +6939,26 @@ $loc_465372$38167:
 ; Line 3544
 	and	eax, 15					; 0000000fH
 ; Line 3545
-	je	$loc_46555D$38176
+	je	$loc_46555D$38177
 ; Line 3546
 	cmp	ax, 1
 ; Line 3547
-	je	$loc_4655B5$38177
+	je	$loc_4655B5$38178
 ; Line 3548
 	cmp	ax, 2
 ; Line 3549
-	je	$loc_465663$38178
+	je	$loc_465663$38179
 ; Line 3550
 	cmp	ax, 3
 ; Line 3551
-	je	$loc_465765$38179
+	je	$loc_465765$38180
 ; Line 3552
 	cmp	ax, 4
 ; Line 3553
-	je	$loc_465867$38180
+	je	$loc_465867$38181
 ; Line 3554
-	jmp	$loc_465939$38181
-$loc_46540A$38175:
+	jmp	$loc_465939$38182
+$loc_46540A$38176:
 ; Line 3556
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 3557
@@ -6986,36 +6985,36 @@ $loc_46540A$38175:
 	shr	eax, 12					; 0000000cH
 ; Line 3568
 	and	eax, 15					; 0000000fH
-$loc_46543D$38182:
+$loc_46543D$38183:
 ; Line 3570
 	cmp	ax, 8
 ; Line 3571
-	je	$loc_465A0B$38183
+	je	$loc_465A0B$38184
 ; Line 3572
 	cmp	ax, 9
 ; Line 3573
-	je	$loc_465A3C$38184
+	je	$loc_465A3C$38185
 ; Line 3574
 	cmp	ax, 10					; 0000000aH
 ; Line 3575
-	je	$loc_465AA8$38185
+	je	$loc_465AA8$38186
 ; Line 3576
 	cmp	ax, 11					; 0000000bH
 ; Line 3577
-	je	$loc_465B40$38186
+	je	$loc_465B40$38187
 ; Line 3578
 	cmp	ax, 12					; 0000000cH
 ; Line 3579
-	je	$loc_465BDA$38187
+	je	$loc_465BDA$38188
 ; Line 3580
-	jmp	$loc_465C53$38188
-$loc_465474$38173:
+	jmp	$loc_465C53$38189
+$loc_465474$38174:
 ; Line 3582
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 3583
 	and	eax, 32768				; 00008000H
 ; Line 3584
-	je	SHORT $loc_4654A6$38189
+	je	SHORT $loc_4654A6$38190
 ; Line 3585
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 3586
@@ -7034,7 +7033,7 @@ $loc_465474$38173:
 	add	eax, DWORD PTR [esi]
 ; Line 3593
 	mov	DWORD PTR _gdwPNum, eax
-$loc_4654A6$38189:
+$loc_4654A6$38190:
 ; Line 3595
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 3596
@@ -7060,14 +7059,14 @@ $loc_4654A6$38189:
 ; Line 3606
 	add	eax, 8
 ; Line 3607
-	jmp	$loc_46543D$38182
-$loc_4654D4$38174:
+	jmp	$loc_46543D$38183
+$loc_4654D4$38175:
 ; Line 3609
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 3610
 	and	eax, 32768				; 00008000H
 ; Line 3611
-	je	SHORT $loc_465506$38190
+	je	SHORT $loc_465506$38191
 ; Line 3612
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 3613
@@ -7086,7 +7085,7 @@ $loc_4654D4$38174:
 	add	eax, DWORD PTR [esi]
 ; Line 3620
 	mov	DWORD PTR _gdwPNum, eax
-$loc_465506$38190:
+$loc_465506$38191:
 ; Line 3622
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 3623
@@ -7108,38 +7107,38 @@ $loc_465506$38190:
 ; Line 3631
 	and	eax, 7
 ; Line 3632
-	je	$loc_465CC8$38191
+	je	$loc_465CC8$38192
 ; Line 3633
 	cmp	ax, 1
 ; Line 3634
-	je	$loc_465CF6$38192
+	je	$loc_465CF6$38193
 ; Line 3635
 	cmp	ax, 2
 ; Line 3636
-	je	$loc_465D58$38193
+	je	$loc_465D58$38194
 ; Line 3637
 	cmp	ax, 3
 ; Line 3638
-	je	$loc_465DDE$38194
+	je	$loc_465DDE$38195
 ; Line 3639
 	cmp	ax, 4
 ; Line 3640
-	je	$loc_465E64$38195
+	je	$loc_465E64$38196
 ; Line 3641
-	jmp	$loc_465ECF$38196
-$loc_46555D$38176:
+	jmp	$loc_465ECF$38197
+$loc_46555D$38177:
 ; Line 3643
 	mov	edx, 32					; 00000020H
-$loc_465562$38197:
+$loc_465562$38198:
 ; Line 3645
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3646
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 3647
 	mov	ecx, 32					; 00000020H
 ; Line 3648
 	push	edx
-$loc_465574$38198:
+$loc_465574$38199:
 ; Line 3650
 	mov	eax, DWORD PTR [esi]
 ; Line 3651
@@ -7177,7 +7176,7 @@ $loc_465574$38198:
 ; Line 3667
 	cmp	cl, 4
 ; Line 3668
-	jge	SHORT $loc_465574$38198
+	jge	SHORT $loc_465574$38199
 ; Line 3669
 	pop	edx
 ; Line 3670
@@ -7185,18 +7184,18 @@ $loc_465574$38198:
 ; Line 3671
 	dec	edx
 ; Line 3672
-	jne	SHORT $loc_465562$38197
+	jne	SHORT $loc_465562$38198
 ; Line 3673
-	jmp	$loc_465F33$38169
-$loc_4655B5$38177:
+	jmp	$loc_465F33$38170
+$loc_4655B5$38178:
 ; Line 3675
 	push	ebp
 ; Line 3676
 	mov	ebp, 32					; 00000020H
-$loc_4655BB$38199:
+$loc_4655BB$38200:
 ; Line 3678
 	mov	edx, 32					; 00000020H
-$loc_4655C0$38200:
+$loc_4655C0$38201:
 ; Line 3680
 	xor	eax, eax
 ; Line 3681
@@ -7206,13 +7205,13 @@ $loc_4655C0$38200:
 ; Line 3683
 	test	al, al
 ; Line 3684
-	js	SHORT $loc_465644$38201
+	js	SHORT $loc_465644$38202
 ; Line 3685
 	sub	edx, eax
 ; Line 3686
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3687
-	jb	$loc_46565D$38202
+	jb	$loc_46565D$38203
 ; Line 3688
 	mov	ecx, eax
 ; Line 3689
@@ -7220,8 +7219,8 @@ $loc_4655C0$38200:
 ; Line 3690
 	cmp	cl, 4
 ; Line 3691
-	jl	SHORT $loc_465611$38203
-$loc_4655DF$38204:
+	jl	SHORT $loc_465611$38204
+$loc_4655DF$38205:
 ; Line 3693
 	mov	eax, DWORD PTR [esi]
 ; Line 3694
@@ -7259,12 +7258,12 @@ $loc_4655DF$38204:
 ; Line 3710
 	cmp	cl, 4
 ; Line 3711
-	jge	SHORT $loc_4655DF$38204
-$loc_465611$38203:
+	jge	SHORT $loc_4655DF$38205
+$loc_465611$38204:
 ; Line 3713
 	cmp	cl, 2
 ; Line 3714
-	jl	SHORT $loc_46562C$38205
+	jl	SHORT $loc_46562C$38206
 ; Line 3715
 	mov	dl, BYTE PTR [esi]
 ; Line 3716
@@ -7281,11 +7280,11 @@ $loc_465611$38203:
 	add	esi, 2
 ; Line 3722
 	add	edi, 2
-$loc_46562C$38205:
+$loc_46562C$38206:
 ; Line 3724
 	and	cl, 1
 ; Line 3725
-	je	SHORT $loc_46563A$38206
+	je	SHORT $loc_46563A$38207
 ; Line 3726
 	mov	dl, BYTE PTR [esi]
 ; Line 3727
@@ -7296,16 +7295,16 @@ $loc_46562C$38205:
 	mov	BYTE PTR [edi], dl
 ; Line 3730
 	inc	edi
-$loc_46563A$38206:
+$loc_46563A$38207:
 ; Line 3732
 	pop	edx
 ; Line 3733
 	test	edx, edx
 ; Line 3734
-	je	SHORT $loc_465650$38207
+	je	SHORT $loc_465650$38208
 ; Line 3735
-	jmp	$loc_4655C0$38200
-$loc_465644$38201:
+	jmp	$loc_4655C0$38201
+$loc_465644$38202:
 ; Line 3737
 	neg	al
 ; Line 3738
@@ -7313,29 +7312,29 @@ $loc_465644$38201:
 ; Line 3739
 	sub	edx, eax
 ; Line 3740
-	jne	$loc_4655C0$38200
-$loc_465650$38207:
+	jne	$loc_4655C0$38201
+$loc_465650$38208:
 ; Line 3742
 	sub	edi, 800				; 00000320H
 ; Line 3743
 	dec	ebp
 ; Line 3744
-	jne	$loc_4655BB$38199
-$loc_46565D$38202:
+	jne	$loc_4655BB$38200
+$loc_46565D$38203:
 ; Line 3746
 	pop	ebp
 ; Line 3747
-	jmp	$loc_465F33$38169
-$loc_465663$38178:
+	jmp	$loc_465F33$38170
+$loc_465663$38179:
 ; Line 3749
 	push	ebp
 ; Line 3750
 	mov	ebp, 30					; 0000001eH
-$loc_465669$38208:
+$loc_465669$38209:
 ; Line 3752
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3753
-	jb	$loc_46575F$38209
+	jb	$loc_46575F$38210
 ; Line 3754
 	add	edi, ebp
 ; Line 3755
@@ -7351,8 +7350,8 @@ $loc_465669$38208:
 ; Line 3760
 	cmp	cl, 4
 ; Line 3761
-	jl	SHORT $loc_4656BC$38210
-$loc_46568A$38211:
+	jl	SHORT $loc_4656BC$38211
+$loc_46568A$38212:
 ; Line 3763
 	mov	eax, DWORD PTR [esi]
 ; Line 3764
@@ -7390,12 +7389,12 @@ $loc_46568A$38211:
 ; Line 3780
 	cmp	cl, 4
 ; Line 3781
-	jge	SHORT $loc_46568A$38211
-$loc_4656BC$38210:
+	jge	SHORT $loc_46568A$38212
+$loc_4656BC$38211:
 ; Line 3783
 	cmp	cl, 2
 ; Line 3784
-	jl	SHORT $loc_4656D7$38212
+	jl	SHORT $loc_4656D7$38213
 ; Line 3785
 	mov	dl, BYTE PTR [esi]
 ; Line 3786
@@ -7412,20 +7411,20 @@ $loc_4656BC$38210:
 	add	esi, 2
 ; Line 3792
 	add	edi, 2
-$loc_4656D7$38212:
+$loc_4656D7$38213:
 ; Line 3794
 	sub	edi, 800				; 00000320H
 ; Line 3795
 	sub	ebp, 2
 ; Line 3796
-	jge	SHORT $loc_465669$38208
+	jge	SHORT $loc_465669$38209
 ; Line 3797
 	mov	ebp, 2
-$loc_4656E7$38213:
+$loc_4656E7$38214:
 ; Line 3799
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3800
-	jb	SHORT $loc_46575F$38209
+	jb	SHORT $loc_46575F$38210
 ; Line 3801
 	add	edi, ebp
 ; Line 3802
@@ -7441,8 +7440,8 @@ $loc_4656E7$38213:
 ; Line 3807
 	cmp	cl, 4
 ; Line 3808
-	jl	SHORT $loc_465736$38214
-$loc_465704$38215:
+	jl	SHORT $loc_465736$38215
+$loc_465704$38216:
 ; Line 3810
 	mov	eax, DWORD PTR [esi]
 ; Line 3811
@@ -7480,12 +7479,12 @@ $loc_465704$38215:
 ; Line 3827
 	cmp	cl, 4
 ; Line 3828
-	jge	SHORT $loc_465704$38215
-$loc_465736$38214:
+	jge	SHORT $loc_465704$38216
+$loc_465736$38215:
 ; Line 3830
 	cmp	cl, 2
 ; Line 3831
-	jl	SHORT $loc_465751$38216
+	jl	SHORT $loc_465751$38217
 ; Line 3832
 	mov	dl, BYTE PTR [esi]
 ; Line 3833
@@ -7502,7 +7501,7 @@ $loc_465736$38214:
 	add	esi, 2
 ; Line 3839
 	add	edi, 2
-$loc_465751$38216:
+$loc_465751$38217:
 ; Line 3841
 	sub	edi, 800				; 00000320H
 ; Line 3842
@@ -7510,22 +7509,22 @@ $loc_465751$38216:
 ; Line 3843
 	cmp	ebp, 32					; 00000020H
 ; Line 3844
-	jne	SHORT $loc_4656E7$38213
-$loc_46575F$38209:
+	jne	SHORT $loc_4656E7$38214
+$loc_46575F$38210:
 ; Line 3846
 	pop	ebp
 ; Line 3847
-	jmp	$loc_465F33$38169
-$loc_465765$38179:
+	jmp	$loc_465F33$38170
+$loc_465765$38180:
 ; Line 3849
 	push	ebp
 ; Line 3850
 	mov	ebp, 30					; 0000001eH
-$loc_46576B$38217:
+$loc_46576B$38218:
 ; Line 3852
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3853
-	jb	$loc_465861$38218
+	jb	$loc_465861$38219
 ; Line 3854
 	mov	ecx, 32					; 00000020H
 ; Line 3855
@@ -7533,8 +7532,8 @@ $loc_46576B$38217:
 ; Line 3856
 	cmp	cl, 4
 ; Line 3857
-	jl	SHORT $loc_4657B5$38219
-$loc_465783$38220:
+	jl	SHORT $loc_4657B5$38220
+$loc_465783$38221:
 ; Line 3859
 	mov	eax, DWORD PTR [esi]
 ; Line 3860
@@ -7572,12 +7571,12 @@ $loc_465783$38220:
 ; Line 3876
 	cmp	cl, 4
 ; Line 3877
-	jge	SHORT $loc_465783$38220
-$loc_4657B5$38219:
+	jge	SHORT $loc_465783$38221
+$loc_4657B5$38220:
 ; Line 3879
 	cmp	cl, 2
 ; Line 3880
-	jl	SHORT $loc_4657D0$38221
+	jl	SHORT $loc_4657D0$38222
 ; Line 3881
 	mov	dl, BYTE PTR [esi]
 ; Line 3882
@@ -7594,7 +7593,7 @@ $loc_4657B5$38219:
 	add	esi, 2
 ; Line 3888
 	add	edi, 2
-$loc_4657D0$38221:
+$loc_4657D0$38222:
 ; Line 3890
 	mov	edx, esi
 ; Line 3891
@@ -7608,14 +7607,14 @@ $loc_4657D0$38221:
 ; Line 3895
 	sub	ebp, 2
 ; Line 3896
-	jge	SHORT $loc_46576B$38217
+	jge	SHORT $loc_46576B$38218
 ; Line 3897
 	mov	ebp, 2
-$loc_4657E9$38222:
+$loc_4657E9$38223:
 ; Line 3899
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3900
-	jb	SHORT $loc_465861$38218
+	jb	SHORT $loc_465861$38219
 ; Line 3901
 	mov	ecx, 32					; 00000020H
 ; Line 3902
@@ -7623,8 +7622,8 @@ $loc_4657E9$38222:
 ; Line 3903
 	cmp	cl, 4
 ; Line 3904
-	jl	SHORT $loc_46582F$38223
-$loc_4657FD$38224:
+	jl	SHORT $loc_46582F$38224
+$loc_4657FD$38225:
 ; Line 3906
 	mov	eax, DWORD PTR [esi]
 ; Line 3907
@@ -7662,12 +7661,12 @@ $loc_4657FD$38224:
 ; Line 3923
 	cmp	cl, 4
 ; Line 3924
-	jge	SHORT $loc_4657FD$38224
-$loc_46582F$38223:
+	jge	SHORT $loc_4657FD$38225
+$loc_46582F$38224:
 ; Line 3926
 	cmp	cl, 2
 ; Line 3927
-	jl	SHORT $loc_46584A$38225
+	jl	SHORT $loc_46584A$38226
 ; Line 3928
 	mov	dl, BYTE PTR [esi]
 ; Line 3929
@@ -7684,7 +7683,7 @@ $loc_46582F$38223:
 	add	esi, 2
 ; Line 3935
 	add	edi, 2
-$loc_46584A$38225:
+$loc_46584A$38226:
 ; Line 3937
 	mov	edx, esi
 ; Line 3938
@@ -7700,22 +7699,22 @@ $loc_46584A$38225:
 ; Line 3943
 	cmp	ebp, 32					; 00000020H
 ; Line 3944
-	jne	SHORT $loc_4657E9$38222
-$loc_465861$38218:
+	jne	SHORT $loc_4657E9$38223
+$loc_465861$38219:
 ; Line 3946
 	pop	ebp
 ; Line 3947
-	jmp	$loc_465F33$38169
-$loc_465867$38180:
+	jmp	$loc_465F33$38170
+$loc_465867$38181:
 ; Line 3949
 	push	ebp
 ; Line 3950
 	mov	ebp, 30					; 0000001eH
-$loc_46586D$38226:
+$loc_46586D$38227:
 ; Line 3952
 	cmp	edi, DWORD PTR _glClipY
 ; Line 3953
-	jb	$loc_465933$38227
+	jb	$loc_465933$38228
 ; Line 3954
 	add	edi, ebp
 ; Line 3955
@@ -7731,8 +7730,8 @@ $loc_46586D$38226:
 ; Line 3960
 	cmp	cl, 4
 ; Line 3961
-	jl	SHORT $loc_4658C0$38228
-$loc_46588E$38229:
+	jl	SHORT $loc_4658C0$38229
+$loc_46588E$38230:
 ; Line 3963
 	mov	eax, DWORD PTR [esi]
 ; Line 3964
@@ -7770,12 +7769,12 @@ $loc_46588E$38229:
 ; Line 3980
 	cmp	cl, 4
 ; Line 3981
-	jge	SHORT $loc_46588E$38229
-$loc_4658C0$38228:
+	jge	SHORT $loc_46588E$38230
+$loc_4658C0$38229:
 ; Line 3983
 	cmp	cl, 2
 ; Line 3984
-	jl	SHORT $loc_4658DB$38230
+	jl	SHORT $loc_4658DB$38231
 ; Line 3985
 	mov	dl, BYTE PTR [esi]
 ; Line 3986
@@ -7792,23 +7791,23 @@ $loc_4658C0$38228:
 	add	esi, 2
 ; Line 3992
 	add	edi, 2
-$loc_4658DB$38230:
+$loc_4658DB$38231:
 ; Line 3994
 	sub	edi, 800				; 00000320H
 ; Line 3995
 	sub	ebp, 2
 ; Line 3996
-	jge	SHORT $loc_46586D$38226
+	jge	SHORT $loc_46586D$38227
 ; Line 3997
 	mov	ebp, 16					; 00000010H
-$loc_4658EB$38231:
+$loc_4658EB$38232:
 ; Line 3999
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4000
-	jb	SHORT $loc_465933$38227
+	jb	SHORT $loc_465933$38228
 ; Line 4001
 	mov	ecx, 32					; 00000020H
-$loc_4658F8$38232:
+$loc_4658F8$38233:
 ; Line 4003
 	mov	eax, DWORD PTR [esi]
 ; Line 4004
@@ -7846,28 +7845,28 @@ $loc_4658F8$38232:
 ; Line 4020
 	cmp	cl, 4
 ; Line 4021
-	jge	SHORT $loc_4658F8$38232
+	jge	SHORT $loc_4658F8$38233
 ; Line 4022
 	sub	edi, 800				; 00000320H
 ; Line 4023
 	dec	ebp
 ; Line 4024
-	jne	SHORT $loc_4658EB$38231
-$loc_465933$38227:
+	jne	SHORT $loc_4658EB$38232
+$loc_465933$38228:
 ; Line 4026
 	pop	ebp
 ; Line 4027
-	jmp	$loc_465F33$38169
-$loc_465939$38181:
+	jmp	$loc_465F33$38170
+$loc_465939$38182:
 ; Line 4029
 	push	ebp
 ; Line 4030
 	mov	ebp, 30					; 0000001eH
-$loc_46593F$38233:
+$loc_46593F$38234:
 ; Line 4032
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4033
-	jb	$loc_465A05$38234
+	jb	$loc_465A05$38235
 ; Line 4034
 	mov	ecx, 32					; 00000020H
 ; Line 4035
@@ -7875,8 +7874,8 @@ $loc_46593F$38233:
 ; Line 4036
 	cmp	cl, 4
 ; Line 4037
-	jl	SHORT $loc_465989$38235
-$loc_465957$38236:
+	jl	SHORT $loc_465989$38236
+$loc_465957$38237:
 ; Line 4039
 	mov	eax, DWORD PTR [esi]
 ; Line 4040
@@ -7914,12 +7913,12 @@ $loc_465957$38236:
 ; Line 4056
 	cmp	cl, 4
 ; Line 4057
-	jge	SHORT $loc_465957$38236
-$loc_465989$38235:
+	jge	SHORT $loc_465957$38237
+$loc_465989$38236:
 ; Line 4059
 	cmp	cl, 2
 ; Line 4060
-	jl	SHORT $loc_4659A4$38237
+	jl	SHORT $loc_4659A4$38238
 ; Line 4061
 	mov	dl, BYTE PTR [esi]
 ; Line 4062
@@ -7936,7 +7935,7 @@ $loc_465989$38235:
 	add	esi, 2
 ; Line 4068
 	add	edi, 2
-$loc_4659A4$38237:
+$loc_4659A4$38238:
 ; Line 4070
 	mov	edx, esi
 ; Line 4071
@@ -7950,17 +7949,17 @@ $loc_4659A4$38237:
 ; Line 4075
 	sub	ebp, 2
 ; Line 4076
-	jge	SHORT $loc_46593F$38233
+	jge	SHORT $loc_46593F$38234
 ; Line 4077
 	mov	ebp, 16					; 00000010H
-$loc_4659BD$38238:
+$loc_4659BD$38239:
 ; Line 4079
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4080
-	jb	SHORT $loc_465A05$38234
+	jb	SHORT $loc_465A05$38235
 ; Line 4081
 	mov	ecx, 32					; 00000020H
-$loc_4659CA$38239:
+$loc_4659CA$38240:
 ; Line 4083
 	mov	eax, DWORD PTR [esi]
 ; Line 4084
@@ -7998,29 +7997,29 @@ $loc_4659CA$38239:
 ; Line 4100
 	cmp	cl, 4
 ; Line 4101
-	jge	SHORT $loc_4659CA$38239
+	jge	SHORT $loc_4659CA$38240
 ; Line 4102
 	sub	edi, 800				; 00000320H
 ; Line 4103
 	dec	ebp
 ; Line 4104
-	jne	SHORT $loc_4659BD$38238
-$loc_465A05$38234:
+	jne	SHORT $loc_4659BD$38239
+$loc_465A05$38235:
 ; Line 4106
 	pop	ebp
 ; Line 4107
-	jmp	$loc_465F33$38169
-$loc_465A0B$38183:
+	jmp	$loc_465F33$38170
+$loc_465A0B$38184:
 ; Line 4109
 	mov	edx, 32					; 00000020H
-$loc_465A10$38240:
+$loc_465A10$38241:
 ; Line 4111
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4112
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4113
 	mov	ecx, 8
-$loc_465A21$38241:
+$loc_465A21$38242:
 ; Line 4115
 	mov	eax, DWORD PTR [esi]
 ; Line 4116
@@ -8032,24 +8031,24 @@ $loc_465A21$38241:
 ; Line 4119
 	dec	ecx
 ; Line 4120
-	jne	SHORT $loc_465A21$38241
+	jne	SHORT $loc_465A21$38242
 ; Line 4121
 	sub	edi, 800				; 00000320H
 ; Line 4122
 	dec	edx
 ; Line 4123
-	jne	SHORT $loc_465A10$38240
+	jne	SHORT $loc_465A10$38241
 ; Line 4124
-	jmp	$loc_465F33$38169
-$loc_465A3C$38184:
+	jmp	$loc_465F33$38170
+$loc_465A3C$38185:
 ; Line 4126
 	push	ebp
 ; Line 4127
 	mov	ebp, 32					; 00000020H
-$loc_465A42$38242:
+$loc_465A42$38243:
 ; Line 4129
 	mov	edx, 32					; 00000020H
-$loc_465A47$38243:
+$loc_465A47$38244:
 ; Line 4131
 	xor	eax, eax
 ; Line 4132
@@ -8059,19 +8058,19 @@ $loc_465A47$38243:
 ; Line 4134
 	test	al, al
 ; Line 4135
-	js	SHORT $loc_465A91$38244
+	js	SHORT $loc_465A91$38245
 ; Line 4136
 	sub	edx, eax
 ; Line 4137
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4138
-	jb	SHORT $loc_465AA2$38245
+	jb	SHORT $loc_465AA2$38246
 ; Line 4139
 	mov	ecx, eax
 ; Line 4140
 	shr	ecx, 1
 ; Line 4141
-	jae	SHORT $loc_465A6A$38246
+	jae	SHORT $loc_465A6A$38247
 ; Line 4142
 	mov	al, BYTE PTR [esi]
 ; Line 4143
@@ -8083,12 +8082,12 @@ $loc_465A47$38243:
 ; Line 4146
 	test	ecx, ecx
 ; Line 4147
-	je	SHORT $loc_465A8B$38247
-$loc_465A6A$38246:
+	je	SHORT $loc_465A8B$38248
+$loc_465A6A$38247:
 ; Line 4149
 	shr	ecx, 1
 ; Line 4150
-	jae	SHORT $loc_465A7E$38248
+	jae	SHORT $loc_465A7E$38249
 ; Line 4151
 	mov	ax, WORD PTR [esi]
 ; Line 4152
@@ -8100,8 +8099,8 @@ $loc_465A6A$38246:
 ; Line 4155
 	test	ecx, ecx
 ; Line 4156
-	je	SHORT $loc_465A8B$38247
-$loc_465A7E$38248:
+	je	SHORT $loc_465A8B$38248
+$loc_465A7E$38249:
 ; Line 4158
 	mov	eax, DWORD PTR [esi]
 ; Line 4159
@@ -8113,15 +8112,15 @@ $loc_465A7E$38248:
 ; Line 4162
 	dec	ecx
 ; Line 4163
-	jne	SHORT $loc_465A7E$38248
-$loc_465A8B$38247:
+	jne	SHORT $loc_465A7E$38249
+$loc_465A8B$38248:
 ; Line 4165
 	test	edx, edx
 ; Line 4166
-	je	SHORT $loc_465A99$38249
+	je	SHORT $loc_465A99$38250
 ; Line 4167
-	jmp	SHORT $loc_465A47$38243
-$loc_465A91$38244:
+	jmp	SHORT $loc_465A47$38244
+$loc_465A91$38245:
 ; Line 4169
 	neg	al
 ; Line 4170
@@ -8129,27 +8128,27 @@ $loc_465A91$38244:
 ; Line 4171
 	sub	edx, eax
 ; Line 4172
-	jne	SHORT $loc_465A47$38243
-$loc_465A99$38249:
+	jne	SHORT $loc_465A47$38244
+$loc_465A99$38250:
 ; Line 4174
 	sub	edi, 800				; 00000320H
 ; Line 4175
 	dec	ebp
 ; Line 4176
-	jne	SHORT $loc_465A42$38242
-$loc_465AA2$38245:
+	jne	SHORT $loc_465A42$38243
+$loc_465AA2$38246:
 ; Line 4178
 	pop	ebp
 ; Line 4179
-	jmp	$loc_465F33$38169
-$loc_465AA8$38185:
+	jmp	$loc_465F33$38170
+$loc_465AA8$38186:
 ; Line 4181
 	mov	edx, 30					; 0000001eH
-$loc_465AAD$38250:
+$loc_465AAD$38251:
 ; Line 4183
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4184
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4185
 	add	edi, edx
 ; Line 4186
@@ -8159,7 +8158,7 @@ $loc_465AAD$38250:
 ; Line 4188
 	shr	ecx, 2
 ; Line 4189
-	jae	SHORT $loc_465AD8$38251
+	jae	SHORT $loc_465AD8$38252
 ; Line 4190
 	mov	ax, WORD PTR [esi+2]
 ; Line 4191
@@ -8171,8 +8170,8 @@ $loc_465AAD$38250:
 ; Line 4194
 	test	ecx, ecx
 ; Line 4195
-	je	SHORT $loc_465AE5$38252
-$loc_465AD8$38251:
+	je	SHORT $loc_465AE5$38253
+$loc_465AD8$38252:
 ; Line 4197
 	mov	eax, DWORD PTR [esi]
 ; Line 4198
@@ -8184,21 +8183,21 @@ $loc_465AD8$38251:
 ; Line 4201
 	dec	ecx
 ; Line 4202
-	jne	SHORT $loc_465AD8$38251
-$loc_465AE5$38252:
+	jne	SHORT $loc_465AD8$38252
+$loc_465AE5$38253:
 ; Line 4204
 	sub	edi, 800				; 00000320H
 ; Line 4205
 	sub	edx, 2
 ; Line 4206
-	jge	SHORT $loc_465AAD$38250
+	jge	SHORT $loc_465AAD$38251
 ; Line 4207
 	mov	edx, 2
-$loc_465AF5$38253:
+$loc_465AF5$38254:
 ; Line 4209
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4210
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4211
 	add	edi, edx
 ; Line 4212
@@ -8208,7 +8207,7 @@ $loc_465AF5$38253:
 ; Line 4214
 	shr	ecx, 2
 ; Line 4215
-	jae	SHORT $loc_465B20$38254
+	jae	SHORT $loc_465B20$38255
 ; Line 4216
 	mov	ax, WORD PTR [esi+2]
 ; Line 4217
@@ -8220,8 +8219,8 @@ $loc_465AF5$38253:
 ; Line 4220
 	test	ecx, ecx
 ; Line 4221
-	je	SHORT $loc_465B2D$38255
-$loc_465B20$38254:
+	je	SHORT $loc_465B2D$38256
+$loc_465B20$38255:
 ; Line 4223
 	mov	eax, DWORD PTR [esi]
 ; Line 4224
@@ -8233,8 +8232,8 @@ $loc_465B20$38254:
 ; Line 4227
 	dec	ecx
 ; Line 4228
-	jne	SHORT $loc_465B20$38254
-$loc_465B2D$38255:
+	jne	SHORT $loc_465B20$38255
+$loc_465B2D$38256:
 ; Line 4230
 	sub	edi, 800				; 00000320H
 ; Line 4231
@@ -8242,19 +8241,19 @@ $loc_465B2D$38255:
 ; Line 4232
 	cmp	edx, 32					; 00000020H
 ; Line 4233
-	jne	SHORT $loc_465AF5$38253
+	jne	SHORT $loc_465AF5$38254
 ; Line 4234
-	jmp	$loc_465F33$38169
-$loc_465B40$38186:
+	jmp	$loc_465F33$38170
+$loc_465B40$38187:
 ; Line 4236
 	push	ebp
 ; Line 4237
 	mov	edx, 30					; 0000001eH
-$loc_465B46$38256:
+$loc_465B46$38257:
 ; Line 4239
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4240
-	jb	$loc_465BD4$38257
+	jb	$loc_465BD4$38258
 ; Line 4241
 	mov	ecx, 32					; 00000020H
 ; Line 4242
@@ -8264,8 +8263,8 @@ $loc_465B46$38256:
 ; Line 4244
 	shr	ecx, 2
 ; Line 4245
-	je	SHORT $loc_465B6D$38258
-$loc_465B60$38259:
+	je	SHORT $loc_465B6D$38259
+$loc_465B60$38260:
 ; Line 4247
 	mov	eax, DWORD PTR [esi]
 ; Line 4248
@@ -8277,12 +8276,12 @@ $loc_465B60$38259:
 ; Line 4251
 	dec	ecx
 ; Line 4252
-	jne	SHORT $loc_465B60$38259
-$loc_465B6D$38258:
+	jne	SHORT $loc_465B60$38260
+$loc_465B6D$38259:
 ; Line 4254
 	and	ebp, 2
 ; Line 4255
-	je	SHORT $loc_465B7E$38260
+	je	SHORT $loc_465B7E$38261
 ; Line 4256
 	mov	ax, WORD PTR [esi]
 ; Line 4257
@@ -8291,7 +8290,7 @@ $loc_465B6D$38258:
 	mov	WORD PTR [edi], ax
 ; Line 4259
 	add	edi, 2
-$loc_465B7E$38260:
+$loc_465B7E$38261:
 ; Line 4261
 	sub	edi, 800				; 00000320H
 ; Line 4262
@@ -8299,14 +8298,14 @@ $loc_465B7E$38260:
 ; Line 4263
 	sub	edx, 2
 ; Line 4264
-	jge	SHORT $loc_465B46$38256
+	jge	SHORT $loc_465B46$38257
 ; Line 4265
 	mov	edx, 2
-$loc_465B90$38261:
+$loc_465B90$38262:
 ; Line 4267
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4268
-	jb	SHORT $loc_465BD4$38257
+	jb	SHORT $loc_465BD4$38258
 ; Line 4269
 	mov	ecx, 32					; 00000020H
 ; Line 4270
@@ -8316,8 +8315,8 @@ $loc_465B90$38261:
 ; Line 4272
 	shr	ecx, 2
 ; Line 4273
-	je	SHORT $loc_465BB3$38262
-$loc_465BA6$38263:
+	je	SHORT $loc_465BB3$38263
+$loc_465BA6$38264:
 ; Line 4275
 	mov	eax, DWORD PTR [esi]
 ; Line 4276
@@ -8329,12 +8328,12 @@ $loc_465BA6$38263:
 ; Line 4279
 	dec	ecx
 ; Line 4280
-	jne	SHORT $loc_465BA6$38263
-$loc_465BB3$38262:
+	jne	SHORT $loc_465BA6$38264
+$loc_465BB3$38263:
 ; Line 4282
 	and	ebp, 2
 ; Line 4283
-	je	SHORT $loc_465BC4$38264
+	je	SHORT $loc_465BC4$38265
 ; Line 4284
 	mov	ax, WORD PTR [esi]
 ; Line 4285
@@ -8343,7 +8342,7 @@ $loc_465BB3$38262:
 	mov	WORD PTR [edi], ax
 ; Line 4287
 	add	edi, 2
-$loc_465BC4$38264:
+$loc_465BC4$38265:
 ; Line 4289
 	sub	edi, 800				; 00000320H
 ; Line 4290
@@ -8353,20 +8352,20 @@ $loc_465BC4$38264:
 ; Line 4292
 	cmp	edx, 32					; 00000020H
 ; Line 4293
-	jne	SHORT $loc_465B90$38261
-$loc_465BD4$38257:
+	jne	SHORT $loc_465B90$38262
+$loc_465BD4$38258:
 ; Line 4295
 	pop	ebp
 ; Line 4296
-	jmp	$loc_465F33$38169
-$loc_465BDA$38187:
+	jmp	$loc_465F33$38170
+$loc_465BDA$38188:
 ; Line 4298
 	mov	edx, 30					; 0000001eH
-$loc_465BDF$38265:
+$loc_465BDF$38266:
 ; Line 4300
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4301
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4302
 	add	edi, edx
 ; Line 4303
@@ -8376,7 +8375,7 @@ $loc_465BDF$38265:
 ; Line 4305
 	shr	ecx, 2
 ; Line 4306
-	jae	SHORT $loc_465C0A$38266
+	jae	SHORT $loc_465C0A$38267
 ; Line 4307
 	mov	ax, WORD PTR [esi+2]
 ; Line 4308
@@ -8388,8 +8387,8 @@ $loc_465BDF$38265:
 ; Line 4311
 	test	ecx, ecx
 ; Line 4312
-	je	SHORT $loc_465C17$38267
-$loc_465C0A$38266:
+	je	SHORT $loc_465C17$38268
+$loc_465C0A$38267:
 ; Line 4314
 	mov	eax, DWORD PTR [esi]
 ; Line 4315
@@ -8401,24 +8400,24 @@ $loc_465C0A$38266:
 ; Line 4318
 	dec	ecx
 ; Line 4319
-	jne	SHORT $loc_465C0A$38266
-$loc_465C17$38267:
+	jne	SHORT $loc_465C0A$38267
+$loc_465C17$38268:
 ; Line 4321
 	sub	edi, 800				; 00000320H
 ; Line 4322
 	sub	edx, 2
 ; Line 4323
-	jge	SHORT $loc_465BDF$38265
+	jge	SHORT $loc_465BDF$38266
 ; Line 4324
 	mov	edx, 16					; 00000010H
-$loc_465C27$38268:
+$loc_465C27$38269:
 ; Line 4326
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4327
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4328
 	mov	ecx, 8
-$loc_465C38$38269:
+$loc_465C38$38270:
 ; Line 4330
 	mov	eax, DWORD PTR [esi]
 ; Line 4331
@@ -8430,25 +8429,25 @@ $loc_465C38$38269:
 ; Line 4334
 	dec	ecx
 ; Line 4335
-	jne	SHORT $loc_465C38$38269
+	jne	SHORT $loc_465C38$38270
 ; Line 4336
 	sub	edi, 800				; 00000320H
 ; Line 4337
 	dec	edx
 ; Line 4338
-	jne	SHORT $loc_465C27$38268
+	jne	SHORT $loc_465C27$38269
 ; Line 4339
-	jmp	$loc_465F33$38169
-$loc_465C53$38188:
+	jmp	$loc_465F33$38170
+$loc_465C53$38189:
 ; Line 4341
 	push	ebp
 ; Line 4342
 	mov	edx, 30					; 0000001eH
-$loc_465C59$38270:
+$loc_465C59$38271:
 ; Line 4344
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4345
-	jb	SHORT $loc_465CC2$38271
+	jb	SHORT $loc_465CC2$38272
 ; Line 4346
 	mov	ecx, 32					; 00000020H
 ; Line 4347
@@ -8458,8 +8457,8 @@ $loc_465C59$38270:
 ; Line 4349
 	shr	ecx, 2
 ; Line 4350
-	je	SHORT $loc_465C7C$38272
-$loc_465C6F$38273:
+	je	SHORT $loc_465C7C$38273
+$loc_465C6F$38274:
 ; Line 4352
 	mov	eax, DWORD PTR [esi]
 ; Line 4353
@@ -8471,12 +8470,12 @@ $loc_465C6F$38273:
 ; Line 4356
 	dec	ecx
 ; Line 4357
-	jne	SHORT $loc_465C6F$38273
-$loc_465C7C$38272:
+	jne	SHORT $loc_465C6F$38274
+$loc_465C7C$38273:
 ; Line 4359
 	and	ebp, 2
 ; Line 4360
-	je	SHORT $loc_465C8D$38274
+	je	SHORT $loc_465C8D$38275
 ; Line 4361
 	mov	ax, WORD PTR [esi]
 ; Line 4362
@@ -8485,7 +8484,7 @@ $loc_465C7C$38272:
 	mov	WORD PTR [edi], ax
 ; Line 4364
 	add	edi, 2
-$loc_465C8D$38274:
+$loc_465C8D$38275:
 ; Line 4366
 	sub	edi, 800				; 00000320H
 ; Line 4367
@@ -8493,17 +8492,17 @@ $loc_465C8D$38274:
 ; Line 4368
 	sub	edx, 2
 ; Line 4369
-	jge	SHORT $loc_465C59$38270
+	jge	SHORT $loc_465C59$38271
 ; Line 4370
 	mov	edx, 16					; 00000010H
-$loc_465C9F$38275:
+$loc_465C9F$38276:
 ; Line 4372
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4373
-	jb	SHORT $loc_465CC2$38271
+	jb	SHORT $loc_465CC2$38272
 ; Line 4374
 	mov	ecx, 8
-$loc_465CAC$38276:
+$loc_465CAC$38277:
 ; Line 4376
 	mov	eax, DWORD PTR [esi]
 ; Line 4377
@@ -8515,31 +8514,31 @@ $loc_465CAC$38276:
 ; Line 4380
 	dec	ecx
 ; Line 4381
-	jne	SHORT $loc_465CAC$38276
+	jne	SHORT $loc_465CAC$38277
 ; Line 4382
 	sub	edi, 800				; 00000320H
 ; Line 4383
 	dec	edx
 ; Line 4384
-	jne	SHORT $loc_465C9F$38275
-$loc_465CC2$38271:
+	jne	SHORT $loc_465C9F$38276
+$loc_465CC2$38272:
 ; Line 4386
 	pop	ebp
 ; Line 4387
-	jmp	$loc_465F33$38169
-$loc_465CC8$38191:
+	jmp	$loc_465F33$38170
+$loc_465CC8$38192:
 ; Line 4389
 	mov	edx, 32					; 00000020H
 ; Line 4390
 	xor	eax, eax
-$loc_465CCF$38277:
+$loc_465CCF$38278:
 ; Line 4392
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4393
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4394
 	mov	ecx, 8
-$loc_465CE0$38278:
+$loc_465CE0$38279:
 ; Line 4396
 	mov	DWORD PTR [edi], eax
 ; Line 4397
@@ -8547,24 +8546,24 @@ $loc_465CE0$38278:
 ; Line 4398
 	dec	ecx
 ; Line 4399
-	jne	SHORT $loc_465CE0$38278
+	jne	SHORT $loc_465CE0$38279
 ; Line 4400
 	sub	edi, 800				; 00000320H
 ; Line 4401
 	dec	edx
 ; Line 4402
-	jne	SHORT $loc_465CCF$38277
+	jne	SHORT $loc_465CCF$38278
 ; Line 4403
-	jmp	$loc_465F33$38169
-$loc_465CF6$38192:
+	jmp	$loc_465F33$38170
+$loc_465CF6$38193:
 ; Line 4405
 	push	ebp
 ; Line 4406
 	mov	ebp, 32					; 00000020H
-$loc_465CFC$38279:
+$loc_465CFC$38280:
 ; Line 4408
 	mov	edx, 32					; 00000020H
-$loc_465D01$38280:
+$loc_465D01$38281:
 ; Line 4410
 	xor	eax, eax
 ; Line 4411
@@ -8574,13 +8573,13 @@ $loc_465D01$38280:
 ; Line 4413
 	test	al, al
 ; Line 4414
-	js	SHORT $loc_465D41$38281
+	js	SHORT $loc_465D41$38282
 ; Line 4415
 	sub	edx, eax
 ; Line 4416
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4417
-	jb	SHORT $loc_465D52$38282
+	jb	SHORT $loc_465D52$38283
 ; Line 4418
 	mov	ecx, eax
 ; Line 4419
@@ -8590,7 +8589,7 @@ $loc_465D01$38280:
 ; Line 4421
 	shr	ecx, 1
 ; Line 4422
-	jae	SHORT $loc_465D25$38283
+	jae	SHORT $loc_465D25$38284
 ; Line 4423
 	mov	BYTE PTR [edi], al
 ; Line 4424
@@ -8598,12 +8597,12 @@ $loc_465D01$38280:
 ; Line 4425
 	test	ecx, ecx
 ; Line 4426
-	je	SHORT $loc_465D3B$38284
-$loc_465D25$38283:
+	je	SHORT $loc_465D3B$38285
+$loc_465D25$38284:
 ; Line 4428
 	shr	ecx, 1
 ; Line 4429
-	jae	SHORT $loc_465D33$38285
+	jae	SHORT $loc_465D33$38286
 ; Line 4430
 	mov	WORD PTR [edi], ax
 ; Line 4431
@@ -8611,8 +8610,8 @@ $loc_465D25$38283:
 ; Line 4432
 	test	ecx, ecx
 ; Line 4433
-	je	SHORT $loc_465D3B$38284
-$loc_465D33$38285:
+	je	SHORT $loc_465D3B$38285
+$loc_465D33$38286:
 ; Line 4435
 	mov	DWORD PTR [edi], eax
 ; Line 4436
@@ -8620,15 +8619,15 @@ $loc_465D33$38285:
 ; Line 4437
 	dec	ecx
 ; Line 4438
-	jne	SHORT $loc_465D33$38285
-$loc_465D3B$38284:
+	jne	SHORT $loc_465D33$38286
+$loc_465D3B$38285:
 ; Line 4440
 	test	edx, edx
 ; Line 4441
-	je	SHORT $loc_465D49$38286
+	je	SHORT $loc_465D49$38287
 ; Line 4442
-	jmp	SHORT $loc_465D01$38280
-$loc_465D41$38281:
+	jmp	SHORT $loc_465D01$38281
+$loc_465D41$38282:
 ; Line 4444
 	neg	al
 ; Line 4445
@@ -8636,29 +8635,29 @@ $loc_465D41$38281:
 ; Line 4446
 	sub	edx, eax
 ; Line 4447
-	jne	SHORT $loc_465D01$38280
-$loc_465D49$38286:
+	jne	SHORT $loc_465D01$38281
+$loc_465D49$38287:
 ; Line 4449
 	sub	edi, 800				; 00000320H
 ; Line 4450
 	dec	ebp
 ; Line 4451
-	jne	SHORT $loc_465CFC$38279
-$loc_465D52$38282:
+	jne	SHORT $loc_465CFC$38280
+$loc_465D52$38283:
 ; Line 4453
 	pop	ebp
 ; Line 4454
-	jmp	$loc_465F33$38169
-$loc_465D58$38193:
+	jmp	$loc_465F33$38170
+$loc_465D58$38194:
 ; Line 4456
 	mov	edx, 30					; 0000001eH
 ; Line 4457
 	xor	eax, eax
-$loc_465D5F$38287:
+$loc_465D5F$38288:
 ; Line 4459
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4460
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4461
 	add	edi, edx
 ; Line 4462
@@ -8668,7 +8667,7 @@ $loc_465D5F$38287:
 ; Line 4464
 	shr	ecx, 2
 ; Line 4465
-	jae	SHORT $loc_465D83$38288
+	jae	SHORT $loc_465D83$38289
 ; Line 4466
 	mov	WORD PTR [edi], ax
 ; Line 4467
@@ -8676,8 +8675,8 @@ $loc_465D5F$38287:
 ; Line 4468
 	test	ecx, ecx
 ; Line 4469
-	je	SHORT $loc_465D8B$38289
-$loc_465D83$38288:
+	je	SHORT $loc_465D8B$38290
+$loc_465D83$38289:
 ; Line 4471
 	mov	DWORD PTR [edi], eax
 ; Line 4472
@@ -8685,26 +8684,26 @@ $loc_465D83$38288:
 ; Line 4473
 	dec	ecx
 ; Line 4474
-	jne	SHORT $loc_465D83$38288
-$loc_465D8B$38289:
+	jne	SHORT $loc_465D83$38289
+$loc_465D8B$38290:
 ; Line 4476
 	sub	edi, 800				; 00000320H
 ; Line 4477
 	test	edx, edx
 ; Line 4478
-	je	SHORT $loc_465D9A$38290
+	je	SHORT $loc_465D9A$38291
 ; Line 4479
 	sub	edx, 2
 ; Line 4480
-	jmp	SHORT $loc_465D5F$38287
-$loc_465D9A$38290:
+	jmp	SHORT $loc_465D5F$38288
+$loc_465D9A$38291:
 ; Line 4482
 	mov	edx, 2
-$loc_465D9F$38291:
+$loc_465D9F$38292:
 ; Line 4484
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4485
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4486
 	add	edi, edx
 ; Line 4487
@@ -8714,7 +8713,7 @@ $loc_465D9F$38291:
 ; Line 4489
 	shr	ecx, 2
 ; Line 4490
-	jae	SHORT $loc_465DC3$38292
+	jae	SHORT $loc_465DC3$38293
 ; Line 4491
 	mov	WORD PTR [edi], ax
 ; Line 4492
@@ -8722,8 +8721,8 @@ $loc_465D9F$38291:
 ; Line 4493
 	test	ecx, ecx
 ; Line 4494
-	je	SHORT $loc_465DCB$38293
-$loc_465DC3$38292:
+	je	SHORT $loc_465DCB$38294
+$loc_465DC3$38293:
 ; Line 4496
 	mov	DWORD PTR [edi], eax
 ; Line 4497
@@ -8731,8 +8730,8 @@ $loc_465DC3$38292:
 ; Line 4498
 	dec	ecx
 ; Line 4499
-	jne	SHORT $loc_465DC3$38292
-$loc_465DCB$38293:
+	jne	SHORT $loc_465DC3$38293
+$loc_465DCB$38294:
 ; Line 4501
 	sub	edi, 800				; 00000320H
 ; Line 4502
@@ -8740,19 +8739,19 @@ $loc_465DCB$38293:
 ; Line 4503
 	cmp	edx, 32					; 00000020H
 ; Line 4504
-	jne	SHORT $loc_465D9F$38291
+	jne	SHORT $loc_465D9F$38292
 ; Line 4505
-	jmp	$loc_465F33$38169
-$loc_465DDE$38194:
+	jmp	$loc_465F33$38170
+$loc_465DDE$38195:
 ; Line 4507
 	mov	edx, 30					; 0000001eH
 ; Line 4508
 	xor	eax, eax
-$loc_465DE5$38294:
+$loc_465DE5$38295:
 ; Line 4510
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4511
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4512
 	mov	ecx, 32					; 00000020H
 ; Line 4513
@@ -8760,7 +8759,7 @@ $loc_465DE5$38294:
 ; Line 4514
 	shr	ecx, 2
 ; Line 4515
-	jae	SHORT $loc_465E07$38295
+	jae	SHORT $loc_465E07$38296
 ; Line 4516
 	mov	WORD PTR [edi], ax
 ; Line 4517
@@ -8768,8 +8767,8 @@ $loc_465DE5$38294:
 ; Line 4518
 	test	ecx, ecx
 ; Line 4519
-	je	SHORT $loc_465E0F$38296
-$loc_465E07$38295:
+	je	SHORT $loc_465E0F$38297
+$loc_465E07$38296:
 ; Line 4521
 	mov	DWORD PTR [edi], eax
 ; Line 4522
@@ -8777,28 +8776,28 @@ $loc_465E07$38295:
 ; Line 4523
 	dec	ecx
 ; Line 4524
-	jne	SHORT $loc_465E07$38295
-$loc_465E0F$38296:
+	jne	SHORT $loc_465E07$38296
+$loc_465E0F$38297:
 ; Line 4526
 	sub	edi, 800				; 00000320H
 ; Line 4527
 	test	edx, edx
 ; Line 4528
-	je	SHORT $loc_465E20$38297
+	je	SHORT $loc_465E20$38298
 ; Line 4529
 	add	edi, edx
 ; Line 4530
 	sub	edx, 2
 ; Line 4531
-	jmp	SHORT $loc_465DE5$38294
-$loc_465E20$38297:
+	jmp	SHORT $loc_465DE5$38295
+$loc_465E20$38298:
 ; Line 4533
 	mov	edx, 2
-$loc_465E25$38298:
+$loc_465E25$38299:
 ; Line 4535
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4536
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4537
 	mov	ecx, 32					; 00000020H
 ; Line 4538
@@ -8806,7 +8805,7 @@ $loc_465E25$38298:
 ; Line 4539
 	shr	ecx, 2
 ; Line 4540
-	jae	SHORT $loc_465E47$38299
+	jae	SHORT $loc_465E47$38300
 ; Line 4541
 	mov	WORD PTR [edi], ax
 ; Line 4542
@@ -8814,8 +8813,8 @@ $loc_465E25$38298:
 ; Line 4543
 	test	ecx, ecx
 ; Line 4544
-	je	SHORT $loc_465E4F$38300
-$loc_465E47$38299:
+	je	SHORT $loc_465E4F$38301
+$loc_465E47$38300:
 ; Line 4546
 	mov	DWORD PTR [edi], eax
 ; Line 4547
@@ -8823,8 +8822,8 @@ $loc_465E47$38299:
 ; Line 4548
 	dec	ecx
 ; Line 4549
-	jne	SHORT $loc_465E47$38299
-$loc_465E4F$38300:
+	jne	SHORT $loc_465E47$38300
+$loc_465E4F$38301:
 ; Line 4551
 	sub	edi, 800				; 00000320H
 ; Line 4552
@@ -8834,19 +8833,19 @@ $loc_465E4F$38300:
 ; Line 4554
 	cmp	edx, 32					; 00000020H
 ; Line 4555
-	jne	SHORT $loc_465E25$38298
+	jne	SHORT $loc_465E25$38299
 ; Line 4556
-	jmp	$loc_465F33$38169
-$loc_465E64$38195:
+	jmp	$loc_465F33$38170
+$loc_465E64$38196:
 ; Line 4558
 	mov	edx, 30					; 0000001eH
 ; Line 4559
 	xor	eax, eax
-$loc_465E6B$38301:
+$loc_465E6B$38302:
 ; Line 4561
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4562
-	jb	$loc_465F33$38169
+	jb	$loc_465F33$38170
 ; Line 4563
 	add	edi, edx
 ; Line 4564
@@ -8856,7 +8855,7 @@ $loc_465E6B$38301:
 ; Line 4566
 	shr	ecx, 2
 ; Line 4567
-	jae	SHORT $loc_465E8F$38302
+	jae	SHORT $loc_465E8F$38303
 ; Line 4568
 	mov	WORD PTR [edi], ax
 ; Line 4569
@@ -8864,8 +8863,8 @@ $loc_465E6B$38301:
 ; Line 4570
 	test	ecx, ecx
 ; Line 4571
-	je	SHORT $loc_465E97$38303
-$loc_465E8F$38302:
+	je	SHORT $loc_465E97$38304
+$loc_465E8F$38303:
 ; Line 4573
 	mov	DWORD PTR [edi], eax
 ; Line 4574
@@ -8873,29 +8872,29 @@ $loc_465E8F$38302:
 ; Line 4575
 	dec	ecx
 ; Line 4576
-	jne	SHORT $loc_465E8F$38302
-$loc_465E97$38303:
+	jne	SHORT $loc_465E8F$38303
+$loc_465E97$38304:
 ; Line 4578
 	sub	edi, 800				; 00000320H
 ; Line 4579
 	test	edx, edx
 ; Line 4580
-	je	SHORT $loc_465EA6$38304
+	je	SHORT $loc_465EA6$38305
 ; Line 4581
 	sub	edx, 2
 ; Line 4582
-	jmp	SHORT $loc_465E6B$38301
-$loc_465EA6$38304:
+	jmp	SHORT $loc_465E6B$38302
+$loc_465EA6$38305:
 ; Line 4584
 	mov	edx, 16					; 00000010H
-$loc_465EAB$38305:
+$loc_465EAB$38306:
 ; Line 4586
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4587
 	jb	NEAR PTR $+130
 ; Line 4588
 	mov	ecx, 8
-$loc_465EBC$38306:
+$loc_465EBC$38307:
 ; Line 4590
 	mov	DWORD PTR [edi], eax
 ; Line 4591
@@ -8903,25 +8902,25 @@ $loc_465EBC$38306:
 ; Line 4592
 	dec	ecx
 ; Line 4593
-	jne	SHORT $loc_465EBC$38306
+	jne	SHORT $loc_465EBC$38307
 ; Line 4594
 	sub	edi, 800				; 00000320H
 ; Line 4595
 	dec	edx
 ; Line 4596
-	jne	SHORT $loc_465EAB$38305
+	jne	SHORT $loc_465EAB$38306
 ; Line 4597
-	jmp	SHORT $loc_465F33$38169
-$loc_465ECF$38196:
+	jmp	SHORT $loc_465F33$38170
+$loc_465ECF$38197:
 ; Line 4599
 	mov	edx, 30					; 0000001eH
 ; Line 4600
 	xor	eax, eax
-$loc_465ED6$38307:
+$loc_465ED6$38308:
 ; Line 4602
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4603
-	jb	SHORT $loc_465F33$38169
+	jb	SHORT $loc_465F33$38170
 ; Line 4604
 	mov	ecx, 32					; 00000020H
 ; Line 4605
@@ -8929,7 +8928,7 @@ $loc_465ED6$38307:
 ; Line 4606
 	shr	ecx, 2
 ; Line 4607
-	jae	SHORT $loc_465EF4$38308
+	jae	SHORT $loc_465EF4$38309
 ; Line 4608
 	mov	WORD PTR [edi], ax
 ; Line 4609
@@ -8937,8 +8936,8 @@ $loc_465ED6$38307:
 ; Line 4610
 	test	ecx, ecx
 ; Line 4611
-	je	SHORT $loc_465EFC$38309
-$loc_465EF4$38308:
+	je	SHORT $loc_465EFC$38310
+$loc_465EF4$38309:
 ; Line 4613
 	mov	DWORD PTR [edi], eax
 ; Line 4614
@@ -8946,31 +8945,31 @@ $loc_465EF4$38308:
 ; Line 4615
 	dec	ecx
 ; Line 4616
-	jne	SHORT $loc_465EF4$38308
-$loc_465EFC$38309:
+	jne	SHORT $loc_465EF4$38309
+$loc_465EFC$38310:
 ; Line 4618
 	sub	edi, 800				; 00000320H
 ; Line 4619
 	test	edx, edx
 ; Line 4620
-	je	SHORT $loc_465F0D$38310
+	je	SHORT $loc_465F0D$38311
 ; Line 4621
 	add	edi, edx
 ; Line 4622
 	sub	edx, 2
 ; Line 4623
-	jmp	SHORT $loc_465ED6$38307
-$loc_465F0D$38310:
+	jmp	SHORT $loc_465ED6$38308
+$loc_465F0D$38311:
 ; Line 4625
 	mov	edx, 16					; 00000010H
-$loc_465F12$38311:
+$loc_465F12$38312:
 ; Line 4627
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4628
-	jb	SHORT $loc_465F33$38169
+	jb	SHORT $loc_465F33$38170
 ; Line 4629
 	mov	ecx, 8
-$loc_465F1F$38312:
+$loc_465F1F$38313:
 ; Line 4631
 	mov	DWORD PTR [edi], eax
 ; Line 4632
@@ -8978,18 +8977,18 @@ $loc_465F1F$38312:
 ; Line 4633
 	dec	ecx
 ; Line 4634
-	jne	SHORT $loc_465F1F$38312
+	jne	SHORT $loc_465F1F$38313
 ; Line 4635
 	sub	edi, 800				; 00000320H
 ; Line 4636
 	dec	edx
 ; Line 4637
-	jne	SHORT $loc_465F12$38311
+	jne	SHORT $loc_465F12$38312
 ; Line 4638
-	jmp	SHORT $loc_465F33$38169
+	jmp	SHORT $loc_465F33$38170
 ; Line 4639
 	pop	eax
-$loc_465F33$38169:
+$loc_465F33$38170:
 ; Line 4641
 	pop	esi
 ; Line 4642
@@ -9027,17 +9026,17 @@ _TEXT	SEGMENT
 ; Line 4660
 	test	al, al
 ; Line 4661
-	je	$loc_466042$38316
+	je	$loc_466042$38317
 ; Line 4662
 	cmp	al, BYTE PTR _lightmax
 ; Line 4663
-	je	$loc_4660A2$38317
+	je	$loc_4660A2$38318
 ; Line 4664
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 4665
 	and	eax, 32768				; 00008000H
 ; Line 4666
-	jne	SHORT $loc_465FD6$38318
+	jne	SHORT $loc_465FD6$38319
 ; Line 4667
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 4668
@@ -9067,26 +9066,26 @@ _TEXT	SEGMENT
 ; Line 4680
 	and	eax, 15					; 0000000fH
 ; Line 4681
-	je	$loc_46612D$38319
+	je	$loc_46612D$38320
 ; Line 4682
 	cmp	ax, 1
 ; Line 4683
-	je	$loc_4661AD$38320
+	je	$loc_4661AD$38321
 ; Line 4684
 	cmp	ax, 2
 ; Line 4685
-	je	$loc_466310$38321
+	je	$loc_466310$38322
 ; Line 4686
 	cmp	ax, 3
 ; Line 4687
-	je	$loc_466611$38322
+	je	$loc_466611$38323
 ; Line 4688
 	cmp	ax, 4
 ; Line 4689
-	je	$loc_466912$38323
+	je	$loc_466912$38324
 ; Line 4690
-	jmp	$loc_466B11$38324
-$loc_465FD6$38318:
+	jmp	$loc_466B11$38325
+$loc_465FD6$38319:
 ; Line 4692
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 4693
@@ -9115,36 +9114,36 @@ $loc_465FD6$38318:
 	shr	eax, 4
 ; Line 4705
 	and	eax, 15					; 0000000fH
-$loc_46600B$38325:
+$loc_46600B$38326:
 ; Line 4707
 	cmp	ax, 8
 ; Line 4708
-	je	$loc_466D10$38326
+	je	$loc_466D10$38327
 ; Line 4709
 	cmp	ax, 9
 ; Line 4710
-	je	$loc_466D7F$38327
+	je	$loc_466D7F$38328
 ; Line 4711
 	cmp	ax, 10					; 0000000aH
 ; Line 4712
-	je	$loc_466E62$38328
+	je	$loc_466E62$38329
 ; Line 4713
 	cmp	ax, 11					; 0000000bH
 ; Line 4714
-	je	$loc_46701C$38329
+	je	$loc_46701C$38330
 ; Line 4715
 	cmp	ax, 12					; 0000000cH
 ; Line 4716
-	je	$loc_4671E1$38330
+	je	$loc_4671E1$38331
 ; Line 4717
-	jmp	$loc_46732D$38331
-$loc_466042$38316:
+	jmp	$loc_46732D$38332
+$loc_466042$38317:
 ; Line 4719
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 4720
 	and	eax, 32768				; 00008000H
 ; Line 4721
-	je	SHORT $loc_466074$38332
+	je	SHORT $loc_466074$38333
 ; Line 4722
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 4723
@@ -9163,7 +9162,7 @@ $loc_466042$38316:
 	add	eax, DWORD PTR [esi]
 ; Line 4730
 	mov	DWORD PTR _gdwPNum, eax
-$loc_466074$38332:
+$loc_466074$38333:
 ; Line 4732
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 4733
@@ -9189,14 +9188,14 @@ $loc_466074$38332:
 ; Line 4743
 	add	eax, 8
 ; Line 4744
-	jmp	$loc_46600B$38325
-$loc_4660A2$38317:
+	jmp	$loc_46600B$38326
+$loc_4660A2$38318:
 ; Line 4746
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 4747
 	and	eax, 32768				; 00008000H
 ; Line 4748
-	je	SHORT $loc_4660D4$38333
+	je	SHORT $loc_4660D4$38334
 ; Line 4749
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 4750
@@ -9215,7 +9214,7 @@ $loc_4660A2$38317:
 	add	eax, DWORD PTR [esi]
 ; Line 4757
 	mov	DWORD PTR _gdwPNum, eax
-$loc_4660D4$38333:
+$loc_4660D4$38334:
 ; Line 4759
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 4760
@@ -9239,45 +9238,45 @@ $loc_4660D4$38333:
 ; Line 4769
 	and	eax, 7
 ; Line 4770
-	je	$loc_46747D$38334
+	je	$loc_46747D$38335
 ; Line 4771
 	cmp	ax, 1
 ; Line 4772
-	je	$loc_4674D9$38335
+	je	$loc_4674D9$38336
 ; Line 4773
 	cmp	ax, 2
 ; Line 4774
-	je	$loc_467599$38336
+	je	$loc_467599$38337
 ; Line 4775
 	cmp	ax, 3
 ; Line 4776
-	je	$loc_467692$38337
+	je	$loc_467692$38338
 ; Line 4777
 	cmp	ax, 4
 ; Line 4778
-	je	$loc_46778F$38338
+	je	$loc_46778F$38339
 ; Line 4779
-	jmp	$loc_46786B$38339
-$loc_46612D$38319:
+	jmp	$loc_46786B$38340
+$loc_46612D$38320:
 ; Line 4781
 	push	ebp
 ; Line 4782
 	mov	ebp, 16					; 00000010H
-$loc_466133$38340:
+$loc_466133$38341:
 ; Line 4784
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4785
-	jb	SHORT $loc_466143$38341
+	jb	SHORT $loc_466143$38342
 ; Line 4786
 	add	esi, 32					; 00000020H
 ; Line 4787
 	add	edi, 32					; 00000020H
 ; Line 4788
-	jmp	SHORT $loc_466166$38342
-$loc_466143$38341:
+	jmp	SHORT $loc_466166$38343
+$loc_466143$38342:
 ; Line 4790
 	mov	ecx, 8
-$loc_466148$38343:
+$loc_466148$38344:
 ; Line 4792
 	mov	eax, DWORD PTR [esi]
 ; Line 4793
@@ -9301,24 +9300,24 @@ $loc_466148$38343:
 ; Line 4802
 	mov	BYTE PTR [edi-1], dl
 ; Line 4803
-	jne	SHORT $loc_466148$38343
-$loc_466166$38342:
+	jne	SHORT $loc_466148$38344
+$loc_466166$38343:
 ; Line 4805
 	sub	edi, 800				; 00000320H
 ; Line 4806
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4807
-	jb	SHORT $loc_46617C$38344
+	jb	SHORT $loc_46617C$38345
 ; Line 4808
 	add	esi, 32					; 00000020H
 ; Line 4809
 	add	edi, 32					; 00000020H
 ; Line 4810
-	jmp	SHORT $loc_46619E$38345
-$loc_46617C$38344:
+	jmp	SHORT $loc_46619E$38346
+$loc_46617C$38345:
 ; Line 4812
 	mov	ecx, 8
-$loc_466181$38346:
+$loc_466181$38347:
 ; Line 4814
 	mov	eax, DWORD PTR [esi]
 ; Line 4815
@@ -9342,19 +9341,19 @@ $loc_466181$38346:
 ; Line 4824
 	mov	BYTE PTR [edi-2], dl
 ; Line 4825
-	jne	SHORT $loc_466181$38346
-$loc_46619E$38345:
+	jne	SHORT $loc_466181$38347
+$loc_46619E$38346:
 ; Line 4827
 	sub	edi, 800				; 00000320H
 ; Line 4828
 	dec	ebp
 ; Line 4829
-	jne	SHORT $loc_466133$38340
+	jne	SHORT $loc_466133$38341
 ; Line 4830
 	pop	ebp
 ; Line 4831
-	jmp	$loc_467944$38347
-$loc_4661AD$38320:
+	jmp	$loc_467944$38348
+$loc_4661AD$38321:
 ; Line 4833
 	push	ebp
 ; Line 4834
@@ -9365,12 +9364,12 @@ $loc_4661AD$38320:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 4837
 	mov	ecx, 32					; 00000020H
-$loc_4661BD$38348:
+$loc_4661BD$38349:
 ; Line 4839
 	push	ecx
 ; Line 4840
 	mov	ebp, 32					; 00000020H
-$loc_4661C3$38349:
+$loc_4661C3$38350:
 ; Line 4842
 	xor	eax, eax
 ; Line 4843
@@ -9380,20 +9379,20 @@ $loc_4661C3$38349:
 ; Line 4845
 	test	al, al
 ; Line 4846
-	js	$loc_4662E2$38350
+	js	$loc_4662E2$38351
 ; Line 4847
 	sub	ebp, eax
 ; Line 4848
 	cmp	edi, DWORD PTR _glClipY
 ; Line 4849
-	jb	SHORT $loc_4661E3$38351
+	jb	SHORT $loc_4661E3$38352
 ; Line 4850
 	add	esi, eax
 ; Line 4851
 	add	edi, eax
 ; Line 4852
-	jmp	$loc_4662D9$38352
-$loc_4661E3$38351:
+	jmp	$loc_4662D9$38353
+$loc_4661E3$38352:
 ; Line 4854
 	mov	ecx, eax
 ; Line 4855
@@ -9403,15 +9402,15 @@ $loc_4661E3$38351:
 ; Line 4857
 	cmp	eax, DWORD PTR _WorldBoolFlag
 ; Line 4858
-	jne	SHORT $loc_466263$38353
+	jne	SHORT $loc_466263$38354
 ; Line 4859
 	shr	ecx, 1
 ; Line 4860
-	jb	SHORT $loc_46622D$38354
+	jb	SHORT $loc_46622D$38355
 ; Line 4861
 	shr	ecx, 1
 ; Line 4862
-	jae	SHORT $loc_466209$38355
+	jae	SHORT $loc_466209$38356
 ; Line 4863
 	mov	dl, BYTE PTR [esi+1]
 ; Line 4864
@@ -9422,12 +9421,12 @@ $loc_4661E3$38351:
 	mov	BYTE PTR [edi+1], dl
 ; Line 4867
 	add	edi, 2
-$loc_466209$38355:
+$loc_466209$38356:
 ; Line 4869
 	test	cl, cl
 ; Line 4870
-	je	SHORT $loc_46622B$38356
-$loc_46620D$38357:
+	je	SHORT $loc_46622B$38357
+$loc_46620D$38358:
 ; Line 4872
 	mov	eax, DWORD PTR [esi]
 ; Line 4873
@@ -9451,11 +9450,11 @@ $loc_46620D$38357:
 ; Line 4882
 	mov	BYTE PTR [edi-1], dl
 ; Line 4883
-	jne	SHORT $loc_46620D$38357
-$loc_46622B$38356:
+	jne	SHORT $loc_46620D$38358
+$loc_46622B$38357:
 ; Line 4885
-	jmp	SHORT $loc_466261$38358
-$loc_46622D$38354:
+	jmp	SHORT $loc_466261$38359
+$loc_46622D$38355:
 ; Line 4887
 	inc	esi
 ; Line 4888
@@ -9463,7 +9462,7 @@ $loc_46622D$38354:
 ; Line 4889
 	shr	ecx, 1
 ; Line 4890
-	jae	SHORT $loc_466240$38359
+	jae	SHORT $loc_466240$38360
 ; Line 4891
 	mov	dl, BYTE PTR [esi]
 ; Line 4892
@@ -9474,12 +9473,12 @@ $loc_46622D$38354:
 	mov	BYTE PTR [edi], dl
 ; Line 4895
 	add	edi, 2
-$loc_466240$38359:
+$loc_466240$38360:
 ; Line 4897
 	test	cl, cl
 ; Line 4898
-	je	SHORT $loc_466261$38358
-$loc_466244$38360:
+	je	SHORT $loc_466261$38359
+$loc_466244$38361:
 ; Line 4900
 	mov	eax, DWORD PTR [esi]
 ; Line 4901
@@ -9503,19 +9502,19 @@ $loc_466244$38360:
 ; Line 4910
 	mov	BYTE PTR [edi-2], dl
 ; Line 4911
-	jne	SHORT $loc_466244$38360
-$loc_466261$38358:
+	jne	SHORT $loc_466244$38361
+$loc_466261$38359:
 ; Line 4913
-	jmp	SHORT $loc_4662D9$38352
-$loc_466263$38353:
+	jmp	SHORT $loc_4662D9$38353
+$loc_466263$38354:
 ; Line 4915
 	shr	ecx, 1
 ; Line 4916
-	jb	SHORT $loc_46629B$38361
+	jb	SHORT $loc_46629B$38362
 ; Line 4917
 	shr	ecx, 1
 ; Line 4918
-	jae	SHORT $loc_466278$38362
+	jae	SHORT $loc_466278$38363
 ; Line 4919
 	mov	dl, BYTE PTR [esi]
 ; Line 4920
@@ -9526,12 +9525,12 @@ $loc_466263$38353:
 	mov	BYTE PTR [edi], dl
 ; Line 4923
 	add	edi, 2
-$loc_466278$38362:
+$loc_466278$38363:
 ; Line 4925
 	test	cl, cl
 ; Line 4926
-	je	SHORT $loc_466299$38363
-$loc_46627C$38364:
+	je	SHORT $loc_466299$38364
+$loc_46627C$38365:
 ; Line 4928
 	mov	eax, DWORD PTR [esi]
 ; Line 4929
@@ -9555,11 +9554,11 @@ $loc_46627C$38364:
 ; Line 4938
 	mov	BYTE PTR [edi-2], dl
 ; Line 4939
-	jne	SHORT $loc_46627C$38364
-$loc_466299$38363:
+	jne	SHORT $loc_46627C$38365
+$loc_466299$38364:
 ; Line 4941
-	jmp	SHORT $loc_4662D9$38352
-$loc_46629B$38361:
+	jmp	SHORT $loc_4662D9$38353
+$loc_46629B$38362:
 ; Line 4943
 	mov	dl, BYTE PTR [esi]
 ; Line 4944
@@ -9573,7 +9572,7 @@ $loc_46629B$38361:
 ; Line 4948
 	shr	ecx, 1
 ; Line 4949
-	jae	SHORT $loc_4662B7$38365
+	jae	SHORT $loc_4662B7$38366
 ; Line 4950
 	mov	dl, BYTE PTR [esi+1]
 ; Line 4951
@@ -9584,12 +9583,12 @@ $loc_46629B$38361:
 	mov	BYTE PTR [edi+1], dl
 ; Line 4954
 	add	edi, 2
-$loc_4662B7$38365:
+$loc_4662B7$38366:
 ; Line 4956
 	test	cl, cl
 ; Line 4957
-	je	SHORT $loc_4662D9$38352
-$loc_4662BB$38366:
+	je	SHORT $loc_4662D9$38353
+$loc_4662BB$38367:
 ; Line 4959
 	mov	eax, DWORD PTR [esi]
 ; Line 4960
@@ -9613,15 +9612,15 @@ $loc_4662BB$38366:
 ; Line 4969
 	mov	BYTE PTR [edi-1], dl
 ; Line 4970
-	jne	SHORT $loc_4662BB$38366
-$loc_4662D9$38352:
+	jne	SHORT $loc_4662BB$38367
+$loc_4662D9$38353:
 ; Line 4972
 	test	ebp, ebp
 ; Line 4973
-	je	SHORT $loc_4662EE$38367
+	je	SHORT $loc_4662EE$38368
 ; Line 4974
-	jmp	$loc_4661C3$38349
-$loc_4662E2$38350:
+	jmp	$loc_4661C3$38350
+$loc_4662E2$38351:
 ; Line 4976
 	neg	al
 ; Line 4977
@@ -9629,8 +9628,8 @@ $loc_4662E2$38350:
 ; Line 4978
 	sub	ebp, eax
 ; Line 4979
-	jne	$loc_4661C3$38349
-$loc_4662EE$38367:
+	jne	$loc_4661C3$38350
+$loc_4662EE$38368:
 ; Line 4981
 	pop	ecx
 ; Line 4982
@@ -9646,12 +9645,12 @@ $loc_4662EE$38367:
 ; Line 4987
 	dec	ecx
 ; Line 4988
-	jne	$loc_4661BD$38348
+	jne	$loc_4661BD$38349
 ; Line 4989
 	pop	ebp
 ; Line 4990
-	jmp	$loc_467944$38347
-$loc_466310$38321:
+	jmp	$loc_467944$38348
+$loc_466310$38322:
 ; Line 4992
 	push	ebp
 ; Line 4993
@@ -9665,7 +9664,7 @@ $loc_466310$38321:
 ; Line 4997
 	sub	eax, DWORD PTR _glClipY
 ; Line 4998
-	jb	SHORT $loc_466370$38368
+	jb	SHORT $loc_466370$38369
 ; Line 4999
 	add	eax, 1023				; 000003ffH
 ; Line 5000
@@ -9673,7 +9672,7 @@ $loc_466310$38321:
 ; Line 5001
 	cmp	eax, 45					; 0000002dH
 ; Line 5002
-	jg	SHORT $loc_46635F$38369
+	jg	SHORT $loc_46635F$38370
 ; Line 5003
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 5004
@@ -9699,15 +9698,15 @@ $loc_466310$38321:
 ; Line 5014
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5015
-	jmp	SHORT $loc_466370$38368
-$loc_46635F$38369:
+	jmp	SHORT $loc_466370$38369
+$loc_46635F$38370:
 ; Line 5017
 	sub	edi, 12288				; 00003000H
 ; Line 5018
 	add	esi, 288				; 00000120H
 ; Line 5019
-	jmp	$loc_466490$38370
-$loc_466370$38368:
+	jmp	$loc_466490$38371
+$loc_466370$38369:
 ; Line 5021
 	add	edi, ebp
 ; Line 5022
@@ -9723,7 +9722,7 @@ $loc_466370$38368:
 ; Line 5027
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5028
-	je	SHORT $loc_466404$38371
+	je	SHORT $loc_466404$38372
 ; Line 5029
 	mov	edx, ecx
 ; Line 5030
@@ -9733,11 +9732,11 @@ $loc_466370$38368:
 ; Line 5032
 	shr	ecx, 1
 ; Line 5033
-	jb	SHORT $loc_4663CB$38372
+	jb	SHORT $loc_4663CB$38373
 ; Line 5034
 	shr	ecx, 1
 ; Line 5035
-	jae	SHORT $loc_4663A7$38373
+	jae	SHORT $loc_4663A7$38374
 ; Line 5036
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5037
@@ -9748,12 +9747,12 @@ $loc_466370$38368:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5040
 	add	edi, 2
-$loc_4663A7$38373:
+$loc_4663A7$38374:
 ; Line 5042
 	test	cl, cl
 ; Line 5043
-	je	SHORT $loc_4663C9$38374
-$loc_4663AB$38375:
+	je	SHORT $loc_4663C9$38375
+$loc_4663AB$38376:
 ; Line 5045
 	mov	eax, DWORD PTR [esi]
 ; Line 5046
@@ -9777,11 +9776,11 @@ $loc_4663AB$38375:
 ; Line 5055
 	mov	BYTE PTR [edi-1], dl
 ; Line 5056
-	jne	SHORT $loc_4663AB$38375
-$loc_4663C9$38374:
+	jne	SHORT $loc_4663AB$38376
+$loc_4663C9$38375:
 ; Line 5058
-	jmp	SHORT $loc_4663FF$38376
-$loc_4663CB$38372:
+	jmp	SHORT $loc_4663FF$38377
+$loc_4663CB$38373:
 ; Line 5060
 	inc	esi
 ; Line 5061
@@ -9789,7 +9788,7 @@ $loc_4663CB$38372:
 ; Line 5062
 	shr	ecx, 1
 ; Line 5063
-	jae	SHORT $loc_4663DE$38377
+	jae	SHORT $loc_4663DE$38378
 ; Line 5064
 	mov	dl, BYTE PTR [esi]
 ; Line 5065
@@ -9800,12 +9799,12 @@ $loc_4663CB$38372:
 	mov	BYTE PTR [edi], dl
 ; Line 5068
 	add	edi, 2
-$loc_4663DE$38377:
+$loc_4663DE$38378:
 ; Line 5070
 	test	cl, cl
 ; Line 5071
-	je	SHORT $loc_4663FF$38376
-$loc_4663E2$38378:
+	je	SHORT $loc_4663FF$38377
+$loc_4663E2$38379:
 ; Line 5073
 	mov	eax, DWORD PTR [esi]
 ; Line 5074
@@ -9829,11 +9828,11 @@ $loc_4663E2$38378:
 ; Line 5083
 	mov	BYTE PTR [edi-2], dl
 ; Line 5084
-	jne	SHORT $loc_4663E2$38378
-$loc_4663FF$38376:
+	jne	SHORT $loc_4663E2$38379
+$loc_4663FF$38377:
 ; Line 5086
 	jmp	NEAR PTR $+130
-$loc_466404$38371:
+$loc_466404$38372:
 ; Line 5088
 	mov	edx, ecx
 ; Line 5089
@@ -9843,11 +9842,11 @@ $loc_466404$38371:
 ; Line 5091
 	shr	ecx, 1
 ; Line 5092
-	jb	SHORT $loc_466443$38379
+	jb	SHORT $loc_466443$38380
 ; Line 5093
 	shr	ecx, 1
 ; Line 5094
-	jae	SHORT $loc_466420$38380
+	jae	SHORT $loc_466420$38381
 ; Line 5095
 	mov	dl, BYTE PTR [esi]
 ; Line 5096
@@ -9858,12 +9857,12 @@ $loc_466404$38371:
 	mov	BYTE PTR [edi], dl
 ; Line 5099
 	add	edi, 2
-$loc_466420$38380:
+$loc_466420$38381:
 ; Line 5101
 	test	cl, cl
 ; Line 5102
-	je	SHORT $loc_466441$38381
-$loc_466424$38382:
+	je	SHORT $loc_466441$38382
+$loc_466424$38383:
 ; Line 5104
 	mov	eax, DWORD PTR [esi]
 ; Line 5105
@@ -9887,11 +9886,11 @@ $loc_466424$38382:
 ; Line 5114
 	mov	BYTE PTR [edi-2], dl
 ; Line 5115
-	jne	SHORT $loc_466424$38382
-$loc_466441$38381:
+	jne	SHORT $loc_466424$38383
+$loc_466441$38382:
 ; Line 5117
-	jmp	SHORT $loc_466481$38383
-$loc_466443$38379:
+	jmp	SHORT $loc_466481$38384
+$loc_466443$38380:
 ; Line 5119
 	mov	dl, BYTE PTR [esi]
 ; Line 5120
@@ -9905,7 +9904,7 @@ $loc_466443$38379:
 ; Line 5124
 	shr	ecx, 1
 ; Line 5125
-	jae	SHORT $loc_46645F$38384
+	jae	SHORT $loc_46645F$38385
 ; Line 5126
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5127
@@ -9916,12 +9915,12 @@ $loc_466443$38379:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5130
 	add	edi, 2
-$loc_46645F$38384:
+$loc_46645F$38385:
 ; Line 5132
 	test	cl, cl
 ; Line 5133
-	je	SHORT $loc_466481$38383
-$loc_466463$38385:
+	je	SHORT $loc_466481$38384
+$loc_466463$38386:
 ; Line 5135
 	mov	eax, DWORD PTR [esi]
 ; Line 5136
@@ -9945,15 +9944,15 @@ $loc_466463$38385:
 ; Line 5145
 	mov	BYTE PTR [edi-1], dl
 ; Line 5146
-	jne	SHORT $loc_466463$38385
-$loc_466481$38383:
+	jne	SHORT $loc_466463$38386
+$loc_466481$38384:
 ; Line 5148
 	sub	edi, 800				; 00000320H
 ; Line 5149
 	sub	ebp, 2
 ; Line 5150
-	jge	$loc_466370$38368
-$loc_466490$38370:
+	jge	$loc_466370$38369
+$loc_466490$38371:
 ; Line 5152
 	mov	ebp, 2
 ; Line 5153
@@ -9961,7 +9960,7 @@ $loc_466490$38370:
 ; Line 5154
 	sub	eax, DWORD PTR _glClipY
 ; Line 5155
-	jb	SHORT $loc_4664E8$38386
+	jb	SHORT $loc_4664E8$38387
 ; Line 5156
 	add	eax, 1023				; 000003ffH
 ; Line 5157
@@ -9969,7 +9968,7 @@ $loc_466490$38370:
 ; Line 5158
 	cmp	eax, 42					; 0000002aH
 ; Line 5159
-	jg	SHORT $loc_4664D7$38387
+	jg	SHORT $loc_4664D7$38388
 ; Line 5160
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 5161
@@ -9995,15 +9994,15 @@ $loc_466490$38370:
 ; Line 5171
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5172
-	jmp	SHORT $loc_4664E8$38386
-$loc_4664D7$38387:
+	jmp	SHORT $loc_4664E8$38387
+$loc_4664D7$38388:
 ; Line 5174
 	sub	edi, 11520				; 00002d00H
 ; Line 5175
 	add	esi, 256				; 00000100H
 ; Line 5176
-	jmp	$loc_46660B$38388
-$loc_4664E8$38386:
+	jmp	$loc_46660B$38389
+$loc_4664E8$38387:
 ; Line 5178
 	add	edi, ebp
 ; Line 5179
@@ -10019,7 +10018,7 @@ $loc_4664E8$38386:
 ; Line 5184
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5185
-	je	SHORT $loc_46657C$38389
+	je	SHORT $loc_46657C$38390
 ; Line 5186
 	mov	edx, ecx
 ; Line 5187
@@ -10029,11 +10028,11 @@ $loc_4664E8$38386:
 ; Line 5189
 	shr	ecx, 1
 ; Line 5190
-	jb	SHORT $loc_466543$38390
+	jb	SHORT $loc_466543$38391
 ; Line 5191
 	shr	ecx, 1
 ; Line 5192
-	jae	SHORT $loc_46651F$38391
+	jae	SHORT $loc_46651F$38392
 ; Line 5193
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5194
@@ -10044,12 +10043,12 @@ $loc_4664E8$38386:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5197
 	add	edi, 2
-$loc_46651F$38391:
+$loc_46651F$38392:
 ; Line 5199
 	test	cl, cl
 ; Line 5200
-	je	SHORT $loc_466541$38392
-$loc_466523$38393:
+	je	SHORT $loc_466541$38393
+$loc_466523$38394:
 ; Line 5202
 	mov	eax, DWORD PTR [esi]
 ; Line 5203
@@ -10073,11 +10072,11 @@ $loc_466523$38393:
 ; Line 5212
 	mov	BYTE PTR [edi-1], dl
 ; Line 5213
-	jne	SHORT $loc_466523$38393
-$loc_466541$38392:
+	jne	SHORT $loc_466523$38394
+$loc_466541$38393:
 ; Line 5215
-	jmp	SHORT $loc_466577$38394
-$loc_466543$38390:
+	jmp	SHORT $loc_466577$38395
+$loc_466543$38391:
 ; Line 5217
 	inc	esi
 ; Line 5218
@@ -10085,7 +10084,7 @@ $loc_466543$38390:
 ; Line 5219
 	shr	ecx, 1
 ; Line 5220
-	jae	SHORT $loc_466556$38395
+	jae	SHORT $loc_466556$38396
 ; Line 5221
 	mov	dl, BYTE PTR [esi]
 ; Line 5222
@@ -10096,12 +10095,12 @@ $loc_466543$38390:
 	mov	BYTE PTR [edi], dl
 ; Line 5225
 	add	edi, 2
-$loc_466556$38395:
+$loc_466556$38396:
 ; Line 5227
 	test	cl, cl
 ; Line 5228
-	je	SHORT $loc_466577$38394
-$loc_46655A$38396:
+	je	SHORT $loc_466577$38395
+$loc_46655A$38397:
 ; Line 5230
 	mov	eax, DWORD PTR [esi]
 ; Line 5231
@@ -10125,11 +10124,11 @@ $loc_46655A$38396:
 ; Line 5240
 	mov	BYTE PTR [edi-2], dl
 ; Line 5241
-	jne	SHORT $loc_46655A$38396
-$loc_466577$38394:
+	jne	SHORT $loc_46655A$38397
+$loc_466577$38395:
 ; Line 5243
 	jmp	NEAR PTR $+130
-$loc_46657C$38389:
+$loc_46657C$38390:
 ; Line 5245
 	mov	edx, ecx
 ; Line 5246
@@ -10139,11 +10138,11 @@ $loc_46657C$38389:
 ; Line 5248
 	shr	ecx, 1
 ; Line 5249
-	jb	SHORT $loc_4665BB$38397
+	jb	SHORT $loc_4665BB$38398
 ; Line 5250
 	shr	ecx, 1
 ; Line 5251
-	jae	SHORT $loc_466598$38398
+	jae	SHORT $loc_466598$38399
 ; Line 5252
 	mov	dl, BYTE PTR [esi]
 ; Line 5253
@@ -10154,12 +10153,12 @@ $loc_46657C$38389:
 	mov	BYTE PTR [edi], dl
 ; Line 5256
 	add	edi, 2
-$loc_466598$38398:
+$loc_466598$38399:
 ; Line 5258
 	test	cl, cl
 ; Line 5259
-	je	SHORT $loc_4665B9$38399
-$loc_46659C$38400:
+	je	SHORT $loc_4665B9$38400
+$loc_46659C$38401:
 ; Line 5261
 	mov	eax, DWORD PTR [esi]
 ; Line 5262
@@ -10183,11 +10182,11 @@ $loc_46659C$38400:
 ; Line 5271
 	mov	BYTE PTR [edi-2], dl
 ; Line 5272
-	jne	SHORT $loc_46659C$38400
-$loc_4665B9$38399:
+	jne	SHORT $loc_46659C$38401
+$loc_4665B9$38400:
 ; Line 5274
-	jmp	SHORT $loc_4665F9$38401
-$loc_4665BB$38397:
+	jmp	SHORT $loc_4665F9$38402
+$loc_4665BB$38398:
 ; Line 5276
 	mov	dl, BYTE PTR [esi]
 ; Line 5277
@@ -10201,7 +10200,7 @@ $loc_4665BB$38397:
 ; Line 5281
 	shr	ecx, 1
 ; Line 5282
-	jae	SHORT $loc_4665D7$38402
+	jae	SHORT $loc_4665D7$38403
 ; Line 5283
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5284
@@ -10212,12 +10211,12 @@ $loc_4665BB$38397:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5287
 	add	edi, 2
-$loc_4665D7$38402:
+$loc_4665D7$38403:
 ; Line 5289
 	test	cl, cl
 ; Line 5290
-	je	SHORT $loc_4665F9$38401
-$loc_4665DB$38403:
+	je	SHORT $loc_4665F9$38402
+$loc_4665DB$38404:
 ; Line 5292
 	mov	eax, DWORD PTR [esi]
 ; Line 5293
@@ -10241,8 +10240,8 @@ $loc_4665DB$38403:
 ; Line 5302
 	mov	BYTE PTR [edi-1], dl
 ; Line 5303
-	jne	SHORT $loc_4665DB$38403
-$loc_4665F9$38401:
+	jne	SHORT $loc_4665DB$38404
+$loc_4665F9$38402:
 ; Line 5305
 	sub	edi, 800				; 00000320H
 ; Line 5306
@@ -10250,13 +10249,13 @@ $loc_4665F9$38401:
 ; Line 5307
 	cmp	ebp, 32					; 00000020H
 ; Line 5308
-	jne	$loc_4664E8$38386
-$loc_46660B$38388:
+	jne	$loc_4664E8$38387
+$loc_46660B$38389:
 ; Line 5310
 	pop	ebp
 ; Line 5311
-	jmp	$loc_467944$38347
-$loc_466611$38322:
+	jmp	$loc_467944$38348
+$loc_466611$38323:
 ; Line 5313
 	push	ebp
 ; Line 5314
@@ -10270,7 +10269,7 @@ $loc_466611$38322:
 ; Line 5318
 	sub	eax, DWORD PTR _glClipY
 ; Line 5319
-	jb	SHORT $loc_466671$38404
+	jb	SHORT $loc_466671$38405
 ; Line 5320
 	add	eax, 1023				; 000003ffH
 ; Line 5321
@@ -10278,7 +10277,7 @@ $loc_466611$38322:
 ; Line 5322
 	cmp	eax, 45					; 0000002dH
 ; Line 5323
-	jg	SHORT $loc_466660$38405
+	jg	SHORT $loc_466660$38406
 ; Line 5324
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 5325
@@ -10304,15 +10303,15 @@ $loc_466611$38322:
 ; Line 5335
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5336
-	jmp	SHORT $loc_466671$38404
-$loc_466660$38405:
+	jmp	SHORT $loc_466671$38405
+$loc_466660$38406:
 ; Line 5338
 	sub	edi, 12288				; 00003000H
 ; Line 5339
 	add	esi, 288				; 00000120H
 ; Line 5340
-	jmp	$loc_466791$38406
-$loc_466671$38404:
+	jmp	$loc_466791$38407
+$loc_466671$38405:
 ; Line 5342
 	mov	ecx, 32					; 00000020H
 ; Line 5343
@@ -10326,15 +10325,15 @@ $loc_466671$38404:
 ; Line 5347
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5348
-	je	SHORT $loc_466703$38407
+	je	SHORT $loc_466703$38408
 ; Line 5349
 	shr	ecx, 1
 ; Line 5350
-	jb	SHORT $loc_4666C3$38408
+	jb	SHORT $loc_4666C3$38409
 ; Line 5351
 	shr	ecx, 1
 ; Line 5352
-	jae	SHORT $loc_46669F$38409
+	jae	SHORT $loc_46669F$38410
 ; Line 5353
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5354
@@ -10345,12 +10344,12 @@ $loc_466671$38404:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5357
 	add	edi, 2
-$loc_46669F$38409:
+$loc_46669F$38410:
 ; Line 5359
 	test	cl, cl
 ; Line 5360
-	je	SHORT $loc_4666C1$38410
-$loc_4666A3$38411:
+	je	SHORT $loc_4666C1$38411
+$loc_4666A3$38412:
 ; Line 5362
 	mov	eax, DWORD PTR [esi]
 ; Line 5363
@@ -10374,11 +10373,11 @@ $loc_4666A3$38411:
 ; Line 5372
 	mov	BYTE PTR [edi-1], dl
 ; Line 5373
-	jne	SHORT $loc_4666A3$38411
-$loc_4666C1$38410:
+	jne	SHORT $loc_4666A3$38412
+$loc_4666C1$38411:
 ; Line 5375
-	jmp	SHORT $loc_4666F7$38412
-$loc_4666C3$38408:
+	jmp	SHORT $loc_4666F7$38413
+$loc_4666C3$38409:
 ; Line 5377
 	inc	esi
 ; Line 5378
@@ -10386,7 +10385,7 @@ $loc_4666C3$38408:
 ; Line 5379
 	shr	ecx, 1
 ; Line 5380
-	jae	SHORT $loc_4666D6$38413
+	jae	SHORT $loc_4666D6$38414
 ; Line 5381
 	mov	dl, BYTE PTR [esi]
 ; Line 5382
@@ -10397,12 +10396,12 @@ $loc_4666C3$38408:
 	mov	BYTE PTR [edi], dl
 ; Line 5385
 	add	edi, 2
-$loc_4666D6$38413:
+$loc_4666D6$38414:
 ; Line 5387
 	test	cl, cl
 ; Line 5388
-	je	SHORT $loc_4666F7$38412
-$loc_4666DA$38414:
+	je	SHORT $loc_4666F7$38413
+$loc_4666DA$38415:
 ; Line 5390
 	mov	eax, DWORD PTR [esi]
 ; Line 5391
@@ -10426,8 +10425,8 @@ $loc_4666DA$38414:
 ; Line 5400
 	mov	BYTE PTR [edi-2], dl
 ; Line 5401
-	jne	SHORT $loc_4666DA$38414
-$loc_4666F7$38412:
+	jne	SHORT $loc_4666DA$38415
+$loc_4666F7$38413:
 ; Line 5403
 	mov	edx, esi
 ; Line 5404
@@ -10436,15 +10435,15 @@ $loc_4666F7$38412:
 	add	esi, edx
 ; Line 5406
 	jmp	NEAR PTR $+130
-$loc_466703$38407:
+$loc_466703$38408:
 ; Line 5408
 	shr	ecx, 1
 ; Line 5409
-	jb	SHORT $loc_46673B$38415
+	jb	SHORT $loc_46673B$38416
 ; Line 5410
 	shr	ecx, 1
 ; Line 5411
-	jae	SHORT $loc_466718$38416
+	jae	SHORT $loc_466718$38417
 ; Line 5412
 	mov	dl, BYTE PTR [esi]
 ; Line 5413
@@ -10455,12 +10454,12 @@ $loc_466703$38407:
 	mov	BYTE PTR [edi], dl
 ; Line 5416
 	add	edi, 2
-$loc_466718$38416:
+$loc_466718$38417:
 ; Line 5418
 	test	cl, cl
 ; Line 5419
-	je	SHORT $loc_466739$38417
-$loc_46671C$38418:
+	je	SHORT $loc_466739$38418
+$loc_46671C$38419:
 ; Line 5421
 	mov	eax, DWORD PTR [esi]
 ; Line 5422
@@ -10484,11 +10483,11 @@ $loc_46671C$38418:
 ; Line 5431
 	mov	BYTE PTR [edi-2], dl
 ; Line 5432
-	jne	SHORT $loc_46671C$38418
-$loc_466739$38417:
+	jne	SHORT $loc_46671C$38419
+$loc_466739$38418:
 ; Line 5434
-	jmp	SHORT $loc_466779$38419
-$loc_46673B$38415:
+	jmp	SHORT $loc_466779$38420
+$loc_46673B$38416:
 ; Line 5436
 	mov	dl, BYTE PTR [esi]
 ; Line 5437
@@ -10502,7 +10501,7 @@ $loc_46673B$38415:
 ; Line 5441
 	shr	ecx, 1
 ; Line 5442
-	jae	SHORT $loc_466757$38420
+	jae	SHORT $loc_466757$38421
 ; Line 5443
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5444
@@ -10513,12 +10512,12 @@ $loc_46673B$38415:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5447
 	add	edi, 2
-$loc_466757$38420:
+$loc_466757$38421:
 ; Line 5449
 	test	cl, cl
 ; Line 5450
-	je	SHORT $loc_466779$38419
-$loc_46675B$38421:
+	je	SHORT $loc_466779$38420
+$loc_46675B$38422:
 ; Line 5452
 	mov	eax, DWORD PTR [esi]
 ; Line 5453
@@ -10542,8 +10541,8 @@ $loc_46675B$38421:
 ; Line 5462
 	mov	BYTE PTR [edi-1], dl
 ; Line 5463
-	jne	SHORT $loc_46675B$38421
-$loc_466779$38419:
+	jne	SHORT $loc_46675B$38422
+$loc_466779$38420:
 ; Line 5465
 	mov	edx, esi
 ; Line 5466
@@ -10557,8 +10556,8 @@ $loc_466779$38419:
 ; Line 5471
 	sub	ebp, 2
 ; Line 5472
-	jge	$loc_466671$38404
-$loc_466791$38406:
+	jge	$loc_466671$38405
+$loc_466791$38407:
 ; Line 5474
 	mov	ebp, 2
 ; Line 5475
@@ -10566,7 +10565,7 @@ $loc_466791$38406:
 ; Line 5476
 	sub	eax, DWORD PTR _glClipY
 ; Line 5477
-	jb	SHORT $loc_4667E9$38422
+	jb	SHORT $loc_4667E9$38423
 ; Line 5478
 	add	eax, 1023				; 000003ffH
 ; Line 5479
@@ -10574,7 +10573,7 @@ $loc_466791$38406:
 ; Line 5480
 	cmp	eax, 42					; 0000002aH
 ; Line 5481
-	jg	SHORT $loc_4667D8$38423
+	jg	SHORT $loc_4667D8$38424
 ; Line 5482
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 5483
@@ -10600,15 +10599,15 @@ $loc_466791$38406:
 ; Line 5493
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5494
-	jmp	SHORT $loc_4667E9$38422
-$loc_4667D8$38423:
+	jmp	SHORT $loc_4667E9$38423
+$loc_4667D8$38424:
 ; Line 5496
 	sub	edi, 11520				; 00002d00H
 ; Line 5497
 	add	esi, 256				; 00000100H
 ; Line 5498
-	jmp	$loc_46690C$38424
-$loc_4667E9$38422:
+	jmp	$loc_46690C$38425
+$loc_4667E9$38423:
 ; Line 5500
 	mov	ecx, 32					; 00000020H
 ; Line 5501
@@ -10622,15 +10621,15 @@ $loc_4667E9$38422:
 ; Line 5505
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5506
-	je	SHORT $loc_46687B$38425
+	je	SHORT $loc_46687B$38426
 ; Line 5507
 	shr	ecx, 1
 ; Line 5508
-	jb	SHORT $loc_46683B$38426
+	jb	SHORT $loc_46683B$38427
 ; Line 5509
 	shr	ecx, 1
 ; Line 5510
-	jae	SHORT $loc_466817$38427
+	jae	SHORT $loc_466817$38428
 ; Line 5511
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5512
@@ -10641,12 +10640,12 @@ $loc_4667E9$38422:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5515
 	add	edi, 2
-$loc_466817$38427:
+$loc_466817$38428:
 ; Line 5517
 	test	cl, cl
 ; Line 5518
-	je	SHORT $loc_466839$38428
-$loc_46681B$38429:
+	je	SHORT $loc_466839$38429
+$loc_46681B$38430:
 ; Line 5520
 	mov	eax, DWORD PTR [esi]
 ; Line 5521
@@ -10670,11 +10669,11 @@ $loc_46681B$38429:
 ; Line 5530
 	mov	BYTE PTR [edi-1], dl
 ; Line 5531
-	jne	SHORT $loc_46681B$38429
-$loc_466839$38428:
+	jne	SHORT $loc_46681B$38430
+$loc_466839$38429:
 ; Line 5533
-	jmp	SHORT $loc_46686F$38430
-$loc_46683B$38426:
+	jmp	SHORT $loc_46686F$38431
+$loc_46683B$38427:
 ; Line 5535
 	inc	esi
 ; Line 5536
@@ -10682,7 +10681,7 @@ $loc_46683B$38426:
 ; Line 5537
 	shr	ecx, 1
 ; Line 5538
-	jae	SHORT $loc_46684E$38431
+	jae	SHORT $loc_46684E$38432
 ; Line 5539
 	mov	dl, BYTE PTR [esi]
 ; Line 5540
@@ -10693,12 +10692,12 @@ $loc_46683B$38426:
 	mov	BYTE PTR [edi], dl
 ; Line 5543
 	add	edi, 2
-$loc_46684E$38431:
+$loc_46684E$38432:
 ; Line 5545
 	test	cl, cl
 ; Line 5546
-	je	SHORT $loc_46686F$38430
-$loc_466852$38432:
+	je	SHORT $loc_46686F$38431
+$loc_466852$38433:
 ; Line 5548
 	mov	eax, DWORD PTR [esi]
 ; Line 5549
@@ -10722,8 +10721,8 @@ $loc_466852$38432:
 ; Line 5558
 	mov	BYTE PTR [edi-2], dl
 ; Line 5559
-	jne	SHORT $loc_466852$38432
-$loc_46686F$38430:
+	jne	SHORT $loc_466852$38433
+$loc_46686F$38431:
 ; Line 5561
 	mov	edx, esi
 ; Line 5562
@@ -10732,15 +10731,15 @@ $loc_46686F$38430:
 	add	esi, edx
 ; Line 5564
 	jmp	NEAR PTR $+130
-$loc_46687B$38425:
+$loc_46687B$38426:
 ; Line 5566
 	shr	ecx, 1
 ; Line 5567
-	jb	SHORT $loc_4668B3$38433
+	jb	SHORT $loc_4668B3$38434
 ; Line 5568
 	shr	ecx, 1
 ; Line 5569
-	jae	SHORT $loc_466890$38434
+	jae	SHORT $loc_466890$38435
 ; Line 5570
 	mov	dl, BYTE PTR [esi]
 ; Line 5571
@@ -10751,12 +10750,12 @@ $loc_46687B$38425:
 	mov	BYTE PTR [edi], dl
 ; Line 5574
 	add	edi, 2
-$loc_466890$38434:
+$loc_466890$38435:
 ; Line 5576
 	test	cl, cl
 ; Line 5577
-	je	SHORT $loc_4668B1$38435
-$loc_466894$38436:
+	je	SHORT $loc_4668B1$38436
+$loc_466894$38437:
 ; Line 5579
 	mov	eax, DWORD PTR [esi]
 ; Line 5580
@@ -10780,11 +10779,11 @@ $loc_466894$38436:
 ; Line 5589
 	mov	BYTE PTR [edi-2], dl
 ; Line 5590
-	jne	SHORT $loc_466894$38436
-$loc_4668B1$38435:
+	jne	SHORT $loc_466894$38437
+$loc_4668B1$38436:
 ; Line 5592
-	jmp	SHORT $loc_4668F1$38437
-$loc_4668B3$38433:
+	jmp	SHORT $loc_4668F1$38438
+$loc_4668B3$38434:
 ; Line 5594
 	mov	dl, BYTE PTR [esi]
 ; Line 5595
@@ -10798,7 +10797,7 @@ $loc_4668B3$38433:
 ; Line 5599
 	shr	ecx, 1
 ; Line 5600
-	jae	SHORT $loc_4668CF$38438
+	jae	SHORT $loc_4668CF$38439
 ; Line 5601
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5602
@@ -10809,12 +10808,12 @@ $loc_4668B3$38433:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5605
 	add	edi, 2
-$loc_4668CF$38438:
+$loc_4668CF$38439:
 ; Line 5607
 	test	cl, cl
 ; Line 5608
-	je	SHORT $loc_4668F1$38437
-$loc_4668D3$38439:
+	je	SHORT $loc_4668F1$38438
+$loc_4668D3$38440:
 ; Line 5610
 	mov	eax, DWORD PTR [esi]
 ; Line 5611
@@ -10838,8 +10837,8 @@ $loc_4668D3$38439:
 ; Line 5620
 	mov	BYTE PTR [edi-1], dl
 ; Line 5621
-	jne	SHORT $loc_4668D3$38439
-$loc_4668F1$38437:
+	jne	SHORT $loc_4668D3$38440
+$loc_4668F1$38438:
 ; Line 5623
 	mov	edx, esi
 ; Line 5624
@@ -10855,13 +10854,13 @@ $loc_4668F1$38437:
 ; Line 5630
 	cmp	ebp, 32					; 00000020H
 ; Line 5631
-	jne	$loc_4667E9$38422
-$loc_46690C$38424:
+	jne	$loc_4667E9$38423
+$loc_46690C$38425:
 ; Line 5633
 	pop	ebp
 ; Line 5634
-	jmp	$loc_467944$38347
-$loc_466912$38323:
+	jmp	$loc_467944$38348
+$loc_466912$38324:
 ; Line 5636
 	push	ebp
 ; Line 5637
@@ -10875,7 +10874,7 @@ $loc_466912$38323:
 ; Line 5641
 	sub	eax, DWORD PTR _glClipY
 ; Line 5642
-	jb	SHORT $loc_466972$38440
+	jb	SHORT $loc_466972$38441
 ; Line 5643
 	add	eax, 1023				; 000003ffH
 ; Line 5644
@@ -10883,7 +10882,7 @@ $loc_466912$38323:
 ; Line 5645
 	cmp	eax, 45					; 0000002dH
 ; Line 5646
-	jg	SHORT $loc_466961$38441
+	jg	SHORT $loc_466961$38442
 ; Line 5647
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 5648
@@ -10909,15 +10908,15 @@ $loc_466912$38323:
 ; Line 5658
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5659
-	jmp	SHORT $loc_466972$38440
-$loc_466961$38441:
+	jmp	SHORT $loc_466972$38441
+$loc_466961$38442:
 ; Line 5661
 	sub	edi, 12288				; 00003000H
 ; Line 5662
 	add	esi, 288				; 00000120H
 ; Line 5663
-	jmp	$loc_466A92$38442
-$loc_466972$38440:
+	jmp	$loc_466A92$38443
+$loc_466972$38441:
 ; Line 5665
 	add	edi, ebp
 ; Line 5666
@@ -10933,7 +10932,7 @@ $loc_466972$38440:
 ; Line 5671
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5672
-	je	SHORT $loc_466A06$38443
+	je	SHORT $loc_466A06$38444
 ; Line 5673
 	mov	edx, ecx
 ; Line 5674
@@ -10943,11 +10942,11 @@ $loc_466972$38440:
 ; Line 5676
 	shr	ecx, 1
 ; Line 5677
-	jb	SHORT $loc_4669CD$38444
+	jb	SHORT $loc_4669CD$38445
 ; Line 5678
 	shr	ecx, 1
 ; Line 5679
-	jae	SHORT $loc_4669A9$38445
+	jae	SHORT $loc_4669A9$38446
 ; Line 5680
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5681
@@ -10958,12 +10957,12 @@ $loc_466972$38440:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5684
 	add	edi, 2
-$loc_4669A9$38445:
+$loc_4669A9$38446:
 ; Line 5686
 	test	cl, cl
 ; Line 5687
-	je	SHORT $loc_4669CB$38446
-$loc_4669AD$38447:
+	je	SHORT $loc_4669CB$38447
+$loc_4669AD$38448:
 ; Line 5689
 	mov	eax, DWORD PTR [esi]
 ; Line 5690
@@ -10987,11 +10986,11 @@ $loc_4669AD$38447:
 ; Line 5699
 	mov	BYTE PTR [edi-1], dl
 ; Line 5700
-	jne	SHORT $loc_4669AD$38447
-$loc_4669CB$38446:
+	jne	SHORT $loc_4669AD$38448
+$loc_4669CB$38447:
 ; Line 5702
-	jmp	SHORT $loc_466A01$38448
-$loc_4669CD$38444:
+	jmp	SHORT $loc_466A01$38449
+$loc_4669CD$38445:
 ; Line 5704
 	inc	esi
 ; Line 5705
@@ -10999,7 +10998,7 @@ $loc_4669CD$38444:
 ; Line 5706
 	shr	ecx, 1
 ; Line 5707
-	jae	SHORT $loc_4669E0$38449
+	jae	SHORT $loc_4669E0$38450
 ; Line 5708
 	mov	dl, BYTE PTR [esi]
 ; Line 5709
@@ -11010,12 +11009,12 @@ $loc_4669CD$38444:
 	mov	BYTE PTR [edi], dl
 ; Line 5712
 	add	edi, 2
-$loc_4669E0$38449:
+$loc_4669E0$38450:
 ; Line 5714
 	test	cl, cl
 ; Line 5715
-	je	SHORT $loc_466A01$38448
-$loc_4669E4$38450:
+	je	SHORT $loc_466A01$38449
+$loc_4669E4$38451:
 ; Line 5717
 	mov	eax, DWORD PTR [esi]
 ; Line 5718
@@ -11039,11 +11038,11 @@ $loc_4669E4$38450:
 ; Line 5727
 	mov	BYTE PTR [edi-2], dl
 ; Line 5728
-	jne	SHORT $loc_4669E4$38450
-$loc_466A01$38448:
+	jne	SHORT $loc_4669E4$38451
+$loc_466A01$38449:
 ; Line 5730
 	jmp	NEAR PTR $+130
-$loc_466A06$38443:
+$loc_466A06$38444:
 ; Line 5732
 	mov	edx, ecx
 ; Line 5733
@@ -11053,11 +11052,11 @@ $loc_466A06$38443:
 ; Line 5735
 	shr	ecx, 1
 ; Line 5736
-	jb	SHORT $loc_466A45$38451
+	jb	SHORT $loc_466A45$38452
 ; Line 5737
 	shr	ecx, 1
 ; Line 5738
-	jae	SHORT $loc_466A22$38452
+	jae	SHORT $loc_466A22$38453
 ; Line 5739
 	mov	dl, BYTE PTR [esi]
 ; Line 5740
@@ -11068,12 +11067,12 @@ $loc_466A06$38443:
 	mov	BYTE PTR [edi], dl
 ; Line 5743
 	add	edi, 2
-$loc_466A22$38452:
+$loc_466A22$38453:
 ; Line 5745
 	test	cl, cl
 ; Line 5746
-	je	SHORT $loc_466A43$38453
-$loc_466A26$38454:
+	je	SHORT $loc_466A43$38454
+$loc_466A26$38455:
 ; Line 5748
 	mov	eax, DWORD PTR [esi]
 ; Line 5749
@@ -11097,11 +11096,11 @@ $loc_466A26$38454:
 ; Line 5758
 	mov	BYTE PTR [edi-2], dl
 ; Line 5759
-	jne	SHORT $loc_466A26$38454
-$loc_466A43$38453:
+	jne	SHORT $loc_466A26$38455
+$loc_466A43$38454:
 ; Line 5761
-	jmp	SHORT $loc_466A83$38455
-$loc_466A45$38451:
+	jmp	SHORT $loc_466A83$38456
+$loc_466A45$38452:
 ; Line 5763
 	mov	dl, BYTE PTR [esi]
 ; Line 5764
@@ -11115,7 +11114,7 @@ $loc_466A45$38451:
 ; Line 5768
 	shr	ecx, 1
 ; Line 5769
-	jae	SHORT $loc_466A61$38456
+	jae	SHORT $loc_466A61$38457
 ; Line 5770
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5771
@@ -11126,12 +11125,12 @@ $loc_466A45$38451:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5774
 	add	edi, 2
-$loc_466A61$38456:
+$loc_466A61$38457:
 ; Line 5776
 	test	cl, cl
 ; Line 5777
-	je	SHORT $loc_466A83$38455
-$loc_466A65$38457:
+	je	SHORT $loc_466A83$38456
+$loc_466A65$38458:
 ; Line 5779
 	mov	eax, DWORD PTR [esi]
 ; Line 5780
@@ -11155,32 +11154,32 @@ $loc_466A65$38457:
 ; Line 5789
 	mov	BYTE PTR [edi-1], dl
 ; Line 5790
-	jne	SHORT $loc_466A65$38457
-$loc_466A83$38455:
+	jne	SHORT $loc_466A65$38458
+$loc_466A83$38456:
 ; Line 5792
 	sub	edi, 800				; 00000320H
 ; Line 5793
 	sub	ebp, 2
 ; Line 5794
-	jge	$loc_466972$38440
-$loc_466A92$38442:
+	jge	$loc_466972$38441
+$loc_466A92$38443:
 ; Line 5796
 	mov	ebp, 8
-$loc_466A97$38458:
+$loc_466A97$38459:
 ; Line 5798
 	cmp	edi, DWORD PTR _glClipY
 ; Line 5799
-	jb	SHORT $loc_466AA7$38459
+	jb	SHORT $loc_466AA7$38460
 ; Line 5800
 	add	esi, 32					; 00000020H
 ; Line 5801
 	add	edi, 32					; 00000020H
 ; Line 5802
-	jmp	SHORT $loc_466ACA$38460
-$loc_466AA7$38459:
+	jmp	SHORT $loc_466ACA$38461
+$loc_466AA7$38460:
 ; Line 5804
 	mov	ecx, 8
-$loc_466AAC$38461:
+$loc_466AAC$38462:
 ; Line 5806
 	mov	eax, DWORD PTR [esi]
 ; Line 5807
@@ -11204,24 +11203,24 @@ $loc_466AAC$38461:
 ; Line 5816
 	mov	BYTE PTR [edi-1], dl
 ; Line 5817
-	jne	SHORT $loc_466AAC$38461
-$loc_466ACA$38460:
+	jne	SHORT $loc_466AAC$38462
+$loc_466ACA$38461:
 ; Line 5819
 	sub	edi, 800				; 00000320H
 ; Line 5820
 	cmp	edi, DWORD PTR _glClipY
 ; Line 5821
-	jb	SHORT $loc_466AE0$38462
+	jb	SHORT $loc_466AE0$38463
 ; Line 5822
 	add	esi, 32					; 00000020H
 ; Line 5823
 	add	edi, 32					; 00000020H
 ; Line 5824
-	jmp	SHORT $loc_466B02$38463
-$loc_466AE0$38462:
+	jmp	SHORT $loc_466B02$38464
+$loc_466AE0$38463:
 ; Line 5826
 	mov	ecx, 8
-$loc_466AE5$38464:
+$loc_466AE5$38465:
 ; Line 5828
 	mov	eax, DWORD PTR [esi]
 ; Line 5829
@@ -11245,19 +11244,19 @@ $loc_466AE5$38464:
 ; Line 5838
 	mov	BYTE PTR [edi-2], dl
 ; Line 5839
-	jne	SHORT $loc_466AE5$38464
-$loc_466B02$38463:
+	jne	SHORT $loc_466AE5$38465
+$loc_466B02$38464:
 ; Line 5841
 	sub	edi, 800				; 00000320H
 ; Line 5842
 	dec	ebp
 ; Line 5843
-	jne	SHORT $loc_466A97$38458
+	jne	SHORT $loc_466A97$38459
 ; Line 5844
 	pop	ebp
 ; Line 5845
-	jmp	$loc_467944$38347
-$loc_466B11$38324:
+	jmp	$loc_467944$38348
+$loc_466B11$38325:
 ; Line 5847
 	push	ebp
 ; Line 5848
@@ -11271,7 +11270,7 @@ $loc_466B11$38324:
 ; Line 5852
 	sub	eax, DWORD PTR _glClipY
 ; Line 5853
-	jb	SHORT $loc_466B71$38465
+	jb	SHORT $loc_466B71$38466
 ; Line 5854
 	add	eax, 1023				; 000003ffH
 ; Line 5855
@@ -11279,7 +11278,7 @@ $loc_466B11$38324:
 ; Line 5856
 	cmp	eax, 45					; 0000002dH
 ; Line 5857
-	jg	SHORT $loc_466B60$38466
+	jg	SHORT $loc_466B60$38467
 ; Line 5858
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 5859
@@ -11305,15 +11304,15 @@ $loc_466B11$38324:
 ; Line 5869
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5870
-	jmp	SHORT $loc_466B71$38465
-$loc_466B60$38466:
+	jmp	SHORT $loc_466B71$38466
+$loc_466B60$38467:
 ; Line 5872
 	sub	edi, 12288				; 00003000H
 ; Line 5873
 	add	esi, 288				; 00000120H
 ; Line 5874
-	jmp	$loc_466C91$38467
-$loc_466B71$38465:
+	jmp	$loc_466C91$38468
+$loc_466B71$38466:
 ; Line 5876
 	mov	ecx, 32					; 00000020H
 ; Line 5877
@@ -11327,15 +11326,15 @@ $loc_466B71$38465:
 ; Line 5881
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 5882
-	je	SHORT $loc_466C03$38468
+	je	SHORT $loc_466C03$38469
 ; Line 5883
 	shr	ecx, 1
 ; Line 5884
-	jb	SHORT $loc_466BC3$38469
+	jb	SHORT $loc_466BC3$38470
 ; Line 5885
 	shr	ecx, 1
 ; Line 5886
-	jae	SHORT $loc_466B9F$38470
+	jae	SHORT $loc_466B9F$38471
 ; Line 5887
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5888
@@ -11346,12 +11345,12 @@ $loc_466B71$38465:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5891
 	add	edi, 2
-$loc_466B9F$38470:
+$loc_466B9F$38471:
 ; Line 5893
 	test	cl, cl
 ; Line 5894
-	je	SHORT $loc_466BC1$38471
-$loc_466BA3$38472:
+	je	SHORT $loc_466BC1$38472
+$loc_466BA3$38473:
 ; Line 5896
 	mov	eax, DWORD PTR [esi]
 ; Line 5897
@@ -11375,11 +11374,11 @@ $loc_466BA3$38472:
 ; Line 5906
 	mov	BYTE PTR [edi-1], dl
 ; Line 5907
-	jne	SHORT $loc_466BA3$38472
-$loc_466BC1$38471:
+	jne	SHORT $loc_466BA3$38473
+$loc_466BC1$38472:
 ; Line 5909
-	jmp	SHORT $loc_466BF7$38473
-$loc_466BC3$38469:
+	jmp	SHORT $loc_466BF7$38474
+$loc_466BC3$38470:
 ; Line 5911
 	inc	esi
 ; Line 5912
@@ -11387,7 +11386,7 @@ $loc_466BC3$38469:
 ; Line 5913
 	shr	ecx, 1
 ; Line 5914
-	jae	SHORT $loc_466BD6$38474
+	jae	SHORT $loc_466BD6$38475
 ; Line 5915
 	mov	dl, BYTE PTR [esi]
 ; Line 5916
@@ -11398,12 +11397,12 @@ $loc_466BC3$38469:
 	mov	BYTE PTR [edi], dl
 ; Line 5919
 	add	edi, 2
-$loc_466BD6$38474:
+$loc_466BD6$38475:
 ; Line 5921
 	test	cl, cl
 ; Line 5922
-	je	SHORT $loc_466BF7$38473
-$loc_466BDA$38475:
+	je	SHORT $loc_466BF7$38474
+$loc_466BDA$38476:
 ; Line 5924
 	mov	eax, DWORD PTR [esi]
 ; Line 5925
@@ -11427,8 +11426,8 @@ $loc_466BDA$38475:
 ; Line 5934
 	mov	BYTE PTR [edi-2], dl
 ; Line 5935
-	jne	SHORT $loc_466BDA$38475
-$loc_466BF7$38473:
+	jne	SHORT $loc_466BDA$38476
+$loc_466BF7$38474:
 ; Line 5937
 	mov	edx, esi
 ; Line 5938
@@ -11437,15 +11436,15 @@ $loc_466BF7$38473:
 	add	esi, edx
 ; Line 5940
 	jmp	NEAR PTR $+130
-$loc_466C03$38468:
+$loc_466C03$38469:
 ; Line 5942
 	shr	ecx, 1
 ; Line 5943
-	jb	SHORT $loc_466C3B$38476
+	jb	SHORT $loc_466C3B$38477
 ; Line 5944
 	shr	ecx, 1
 ; Line 5945
-	jae	SHORT $loc_466C18$38477
+	jae	SHORT $loc_466C18$38478
 ; Line 5946
 	mov	dl, BYTE PTR [esi]
 ; Line 5947
@@ -11456,12 +11455,12 @@ $loc_466C03$38468:
 	mov	BYTE PTR [edi], dl
 ; Line 5950
 	add	edi, 2
-$loc_466C18$38477:
+$loc_466C18$38478:
 ; Line 5952
 	test	cl, cl
 ; Line 5953
-	je	SHORT $loc_466C39$38478
-$loc_466C1C$38479:
+	je	SHORT $loc_466C39$38479
+$loc_466C1C$38480:
 ; Line 5955
 	mov	eax, DWORD PTR [esi]
 ; Line 5956
@@ -11485,11 +11484,11 @@ $loc_466C1C$38479:
 ; Line 5965
 	mov	BYTE PTR [edi-2], dl
 ; Line 5966
-	jne	SHORT $loc_466C1C$38479
-$loc_466C39$38478:
+	jne	SHORT $loc_466C1C$38480
+$loc_466C39$38479:
 ; Line 5968
-	jmp	SHORT $loc_466C79$38480
-$loc_466C3B$38476:
+	jmp	SHORT $loc_466C79$38481
+$loc_466C3B$38477:
 ; Line 5970
 	mov	dl, BYTE PTR [esi]
 ; Line 5971
@@ -11503,7 +11502,7 @@ $loc_466C3B$38476:
 ; Line 5975
 	shr	ecx, 1
 ; Line 5976
-	jae	SHORT $loc_466C57$38481
+	jae	SHORT $loc_466C57$38482
 ; Line 5977
 	mov	dl, BYTE PTR [esi+1]
 ; Line 5978
@@ -11514,12 +11513,12 @@ $loc_466C3B$38476:
 	mov	BYTE PTR [edi+1], dl
 ; Line 5981
 	add	edi, 2
-$loc_466C57$38481:
+$loc_466C57$38482:
 ; Line 5983
 	test	cl, cl
 ; Line 5984
-	je	SHORT $loc_466C79$38480
-$loc_466C5B$38482:
+	je	SHORT $loc_466C79$38481
+$loc_466C5B$38483:
 ; Line 5986
 	mov	eax, DWORD PTR [esi]
 ; Line 5987
@@ -11543,8 +11542,8 @@ $loc_466C5B$38482:
 ; Line 5996
 	mov	BYTE PTR [edi-1], dl
 ; Line 5997
-	jne	SHORT $loc_466C5B$38482
-$loc_466C79$38480:
+	jne	SHORT $loc_466C5B$38483
+$loc_466C79$38481:
 ; Line 5999
 	mov	edx, esi
 ; Line 6000
@@ -11558,25 +11557,25 @@ $loc_466C79$38480:
 ; Line 6005
 	sub	ebp, 2
 ; Line 6006
-	jge	$loc_466B71$38465
-$loc_466C91$38467:
+	jge	$loc_466B71$38466
+$loc_466C91$38468:
 ; Line 6008
 	mov	ebp, 8
-$loc_466C96$38483:
+$loc_466C96$38484:
 ; Line 6010
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6011
-	jb	SHORT $loc_466CA6$38484
+	jb	SHORT $loc_466CA6$38485
 ; Line 6012
 	add	esi, 32					; 00000020H
 ; Line 6013
 	add	edi, 32					; 00000020H
 ; Line 6014
-	jmp	SHORT $loc_466CC9$38485
-$loc_466CA6$38484:
+	jmp	SHORT $loc_466CC9$38486
+$loc_466CA6$38485:
 ; Line 6016
 	mov	ecx, 8
-$loc_466CAB$38486:
+$loc_466CAB$38487:
 ; Line 6018
 	mov	eax, DWORD PTR [esi]
 ; Line 6019
@@ -11600,24 +11599,24 @@ $loc_466CAB$38486:
 ; Line 6028
 	mov	BYTE PTR [edi-1], dl
 ; Line 6029
-	jne	SHORT $loc_466CAB$38486
-$loc_466CC9$38485:
+	jne	SHORT $loc_466CAB$38487
+$loc_466CC9$38486:
 ; Line 6031
 	sub	edi, 800				; 00000320H
 ; Line 6032
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6033
-	jb	SHORT $loc_466CDF$38487
+	jb	SHORT $loc_466CDF$38488
 ; Line 6034
 	add	esi, 32					; 00000020H
 ; Line 6035
 	add	edi, 32					; 00000020H
 ; Line 6036
-	jmp	SHORT $loc_466D01$38488
-$loc_466CDF$38487:
+	jmp	SHORT $loc_466D01$38489
+$loc_466CDF$38488:
 ; Line 6038
 	mov	ecx, 8
-$loc_466CE4$38489:
+$loc_466CE4$38490:
 ; Line 6040
 	mov	eax, DWORD PTR [esi]
 ; Line 6041
@@ -11641,36 +11640,36 @@ $loc_466CE4$38489:
 ; Line 6050
 	mov	BYTE PTR [edi-2], dl
 ; Line 6051
-	jne	SHORT $loc_466CE4$38489
-$loc_466D01$38488:
+	jne	SHORT $loc_466CE4$38490
+$loc_466D01$38489:
 ; Line 6053
 	sub	edi, 800				; 00000320H
 ; Line 6054
 	dec	ebp
 ; Line 6055
-	jne	SHORT $loc_466C96$38483
+	jne	SHORT $loc_466C96$38484
 ; Line 6056
 	pop	ebp
 ; Line 6057
-	jmp	$loc_467944$38347
-$loc_466D10$38326:
+	jmp	$loc_467944$38348
+$loc_466D10$38327:
 ; Line 6059
 	mov	edx, 16					; 00000010H
-$loc_466D15$38490:
+$loc_466D15$38491:
 ; Line 6061
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6062
-	jb	SHORT $loc_466D25$38491
+	jb	SHORT $loc_466D25$38492
 ; Line 6063
 	add	esi, 32					; 00000020H
 ; Line 6064
 	add	edi, 32					; 00000020H
 ; Line 6065
-	jmp	SHORT $loc_466D41$38492
-$loc_466D25$38491:
+	jmp	SHORT $loc_466D41$38493
+$loc_466D25$38492:
 ; Line 6067
 	mov	ecx, 8
-$loc_466D2A$38493:
+$loc_466D2A$38494:
 ; Line 6069
 	mov	eax, DWORD PTR [esi]
 ; Line 6070
@@ -11692,24 +11691,24 @@ $loc_466D2A$38493:
 ; Line 6078
 	dec	ecx
 ; Line 6079
-	jne	SHORT $loc_466D2A$38493
-$loc_466D41$38492:
+	jne	SHORT $loc_466D2A$38494
+$loc_466D41$38493:
 ; Line 6081
 	sub	edi, 800				; 00000320H
 ; Line 6082
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6083
-	jb	SHORT $loc_466D57$38494
+	jb	SHORT $loc_466D57$38495
 ; Line 6084
 	add	esi, 32					; 00000020H
 ; Line 6085
 	add	edi, 32					; 00000020H
 ; Line 6086
-	jmp	SHORT $loc_466D71$38495
-$loc_466D57$38494:
+	jmp	SHORT $loc_466D71$38496
+$loc_466D57$38495:
 ; Line 6088
 	mov	ecx, 8
-$loc_466D5C$38496:
+$loc_466D5C$38497:
 ; Line 6090
 	mov	eax, DWORD PTR [esi]
 ; Line 6091
@@ -11727,17 +11726,17 @@ $loc_466D5C$38496:
 ; Line 6097
 	dec	ecx
 ; Line 6098
-	jne	SHORT $loc_466D5C$38496
-$loc_466D71$38495:
+	jne	SHORT $loc_466D5C$38497
+$loc_466D71$38496:
 ; Line 6100
 	sub	edi, 800				; 00000320H
 ; Line 6101
 	dec	edx
 ; Line 6102
-	jne	SHORT $loc_466D15$38490
+	jne	SHORT $loc_466D15$38491
 ; Line 6103
-	jmp	$loc_467944$38347
-$loc_466D7F$38327:
+	jmp	$loc_467944$38348
+$loc_466D7F$38328:
 ; Line 6105
 	mov	eax, edi
 ; Line 6106
@@ -11746,12 +11745,12 @@ $loc_466D7F$38327:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6108
 	mov	ecx, 32					; 00000020H
-$loc_466D8E$38497:
+$loc_466D8E$38498:
 ; Line 6110
 	push	ecx
 ; Line 6111
 	mov	edx, 32					; 00000020H
-$loc_466D94$38498:
+$loc_466D94$38499:
 ; Line 6113
 	xor	eax, eax
 ; Line 6114
@@ -11761,20 +11760,20 @@ $loc_466D94$38498:
 ; Line 6116
 	test	al, al
 ; Line 6117
-	js	$loc_466E35$38499
+	js	$loc_466E35$38500
 ; Line 6118
 	sub	edx, eax
 ; Line 6119
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6120
-	jb	SHORT $loc_466DB1$38500
+	jb	SHORT $loc_466DB1$38501
 ; Line 6121
 	add	esi, eax
 ; Line 6122
 	add	edi, eax
 ; Line 6123
-	jmp	SHORT $loc_466E2C$38501
-$loc_466DB1$38500:
+	jmp	SHORT $loc_466E2C$38502
+$loc_466DB1$38501:
 ; Line 6125
 	mov	ecx, eax
 ; Line 6126
@@ -11784,11 +11783,11 @@ $loc_466DB1$38500:
 ; Line 6128
 	cmp	eax, DWORD PTR _WorldBoolFlag
 ; Line 6129
-	jne	SHORT $loc_466DF5$38502
+	jne	SHORT $loc_466DF5$38503
 ; Line 6130
 	shr	ecx, 1
 ; Line 6131
-	jae	SHORT $loc_466DCC$38503
+	jae	SHORT $loc_466DCC$38504
 ; Line 6132
 	inc	esi
 ; Line 6133
@@ -11796,14 +11795,14 @@ $loc_466DB1$38500:
 ; Line 6134
 	test	ecx, ecx
 ; Line 6135
-	je	SHORT $loc_466E2C$38501
+	je	SHORT $loc_466E2C$38502
 ; Line 6136
-	jmp	SHORT $loc_466E05$38504
-$loc_466DCC$38503:
+	jmp	SHORT $loc_466E05$38505
+$loc_466DCC$38504:
 ; Line 6138
 	shr	ecx, 1
 ; Line 6139
-	jae	SHORT $loc_466DDC$38505
+	jae	SHORT $loc_466DDC$38506
 ; Line 6140
 	inc	esi
 ; Line 6141
@@ -11819,8 +11818,8 @@ $loc_466DCC$38503:
 ; Line 6146
 	test	ecx, ecx
 ; Line 6147
-	je	SHORT $loc_466E2C$38501
-$loc_466DDC$38505:
+	je	SHORT $loc_466E2C$38502
+$loc_466DDC$38506:
 ; Line 6149
 	mov	eax, DWORD PTR [esi]
 ; Line 6150
@@ -11842,14 +11841,14 @@ $loc_466DDC$38505:
 ; Line 6158
 	dec	ecx
 ; Line 6159
-	jne	SHORT $loc_466DDC$38505
+	jne	SHORT $loc_466DDC$38506
 ; Line 6160
-	jmp	SHORT $loc_466E2C$38501
-$loc_466DF5$38502:
+	jmp	SHORT $loc_466E2C$38502
+$loc_466DF5$38503:
 ; Line 6162
 	shr	ecx, 1
 ; Line 6163
-	jae	SHORT $loc_466E05$38504
+	jae	SHORT $loc_466E05$38505
 ; Line 6164
 	mov	al, BYTE PTR [esi]
 ; Line 6165
@@ -11861,14 +11860,14 @@ $loc_466DF5$38502:
 ; Line 6168
 	test	ecx, ecx
 ; Line 6169
-	je	SHORT $loc_466E2C$38501
+	je	SHORT $loc_466E2C$38502
 ; Line 6170
-	jmp	SHORT $loc_466DCC$38503
-$loc_466E05$38504:
+	jmp	SHORT $loc_466DCC$38504
+$loc_466E05$38505:
 ; Line 6172
 	shr	ecx, 1
 ; Line 6173
-	jae	SHORT $loc_466E17$38506
+	jae	SHORT $loc_466E17$38507
 ; Line 6174
 	mov	al, BYTE PTR [esi]
 ; Line 6175
@@ -11880,8 +11879,8 @@ $loc_466E05$38504:
 ; Line 6178
 	test	ecx, ecx
 ; Line 6179
-	je	SHORT $loc_466E2C$38501
-$loc_466E17$38506:
+	je	SHORT $loc_466E2C$38502
+$loc_466E17$38507:
 ; Line 6181
 	mov	eax, DWORD PTR [esi]
 ; Line 6182
@@ -11899,15 +11898,15 @@ $loc_466E17$38506:
 ; Line 6188
 	dec	ecx
 ; Line 6189
-	jne	SHORT $loc_466E17$38506
-$loc_466E2C$38501:
+	jne	SHORT $loc_466E17$38507
+$loc_466E2C$38502:
 ; Line 6191
 	test	edx, edx
 ; Line 6192
-	je	SHORT $loc_466E41$38507
+	je	SHORT $loc_466E41$38508
 ; Line 6193
-	jmp	$loc_466D94$38498
-$loc_466E35$38499:
+	jmp	$loc_466D94$38499
+$loc_466E35$38500:
 ; Line 6195
 	neg	al
 ; Line 6196
@@ -11915,8 +11914,8 @@ $loc_466E35$38499:
 ; Line 6197
 	sub	edx, eax
 ; Line 6198
-	jne	$loc_466D94$38498
-$loc_466E41$38507:
+	jne	$loc_466D94$38499
+$loc_466E41$38508:
 ; Line 6200
 	pop	ecx
 ; Line 6201
@@ -11932,10 +11931,10 @@ $loc_466E41$38507:
 ; Line 6206
 	dec	ecx
 ; Line 6207
-	jne	$loc_466D8E$38497
+	jne	$loc_466D8E$38498
 ; Line 6208
-	jmp	$loc_467944$38347
-$loc_466E62$38328:
+	jmp	$loc_467944$38348
+$loc_466E62$38329:
 ; Line 6210
 	xor	eax, eax
 ; Line 6211
@@ -11947,7 +11946,7 @@ $loc_466E62$38328:
 ; Line 6214
 	sub	eax, DWORD PTR _glClipY
 ; Line 6215
-	jb	SHORT $loc_466EC1$38508
+	jb	SHORT $loc_466EC1$38509
 ; Line 6216
 	add	eax, 1023				; 000003ffH
 ; Line 6217
@@ -11955,7 +11954,7 @@ $loc_466E62$38328:
 ; Line 6218
 	cmp	eax, 45					; 0000002dH
 ; Line 6219
-	jg	SHORT $loc_466EB0$38509
+	jg	SHORT $loc_466EB0$38510
 ; Line 6220
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 6221
@@ -11981,15 +11980,15 @@ $loc_466E62$38328:
 ; Line 6231
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6232
-	jmp	SHORT $loc_466EC1$38508
-$loc_466EB0$38509:
+	jmp	SHORT $loc_466EC1$38509
+$loc_466EB0$38510:
 ; Line 6234
 	sub	edi, 12288				; 00003000H
 ; Line 6235
 	add	esi, 288				; 00000120H
 ; Line 6236
 	jmp	NEAR PTR $+131
-$loc_466EC1$38508:
+$loc_466EC1$38509:
 ; Line 6238
 	add	edi, edx
 ; Line 6239
@@ -12005,11 +12004,11 @@ $loc_466EC1$38508:
 ; Line 6244
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6245
-	je	SHORT $loc_466F0A$38510
+	je	SHORT $loc_466F0A$38511
 ; Line 6246
 	shr	ecx, 2
 ; Line 6247
-	jae	SHORT $loc_466EF1$38511
+	jae	SHORT $loc_466EF1$38512
 ; Line 6248
 	mov	ax, WORD PTR [esi+2]
 ; Line 6249
@@ -12025,8 +12024,8 @@ $loc_466EC1$38508:
 ; Line 6254
 	test	ecx, ecx
 ; Line 6255
-	je	SHORT $loc_466F34$38512
-$loc_466EF1$38511:
+	je	SHORT $loc_466F34$38513
+$loc_466EF1$38512:
 ; Line 6257
 	mov	eax, DWORD PTR [esi]
 ; Line 6258
@@ -12048,14 +12047,14 @@ $loc_466EF1$38511:
 ; Line 6266
 	dec	ecx
 ; Line 6267
-	jne	SHORT $loc_466EF1$38511
+	jne	SHORT $loc_466EF1$38512
 ; Line 6268
-	jmp	SHORT $loc_466F34$38512
-$loc_466F0A$38510:
+	jmp	SHORT $loc_466F34$38513
+$loc_466F0A$38511:
 ; Line 6270
 	shr	ecx, 2
 ; Line 6271
-	jae	SHORT $loc_466F1F$38513
+	jae	SHORT $loc_466F1F$38514
 ; Line 6272
 	mov	ax, WORD PTR [esi+2]
 ; Line 6273
@@ -12067,8 +12066,8 @@ $loc_466F0A$38510:
 ; Line 6276
 	test	ecx, ecx
 ; Line 6277
-	je	SHORT $loc_466F34$38512
-$loc_466F1F$38513:
+	je	SHORT $loc_466F34$38513
+$loc_466F1F$38514:
 ; Line 6279
 	mov	eax, DWORD PTR [esi]
 ; Line 6280
@@ -12086,14 +12085,14 @@ $loc_466F1F$38513:
 ; Line 6286
 	dec	ecx
 ; Line 6287
-	jne	SHORT $loc_466F1F$38513
-$loc_466F34$38512:
+	jne	SHORT $loc_466F1F$38514
+$loc_466F34$38513:
 ; Line 6289
 	sub	edi, 800				; 00000320H
 ; Line 6290
 	sub	edx, 2
 ; Line 6291
-	jge	SHORT $loc_466EC1$38508
+	jge	SHORT $loc_466EC1$38509
 ; Line 6293
 	mov	edx, 2
 ; Line 6294
@@ -12101,7 +12100,7 @@ $loc_466F34$38512:
 ; Line 6295
 	sub	eax, DWORD PTR _glClipY
 ; Line 6296
-	jb	SHORT $loc_466F97$38514
+	jb	SHORT $loc_466F97$38515
 ; Line 6297
 	add	eax, 1023				; 000003ffH
 ; Line 6298
@@ -12109,7 +12108,7 @@ $loc_466F34$38512:
 ; Line 6299
 	cmp	eax, 42					; 0000002aH
 ; Line 6300
-	jg	SHORT $loc_466F86$38515
+	jg	SHORT $loc_466F86$38516
 ; Line 6301
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 6302
@@ -12135,15 +12134,15 @@ $loc_466F34$38512:
 ; Line 6312
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6313
-	jmp	SHORT $loc_466F97$38514
-$loc_466F86$38515:
+	jmp	SHORT $loc_466F97$38515
+$loc_466F86$38516:
 ; Line 6315
 	sub	edi, 11520				; 00002d00H
 ; Line 6316
 	add	esi, 256				; 00000100H
 ; Line 6317
-	jmp	$loc_467944$38347
-$loc_466F97$38514:
+	jmp	$loc_467944$38348
+$loc_466F97$38515:
 ; Line 6319
 	add	edi, edx
 ; Line 6320
@@ -12159,11 +12158,11 @@ $loc_466F97$38514:
 ; Line 6325
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6326
-	je	SHORT $loc_466FE0$38516
+	je	SHORT $loc_466FE0$38517
 ; Line 6327
 	shr	ecx, 2
 ; Line 6328
-	jae	SHORT $loc_466FC7$38517
+	jae	SHORT $loc_466FC7$38518
 ; Line 6329
 	mov	ax, WORD PTR [esi+2]
 ; Line 6330
@@ -12179,8 +12178,8 @@ $loc_466F97$38514:
 ; Line 6335
 	test	ecx, ecx
 ; Line 6336
-	je	SHORT $loc_467009$38518
-$loc_466FC7$38517:
+	je	SHORT $loc_467009$38519
+$loc_466FC7$38518:
 ; Line 6338
 	mov	eax, DWORD PTR [esi]
 ; Line 6339
@@ -12202,14 +12201,14 @@ $loc_466FC7$38517:
 ; Line 6347
 	dec	ecx
 ; Line 6348
-	jne	SHORT $loc_466FC7$38517
+	jne	SHORT $loc_466FC7$38518
 ; Line 6349
-	jmp	SHORT $loc_467009$38518
-$loc_466FE0$38516:
+	jmp	SHORT $loc_467009$38519
+$loc_466FE0$38517:
 ; Line 6351
 	shr	ecx, 2
 ; Line 6352
-	jae	SHORT $loc_466FF4$38519
+	jae	SHORT $loc_466FF4$38520
 ; Line 6353
 	mov	ax, WORD PTR [esi+2]
 ; Line 6354
@@ -12221,8 +12220,8 @@ $loc_466FE0$38516:
 ; Line 6357
 	dec	ecx
 ; Line 6358
-	je	SHORT $loc_467009$38518
-$loc_466FF4$38519:
+	je	SHORT $loc_467009$38519
+$loc_466FF4$38520:
 ; Line 6360
 	mov	eax, DWORD PTR [esi]
 ; Line 6361
@@ -12240,8 +12239,8 @@ $loc_466FF4$38519:
 ; Line 6367
 	dec	ecx
 ; Line 6368
-	jne	SHORT $loc_466FF4$38519
-$loc_467009$38518:
+	jne	SHORT $loc_466FF4$38520
+$loc_467009$38519:
 ; Line 6370
 	sub	edi, 800				; 00000320H
 ; Line 6371
@@ -12249,10 +12248,10 @@ $loc_467009$38518:
 ; Line 6372
 	cmp	edx, 32					; 00000020H
 ; Line 6373
-	jne	SHORT $loc_466F97$38514
+	jne	SHORT $loc_466F97$38515
 ; Line 6374
-	jmp	$loc_467944$38347
-$loc_46701C$38329:
+	jmp	$loc_467944$38348
+$loc_46701C$38330:
 ; Line 6376
 	push	ebp
 ; Line 6377
@@ -12266,7 +12265,7 @@ $loc_46701C$38329:
 ; Line 6381
 	sub	eax, DWORD PTR _glClipY
 ; Line 6382
-	jb	SHORT $loc_46707C$38520
+	jb	SHORT $loc_46707C$38521
 ; Line 6383
 	add	eax, 1023				; 000003ffH
 ; Line 6384
@@ -12274,7 +12273,7 @@ $loc_46701C$38329:
 ; Line 6385
 	cmp	eax, 45					; 0000002dH
 ; Line 6386
-	jg	SHORT $loc_46706B$38521
+	jg	SHORT $loc_46706B$38522
 ; Line 6387
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 6388
@@ -12300,15 +12299,15 @@ $loc_46701C$38329:
 ; Line 6398
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6399
-	jmp	SHORT $loc_46707C$38520
-$loc_46706B$38521:
+	jmp	SHORT $loc_46707C$38521
+$loc_46706B$38522:
 ; Line 6401
 	sub	edi, 12288				; 00003000H
 ; Line 6402
 	add	esi, 288				; 00000120H
 ; Line 6403
-	jmp	$loc_4670FC$38522
-$loc_46707C$38520:
+	jmp	$loc_4670FC$38523
+$loc_46707C$38521:
 ; Line 6405
 	mov	ecx, 32					; 00000020H
 ; Line 6406
@@ -12324,12 +12323,12 @@ $loc_46707C$38520:
 ; Line 6411
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6412
-	je	SHORT $loc_4670C5$38523
+	je	SHORT $loc_4670C5$38524
 ; Line 6413
 	shr	ecx, 2
 ; Line 6414
-	je	SHORT $loc_4670B1$38524
-$loc_46709A$38525:
+	je	SHORT $loc_4670B1$38525
+$loc_46709A$38526:
 ; Line 6416
 	mov	eax, DWORD PTR [esi]
 ; Line 6417
@@ -12351,12 +12350,12 @@ $loc_46709A$38525:
 ; Line 6425
 	dec	ecx
 ; Line 6426
-	jne	SHORT $loc_46709A$38525
-$loc_4670B1$38524:
+	jne	SHORT $loc_46709A$38526
+$loc_4670B1$38525:
 ; Line 6428
 	and	ebp, 2
 ; Line 6429
-	je	SHORT $loc_4670EF$38526
+	je	SHORT $loc_4670EF$38527
 ; Line 6430
 	mov	ax, WORD PTR [esi]
 ; Line 6431
@@ -12370,13 +12369,13 @@ $loc_4670B1$38524:
 ; Line 6435
 	inc	edi
 ; Line 6436
-	jmp	SHORT $loc_4670EF$38526
-$loc_4670C5$38523:
+	jmp	SHORT $loc_4670EF$38527
+$loc_4670C5$38524:
 ; Line 6438
 	shr	ecx, 2
 ; Line 6439
-	je	SHORT $loc_4670DF$38527
-$loc_4670CA$38528:
+	je	SHORT $loc_4670DF$38528
+$loc_4670CA$38529:
 ; Line 6441
 	mov	eax, DWORD PTR [esi]
 ; Line 6442
@@ -12394,12 +12393,12 @@ $loc_4670CA$38528:
 ; Line 6448
 	dec	ecx
 ; Line 6449
-	jne	SHORT $loc_4670CA$38528
-$loc_4670DF$38527:
+	jne	SHORT $loc_4670CA$38529
+$loc_4670DF$38528:
 ; Line 6451
 	and	ebp, 2
 ; Line 6452
-	je	SHORT $loc_4670EF$38526
+	je	SHORT $loc_4670EF$38527
 ; Line 6453
 	mov	ax, WORD PTR [esi]
 ; Line 6454
@@ -12408,7 +12407,7 @@ $loc_4670DF$38527:
 	mov	BYTE PTR [edi], al
 ; Line 6456
 	add	edi, 2
-$loc_4670EF$38526:
+$loc_4670EF$38527:
 ; Line 6458
 	sub	edi, 800				; 00000320H
 ; Line 6459
@@ -12416,8 +12415,8 @@ $loc_4670EF$38526:
 ; Line 6460
 	sub	edx, 2
 ; Line 6461
-	jge	SHORT $loc_46707C$38520
-$loc_4670FC$38522:
+	jge	SHORT $loc_46707C$38521
+$loc_4670FC$38523:
 ; Line 6463
 	mov	edx, 2
 ; Line 6464
@@ -12425,7 +12424,7 @@ $loc_4670FC$38522:
 ; Line 6465
 	sub	eax, DWORD PTR _glClipY
 ; Line 6466
-	jb	SHORT $loc_467154$38529
+	jb	SHORT $loc_467154$38530
 ; Line 6467
 	add	eax, 1023				; 000003ffH
 ; Line 6468
@@ -12433,7 +12432,7 @@ $loc_4670FC$38522:
 ; Line 6469
 	cmp	eax, 42					; 0000002aH
 ; Line 6470
-	jg	SHORT $loc_467143$38530
+	jg	SHORT $loc_467143$38531
 ; Line 6471
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 6472
@@ -12459,15 +12458,15 @@ $loc_4670FC$38522:
 ; Line 6482
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6483
-	jmp	SHORT $loc_467154$38529
-$loc_467143$38530:
+	jmp	SHORT $loc_467154$38530
+$loc_467143$38531:
 ; Line 6485
 	sub	edi, 11520				; 00002d00H
 ; Line 6486
 	add	esi, 256				; 00000100H
 ; Line 6487
-	jmp	$loc_4671DB$38531
-$loc_467154$38529:
+	jmp	$loc_4671DB$38532
+$loc_467154$38530:
 ; Line 6489
 	mov	ecx, 32					; 00000020H
 ; Line 6490
@@ -12483,12 +12482,12 @@ $loc_467154$38529:
 ; Line 6495
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6496
-	je	SHORT $loc_46719D$38532
+	je	SHORT $loc_46719D$38533
 ; Line 6497
 	shr	ecx, 2
 ; Line 6498
-	je	SHORT $loc_467189$38533
-$loc_467172$38534:
+	je	SHORT $loc_467189$38534
+$loc_467172$38535:
 ; Line 6500
 	mov	eax, DWORD PTR [esi]
 ; Line 6501
@@ -12510,12 +12509,12 @@ $loc_467172$38534:
 ; Line 6509
 	dec	ecx
 ; Line 6510
-	jne	SHORT $loc_467172$38534
-$loc_467189$38533:
+	jne	SHORT $loc_467172$38535
+$loc_467189$38534:
 ; Line 6512
 	and	ebp, 2
 ; Line 6513
-	je	SHORT $loc_4671C7$38535
+	je	SHORT $loc_4671C7$38536
 ; Line 6514
 	mov	ax, WORD PTR [esi]
 ; Line 6515
@@ -12529,13 +12528,13 @@ $loc_467189$38533:
 ; Line 6519
 	inc	edi
 ; Line 6520
-	jmp	SHORT $loc_4671C7$38535
-$loc_46719D$38532:
+	jmp	SHORT $loc_4671C7$38536
+$loc_46719D$38533:
 ; Line 6522
 	shr	ecx, 2
 ; Line 6523
-	je	SHORT $loc_4671B7$38536
-$loc_4671A2$38537:
+	je	SHORT $loc_4671B7$38537
+$loc_4671A2$38538:
 ; Line 6525
 	mov	eax, DWORD PTR [esi]
 ; Line 6526
@@ -12553,12 +12552,12 @@ $loc_4671A2$38537:
 ; Line 6532
 	dec	ecx
 ; Line 6533
-	jne	SHORT $loc_4671A2$38537
-$loc_4671B7$38536:
+	jne	SHORT $loc_4671A2$38538
+$loc_4671B7$38537:
 ; Line 6535
 	and	ebp, 2
 ; Line 6536
-	je	SHORT $loc_4671C7$38535
+	je	SHORT $loc_4671C7$38536
 ; Line 6537
 	mov	ax, WORD PTR [esi]
 ; Line 6538
@@ -12567,7 +12566,7 @@ $loc_4671B7$38536:
 	mov	BYTE PTR [edi], al
 ; Line 6540
 	add	edi, 2
-$loc_4671C7$38535:
+$loc_4671C7$38536:
 ; Line 6542
 	sub	edi, 800				; 00000320H
 ; Line 6543
@@ -12577,13 +12576,13 @@ $loc_4671C7$38535:
 ; Line 6545
 	cmp	edx, 32					; 00000020H
 ; Line 6546
-	jne	$loc_467154$38529
-$loc_4671DB$38531:
+	jne	$loc_467154$38530
+$loc_4671DB$38532:
 ; Line 6548
 	pop	ebp
 ; Line 6549
-	jmp	$loc_467944$38347
-$loc_4671E1$38330:
+	jmp	$loc_467944$38348
+$loc_4671E1$38331:
 ; Line 6551
 	xor	eax, eax
 ; Line 6552
@@ -12595,7 +12594,7 @@ $loc_4671E1$38330:
 ; Line 6555
 	sub	eax, DWORD PTR _glClipY
 ; Line 6556
-	jb	SHORT $loc_467240$38538
+	jb	SHORT $loc_467240$38539
 ; Line 6557
 	add	eax, 1023				; 000003ffH
 ; Line 6558
@@ -12603,7 +12602,7 @@ $loc_4671E1$38330:
 ; Line 6559
 	cmp	eax, 45					; 0000002dH
 ; Line 6560
-	jg	SHORT $loc_46722F$38539
+	jg	SHORT $loc_46722F$38540
 ; Line 6561
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 6562
@@ -12629,15 +12628,15 @@ $loc_4671E1$38330:
 ; Line 6572
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6573
-	jmp	SHORT $loc_467240$38538
-$loc_46722F$38539:
+	jmp	SHORT $loc_467240$38539
+$loc_46722F$38540:
 ; Line 6575
 	sub	edi, 12288				; 00003000H
 ; Line 6576
 	add	esi, 288				; 00000120H
 ; Line 6577
 	jmp	NEAR PTR $+131
-$loc_467240$38538:
+$loc_467240$38539:
 ; Line 6579
 	add	edi, edx
 ; Line 6580
@@ -12653,11 +12652,11 @@ $loc_467240$38538:
 ; Line 6585
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6586
-	je	SHORT $loc_467289$38540
+	je	SHORT $loc_467289$38541
 ; Line 6587
 	shr	ecx, 2
 ; Line 6588
-	jae	SHORT $loc_467270$38541
+	jae	SHORT $loc_467270$38542
 ; Line 6589
 	mov	ax, WORD PTR [esi+2]
 ; Line 6590
@@ -12673,8 +12672,8 @@ $loc_467240$38538:
 ; Line 6595
 	test	ecx, ecx
 ; Line 6596
-	je	SHORT $loc_4672B3$38542
-$loc_467270$38541:
+	je	SHORT $loc_4672B3$38543
+$loc_467270$38542:
 ; Line 6598
 	mov	eax, DWORD PTR [esi]
 ; Line 6599
@@ -12696,14 +12695,14 @@ $loc_467270$38541:
 ; Line 6607
 	dec	ecx
 ; Line 6608
-	jne	SHORT $loc_467270$38541
+	jne	SHORT $loc_467270$38542
 ; Line 6609
-	jmp	SHORT $loc_4672B3$38542
-$loc_467289$38540:
+	jmp	SHORT $loc_4672B3$38543
+$loc_467289$38541:
 ; Line 6611
 	shr	ecx, 2
 ; Line 6612
-	jae	SHORT $loc_46729E$38543
+	jae	SHORT $loc_46729E$38544
 ; Line 6613
 	mov	ax, WORD PTR [esi+2]
 ; Line 6614
@@ -12715,8 +12714,8 @@ $loc_467289$38540:
 ; Line 6617
 	lea	edi, DWORD PTR [edi+2]
 ; Line 6618
-	je	SHORT $loc_4672B3$38542
-$loc_46729E$38543:
+	je	SHORT $loc_4672B3$38543
+$loc_46729E$38544:
 ; Line 6620
 	mov	eax, DWORD PTR [esi]
 ; Line 6621
@@ -12734,31 +12733,31 @@ $loc_46729E$38543:
 ; Line 6627
 	lea	edi, DWORD PTR [edi+2]
 ; Line 6628
-	jne	SHORT $loc_46729E$38543
-$loc_4672B3$38542:
+	jne	SHORT $loc_46729E$38544
+$loc_4672B3$38543:
 ; Line 6630
 	sub	edi, 800				; 00000320H
 ; Line 6631
 	sub	edx, 2
 ; Line 6632
-	jge	SHORT $loc_467240$38538
+	jge	SHORT $loc_467240$38539
 ; Line 6634
 	mov	edx, 8
-$loc_4672C3$38544:
+$loc_4672C3$38545:
 ; Line 6636
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6637
-	jb	SHORT $loc_4672D3$38545
+	jb	SHORT $loc_4672D3$38546
 ; Line 6638
 	add	esi, 32					; 00000020H
 ; Line 6639
 	add	edi, 32					; 00000020H
 ; Line 6640
-	jmp	SHORT $loc_4672EF$38546
-$loc_4672D3$38545:
+	jmp	SHORT $loc_4672EF$38547
+$loc_4672D3$38546:
 ; Line 6642
 	mov	ecx, 8
-$loc_4672D8$38547:
+$loc_4672D8$38548:
 ; Line 6644
 	mov	eax, DWORD PTR [esi]
 ; Line 6645
@@ -12780,24 +12779,24 @@ $loc_4672D8$38547:
 ; Line 6653
 	dec	ecx
 ; Line 6654
-	jne	SHORT $loc_4672D8$38547
-$loc_4672EF$38546:
+	jne	SHORT $loc_4672D8$38548
+$loc_4672EF$38547:
 ; Line 6656
 	sub	edi, 800				; 00000320H
 ; Line 6657
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6658
-	jb	SHORT $loc_467305$38548
+	jb	SHORT $loc_467305$38549
 ; Line 6659
 	add	esi, 32					; 00000020H
 ; Line 6660
 	add	edi, 32					; 00000020H
 ; Line 6661
-	jmp	SHORT $loc_46731F$38549
-$loc_467305$38548:
+	jmp	SHORT $loc_46731F$38550
+$loc_467305$38549:
 ; Line 6663
 	mov	ecx, 8
-$loc_46730A$38550:
+$loc_46730A$38551:
 ; Line 6665
 	mov	eax, DWORD PTR [esi]
 ; Line 6666
@@ -12815,17 +12814,17 @@ $loc_46730A$38550:
 ; Line 6672
 	dec	ecx
 ; Line 6673
-	jne	SHORT $loc_46730A$38550
-$loc_46731F$38549:
+	jne	SHORT $loc_46730A$38551
+$loc_46731F$38550:
 ; Line 6675
 	sub	edi, 800				; 00000320H
 ; Line 6676
 	dec	edx
 ; Line 6677
-	jne	SHORT $loc_4672C3$38544
+	jne	SHORT $loc_4672C3$38545
 ; Line 6678
-	jmp	$loc_467944$38347
-$loc_46732D$38331:
+	jmp	$loc_467944$38348
+$loc_46732D$38332:
 ; Line 6680
 	push	ebp
 ; Line 6681
@@ -12839,7 +12838,7 @@ $loc_46732D$38331:
 ; Line 6685
 	sub	eax, DWORD PTR _glClipY
 ; Line 6686
-	jb	SHORT $loc_46738D$38551
+	jb	SHORT $loc_46738D$38552
 ; Line 6687
 	add	eax, 1023				; 000003ffH
 ; Line 6688
@@ -12847,7 +12846,7 @@ $loc_46732D$38331:
 ; Line 6689
 	cmp	eax, 45					; 0000002dH
 ; Line 6690
-	jg	SHORT $loc_46737C$38552
+	jg	SHORT $loc_46737C$38553
 ; Line 6691
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 6692
@@ -12873,15 +12872,15 @@ $loc_46732D$38331:
 ; Line 6702
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6703
-	jmp	SHORT $loc_46738D$38551
-$loc_46737C$38552:
+	jmp	SHORT $loc_46738D$38552
+$loc_46737C$38553:
 ; Line 6705
 	sub	edi, 12288				; 00003000H
 ; Line 6706
 	add	esi, 288				; 00000120H
 ; Line 6707
-	jmp	$loc_46740D$38553
-$loc_46738D$38551:
+	jmp	$loc_46740D$38554
+$loc_46738D$38552:
 ; Line 6709
 	mov	ecx, 32					; 00000020H
 ; Line 6710
@@ -12897,12 +12896,12 @@ $loc_46738D$38551:
 ; Line 6715
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6716
-	je	SHORT $loc_4673D6$38554
+	je	SHORT $loc_4673D6$38555
 ; Line 6717
 	shr	ecx, 2
 ; Line 6718
-	je	SHORT $loc_4673C2$38555
-$loc_4673AB$38556:
+	je	SHORT $loc_4673C2$38556
+$loc_4673AB$38557:
 ; Line 6720
 	mov	eax, DWORD PTR [esi]
 ; Line 6721
@@ -12924,12 +12923,12 @@ $loc_4673AB$38556:
 ; Line 6729
 	dec	ecx
 ; Line 6730
-	jne	SHORT $loc_4673AB$38556
-$loc_4673C2$38555:
+	jne	SHORT $loc_4673AB$38557
+$loc_4673C2$38556:
 ; Line 6732
 	and	ebp, 2
 ; Line 6733
-	je	SHORT $loc_467400$38557
+	je	SHORT $loc_467400$38558
 ; Line 6734
 	mov	ax, WORD PTR [esi]
 ; Line 6735
@@ -12943,13 +12942,13 @@ $loc_4673C2$38555:
 ; Line 6739
 	inc	edi
 ; Line 6740
-	jmp	SHORT $loc_467400$38557
-$loc_4673D6$38554:
+	jmp	SHORT $loc_467400$38558
+$loc_4673D6$38555:
 ; Line 6742
 	shr	ecx, 2
 ; Line 6743
-	je	SHORT $loc_4673F0$38558
-$loc_4673DB$38559:
+	je	SHORT $loc_4673F0$38559
+$loc_4673DB$38560:
 ; Line 6745
 	mov	eax, DWORD PTR [esi]
 ; Line 6746
@@ -12967,12 +12966,12 @@ $loc_4673DB$38559:
 ; Line 6752
 	dec	ecx
 ; Line 6753
-	jne	SHORT $loc_4673DB$38559
-$loc_4673F0$38558:
+	jne	SHORT $loc_4673DB$38560
+$loc_4673F0$38559:
 ; Line 6755
 	and	ebp, 2
 ; Line 6756
-	je	SHORT $loc_467400$38557
+	je	SHORT $loc_467400$38558
 ; Line 6757
 	mov	ax, WORD PTR [esi]
 ; Line 6758
@@ -12981,7 +12980,7 @@ $loc_4673F0$38558:
 	mov	BYTE PTR [edi], al
 ; Line 6760
 	add	edi, 2
-$loc_467400$38557:
+$loc_467400$38558:
 ; Line 6762
 	sub	edi, 800				; 00000320H
 ; Line 6763
@@ -12989,25 +12988,25 @@ $loc_467400$38557:
 ; Line 6764
 	sub	edx, 2
 ; Line 6765
-	jge	SHORT $loc_46738D$38551
-$loc_46740D$38553:
+	jge	SHORT $loc_46738D$38552
+$loc_46740D$38554:
 ; Line 6767
 	mov	edx, 8
-$loc_467412$38560:
+$loc_467412$38561:
 ; Line 6769
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6770
-	jb	SHORT $loc_467422$38561
+	jb	SHORT $loc_467422$38562
 ; Line 6771
 	add	esi, 32					; 00000020H
 ; Line 6772
 	add	edi, 32					; 00000020H
 ; Line 6773
-	jmp	SHORT $loc_46743E$38562
-$loc_467422$38561:
+	jmp	SHORT $loc_46743E$38563
+$loc_467422$38562:
 ; Line 6775
 	mov	ecx, 8
-$loc_467427$38563:
+$loc_467427$38564:
 ; Line 6777
 	mov	eax, DWORD PTR [esi]
 ; Line 6778
@@ -13029,24 +13028,24 @@ $loc_467427$38563:
 ; Line 6786
 	dec	ecx
 ; Line 6787
-	jne	SHORT $loc_467427$38563
-$loc_46743E$38562:
+	jne	SHORT $loc_467427$38564
+$loc_46743E$38563:
 ; Line 6789
 	sub	edi, 800				; 00000320H
 ; Line 6790
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6791
-	jb	SHORT $loc_467454$38564
+	jb	SHORT $loc_467454$38565
 ; Line 6792
 	add	esi, 32					; 00000020H
 ; Line 6793
 	add	edi, 32					; 00000020H
 ; Line 6794
-	jmp	SHORT $loc_46746E$38565
-$loc_467454$38564:
+	jmp	SHORT $loc_46746E$38566
+$loc_467454$38565:
 ; Line 6796
 	mov	ecx, 8
-$loc_467459$38566:
+$loc_467459$38567:
 ; Line 6798
 	mov	eax, DWORD PTR [esi]
 ; Line 6799
@@ -13064,38 +13063,38 @@ $loc_467459$38566:
 ; Line 6805
 	dec	ecx
 ; Line 6806
-	jne	SHORT $loc_467459$38566
-$loc_46746E$38565:
+	jne	SHORT $loc_467459$38567
+$loc_46746E$38566:
 ; Line 6808
 	sub	edi, 800				; 00000320H
 ; Line 6809
 	dec	edx
 ; Line 6810
-	jne	SHORT $loc_467412$38560
+	jne	SHORT $loc_467412$38561
 ; Line 6811
 	pop	ebp
 ; Line 6812
-	jmp	$loc_467944$38347
-$loc_46747D$38334:
+	jmp	$loc_467944$38348
+$loc_46747D$38335:
 ; Line 6814
 	mov	edx, 16					; 00000010H
 ; Line 6815
 	xor	eax, eax
-$loc_467484$38567:
+$loc_467484$38568:
 ; Line 6817
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6818
-	jb	SHORT $loc_467494$38568
+	jb	SHORT $loc_467494$38569
 ; Line 6819
 	add	esi, 32					; 00000020H
 ; Line 6820
 	add	edi, 32					; 00000020H
 ; Line 6821
-	jmp	SHORT $loc_4674A5$38569
-$loc_467494$38568:
+	jmp	SHORT $loc_4674A5$38570
+$loc_467494$38569:
 ; Line 6823
 	mov	ecx, 8
-$loc_467499$38570:
+$loc_467499$38571:
 ; Line 6825
 	mov	BYTE PTR [edi+1], al
 ; Line 6826
@@ -13105,24 +13104,24 @@ $loc_467499$38570:
 ; Line 6828
 	dec	ecx
 ; Line 6829
-	jne	SHORT $loc_467499$38570
-$loc_4674A5$38569:
+	jne	SHORT $loc_467499$38571
+$loc_4674A5$38570:
 ; Line 6831
 	sub	edi, 800				; 00000320H
 ; Line 6832
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6833
-	jb	SHORT $loc_4674BB$38571
+	jb	SHORT $loc_4674BB$38572
 ; Line 6834
 	add	esi, 32					; 00000020H
 ; Line 6835
 	add	edi, 32					; 00000020H
 ; Line 6836
-	jmp	SHORT $loc_4674CB$38572
-$loc_4674BB$38571:
+	jmp	SHORT $loc_4674CB$38573
+$loc_4674BB$38572:
 ; Line 6838
 	mov	ecx, 8
-$loc_4674C0$38573:
+$loc_4674C0$38574:
 ; Line 6840
 	mov	BYTE PTR [edi], al
 ; Line 6841
@@ -13132,17 +13131,17 @@ $loc_4674C0$38573:
 ; Line 6843
 	dec	ecx
 ; Line 6844
-	jne	SHORT $loc_4674C0$38573
-$loc_4674CB$38572:
+	jne	SHORT $loc_4674C0$38574
+$loc_4674CB$38573:
 ; Line 6846
 	sub	edi, 800				; 00000320H
 ; Line 6847
 	dec	edx
 ; Line 6848
-	jne	SHORT $loc_467484$38567
+	jne	SHORT $loc_467484$38568
 ; Line 6849
-	jmp	$loc_467944$38347
-$loc_4674D9$38335:
+	jmp	$loc_467944$38348
+$loc_4674D9$38336:
 ; Line 6851
 	mov	eax, edi
 ; Line 6852
@@ -13151,12 +13150,12 @@ $loc_4674D9$38335:
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6854
 	mov	ecx, 32					; 00000020H
-$loc_4674E8$38574:
+$loc_4674E8$38575:
 ; Line 6856
 	push	ecx
 ; Line 6857
 	mov	edx, 32					; 00000020H
-$loc_4674EE$38575:
+$loc_4674EE$38576:
 ; Line 6859
 	xor	eax, eax
 ; Line 6860
@@ -13166,20 +13165,20 @@ $loc_4674EE$38575:
 ; Line 6862
 	test	al, al
 ; Line 6863
-	js	SHORT $loc_46756C$38576
+	js	SHORT $loc_46756C$38577
 ; Line 6864
 	sub	edx, eax
 ; Line 6865
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6866
-	jb	SHORT $loc_467507$38577
+	jb	SHORT $loc_467507$38578
 ; Line 6867
 	add	esi, eax
 ; Line 6868
 	add	edi, eax
 ; Line 6869
-	jmp	SHORT $loc_467566$38578
-$loc_467507$38577:
+	jmp	SHORT $loc_467566$38579
+$loc_467507$38578:
 ; Line 6871
 	mov	ecx, eax
 ; Line 6872
@@ -13191,26 +13190,26 @@ $loc_467507$38577:
 ; Line 6875
 	cmp	eax, DWORD PTR _WorldBoolFlag
 ; Line 6876
-	jne	SHORT $loc_46753F$38579
+	jne	SHORT $loc_46753F$38580
 ; Line 6877
 	xor	eax, eax
 ; Line 6878
 	shr	ecx, 1
 ; Line 6879
-	jae	SHORT $loc_467525$38580
+	jae	SHORT $loc_467525$38581
 ; Line 6880
 	inc	edi
 ; Line 6881
 	test	ecx, ecx
 ; Line 6882
-	je	SHORT $loc_467566$38578
+	je	SHORT $loc_467566$38579
 ; Line 6883
-	jmp	SHORT $loc_46754E$38581
-$loc_467525$38580:
+	jmp	SHORT $loc_46754E$38582
+$loc_467525$38581:
 ; Line 6885
 	shr	ecx, 1
 ; Line 6886
-	jae	SHORT $loc_467531$38582
+	jae	SHORT $loc_467531$38583
 ; Line 6887
 	inc	edi
 ; Line 6888
@@ -13220,8 +13219,8 @@ $loc_467525$38580:
 ; Line 6890
 	test	ecx, ecx
 ; Line 6891
-	je	SHORT $loc_467566$38578
-$loc_467531$38582:
+	je	SHORT $loc_467566$38579
+$loc_467531$38583:
 ; Line 6893
 	mov	BYTE PTR [edi+1], al
 ; Line 6894
@@ -13231,16 +13230,16 @@ $loc_467531$38582:
 ; Line 6896
 	dec	ecx
 ; Line 6897
-	jne	SHORT $loc_467531$38582
+	jne	SHORT $loc_467531$38583
 ; Line 6898
-	jmp	SHORT $loc_467566$38578
-$loc_46753F$38579:
+	jmp	SHORT $loc_467566$38579
+$loc_46753F$38580:
 ; Line 6900
 	xor	eax, eax
 ; Line 6901
 	shr	ecx, 1
 ; Line 6902
-	jae	SHORT $loc_46754E$38581
+	jae	SHORT $loc_46754E$38582
 ; Line 6903
 	mov	BYTE PTR [edi], al
 ; Line 6904
@@ -13248,14 +13247,14 @@ $loc_46753F$38579:
 ; Line 6905
 	test	ecx, ecx
 ; Line 6906
-	je	SHORT $loc_467566$38578
+	je	SHORT $loc_467566$38579
 ; Line 6907
-	jmp	SHORT $loc_467525$38580
-$loc_46754E$38581:
+	jmp	SHORT $loc_467525$38581
+$loc_46754E$38582:
 ; Line 6909
 	shr	ecx, 1
 ; Line 6910
-	jae	SHORT $loc_46755B$38583
+	jae	SHORT $loc_46755B$38584
 ; Line 6911
 	mov	BYTE PTR [edi], al
 ; Line 6912
@@ -13263,8 +13262,8 @@ $loc_46754E$38581:
 ; Line 6913
 	test	ecx, ecx
 ; Line 6914
-	je	SHORT $loc_467566$38578
-$loc_46755B$38583:
+	je	SHORT $loc_467566$38579
+$loc_46755B$38584:
 ; Line 6916
 	mov	BYTE PTR [edi], al
 ; Line 6917
@@ -13274,15 +13273,15 @@ $loc_46755B$38583:
 ; Line 6919
 	dec	ecx
 ; Line 6920
-	jne	SHORT $loc_46755B$38583
-$loc_467566$38578:
+	jne	SHORT $loc_46755B$38584
+$loc_467566$38579:
 ; Line 6922
 	test	edx, edx
 ; Line 6923
-	je	SHORT $loc_467578$38584
+	je	SHORT $loc_467578$38585
 ; Line 6924
-	jmp	SHORT $loc_4674EE$38575
-$loc_46756C$38576:
+	jmp	SHORT $loc_4674EE$38576
+$loc_46756C$38577:
 ; Line 6926
 	neg	al
 ; Line 6927
@@ -13290,8 +13289,8 @@ $loc_46756C$38576:
 ; Line 6928
 	sub	edx, eax
 ; Line 6929
-	jne	$loc_4674EE$38575
-$loc_467578$38584:
+	jne	$loc_4674EE$38576
+$loc_467578$38585:
 ; Line 6931
 	pop	ecx
 ; Line 6932
@@ -13307,21 +13306,21 @@ $loc_467578$38584:
 ; Line 6937
 	dec	ecx
 ; Line 6938
-	jne	$loc_4674E8$38574
+	jne	$loc_4674E8$38575
 ; Line 6939
-	jmp	$loc_467944$38347
-$loc_467599$38336:
+	jmp	$loc_467944$38348
+$loc_467599$38337:
 ; Line 6941
 	xor	eax, eax
 ; Line 6942
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6943
 	mov	edx, 30					; 0000001eH
-$loc_4675A5$38585:
+$loc_4675A5$38586:
 ; Line 6945
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6946
-	jb	SHORT $loc_4675B7$38586
+	jb	SHORT $loc_4675B7$38587
 ; Line 6947
 	add	esi, 32					; 00000020H
 ; Line 6948
@@ -13329,8 +13328,8 @@ $loc_4675A5$38585:
 ; Line 6949
 	add	edi, 32					; 00000020H
 ; Line 6950
-	jmp	SHORT $loc_467608$38587
-$loc_4675B7$38586:
+	jmp	SHORT $loc_467608$38588
+$loc_4675B7$38587:
 ; Line 6952
 	add	edi, edx
 ; Line 6953
@@ -13346,13 +13345,13 @@ $loc_4675B7$38586:
 ; Line 6958
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 6959
-	je	SHORT $loc_4675ED$38588
+	je	SHORT $loc_4675ED$38589
 ; Line 6960
 	xor	eax, eax
 ; Line 6961
 	shr	ecx, 2
 ; Line 6962
-	jae	SHORT $loc_4675DF$38589
+	jae	SHORT $loc_4675DF$38590
 ; Line 6963
 	inc	edi
 ; Line 6964
@@ -13362,8 +13361,8 @@ $loc_4675B7$38586:
 ; Line 6966
 	test	ecx, ecx
 ; Line 6967
-	je	SHORT $loc_467608$38587
-$loc_4675DF$38589:
+	je	SHORT $loc_467608$38588
+$loc_4675DF$38590:
 ; Line 6969
 	mov	BYTE PTR [edi+1], al
 ; Line 6970
@@ -13373,16 +13372,16 @@ $loc_4675DF$38589:
 ; Line 6972
 	dec	ecx
 ; Line 6973
-	jne	SHORT $loc_4675DF$38589
+	jne	SHORT $loc_4675DF$38590
 ; Line 6974
-	jmp	SHORT $loc_467608$38587
-$loc_4675ED$38588:
+	jmp	SHORT $loc_467608$38588
+$loc_4675ED$38589:
 ; Line 6976
 	xor	eax, eax
 ; Line 6977
 	shr	ecx, 2
 ; Line 6978
-	jae	SHORT $loc_4675FD$38590
+	jae	SHORT $loc_4675FD$38591
 ; Line 6979
 	mov	BYTE PTR [edi], al
 ; Line 6980
@@ -13390,8 +13389,8 @@ $loc_4675ED$38588:
 ; Line 6981
 	test	ecx, ecx
 ; Line 6982
-	je	SHORT $loc_467608$38587
-$loc_4675FD$38590:
+	je	SHORT $loc_467608$38588
+$loc_4675FD$38591:
 ; Line 6984
 	mov	BYTE PTR [edi], al
 ; Line 6985
@@ -13401,26 +13400,26 @@ $loc_4675FD$38590:
 ; Line 6987
 	dec	ecx
 ; Line 6988
-	jne	SHORT $loc_4675FD$38590
-$loc_467608$38587:
+	jne	SHORT $loc_4675FD$38591
+$loc_467608$38588:
 ; Line 6990
 	sub	edi, 800				; 00000320H
 ; Line 6991
 	test	edx, edx
 ; Line 6992
-	je	SHORT $loc_467617$38591
+	je	SHORT $loc_467617$38592
 ; Line 6993
 	sub	edx, 2
 ; Line 6994
-	jmp	SHORT $loc_4675A5$38585
-$loc_467617$38591:
+	jmp	SHORT $loc_4675A5$38586
+$loc_467617$38592:
 ; Line 6996
 	mov	edx, 2
-$loc_46761C$38592:
+$loc_46761C$38593:
 ; Line 6998
 	cmp	edi, DWORD PTR _glClipY
 ; Line 6999
-	jb	SHORT $loc_46762E$38593
+	jb	SHORT $loc_46762E$38594
 ; Line 7000
 	add	esi, 32					; 00000020H
 ; Line 7001
@@ -13428,8 +13427,8 @@ $loc_46761C$38592:
 ; Line 7002
 	add	edi, 32					; 00000020H
 ; Line 7003
-	jmp	SHORT $loc_46767F$38594
-$loc_46762E$38593:
+	jmp	SHORT $loc_46767F$38595
+$loc_46762E$38594:
 ; Line 7005
 	add	edi, edx
 ; Line 7006
@@ -13445,13 +13444,13 @@ $loc_46762E$38593:
 ; Line 7011
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7012
-	je	SHORT $loc_467664$38595
+	je	SHORT $loc_467664$38596
 ; Line 7013
 	xor	eax, eax
 ; Line 7014
 	shr	ecx, 2
 ; Line 7015
-	jae	SHORT $loc_467656$38596
+	jae	SHORT $loc_467656$38597
 ; Line 7016
 	inc	edi
 ; Line 7017
@@ -13461,8 +13460,8 @@ $loc_46762E$38593:
 ; Line 7019
 	test	ecx, ecx
 ; Line 7020
-	je	SHORT $loc_46767F$38594
-$loc_467656$38596:
+	je	SHORT $loc_46767F$38595
+$loc_467656$38597:
 ; Line 7022
 	mov	BYTE PTR [edi+1], al
 ; Line 7023
@@ -13472,16 +13471,16 @@ $loc_467656$38596:
 ; Line 7025
 	dec	ecx
 ; Line 7026
-	jne	SHORT $loc_467656$38596
+	jne	SHORT $loc_467656$38597
 ; Line 7027
-	jmp	SHORT $loc_46767F$38594
-$loc_467664$38595:
+	jmp	SHORT $loc_46767F$38595
+$loc_467664$38596:
 ; Line 7029
 	xor	eax, eax
 ; Line 7030
 	shr	ecx, 2
 ; Line 7031
-	jae	SHORT $loc_467674$38597
+	jae	SHORT $loc_467674$38598
 ; Line 7032
 	mov	BYTE PTR [edi], al
 ; Line 7033
@@ -13489,8 +13488,8 @@ $loc_467664$38595:
 ; Line 7034
 	test	ecx, ecx
 ; Line 7035
-	je	SHORT $loc_46767F$38594
-$loc_467674$38597:
+	je	SHORT $loc_46767F$38595
+$loc_467674$38598:
 ; Line 7037
 	mov	BYTE PTR [edi], al
 ; Line 7038
@@ -13500,8 +13499,8 @@ $loc_467674$38597:
 ; Line 7040
 	dec	ecx
 ; Line 7041
-	jne	SHORT $loc_467674$38597
-$loc_46767F$38594:
+	jne	SHORT $loc_467674$38598
+$loc_46767F$38595:
 ; Line 7043
 	sub	edi, 800				; 00000320H
 ; Line 7044
@@ -13509,21 +13508,21 @@ $loc_46767F$38594:
 ; Line 7045
 	cmp	edx, 32					; 00000020H
 ; Line 7046
-	jne	SHORT $loc_46761C$38592
+	jne	SHORT $loc_46761C$38593
 ; Line 7047
-	jmp	$loc_467944$38347
-$loc_467692$38337:
+	jmp	$loc_467944$38348
+$loc_467692$38338:
 ; Line 7049
 	xor	eax, eax
 ; Line 7050
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7051
 	mov	edx, 30					; 0000001eH
-$loc_46769E$38598:
+$loc_46769E$38599:
 ; Line 7053
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7054
-	jb	SHORT $loc_4676B2$38599
+	jb	SHORT $loc_4676B2$38600
 ; Line 7055
 	add	esi, 32					; 00000020H
 ; Line 7056
@@ -13533,8 +13532,8 @@ $loc_46769E$38598:
 ; Line 7058
 	sub	edi, edx
 ; Line 7059
-	jmp	SHORT $loc_467701$38600
-$loc_4676B2$38599:
+	jmp	SHORT $loc_467701$38601
+$loc_4676B2$38600:
 ; Line 7061
 	mov	ecx, 32					; 00000020H
 ; Line 7062
@@ -13548,13 +13547,13 @@ $loc_4676B2$38599:
 ; Line 7066
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7067
-	je	SHORT $loc_4676E6$38601
+	je	SHORT $loc_4676E6$38602
 ; Line 7068
 	xor	eax, eax
 ; Line 7069
 	shr	ecx, 2
 ; Line 7070
-	jae	SHORT $loc_4676D8$38602
+	jae	SHORT $loc_4676D8$38603
 ; Line 7071
 	inc	edi
 ; Line 7072
@@ -13564,8 +13563,8 @@ $loc_4676B2$38599:
 ; Line 7074
 	test	ecx, ecx
 ; Line 7075
-	je	SHORT $loc_467701$38600
-$loc_4676D8$38602:
+	je	SHORT $loc_467701$38601
+$loc_4676D8$38603:
 ; Line 7077
 	mov	BYTE PTR [edi+1], al
 ; Line 7078
@@ -13575,16 +13574,16 @@ $loc_4676D8$38602:
 ; Line 7080
 	dec	ecx
 ; Line 7081
-	jne	SHORT $loc_4676D8$38602
+	jne	SHORT $loc_4676D8$38603
 ; Line 7082
-	jmp	SHORT $loc_467701$38600
-$loc_4676E6$38601:
+	jmp	SHORT $loc_467701$38601
+$loc_4676E6$38602:
 ; Line 7084
 	xor	eax, eax
 ; Line 7085
 	shr	ecx, 2
 ; Line 7086
-	jae	SHORT $loc_4676F6$38603
+	jae	SHORT $loc_4676F6$38604
 ; Line 7087
 	mov	BYTE PTR [edi], al
 ; Line 7088
@@ -13592,8 +13591,8 @@ $loc_4676E6$38601:
 ; Line 7089
 	test	ecx, ecx
 ; Line 7090
-	je	SHORT $loc_467701$38600
-$loc_4676F6$38603:
+	je	SHORT $loc_467701$38601
+$loc_4676F6$38604:
 ; Line 7092
 	mov	BYTE PTR [edi], al
 ; Line 7093
@@ -13603,28 +13602,28 @@ $loc_4676F6$38603:
 ; Line 7095
 	dec	ecx
 ; Line 7096
-	jne	SHORT $loc_4676F6$38603
-$loc_467701$38600:
+	jne	SHORT $loc_4676F6$38604
+$loc_467701$38601:
 ; Line 7098
 	sub	edi, 800				; 00000320H
 ; Line 7099
 	test	edx, edx
 ; Line 7100
-	je	SHORT $loc_467712$38604
+	je	SHORT $loc_467712$38605
 ; Line 7101
 	add	edi, edx
 ; Line 7102
 	sub	edx, 2
 ; Line 7103
-	jmp	SHORT $loc_46769E$38598
-$loc_467712$38604:
+	jmp	SHORT $loc_46769E$38599
+$loc_467712$38605:
 ; Line 7105
 	mov	edx, 2
-$loc_467717$38605:
+$loc_467717$38606:
 ; Line 7107
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7108
-	jb	SHORT $loc_46772B$38606
+	jb	SHORT $loc_46772B$38607
 ; Line 7109
 	add	esi, 32					; 00000020H
 ; Line 7110
@@ -13634,8 +13633,8 @@ $loc_467717$38605:
 ; Line 7112
 	sub	edi, edx
 ; Line 7113
-	jmp	SHORT $loc_46777A$38607
-$loc_46772B$38606:
+	jmp	SHORT $loc_46777A$38608
+$loc_46772B$38607:
 ; Line 7115
 	mov	ecx, 32					; 00000020H
 ; Line 7116
@@ -13649,13 +13648,13 @@ $loc_46772B$38606:
 ; Line 7120
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7121
-	je	SHORT $loc_46775F$38608
+	je	SHORT $loc_46775F$38609
 ; Line 7122
 	xor	eax, eax
 ; Line 7123
 	shr	ecx, 2
 ; Line 7124
-	jae	SHORT $loc_467751$38609
+	jae	SHORT $loc_467751$38610
 ; Line 7125
 	inc	edi
 ; Line 7126
@@ -13665,8 +13664,8 @@ $loc_46772B$38606:
 ; Line 7128
 	test	ecx, ecx
 ; Line 7129
-	je	SHORT $loc_46777A$38607
-$loc_467751$38609:
+	je	SHORT $loc_46777A$38608
+$loc_467751$38610:
 ; Line 7131
 	mov	BYTE PTR [edi+1], al
 ; Line 7132
@@ -13676,16 +13675,16 @@ $loc_467751$38609:
 ; Line 7134
 	dec	ecx
 ; Line 7135
-	jne	SHORT $loc_467751$38609
+	jne	SHORT $loc_467751$38610
 ; Line 7136
-	jmp	SHORT $loc_46777A$38607
-$loc_46775F$38608:
+	jmp	SHORT $loc_46777A$38608
+$loc_46775F$38609:
 ; Line 7138
 	xor	eax, eax
 ; Line 7139
 	shr	ecx, 2
 ; Line 7140
-	jae	SHORT $loc_46776F$38610
+	jae	SHORT $loc_46776F$38611
 ; Line 7141
 	mov	BYTE PTR [edi], al
 ; Line 7142
@@ -13693,8 +13692,8 @@ $loc_46775F$38608:
 ; Line 7143
 	test	ecx, ecx
 ; Line 7144
-	je	SHORT $loc_46777A$38607
-$loc_46776F$38610:
+	je	SHORT $loc_46777A$38608
+$loc_46776F$38611:
 ; Line 7146
 	mov	BYTE PTR [edi], al
 ; Line 7147
@@ -13704,8 +13703,8 @@ $loc_46776F$38610:
 ; Line 7149
 	dec	ecx
 ; Line 7150
-	jne	SHORT $loc_46776F$38610
-$loc_46777A$38607:
+	jne	SHORT $loc_46776F$38611
+$loc_46777A$38608:
 ; Line 7152
 	sub	edi, 800				; 00000320H
 ; Line 7153
@@ -13715,21 +13714,21 @@ $loc_46777A$38607:
 ; Line 7155
 	cmp	edx, 32					; 00000020H
 ; Line 7156
-	jne	SHORT $loc_467717$38605
+	jne	SHORT $loc_467717$38606
 ; Line 7157
-	jmp	$loc_467944$38347
-$loc_46778F$38338:
+	jmp	$loc_467944$38348
+$loc_46778F$38339:
 ; Line 7159
 	xor	eax, eax
 ; Line 7160
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7161
 	mov	edx, 30					; 0000001eH
-$loc_46779B$38611:
+$loc_46779B$38612:
 ; Line 7163
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7164
-	jb	SHORT $loc_4677AD$38612
+	jb	SHORT $loc_4677AD$38613
 ; Line 7165
 	add	esi, 32					; 00000020H
 ; Line 7166
@@ -13737,8 +13736,8 @@ $loc_46779B$38611:
 ; Line 7167
 	add	edi, 32					; 00000020H
 ; Line 7168
-	jmp	SHORT $loc_4677FE$38613
-$loc_4677AD$38612:
+	jmp	SHORT $loc_4677FE$38614
+$loc_4677AD$38613:
 ; Line 7170
 	add	edi, edx
 ; Line 7171
@@ -13754,13 +13753,13 @@ $loc_4677AD$38612:
 ; Line 7176
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7177
-	je	SHORT $loc_4677E3$38614
+	je	SHORT $loc_4677E3$38615
 ; Line 7178
 	xor	eax, eax
 ; Line 7179
 	shr	ecx, 2
 ; Line 7180
-	jae	SHORT $loc_4677D5$38615
+	jae	SHORT $loc_4677D5$38616
 ; Line 7181
 	inc	edi
 ; Line 7182
@@ -13770,8 +13769,8 @@ $loc_4677AD$38612:
 ; Line 7184
 	test	ecx, ecx
 ; Line 7185
-	je	SHORT $loc_4677FE$38613
-$loc_4677D5$38615:
+	je	SHORT $loc_4677FE$38614
+$loc_4677D5$38616:
 ; Line 7187
 	mov	BYTE PTR [edi+1], al
 ; Line 7188
@@ -13781,16 +13780,16 @@ $loc_4677D5$38615:
 ; Line 7190
 	dec	ecx
 ; Line 7191
-	jne	SHORT $loc_4677D5$38615
+	jne	SHORT $loc_4677D5$38616
 ; Line 7192
-	jmp	SHORT $loc_4677FE$38613
-$loc_4677E3$38614:
+	jmp	SHORT $loc_4677FE$38614
+$loc_4677E3$38615:
 ; Line 7194
 	xor	eax, eax
 ; Line 7195
 	shr	ecx, 2
 ; Line 7196
-	jae	SHORT $loc_4677F3$38616
+	jae	SHORT $loc_4677F3$38617
 ; Line 7197
 	mov	BYTE PTR [edi], al
 ; Line 7198
@@ -13798,8 +13797,8 @@ $loc_4677E3$38614:
 ; Line 7199
 	test	ecx, ecx
 ; Line 7200
-	je	SHORT $loc_4677FE$38613
-$loc_4677F3$38616:
+	je	SHORT $loc_4677FE$38614
+$loc_4677F3$38617:
 ; Line 7202
 	mov	BYTE PTR [edi], al
 ; Line 7203
@@ -13809,38 +13808,38 @@ $loc_4677F3$38616:
 ; Line 7205
 	dec	ecx
 ; Line 7206
-	jne	SHORT $loc_4677F3$38616
-$loc_4677FE$38613:
+	jne	SHORT $loc_4677F3$38617
+$loc_4677FE$38614:
 ; Line 7208
 	sub	edi, 800				; 00000320H
 ; Line 7209
 	test	edx, edx
 ; Line 7210
-	je	SHORT $loc_46780D$38617
+	je	SHORT $loc_46780D$38618
 ; Line 7211
 	sub	edx, 2
 ; Line 7212
-	jmp	SHORT $loc_46779B$38611
-$loc_46780D$38617:
+	jmp	SHORT $loc_46779B$38612
+$loc_46780D$38618:
 ; Line 7214
 	mov	edx, 8
-$loc_467812$38618:
+$loc_467812$38619:
 ; Line 7216
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7217
-	jb	SHORT $loc_467822$38619
+	jb	SHORT $loc_467822$38620
 ; Line 7218
 	add	esi, 32					; 00000020H
 ; Line 7219
 	add	edi, 32					; 00000020H
 ; Line 7220
-	jmp	SHORT $loc_467835$38620
-$loc_467822$38619:
+	jmp	SHORT $loc_467835$38621
+$loc_467822$38620:
 ; Line 7222
 	mov	ecx, 8
 ; Line 7223
 	xor	eax, eax
-$loc_467829$38621:
+$loc_467829$38622:
 ; Line 7225
 	mov	BYTE PTR [edi+1], al
 ; Line 7226
@@ -13850,26 +13849,26 @@ $loc_467829$38621:
 ; Line 7228
 	dec	ecx
 ; Line 7229
-	jne	SHORT $loc_467829$38621
-$loc_467835$38620:
+	jne	SHORT $loc_467829$38622
+$loc_467835$38621:
 ; Line 7231
 	sub	edi, 800				; 00000320H
 ; Line 7232
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7233
-	jb	SHORT $loc_46784B$38622
+	jb	SHORT $loc_46784B$38623
 ; Line 7234
 	add	esi, 32					; 00000020H
 ; Line 7235
 	add	edi, 32					; 00000020H
 ; Line 7236
-	jmp	SHORT $loc_46785D$38623
-$loc_46784B$38622:
+	jmp	SHORT $loc_46785D$38624
+$loc_46784B$38623:
 ; Line 7238
 	mov	ecx, 8
 ; Line 7239
 	xor	eax, eax
-$loc_467852$38624:
+$loc_467852$38625:
 ; Line 7241
 	mov	BYTE PTR [edi], al
 ; Line 7242
@@ -13879,28 +13878,28 @@ $loc_467852$38624:
 ; Line 7244
 	dec	ecx
 ; Line 7245
-	jne	SHORT $loc_467852$38624
-$loc_46785D$38623:
+	jne	SHORT $loc_467852$38625
+$loc_46785D$38624:
 ; Line 7247
 	sub	edi, 800				; 00000320H
 ; Line 7248
 	dec	edx
 ; Line 7249
-	jne	SHORT $loc_467812$38618
+	jne	SHORT $loc_467812$38619
 ; Line 7250
-	jmp	$loc_467944$38347
-$loc_46786B$38339:
+	jmp	$loc_467944$38348
+$loc_46786B$38340:
 ; Line 7252
 	xor	eax, eax
 ; Line 7253
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7254
 	mov	edx, 30					; 0000001eH
-$loc_467877$38625:
+$loc_467877$38626:
 ; Line 7256
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7257
-	jb	SHORT $loc_46788B$38626
+	jb	SHORT $loc_46788B$38627
 ; Line 7258
 	add	esi, 32					; 00000020H
 ; Line 7259
@@ -13910,8 +13909,8 @@ $loc_467877$38625:
 ; Line 7261
 	sub	edi, edx
 ; Line 7262
-	jmp	SHORT $loc_4678DA$38627
-$loc_46788B$38626:
+	jmp	SHORT $loc_4678DA$38628
+$loc_46788B$38627:
 ; Line 7264
 	mov	ecx, 32					; 00000020H
 ; Line 7265
@@ -13925,13 +13924,13 @@ $loc_46788B$38626:
 ; Line 7269
 	mov	DWORD PTR _WorldBoolFlag, eax
 ; Line 7270
-	je	SHORT $loc_4678BF$38628
+	je	SHORT $loc_4678BF$38629
 ; Line 7271
 	xor	eax, eax
 ; Line 7272
 	shr	ecx, 2
 ; Line 7273
-	jae	SHORT $loc_4678B1$38629
+	jae	SHORT $loc_4678B1$38630
 ; Line 7274
 	inc	edi
 ; Line 7275
@@ -13941,8 +13940,8 @@ $loc_46788B$38626:
 ; Line 7277
 	test	ecx, ecx
 ; Line 7278
-	je	SHORT $loc_4678DA$38627
-$loc_4678B1$38629:
+	je	SHORT $loc_4678DA$38628
+$loc_4678B1$38630:
 ; Line 7280
 	mov	BYTE PTR [edi+1], al
 ; Line 7281
@@ -13952,16 +13951,16 @@ $loc_4678B1$38629:
 ; Line 7283
 	dec	ecx
 ; Line 7284
-	jne	SHORT $loc_4678B1$38629
+	jne	SHORT $loc_4678B1$38630
 ; Line 7285
-	jmp	SHORT $loc_4678DA$38627
-$loc_4678BF$38628:
+	jmp	SHORT $loc_4678DA$38628
+$loc_4678BF$38629:
 ; Line 7287
 	xor	eax, eax
 ; Line 7288
 	shr	ecx, 2
 ; Line 7289
-	jae	SHORT $loc_4678CF$38630
+	jae	SHORT $loc_4678CF$38631
 ; Line 7290
 	mov	BYTE PTR [edi], al
 ; Line 7291
@@ -13969,8 +13968,8 @@ $loc_4678BF$38628:
 ; Line 7292
 	test	ecx, ecx
 ; Line 7293
-	je	SHORT $loc_4678DA$38627
-$loc_4678CF$38630:
+	je	SHORT $loc_4678DA$38628
+$loc_4678CF$38631:
 ; Line 7295
 	mov	BYTE PTR [edi], al
 ; Line 7296
@@ -13980,40 +13979,40 @@ $loc_4678CF$38630:
 ; Line 7298
 	dec	ecx
 ; Line 7299
-	jne	SHORT $loc_4678CF$38630
-$loc_4678DA$38627:
+	jne	SHORT $loc_4678CF$38631
+$loc_4678DA$38628:
 ; Line 7301
 	sub	edi, 800				; 00000320H
 ; Line 7302
 	test	edx, edx
 ; Line 7303
-	je	SHORT $loc_4678EB$38631
+	je	SHORT $loc_4678EB$38632
 ; Line 7304
 	add	edi, edx
 ; Line 7305
 	sub	edx, 2
 ; Line 7306
-	jmp	SHORT $loc_467877$38625
-$loc_4678EB$38631:
+	jmp	SHORT $loc_467877$38626
+$loc_4678EB$38632:
 ; Line 7308
 	mov	edx, 8
-$loc_4678F0$38632:
+$loc_4678F0$38633:
 ; Line 7310
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7311
-	jb	SHORT $loc_467900$38633
+	jb	SHORT $loc_467900$38634
 ; Line 7312
 	add	esi, 32					; 00000020H
 ; Line 7313
 	add	edi, 32					; 00000020H
 ; Line 7314
-	jmp	SHORT $loc_467913$38634
-$loc_467900$38633:
+	jmp	SHORT $loc_467913$38635
+$loc_467900$38634:
 ; Line 7316
 	mov	ecx, 8
 ; Line 7317
 	xor	eax, eax
-$loc_467907$38635:
+$loc_467907$38636:
 ; Line 7319
 	mov	BYTE PTR [edi+1], al
 ; Line 7320
@@ -14023,26 +14022,26 @@ $loc_467907$38635:
 ; Line 7322
 	dec	ecx
 ; Line 7323
-	jne	SHORT $loc_467907$38635
-$loc_467913$38634:
+	jne	SHORT $loc_467907$38636
+$loc_467913$38635:
 ; Line 7325
 	sub	edi, 800				; 00000320H
 ; Line 7326
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7327
-	jb	SHORT $loc_467929$38636
+	jb	SHORT $loc_467929$38637
 ; Line 7328
 	add	esi, 32					; 00000020H
 ; Line 7329
 	add	edi, 32					; 00000020H
 ; Line 7330
-	jmp	SHORT $loc_46793B$38637
-$loc_467929$38636:
+	jmp	SHORT $loc_46793B$38638
+$loc_467929$38637:
 ; Line 7332
 	mov	ecx, 8
 ; Line 7333
 	xor	eax, eax
-$loc_467930$38638:
+$loc_467930$38639:
 ; Line 7335
 	mov	BYTE PTR [edi], al
 ; Line 7336
@@ -14052,15 +14051,15 @@ $loc_467930$38638:
 ; Line 7338
 	dec	ecx
 ; Line 7339
-	jne	SHORT $loc_467930$38638
-$loc_46793B$38637:
+	jne	SHORT $loc_467930$38639
+$loc_46793B$38638:
 ; Line 7341
 	sub	edi, 800				; 00000320H
 ; Line 7342
 	dec	edx
 ; Line 7343
-	jne	SHORT $loc_4678F0$38632
-$loc_467944$38347:
+	jne	SHORT $loc_4678F0$38633
+$loc_467944$38348:
 ; Line 7345
 	pop	esi
 ; Line 7346
@@ -14099,17 +14098,17 @@ _TEXT	SEGMENT
 ; Line 7364
 	test	al, al
 ; Line 7365
-	je	$loc_467A58$38643
+	je	$loc_467A58$38644
 ; Line 7366
 	cmp	al, BYTE PTR _lightmax
 ; Line 7367
-	je	$loc_467AB8$38644
+	je	$loc_467AB8$38645
 ; Line 7368
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 7369
 	and	eax, 32768				; 00008000H
 ; Line 7370
-	jne	SHORT $loc_4679EC$38645
+	jne	SHORT $loc_4679EC$38646
 ; Line 7371
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 7372
@@ -14139,26 +14138,26 @@ _TEXT	SEGMENT
 ; Line 7384
 	and	eax, 15					; 0000000fH
 ; Line 7385
-	je	$loc_467B43$38646
+	je	$loc_467B43$38647
 ; Line 7386
 	cmp	ax, 1
 ; Line 7387
-	je	$loc_467B8F$38647
+	je	$loc_467B8F$38648
 ; Line 7388
 	cmp	ax, 2
 ; Line 7389
-	je	$loc_467C20$38648
+	je	$loc_467C20$38649
 ; Line 7390
 	cmp	ax, 3
 ; Line 7391
-	je	$loc_467D5B$38649
+	je	$loc_467D5B$38650
 ; Line 7392
 	cmp	ax, 4
 ; Line 7393
-	je	$loc_467E99$38650
+	je	$loc_467E99$38651
 ; Line 7394
-	jmp	$loc_467F8A$38651
-$loc_4679EC$38645:
+	jmp	$loc_467F8A$38652
+$loc_4679EC$38646:
 ; Line 7396
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 7397
@@ -14187,36 +14186,36 @@ $loc_4679EC$38645:
 	shr	eax, 4
 ; Line 7409
 	and	eax, 15					; 0000000fH
-$loc_467A21$38652:
+$loc_467A21$38653:
 ; Line 7411
 	cmp	ax, 8
 ; Line 7412
-	je	$loc_468086$38653
+	je	$loc_468086$38654
 ; Line 7413
 	cmp	ax, 9
 ; Line 7414
-	je	$loc_4680D1$38654
+	je	$loc_4680D1$38655
 ; Line 7415
 	cmp	ax, 10					; 0000000aH
 ; Line 7416
-	je	$loc_468161$38655
+	je	$loc_468161$38656
 ; Line 7417
 	cmp	ax, 11					; 0000000bH
 ; Line 7418
-	je	$loc_468268$38656
+	je	$loc_468268$38657
 ; Line 7419
 	cmp	ax, 12					; 0000000cH
 ; Line 7420
-	je	$loc_468372$38657
+	je	$loc_468372$38658
 ; Line 7421
-	jmp	$loc_468448$38658
-$loc_467A58$38643:
+	jmp	$loc_468448$38659
+$loc_467A58$38644:
 ; Line 7423
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 7424
 	and	eax, 32768				; 00008000H
 ; Line 7425
-	je	SHORT $loc_467A8A$38659
+	je	SHORT $loc_467A8A$38660
 ; Line 7426
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 7427
@@ -14235,7 +14234,7 @@ $loc_467A58$38643:
 	add	eax, DWORD PTR [esi]
 ; Line 7434
 	mov	DWORD PTR _gdwPNum, eax
-$loc_467A8A$38659:
+$loc_467A8A$38660:
 ; Line 7436
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 7437
@@ -14261,14 +14260,14 @@ $loc_467A8A$38659:
 ; Line 7447
 	add	eax, 8
 ; Line 7448
-	jmp	$loc_467A21$38652
-$loc_467AB8$38644:
+	jmp	$loc_467A21$38653
+$loc_467AB8$38645:
 ; Line 7450
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 7451
 	and	eax, 32768				; 00008000H
 ; Line 7452
-	je	SHORT $loc_467AEA$38660
+	je	SHORT $loc_467AEA$38661
 ; Line 7453
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 7454
@@ -14287,7 +14286,7 @@ $loc_467AB8$38644:
 	add	eax, DWORD PTR [esi]
 ; Line 7461
 	mov	DWORD PTR _gdwPNum, eax
-$loc_467AEA$38660:
+$loc_467AEA$38661:
 ; Line 7463
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 7464
@@ -14311,49 +14310,49 @@ $loc_467AEA$38660:
 ; Line 7473
 	and	eax, 7
 ; Line 7474
-	je	$loc_468529$38661
+	je	$loc_468529$38662
 ; Line 7475
 	cmp	ax, 1
 ; Line 7476
-	je	$loc_468573$38662
+	je	$loc_468573$38663
 ; Line 7477
 	cmp	ax, 2
 ; Line 7478
-	je	$loc_468604$38663
+	je	$loc_468604$38664
 ; Line 7479
 	cmp	ax, 3
 ; Line 7480
-	je	$loc_468696$38664
+	je	$loc_468696$38665
 ; Line 7481
 	cmp	ax, 4
 ; Line 7482
-	je	$loc_46872C$38665
+	je	$loc_46872C$38666
 ; Line 7483
-	jmp	$loc_4687CB$38666
-$loc_467B43$38646:
+	jmp	$loc_4687CB$38667
+$loc_467B43$38647:
 ; Line 7485
 	push	ebp
 ; Line 7486
 	mov	ebp, 32					; 00000020H
-$loc_467B49$38667:
+$loc_467B49$38668:
 ; Line 7488
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7489
-	jb	SHORT $loc_467B59$38668
+	jb	SHORT $loc_467B59$38669
 ; Line 7490
 	add	esi, 32					; 00000020H
 ; Line 7491
 	add	edi, 32					; 00000020H
 ; Line 7492
-	jmp	SHORT $loc_467B73$38669
-$loc_467B59$38668:
+	jmp	SHORT $loc_467B73$38670
+$loc_467B59$38669:
 ; Line 7494
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 7495
 	mov	edx, DWORD PTR [eax]
 ; Line 7496
 	mov	ecx, 32					; 00000020H
-$loc_467B65$38670:
+$loc_467B65$38671:
 ; Line 7498
 	mov	al, BYTE PTR [esi]
 ; Line 7499
@@ -14361,19 +14360,19 @@ $loc_467B65$38670:
 ; Line 7500
 	shl	edx, 1
 ; Line 7501
-	jae	SHORT $loc_467B6F$38671
+	jae	SHORT $loc_467B6F$38672
 ; Line 7502
 	xlat
 ; Line 7503
 	mov	BYTE PTR [edi], al
-$loc_467B6F$38671:
+$loc_467B6F$38672:
 ; Line 7505
 	inc	edi
 ; Line 7506
 	dec	ecx
 ; Line 7507
-	jne	SHORT $loc_467B65$38670
-$loc_467B73$38669:
+	jne	SHORT $loc_467B65$38671
+$loc_467B73$38670:
 ; Line 7509
 	sub	edi, 800				; 00000320H
 ; Line 7510
@@ -14385,15 +14384,15 @@ $loc_467B73$38669:
 ; Line 7513
 	dec	ebp
 ; Line 7514
-	jne	SHORT $loc_467B49$38667
+	jne	SHORT $loc_467B49$38668
 ; Line 7515
 	pop	ebp
 ; Line 7516
-	jmp	$loc_468867$38672
-$loc_467B8F$38647:
+	jmp	$loc_468867$38673
+$loc_467B8F$38648:
 ; Line 7518
 	mov	ecx, 32					; 00000020H
-$loc_467B94$38673:
+$loc_467B94$38674:
 ; Line 7520
 	push	ecx
 ; Line 7521
@@ -14404,7 +14403,7 @@ $loc_467B94$38673:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 7524
 	mov	edx, 32					; 00000020H
-$loc_467BA6$38674:
+$loc_467BA6$38675:
 ; Line 7526
 	xor	eax, eax
 ; Line 7527
@@ -14414,27 +14413,27 @@ $loc_467BA6$38674:
 ; Line 7529
 	test	al, al
 ; Line 7530
-	js	SHORT $loc_467BE3$38675
+	js	SHORT $loc_467BE3$38676
 ; Line 7531
 	sub	edx, eax
 ; Line 7532
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7533
-	jb	SHORT $loc_467BBF$38676
+	jb	SHORT $loc_467BBF$38677
 ; Line 7534
 	add	esi, eax
 ; Line 7535
 	add	edi, eax
 ; Line 7536
-	jmp	SHORT $loc_467BDD$38677
-$loc_467BBF$38676:
+	jmp	SHORT $loc_467BDD$38678
+$loc_467BBF$38677:
 ; Line 7538
 	mov	ecx, eax
 ; Line 7539
 	push	edx
 ; Line 7540
 	mov	edx, DWORD PTR _gdwCurrentMask
-$loc_467BC8$38678:
+$loc_467BC8$38679:
 ; Line 7542
 	mov	al, BYTE PTR [esi]
 ; Line 7543
@@ -14442,30 +14441,30 @@ $loc_467BC8$38678:
 ; Line 7544
 	shl	edx, 1
 ; Line 7545
-	jae	SHORT $loc_467BD2$38679
+	jae	SHORT $loc_467BD2$38680
 ; Line 7546
 	xlat
 ; Line 7547
 	mov	BYTE PTR [edi], al
-$loc_467BD2$38679:
+$loc_467BD2$38680:
 ; Line 7549
 	inc	edi
 ; Line 7550
 	dec	ecx
 ; Line 7551
-	jne	SHORT $loc_467BC8$38678
+	jne	SHORT $loc_467BC8$38679
 ; Line 7552
 	mov	DWORD PTR _gdwCurrentMask, edx
 ; Line 7553
 	pop	edx
-$loc_467BDD$38677:
+$loc_467BDD$38678:
 ; Line 7555
 	test	edx, edx
 ; Line 7556
-	je	SHORT $loc_467C00$38680
+	je	SHORT $loc_467C00$38681
 ; Line 7557
-	jmp	SHORT $loc_467BA6$38674
-$loc_467BE3$38675:
+	jmp	SHORT $loc_467BA6$38675
+$loc_467BE3$38676:
 ; Line 7559
 	neg	al
 ; Line 7560
@@ -14475,7 +14474,7 @@ $loc_467BE3$38675:
 ; Line 7562
 	and	ecx, 31					; 0000001fH
 ; Line 7563
-	je	SHORT $loc_467BFC$38681
+	je	SHORT $loc_467BFC$38682
 ; Line 7564
 	push	eax
 ; Line 7565
@@ -14486,12 +14485,12 @@ $loc_467BE3$38675:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 7568
 	pop	eax
-$loc_467BFC$38681:
+$loc_467BFC$38682:
 ; Line 7570
 	sub	edx, eax
 ; Line 7571
-	jne	SHORT $loc_467BA6$38674
-$loc_467C00$38680:
+	jne	SHORT $loc_467BA6$38675
+$loc_467C00$38681:
 ; Line 7573
 	pop	ecx
 ; Line 7574
@@ -14505,10 +14504,10 @@ $loc_467C00$38680:
 ; Line 7578
 	dec	ecx
 ; Line 7579
-	jne	$loc_467B94$38673
+	jne	$loc_467B94$38674
 ; Line 7580
-	jmp	$loc_468867$38672
-$loc_467C20$38648:
+	jmp	$loc_468867$38673
+$loc_467C20$38649:
 ; Line 7582
 	mov	edx, 30					; 0000001eH
 ; Line 7583
@@ -14516,7 +14515,7 @@ $loc_467C20$38648:
 ; Line 7584
 	sub	eax, DWORD PTR _glClipY
 ; Line 7585
-	jb	SHORT $loc_467C67$38682
+	jb	SHORT $loc_467C67$38683
 ; Line 7586
 	add	eax, 1023				; 000003ffH
 ; Line 7587
@@ -14524,7 +14523,7 @@ $loc_467C20$38648:
 ; Line 7588
 	cmp	eax, 45					; 0000002dH
 ; Line 7589
-	jg	SHORT $loc_467C59$38683
+	jg	SHORT $loc_467C59$38684
 ; Line 7590
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 7591
@@ -14542,15 +14541,15 @@ $loc_467C20$38648:
 ; Line 7597
 	sub	edx, ecx
 ; Line 7598
-	jmp	SHORT $loc_467C67$38682
-$loc_467C59$38683:
+	jmp	SHORT $loc_467C67$38683
+$loc_467C59$38684:
 ; Line 7600
 	sub	edi, 12288				; 00003000H
 ; Line 7601
 	add	esi, 288				; 00000120H
 ; Line 7602
-	jmp	SHORT $loc_467CB8$38684
-$loc_467C67$38682:
+	jmp	SHORT $loc_467CB8$38685
+$loc_467C67$38683:
 ; Line 7604
 	add	edi, edx
 ; Line 7605
@@ -14560,7 +14559,7 @@ $loc_467C67$38682:
 ; Line 7607
 	shr	ecx, 2
 ; Line 7608
-	jae	SHORT $loc_467C90$38685
+	jae	SHORT $loc_467C90$38686
 ; Line 7609
 	mov	ax, WORD PTR [esi+2]
 ; Line 7610
@@ -14580,8 +14579,8 @@ $loc_467C67$38682:
 ; Line 7617
 	test	ecx, ecx
 ; Line 7618
-	je	SHORT $loc_467CAD$38686
-$loc_467C90$38685:
+	je	SHORT $loc_467CAD$38687
+$loc_467C90$38686:
 ; Line 7620
 	mov	eax, DWORD PTR [esi]
 ; Line 7621
@@ -14609,15 +14608,15 @@ $loc_467C90$38685:
 ; Line 7632
 	dec	ecx
 ; Line 7633
-	jne	SHORT $loc_467C90$38685
-$loc_467CAD$38686:
+	jne	SHORT $loc_467C90$38686
+$loc_467CAD$38687:
 ; Line 7635
 	sub	edi, 800				; 00000320H
 ; Line 7636
 	sub	edx, 2
 ; Line 7637
-	jge	SHORT $loc_467C67$38682
-$loc_467CB8$38684:
+	jge	SHORT $loc_467C67$38683
+$loc_467CB8$38685:
 ; Line 7639
 	mov	edx, 2
 ; Line 7640
@@ -14625,7 +14624,7 @@ $loc_467CB8$38684:
 ; Line 7641
 	sub	eax, DWORD PTR _glClipY
 ; Line 7642
-	jb	SHORT $loc_467D02$38687
+	jb	SHORT $loc_467D02$38688
 ; Line 7643
 	add	eax, 1023				; 000003ffH
 ; Line 7644
@@ -14633,7 +14632,7 @@ $loc_467CB8$38684:
 ; Line 7645
 	cmp	eax, 42					; 0000002aH
 ; Line 7646
-	jg	SHORT $loc_467CF1$38688
+	jg	SHORT $loc_467CF1$38689
 ; Line 7647
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 7648
@@ -14651,15 +14650,15 @@ $loc_467CB8$38684:
 ; Line 7654
 	add	edx, ecx
 ; Line 7655
-	jmp	SHORT $loc_467D02$38687
-$loc_467CF1$38688:
+	jmp	SHORT $loc_467D02$38688
+$loc_467CF1$38689:
 ; Line 7657
 	sub	edi, 11520				; 00002d00H
 ; Line 7658
 	add	esi, 256				; 00000100H
 ; Line 7659
-	jmp	$loc_468867$38672
-$loc_467D02$38687:
+	jmp	$loc_468867$38673
+$loc_467D02$38688:
 ; Line 7661
 	add	edi, edx
 ; Line 7662
@@ -14669,7 +14668,7 @@ $loc_467D02$38687:
 ; Line 7664
 	shr	ecx, 2
 ; Line 7665
-	jae	SHORT $loc_467D2B$38689
+	jae	SHORT $loc_467D2B$38690
 ; Line 7666
 	mov	ax, WORD PTR [esi+2]
 ; Line 7667
@@ -14689,8 +14688,8 @@ $loc_467D02$38687:
 ; Line 7674
 	test	ecx, ecx
 ; Line 7675
-	je	SHORT $loc_467D48$38690
-$loc_467D2B$38689:
+	je	SHORT $loc_467D48$38691
+$loc_467D2B$38690:
 ; Line 7677
 	mov	eax, DWORD PTR [esi]
 ; Line 7678
@@ -14718,8 +14717,8 @@ $loc_467D2B$38689:
 ; Line 7689
 	dec	ecx
 ; Line 7690
-	jne	SHORT $loc_467D2B$38689
-$loc_467D48$38690:
+	jne	SHORT $loc_467D2B$38690
+$loc_467D48$38691:
 ; Line 7692
 	sub	edi, 800				; 00000320H
 ; Line 7693
@@ -14727,10 +14726,10 @@ $loc_467D48$38690:
 ; Line 7694
 	cmp	edx, 32					; 00000020H
 ; Line 7695
-	jne	SHORT $loc_467D02$38687
+	jne	SHORT $loc_467D02$38688
 ; Line 7696
-	jmp	$loc_468867$38672
-$loc_467D5B$38649:
+	jmp	$loc_468867$38673
+$loc_467D5B$38650:
 ; Line 7698
 	push	ebp
 ; Line 7699
@@ -14740,7 +14739,7 @@ $loc_467D5B$38649:
 ; Line 7701
 	sub	eax, DWORD PTR _glClipY
 ; Line 7702
-	jb	SHORT $loc_467DA3$38691
+	jb	SHORT $loc_467DA3$38692
 ; Line 7703
 	add	eax, 1023				; 000003ffH
 ; Line 7704
@@ -14748,7 +14747,7 @@ $loc_467D5B$38649:
 ; Line 7705
 	cmp	eax, 45					; 0000002dH
 ; Line 7706
-	jg	SHORT $loc_467D95$38692
+	jg	SHORT $loc_467D95$38693
 ; Line 7707
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 7708
@@ -14766,15 +14765,15 @@ $loc_467D5B$38649:
 ; Line 7714
 	sub	edx, ecx
 ; Line 7715
-	jmp	SHORT $loc_467DA3$38691
-$loc_467D95$38692:
+	jmp	SHORT $loc_467DA3$38692
+$loc_467D95$38693:
 ; Line 7717
 	sub	edi, 12288				; 00003000H
 ; Line 7718
 	add	esi, 288				; 00000120H
 ; Line 7719
-	jmp	SHORT $loc_467DF6$38693
-$loc_467DA3$38691:
+	jmp	SHORT $loc_467DF6$38694
+$loc_467DA3$38692:
 ; Line 7721
 	mov	ecx, 32					; 00000020H
 ; Line 7722
@@ -14784,8 +14783,8 @@ $loc_467DA3$38691:
 ; Line 7724
 	shr	ecx, 2
 ; Line 7725
-	je	SHORT $loc_467DCE$38694
-$loc_467DB1$38695:
+	je	SHORT $loc_467DCE$38695
+$loc_467DB1$38696:
 ; Line 7727
 	mov	eax, DWORD PTR [esi]
 ; Line 7728
@@ -14813,12 +14812,12 @@ $loc_467DB1$38695:
 ; Line 7739
 	dec	ecx
 ; Line 7740
-	jne	SHORT $loc_467DB1$38695
-$loc_467DCE$38694:
+	jne	SHORT $loc_467DB1$38696
+$loc_467DCE$38695:
 ; Line 7742
 	and	ebp, 2
 ; Line 7743
-	je	SHORT $loc_467DE9$38696
+	je	SHORT $loc_467DE9$38697
 ; Line 7744
 	mov	ax, WORD PTR [esi]
 ; Line 7745
@@ -14835,7 +14834,7 @@ $loc_467DCE$38694:
 	mov	WORD PTR [edi], ax
 ; Line 7751
 	add	edi, 2
-$loc_467DE9$38696:
+$loc_467DE9$38697:
 ; Line 7753
 	sub	edi, 800				; 00000320H
 ; Line 7754
@@ -14843,8 +14842,8 @@ $loc_467DE9$38696:
 ; Line 7755
 	sub	edx, 2
 ; Line 7756
-	jge	SHORT $loc_467DA3$38691
-$loc_467DF6$38693:
+	jge	SHORT $loc_467DA3$38692
+$loc_467DF6$38694:
 ; Line 7758
 	mov	edx, 2
 ; Line 7759
@@ -14852,7 +14851,7 @@ $loc_467DF6$38693:
 ; Line 7760
 	sub	eax, DWORD PTR _glClipY
 ; Line 7761
-	jb	SHORT $loc_467E3D$38697
+	jb	SHORT $loc_467E3D$38698
 ; Line 7762
 	add	eax, 1023				; 000003ffH
 ; Line 7763
@@ -14860,7 +14859,7 @@ $loc_467DF6$38693:
 ; Line 7764
 	cmp	eax, 42					; 0000002aH
 ; Line 7765
-	jg	SHORT $loc_467E2F$38698
+	jg	SHORT $loc_467E2F$38699
 ; Line 7766
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 7767
@@ -14878,15 +14877,15 @@ $loc_467DF6$38693:
 ; Line 7773
 	add	edx, ecx
 ; Line 7774
-	jmp	SHORT $loc_467E3D$38697
-$loc_467E2F$38698:
+	jmp	SHORT $loc_467E3D$38698
+$loc_467E2F$38699:
 ; Line 7776
 	sub	edi, 11520				; 00002d00H
 ; Line 7777
 	add	esi, 256				; 00000100H
 ; Line 7778
-	jmp	SHORT $loc_467E93$38699
-$loc_467E3D$38697:
+	jmp	SHORT $loc_467E93$38700
+$loc_467E3D$38698:
 ; Line 7780
 	mov	ecx, 32					; 00000020H
 ; Line 7781
@@ -14896,8 +14895,8 @@ $loc_467E3D$38697:
 ; Line 7783
 	shr	ecx, 2
 ; Line 7784
-	je	SHORT $loc_467E68$38700
-$loc_467E4B$38701:
+	je	SHORT $loc_467E68$38701
+$loc_467E4B$38702:
 ; Line 7786
 	mov	eax, DWORD PTR [esi]
 ; Line 7787
@@ -14925,12 +14924,12 @@ $loc_467E4B$38701:
 ; Line 7798
 	dec	ecx
 ; Line 7799
-	jne	SHORT $loc_467E4B$38701
-$loc_467E68$38700:
+	jne	SHORT $loc_467E4B$38702
+$loc_467E68$38701:
 ; Line 7801
 	and	ebp, 2
 ; Line 7802
-	je	SHORT $loc_467E83$38702
+	je	SHORT $loc_467E83$38703
 ; Line 7803
 	mov	ax, WORD PTR [esi]
 ; Line 7804
@@ -14947,7 +14946,7 @@ $loc_467E68$38700:
 	mov	WORD PTR [edi], ax
 ; Line 7810
 	add	edi, 2
-$loc_467E83$38702:
+$loc_467E83$38703:
 ; Line 7812
 	sub	edi, 800				; 00000320H
 ; Line 7813
@@ -14957,13 +14956,13 @@ $loc_467E83$38702:
 ; Line 7815
 	cmp	edx, 32					; 00000020H
 ; Line 7816
-	jne	SHORT $loc_467E3D$38697
-$loc_467E93$38699:
+	jne	SHORT $loc_467E3D$38698
+$loc_467E93$38700:
 ; Line 7818
 	pop	ebp
 ; Line 7819
-	jmp	$loc_468867$38672
-$loc_467E99$38650:
+	jmp	$loc_468867$38673
+$loc_467E99$38651:
 ; Line 7821
 	mov	edx, 30					; 0000001eH
 ; Line 7822
@@ -14971,7 +14970,7 @@ $loc_467E99$38650:
 ; Line 7823
 	sub	eax, DWORD PTR _glClipY
 ; Line 7824
-	jb	SHORT $loc_467EE0$38703
+	jb	SHORT $loc_467EE0$38704
 ; Line 7825
 	add	eax, 1023				; 000003ffH
 ; Line 7826
@@ -14979,7 +14978,7 @@ $loc_467E99$38650:
 ; Line 7827
 	cmp	eax, 45					; 0000002dH
 ; Line 7828
-	jg	SHORT $loc_467ED2$38704
+	jg	SHORT $loc_467ED2$38705
 ; Line 7829
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 7830
@@ -14997,15 +14996,15 @@ $loc_467E99$38650:
 ; Line 7836
 	sub	edx, ecx
 ; Line 7837
-	jmp	SHORT $loc_467EE0$38703
-$loc_467ED2$38704:
+	jmp	SHORT $loc_467EE0$38704
+$loc_467ED2$38705:
 ; Line 7839
 	sub	edi, 12288				; 00003000H
 ; Line 7840
 	add	esi, 288				; 00000120H
 ; Line 7841
-	jmp	SHORT $loc_467F31$38705
-$loc_467EE0$38703:
+	jmp	SHORT $loc_467F31$38706
+$loc_467EE0$38704:
 ; Line 7843
 	add	edi, edx
 ; Line 7844
@@ -15015,7 +15014,7 @@ $loc_467EE0$38703:
 ; Line 7846
 	shr	ecx, 2
 ; Line 7847
-	jae	SHORT $loc_467F09$38706
+	jae	SHORT $loc_467F09$38707
 ; Line 7848
 	mov	ax, WORD PTR [esi+2]
 ; Line 7849
@@ -15035,8 +15034,8 @@ $loc_467EE0$38703:
 ; Line 7856
 	test	ecx, ecx
 ; Line 7857
-	je	SHORT $loc_467F26$38707
-$loc_467F09$38706:
+	je	SHORT $loc_467F26$38708
+$loc_467F09$38707:
 ; Line 7859
 	mov	eax, DWORD PTR [esi]
 ; Line 7860
@@ -15064,15 +15063,15 @@ $loc_467F09$38706:
 ; Line 7871
 	dec	ecx
 ; Line 7872
-	jne	SHORT $loc_467F09$38706
-$loc_467F26$38707:
+	jne	SHORT $loc_467F09$38707
+$loc_467F26$38708:
 ; Line 7874
 	sub	edi, 800				; 00000320H
 ; Line 7875
 	sub	edx, 2
 ; Line 7876
-	jge	SHORT $loc_467EE0$38703
-$loc_467F31$38705:
+	jge	SHORT $loc_467EE0$38704
+$loc_467F31$38706:
 ; Line 7878
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 7879
@@ -15081,18 +15080,18 @@ $loc_467F31$38705:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 7881
 	mov	edx, 16					; 00000010H
-$loc_467F43$38708:
+$loc_467F43$38709:
 ; Line 7883
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7884
-	jb	SHORT $loc_467F53$38709
+	jb	SHORT $loc_467F53$38710
 ; Line 7885
 	add	esi, 32					; 00000020H
 ; Line 7886
 	add	edi, 32					; 00000020H
 ; Line 7887
-	jmp	SHORT $loc_467F6F$38710
-$loc_467F53$38709:
+	jmp	SHORT $loc_467F6F$38711
+$loc_467F53$38710:
 ; Line 7889
 	push	edx
 ; Line 7890
@@ -15101,7 +15100,7 @@ $loc_467F53$38709:
 	mov	edx, DWORD PTR [eax]
 ; Line 7892
 	mov	ecx, 32					; 00000020H
-$loc_467F60$38711:
+$loc_467F60$38712:
 ; Line 7894
 	mov	al, BYTE PTR [esi]
 ; Line 7895
@@ -15109,21 +15108,21 @@ $loc_467F60$38711:
 ; Line 7896
 	shl	edx, 1
 ; Line 7897
-	jae	SHORT $loc_467F6A$38712
+	jae	SHORT $loc_467F6A$38713
 ; Line 7898
 	xlat
 ; Line 7899
 	mov	BYTE PTR [edi], al
-$loc_467F6A$38712:
+$loc_467F6A$38713:
 ; Line 7901
 	inc	edi
 ; Line 7902
 	dec	ecx
 ; Line 7903
-	jne	SHORT $loc_467F60$38711
+	jne	SHORT $loc_467F60$38712
 ; Line 7904
 	pop	edx
-$loc_467F6F$38710:
+$loc_467F6F$38711:
 ; Line 7906
 	sub	edi, 800				; 00000320H
 ; Line 7907
@@ -15135,10 +15134,10 @@ $loc_467F6F$38710:
 ; Line 7910
 	dec	edx
 ; Line 7911
-	jne	SHORT $loc_467F43$38708
+	jne	SHORT $loc_467F43$38709
 ; Line 7912
-	jmp	$loc_468867$38672
-$loc_467F8A$38651:
+	jmp	$loc_468867$38673
+$loc_467F8A$38652:
 ; Line 7914
 	push	ebp
 ; Line 7915
@@ -15148,7 +15147,7 @@ $loc_467F8A$38651:
 ; Line 7917
 	sub	eax, DWORD PTR _glClipY
 ; Line 7918
-	jb	SHORT $loc_467FD2$38713
+	jb	SHORT $loc_467FD2$38714
 ; Line 7919
 	add	eax, 1023				; 000003ffH
 ; Line 7920
@@ -15156,7 +15155,7 @@ $loc_467F8A$38651:
 ; Line 7921
 	cmp	eax, 45					; 0000002dH
 ; Line 7922
-	jg	SHORT $loc_467FC4$38714
+	jg	SHORT $loc_467FC4$38715
 ; Line 7923
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 7924
@@ -15174,15 +15173,15 @@ $loc_467F8A$38651:
 ; Line 7930
 	sub	edx, ecx
 ; Line 7931
-	jmp	SHORT $loc_467FD2$38713
-$loc_467FC4$38714:
+	jmp	SHORT $loc_467FD2$38714
+$loc_467FC4$38715:
 ; Line 7933
 	sub	edi, 12288				; 00003000H
 ; Line 7934
 	add	esi, 288				; 00000120H
 ; Line 7935
-	jmp	SHORT $loc_468025$38715
-$loc_467FD2$38713:
+	jmp	SHORT $loc_468025$38716
+$loc_467FD2$38714:
 ; Line 7937
 	mov	ecx, 32					; 00000020H
 ; Line 7938
@@ -15192,8 +15191,8 @@ $loc_467FD2$38713:
 ; Line 7940
 	shr	ecx, 2
 ; Line 7941
-	je	SHORT $loc_467FFD$38716
-$loc_467FE0$38717:
+	je	SHORT $loc_467FFD$38717
+$loc_467FE0$38718:
 ; Line 7943
 	mov	eax, DWORD PTR [esi]
 ; Line 7944
@@ -15221,12 +15220,12 @@ $loc_467FE0$38717:
 ; Line 7955
 	dec	ecx
 ; Line 7956
-	jne	SHORT $loc_467FE0$38717
-$loc_467FFD$38716:
+	jne	SHORT $loc_467FE0$38718
+$loc_467FFD$38717:
 ; Line 7958
 	and	ebp, 2
 ; Line 7959
-	je	SHORT $loc_468018$38718
+	je	SHORT $loc_468018$38719
 ; Line 7960
 	mov	ax, WORD PTR [esi]
 ; Line 7961
@@ -15243,7 +15242,7 @@ $loc_467FFD$38716:
 	mov	WORD PTR [edi], ax
 ; Line 7967
 	add	edi, 2
-$loc_468018$38718:
+$loc_468018$38719:
 ; Line 7969
 	sub	edi, 800				; 00000320H
 ; Line 7970
@@ -15251,8 +15250,8 @@ $loc_468018$38718:
 ; Line 7971
 	sub	edx, 2
 ; Line 7972
-	jge	SHORT $loc_467FD2$38713
-$loc_468025$38715:
+	jge	SHORT $loc_467FD2$38714
+$loc_468025$38716:
 ; Line 7974
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 7975
@@ -15261,18 +15260,18 @@ $loc_468025$38715:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 7977
 	mov	edx, 16					; 00000010H
-$loc_468037$38719:
+$loc_468037$38720:
 ; Line 7979
 	cmp	edi, DWORD PTR _glClipY
 ; Line 7980
-	jb	SHORT $loc_468047$38720
+	jb	SHORT $loc_468047$38721
 ; Line 7981
 	add	esi, 32					; 00000020H
 ; Line 7982
 	add	edi, 32					; 00000020H
 ; Line 7983
-	jmp	SHORT $loc_46806A$38721
-$loc_468047$38720:
+	jmp	SHORT $loc_46806A$38722
+$loc_468047$38721:
 ; Line 7985
 	push	edx
 ; Line 7986
@@ -15281,7 +15280,7 @@ $loc_468047$38720:
 	mov	edx, DWORD PTR [eax]
 ; Line 7988
 	mov	ecx, 32					; 00000020H
-$loc_468054$38722:
+$loc_468054$38723:
 ; Line 7990
 	mov	al, BYTE PTR [esi]
 ; Line 7991
@@ -15289,18 +15288,18 @@ $loc_468054$38722:
 ; Line 7992
 	shl	edx, 1
 ; Line 7993
-	jae	SHORT $loc_46805E$38723
+	jae	SHORT $loc_46805E$38724
 ; Line 7994
 	xlat
 ; Line 7995
 	mov	BYTE PTR [edi], al
-$loc_46805E$38723:
+$loc_46805E$38724:
 ; Line 7997
 	inc	edi
 ; Line 7998
 	dec	ecx
 ; Line 7999
-	jne	SHORT $loc_468054$38722
+	jne	SHORT $loc_468054$38723
 ; Line 8000
 	mov	ebp, esi
 ; Line 8001
@@ -15309,7 +15308,7 @@ $loc_46805E$38723:
 	add	esi, ebp
 ; Line 8003
 	pop	edx
-$loc_46806A$38721:
+$loc_46806A$38722:
 ; Line 8005
 	sub	edi, 800				; 00000320H
 ; Line 8006
@@ -15321,26 +15320,26 @@ $loc_46806A$38721:
 ; Line 8009
 	dec	edx
 ; Line 8010
-	jne	SHORT $loc_468037$38719
+	jne	SHORT $loc_468037$38720
 ; Line 8011
 	pop	ebp
 ; Line 8012
-	jmp	$loc_468867$38672
-$loc_468086$38653:
+	jmp	$loc_468867$38673
+$loc_468086$38654:
 ; Line 8014
 	mov	edx, 32					; 00000020H
-$loc_46808B$38724:
+$loc_46808B$38725:
 ; Line 8016
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8017
-	jb	SHORT $loc_46809B$38725
+	jb	SHORT $loc_46809B$38726
 ; Line 8018
 	add	esi, 32					; 00000020H
 ; Line 8019
 	add	edi, 32					; 00000020H
 ; Line 8020
-	jmp	SHORT $loc_4680B6$38726
-$loc_46809B$38725:
+	jmp	SHORT $loc_4680B6$38727
+$loc_46809B$38726:
 ; Line 8022
 	push	edx
 ; Line 8023
@@ -15349,7 +15348,7 @@ $loc_46809B$38725:
 	mov	edx, DWORD PTR [eax]
 ; Line 8025
 	mov	ecx, 32					; 00000020H
-$loc_4680A8$38727:
+$loc_4680A8$38728:
 ; Line 8027
 	mov	al, BYTE PTR [esi]
 ; Line 8028
@@ -15357,19 +15356,19 @@ $loc_4680A8$38727:
 ; Line 8029
 	shl	edx, 1
 ; Line 8030
-	jae	SHORT $loc_4680B1$38728
+	jae	SHORT $loc_4680B1$38729
 ; Line 8031
 	mov	BYTE PTR [edi], al
-$loc_4680B1$38728:
+$loc_4680B1$38729:
 ; Line 8033
 	inc	edi
 ; Line 8034
 	dec	ecx
 ; Line 8035
-	jne	SHORT $loc_4680A8$38727
+	jne	SHORT $loc_4680A8$38728
 ; Line 8036
 	pop	edx
-$loc_4680B6$38726:
+$loc_4680B6$38727:
 ; Line 8038
 	sub	edi, 800				; 00000320H
 ; Line 8039
@@ -15381,13 +15380,13 @@ $loc_4680B6$38726:
 ; Line 8042
 	dec	edx
 ; Line 8043
-	jne	SHORT $loc_46808B$38724
+	jne	SHORT $loc_46808B$38725
 ; Line 8044
-	jmp	$loc_468867$38672
-$loc_4680D1$38654:
+	jmp	$loc_468867$38673
+$loc_4680D1$38655:
 ; Line 8046
 	mov	ecx, 32					; 00000020H
-$loc_4680D6$38729:
+$loc_4680D6$38730:
 ; Line 8048
 	push	ecx
 ; Line 8049
@@ -15398,7 +15397,7 @@ $loc_4680D6$38729:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 8052
 	mov	edx, 32					; 00000020H
-$loc_4680E8$38730:
+$loc_4680E8$38731:
 ; Line 8054
 	xor	eax, eax
 ; Line 8055
@@ -15408,27 +15407,27 @@ $loc_4680E8$38730:
 ; Line 8057
 	test	al, al
 ; Line 8058
-	js	SHORT $loc_468124$38731
+	js	SHORT $loc_468124$38732
 ; Line 8059
 	sub	edx, eax
 ; Line 8060
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8061
-	jb	SHORT $loc_468101$38732
+	jb	SHORT $loc_468101$38733
 ; Line 8062
 	add	esi, eax
 ; Line 8063
 	add	edi, eax
 ; Line 8064
-	jmp	SHORT $loc_46811E$38733
-$loc_468101$38732:
+	jmp	SHORT $loc_46811E$38734
+$loc_468101$38733:
 ; Line 8066
 	mov	ecx, eax
 ; Line 8067
 	push	edx
 ; Line 8068
 	mov	edx, DWORD PTR _gdwCurrentMask
-$loc_46810A$38734:
+$loc_46810A$38735:
 ; Line 8070
 	mov	al, BYTE PTR [esi]
 ; Line 8071
@@ -15436,28 +15435,28 @@ $loc_46810A$38734:
 ; Line 8072
 	shl	edx, 1
 ; Line 8073
-	jae	SHORT $loc_468113$38735
+	jae	SHORT $loc_468113$38736
 ; Line 8074
 	mov	BYTE PTR [edi], al
-$loc_468113$38735:
+$loc_468113$38736:
 ; Line 8076
 	inc	edi
 ; Line 8077
 	dec	ecx
 ; Line 8078
-	jne	SHORT $loc_46810A$38734
+	jne	SHORT $loc_46810A$38735
 ; Line 8079
 	mov	DWORD PTR _gdwCurrentMask, edx
 ; Line 8080
 	pop	edx
-$loc_46811E$38733:
+$loc_46811E$38734:
 ; Line 8082
 	test	edx, edx
 ; Line 8083
-	je	SHORT $loc_468141$38736
+	je	SHORT $loc_468141$38737
 ; Line 8084
-	jmp	SHORT $loc_4680E8$38730
-$loc_468124$38731:
+	jmp	SHORT $loc_4680E8$38731
+$loc_468124$38732:
 ; Line 8086
 	neg	al
 ; Line 8087
@@ -15467,19 +15466,19 @@ $loc_468124$38731:
 ; Line 8089
 	and	ecx, 31					; 0000001fH
 ; Line 8090
-	je	SHORT $loc_46813D$38737
+	je	SHORT $loc_46813D$38738
 ; Line 8091
 	mov	ebx, DWORD PTR _gdwCurrentMask
 ; Line 8092
 	shl	ebx, cl
 ; Line 8093
 	mov	DWORD PTR _gdwCurrentMask, ebx
-$loc_46813D$38737:
+$loc_46813D$38738:
 ; Line 8095
 	sub	edx, eax
 ; Line 8096
-	jne	SHORT $loc_4680E8$38730
-$loc_468141$38736:
+	jne	SHORT $loc_4680E8$38731
+$loc_468141$38737:
 ; Line 8098
 	pop	ecx
 ; Line 8099
@@ -15493,10 +15492,10 @@ $loc_468141$38736:
 ; Line 8103
 	dec	ecx
 ; Line 8104
-	jne	$loc_4680D6$38729
+	jne	$loc_4680D6$38730
 ; Line 8105
-	jmp	$loc_468867$38672
-$loc_468161$38655:
+	jmp	$loc_468867$38673
+$loc_468161$38656:
 ; Line 8107
 	mov	edx, 30					; 0000001eH
 ; Line 8108
@@ -15504,7 +15503,7 @@ $loc_468161$38655:
 ; Line 8109
 	sub	eax, DWORD PTR _glClipY
 ; Line 8110
-	jb	SHORT $loc_4681A8$38738
+	jb	SHORT $loc_4681A8$38739
 ; Line 8111
 	add	eax, 1023				; 000003ffH
 ; Line 8112
@@ -15512,7 +15511,7 @@ $loc_468161$38655:
 ; Line 8113
 	cmp	eax, 45					; 0000002dH
 ; Line 8114
-	jg	SHORT $loc_46819A$38739
+	jg	SHORT $loc_46819A$38740
 ; Line 8115
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 8116
@@ -15530,15 +15529,15 @@ $loc_468161$38655:
 ; Line 8122
 	sub	edx, ecx
 ; Line 8123
-	jmp	SHORT $loc_4681A8$38738
-$loc_46819A$38739:
+	jmp	SHORT $loc_4681A8$38739
+$loc_46819A$38740:
 ; Line 8125
 	sub	edi, 12288				; 00003000H
 ; Line 8126
 	add	esi, 288				; 00000120H
 ; Line 8127
-	jmp	SHORT $loc_4681DF$38740
-$loc_4681A8$38738:
+	jmp	SHORT $loc_4681DF$38741
+$loc_4681A8$38739:
 ; Line 8129
 	add	edi, edx
 ; Line 8130
@@ -15548,7 +15547,7 @@ $loc_4681A8$38738:
 ; Line 8132
 	shr	ecx, 2
 ; Line 8133
-	jae	SHORT $loc_4681C7$38741
+	jae	SHORT $loc_4681C7$38742
 ; Line 8134
 	mov	ax, WORD PTR [esi+2]
 ; Line 8135
@@ -15560,8 +15559,8 @@ $loc_4681A8$38738:
 ; Line 8138
 	test	ecx, ecx
 ; Line 8139
-	je	SHORT $loc_4681D4$38742
-$loc_4681C7$38741:
+	je	SHORT $loc_4681D4$38743
+$loc_4681C7$38742:
 ; Line 8141
 	mov	eax, DWORD PTR [esi]
 ; Line 8142
@@ -15573,15 +15572,15 @@ $loc_4681C7$38741:
 ; Line 8145
 	dec	ecx
 ; Line 8146
-	jne	SHORT $loc_4681C7$38741
-$loc_4681D4$38742:
+	jne	SHORT $loc_4681C7$38742
+$loc_4681D4$38743:
 ; Line 8148
 	sub	edi, 800				; 00000320H
 ; Line 8149
 	sub	edx, 2
 ; Line 8150
-	jge	SHORT $loc_4681A8$38738
-$loc_4681DF$38740:
+	jge	SHORT $loc_4681A8$38739
+$loc_4681DF$38741:
 ; Line 8152
 	mov	edx, 2
 ; Line 8153
@@ -15589,7 +15588,7 @@ $loc_4681DF$38740:
 ; Line 8154
 	sub	eax, DWORD PTR _glClipY
 ; Line 8155
-	jb	SHORT $loc_468229$38743
+	jb	SHORT $loc_468229$38744
 ; Line 8156
 	add	eax, 1023				; 000003ffH
 ; Line 8157
@@ -15597,7 +15596,7 @@ $loc_4681DF$38740:
 ; Line 8158
 	cmp	eax, 42					; 0000002aH
 ; Line 8159
-	jg	SHORT $loc_468218$38744
+	jg	SHORT $loc_468218$38745
 ; Line 8160
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 8161
@@ -15615,15 +15614,15 @@ $loc_4681DF$38740:
 ; Line 8167
 	add	edx, ecx
 ; Line 8168
-	jmp	SHORT $loc_468229$38743
-$loc_468218$38744:
+	jmp	SHORT $loc_468229$38744
+$loc_468218$38745:
 ; Line 8170
 	sub	edi, 11520				; 00002d00H
 ; Line 8171
 	add	esi, 256				; 00000100H
 ; Line 8172
-	jmp	$loc_468867$38672
-$loc_468229$38743:
+	jmp	$loc_468867$38673
+$loc_468229$38744:
 ; Line 8174
 	add	edi, edx
 ; Line 8175
@@ -15633,7 +15632,7 @@ $loc_468229$38743:
 ; Line 8177
 	shr	ecx, 2
 ; Line 8178
-	jae	SHORT $loc_468248$38745
+	jae	SHORT $loc_468248$38746
 ; Line 8179
 	mov	ax, WORD PTR [esi+2]
 ; Line 8180
@@ -15645,8 +15644,8 @@ $loc_468229$38743:
 ; Line 8183
 	test	ecx, ecx
 ; Line 8184
-	je	SHORT $loc_468255$38746
-$loc_468248$38745:
+	je	SHORT $loc_468255$38747
+$loc_468248$38746:
 ; Line 8186
 	mov	eax, DWORD PTR [esi]
 ; Line 8187
@@ -15658,8 +15657,8 @@ $loc_468248$38745:
 ; Line 8190
 	dec	ecx
 ; Line 8191
-	jne	SHORT $loc_468248$38745
-$loc_468255$38746:
+	jne	SHORT $loc_468248$38746
+$loc_468255$38747:
 ; Line 8193
 	sub	edi, 800				; 00000320H
 ; Line 8194
@@ -15667,10 +15666,10 @@ $loc_468255$38746:
 ; Line 8195
 	cmp	edx, 32					; 00000020H
 ; Line 8196
-	jne	SHORT $loc_468229$38743
+	jne	SHORT $loc_468229$38744
 ; Line 8197
-	jmp	$loc_468867$38672
-$loc_468268$38656:
+	jmp	$loc_468867$38673
+$loc_468268$38657:
 ; Line 8199
 	push	ebp
 ; Line 8200
@@ -15680,7 +15679,7 @@ $loc_468268$38656:
 ; Line 8202
 	sub	eax, DWORD PTR _glClipY
 ; Line 8203
-	jb	SHORT $loc_4682B0$38747
+	jb	SHORT $loc_4682B0$38748
 ; Line 8204
 	add	eax, 1023				; 000003ffH
 ; Line 8205
@@ -15688,7 +15687,7 @@ $loc_468268$38656:
 ; Line 8206
 	cmp	eax, 45					; 0000002dH
 ; Line 8207
-	jg	SHORT $loc_4682A2$38748
+	jg	SHORT $loc_4682A2$38749
 ; Line 8208
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 8209
@@ -15706,15 +15705,15 @@ $loc_468268$38656:
 ; Line 8215
 	sub	edx, ecx
 ; Line 8216
-	jmp	SHORT $loc_4682B0$38747
-$loc_4682A2$38748:
+	jmp	SHORT $loc_4682B0$38748
+$loc_4682A2$38749:
 ; Line 8218
 	sub	edi, 12288				; 00003000H
 ; Line 8219
 	add	esi, 288				; 00000120H
 ; Line 8220
-	jmp	SHORT $loc_4682E9$38749
-$loc_4682B0$38747:
+	jmp	SHORT $loc_4682E9$38750
+$loc_4682B0$38748:
 ; Line 8222
 	mov	ecx, 32					; 00000020H
 ; Line 8223
@@ -15724,8 +15723,8 @@ $loc_4682B0$38747:
 ; Line 8225
 	shr	ecx, 2
 ; Line 8226
-	je	SHORT $loc_4682CB$38750
-$loc_4682BE$38751:
+	je	SHORT $loc_4682CB$38751
+$loc_4682BE$38752:
 ; Line 8228
 	mov	eax, DWORD PTR [esi]
 ; Line 8229
@@ -15737,12 +15736,12 @@ $loc_4682BE$38751:
 ; Line 8232
 	dec	ecx
 ; Line 8233
-	jne	SHORT $loc_4682BE$38751
-$loc_4682CB$38750:
+	jne	SHORT $loc_4682BE$38752
+$loc_4682CB$38751:
 ; Line 8235
 	and	ebp, 2
 ; Line 8236
-	je	SHORT $loc_4682DC$38752
+	je	SHORT $loc_4682DC$38753
 ; Line 8237
 	mov	ax, WORD PTR [esi]
 ; Line 8238
@@ -15751,7 +15750,7 @@ $loc_4682CB$38750:
 	mov	WORD PTR [edi], ax
 ; Line 8240
 	add	edi, 2
-$loc_4682DC$38752:
+$loc_4682DC$38753:
 ; Line 8242
 	sub	edi, 800				; 00000320H
 ; Line 8243
@@ -15759,8 +15758,8 @@ $loc_4682DC$38752:
 ; Line 8244
 	sub	edx, 2
 ; Line 8245
-	jge	SHORT $loc_4682B0$38747
-$loc_4682E9$38749:
+	jge	SHORT $loc_4682B0$38748
+$loc_4682E9$38750:
 ; Line 8247
 	mov	edx, 2
 ; Line 8248
@@ -15768,7 +15767,7 @@ $loc_4682E9$38749:
 ; Line 8249
 	sub	eax, DWORD PTR _glClipY
 ; Line 8250
-	jb	SHORT $loc_468330$38753
+	jb	SHORT $loc_468330$38754
 ; Line 8251
 	add	eax, 1023				; 000003ffH
 ; Line 8252
@@ -15776,7 +15775,7 @@ $loc_4682E9$38749:
 ; Line 8253
 	cmp	eax, 42					; 0000002aH
 ; Line 8254
-	jg	SHORT $loc_468322$38754
+	jg	SHORT $loc_468322$38755
 ; Line 8255
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 8256
@@ -15794,15 +15793,15 @@ $loc_4682E9$38749:
 ; Line 8262
 	add	edx, ecx
 ; Line 8263
-	jmp	SHORT $loc_468330$38753
-$loc_468322$38754:
+	jmp	SHORT $loc_468330$38754
+$loc_468322$38755:
 ; Line 8265
 	sub	edi, 11520				; 00002d00H
 ; Line 8266
 	add	esi, 256				; 00000100H
 ; Line 8267
-	jmp	SHORT $loc_46836C$38755
-$loc_468330$38753:
+	jmp	SHORT $loc_46836C$38756
+$loc_468330$38754:
 ; Line 8269
 	mov	ecx, 32					; 00000020H
 ; Line 8270
@@ -15812,8 +15811,8 @@ $loc_468330$38753:
 ; Line 8272
 	shr	ecx, 2
 ; Line 8273
-	je	SHORT $loc_46834B$38756
-$loc_46833E$38757:
+	je	SHORT $loc_46834B$38757
+$loc_46833E$38758:
 ; Line 8275
 	mov	eax, DWORD PTR [esi]
 ; Line 8276
@@ -15825,12 +15824,12 @@ $loc_46833E$38757:
 ; Line 8279
 	dec	ecx
 ; Line 8280
-	jne	SHORT $loc_46833E$38757
-$loc_46834B$38756:
+	jne	SHORT $loc_46833E$38758
+$loc_46834B$38757:
 ; Line 8282
 	and	ebp, 2
 ; Line 8283
-	je	SHORT $loc_46835C$38758
+	je	SHORT $loc_46835C$38759
 ; Line 8284
 	mov	ax, WORD PTR [esi]
 ; Line 8285
@@ -15839,7 +15838,7 @@ $loc_46834B$38756:
 	mov	WORD PTR [edi], ax
 ; Line 8287
 	add	edi, 2
-$loc_46835C$38758:
+$loc_46835C$38759:
 ; Line 8289
 	sub	edi, 800				; 00000320H
 ; Line 8290
@@ -15849,13 +15848,13 @@ $loc_46835C$38758:
 ; Line 8292
 	cmp	edx, 32					; 00000020H
 ; Line 8293
-	jne	SHORT $loc_468330$38753
-$loc_46836C$38755:
+	jne	SHORT $loc_468330$38754
+$loc_46836C$38756:
 ; Line 8295
 	pop	ebp
 ; Line 8296
-	jmp	$loc_468867$38672
-$loc_468372$38657:
+	jmp	$loc_468867$38673
+$loc_468372$38658:
 ; Line 8298
 	mov	edx, 30					; 0000001eH
 ; Line 8299
@@ -15863,7 +15862,7 @@ $loc_468372$38657:
 ; Line 8300
 	sub	eax, DWORD PTR _glClipY
 ; Line 8301
-	jb	SHORT $loc_4683B9$38759
+	jb	SHORT $loc_4683B9$38760
 ; Line 8302
 	add	eax, 1023				; 000003ffH
 ; Line 8303
@@ -15871,7 +15870,7 @@ $loc_468372$38657:
 ; Line 8304
 	cmp	eax, 45					; 0000002dH
 ; Line 8305
-	jg	SHORT $loc_4683AB$38760
+	jg	SHORT $loc_4683AB$38761
 ; Line 8306
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 8307
@@ -15889,15 +15888,15 @@ $loc_468372$38657:
 ; Line 8313
 	sub	edx, ecx
 ; Line 8314
-	jmp	SHORT $loc_4683B9$38759
-$loc_4683AB$38760:
+	jmp	SHORT $loc_4683B9$38760
+$loc_4683AB$38761:
 ; Line 8316
 	sub	edi, 12288				; 00003000H
 ; Line 8317
 	add	esi, 288				; 00000120H
 ; Line 8318
-	jmp	SHORT $loc_4683F0$38761
-$loc_4683B9$38759:
+	jmp	SHORT $loc_4683F0$38762
+$loc_4683B9$38760:
 ; Line 8320
 	add	edi, edx
 ; Line 8321
@@ -15907,7 +15906,7 @@ $loc_4683B9$38759:
 ; Line 8323
 	shr	ecx, 2
 ; Line 8324
-	jae	SHORT $loc_4683D8$38762
+	jae	SHORT $loc_4683D8$38763
 ; Line 8325
 	mov	ax, WORD PTR [esi+2]
 ; Line 8326
@@ -15919,8 +15918,8 @@ $loc_4683B9$38759:
 ; Line 8329
 	test	ecx, ecx
 ; Line 8330
-	je	SHORT $loc_4683E5$38763
-$loc_4683D8$38762:
+	je	SHORT $loc_4683E5$38764
+$loc_4683D8$38763:
 ; Line 8332
 	mov	eax, DWORD PTR [esi]
 ; Line 8333
@@ -15932,15 +15931,15 @@ $loc_4683D8$38762:
 ; Line 8336
 	dec	ecx
 ; Line 8337
-	jne	SHORT $loc_4683D8$38762
-$loc_4683E5$38763:
+	jne	SHORT $loc_4683D8$38763
+$loc_4683E5$38764:
 ; Line 8339
 	sub	edi, 800				; 00000320H
 ; Line 8340
 	sub	edx, 2
 ; Line 8341
-	jge	SHORT $loc_4683B9$38759
-$loc_4683F0$38761:
+	jge	SHORT $loc_4683B9$38760
+$loc_4683F0$38762:
 ; Line 8343
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 8344
@@ -15949,18 +15948,18 @@ $loc_4683F0$38761:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 8346
 	mov	edx, 16					; 00000010H
-$loc_468402$38764:
+$loc_468402$38765:
 ; Line 8348
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8349
-	jb	SHORT $loc_468412$38765
+	jb	SHORT $loc_468412$38766
 ; Line 8350
 	add	esi, 32					; 00000020H
 ; Line 8351
 	add	edi, 32					; 00000020H
 ; Line 8352
-	jmp	SHORT $loc_46842D$38766
-$loc_468412$38765:
+	jmp	SHORT $loc_46842D$38767
+$loc_468412$38766:
 ; Line 8354
 	push	edx
 ; Line 8355
@@ -15969,7 +15968,7 @@ $loc_468412$38765:
 	mov	edx, DWORD PTR [eax]
 ; Line 8357
 	mov	ecx, 32					; 00000020H
-$loc_46841F$38767:
+$loc_46841F$38768:
 ; Line 8359
 	mov	al, BYTE PTR [esi]
 ; Line 8360
@@ -15977,19 +15976,19 @@ $loc_46841F$38767:
 ; Line 8361
 	shl	edx, 1
 ; Line 8362
-	jae	SHORT $loc_468428$38768
+	jae	SHORT $loc_468428$38769
 ; Line 8363
 	mov	BYTE PTR [edi], al
-$loc_468428$38768:
+$loc_468428$38769:
 ; Line 8365
 	inc	edi
 ; Line 8366
 	dec	ecx
 ; Line 8367
-	jne	SHORT $loc_46841F$38767
+	jne	SHORT $loc_46841F$38768
 ; Line 8368
 	pop	edx
-$loc_46842D$38766:
+$loc_46842D$38767:
 ; Line 8370
 	sub	edi, 800				; 00000320H
 ; Line 8371
@@ -16001,10 +16000,10 @@ $loc_46842D$38766:
 ; Line 8374
 	dec	edx
 ; Line 8375
-	jne	SHORT $loc_468402$38764
+	jne	SHORT $loc_468402$38765
 ; Line 8376
-	jmp	$loc_468867$38672
-$loc_468448$38658:
+	jmp	$loc_468867$38673
+$loc_468448$38659:
 ; Line 8378
 	push	ebp
 ; Line 8379
@@ -16014,7 +16013,7 @@ $loc_468448$38658:
 ; Line 8381
 	sub	eax, DWORD PTR _glClipY
 ; Line 8382
-	jb	SHORT $loc_468490$38769
+	jb	SHORT $loc_468490$38770
 ; Line 8383
 	add	eax, 1023				; 000003ffH
 ; Line 8384
@@ -16022,7 +16021,7 @@ $loc_468448$38658:
 ; Line 8385
 	cmp	eax, 45					; 0000002dH
 ; Line 8386
-	jg	SHORT $loc_468482$38770
+	jg	SHORT $loc_468482$38771
 ; Line 8387
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 8388
@@ -16040,15 +16039,15 @@ $loc_468448$38658:
 ; Line 8394
 	sub	edx, ecx
 ; Line 8395
-	jmp	SHORT $loc_468490$38769
-$loc_468482$38770:
+	jmp	SHORT $loc_468490$38770
+$loc_468482$38771:
 ; Line 8397
 	sub	edi, 12288				; 00003000H
 ; Line 8398
 	add	esi, 288				; 00000120H
 ; Line 8399
-	jmp	SHORT $loc_4684C9$38771
-$loc_468490$38769:
+	jmp	SHORT $loc_4684C9$38772
+$loc_468490$38770:
 ; Line 8401
 	mov	ecx, 32					; 00000020H
 ; Line 8402
@@ -16058,8 +16057,8 @@ $loc_468490$38769:
 ; Line 8404
 	shr	ecx, 2
 ; Line 8405
-	je	SHORT $loc_4684AB$38772
-$loc_46849E$38773:
+	je	SHORT $loc_4684AB$38773
+$loc_46849E$38774:
 ; Line 8407
 	mov	eax, DWORD PTR [esi]
 ; Line 8408
@@ -16071,12 +16070,12 @@ $loc_46849E$38773:
 ; Line 8411
 	dec	ecx
 ; Line 8412
-	jne	SHORT $loc_46849E$38773
-$loc_4684AB$38772:
+	jne	SHORT $loc_46849E$38774
+$loc_4684AB$38773:
 ; Line 8414
 	and	ebp, 2
 ; Line 8415
-	je	SHORT $loc_4684BC$38774
+	je	SHORT $loc_4684BC$38775
 ; Line 8416
 	mov	ax, WORD PTR [esi]
 ; Line 8417
@@ -16085,7 +16084,7 @@ $loc_4684AB$38772:
 	mov	WORD PTR [edi], ax
 ; Line 8419
 	add	edi, 2
-$loc_4684BC$38774:
+$loc_4684BC$38775:
 ; Line 8421
 	sub	edi, 800				; 00000320H
 ; Line 8422
@@ -16093,8 +16092,8 @@ $loc_4684BC$38774:
 ; Line 8423
 	sub	edx, 2
 ; Line 8424
-	jge	SHORT $loc_468490$38769
-$loc_4684C9$38771:
+	jge	SHORT $loc_468490$38770
+$loc_4684C9$38772:
 ; Line 8426
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 8427
@@ -16103,18 +16102,18 @@ $loc_4684C9$38771:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 8429
 	mov	edx, 16					; 00000010H
-$loc_4684DB$38775:
+$loc_4684DB$38776:
 ; Line 8431
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8432
-	jb	SHORT $loc_4684EB$38776
+	jb	SHORT $loc_4684EB$38777
 ; Line 8433
 	add	esi, 32					; 00000020H
 ; Line 8434
 	add	edi, 32					; 00000020H
 ; Line 8435
-	jmp	SHORT $loc_46850D$38777
-$loc_4684EB$38776:
+	jmp	SHORT $loc_46850D$38778
+$loc_4684EB$38777:
 ; Line 8437
 	push	edx
 ; Line 8438
@@ -16123,7 +16122,7 @@ $loc_4684EB$38776:
 	mov	edx, DWORD PTR [eax]
 ; Line 8440
 	mov	ecx, 32					; 00000020H
-$loc_4684F8$38778:
+$loc_4684F8$38779:
 ; Line 8442
 	mov	al, BYTE PTR [esi]
 ; Line 8443
@@ -16131,16 +16130,16 @@ $loc_4684F8$38778:
 ; Line 8444
 	shl	edx, 1
 ; Line 8445
-	jae	SHORT $loc_468501$38779
+	jae	SHORT $loc_468501$38780
 ; Line 8446
 	mov	BYTE PTR [edi], al
-$loc_468501$38779:
+$loc_468501$38780:
 ; Line 8448
 	inc	edi
 ; Line 8449
 	dec	ecx
 ; Line 8450
-	jne	SHORT $loc_4684F8$38778
+	jne	SHORT $loc_4684F8$38779
 ; Line 8451
 	mov	ebp, esi
 ; Line 8452
@@ -16149,7 +16148,7 @@ $loc_468501$38779:
 	add	esi, ebp
 ; Line 8454
 	pop	edx
-$loc_46850D$38777:
+$loc_46850D$38778:
 ; Line 8456
 	sub	edi, 800				; 00000320H
 ; Line 8457
@@ -16161,26 +16160,26 @@ $loc_46850D$38777:
 ; Line 8460
 	dec	edx
 ; Line 8461
-	jne	SHORT $loc_4684DB$38775
+	jne	SHORT $loc_4684DB$38776
 ; Line 8462
 	pop	ebp
 ; Line 8463
-	jmp	$loc_468867$38672
-$loc_468529$38661:
+	jmp	$loc_468867$38673
+$loc_468529$38662:
 ; Line 8465
 	mov	edx, 32					; 00000020H
-$loc_46852E$38780:
+$loc_46852E$38781:
 ; Line 8467
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8468
-	jb	SHORT $loc_46853E$38781
+	jb	SHORT $loc_46853E$38782
 ; Line 8469
 	add	esi, 32					; 00000020H
 ; Line 8470
 	add	edi, 32					; 00000020H
 ; Line 8471
-	jmp	SHORT $loc_468558$38782
-$loc_46853E$38781:
+	jmp	SHORT $loc_468558$38783
+$loc_46853E$38782:
 ; Line 8473
 	push	edx
 ; Line 8474
@@ -16191,23 +16190,23 @@ $loc_46853E$38781:
 	xor	eax, eax
 ; Line 8477
 	mov	ecx, 32					; 00000020H
-$loc_46854D$38783:
+$loc_46854D$38784:
 ; Line 8479
 	shl	edx, 1
 ; Line 8480
-	jae	SHORT $loc_468553$38784
+	jae	SHORT $loc_468553$38785
 ; Line 8481
 	mov	BYTE PTR [edi], al
-$loc_468553$38784:
+$loc_468553$38785:
 ; Line 8483
 	inc	edi
 ; Line 8484
 	dec	ecx
 ; Line 8485
-	jne	SHORT $loc_46854D$38783
+	jne	SHORT $loc_46854D$38784
 ; Line 8486
 	pop	edx
-$loc_468558$38782:
+$loc_468558$38783:
 ; Line 8488
 	sub	edi, 800				; 00000320H
 ; Line 8489
@@ -16219,13 +16218,13 @@ $loc_468558$38782:
 ; Line 8492
 	dec	edx
 ; Line 8493
-	jne	SHORT $loc_46852E$38780
+	jne	SHORT $loc_46852E$38781
 ; Line 8494
-	jmp	$loc_468867$38672
-$loc_468573$38662:
+	jmp	$loc_468867$38673
+$loc_468573$38663:
 ; Line 8496
 	mov	ecx, 32					; 00000020H
-$loc_468578$38785:
+$loc_468578$38786:
 ; Line 8498
 	push	ecx
 ; Line 8499
@@ -16236,7 +16235,7 @@ $loc_468578$38785:
 	mov	DWORD PTR _gdwCurrentMask, eax
 ; Line 8502
 	mov	edx, 32					; 00000020H
-$loc_46858A$38786:
+$loc_46858A$38787:
 ; Line 8504
 	xor	eax, eax
 ; Line 8505
@@ -16246,20 +16245,20 @@ $loc_46858A$38786:
 ; Line 8507
 	test	al, al
 ; Line 8508
-	js	SHORT $loc_4685C7$38787
+	js	SHORT $loc_4685C7$38788
 ; Line 8509
 	sub	edx, eax
 ; Line 8510
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8511
-	jb	SHORT $loc_4685A3$38788
+	jb	SHORT $loc_4685A3$38789
 ; Line 8512
 	add	esi, eax
 ; Line 8513
 	add	edi, eax
 ; Line 8514
-	jmp	SHORT $loc_4685C1$38789
-$loc_4685A3$38788:
+	jmp	SHORT $loc_4685C1$38790
+$loc_4685A3$38789:
 ; Line 8516
 	mov	ecx, eax
 ; Line 8517
@@ -16270,32 +16269,32 @@ $loc_4685A3$38788:
 	mov	edx, DWORD PTR _gdwCurrentMask
 ; Line 8520
 	xor	eax, eax
-$loc_4685B0$38790:
+$loc_4685B0$38791:
 ; Line 8522
 	shl	edx, 1
 ; Line 8523
-	jae	SHORT $loc_4685B6$38791
+	jae	SHORT $loc_4685B6$38792
 ; Line 8524
 	mov	BYTE PTR [edi], al
-$loc_4685B6$38791:
+$loc_4685B6$38792:
 ; Line 8526
 	inc	edi
 ; Line 8527
 	dec	ecx
 ; Line 8528
-	jne	SHORT $loc_4685B0$38790
+	jne	SHORT $loc_4685B0$38791
 ; Line 8529
 	mov	DWORD PTR _gdwCurrentMask, edx
 ; Line 8530
 	pop	edx
-$loc_4685C1$38789:
+$loc_4685C1$38790:
 ; Line 8532
 	test	edx, edx
 ; Line 8533
-	je	SHORT $loc_4685E4$38792
+	je	SHORT $loc_4685E4$38793
 ; Line 8534
-	jmp	SHORT $loc_46858A$38786
-$loc_4685C7$38787:
+	jmp	SHORT $loc_46858A$38787
+$loc_4685C7$38788:
 ; Line 8536
 	neg	al
 ; Line 8537
@@ -16305,19 +16304,19 @@ $loc_4685C7$38787:
 ; Line 8539
 	and	ecx, 31					; 0000001fH
 ; Line 8540
-	je	SHORT $loc_4685E0$38793
+	je	SHORT $loc_4685E0$38794
 ; Line 8541
 	mov	ebx, DWORD PTR _gdwCurrentMask
 ; Line 8542
 	shl	ebx, cl
 ; Line 8543
 	mov	DWORD PTR _gdwCurrentMask, ebx
-$loc_4685E0$38793:
+$loc_4685E0$38794:
 ; Line 8545
 	sub	edx, eax
 ; Line 8546
-	jne	SHORT $loc_46858A$38786
-$loc_4685E4$38792:
+	jne	SHORT $loc_46858A$38787
+$loc_4685E4$38793:
 ; Line 8548
 	pop	ecx
 ; Line 8549
@@ -16331,19 +16330,19 @@ $loc_4685E4$38792:
 ; Line 8553
 	dec	ecx
 ; Line 8554
-	jne	$loc_468578$38785
+	jne	$loc_468578$38786
 ; Line 8555
-	jmp	$loc_468867$38672
-$loc_468604$38663:
+	jmp	$loc_468867$38673
+$loc_468604$38664:
 ; Line 8557
 	mov	edx, 30					; 0000001eH
 ; Line 8558
 	xor	eax, eax
-$loc_46860B$38794:
+$loc_46860B$38795:
 ; Line 8560
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8561
-	jb	SHORT $loc_46861D$38795
+	jb	SHORT $loc_46861D$38796
 ; Line 8562
 	add	esi, 32					; 00000020H
 ; Line 8563
@@ -16351,8 +16350,8 @@ $loc_46860B$38794:
 ; Line 8564
 	add	edi, 32					; 00000020H
 ; Line 8565
-	jmp	SHORT $loc_46863D$38796
-$loc_46861D$38795:
+	jmp	SHORT $loc_46863D$38797
+$loc_46861D$38796:
 ; Line 8567
 	add	edi, edx
 ; Line 8568
@@ -16362,7 +16361,7 @@ $loc_46861D$38795:
 ; Line 8570
 	shr	ecx, 2
 ; Line 8571
-	jae	SHORT $loc_468635$38797
+	jae	SHORT $loc_468635$38798
 ; Line 8572
 	mov	WORD PTR [edi], ax
 ; Line 8573
@@ -16370,8 +16369,8 @@ $loc_46861D$38795:
 ; Line 8574
 	test	ecx, ecx
 ; Line 8575
-	je	SHORT $loc_46863D$38796
-$loc_468635$38797:
+	je	SHORT $loc_46863D$38797
+$loc_468635$38798:
 ; Line 8577
 	mov	DWORD PTR [edi], eax
 ; Line 8578
@@ -16379,26 +16378,26 @@ $loc_468635$38797:
 ; Line 8579
 	dec	ecx
 ; Line 8580
-	jne	SHORT $loc_468635$38797
-$loc_46863D$38796:
+	jne	SHORT $loc_468635$38798
+$loc_46863D$38797:
 ; Line 8582
 	sub	edi, 800				; 00000320H
 ; Line 8583
 	test	edx, edx
 ; Line 8584
-	je	SHORT $loc_46864C$38798
+	je	SHORT $loc_46864C$38799
 ; Line 8585
 	sub	edx, 2
 ; Line 8586
-	jmp	SHORT $loc_46860B$38794
-$loc_46864C$38798:
+	jmp	SHORT $loc_46860B$38795
+$loc_46864C$38799:
 ; Line 8588
 	mov	edx, 2
-$loc_468651$38799:
+$loc_468651$38800:
 ; Line 8590
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8591
-	jb	SHORT $loc_468663$38800
+	jb	SHORT $loc_468663$38801
 ; Line 8592
 	add	esi, 32					; 00000020H
 ; Line 8593
@@ -16406,8 +16405,8 @@ $loc_468651$38799:
 ; Line 8594
 	add	edi, 32					; 00000020H
 ; Line 8595
-	jmp	SHORT $loc_468683$38801
-$loc_468663$38800:
+	jmp	SHORT $loc_468683$38802
+$loc_468663$38801:
 ; Line 8597
 	add	edi, edx
 ; Line 8598
@@ -16417,7 +16416,7 @@ $loc_468663$38800:
 ; Line 8600
 	shr	ecx, 2
 ; Line 8601
-	jae	SHORT $loc_46867B$38802
+	jae	SHORT $loc_46867B$38803
 ; Line 8602
 	mov	WORD PTR [edi], ax
 ; Line 8603
@@ -16425,8 +16424,8 @@ $loc_468663$38800:
 ; Line 8604
 	test	ecx, ecx
 ; Line 8605
-	je	SHORT $loc_468683$38801
-$loc_46867B$38802:
+	je	SHORT $loc_468683$38802
+$loc_46867B$38803:
 ; Line 8607
 	mov	DWORD PTR [edi], eax
 ; Line 8608
@@ -16434,8 +16433,8 @@ $loc_46867B$38802:
 ; Line 8609
 	dec	ecx
 ; Line 8610
-	jne	SHORT $loc_46867B$38802
-$loc_468683$38801:
+	jne	SHORT $loc_46867B$38803
+$loc_468683$38802:
 ; Line 8612
 	sub	edi, 800				; 00000320H
 ; Line 8613
@@ -16443,19 +16442,19 @@ $loc_468683$38801:
 ; Line 8614
 	cmp	edx, 32					; 00000020H
 ; Line 8615
-	jne	SHORT $loc_468651$38799
+	jne	SHORT $loc_468651$38800
 ; Line 8616
-	jmp	$loc_468867$38672
-$loc_468696$38664:
+	jmp	$loc_468867$38673
+$loc_468696$38665:
 ; Line 8618
 	mov	edx, 30					; 0000001eH
 ; Line 8619
 	xor	eax, eax
-$loc_46869D$38803:
+$loc_46869D$38804:
 ; Line 8621
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8622
-	jb	SHORT $loc_4686B1$38804
+	jb	SHORT $loc_4686B1$38805
 ; Line 8623
 	add	esi, 32					; 00000020H
 ; Line 8624
@@ -16465,8 +16464,8 @@ $loc_46869D$38803:
 ; Line 8626
 	sub	edi, edx
 ; Line 8627
-	jmp	SHORT $loc_4686CF$38805
-$loc_4686B1$38804:
+	jmp	SHORT $loc_4686CF$38806
+$loc_4686B1$38805:
 ; Line 8629
 	mov	ecx, 32					; 00000020H
 ; Line 8630
@@ -16474,7 +16473,7 @@ $loc_4686B1$38804:
 ; Line 8631
 	shr	ecx, 2
 ; Line 8632
-	jae	SHORT $loc_4686C7$38806
+	jae	SHORT $loc_4686C7$38807
 ; Line 8633
 	mov	WORD PTR [edi], ax
 ; Line 8634
@@ -16482,8 +16481,8 @@ $loc_4686B1$38804:
 ; Line 8635
 	test	ecx, ecx
 ; Line 8636
-	je	SHORT $loc_4686CF$38805
-$loc_4686C7$38806:
+	je	SHORT $loc_4686CF$38806
+$loc_4686C7$38807:
 ; Line 8638
 	mov	DWORD PTR [edi], eax
 ; Line 8639
@@ -16491,28 +16490,28 @@ $loc_4686C7$38806:
 ; Line 8640
 	dec	ecx
 ; Line 8641
-	jne	SHORT $loc_4686C7$38806
-$loc_4686CF$38805:
+	jne	SHORT $loc_4686C7$38807
+$loc_4686CF$38806:
 ; Line 8643
 	sub	edi, 800				; 00000320H
 ; Line 8644
 	test	edx, edx
 ; Line 8645
-	je	SHORT $loc_4686E0$38807
+	je	SHORT $loc_4686E0$38808
 ; Line 8646
 	add	edi, edx
 ; Line 8647
 	sub	edx, 2
 ; Line 8648
-	jmp	SHORT $loc_46869D$38803
-$loc_4686E0$38807:
+	jmp	SHORT $loc_46869D$38804
+$loc_4686E0$38808:
 ; Line 8650
 	mov	edx, 2
-$loc_4686E5$38808:
+$loc_4686E5$38809:
 ; Line 8652
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8653
-	jb	SHORT $loc_4686F9$38809
+	jb	SHORT $loc_4686F9$38810
 ; Line 8654
 	add	esi, 32					; 00000020H
 ; Line 8655
@@ -16522,8 +16521,8 @@ $loc_4686E5$38808:
 ; Line 8657
 	sub	edi, edx
 ; Line 8658
-	jmp	SHORT $loc_468717$38810
-$loc_4686F9$38809:
+	jmp	SHORT $loc_468717$38811
+$loc_4686F9$38810:
 ; Line 8660
 	mov	ecx, 32					; 00000020H
 ; Line 8661
@@ -16531,7 +16530,7 @@ $loc_4686F9$38809:
 ; Line 8662
 	shr	ecx, 2
 ; Line 8663
-	jae	SHORT $loc_46870F$38811
+	jae	SHORT $loc_46870F$38812
 ; Line 8664
 	mov	WORD PTR [edi], ax
 ; Line 8665
@@ -16539,8 +16538,8 @@ $loc_4686F9$38809:
 ; Line 8666
 	test	ecx, ecx
 ; Line 8667
-	je	SHORT $loc_468717$38810
-$loc_46870F$38811:
+	je	SHORT $loc_468717$38811
+$loc_46870F$38812:
 ; Line 8669
 	mov	DWORD PTR [edi], eax
 ; Line 8670
@@ -16548,8 +16547,8 @@ $loc_46870F$38811:
 ; Line 8671
 	dec	ecx
 ; Line 8672
-	jne	SHORT $loc_46870F$38811
-$loc_468717$38810:
+	jne	SHORT $loc_46870F$38812
+$loc_468717$38811:
 ; Line 8674
 	sub	edi, 800				; 00000320H
 ; Line 8675
@@ -16559,19 +16558,19 @@ $loc_468717$38810:
 ; Line 8677
 	cmp	edx, 32					; 00000020H
 ; Line 8678
-	jne	SHORT $loc_4686E5$38808
+	jne	SHORT $loc_4686E5$38809
 ; Line 8679
-	jmp	$loc_468867$38672
-$loc_46872C$38665:
+	jmp	$loc_468867$38673
+$loc_46872C$38666:
 ; Line 8681
 	mov	edx, 30					; 0000001eH
 ; Line 8682
 	xor	eax, eax
-$loc_468733$38812:
+$loc_468733$38813:
 ; Line 8684
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8685
-	jb	SHORT $loc_468745$38813
+	jb	SHORT $loc_468745$38814
 ; Line 8686
 	add	esi, 32					; 00000020H
 ; Line 8687
@@ -16579,8 +16578,8 @@ $loc_468733$38812:
 ; Line 8688
 	add	edi, 32					; 00000020H
 ; Line 8689
-	jmp	SHORT $loc_468765$38814
-$loc_468745$38813:
+	jmp	SHORT $loc_468765$38815
+$loc_468745$38814:
 ; Line 8691
 	add	edi, edx
 ; Line 8692
@@ -16590,7 +16589,7 @@ $loc_468745$38813:
 ; Line 8694
 	shr	ecx, 2
 ; Line 8695
-	jae	SHORT $loc_46875D$38815
+	jae	SHORT $loc_46875D$38816
 ; Line 8696
 	mov	WORD PTR [edi], ax
 ; Line 8697
@@ -16598,8 +16597,8 @@ $loc_468745$38813:
 ; Line 8698
 	test	ecx, ecx
 ; Line 8699
-	je	SHORT $loc_468765$38814
-$loc_46875D$38815:
+	je	SHORT $loc_468765$38815
+$loc_46875D$38816:
 ; Line 8701
 	mov	DWORD PTR [edi], eax
 ; Line 8702
@@ -16607,19 +16606,19 @@ $loc_46875D$38815:
 ; Line 8703
 	dec	ecx
 ; Line 8704
-	jne	SHORT $loc_46875D$38815
-$loc_468765$38814:
+	jne	SHORT $loc_46875D$38816
+$loc_468765$38815:
 ; Line 8706
 	sub	edi, 800				; 00000320H
 ; Line 8707
 	test	edx, edx
 ; Line 8708
-	je	SHORT $loc_468774$38816
+	je	SHORT $loc_468774$38817
 ; Line 8709
 	sub	edx, 2
 ; Line 8710
-	jmp	SHORT $loc_468733$38812
-$loc_468774$38816:
+	jmp	SHORT $loc_468733$38813
+$loc_468774$38817:
 ; Line 8712
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 8713
@@ -16628,18 +16627,18 @@ $loc_468774$38816:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 8715
 	mov	edx, 16					; 00000010H
-$loc_468786$38817:
+$loc_468786$38818:
 ; Line 8717
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8718
-	jb	SHORT $loc_468796$38818
+	jb	SHORT $loc_468796$38819
 ; Line 8719
 	add	esi, 32					; 00000020H
 ; Line 8720
 	add	edi, 32					; 00000020H
 ; Line 8721
-	jmp	SHORT $loc_4687B0$38819
-$loc_468796$38818:
+	jmp	SHORT $loc_4687B0$38820
+$loc_468796$38819:
 ; Line 8723
 	push	edx
 ; Line 8724
@@ -16650,23 +16649,23 @@ $loc_468796$38818:
 	xor	eax, eax
 ; Line 8727
 	mov	ecx, 32					; 00000020H
-$loc_4687A5$38820:
+$loc_4687A5$38821:
 ; Line 8729
 	shl	edx, 1
 ; Line 8730
-	jae	SHORT $loc_4687AB$38821
+	jae	SHORT $loc_4687AB$38822
 ; Line 8731
 	mov	BYTE PTR [edi], al
-$loc_4687AB$38821:
+$loc_4687AB$38822:
 ; Line 8733
 	inc	edi
 ; Line 8734
 	dec	ecx
 ; Line 8735
-	jne	SHORT $loc_4687A5$38820
+	jne	SHORT $loc_4687A5$38821
 ; Line 8736
 	pop	edx
-$loc_4687B0$38819:
+$loc_4687B0$38820:
 ; Line 8738
 	sub	edi, 800				; 00000320H
 ; Line 8739
@@ -16678,19 +16677,19 @@ $loc_4687B0$38819:
 ; Line 8742
 	dec	edx
 ; Line 8743
-	jne	SHORT $loc_468786$38817
+	jne	SHORT $loc_468786$38818
 ; Line 8744
-	jmp	$loc_468867$38672
-$loc_4687CB$38666:
+	jmp	$loc_468867$38673
+$loc_4687CB$38667:
 ; Line 8746
 	mov	edx, 30					; 0000001eH
 ; Line 8747
 	xor	eax, eax
-$loc_4687D2$38822:
+$loc_4687D2$38823:
 ; Line 8749
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8750
-	jb	SHORT $loc_4687E6$38823
+	jb	SHORT $loc_4687E6$38824
 ; Line 8751
 	add	esi, 32					; 00000020H
 ; Line 8752
@@ -16700,8 +16699,8 @@ $loc_4687D2$38822:
 ; Line 8754
 	sub	edi, edx
 ; Line 8755
-	jmp	SHORT $loc_468804$38824
-$loc_4687E6$38823:
+	jmp	SHORT $loc_468804$38825
+$loc_4687E6$38824:
 ; Line 8757
 	mov	ecx, 32					; 00000020H
 ; Line 8758
@@ -16709,7 +16708,7 @@ $loc_4687E6$38823:
 ; Line 8759
 	shr	ecx, 2
 ; Line 8760
-	jae	SHORT $loc_4687FC$38825
+	jae	SHORT $loc_4687FC$38826
 ; Line 8761
 	mov	WORD PTR [edi], ax
 ; Line 8762
@@ -16717,8 +16716,8 @@ $loc_4687E6$38823:
 ; Line 8763
 	test	ecx, ecx
 ; Line 8764
-	je	SHORT $loc_468804$38824
-$loc_4687FC$38825:
+	je	SHORT $loc_468804$38825
+$loc_4687FC$38826:
 ; Line 8766
 	mov	DWORD PTR [edi], eax
 ; Line 8767
@@ -16726,21 +16725,21 @@ $loc_4687FC$38825:
 ; Line 8768
 	dec	ecx
 ; Line 8769
-	jne	SHORT $loc_4687FC$38825
-$loc_468804$38824:
+	jne	SHORT $loc_4687FC$38826
+$loc_468804$38825:
 ; Line 8771
 	sub	edi, 800				; 00000320H
 ; Line 8772
 	test	edx, edx
 ; Line 8773
-	je	SHORT $loc_468815$38826
+	je	SHORT $loc_468815$38827
 ; Line 8774
 	add	edi, edx
 ; Line 8775
 	sub	edx, 2
 ; Line 8776
-	jmp	SHORT $loc_4687D2$38822
-$loc_468815$38826:
+	jmp	SHORT $loc_4687D2$38823
+$loc_468815$38827:
 ; Line 8778
 	mov	eax, DWORD PTR _gpDrawMask
 ; Line 8779
@@ -16749,18 +16748,18 @@ $loc_468815$38826:
 	mov	DWORD PTR _gpDrawMask, eax
 ; Line 8781
 	mov	edx, 16					; 00000010H
-$loc_468827$38827:
+$loc_468827$38828:
 ; Line 8783
 	cmp	edi, DWORD PTR _glClipY
 ; Line 8784
-	jb	SHORT $loc_468837$38828
+	jb	SHORT $loc_468837$38829
 ; Line 8785
 	add	esi, 32					; 00000020H
 ; Line 8786
 	add	edi, 32					; 00000020H
 ; Line 8787
-	jmp	SHORT $loc_468851$38829
-$loc_468837$38828:
+	jmp	SHORT $loc_468851$38830
+$loc_468837$38829:
 ; Line 8789
 	push	edx
 ; Line 8790
@@ -16771,23 +16770,23 @@ $loc_468837$38828:
 	xor	eax, eax
 ; Line 8793
 	mov	ecx, 32					; 00000020H
-$loc_468846$38830:
+$loc_468846$38831:
 ; Line 8795
 	shl	edx, 1
 ; Line 8796
-	jae	SHORT $loc_46884C$38831
+	jae	SHORT $loc_46884C$38832
 ; Line 8797
 	mov	BYTE PTR [edi], al
-$loc_46884C$38831:
+$loc_46884C$38832:
 ; Line 8799
 	inc	edi
 ; Line 8800
 	dec	ecx
 ; Line 8801
-	jne	SHORT $loc_468846$38830
+	jne	SHORT $loc_468846$38831
 ; Line 8802
 	pop	edx
-$loc_468851$38829:
+$loc_468851$38830:
 ; Line 8804
 	sub	edi, 800				; 00000320H
 ; Line 8805
@@ -16799,8 +16798,8 @@ $loc_468851$38829:
 ; Line 8808
 	dec	edx
 ; Line 8809
-	jne	SHORT $loc_468827$38827
-$loc_468867$38672:
+	jne	SHORT $loc_468827$38828
+$loc_468867$38673:
 ; Line 8811
 	pop	esi
 ; Line 8812
@@ -16830,22 +16829,22 @@ _TEXT	SEGMENT
 ; Line 8826
 	test	edx, edx
 ; Line 8827
-	je	$loc_468918$38834
+	je	$loc_468918$38835
 ; Line 8828
 	mov	dl, BYTE PTR _gbPartialTrans
 ; Line 8829
 	cmp	dl, 0
 ; Line 8830
-	jne	SHORT $loc_468892$38835
+	jne	SHORT $loc_468892$38836
 ; Line 8831
 	call	?drawTopArchesLowerScreen@@YIXPAE@Z	; drawTopArchesLowerScreen
 ; Line 8832
-	jmp	$loc_4696B9$38836
-$loc_468892$38835:
+	jmp	$loc_4696B9$38837
+$loc_468892$38836:
 ; Line 8834
 	cmp	dl, 1
 ; Line 8835
-	jne	SHORT $loc_4688D5$38837
+	jne	SHORT $loc_4688D5$38838
 ; Line 8836
 	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 8837
@@ -16853,14 +16852,14 @@ $loc_468892$38835:
 ; Line 8838
 	cmp	al, 1
 ; Line 8839
-	je	SHORT $loc_4688AD$38838
+	je	SHORT $loc_4688AD$38839
 ; Line 8840
 	cmp	al, 3
 ; Line 8841
-	je	SHORT $loc_4688AD$38838
+	je	SHORT $loc_4688AD$38839
 ; Line 8842
-	jmp	SHORT $loc_4688D5$38837
-$loc_4688AD$38838:
+	jmp	SHORT $loc_4688D5$38838
+$loc_4688AD$38839:
 ; Line 8844
 	mov	edx, OFFSET FLAT:_LeftMask
 ; Line 8845
@@ -16868,11 +16867,11 @@ $loc_4688AD$38838:
 ; Line 8846
 	call	?drawBottomArchesLowerScreen@@YIXPAEPAK@Z ; drawBottomArchesLowerScreen
 ; Line 8847
-	jmp	$loc_4696B9$38836
+	jmp	$loc_4696B9$38837
 ; Line 8848
 	cmp	al, 4
 ; Line 8849
-	jne	SHORT $loc_4688D5$38837
+	jne	SHORT $loc_4688D5$38838
 ; Line 8850
 	mov	edx, OFFSET FLAT:_RightMask
 ; Line 8851
@@ -16880,12 +16879,12 @@ $loc_4688AD$38838:
 ; Line 8852
 	call	?drawBottomArchesLowerScreen@@YIXPAEPAK@Z ; drawBottomArchesLowerScreen
 ; Line 8853
-	jmp	$loc_4696B9$38836
-$loc_4688D5$38837:
+	jmp	$loc_4696B9$38837
+$loc_4688D5$38838:
 ; Line 8855
 	cmp	dl, 2
 ; Line 8856
-	jne	SHORT $loc_468918$38834
+	jne	SHORT $loc_468918$38835
 ; Line 8857
 	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 8858
@@ -16893,14 +16892,14 @@ $loc_4688D5$38837:
 ; Line 8859
 	cmp	al, 2
 ; Line 8860
-	je	SHORT $loc_4688F0$38839
+	je	SHORT $loc_4688F0$38840
 ; Line 8861
 	cmp	al, 3
 ; Line 8862
-	je	SHORT $loc_4688F0$38839
+	je	SHORT $loc_4688F0$38840
 ; Line 8863
-	jmp	SHORT $loc_468918$38834
-$loc_4688F0$38839:
+	jmp	SHORT $loc_468918$38835
+$loc_4688F0$38840:
 ; Line 8865
 	mov	edx, OFFSET FLAT:_RightMask
 ; Line 8866
@@ -16908,11 +16907,11 @@ $loc_4688F0$38839:
 ; Line 8867
 	call	?drawBottomArchesLowerScreen@@YIXPAEPAK@Z ; drawBottomArchesLowerScreen
 ; Line 8868
-	jmp	$loc_4696B9$38836
+	jmp	$loc_4696B9$38837
 ; Line 8869
 	cmp	al, 4
 ; Line 8870
-	jne	SHORT $loc_468918$38834
+	jne	SHORT $loc_468918$38835
 ; Line 8871
 	mov	edx, OFFSET FLAT:_LeftMask
 ; Line 8872
@@ -16920,8 +16919,8 @@ $loc_4688F0$38839:
 ; Line 8873
 	call	?drawBottomArchesLowerScreen@@YIXPAEPAK@Z ; drawBottomArchesLowerScreen
 ; Line 8874
-	jmp	$loc_4696B9$38836
-$loc_468918$38834:
+	jmp	$loc_4696B9$38837
+$loc_468918$38835:
 ; Line 8876
 	mov	edi, OFFSET FLAT:_SpeedFrameTbl
 ; Line 8877
@@ -16933,17 +16932,17 @@ $loc_468918$38834:
 ; Line 8880
 	test	al, al
 ; Line 8881
-	je	$loc_468A1A$38840
+	je	$loc_468A1A$38841
 ; Line 8882
 	cmp	al, BYTE PTR _lightmax
 ; Line 8883
-	je	$loc_468A78$38841
+	je	$loc_468A78$38842
 ; Line 8884
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 8885
 	and	eax, 32768				; 00008000H
 ; Line 8886
-	jne	SHORT $loc_4689B0$38842
+	jne	SHORT $loc_4689B0$38843
 ; Line 8887
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 8888
@@ -16971,26 +16970,26 @@ $loc_468918$38834:
 ; Line 8899
 	and	eax, 15					; 0000000fH
 ; Line 8900
-	je	$loc_468B03$38843
+	je	$loc_468B03$38844
 ; Line 8901
 	cmp	ax, 1
 ; Line 8902
-	je	$loc_468B5B$38844
+	je	$loc_468B5B$38845
 ; Line 8903
 	cmp	ax, 2
 ; Line 8904
-	je	$loc_468C06$38845
+	je	$loc_468C06$38846
 ; Line 8905
 	cmp	ax, 3
 ; Line 8906
-	je	$loc_468CEC$38846
+	je	$loc_468CEC$38847
 ; Line 8907
 	cmp	ax, 4
 ; Line 8908
-	je	$loc_468DD2$38847
+	je	$loc_468DD2$38848
 ; Line 8909
-	jmp	$loc_468EE2$38848
-$loc_4689B0$38842:
+	jmp	$loc_468EE2$38849
+$loc_4689B0$38843:
 ; Line 8911
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 8912
@@ -17017,36 +17016,36 @@ $loc_4689B0$38842:
 	shr	eax, 12					; 0000000cH
 ; Line 8923
 	and	eax, 15					; 0000000fH
-$loc_4689E3$38849:
+$loc_4689E3$38850:
 ; Line 8925
 	cmp	ax, 8
 ; Line 8926
-	je	$loc_468FF2$38850
+	je	$loc_468FF2$38851
 ; Line 8927
 	cmp	ax, 9
 ; Line 8928
-	je	$loc_469027$38851
+	je	$loc_469027$38852
 ; Line 8929
 	cmp	ax, 10					; 0000000aH
 ; Line 8930
-	je	$loc_469099$38852
+	je	$loc_469099$38853
 ; Line 8931
 	cmp	ax, 11					; 0000000bH
 ; Line 8932
-	je	$loc_46919D$38853
+	je	$loc_46919D$38854
 ; Line 8933
 	cmp	ax, 12					; 0000000cH
 ; Line 8934
-	je	$loc_4692A5$38854
+	je	$loc_4692A5$38855
 ; Line 8935
-	jmp	$loc_469358$38855
-$loc_468A1A$38840:
+	jmp	$loc_469358$38856
+$loc_468A1A$38841:
 ; Line 8937
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 8938
 	and	eax, 32768				; 00008000H
 ; Line 8939
-	je	SHORT $loc_468A4C$38856
+	je	SHORT $loc_468A4C$38857
 ; Line 8940
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 8941
@@ -17065,7 +17064,7 @@ $loc_468A1A$38840:
 	add	eax, DWORD PTR [esi]
 ; Line 8948
 	mov	DWORD PTR _gdwPNum, eax
-$loc_468A4C$38856:
+$loc_468A4C$38857:
 ; Line 8950
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 8951
@@ -17089,14 +17088,14 @@ $loc_468A4C$38856:
 ; Line 8960
 	add	eax, 8
 ; Line 8961
-	jmp	$loc_4689E3$38849
-$loc_468A78$38841:
+	jmp	$loc_4689E3$38850
+$loc_468A78$38842:
 ; Line 8963
 	mov	eax, DWORD PTR _gdwPNum
 ; Line 8964
 	and	eax, 32768				; 00008000H
 ; Line 8965
-	je	SHORT $loc_468AAA$38857
+	je	SHORT $loc_468AAA$38858
 ; Line 8966
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 8967
@@ -17115,7 +17114,7 @@ $loc_468A78$38841:
 	add	eax, DWORD PTR [esi]
 ; Line 8974
 	mov	DWORD PTR _gdwPNum, eax
-$loc_468AAA$38857:
+$loc_468AAA$38858:
 ; Line 8976
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 8977
@@ -17139,49 +17138,49 @@ $loc_468AAA$38857:
 ; Line 8986
 	and	eax, 7
 ; Line 8987
-	je	$loc_46940D$38858
+	je	$loc_46940D$38859
 ; Line 8988
 	cmp	ax, 1
 ; Line 8989
-	je	$loc_46943F$38859
+	je	$loc_46943F$38860
 ; Line 8990
 	cmp	ax, 2
 ; Line 8991
-	je	$loc_4694A7$38860
+	je	$loc_4694A7$38861
 ; Line 8992
 	cmp	ax, 3
 ; Line 8993
-	je	$loc_469539$38861
+	je	$loc_469539$38862
 ; Line 8994
 	cmp	ax, 4
 ; Line 8995
-	je	$loc_4695CF$38862
+	je	$loc_4695CF$38863
 ; Line 8996
-	jmp	$loc_469644$38863
-$loc_468B03$38843:
+	jmp	$loc_469644$38864
+$loc_468B03$38844:
 ; Line 8998
 	mov	edx, 32					; 00000020H
 ; Line 8999
 	push	ebp
-$loc_468B09$38864:
+$loc_468B09$38865:
 ; Line 9001
 	push	edx
 ; Line 9002
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9003
-	jb	SHORT $loc_468B1A$38865
+	jb	SHORT $loc_468B1A$38866
 ; Line 9004
 	add	esi, 32					; 00000020H
 ; Line 9005
 	add	edi, 32					; 00000020H
 ; Line 9006
-	jmp	SHORT $loc_468B4B$38866
-$loc_468B1A$38865:
+	jmp	SHORT $loc_468B4B$38867
+$loc_468B1A$38866:
 ; Line 9008
 	xor	edx, edx
 ; Line 9009
 	mov	ebp, 8
-$loc_468B21$38867:
+$loc_468B21$38868:
 ; Line 9011
 	mov	eax, DWORD PTR [esi]
 ; Line 9012
@@ -17215,8 +17214,8 @@ $loc_468B21$38867:
 ; Line 9026
 	dec	ebp
 ; Line 9027
-	jne	SHORT $loc_468B21$38867
-$loc_468B4B$38866:
+	jne	SHORT $loc_468B21$38868
+$loc_468B4B$38867:
 ; Line 9029
 	sub	edi, 800				; 00000320H
 ; Line 9030
@@ -17224,22 +17223,22 @@ $loc_468B4B$38866:
 ; Line 9031
 	dec	edx
 ; Line 9032
-	jne	SHORT $loc_468B09$38864
+	jne	SHORT $loc_468B09$38865
 ; Line 9033
 	pop	ebp
 ; Line 9034
-	jmp	$loc_4696B9$38836
-$loc_468B5B$38844:
+	jmp	$loc_4696B9$38837
+$loc_468B5B$38845:
 ; Line 9036
 	push	ebp
 ; Line 9037
 	mov	ecx, 32					; 00000020H
-$loc_468B61$38868:
+$loc_468B61$38869:
 ; Line 9039
 	push	ecx
 ; Line 9040
 	mov	ebp, 32					; 00000020H
-$loc_468B67$38869:
+$loc_468B67$38870:
 ; Line 9042
 	xor	eax, eax
 ; Line 9043
@@ -17249,7 +17248,7 @@ $loc_468B67$38869:
 ; Line 9045
 	test	al, al
 ; Line 9046
-	jns	SHORT $loc_468B78$38870
+	jns	SHORT $loc_468B78$38871
 ; Line 9047
 	neg	al
 ; Line 9048
@@ -17257,28 +17256,28 @@ $loc_468B67$38869:
 ; Line 9049
 	sub	ebp, eax
 ; Line 9050
-	jmp	SHORT $loc_468BEA$38871
-$loc_468B78$38870:
+	jmp	SHORT $loc_468BEA$38872
+$loc_468B78$38871:
 ; Line 9052
 	sub	ebp, eax
 ; Line 9053
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9054
-	jb	SHORT $loc_468B88$38872
+	jb	SHORT $loc_468B88$38873
 ; Line 9055
 	add	esi, eax
 ; Line 9056
 	add	edi, eax
 ; Line 9057
-	jmp	SHORT $loc_468BEA$38871
-$loc_468B88$38872:
+	jmp	SHORT $loc_468BEA$38872
+$loc_468B88$38873:
 ; Line 9059
 	mov	ecx, eax
 ; Line 9060
 	cmp	cl, 4
 ; Line 9061
-	jl	SHORT $loc_468BC1$38873
-$loc_468B8F$38874:
+	jl	SHORT $loc_468BC1$38874
+$loc_468B8F$38875:
 ; Line 9063
 	mov	eax, DWORD PTR [esi]
 ; Line 9064
@@ -17316,12 +17315,12 @@ $loc_468B8F$38874:
 ; Line 9080
 	cmp	cl, 4
 ; Line 9081
-	jge	SHORT $loc_468B8F$38874
-$loc_468BC1$38873:
+	jge	SHORT $loc_468B8F$38875
+$loc_468BC1$38874:
 ; Line 9083
 	cmp	cl, 2
 ; Line 9084
-	jl	SHORT $loc_468BDC$38875
+	jl	SHORT $loc_468BDC$38876
 ; Line 9085
 	mov	dl, BYTE PTR [esi]
 ; Line 9086
@@ -17338,11 +17337,11 @@ $loc_468BC1$38873:
 	add	esi, 2
 ; Line 9092
 	add	edi, 2
-$loc_468BDC$38875:
+$loc_468BDC$38876:
 ; Line 9094
 	and	cl, 1
 ; Line 9095
-	je	SHORT $loc_468BEA$38871
+	je	SHORT $loc_468BEA$38872
 ; Line 9096
 	mov	dl, BYTE PTR [esi]
 ; Line 9097
@@ -17353,11 +17352,11 @@ $loc_468BDC$38875:
 	mov	BYTE PTR [edi], dl
 ; Line 9100
 	inc	edi
-$loc_468BEA$38871:
+$loc_468BEA$38872:
 ; Line 9102
 	test	ebp, ebp
 ; Line 9103
-	jne	$loc_468B67$38869
+	jne	$loc_468B67$38870
 ; Line 9104
 	pop	ecx
 ; Line 9105
@@ -17365,12 +17364,12 @@ $loc_468BEA$38871:
 ; Line 9106
 	dec	ecx
 ; Line 9107
-	jne	$loc_468B61$38868
+	jne	$loc_468B61$38869
 ; Line 9108
 	pop	ebp
 ; Line 9109
-	jmp	$loc_4696B9$38836
-$loc_468C06$38845:
+	jmp	$loc_4696B9$38837
+$loc_468C06$38846:
 ; Line 9111
 	push	ebp
 ; Line 9112
@@ -17380,7 +17379,7 @@ $loc_468C06$38845:
 ; Line 9114
 	sub	eax, DWORD PTR _glClipY
 ; Line 9115
-	jb	SHORT $loc_468C4E$38876
+	jb	SHORT $loc_468C4E$38877
 ; Line 9116
 	add	eax, 1023				; 000003ffH
 ; Line 9117
@@ -17388,7 +17387,7 @@ $loc_468C06$38845:
 ; Line 9118
 	cmp	eax, 45					; 0000002dH
 ; Line 9119
-	jg	SHORT $loc_468C40$38877
+	jg	SHORT $loc_468C40$38878
 ; Line 9120
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9121
@@ -17406,15 +17405,15 @@ $loc_468C06$38845:
 ; Line 9127
 	sub	ebp, ecx
 ; Line 9128
-	jmp	SHORT $loc_468C4E$38876
-$loc_468C40$38877:
+	jmp	SHORT $loc_468C4E$38877
+$loc_468C40$38878:
 ; Line 9130
 	sub	edi, 12288				; 00003000H
 ; Line 9131
 	add	esi, 288				; 00000120H
 ; Line 9132
-	jmp	SHORT $loc_468C75$38878
-$loc_468C4E$38876:
+	jmp	SHORT $loc_468C75$38879
+$loc_468C4E$38877:
 ; Line 9134
 	add	edi, ebp
 ; Line 9135
@@ -17427,7 +17426,7 @@ $loc_468C4E$38876:
 	and	edx, 2
 ; Line 9139
 	add	esi, edx
-$loc_468C5E$38879:
+$loc_468C5E$38880:
 ; Line 9141
 	mov	dl, BYTE PTR [esi]
 ; Line 9142
@@ -17441,14 +17440,14 @@ $loc_468C5E$38879:
 ; Line 9146
 	dec	ecx
 ; Line 9147
-	jne	SHORT $loc_468C5E$38879
+	jne	SHORT $loc_468C5E$38880
 ; Line 9148
 	sub	edi, 800				; 00000320H
 ; Line 9149
 	sub	ebp, 2
 ; Line 9150
-	jge	SHORT $loc_468C4E$38876
-$loc_468C75$38878:
+	jge	SHORT $loc_468C4E$38877
+$loc_468C75$38879:
 ; Line 9152
 	mov	ebp, 2
 ; Line 9153
@@ -17456,7 +17455,7 @@ $loc_468C75$38878:
 ; Line 9154
 	sub	eax, DWORD PTR _glClipY
 ; Line 9155
-	jb	SHORT $loc_468CBC$38880
+	jb	SHORT $loc_468CBC$38881
 ; Line 9156
 	add	eax, 1023				; 000003ffH
 ; Line 9157
@@ -17464,7 +17463,7 @@ $loc_468C75$38878:
 ; Line 9158
 	cmp	eax, 42					; 0000002aH
 ; Line 9159
-	jg	SHORT $loc_468CAE$38881
+	jg	SHORT $loc_468CAE$38882
 ; Line 9160
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9161
@@ -17482,15 +17481,15 @@ $loc_468C75$38878:
 ; Line 9167
 	add	ebp, ecx
 ; Line 9168
-	jmp	SHORT $loc_468CBC$38880
-$loc_468CAE$38881:
+	jmp	SHORT $loc_468CBC$38881
+$loc_468CAE$38882:
 ; Line 9170
 	sub	edi, 11520				; 00002d00H
 ; Line 9171
 	add	esi, 256				; 00000100H
 ; Line 9172
-	jmp	SHORT $loc_468CE6$38882
-$loc_468CBC$38880:
+	jmp	SHORT $loc_468CE6$38883
+$loc_468CBC$38881:
 ; Line 9174
 	add	edi, ebp
 ; Line 9175
@@ -17503,7 +17502,7 @@ $loc_468CBC$38880:
 	and	edx, 2
 ; Line 9179
 	add	esi, edx
-$loc_468CCC$38883:
+$loc_468CCC$38884:
 ; Line 9181
 	mov	dl, BYTE PTR [esi]
 ; Line 9182
@@ -17517,7 +17516,7 @@ $loc_468CCC$38883:
 ; Line 9186
 	dec	ecx
 ; Line 9187
-	jne	SHORT $loc_468CCC$38883
+	jne	SHORT $loc_468CCC$38884
 ; Line 9188
 	add	ebp, 2
 ; Line 9189
@@ -17525,13 +17524,13 @@ $loc_468CCC$38883:
 ; Line 9190
 	cmp	ebp, 32					; 00000020H
 ; Line 9191
-	jne	SHORT $loc_468CBC$38880
-$loc_468CE6$38882:
+	jne	SHORT $loc_468CBC$38881
+$loc_468CE6$38883:
 ; Line 9193
 	pop	ebp
 ; Line 9194
-	jmp	$loc_4696B9$38836
-$loc_468CEC$38846:
+	jmp	$loc_4696B9$38837
+$loc_468CEC$38847:
 ; Line 9196
 	push	ebp
 ; Line 9197
@@ -17541,7 +17540,7 @@ $loc_468CEC$38846:
 ; Line 9199
 	sub	eax, DWORD PTR _glClipY
 ; Line 9200
-	jb	SHORT $loc_468D34$38884
+	jb	SHORT $loc_468D34$38885
 ; Line 9201
 	add	eax, 1023				; 000003ffH
 ; Line 9202
@@ -17549,7 +17548,7 @@ $loc_468CEC$38846:
 ; Line 9203
 	cmp	eax, 45					; 0000002dH
 ; Line 9204
-	jg	SHORT $loc_468D26$38885
+	jg	SHORT $loc_468D26$38886
 ; Line 9205
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9206
@@ -17567,20 +17566,20 @@ $loc_468CEC$38846:
 ; Line 9212
 	sub	ebp, ecx
 ; Line 9213
-	jmp	SHORT $loc_468D34$38884
-$loc_468D26$38885:
+	jmp	SHORT $loc_468D34$38885
+$loc_468D26$38886:
 ; Line 9215
 	sub	edi, 12288				; 00003000H
 ; Line 9216
 	add	esi, 288				; 00000120H
 ; Line 9217
-	jmp	SHORT $loc_468D5B$38886
-$loc_468D34$38884:
+	jmp	SHORT $loc_468D5B$38887
+$loc_468D34$38885:
 ; Line 9219
 	mov	ecx, 32					; 00000020H
 ; Line 9220
 	sub	ecx, ebp
-$loc_468D3B$38887:
+$loc_468D3B$38888:
 ; Line 9222
 	mov	dl, BYTE PTR [esi]
 ; Line 9223
@@ -17594,7 +17593,7 @@ $loc_468D3B$38887:
 ; Line 9227
 	dec	ecx
 ; Line 9228
-	jne	SHORT $loc_468D3B$38887
+	jne	SHORT $loc_468D3B$38888
 ; Line 9229
 	mov	edx, esi
 ; Line 9230
@@ -17608,8 +17607,8 @@ $loc_468D3B$38887:
 ; Line 9234
 	sub	ebp, 2
 ; Line 9235
-	jge	SHORT $loc_468D34$38884
-$loc_468D5B$38886:
+	jge	SHORT $loc_468D34$38885
+$loc_468D5B$38887:
 ; Line 9237
 	mov	ebp, 2
 ; Line 9238
@@ -17617,7 +17616,7 @@ $loc_468D5B$38886:
 ; Line 9239
 	sub	eax, DWORD PTR _glClipY
 ; Line 9240
-	jb	SHORT $loc_468DA2$38888
+	jb	SHORT $loc_468DA2$38889
 ; Line 9241
 	add	eax, 1023				; 000003ffH
 ; Line 9242
@@ -17625,7 +17624,7 @@ $loc_468D5B$38886:
 ; Line 9243
 	cmp	eax, 42					; 0000002aH
 ; Line 9244
-	jg	SHORT $loc_468D94$38889
+	jg	SHORT $loc_468D94$38890
 ; Line 9245
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9246
@@ -17643,20 +17642,20 @@ $loc_468D5B$38886:
 ; Line 9252
 	add	ebp, ecx
 ; Line 9253
-	jmp	SHORT $loc_468DA2$38888
-$loc_468D94$38889:
+	jmp	SHORT $loc_468DA2$38889
+$loc_468D94$38890:
 ; Line 9255
 	sub	edi, 11520				; 00002d00H
 ; Line 9256
 	add	esi, 256				; 00000100H
 ; Line 9257
-	jmp	SHORT $loc_468DCC$38890
-$loc_468DA2$38888:
+	jmp	SHORT $loc_468DCC$38891
+$loc_468DA2$38889:
 ; Line 9259
 	mov	ecx, 32					; 00000020H
 ; Line 9260
 	sub	ecx, ebp
-$loc_468DA9$38891:
+$loc_468DA9$38892:
 ; Line 9262
 	mov	dl, BYTE PTR [esi]
 ; Line 9263
@@ -17670,7 +17669,7 @@ $loc_468DA9$38891:
 ; Line 9267
 	dec	ecx
 ; Line 9268
-	jne	SHORT $loc_468DA9$38891
+	jne	SHORT $loc_468DA9$38892
 ; Line 9269
 	mov	edx, esi
 ; Line 9270
@@ -17686,13 +17685,13 @@ $loc_468DA9$38891:
 ; Line 9275
 	cmp	ebp, 32					; 00000020H
 ; Line 9276
-	jne	SHORT $loc_468DA2$38888
-$loc_468DCC$38890:
+	jne	SHORT $loc_468DA2$38889
+$loc_468DCC$38891:
 ; Line 9278
 	pop	ebp
 ; Line 9279
-	jmp	$loc_4696B9$38836
-$loc_468DD2$38847:
+	jmp	$loc_4696B9$38837
+$loc_468DD2$38848:
 ; Line 9281
 	push	ebp
 ; Line 9282
@@ -17702,7 +17701,7 @@ $loc_468DD2$38847:
 ; Line 9284
 	sub	eax, DWORD PTR _glClipY
 ; Line 9285
-	jb	SHORT $loc_468E1A$38892
+	jb	SHORT $loc_468E1A$38893
 ; Line 9286
 	add	eax, 1023				; 000003ffH
 ; Line 9287
@@ -17710,7 +17709,7 @@ $loc_468DD2$38847:
 ; Line 9288
 	cmp	eax, 45					; 0000002dH
 ; Line 9289
-	jg	SHORT $loc_468E0C$38893
+	jg	SHORT $loc_468E0C$38894
 ; Line 9290
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9291
@@ -17728,15 +17727,15 @@ $loc_468DD2$38847:
 ; Line 9297
 	sub	ebp, ecx
 ; Line 9298
-	jmp	SHORT $loc_468E1A$38892
-$loc_468E0C$38893:
+	jmp	SHORT $loc_468E1A$38893
+$loc_468E0C$38894:
 ; Line 9300
 	sub	edi, 12288				; 00003000H
 ; Line 9301
 	add	esi, 288				; 00000120H
 ; Line 9302
-	jmp	SHORT $loc_468E87$38894
-$loc_468E1A$38892:
+	jmp	SHORT $loc_468E87$38895
+$loc_468E1A$38893:
 ; Line 9304
 	add	edi, ebp
 ; Line 9305
@@ -17752,8 +17751,8 @@ $loc_468E1A$38892:
 ; Line 9310
 	cmp	cl, 4
 ; Line 9311
-	jl	SHORT $loc_468E61$38895
-$loc_468E2F$38896:
+	jl	SHORT $loc_468E61$38896
+$loc_468E2F$38897:
 ; Line 9313
 	mov	eax, DWORD PTR [esi]
 ; Line 9314
@@ -17791,12 +17790,12 @@ $loc_468E2F$38896:
 ; Line 9330
 	cmp	cl, 4
 ; Line 9331
-	jge	SHORT $loc_468E2F$38896
-$loc_468E61$38895:
+	jge	SHORT $loc_468E2F$38897
+$loc_468E61$38896:
 ; Line 9333
 	cmp	cl, 2
 ; Line 9334
-	jl	SHORT $loc_468E7C$38897
+	jl	SHORT $loc_468E7C$38898
 ; Line 9335
 	mov	dl, BYTE PTR [esi]
 ; Line 9336
@@ -17813,31 +17812,31 @@ $loc_468E61$38895:
 	add	esi, 2
 ; Line 9342
 	add	edi, 2
-$loc_468E7C$38897:
+$loc_468E7C$38898:
 ; Line 9344
 	sub	edi, 800				; 00000320H
 ; Line 9345
 	sub	ebp, 2
 ; Line 9346
-	jge	SHORT $loc_468E1A$38892
-$loc_468E87$38894:
+	jge	SHORT $loc_468E1A$38893
+$loc_468E87$38895:
 ; Line 9348
 	mov	ebp, 16					; 00000010H
-$loc_468E8C$38898:
+$loc_468E8C$38899:
 ; Line 9350
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9351
-	jb	SHORT $loc_468E9C$38899
+	jb	SHORT $loc_468E9C$38900
 ; Line 9352
 	add	esi, 32					; 00000020H
 ; Line 9353
 	add	edi, 32					; 00000020H
 ; Line 9354
-	jmp	SHORT $loc_468ED3$38900
-$loc_468E9C$38899:
+	jmp	SHORT $loc_468ED3$38901
+$loc_468E9C$38900:
 ; Line 9356
 	mov	ecx, 32					; 00000020H
-$loc_468EA1$38901:
+$loc_468EA1$38902:
 ; Line 9358
 	mov	eax, DWORD PTR [esi]
 ; Line 9359
@@ -17875,19 +17874,19 @@ $loc_468EA1$38901:
 ; Line 9375
 	cmp	cl, 4
 ; Line 9376
-	jge	SHORT $loc_468EA1$38901
-$loc_468ED3$38900:
+	jge	SHORT $loc_468EA1$38902
+$loc_468ED3$38901:
 ; Line 9378
 	sub	edi, 800				; 00000320H
 ; Line 9379
 	dec	ebp
 ; Line 9380
-	jne	SHORT $loc_468E8C$38898
+	jne	SHORT $loc_468E8C$38899
 ; Line 9381
 	pop	ebp
 ; Line 9382
-	jmp	$loc_4696B9$38836
-$loc_468EE2$38848:
+	jmp	$loc_4696B9$38837
+$loc_468EE2$38849:
 ; Line 9384
 	push	ebp
 ; Line 9385
@@ -17897,7 +17896,7 @@ $loc_468EE2$38848:
 ; Line 9387
 	sub	eax, DWORD PTR _glClipY
 ; Line 9388
-	jb	SHORT $loc_468F2A$38902
+	jb	SHORT $loc_468F2A$38903
 ; Line 9389
 	add	eax, 1023				; 000003ffH
 ; Line 9390
@@ -17905,7 +17904,7 @@ $loc_468EE2$38848:
 ; Line 9391
 	cmp	eax, 45					; 0000002dH
 ; Line 9392
-	jg	SHORT $loc_468F1C$38903
+	jg	SHORT $loc_468F1C$38904
 ; Line 9393
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9394
@@ -17923,15 +17922,15 @@ $loc_468EE2$38848:
 ; Line 9400
 	sub	ebp, ecx
 ; Line 9401
-	jmp	SHORT $loc_468F2A$38902
-$loc_468F1C$38903:
+	jmp	SHORT $loc_468F2A$38903
+$loc_468F1C$38904:
 ; Line 9403
 	sub	edi, 12288				; 00003000H
 ; Line 9404
 	add	esi, 288				; 00000120H
 ; Line 9405
-	jmp	SHORT $loc_468F97$38904
-$loc_468F2A$38902:
+	jmp	SHORT $loc_468F97$38905
+$loc_468F2A$38903:
 ; Line 9407
 	mov	ecx, 32					; 00000020H
 ; Line 9408
@@ -17939,8 +17938,8 @@ $loc_468F2A$38902:
 ; Line 9409
 	cmp	cl, 4
 ; Line 9410
-	jl	SHORT $loc_468F68$38905
-$loc_468F36$38906:
+	jl	SHORT $loc_468F68$38906
+$loc_468F36$38907:
 ; Line 9412
 	mov	eax, DWORD PTR [esi]
 ; Line 9413
@@ -17978,12 +17977,12 @@ $loc_468F36$38906:
 ; Line 9429
 	cmp	cl, 4
 ; Line 9430
-	jge	SHORT $loc_468F36$38906
-$loc_468F68$38905:
+	jge	SHORT $loc_468F36$38907
+$loc_468F68$38906:
 ; Line 9432
 	cmp	cl, 2
 ; Line 9433
-	jl	SHORT $loc_468F83$38907
+	jl	SHORT $loc_468F83$38908
 ; Line 9434
 	mov	dl, BYTE PTR [esi]
 ; Line 9435
@@ -18000,7 +17999,7 @@ $loc_468F68$38905:
 	add	esi, 2
 ; Line 9441
 	add	edi, 2
-$loc_468F83$38907:
+$loc_468F83$38908:
 ; Line 9443
 	mov	edx, esi
 ; Line 9444
@@ -18014,25 +18013,25 @@ $loc_468F83$38907:
 ; Line 9448
 	sub	ebp, 2
 ; Line 9449
-	jge	SHORT $loc_468F2A$38902
-$loc_468F97$38904:
+	jge	SHORT $loc_468F2A$38903
+$loc_468F97$38905:
 ; Line 9451
 	mov	ebp, 16					; 00000010H
-$loc_468F9C$38908:
+$loc_468F9C$38909:
 ; Line 9453
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9454
-	jb	SHORT $loc_468FAC$38909
+	jb	SHORT $loc_468FAC$38910
 ; Line 9455
 	add	esi, 32					; 00000020H
 ; Line 9456
 	add	edi, 32					; 00000020H
 ; Line 9457
-	jmp	SHORT $loc_468FE3$38910
-$loc_468FAC$38909:
+	jmp	SHORT $loc_468FE3$38911
+$loc_468FAC$38910:
 ; Line 9459
 	mov	ecx, 32					; 00000020H
-$loc_468FB1$38911:
+$loc_468FB1$38912:
 ; Line 9461
 	mov	eax, DWORD PTR [esi]
 ; Line 9462
@@ -18070,36 +18069,36 @@ $loc_468FB1$38911:
 ; Line 9478
 	cmp	cl, 4
 ; Line 9479
-	jge	SHORT $loc_468FB1$38911
-$loc_468FE3$38910:
+	jge	SHORT $loc_468FB1$38912
+$loc_468FE3$38911:
 ; Line 9481
 	sub	edi, 800				; 00000320H
 ; Line 9482
 	dec	ebp
 ; Line 9483
-	jne	SHORT $loc_468F9C$38908
+	jne	SHORT $loc_468F9C$38909
 ; Line 9484
 	pop	ebp
 ; Line 9485
-	jmp	$loc_4696B9$38836
-$loc_468FF2$38850:
+	jmp	$loc_4696B9$38837
+$loc_468FF2$38851:
 ; Line 9487
 	mov	edx, 32					; 00000020H
-$loc_468FF7$38912:
+$loc_468FF7$38913:
 ; Line 9489
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9490
-	jb	SHORT $loc_469007$38913
+	jb	SHORT $loc_469007$38914
 ; Line 9491
 	add	esi, 32					; 00000020H
 ; Line 9492
 	add	edi, 32					; 00000020H
 ; Line 9493
-	jmp	SHORT $loc_469019$38914
-$loc_469007$38913:
+	jmp	SHORT $loc_469019$38915
+$loc_469007$38914:
 ; Line 9495
 	mov	ecx, 8
-$loc_46900C$38915:
+$loc_46900C$38916:
 ; Line 9497
 	mov	eax, DWORD PTR [esi]
 ; Line 9498
@@ -18111,25 +18110,25 @@ $loc_46900C$38915:
 ; Line 9501
 	dec	ecx
 ; Line 9502
-	jne	SHORT $loc_46900C$38915
-$loc_469019$38914:
+	jne	SHORT $loc_46900C$38916
+$loc_469019$38915:
 ; Line 9504
 	sub	edi, 800				; 00000320H
 ; Line 9505
 	dec	edx
 ; Line 9506
-	jne	SHORT $loc_468FF7$38912
+	jne	SHORT $loc_468FF7$38913
 ; Line 9507
-	jmp	$loc_4696B9$38836
-$loc_469027$38851:
+	jmp	$loc_4696B9$38837
+$loc_469027$38852:
 ; Line 9509
 	mov	ecx, 32					; 00000020H
-$loc_46902C$38916:
+$loc_46902C$38917:
 ; Line 9511
 	push	ecx
 ; Line 9512
 	mov	edx, 32					; 00000020H
-$loc_469032$38917:
+$loc_469032$38918:
 ; Line 9514
 	xor	eax, eax
 ; Line 9515
@@ -18139,26 +18138,26 @@ $loc_469032$38917:
 ; Line 9517
 	test	al, al
 ; Line 9518
-	js	SHORT $loc_469082$38918
+	js	SHORT $loc_469082$38919
 ; Line 9519
 	sub	edx, eax
 ; Line 9520
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9521
-	jb	SHORT $loc_46904B$38919
+	jb	SHORT $loc_46904B$38920
 ; Line 9522
 	add	esi, eax
 ; Line 9523
 	add	edi, eax
 ; Line 9524
-	jmp	SHORT $loc_46907C$38920
-$loc_46904B$38919:
+	jmp	SHORT $loc_46907C$38921
+$loc_46904B$38920:
 ; Line 9526
 	mov	ecx, eax
 ; Line 9527
 	shr	ecx, 1
 ; Line 9528
-	jae	SHORT $loc_46905B$38921
+	jae	SHORT $loc_46905B$38922
 ; Line 9529
 	mov	al, BYTE PTR [esi]
 ; Line 9530
@@ -18170,12 +18169,12 @@ $loc_46904B$38919:
 ; Line 9533
 	test	ecx, ecx
 ; Line 9534
-	je	SHORT $loc_46907C$38920
-$loc_46905B$38921:
+	je	SHORT $loc_46907C$38921
+$loc_46905B$38922:
 ; Line 9536
 	shr	ecx, 1
 ; Line 9537
-	jae	SHORT $loc_46906F$38922
+	jae	SHORT $loc_46906F$38923
 ; Line 9538
 	mov	ax, WORD PTR [esi]
 ; Line 9539
@@ -18187,8 +18186,8 @@ $loc_46905B$38921:
 ; Line 9542
 	test	ecx, ecx
 ; Line 9543
-	je	SHORT $loc_46907C$38920
-$loc_46906F$38922:
+	je	SHORT $loc_46907C$38921
+$loc_46906F$38923:
 ; Line 9545
 	mov	eax, DWORD PTR [esi]
 ; Line 9546
@@ -18200,15 +18199,15 @@ $loc_46906F$38922:
 ; Line 9549
 	dec	ecx
 ; Line 9550
-	jne	SHORT $loc_46906F$38922
-$loc_46907C$38920:
+	jne	SHORT $loc_46906F$38923
+$loc_46907C$38921:
 ; Line 9552
 	test	edx, edx
 ; Line 9553
-	je	SHORT $loc_46908A$38923
+	je	SHORT $loc_46908A$38924
 ; Line 9554
-	jmp	SHORT $loc_469032$38917
-$loc_469082$38918:
+	jmp	SHORT $loc_469032$38918
+$loc_469082$38919:
 ; Line 9556
 	neg	al
 ; Line 9557
@@ -18216,8 +18215,8 @@ $loc_469082$38918:
 ; Line 9558
 	sub	edx, eax
 ; Line 9559
-	jne	SHORT $loc_469032$38917
-$loc_46908A$38923:
+	jne	SHORT $loc_469032$38918
+$loc_46908A$38924:
 ; Line 9561
 	pop	ecx
 ; Line 9562
@@ -18225,10 +18224,10 @@ $loc_46908A$38923:
 ; Line 9563
 	dec	ecx
 ; Line 9564
-	jne	SHORT $loc_46902C$38916
+	jne	SHORT $loc_46902C$38917
 ; Line 9565
-	jmp	$loc_4696B9$38836
-$loc_469099$38852:
+	jmp	$loc_4696B9$38837
+$loc_469099$38853:
 ; Line 9567
 	mov	edx, 30					; 0000001eH
 ; Line 9568
@@ -18236,7 +18235,7 @@ $loc_469099$38852:
 ; Line 9569
 	sub	eax, DWORD PTR _glClipY
 ; Line 9570
-	jb	SHORT $loc_4690E0$38924
+	jb	SHORT $loc_4690E0$38925
 ; Line 9571
 	add	eax, 1023				; 000003ffH
 ; Line 9572
@@ -18244,7 +18243,7 @@ $loc_469099$38852:
 ; Line 9573
 	cmp	eax, 45					; 0000002dH
 ; Line 9574
-	jg	SHORT $loc_4690D2$38925
+	jg	SHORT $loc_4690D2$38926
 ; Line 9575
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9576
@@ -18262,15 +18261,15 @@ $loc_469099$38852:
 ; Line 9582
 	sub	edx, ecx
 ; Line 9583
-	jmp	SHORT $loc_4690E0$38924
-$loc_4690D2$38925:
+	jmp	SHORT $loc_4690E0$38925
+$loc_4690D2$38926:
 ; Line 9585
 	sub	edi, 12288				; 00003000H
 ; Line 9586
 	add	esi, 288				; 00000120H
 ; Line 9587
-	jmp	SHORT $loc_469117$38926
-$loc_4690E0$38924:
+	jmp	SHORT $loc_469117$38927
+$loc_4690E0$38925:
 ; Line 9589
 	add	edi, edx
 ; Line 9590
@@ -18280,7 +18279,7 @@ $loc_4690E0$38924:
 ; Line 9592
 	shr	ecx, 2
 ; Line 9593
-	jae	SHORT $loc_4690FF$38927
+	jae	SHORT $loc_4690FF$38928
 ; Line 9594
 	mov	ax, WORD PTR [esi+2]
 ; Line 9595
@@ -18292,8 +18291,8 @@ $loc_4690E0$38924:
 ; Line 9598
 	test	ecx, ecx
 ; Line 9599
-	je	SHORT $loc_46910C$38928
-$loc_4690FF$38927:
+	je	SHORT $loc_46910C$38929
+$loc_4690FF$38928:
 ; Line 9601
 	mov	eax, DWORD PTR [esi]
 ; Line 9602
@@ -18305,15 +18304,15 @@ $loc_4690FF$38927:
 ; Line 9605
 	dec	ecx
 ; Line 9606
-	jne	SHORT $loc_4690FF$38927
-$loc_46910C$38928:
+	jne	SHORT $loc_4690FF$38928
+$loc_46910C$38929:
 ; Line 9608
 	sub	edi, 800				; 00000320H
 ; Line 9609
 	sub	edx, 2
 ; Line 9610
-	jge	SHORT $loc_4690E0$38924
-$loc_469117$38926:
+	jge	SHORT $loc_4690E0$38925
+$loc_469117$38927:
 ; Line 9612
 	mov	edx, 2
 ; Line 9613
@@ -18321,7 +18320,7 @@ $loc_469117$38926:
 ; Line 9614
 	sub	eax, DWORD PTR _glClipY
 ; Line 9615
-	jb	SHORT $loc_46915E$38929
+	jb	SHORT $loc_46915E$38930
 ; Line 9616
 	add	eax, 1023				; 000003ffH
 ; Line 9617
@@ -18329,7 +18328,7 @@ $loc_469117$38926:
 ; Line 9618
 	cmp	eax, 42					; 0000002aH
 ; Line 9619
-	jg	SHORT $loc_469150$38930
+	jg	SHORT $loc_469150$38931
 ; Line 9620
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9621
@@ -18347,15 +18346,15 @@ $loc_469117$38926:
 ; Line 9627
 	add	edx, ecx
 ; Line 9628
-	jmp	SHORT $loc_46915E$38929
-$loc_469150$38930:
+	jmp	SHORT $loc_46915E$38930
+$loc_469150$38931:
 ; Line 9630
 	sub	edi, 11520				; 00002d00H
 ; Line 9631
 	add	esi, 256				; 00000100H
 ; Line 9632
-	jmp	SHORT $loc_469198$38931
-$loc_46915E$38929:
+	jmp	SHORT $loc_469198$38932
+$loc_46915E$38930:
 ; Line 9634
 	mov	ecx, 32					; 00000020H
 ; Line 9635
@@ -18365,7 +18364,7 @@ $loc_46915E$38929:
 ; Line 9637
 	shr	ecx, 2
 ; Line 9638
-	jae	SHORT $loc_46917D$38932
+	jae	SHORT $loc_46917D$38933
 ; Line 9639
 	mov	ax, WORD PTR [esi+2]
 ; Line 9640
@@ -18377,8 +18376,8 @@ $loc_46915E$38929:
 ; Line 9643
 	test	ecx, ecx
 ; Line 9644
-	je	SHORT $loc_46918A$38933
-$loc_46917D$38932:
+	je	SHORT $loc_46918A$38934
+$loc_46917D$38933:
 ; Line 9646
 	mov	eax, DWORD PTR [esi]
 ; Line 9647
@@ -18390,8 +18389,8 @@ $loc_46917D$38932:
 ; Line 9650
 	dec	ecx
 ; Line 9651
-	jne	SHORT $loc_46917D$38932
-$loc_46918A$38933:
+	jne	SHORT $loc_46917D$38933
+$loc_46918A$38934:
 ; Line 9653
 	add	edx, 2
 ; Line 9654
@@ -18399,11 +18398,11 @@ $loc_46918A$38933:
 ; Line 9655
 	cmp	edx, 32					; 00000020H
 ; Line 9656
-	jl	SHORT $loc_46915E$38929
-$loc_469198$38931:
+	jl	SHORT $loc_46915E$38930
+$loc_469198$38932:
 ; Line 9658
-	jmp	$loc_4696B9$38836
-$loc_46919D$38853:
+	jmp	$loc_4696B9$38837
+$loc_46919D$38854:
 ; Line 9660
 	mov	edx, 30					; 0000001eH
 ; Line 9661
@@ -18411,7 +18410,7 @@ $loc_46919D$38853:
 ; Line 9662
 	sub	eax, DWORD PTR _glClipY
 ; Line 9663
-	jb	SHORT $loc_4691E4$38934
+	jb	SHORT $loc_4691E4$38935
 ; Line 9664
 	add	eax, 1023				; 000003ffH
 ; Line 9665
@@ -18419,7 +18418,7 @@ $loc_46919D$38853:
 ; Line 9666
 	cmp	eax, 45					; 0000002dH
 ; Line 9667
-	jg	SHORT $loc_4691D6$38935
+	jg	SHORT $loc_4691D6$38936
 ; Line 9668
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9669
@@ -18437,15 +18436,15 @@ $loc_46919D$38853:
 ; Line 9675
 	sub	edx, ecx
 ; Line 9676
-	jmp	SHORT $loc_4691E4$38934
-$loc_4691D6$38935:
+	jmp	SHORT $loc_4691E4$38935
+$loc_4691D6$38936:
 ; Line 9678
 	sub	edi, 12288				; 00003000H
 ; Line 9679
 	add	esi, 288				; 00000120H
 ; Line 9680
-	jmp	SHORT $loc_46921D$38936
-$loc_4691E4$38934:
+	jmp	SHORT $loc_46921D$38937
+$loc_4691E4$38935:
 ; Line 9682
 	mov	ecx, 32					; 00000020H
 ; Line 9683
@@ -18455,8 +18454,8 @@ $loc_4691E4$38934:
 ; Line 9685
 	shr	ecx, 2
 ; Line 9686
-	je	SHORT $loc_4691FF$38937
-$loc_4691F2$38938:
+	je	SHORT $loc_4691FF$38938
+$loc_4691F2$38939:
 ; Line 9688
 	mov	eax, DWORD PTR [esi]
 ; Line 9689
@@ -18468,12 +18467,12 @@ $loc_4691F2$38938:
 ; Line 9692
 	dec	ecx
 ; Line 9693
-	jne	SHORT $loc_4691F2$38938
-$loc_4691FF$38937:
+	jne	SHORT $loc_4691F2$38939
+$loc_4691FF$38938:
 ; Line 9695
 	and	ebx, 2
 ; Line 9696
-	je	SHORT $loc_469210$38939
+	je	SHORT $loc_469210$38940
 ; Line 9697
 	mov	ax, WORD PTR [esi]
 ; Line 9698
@@ -18482,7 +18481,7 @@ $loc_4691FF$38937:
 	mov	WORD PTR [edi], ax
 ; Line 9700
 	add	edi, 2
-$loc_469210$38939:
+$loc_469210$38940:
 ; Line 9702
 	add	edi, edx
 ; Line 9703
@@ -18490,8 +18489,8 @@ $loc_469210$38939:
 ; Line 9704
 	sub	edx, 2
 ; Line 9705
-	jge	SHORT $loc_4691E4$38934
-$loc_46921D$38936:
+	jge	SHORT $loc_4691E4$38935
+$loc_46921D$38937:
 ; Line 9707
 	mov	edx, 2
 ; Line 9708
@@ -18499,7 +18498,7 @@ $loc_46921D$38936:
 ; Line 9709
 	sub	eax, DWORD PTR _glClipY
 ; Line 9710
-	jb	SHORT $loc_469264$38940
+	jb	SHORT $loc_469264$38941
 ; Line 9711
 	add	eax, 1023				; 000003ffH
 ; Line 9712
@@ -18507,7 +18506,7 @@ $loc_46921D$38936:
 ; Line 9713
 	cmp	eax, 42					; 0000002aH
 ; Line 9714
-	jg	SHORT $loc_469256$38941
+	jg	SHORT $loc_469256$38942
 ; Line 9715
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9716
@@ -18525,15 +18524,15 @@ $loc_46921D$38936:
 ; Line 9722
 	add	edx, ecx
 ; Line 9723
-	jmp	SHORT $loc_469264$38940
-$loc_469256$38941:
+	jmp	SHORT $loc_469264$38941
+$loc_469256$38942:
 ; Line 9725
 	sub	edi, 11520				; 00002d00H
 ; Line 9726
 	add	esi, 256				; 00000100H
 ; Line 9727
-	jmp	SHORT $loc_4692A0$38942
-$loc_469264$38940:
+	jmp	SHORT $loc_4692A0$38943
+$loc_469264$38941:
 ; Line 9729
 	mov	ecx, 32					; 00000020H
 ; Line 9730
@@ -18543,8 +18542,8 @@ $loc_469264$38940:
 ; Line 9732
 	shr	ecx, 2
 ; Line 9733
-	je	SHORT $loc_46927F$38943
-$loc_469272$38944:
+	je	SHORT $loc_46927F$38944
+$loc_469272$38945:
 ; Line 9735
 	mov	eax, DWORD PTR [esi]
 ; Line 9736
@@ -18556,12 +18555,12 @@ $loc_469272$38944:
 ; Line 9739
 	dec	ecx
 ; Line 9740
-	jne	SHORT $loc_469272$38944
-$loc_46927F$38943:
+	jne	SHORT $loc_469272$38945
+$loc_46927F$38944:
 ; Line 9742
 	and	ebx, 2
 ; Line 9743
-	je	SHORT $loc_469290$38945
+	je	SHORT $loc_469290$38946
 ; Line 9744
 	mov	ax, WORD PTR [esi]
 ; Line 9745
@@ -18570,7 +18569,7 @@ $loc_46927F$38943:
 	mov	WORD PTR [edi], ax
 ; Line 9747
 	add	edi, 2
-$loc_469290$38945:
+$loc_469290$38946:
 ; Line 9749
 	add	edi, edx
 ; Line 9750
@@ -18580,11 +18579,11 @@ $loc_469290$38945:
 ; Line 9752
 	cmp	edx, 32					; 00000020H
 ; Line 9753
-	jl	SHORT $loc_469264$38940
-$loc_4692A0$38942:
+	jl	SHORT $loc_469264$38941
+$loc_4692A0$38943:
 ; Line 9755
-	jmp	$loc_4696B9$38836
-$loc_4692A5$38854:
+	jmp	$loc_4696B9$38837
+$loc_4692A5$38855:
 ; Line 9757
 	mov	edx, 30					; 0000001eH
 ; Line 9758
@@ -18592,7 +18591,7 @@ $loc_4692A5$38854:
 ; Line 9759
 	sub	eax, DWORD PTR _glClipY
 ; Line 9760
-	jb	SHORT $loc_4692EC$38946
+	jb	SHORT $loc_4692EC$38947
 ; Line 9761
 	add	eax, 1023				; 000003ffH
 ; Line 9762
@@ -18600,7 +18599,7 @@ $loc_4692A5$38854:
 ; Line 9763
 	cmp	eax, 45					; 0000002dH
 ; Line 9764
-	jg	SHORT $loc_4692DE$38947
+	jg	SHORT $loc_4692DE$38948
 ; Line 9765
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9766
@@ -18618,15 +18617,15 @@ $loc_4692A5$38854:
 ; Line 9772
 	sub	edx, ecx
 ; Line 9773
-	jmp	SHORT $loc_4692EC$38946
-$loc_4692DE$38947:
+	jmp	SHORT $loc_4692EC$38947
+$loc_4692DE$38948:
 ; Line 9775
 	sub	edi, 12288				; 00003000H
 ; Line 9776
 	add	esi, 288				; 00000120H
 ; Line 9777
-	jmp	SHORT $loc_469323$38948
-$loc_4692EC$38946:
+	jmp	SHORT $loc_469323$38949
+$loc_4692EC$38947:
 ; Line 9779
 	add	edi, edx
 ; Line 9780
@@ -18636,7 +18635,7 @@ $loc_4692EC$38946:
 ; Line 9782
 	shr	ecx, 2
 ; Line 9783
-	jae	SHORT $loc_46930B$38949
+	jae	SHORT $loc_46930B$38950
 ; Line 9784
 	mov	ax, WORD PTR [esi+2]
 ; Line 9785
@@ -18648,8 +18647,8 @@ $loc_4692EC$38946:
 ; Line 9788
 	test	ecx, ecx
 ; Line 9789
-	je	SHORT $loc_469318$38950
-$loc_46930B$38949:
+	je	SHORT $loc_469318$38951
+$loc_46930B$38950:
 ; Line 9791
 	mov	eax, DWORD PTR [esi]
 ; Line 9792
@@ -18661,32 +18660,32 @@ $loc_46930B$38949:
 ; Line 9795
 	dec	ecx
 ; Line 9796
-	jne	SHORT $loc_46930B$38949
-$loc_469318$38950:
+	jne	SHORT $loc_46930B$38950
+$loc_469318$38951:
 ; Line 9798
 	sub	edi, 800				; 00000320H
 ; Line 9799
 	sub	edx, 2
 ; Line 9800
-	jge	SHORT $loc_4692EC$38946
-$loc_469323$38948:
+	jge	SHORT $loc_4692EC$38947
+$loc_469323$38949:
 ; Line 9802
 	mov	edx, 16					; 00000010H
-$loc_469328$38951:
+$loc_469328$38952:
 ; Line 9804
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9805
-	jb	SHORT $loc_469338$38952
+	jb	SHORT $loc_469338$38953
 ; Line 9806
 	add	esi, 32					; 00000020H
 ; Line 9807
 	add	edi, 32					; 00000020H
 ; Line 9808
-	jmp	SHORT $loc_46934A$38953
-$loc_469338$38952:
+	jmp	SHORT $loc_46934A$38954
+$loc_469338$38953:
 ; Line 9810
 	mov	ecx, 8
-$loc_46933D$38954:
+$loc_46933D$38955:
 ; Line 9812
 	mov	eax, DWORD PTR [esi]
 ; Line 9813
@@ -18698,17 +18697,17 @@ $loc_46933D$38954:
 ; Line 9816
 	dec	ecx
 ; Line 9817
-	jne	SHORT $loc_46933D$38954
-$loc_46934A$38953:
+	jne	SHORT $loc_46933D$38955
+$loc_46934A$38954:
 ; Line 9819
 	sub	edi, 800				; 00000320H
 ; Line 9820
 	dec	edx
 ; Line 9821
-	jne	SHORT $loc_469328$38951
+	jne	SHORT $loc_469328$38952
 ; Line 9822
-	jmp	$loc_4696B9$38836
-$loc_469358$38855:
+	jmp	$loc_4696B9$38837
+$loc_469358$38856:
 ; Line 9824
 	mov	edx, 30					; 0000001eH
 ; Line 9825
@@ -18716,7 +18715,7 @@ $loc_469358$38855:
 ; Line 9826
 	sub	eax, DWORD PTR _glClipY
 ; Line 9827
-	jb	SHORT $loc_46939F$38955
+	jb	SHORT $loc_46939F$38956
 ; Line 9828
 	add	eax, 1023				; 000003ffH
 ; Line 9829
@@ -18724,7 +18723,7 @@ $loc_469358$38855:
 ; Line 9830
 	cmp	eax, 45					; 0000002dH
 ; Line 9831
-	jg	SHORT $loc_469391$38956
+	jg	SHORT $loc_469391$38957
 ; Line 9832
 	mov	ecx, DWORD PTR _WorldTbl3x16[eax*4]
 ; Line 9833
@@ -18742,15 +18741,15 @@ $loc_469358$38855:
 ; Line 9839
 	sub	edx, ecx
 ; Line 9840
-	jmp	SHORT $loc_46939F$38955
-$loc_469391$38956:
+	jmp	SHORT $loc_46939F$38956
+$loc_469391$38957:
 ; Line 9842
 	sub	edi, 12288				; 00003000H
 ; Line 9843
 	add	esi, 288				; 00000120H
 ; Line 9844
-	jmp	SHORT $loc_4693D8$38957
-$loc_46939F$38955:
+	jmp	SHORT $loc_4693D8$38958
+$loc_46939F$38956:
 ; Line 9846
 	mov	ecx, 32					; 00000020H
 ; Line 9847
@@ -18760,8 +18759,8 @@ $loc_46939F$38955:
 ; Line 9849
 	shr	ecx, 2
 ; Line 9850
-	je	SHORT $loc_4693BA$38958
-$loc_4693AD$38959:
+	je	SHORT $loc_4693BA$38959
+$loc_4693AD$38960:
 ; Line 9852
 	mov	eax, DWORD PTR [esi]
 ; Line 9853
@@ -18773,12 +18772,12 @@ $loc_4693AD$38959:
 ; Line 9856
 	dec	ecx
 ; Line 9857
-	jne	SHORT $loc_4693AD$38959
-$loc_4693BA$38958:
+	jne	SHORT $loc_4693AD$38960
+$loc_4693BA$38959:
 ; Line 9859
 	and	ebx, 2
 ; Line 9860
-	je	SHORT $loc_4693CB$38960
+	je	SHORT $loc_4693CB$38961
 ; Line 9861
 	mov	ax, WORD PTR [esi]
 ; Line 9862
@@ -18787,7 +18786,7 @@ $loc_4693BA$38958:
 	mov	WORD PTR [edi], ax
 ; Line 9864
 	add	edi, 2
-$loc_4693CB$38960:
+$loc_4693CB$38961:
 ; Line 9866
 	sub	edi, 800				; 00000320H
 ; Line 9867
@@ -18795,25 +18794,25 @@ $loc_4693CB$38960:
 ; Line 9868
 	sub	edx, 2
 ; Line 9869
-	jge	SHORT $loc_46939F$38955
-$loc_4693D8$38957:
+	jge	SHORT $loc_46939F$38956
+$loc_4693D8$38958:
 ; Line 9871
 	mov	edx, 16					; 00000010H
-$loc_4693DD$38961:
+$loc_4693DD$38962:
 ; Line 9873
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9874
-	jb	SHORT $loc_4693ED$38962
+	jb	SHORT $loc_4693ED$38963
 ; Line 9875
 	add	esi, 32					; 00000020H
 ; Line 9876
 	add	edi, 32					; 00000020H
 ; Line 9877
-	jmp	SHORT $loc_4693FF$38963
-$loc_4693ED$38962:
+	jmp	SHORT $loc_4693FF$38964
+$loc_4693ED$38963:
 ; Line 9879
 	mov	ecx, 8
-$loc_4693F2$38964:
+$loc_4693F2$38965:
 ; Line 9881
 	mov	eax, DWORD PTR [esi]
 ; Line 9882
@@ -18825,36 +18824,36 @@ $loc_4693F2$38964:
 ; Line 9885
 	dec	ecx
 ; Line 9886
-	jne	SHORT $loc_4693F2$38964
-$loc_4693FF$38963:
+	jne	SHORT $loc_4693F2$38965
+$loc_4693FF$38964:
 ; Line 9888
 	sub	edi, 800				; 00000320H
 ; Line 9889
 	dec	edx
 ; Line 9890
-	jne	SHORT $loc_4693DD$38961
+	jne	SHORT $loc_4693DD$38962
 ; Line 9891
-	jmp	$loc_4696B9$38836
-$loc_46940D$38858:
+	jmp	$loc_4696B9$38837
+$loc_46940D$38859:
 ; Line 9893
 	mov	edx, 32					; 00000020H
 ; Line 9894
 	xor	eax, eax
-$loc_469414$38965:
+$loc_469414$38966:
 ; Line 9896
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9897
-	jb	SHORT $loc_469424$38966
+	jb	SHORT $loc_469424$38967
 ; Line 9898
 	add	esi, 32					; 00000020H
 ; Line 9899
 	add	edi, 32					; 00000020H
 ; Line 9900
-	jmp	SHORT $loc_469431$38967
-$loc_469424$38966:
+	jmp	SHORT $loc_469431$38968
+$loc_469424$38967:
 ; Line 9902
 	mov	ecx, 8
-$loc_469429$38968:
+$loc_469429$38969:
 ; Line 9904
 	mov	DWORD PTR [edi], eax
 ; Line 9905
@@ -18862,25 +18861,25 @@ $loc_469429$38968:
 ; Line 9906
 	dec	ecx
 ; Line 9907
-	jne	SHORT $loc_469429$38968
-$loc_469431$38967:
+	jne	SHORT $loc_469429$38969
+$loc_469431$38968:
 ; Line 9909
 	sub	edi, 800				; 00000320H
 ; Line 9910
 	dec	edx
 ; Line 9911
-	jne	SHORT $loc_469414$38965
+	jne	SHORT $loc_469414$38966
 ; Line 9912
-	jmp	$loc_4696B9$38836
-$loc_46943F$38859:
+	jmp	$loc_4696B9$38837
+$loc_46943F$38860:
 ; Line 9914
 	mov	ecx, 32					; 00000020H
-$loc_469444$38969:
+$loc_469444$38970:
 ; Line 9916
 	push	ecx
 ; Line 9917
 	mov	edx, 32					; 00000020H
-$loc_46944A$38970:
+$loc_46944A$38971:
 ; Line 9919
 	xor	eax, eax
 ; Line 9920
@@ -18890,20 +18889,20 @@ $loc_46944A$38970:
 ; Line 9922
 	test	al, al
 ; Line 9923
-	js	SHORT $loc_469490$38971
+	js	SHORT $loc_469490$38972
 ; Line 9924
 	sub	edx, eax
 ; Line 9925
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9926
-	jb	SHORT $loc_469463$38972
+	jb	SHORT $loc_469463$38973
 ; Line 9927
 	add	esi, eax
 ; Line 9928
 	add	edi, eax
 ; Line 9929
-	jmp	SHORT $loc_46948A$38973
-$loc_469463$38972:
+	jmp	SHORT $loc_46948A$38974
+$loc_469463$38973:
 ; Line 9931
 	mov	ecx, eax
 ; Line 9932
@@ -18913,7 +18912,7 @@ $loc_469463$38972:
 ; Line 9934
 	shr	ecx, 1
 ; Line 9935
-	jae	SHORT $loc_469474$38974
+	jae	SHORT $loc_469474$38975
 ; Line 9936
 	mov	BYTE PTR [edi], al
 ; Line 9937
@@ -18921,12 +18920,12 @@ $loc_469463$38972:
 ; Line 9938
 	test	ecx, ecx
 ; Line 9939
-	je	SHORT $loc_46948A$38973
-$loc_469474$38974:
+	je	SHORT $loc_46948A$38974
+$loc_469474$38975:
 ; Line 9941
 	shr	ecx, 1
 ; Line 9942
-	jae	SHORT $loc_469482$38975
+	jae	SHORT $loc_469482$38976
 ; Line 9943
 	mov	WORD PTR [edi], ax
 ; Line 9944
@@ -18934,8 +18933,8 @@ $loc_469474$38974:
 ; Line 9945
 	test	ecx, ecx
 ; Line 9946
-	je	SHORT $loc_46948A$38973
-$loc_469482$38975:
+	je	SHORT $loc_46948A$38974
+$loc_469482$38976:
 ; Line 9948
 	mov	DWORD PTR [edi], eax
 ; Line 9949
@@ -18943,15 +18942,15 @@ $loc_469482$38975:
 ; Line 9950
 	dec	ecx
 ; Line 9951
-	jne	SHORT $loc_469482$38975
-$loc_46948A$38973:
+	jne	SHORT $loc_469482$38976
+$loc_46948A$38974:
 ; Line 9953
 	test	edx, edx
 ; Line 9954
-	je	SHORT $loc_469498$38976
+	je	SHORT $loc_469498$38977
 ; Line 9955
-	jmp	SHORT $loc_46944A$38970
-$loc_469490$38971:
+	jmp	SHORT $loc_46944A$38971
+$loc_469490$38972:
 ; Line 9957
 	neg	al
 ; Line 9958
@@ -18959,8 +18958,8 @@ $loc_469490$38971:
 ; Line 9959
 	sub	edx, eax
 ; Line 9960
-	jne	SHORT $loc_46944A$38970
-$loc_469498$38976:
+	jne	SHORT $loc_46944A$38971
+$loc_469498$38977:
 ; Line 9962
 	pop	ecx
 ; Line 9963
@@ -18968,19 +18967,19 @@ $loc_469498$38976:
 ; Line 9964
 	dec	ecx
 ; Line 9965
-	jne	SHORT $loc_469444$38969
+	jne	SHORT $loc_469444$38970
 ; Line 9966
-	jmp	$loc_4696B9$38836
-$loc_4694A7$38860:
+	jmp	$loc_4696B9$38837
+$loc_4694A7$38861:
 ; Line 9968
 	mov	edx, 30					; 0000001eH
 ; Line 9969
 	xor	eax, eax
-$loc_4694AE$38977:
+$loc_4694AE$38978:
 ; Line 9971
 	cmp	edi, DWORD PTR _glClipY
 ; Line 9972
-	jb	SHORT $loc_4694C0$38978
+	jb	SHORT $loc_4694C0$38979
 ; Line 9973
 	add	esi, 32					; 00000020H
 ; Line 9974
@@ -18988,8 +18987,8 @@ $loc_4694AE$38977:
 ; Line 9975
 	add	edi, 32					; 00000020H
 ; Line 9976
-	jmp	SHORT $loc_4694E0$38979
-$loc_4694C0$38978:
+	jmp	SHORT $loc_4694E0$38980
+$loc_4694C0$38979:
 ; Line 9978
 	add	edi, edx
 ; Line 9979
@@ -18999,7 +18998,7 @@ $loc_4694C0$38978:
 ; Line 9981
 	shr	ecx, 2
 ; Line 9982
-	jae	SHORT $loc_4694D8$38980
+	jae	SHORT $loc_4694D8$38981
 ; Line 9983
 	mov	WORD PTR [edi], ax
 ; Line 9984
@@ -19007,8 +19006,8 @@ $loc_4694C0$38978:
 ; Line 9985
 	test	ecx, ecx
 ; Line 9986
-	je	SHORT $loc_4694E0$38979
-$loc_4694D8$38980:
+	je	SHORT $loc_4694E0$38980
+$loc_4694D8$38981:
 ; Line 9988
 	mov	DWORD PTR [edi], eax
 ; Line 9989
@@ -19016,26 +19015,26 @@ $loc_4694D8$38980:
 ; Line 9990
 	dec	ecx
 ; Line 9991
-	jne	SHORT $loc_4694D8$38980
-$loc_4694E0$38979:
+	jne	SHORT $loc_4694D8$38981
+$loc_4694E0$38980:
 ; Line 9993
 	sub	edi, 800				; 00000320H
 ; Line 9994
 	test	edx, edx
 ; Line 9995
-	je	SHORT $loc_4694EF$38981
+	je	SHORT $loc_4694EF$38982
 ; Line 9996
 	sub	edx, 2
 ; Line 9997
-	jmp	SHORT $loc_4694AE$38977
-$loc_4694EF$38981:
+	jmp	SHORT $loc_4694AE$38978
+$loc_4694EF$38982:
 ; Line 9999
 	mov	edx, 2
-$loc_4694F4$38982:
+$loc_4694F4$38983:
 ; Line 10001
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10002
-	jb	SHORT $loc_469506$38983
+	jb	SHORT $loc_469506$38984
 ; Line 10003
 	add	esi, 32					; 00000020H
 ; Line 10004
@@ -19043,8 +19042,8 @@ $loc_4694F4$38982:
 ; Line 10005
 	add	edi, 32					; 00000020H
 ; Line 10006
-	jmp	SHORT $loc_469526$38984
-$loc_469506$38983:
+	jmp	SHORT $loc_469526$38985
+$loc_469506$38984:
 ; Line 10008
 	add	edi, edx
 ; Line 10009
@@ -19054,7 +19053,7 @@ $loc_469506$38983:
 ; Line 10011
 	shr	ecx, 2
 ; Line 10012
-	jae	SHORT $loc_46951E$38985
+	jae	SHORT $loc_46951E$38986
 ; Line 10013
 	mov	WORD PTR [edi], ax
 ; Line 10014
@@ -19062,8 +19061,8 @@ $loc_469506$38983:
 ; Line 10015
 	test	ecx, ecx
 ; Line 10016
-	je	SHORT $loc_469526$38984
-$loc_46951E$38985:
+	je	SHORT $loc_469526$38985
+$loc_46951E$38986:
 ; Line 10018
 	mov	DWORD PTR [edi], eax
 ; Line 10019
@@ -19071,8 +19070,8 @@ $loc_46951E$38985:
 ; Line 10020
 	dec	ecx
 ; Line 10021
-	jne	SHORT $loc_46951E$38985
-$loc_469526$38984:
+	jne	SHORT $loc_46951E$38986
+$loc_469526$38985:
 ; Line 10023
 	sub	edi, 800				; 00000320H
 ; Line 10024
@@ -19080,19 +19079,19 @@ $loc_469526$38984:
 ; Line 10025
 	cmp	edx, 32					; 00000020H
 ; Line 10026
-	jne	SHORT $loc_4694F4$38982
+	jne	SHORT $loc_4694F4$38983
 ; Line 10027
-	jmp	$loc_4696B9$38836
-$loc_469539$38861:
+	jmp	$loc_4696B9$38837
+$loc_469539$38862:
 ; Line 10029
 	mov	edx, 30					; 0000001eH
 ; Line 10030
 	xor	eax, eax
-$loc_469540$38986:
+$loc_469540$38987:
 ; Line 10032
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10033
-	jb	SHORT $loc_469554$38987
+	jb	SHORT $loc_469554$38988
 ; Line 10034
 	add	esi, 32					; 00000020H
 ; Line 10035
@@ -19102,8 +19101,8 @@ $loc_469540$38986:
 ; Line 10037
 	sub	edi, edx
 ; Line 10038
-	jmp	SHORT $loc_469572$38988
-$loc_469554$38987:
+	jmp	SHORT $loc_469572$38989
+$loc_469554$38988:
 ; Line 10040
 	mov	ecx, 32					; 00000020H
 ; Line 10041
@@ -19111,7 +19110,7 @@ $loc_469554$38987:
 ; Line 10042
 	shr	ecx, 2
 ; Line 10043
-	jae	SHORT $loc_46956A$38989
+	jae	SHORT $loc_46956A$38990
 ; Line 10044
 	mov	WORD PTR [edi], ax
 ; Line 10045
@@ -19119,8 +19118,8 @@ $loc_469554$38987:
 ; Line 10046
 	test	ecx, ecx
 ; Line 10047
-	je	SHORT $loc_469572$38988
-$loc_46956A$38989:
+	je	SHORT $loc_469572$38989
+$loc_46956A$38990:
 ; Line 10049
 	mov	DWORD PTR [edi], eax
 ; Line 10050
@@ -19128,28 +19127,28 @@ $loc_46956A$38989:
 ; Line 10051
 	dec	ecx
 ; Line 10052
-	jne	SHORT $loc_46956A$38989
-$loc_469572$38988:
+	jne	SHORT $loc_46956A$38990
+$loc_469572$38989:
 ; Line 10054
 	sub	edi, 800				; 00000320H
 ; Line 10055
 	test	edx, edx
 ; Line 10056
-	je	SHORT $loc_469583$38990
+	je	SHORT $loc_469583$38991
 ; Line 10057
 	add	edi, edx
 ; Line 10058
 	sub	edx, 2
 ; Line 10059
-	jmp	SHORT $loc_469540$38986
-$loc_469583$38990:
+	jmp	SHORT $loc_469540$38987
+$loc_469583$38991:
 ; Line 10061
 	mov	edx, 2
-$loc_469588$38991:
+$loc_469588$38992:
 ; Line 10063
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10064
-	jb	SHORT $loc_46959C$38992
+	jb	SHORT $loc_46959C$38993
 ; Line 10065
 	add	esi, 32					; 00000020H
 ; Line 10066
@@ -19159,8 +19158,8 @@ $loc_469588$38991:
 ; Line 10068
 	sub	edi, edx
 ; Line 10069
-	jmp	SHORT $loc_4695BA$38993
-$loc_46959C$38992:
+	jmp	SHORT $loc_4695BA$38994
+$loc_46959C$38993:
 ; Line 10071
 	mov	ecx, 32					; 00000020H
 ; Line 10072
@@ -19168,7 +19167,7 @@ $loc_46959C$38992:
 ; Line 10073
 	shr	ecx, 2
 ; Line 10074
-	jae	SHORT $loc_4695B2$38994
+	jae	SHORT $loc_4695B2$38995
 ; Line 10075
 	mov	WORD PTR [edi], ax
 ; Line 10076
@@ -19176,8 +19175,8 @@ $loc_46959C$38992:
 ; Line 10077
 	test	ecx, ecx
 ; Line 10078
-	je	SHORT $loc_4695BA$38993
-$loc_4695B2$38994:
+	je	SHORT $loc_4695BA$38994
+$loc_4695B2$38995:
 ; Line 10080
 	mov	DWORD PTR [edi], eax
 ; Line 10081
@@ -19185,8 +19184,8 @@ $loc_4695B2$38994:
 ; Line 10082
 	dec	ecx
 ; Line 10083
-	jne	SHORT $loc_4695B2$38994
-$loc_4695BA$38993:
+	jne	SHORT $loc_4695B2$38995
+$loc_4695BA$38994:
 ; Line 10085
 	sub	edi, 800				; 00000320H
 ; Line 10086
@@ -19196,19 +19195,19 @@ $loc_4695BA$38993:
 ; Line 10088
 	cmp	edx, 32					; 00000020H
 ; Line 10089
-	jne	SHORT $loc_469588$38991
+	jne	SHORT $loc_469588$38992
 ; Line 10090
-	jmp	$loc_4696B9$38836
-$loc_4695CF$38862:
+	jmp	$loc_4696B9$38837
+$loc_4695CF$38863:
 ; Line 10092
 	mov	edx, 30					; 0000001eH
 ; Line 10093
 	xor	eax, eax
-$loc_4695D6$38995:
+$loc_4695D6$38996:
 ; Line 10095
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10096
-	jb	SHORT $loc_4695E8$38996
+	jb	SHORT $loc_4695E8$38997
 ; Line 10097
 	add	esi, 32					; 00000020H
 ; Line 10098
@@ -19216,8 +19215,8 @@ $loc_4695D6$38995:
 ; Line 10099
 	add	edi, 32					; 00000020H
 ; Line 10100
-	jmp	SHORT $loc_469608$38997
-$loc_4695E8$38996:
+	jmp	SHORT $loc_469608$38998
+$loc_4695E8$38997:
 ; Line 10102
 	add	edi, edx
 ; Line 10103
@@ -19227,7 +19226,7 @@ $loc_4695E8$38996:
 ; Line 10105
 	shr	ecx, 2
 ; Line 10106
-	jae	SHORT $loc_469600$38998
+	jae	SHORT $loc_469600$38999
 ; Line 10107
 	mov	WORD PTR [edi], ax
 ; Line 10108
@@ -19235,8 +19234,8 @@ $loc_4695E8$38996:
 ; Line 10109
 	test	ecx, ecx
 ; Line 10110
-	je	SHORT $loc_469608$38997
-$loc_469600$38998:
+	je	SHORT $loc_469608$38998
+$loc_469600$38999:
 ; Line 10112
 	mov	DWORD PTR [edi], eax
 ; Line 10113
@@ -19244,36 +19243,36 @@ $loc_469600$38998:
 ; Line 10114
 	dec	ecx
 ; Line 10115
-	jne	SHORT $loc_469600$38998
-$loc_469608$38997:
+	jne	SHORT $loc_469600$38999
+$loc_469608$38998:
 ; Line 10117
 	sub	edi, 800				; 00000320H
 ; Line 10118
 	test	edx, edx
 ; Line 10119
-	je	SHORT $loc_469617$38999
+	je	SHORT $loc_469617$39000
 ; Line 10120
 	sub	edx, 2
 ; Line 10121
-	jmp	SHORT $loc_4695D6$38995
-$loc_469617$38999:
+	jmp	SHORT $loc_4695D6$38996
+$loc_469617$39000:
 ; Line 10123
 	mov	edx, 16					; 00000010H
-$loc_46961C$39000:
+$loc_46961C$39001:
 ; Line 10125
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10126
-	jb	SHORT $loc_46962C$39001
+	jb	SHORT $loc_46962C$39002
 ; Line 10127
 	add	esi, 32					; 00000020H
 ; Line 10128
 	add	edi, 32					; 00000020H
 ; Line 10129
-	jmp	SHORT $loc_469639$39002
-$loc_46962C$39001:
+	jmp	SHORT $loc_469639$39003
+$loc_46962C$39002:
 ; Line 10131
 	mov	ecx, 8
-$loc_469631$39003:
+$loc_469631$39004:
 ; Line 10133
 	mov	DWORD PTR [edi], eax
 ; Line 10134
@@ -19281,26 +19280,26 @@ $loc_469631$39003:
 ; Line 10135
 	dec	ecx
 ; Line 10136
-	jne	SHORT $loc_469631$39003
-$loc_469639$39002:
+	jne	SHORT $loc_469631$39004
+$loc_469639$39003:
 ; Line 10138
 	sub	edi, 800				; 00000320H
 ; Line 10139
 	dec	edx
 ; Line 10140
-	jne	SHORT $loc_46961C$39000
+	jne	SHORT $loc_46961C$39001
 ; Line 10141
-	jmp	SHORT $loc_4696B9$38836
-$loc_469644$38863:
+	jmp	SHORT $loc_4696B9$38837
+$loc_469644$38864:
 ; Line 10143
 	mov	edx, 30					; 0000001eH
 ; Line 10144
 	xor	eax, eax
-$loc_46964B$39004:
+$loc_46964B$39005:
 ; Line 10146
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10147
-	jb	SHORT $loc_46965F$39005
+	jb	SHORT $loc_46965F$39006
 ; Line 10148
 	add	esi, 32					; 00000020H
 ; Line 10149
@@ -19310,8 +19309,8 @@ $loc_46964B$39004:
 ; Line 10151
 	sub	edi, edx
 ; Line 10152
-	jmp	SHORT $loc_46967D$39006
-$loc_46965F$39005:
+	jmp	SHORT $loc_46967D$39007
+$loc_46965F$39006:
 ; Line 10154
 	mov	ecx, 32					; 00000020H
 ; Line 10155
@@ -19319,7 +19318,7 @@ $loc_46965F$39005:
 ; Line 10156
 	shr	ecx, 2
 ; Line 10157
-	jae	SHORT $loc_469675$39007
+	jae	SHORT $loc_469675$39008
 ; Line 10158
 	mov	WORD PTR [edi], ax
 ; Line 10159
@@ -19327,8 +19326,8 @@ $loc_46965F$39005:
 ; Line 10160
 	test	ecx, ecx
 ; Line 10161
-	je	SHORT $loc_46967D$39006
-$loc_469675$39007:
+	je	SHORT $loc_46967D$39007
+$loc_469675$39008:
 ; Line 10163
 	mov	DWORD PTR [edi], eax
 ; Line 10164
@@ -19336,38 +19335,38 @@ $loc_469675$39007:
 ; Line 10165
 	dec	ecx
 ; Line 10166
-	jne	SHORT $loc_469675$39007
-$loc_46967D$39006:
+	jne	SHORT $loc_469675$39008
+$loc_46967D$39007:
 ; Line 10168
 	sub	edi, 800				; 00000320H
 ; Line 10169
 	test	edx, edx
 ; Line 10170
-	je	SHORT $loc_46968E$39008
+	je	SHORT $loc_46968E$39009
 ; Line 10171
 	add	edi, edx
 ; Line 10172
 	sub	edx, 2
 ; Line 10173
-	jmp	SHORT $loc_46964B$39004
-$loc_46968E$39008:
+	jmp	SHORT $loc_46964B$39005
+$loc_46968E$39009:
 ; Line 10175
 	mov	edx, 16					; 00000010H
-$loc_469693$39009:
+$loc_469693$39010:
 ; Line 10177
 	cmp	edi, DWORD PTR _glClipY
 ; Line 10178
-	jb	SHORT $loc_4696A3$39010
+	jb	SHORT $loc_4696A3$39011
 ; Line 10179
 	add	esi, 32					; 00000020H
 ; Line 10180
 	add	edi, 32					; 00000020H
 ; Line 10181
-	jmp	SHORT $loc_4696B0$39011
-$loc_4696A3$39010:
+	jmp	SHORT $loc_4696B0$39012
+$loc_4696A3$39011:
 ; Line 10183
 	mov	ecx, 8
-$loc_4696A8$39012:
+$loc_4696A8$39013:
 ; Line 10185
 	mov	DWORD PTR [edi], eax
 ; Line 10186
@@ -19375,15 +19374,15 @@ $loc_4696A8$39012:
 ; Line 10187
 	dec	ecx
 ; Line 10188
-	jne	SHORT $loc_4696A8$39012
-$loc_4696B0$39011:
+	jne	SHORT $loc_4696A8$39013
+$loc_4696B0$39012:
 ; Line 10190
 	sub	edi, 800				; 00000320H
 ; Line 10191
 	dec	edx
 ; Line 10192
-	jne	SHORT $loc_469693$39009
-$loc_4696B9$38836:
+	jne	SHORT $loc_469693$39010
+$loc_4696B9$38837:
 ; Line 10194
 	pop	esi
 ; Line 10195
@@ -19418,12 +19417,12 @@ _TEXT	SEGMENT
 	mov	ebx, 1
 ; Line 10212
 	xor	eax, eax
-$loc_4696D0$39015:
+$loc_4696D0$39016:
 ; Line 10214
 	add	edi, edx
 ; Line 10215
 	mov	ecx, ebx
-$loc_4696D4$39016:
+$loc_4696D4$39017:
 ; Line 10217
 	mov	DWORD PTR [edi], eax
 ; Line 10218
@@ -19431,7 +19430,7 @@ $loc_4696D4$39016:
 ; Line 10219
 	dec	ecx
 ; Line 10220
-	jne	SHORT $loc_4696D4$39016
+	jne	SHORT $loc_4696D4$39017
 ; Line 10221
 	add	edi, edx
 ; Line 10222
@@ -19439,24 +19438,24 @@ $loc_4696D4$39016:
 ; Line 10223
 	test	edx, edx
 ; Line 10224
-	je	SHORT $loc_4696EE$39017
+	je	SHORT $loc_4696EE$39018
 ; Line 10225
 	sub	edx, 2
 ; Line 10226
 	inc	ebx
 ; Line 10227
-	jmp	SHORT $loc_4696D0$39015
-$loc_4696EE$39017:
+	jmp	SHORT $loc_4696D0$39016
+$loc_4696EE$39018:
 ; Line 10229
 	mov	edx, 2
 ; Line 10230
 	mov	ebx, 15					; 0000000fH
-$loc_4696F8$39018:
+$loc_4696F8$39019:
 ; Line 10232
 	add	edi, edx
 ; Line 10233
 	mov	ecx, ebx
-$loc_4696FC$39019:
+$loc_4696FC$39020:
 ; Line 10235
 	mov	DWORD PTR [edi], eax
 ; Line 10236
@@ -19464,7 +19463,7 @@ $loc_4696FC$39019:
 ; Line 10237
 	dec	ecx
 ; Line 10238
-	jne	SHORT $loc_4696FC$39019
+	jne	SHORT $loc_4696FC$39020
 ; Line 10239
 	add	edi, edx
 ; Line 10240
@@ -19476,7 +19475,7 @@ $loc_4696FC$39019:
 ; Line 10243
 	cmp	edx, 32					; 00000020H
 ; Line 10244
-	jne	SHORT $loc_4696F8$39018
+	jne	SHORT $loc_4696F8$39019
 ; Line 10245
 	pop	esi
 ; Line 10246

@@ -107,6 +107,16 @@ int ToBlkTbl[NUM_CLASSES] = {
 	30,
 #endif
 };
+const char *ClassStrTblOld[] = {
+	"Warrior",
+	"Rogue",
+	"Sorceror",
+#ifdef HELLFIRE
+	"Monk",
+	"Bard",
+	"Barbarian",
+#endif
+};
 /** Maps from player_class to maximum stats. */
 int MaxStats[NUM_CLASSES][4] = {
 	// clang-format off
@@ -227,16 +237,6 @@ BOOL deathflag = 0;
 int plr_hframe_size = 0;
 int plr_bframe_size = 0;
 BYTE plr_gfx_bflag = 0;
-const char *const ClassStrTblOld[] = {
-	"Warrior",
-	"Rogue",
-	"Sorceror",
-#ifdef HELLFIRE
-	"Monk",
-	"Bard",
-	"Barbarian",
-#endif
-};
 int plr_sframe_size = 0;
 int deathdelay = 0;
 int plr_dframe_size = 0;

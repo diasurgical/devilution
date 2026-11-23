@@ -90,7 +90,8 @@ int cowoffx[8] = { -1, 0, -1, -1, -1, 0, -1, -1 };
  */
 int cowoffy[8] = { -1, -1, -1, 0, -1, -1, -1, 0 };
 /** Contains the data related to quest gossip for each towner ID. */
-QuestTalkData Qtalklist[] = {
+/** 1.09b: a plain table indexed by quest_id (a struct array would be 8-byte aligned) */
+int Qtalklist[][MAXQUESTS] = {
 // clang-format off
 #ifdef HELLFIRE
 	// _qinfra,      _qblkm,       _qgarb,      _qzhar,      _qveil,      _qmod,       _qbutch,      _qbol,         _qblind,      _qblood,      _qanvil,      _qwarlrd,      _qking,       _qpw,           _qbone,      _qvb,         _qgrv,        _qfarm, _qgirl, _qtrade, _qdefiler, _qnakrul, _qjersy, _qhf8
@@ -262,8 +263,8 @@ void InitQstSnds(int i)
 		tl++;
 	for (j = 0; j < MAXQUESTS; j++) {
 		towner[i].qsts[j]._qsttype = quests[j]._qtype;
-		towner[i].qsts[j]._qstmsg = ((int *)(Qtalklist + tl))[j];
-		if (((int *)(Qtalklist + tl))[j] != -1)
+		towner[i].qsts[j]._qstmsg = Qtalklist[tl][j];
+		if (Qtalklist[tl][j] != -1)
 			towner[i].qsts[j]._qstmsgact = TRUE;
 		else
 			towner[i].qsts[j]._qstmsgact = FALSE;
@@ -1034,8 +1035,8 @@ else if (t == GetActiveTowner(TOWN_WITCH))
 			if (PlrHasItem(p, IDI_MUSHROOM, i) != NULL) {
 				RemoveInvItem(p, i);
 				quests[Q_MUSHROOM]._qvar1 = 5;
-				Qtalklist[TOWN_HEALER]._qblkm = TEXT_MUSH3;
-				Qtalklist[TOWN_WITCH]._qblkm = -1;
+				Qtalklist[TOWN_HEALER][Q_MUSHROOM] = TEXT_MUSH3;
+				Qtalklist[TOWN_WITCH][Q_MUSHROOM] = -1;
 				towner[t]._tbtcnt = 150;
 				towner[t]._tVar1 = p;
 				quests[Q_MUSHROOM]._qmsg = TEXT_MUSH10;
@@ -1134,7 +1135,7 @@ else if (t == GetActiveTowner(TOWN_HEALER))
 			SpawnQuestItem(IDI_SPECELIX, towner[t]._tx, towner[t]._ty + 1, 0, 0);
 			InitQTextMsg(TEXT_MUSH4);
 			quests[Q_MUSHROOM]._qvar1 = QS_BRAINGIVEN;
-			Qtalklist[TOWN_HEALER]._qblkm = -1;
+			Qtalklist[TOWN_HEALER][Q_MUSHROOM] = -1;
 		}
 	}
 	if (!qtextflag) {

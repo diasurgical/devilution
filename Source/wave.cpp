@@ -14,7 +14,7 @@ static void WGetFileArchive(HANDLE hsFile, DWORD *retries, const char *FileName)
 	if (*retries >= 5)
 		FileErrDlg(FileName);
 
-	if (hsFile && SFileGetFileArchive(hsFile, &archive) && archive != diabdat_mpq) {
+	if (hsFile && SFileGetFileArchive(hsFile, &archive) && archive != ghsMainArchive) {
 		Sleep(20);
 		(*retries)++;
 	} else if (!InsertCDDlg())

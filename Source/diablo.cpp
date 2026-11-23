@@ -24,6 +24,8 @@ BOOL FriendlyMode = TRUE;
 // 1.09b declared most globals without an initialiser; the VC5 front end then lays them out in name-hash order,
 // ahead of the zero-initialised ones (which keep their order). Hence the unused gv1..gv5 and the names below.
 HWND ghMainWnd;
+/** unused: 1.09b has 0x14 more bytes here whose names are unknown (these names hash into the same place) */
+DWORD sgdwUnused1, sgdwUnused2, sgdwUnused3, sgdwUnused4, sgdwUnused5;
 #ifndef HELLFIRE
 int glEndSeed[NUMLEVELS];
 int glMid1Seed[NUMLEVELS + 1]; // the original reserves one more entry here

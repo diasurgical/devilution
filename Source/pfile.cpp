@@ -809,7 +809,7 @@ void pfile_write_save_file(const char *pszName, BYTE *pbData, DWORD dwLen, DWORD
 		app_fatal("Unable to write to save file archive");
 	mpqapi_write_file(pszName, pbData, qwLen);
 #else
-		app_fatal("Unable to write so save file archive");
+		app_fatal("Unable to write to save file archive");
 	mpqapi_write_file(FileName, pbData, qwLen);
 #endif
 	pfile_flush(TRUE, save_num);

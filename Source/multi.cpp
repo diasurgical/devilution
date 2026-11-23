@@ -23,10 +23,9 @@ BYTE gbDeltaSender;
 BOOLEAN gbSomebodyWonGameKludge;
 char gszGameName[128];
 char gszGamePass[128];
-int sgbSentThisCycle;
-BOOL gbShouldValidatePackage;
-/** unused */
-DWORD sgdwSyncMsgs;
+/** the turn number (1.09b name unknown; this one hashes into its place) */
+int sgnTurnCnt;
+BOOL sgbSentThisCycle;
 DWORD sgdwGameLoops;
 WORD sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct sgPackPlr[MAX_PLRS];
@@ -40,6 +39,8 @@ int sglTimeoutStart;
 TBuffer sgLoPriBuf;
 TBuffer sgHiPriBuf;
 BOOL sgbNetInited = 0;
+/** unused: 1.09b has 4 more bytes here (name unknown) */
+int multi_unused = 0;
 int player_state[MAX_PLRS] = { 0 };
 
 /**
@@ -192,8 +193,8 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 		multi_copy_packet(&sgHiPriBuf, pbMsg, bLen);
 		multi_send_packet(pbMsg, bLen);
 	}
-	if (!gbShouldValidatePackage) {
-		gbShouldValidatePackage = TRUE;
+	if (!sgbSentThisCycle) {
+		sgbSentThisCycle = TRUE;
 		NetRecvPlrData(&pkt);
 		size = gdwNormalMsgSize - sizeof(TPktHdr);
 		hipri_body = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
@@ -260,10 +261,10 @@ static void multi_parse_turn(int pnum, int turn)
 	if (turn >> 31)
 		multi_handle_turn_upper_bit(pnum);
 	absTurns = turn & 0x7FFFFFFF;
-	if (sgbSentThisCycle < gdwTurnsInTransit + absTurns) {
+	if (sgnTurnCnt < gdwTurnsInTransit + absTurns) {
 		if (absTurns >= 0x7FFFFFFF)
 			absTurns &= 0xFFFF;
-		sgbSentThisCycle = absTurns + gdwTurnsInTransit;
+		sgnTurnCnt = absTurns + gdwTurnsInTransit;
 		sgdwGameLoops = 4 * absTurns * gbGameLoopsPerPacket;
 	}
 }
@@ -441,7 +442,7 @@ int multi_handle_delta()
 		}
 	}
 
-	sgbSentThisCycle = nthread_send_and_recv_turn(sgbSentThisCycle, 1);
+	sgnTurnCnt = nthread_send_and_recv_turn(sgnTurnCnt, 1);
 	if (!nthread_recv_turns(&received)) {
 		multi_begin_timeout();
 		return FALSE;
@@ -449,11 +450,11 @@ int multi_handle_delta()
 
 	sgbTimeout = FALSE;
 	if (received) {
-		if (!gbShouldValidatePackage) {
+		if (!sgbSentThisCycle) {
 			NetSendHiPri(0, 0);
-			gbShouldValidatePackage = FALSE;
+			sgbSentThisCycle = FALSE;
 		} else {
-			gbShouldValidatePackage = FALSE;
+			sgbSentThisCycle = FALSE;
 			if (!multi_check_pkt_valid(&sgHiPriBuf))
 				NetSendHiPri(0, 0);
 		}
@@ -862,13 +863,13 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		InitPlrMsg();
 		buffer_init(&sgHiPriBuf);
 		buffer_init(&sgLoPriBuf);
-		gbShouldValidatePackage = FALSE;
+		sgbSentThisCycle = FALSE;
 		sync_init();
 		nthread_start(sgbGameJoiner[myplr]);
 		dthread_start();
 		tmsg_start();
 		sgdwGameLoops = 0;
-		sgbSentThisCycle = 0;
+		sgnTurnCnt = 0;
 		gbDeltaSender = myplr;
 		gbSomebodyWonGameKludge = FALSE;
 		nthread_send_and_recv_turn(0, 0);
@@ -900,7 +901,7 @@ BOOL multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info
 {
 	int unused;
 
-	if (!SNetInitializeProvider(0, client_info, user_info, ui_info, &fileinfo)) {
+	if (!SNetInitializeProvider(0, client_info, user_info, ui_info, &gVersion)) {
 		DERROR();
 		return FALSE;
 	}
@@ -925,7 +926,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 	for (first = TRUE;; first = FALSE) {
 		type = 0x00;
 		if (gbSelectProvider) {
-			if (!UiSelectProvider(0, client_info, user_info, ui_info, &fileinfo, &type)
+			if (!UiSelectProvider(0, client_info, user_info, ui_info, &gVersion, &type)
 			    && (!first || DERROR() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(pfExitProgram))) {
 				return FALSE;
 			}
@@ -936,7 +937,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 		}
 
 		multi_event_handler(TRUE);
-		if (UiSelectGame(1, client_info, user_info, ui_info, &fileinfo, &playerId))
+		if (UiSelectGame(1, client_info, user_info, ui_info, &gVersion, &playerId))
 			break;
 
 		gbSelectProvider = TRUE;

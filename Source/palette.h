@@ -6,7 +6,7 @@
 #ifndef __PALETTE_H__
 #define __PALETTE_H__
 
-extern PALETTEENTRY system_palette[256];
+extern PALETTEENTRY sgCurr[256];
 
 void SaveGamma();
 void palette_init();

@@ -138,7 +138,7 @@ BOOL __stdcall mainmenu_select_hero_dialog(
     const _SNETPROGRAMDATA *client_info,
     const _SNETPLAYERDATA *user_info,
     const _SNETUIDATA *ui_info,
-    const _SNETVERSIONDATA *fileinfo,
+    const _SNETVERSIONDATA *gVersion,
     DWORD mode,
     char *cname, DWORD clen,
     char *cdesc, DWORD cdlen,
@@ -229,7 +229,7 @@ void mainmenu_loop()
 			done = FALSE;
 #endif
 #else
-			if (gbActive)
+			if (bActive)
 				mainmenu_play_intro();
 #endif
 			break;

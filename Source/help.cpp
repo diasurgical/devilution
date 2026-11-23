@@ -8,6 +8,8 @@
 int help_select_line = 0;
 int unused_help = 0;
 BOOL helpflag = 0;
+/** unused: 1.09b reserves 0x46C bytes here (Hellfire: helpstr[8] and three ints; names unknown) */
+char help_unused[0x46C] = { 0 };
 int displayinghelp[22] = { 0 }; /* check, does nothing? */
 int HelpTop = 0;
 
