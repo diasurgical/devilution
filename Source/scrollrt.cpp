@@ -6,6 +6,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig6[128] = "REGISTRATION_BLOCK";
+
 /**
  * Specifies the current light entry.
  */

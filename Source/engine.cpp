@@ -13,6 +13,9 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig1[128] = "REGISTRATION_BLOCK";
+
 #ifdef USE_ASM
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
 #endif

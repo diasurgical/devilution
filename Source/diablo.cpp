@@ -7,6 +7,9 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszTblSig[128] = "REGISTRATION_TABLE";
+
 /**
  * Specifies whether to give the game exclusive access to the
  * screen, as needed for efficient rendering in fullscreen mode.

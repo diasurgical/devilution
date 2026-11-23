@@ -5,6 +5,9 @@
  */
 #include "all.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig5[128] = "REGISTRATION_BLOCK";
+
 /** Maps from font index to smaltext.cel frame number. */
 const BYTE fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

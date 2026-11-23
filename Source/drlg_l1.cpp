@@ -5,6 +5,9 @@
  */
 #include "all.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig2[128] = "REGISTRATION_BLOCK";
+
 /**
  * A lookup table for the 16 possible patterns of a 2x2 area,
  * where each cell either contains a SW wall or it doesn't.

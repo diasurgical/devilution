@@ -27,8 +27,6 @@ char PlrGFXAnimLens[NUM_CLASSES][11] = {
 };
 #ifdef HELLFIRE
 PlayerStruct *plr = NULL;
-#else
-PlayerStruct plr[MAX_PLRS] = { 0 };
 #endif
 /** Maps from player class to player velocity. */
 int PWVel[NUM_CLASSES][3] = {
@@ -220,6 +218,9 @@ int plr_wframe_size = 0;
 BYTE plr_gfx_flag = 0;
 int plr_aframe_size = 0;
 int myplr = 0;
+#ifndef HELLFIRE
+PlayerStruct plr[MAX_PLRS] = { 0 };
+#endif
 int plr_fframe_size = 0;
 int plr_qframe_size = 0;
 BOOL deathflag = 0;

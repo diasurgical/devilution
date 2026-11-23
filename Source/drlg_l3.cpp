@@ -6,6 +6,9 @@
 #ifndef SPAWN
 #include "all.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig4[128] = "REGISTRATION_BLOCK";
+
 /** This will be true if a lava pool has been generated for the level */
 
 BOOLEAN lavapool = 0;
