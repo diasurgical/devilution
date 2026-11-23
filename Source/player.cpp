@@ -223,9 +223,11 @@ const char *ClassStrTbl[NUM_CLASSES] = {
 	"Warrior",
 #endif
 };
-int plr_lframe_size = 0;
-int plr_wframe_size = 0;
-BYTE plr_gfx_flag = 0;
+// 1.09b: uninitialised, so placed by name hash (ahead of storm.h's per-file static); the names are unknown,
+// these hash into the original order
+int sgnLFrame;
+int sgnWFrame;
+BYTE sgnGfxFlag;
 int plr_aframe_size = 0;
 int myplr = 0;
 #ifndef HELLFIRE
@@ -442,58 +444,58 @@ void InitPlrGFXMem(int pnum)
 		app_fatal("InitPlrGFXMem: illegal player %d", pnum);
 	}
 
-	if (!(plr_gfx_flag & 0x1)) { //STAND
-		plr_gfx_flag |= 0x1;
-		if (GetPlrGFXSize("ST") > GetPlrGFXSize("AS")) {
-			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
-		} else {
+	if (!(sgnGfxFlag & 0x1)) { //STAND
+		sgnGfxFlag |= 0x1;
+		if (GetPlrGFXSize("AS") > GetPlrGFXSize("ST")) {
 			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGEON
+		} else {
+			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
 		}
 	}
 	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
 
-	if (!(plr_gfx_flag & 0x2)) { //WALK
-		plr_gfx_flag |= 0x2;
-		if (GetPlrGFXSize("WL") > GetPlrGFXSize("AW")) {
-			plr_wframe_size = GetPlrGFXSize("WL"); //TOWN
+	if (!(sgnGfxFlag & 0x2)) { //WALK
+		sgnGfxFlag |= 0x2;
+		if (GetPlrGFXSize("AW") > GetPlrGFXSize("WL")) {
+			sgnWFrame = GetPlrGFXSize("AW"); //DUNGEON
 		} else {
-			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGEON
+			sgnWFrame = GetPlrGFXSize("WL"); //TOWN
 		}
 	}
-	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);
+	plr[pnum]._pWData = DiabloAllocPtr(sgnWFrame);
 
-	if (!(plr_gfx_flag & 0x4)) { //ATTACK
-		plr_gfx_flag |= 0x4;
+	if (!(sgnGfxFlag & 0x4)) { //ATTACK
+		sgnGfxFlag |= 0x4;
 		plr_aframe_size = GetPlrGFXSize("AT");
 	}
 	plr[pnum]._pAData = DiabloAllocPtr(plr_aframe_size);
 
-	if (!(plr_gfx_flag & 0x8)) { //HIT
-		plr_gfx_flag |= 0x8;
+	if (!(sgnGfxFlag & 0x8)) { //HIT
+		sgnGfxFlag |= 0x8;
 		plr_hframe_size = GetPlrGFXSize("HT");
 	}
 	plr[pnum]._pHData = DiabloAllocPtr(plr_hframe_size);
 
-	if (!(plr_gfx_flag & 0x10)) { //LIGHTNING
-		plr_gfx_flag |= 0x10;
-		plr_lframe_size = GetPlrGFXSize("LM");
+	if (!(sgnGfxFlag & 0x10)) { //LIGHTNING
+		sgnGfxFlag |= 0x10;
+		sgnLFrame = GetPlrGFXSize("LM");
 	}
-	plr[pnum]._pLData = DiabloAllocPtr(plr_lframe_size);
+	plr[pnum]._pLData = DiabloAllocPtr(sgnLFrame);
 
-	if (!(plr_gfx_flag & 0x20)) { //FIRE
-		plr_gfx_flag |= 0x20;
+	if (!(sgnGfxFlag & 0x20)) { //FIRE
+		sgnGfxFlag |= 0x20;
 		plr_fframe_size = GetPlrGFXSize("FM");
 	}
 	plr[pnum]._pFData = DiabloAllocPtr(plr_fframe_size);
 
-	if (!(plr_gfx_flag & 0x40)) { //MAGIC
-		plr_gfx_flag |= 0x40;
+	if (!(sgnGfxFlag & 0x40)) { //MAGIC
+		sgnGfxFlag |= 0x40;
 		plr_qframe_size = GetPlrGFXSize("QM");
 	}
 	plr[pnum]._pTData = DiabloAllocPtr(plr_qframe_size);
 
-	if (!(plr_gfx_flag & 0x80)) { //DEATH
-		plr_gfx_flag |= 0x80;
+	if (!(sgnGfxFlag & 0x80)) { //DEATH
+		sgnGfxFlag |= 0x80;
 		plr_dframe_size = GetPlrGFXSize("DT");
 	}
 	plr[pnum]._pDData = DiabloAllocPtr(plr_dframe_size);
@@ -2111,7 +2113,7 @@ void StartPlayerKill(int pnum, int earflag)
 
 			if (pcurs >= CURSOR_FIRSTITEM) {
 				PlrDeadItem(pnum, &p->HoldItem, 0, 0);
-				SetCursor_(CURSOR_HAND);
+				NewCursor(CURSOR_HAND);
 			}
 
 			if (!diablolevel) {
@@ -3116,7 +3118,7 @@ BOOL PlrHitPlr(int pnum, char p)
 
 	hit = random_(4, 100);
 
-	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (plr[p]._pIBonusAC + plr[p]._pIAC + plr[p]._pDexterity / 5);
+	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (plr[p]._pIAC + plr[p]._pIBonusAC + plr[p]._pDexterity / 5);
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
 		hper += 20;

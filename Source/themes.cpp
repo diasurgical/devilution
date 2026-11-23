@@ -1058,11 +1058,11 @@ void CreateThemeRooms()
 		case THEME_CAULDRON:
 			Theme_Cauldron(i);
 			break;
-		case THEME_MURKYFOUNTAIN:
-			Theme_MurkyFountain(i);
-			break;
 		case THEME_TEARFOUNTAIN:
 			Theme_TearFountain(i);
+			break;
+		case THEME_MURKYFOUNTAIN:
+			Theme_MurkyFountain(i);
 			break;
 		case THEME_BRNCROSS:
 			Theme_BrnCross(i);

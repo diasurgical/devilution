@@ -757,16 +757,16 @@ void ResyncQuests()
 	if (QuestStatus(Q_LTBANNER)) {
 		if (quests[Q_LTBANNER]._qvar1 == 1)
 			ObjChangeMapResync(
-			    setpc_w + setpc_x - 2,
-			    setpc_h + setpc_y - 2,
-			    setpc_w + setpc_x + 1,
-			    setpc_h + setpc_y + 1);
+			    setpc_x + setpc_w - 2,
+			    setpc_y + setpc_h - 2,
+			    setpc_x + setpc_w + 1,
+			    setpc_y + setpc_h + 1);
 		if (quests[Q_LTBANNER]._qvar1 == 2) {
 			ObjChangeMapResync(
-			    setpc_w + setpc_x - 2,
-			    setpc_h + setpc_y - 2,
-			    setpc_w + setpc_x + 1,
-			    setpc_h + setpc_y + 1);
+			    setpc_x + setpc_w - 2,
+			    setpc_y + setpc_h - 2,
+			    setpc_x + setpc_w + 1,
+			    setpc_y + setpc_h + 1);
 			ObjChangeMapResync(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
 			for (i = 0; i < nobjects; i++)
 				SyncObjectAnim(objectactive[i]);

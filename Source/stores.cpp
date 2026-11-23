@@ -2817,11 +2817,11 @@ void STextEnter()
 		case STORE_SMITH:
 			S_SmithEnter();
 			break;
-		case STORE_SPBUY:
-			S_SPBuyEnter();
-			break;
 		case STORE_SBUY:
 			S_SBuyEnter();
+			break;
+		case STORE_SPBUY:
+			S_SPBuyEnter();
 			break;
 		case STORE_SSELL:
 			S_SSellEnter();
@@ -2874,14 +2874,14 @@ void STextEnter()
 		case STORE_IDSHOW:
 			StartStore(STORE_SIDENTIFY);
 			break;
-		case STORE_DRUNK:
-			S_DrunkEnter();
-			break;
 		case STORE_TAVERN:
 			S_TavernEnter();
 			break;
 		case STORE_BARMAID:
 			S_BarmaidEnter();
+			break;
+		case STORE_DRUNK:
+			S_DrunkEnter();
 			break;
 		}
 	}

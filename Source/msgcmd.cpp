@@ -26,7 +26,25 @@ private:
 
 // static float msgcmd_init_cpp_value = 0x7F800000;
 
-struct EXTERNMESSAGE {
+struct EXTERNMESSAGE;
+// 1.09b: Delete comes from a template base (as with Storm's list nodes), so it is emitted with the
+// list functions, after its callers
+template <class T>
+struct TDeletable {
+	void *Delete(DWORD flags)
+	{
+		T *self = (T *)this;
+		// BUGFIX: this is already called by m_Link's destructor
+		self->m_Link.Unlink();
+		self->~T();
+		if ((flags & 0x1) && self) {
+			SMemFree(self, "delete", SLOG_FUNCTION, 0);
+		}
+		return self;
+	}
+};
+
+struct EXTERNMESSAGE : TDeletable<EXTERNMESSAGE> {
 	LIST_LINK(EXTERNMESSAGE)
 	m_Link;
 	char command[COMMAND_LEN];
@@ -37,20 +55,7 @@ struct EXTERNMESSAGE {
 	void operator delete(void *address)
 	{
 	}
-	void *Delete(DWORD flags);
 };
-
-// inline: in 1.09b it is emitted with the list functions, after its callers
-inline void *EXTERNMESSAGE::Delete(DWORD flags)
-{
-	// BUGFIX: this is already called by m_Link's destructor
-	m_Link.Unlink();
-	this->~EXTERNMESSAGE();
-	if ((flags & 0x1) && this) {
-		SMemFree(this, "delete", SLOG_FUNCTION, 0);
-	}
-	return this;
-}
 
 static TList<EXTERNMESSAGE> sgChat_Cmd;
 
@@ -65,7 +70,7 @@ void msgcmd_send_chat()
 	struct EXTERNMESSAGE *msg = sgChat_Cmd.Head();
 
 	if (msg) {
-		static DWORD sgdwMsgCmdTimer;
+		static DWORD sgdwMsgCmdTimer = 0;
 		tick = GetTickCount();
 		if (tick - sgdwMsgCmdTimer >= 2000) {
 			sgdwMsgCmdTimer = tick;

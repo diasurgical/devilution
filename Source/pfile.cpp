@@ -886,7 +886,7 @@ BYTE *pfile_read(const char *pszName, DWORD *pdwLen)
 void pfile_update(BOOL force_save)
 {
 	// BUGFIX: these tick values should be treated as unsigned to handle overflows correctly
-	static int save_prev_tc;
+	static int save_prev_tc = 0;
 
 	if (gbMaxPlayers != 1) {
 		int tick = GetTickCount();

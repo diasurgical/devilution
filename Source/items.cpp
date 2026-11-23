@@ -3,7 +3,43 @@
  *
  * Implementation of item functionality.
  */
-#include "all.h"
+// 1.09b: items.cpp includes only the headers it needs (as in Blizzard's source); the set of declarations
+// the compiler has seen decides a register tie in SpawnHealer
+#include "../types.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "control.h"
+#include "cursor.h"
+#include "diablo.h"
+#include "doom.h"
+#include "drlg_l1.h"
+#include "dx.h"
+#include "effects.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "itemdat.h"
+#include "items.h"
+#include "lighting.h"
+#include "minitext.h"
+#include "missiles.h"
+#include "monstdat.h"
+#include "monster.h"
+#include "msg.h"
+#include "multi.h"
+#include "objects.h"
+#include "pack.h"
+#include "player.h"
+#include "quests.h"
+#include "scrollrt.h"
+#include "sound.h"
+#include "spelldat.h"
+#include "spells.h"
+#include "stores.h"
+#ifdef __cplusplus
+}
+#endif
 #ifdef HELLFIRE
 #include "../3rdParty/Storm/Source/storm.h"
 #endif
@@ -3567,7 +3603,7 @@ void CheckIdentify(int pnum, int cii)
 	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 }
 
 static void RepairItem(ItemStruct *i, int lvl)
@@ -3619,7 +3655,7 @@ void DoRepair(int pnum, int cii)
 	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 }
 
 static void RechargeItem(ItemStruct *i, int r)
@@ -3657,7 +3693,7 @@ void DoRecharge(int pnum, int cii)
 	}
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 }
 
 #ifdef HELLFIRE
@@ -5990,10 +6026,10 @@ static void NextItemRecord(int i)
 		return;
 	}
 
-	itemgets[i].dwTimestamp = itemgets[gnNumGetRecords].dwTimestamp;
+	itemgets[i].nIndex = itemgets[gnNumGetRecords].nIndex;
 	itemgets[i].nSeed = itemgets[gnNumGetRecords].nSeed;
 	itemgets[i].wCI = itemgets[gnNumGetRecords].wCI;
-	itemgets[i].nIndex = itemgets[gnNumGetRecords].nIndex;
+	itemgets[i].dwTimestamp = itemgets[gnNumGetRecords].dwTimestamp;
 }
 
 BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)

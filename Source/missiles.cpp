@@ -681,16 +681,21 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 	if (pnum != -1) {
 #endif
 		if (missiledata[t].mType == 0) {
+#ifdef HELLFIRE
 			hper = plr[pnum]._pDexterity;
 			hper += plr[pnum]._pIBonusToHit;
 			hper += plr[pnum]._pLevel;
 			hper -= monster[m].mArmorClass;
 			hper -= (dist * dist) >> 1;
-#ifdef HELLFIRE
 			hper -= plr[pnum]._pIEnAc; // BUGFIX: armor piercing DECREASES hit chance here, probably a 1.04 bug that got fixed in 1.09, go with +=
-#endif
-#ifndef HELLFIRE
-			hper += plr[pnum]._pIEnAc;
+#else
+			// 1.09b term order (the compiler keeps it when it regroups the sum)
+			hper = plr[pnum]._pIEnAc;
+			hper += plr[pnum]._pDexterity;
+			hper += plr[pnum]._pIBonusToHit;
+			hper += plr[pnum]._pLevel;
+			hper -= monster[m].mArmorClass;
+			hper -= (dist * dist) >> 1;
 #endif
 			hper += 50;
 			if (plr[pnum]._pClass == PC_ROGUE)
@@ -1030,13 +1035,13 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 	}
 	hper = random_(69, 100);
 	if (missiledata[mtype].mType == 0) {
-		hit = plr[pnum]._pIBonusToHit
+		hit = plr[pnum]._pDexterity
 		    + plr[pnum]._pLevel
 		    - (dist * dist >> 1)
 		    - plr[p]._pDexterity / 5
-		    - plr[p]._pIBonusAC
 		    - plr[p]._pIAC
-		    + plr[pnum]._pDexterity + 50;
+		    - plr[p]._pIBonusAC
+		    + plr[pnum]._pIBonusToHit + 50;
 		if (plr[pnum]._pClass == PC_ROGUE)
 			hit += 20;
 #ifdef HELLFIRE
@@ -2647,7 +2652,7 @@ void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 				ty = dy + CrawlTable[k];
 				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
 					dp = dPiece[tx][ty];
-					if ((dMissile[tx][ty] | nSolidTable[dp] | nMissileTable[dp] | dObject[tx][ty] | dPlayer[tx][ty]) == 0) {
+					if ((dObject[tx][ty] | nSolidTable[dp] | nMissileTable[dp] | dPlayer[tx][ty] | dMissile[tx][ty]) == 0) {
 						if (!CheckIfTrig(tx, ty)) {
 							missile[mi]._mix = tx;
 							missile[mi]._miy = ty;
@@ -3173,7 +3178,7 @@ void AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, SPL_HEALOTHER);
 	if (id == myplr)
-		SetCursor_(CURSOR_HEALOTHER);
+		NewCursor(CURSOR_HEALOTHER);
 }
 
 void AddElement(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3210,7 +3215,7 @@ void AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			sbookflag = FALSE;
 		if (!invflag)
 			invflag = TRUE;
-		SetCursor_(CURSOR_IDENTIFY);
+		NewCursor(CURSOR_IDENTIFY);
 	}
 }
 
@@ -3356,7 +3361,7 @@ void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 			sbookflag = FALSE;
 		if (!invflag)
 			invflag = TRUE;
-		SetCursor_(CURSOR_REPAIR);
+		NewCursor(CURSOR_REPAIR);
 	}
 }
 
@@ -3369,7 +3374,7 @@ void AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			sbookflag = FALSE;
 		if (!invflag)
 			invflag = TRUE;
-		SetCursor_(CURSOR_RECHARGE);
+		NewCursor(CURSOR_RECHARGE);
 	}
 }
 
@@ -3378,7 +3383,7 @@ void AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, SPL_DISARM);
 	if (id == myplr)
-		SetCursor_(CURSOR_DISARM);
+		NewCursor(CURSOR_DISARM);
 }
 
 void AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3508,7 +3513,7 @@ void AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 {
 	UseMana(id, SPL_RESURRECT);
 	if (id == myplr)
-		SetCursor_(CURSOR_RESURRECT);
+		NewCursor(CURSOR_RESURRECT);
 	missile[mi]._miDelFlag = TRUE;
 }
 
@@ -3528,7 +3533,7 @@ void AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, SPL_TELEKINESIS);
 	if (id == myplr)
-		SetCursor_(CURSOR_TELEKINESIS);
+		NewCursor(CURSOR_TELEKINESIS);
 }
 
 void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)

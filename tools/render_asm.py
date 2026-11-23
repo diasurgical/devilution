@@ -53,6 +53,8 @@ if bss:
               "_gpCelFrame DD 00H\r\n_gpDrawMask DD 00H\r\n\tDD\t04H DUP (00H)\t\t\t; unused\r\n_DATA\tENDS\r\n")
     txt = txt[:bss.start()] + packed + txt[bss.end():]
     txt = txt.replace("_DATA\tSEGMENT DWORD USE32 PUBLIC 'DATA'", "_DATA\tSEGMENT BYTE USE32 PUBLIC 'DATA'", 1)
+# 1.09b (TASM) encodes "cmp ax, imm" in the accumulator form 66 3D iw; MASM would pick 66 83 F8 ib (same length)
+txt = re.sub(r"\tcmp\tax, (\d+)[^\r\n]*(\r?)\n", lambda m: f"\tDB\t066H, 03dH\t\t\t\t; cmp ax, {m.group(1)}{m.group(2)}\n\tDW\t{int(m.group(1)):05X}H{m.group(2)}\n", txt)
 res = txt.split("\n")
 res.insert(0, "; Generated from Source/render.cpp by tools/render_asm.py - edit render.cpp and regenerate\r")
 open(out, "w", newline="").write("\n".join(res))

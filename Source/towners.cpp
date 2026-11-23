@@ -724,14 +724,14 @@ void ProcessTowners()
 		case TOWN_DRUNK:
 			TownDrunk();
 			break;
+		case TOWN_PEGBOY:
+			TownBoy();
+			break;
 		case TOWN_WITCH:
 			TownWitch();
 			break;
 		case TOWN_BMAID:
 			TownBarMaid();
-			break;
-		case TOWN_PEGBOY:
-			TownBoy();
 			break;
 		case TOWN_COW:
 			TownCow();

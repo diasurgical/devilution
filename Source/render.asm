@@ -341,19 +341,23 @@ _TEXT	SEGMENT
 ; Line 33
 	je	$loc_463255$37755
 ; Line 34
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 35
 	je	$loc_4632C5$37756
 ; Line 36
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 37
 	je	$loc_463425$37757
 ; Line 38
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 39
 	je	$loc_463698$37758
 ; Line 40
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 41
 	je	$loc_46390B$37759
 ; Line 42
@@ -389,23 +393,28 @@ $loc_4630FE$37754:
 	and	eax, 15					; 0000000fH
 $loc_463133$37761:
 ; Line 59
-	cmp	ax, 8
+	DB	066H, 03dH				; cmp ax, 8
+	DW	00008H
 ; Line 60
 	je	$loc_463C5B$37762
 ; Line 61
-	cmp	ax, 9
+	DB	066H, 03dH				; cmp ax, 9
+	DW	00009H
 ; Line 62
 	je	$loc_463CC2$37763
 ; Line 63
-	cmp	ax, 10					; 0000000aH
+	DB	066H, 03dH				; cmp ax, 10
+	DW	0000AH
 ; Line 64
 	je	$loc_463DA3$37764
 ; Line 65
-	cmp	ax, 11					; 0000000bH
+	DB	066H, 03dH				; cmp ax, 11
+	DW	0000BH
 ; Line 66
 	je	$loc_463ED8$37765
 ; Line 67
-	cmp	ax, 12					; 0000000cH
+	DB	066H, 03dH				; cmp ax, 12
+	DW	0000CH
 ; Line 68
 	je	$loc_464011$37766
 ; Line 69
@@ -513,19 +522,23 @@ $loc_4631FC$37769:
 ; Line 122
 	je	$loc_46420F$37770
 ; Line 123
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 124
 	je	$loc_464263$37771
 ; Line 125
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 126
 	je	$loc_464321$37772
 ; Line 127
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 128
 	je	$loc_46440E$37773
 ; Line 129
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 130
 	je	$loc_4644FB$37774
 ; Line 131
@@ -4676,19 +4689,23 @@ _TEXT	SEGMENT
 ; Line 2339
 	je	$loc_464FBC$38028
 ; Line 2340
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 2341
 	je	$loc_4648D5$38029
 ; Line 2342
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 2343
 	je	$loc_464964$38030
 ; Line 2344
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 2345
 	je	$loc_464A30$38031
 ; Line 2346
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 2347
 	je	$loc_464AFE$38032
 ; Line 2348
@@ -4724,23 +4741,28 @@ $loc_464736$38026:
 	and	eax, 15					; 0000000fH
 $loc_46476B$38034:
 ; Line 2365
-	cmp	ax, 8
+	DB	066H, 03dH				; cmp ax, 8
+	DW	00008H
 ; Line 2366
 	je	$loc_464C7A$38035
 ; Line 2367
-	cmp	ax, 9
+	DB	066H, 03dH				; cmp ax, 9
+	DW	00009H
 ; Line 2368
 	je	$loc_464CC1$38036
 ; Line 2369
-	cmp	ax, 10					; 0000000aH
+	DB	066H, 03dH				; cmp ax, 10
+	DW	0000AH
 ; Line 2370
 	je	$loc_464D4B$38037
 ; Line 2371
-	cmp	ax, 11					; 0000000bH
+	DB	066H, 03dH				; cmp ax, 11
+	DW	0000BH
 ; Line 2372
 	je	$loc_464DE3$38038
 ; Line 2373
-	cmp	ax, 12					; 0000000cH
+	DB	066H, 03dH				; cmp ax, 12
+	DW	0000CH
 ; Line 2374
 	je	$loc_464E7D$38039
 ; Line 2375
@@ -4848,19 +4870,23 @@ $loc_464834$38042:
 ; Line 2428
 	je	$loc_464FBC$38028
 ; Line 2429
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 2430
 	je	$loc_465002$38043
 ; Line 2431
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 2432
 	je	$loc_465091$38044
 ; Line 2433
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 2434
 	je	$loc_465117$38045
 ; Line 2435
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 2436
 	je	$loc_46519D$38046
 ; Line 2437
@@ -6941,19 +6967,23 @@ $loc_465372$38168:
 ; Line 3545
 	je	$loc_46555D$38177
 ; Line 3546
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 3547
 	je	$loc_4655B5$38178
 ; Line 3548
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 3549
 	je	$loc_465663$38179
 ; Line 3550
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 3551
 	je	$loc_465765$38180
 ; Line 3552
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 3553
 	je	$loc_465867$38181
 ; Line 3554
@@ -6987,23 +7017,28 @@ $loc_46540A$38176:
 	and	eax, 15					; 0000000fH
 $loc_46543D$38183:
 ; Line 3570
-	cmp	ax, 8
+	DB	066H, 03dH				; cmp ax, 8
+	DW	00008H
 ; Line 3571
 	je	$loc_465A0B$38184
 ; Line 3572
-	cmp	ax, 9
+	DB	066H, 03dH				; cmp ax, 9
+	DW	00009H
 ; Line 3573
 	je	$loc_465A3C$38185
 ; Line 3574
-	cmp	ax, 10					; 0000000aH
+	DB	066H, 03dH				; cmp ax, 10
+	DW	0000AH
 ; Line 3575
 	je	$loc_465AA8$38186
 ; Line 3576
-	cmp	ax, 11					; 0000000bH
+	DB	066H, 03dH				; cmp ax, 11
+	DW	0000BH
 ; Line 3577
 	je	$loc_465B40$38187
 ; Line 3578
-	cmp	ax, 12					; 0000000cH
+	DB	066H, 03dH				; cmp ax, 12
+	DW	0000CH
 ; Line 3579
 	je	$loc_465BDA$38188
 ; Line 3580
@@ -7109,19 +7144,23 @@ $loc_465506$38191:
 ; Line 3632
 	je	$loc_465CC8$38192
 ; Line 3633
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 3634
 	je	$loc_465CF6$38193
 ; Line 3635
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 3636
 	je	$loc_465D58$38194
 ; Line 3637
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 3638
 	je	$loc_465DDE$38195
 ; Line 3639
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 3640
 	je	$loc_465E64$38196
 ; Line 3641
@@ -9068,19 +9107,23 @@ _TEXT	SEGMENT
 ; Line 4681
 	je	$loc_46612D$38320
 ; Line 4682
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 4683
 	je	$loc_4661AD$38321
 ; Line 4684
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 4685
 	je	$loc_466310$38322
 ; Line 4686
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 4687
 	je	$loc_466611$38323
 ; Line 4688
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 4689
 	je	$loc_466912$38324
 ; Line 4690
@@ -9116,23 +9159,28 @@ $loc_465FD6$38319:
 	and	eax, 15					; 0000000fH
 $loc_46600B$38326:
 ; Line 4707
-	cmp	ax, 8
+	DB	066H, 03dH				; cmp ax, 8
+	DW	00008H
 ; Line 4708
 	je	$loc_466D10$38327
 ; Line 4709
-	cmp	ax, 9
+	DB	066H, 03dH				; cmp ax, 9
+	DW	00009H
 ; Line 4710
 	je	$loc_466D7F$38328
 ; Line 4711
-	cmp	ax, 10					; 0000000aH
+	DB	066H, 03dH				; cmp ax, 10
+	DW	0000AH
 ; Line 4712
 	je	$loc_466E62$38329
 ; Line 4713
-	cmp	ax, 11					; 0000000bH
+	DB	066H, 03dH				; cmp ax, 11
+	DW	0000BH
 ; Line 4714
 	je	$loc_46701C$38330
 ; Line 4715
-	cmp	ax, 12					; 0000000cH
+	DB	066H, 03dH				; cmp ax, 12
+	DW	0000CH
 ; Line 4716
 	je	$loc_4671E1$38331
 ; Line 4717
@@ -9240,19 +9288,23 @@ $loc_4660D4$38334:
 ; Line 4770
 	je	$loc_46747D$38335
 ; Line 4771
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 4772
 	je	$loc_4674D9$38336
 ; Line 4773
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 4774
 	je	$loc_467599$38337
 ; Line 4775
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 4776
 	je	$loc_467692$38338
 ; Line 4777
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 4778
 	je	$loc_46778F$38339
 ; Line 4779
@@ -14140,19 +14192,23 @@ _TEXT	SEGMENT
 ; Line 7385
 	je	$loc_467B43$38647
 ; Line 7386
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 7387
 	je	$loc_467B8F$38648
 ; Line 7388
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 7389
 	je	$loc_467C20$38649
 ; Line 7390
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 7391
 	je	$loc_467D5B$38650
 ; Line 7392
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 7393
 	je	$loc_467E99$38651
 ; Line 7394
@@ -14188,23 +14244,28 @@ $loc_4679EC$38646:
 	and	eax, 15					; 0000000fH
 $loc_467A21$38653:
 ; Line 7411
-	cmp	ax, 8
+	DB	066H, 03dH				; cmp ax, 8
+	DW	00008H
 ; Line 7412
 	je	$loc_468086$38654
 ; Line 7413
-	cmp	ax, 9
+	DB	066H, 03dH				; cmp ax, 9
+	DW	00009H
 ; Line 7414
 	je	$loc_4680D1$38655
 ; Line 7415
-	cmp	ax, 10					; 0000000aH
+	DB	066H, 03dH				; cmp ax, 10
+	DW	0000AH
 ; Line 7416
 	je	$loc_468161$38656
 ; Line 7417
-	cmp	ax, 11					; 0000000bH
+	DB	066H, 03dH				; cmp ax, 11
+	DW	0000BH
 ; Line 7418
 	je	$loc_468268$38657
 ; Line 7419
-	cmp	ax, 12					; 0000000cH
+	DB	066H, 03dH				; cmp ax, 12
+	DW	0000CH
 ; Line 7420
 	je	$loc_468372$38658
 ; Line 7421
@@ -14312,19 +14373,23 @@ $loc_467AEA$38661:
 ; Line 7474
 	je	$loc_468529$38662
 ; Line 7475
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 7476
 	je	$loc_468573$38663
 ; Line 7477
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 7478
 	je	$loc_468604$38664
 ; Line 7479
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 7480
 	je	$loc_468696$38665
 ; Line 7481
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 7482
 	je	$loc_46872C$38666
 ; Line 7483
@@ -16972,19 +17037,23 @@ $loc_468918$38835:
 ; Line 8900
 	je	$loc_468B03$38844
 ; Line 8901
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 8902
 	je	$loc_468B5B$38845
 ; Line 8903
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 8904
 	je	$loc_468C06$38846
 ; Line 8905
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 8906
 	je	$loc_468CEC$38847
 ; Line 8907
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 8908
 	je	$loc_468DD2$38848
 ; Line 8909
@@ -17018,23 +17087,28 @@ $loc_4689B0$38843:
 	and	eax, 15					; 0000000fH
 $loc_4689E3$38850:
 ; Line 8925
-	cmp	ax, 8
+	DB	066H, 03dH				; cmp ax, 8
+	DW	00008H
 ; Line 8926
 	je	$loc_468FF2$38851
 ; Line 8927
-	cmp	ax, 9
+	DB	066H, 03dH				; cmp ax, 9
+	DW	00009H
 ; Line 8928
 	je	$loc_469027$38852
 ; Line 8929
-	cmp	ax, 10					; 0000000aH
+	DB	066H, 03dH				; cmp ax, 10
+	DW	0000AH
 ; Line 8930
 	je	$loc_469099$38853
 ; Line 8931
-	cmp	ax, 11					; 0000000bH
+	DB	066H, 03dH				; cmp ax, 11
+	DW	0000BH
 ; Line 8932
 	je	$loc_46919D$38854
 ; Line 8933
-	cmp	ax, 12					; 0000000cH
+	DB	066H, 03dH				; cmp ax, 12
+	DW	0000CH
 ; Line 8934
 	je	$loc_4692A5$38855
 ; Line 8935
@@ -17140,19 +17214,23 @@ $loc_468AAA$38858:
 ; Line 8987
 	je	$loc_46940D$38859
 ; Line 8988
-	cmp	ax, 1
+	DB	066H, 03dH				; cmp ax, 1
+	DW	00001H
 ; Line 8989
 	je	$loc_46943F$38860
 ; Line 8990
-	cmp	ax, 2
+	DB	066H, 03dH				; cmp ax, 2
+	DW	00002H
 ; Line 8991
 	je	$loc_4694A7$38861
 ; Line 8992
-	cmp	ax, 3
+	DB	066H, 03dH				; cmp ax, 3
+	DW	00003H
 ; Line 8993
 	je	$loc_469539$38862
 ; Line 8994
-	cmp	ax, 4
+	DB	066H, 03dH				; cmp ax, 4
+	DW	00004H
 ; Line 8995
 	je	$loc_4695CF$38863
 ; Line 8996

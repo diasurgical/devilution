@@ -7,7 +7,7 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-static DWORD sgdwOwnerWait = 0;
+static DWORD sgdwOwnerWait;
 static DWORD sgdwRecvOffset = 0;
 static int sgnCurrMegaPlayer = 0;
 static DLevel sgLevels[NUMLEVELS] = { 0 };

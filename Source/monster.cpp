@@ -2631,7 +2631,7 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	if (debug_mode_dollar_sign || debug_mode_key_inverted_v)
 		hper = 1000;
 #endif
-	ac = plr[pnum]._pIBonusAC + plr[pnum]._pIAC;
+	ac = plr[pnum]._pIAC + plr[pnum]._pIBonusAC;
 #ifdef HELLFIRE
 	if (plr[pnum].pDamAcFlags & ISPLHF_ACDEMON && monster[i].MData->mMonstClass == MC_DEMON)
 		ac += 40;
@@ -5618,6 +5618,9 @@ void ProcessMonsters()
 			case MM_ATTACK:
 				raflag = M_DoAttack(mi);
 				break;
+			case MM_RATTACK:
+				raflag = M_DoRAttack(mi);
+				break;
 			case MM_GOTHIT:
 				raflag = M_DoGotHit(mi);
 				break;
@@ -5632,9 +5635,6 @@ void ProcessMonsters()
 				break;
 			case MM_FADEOUT:
 				raflag = M_DoFadeout(mi);
-				break;
-			case MM_RATTACK:
-				raflag = M_DoRAttack(mi);
 				break;
 			case MM_SPSTAND:
 				raflag = M_DoSpStand(mi);
