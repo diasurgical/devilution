@@ -62,6 +62,9 @@ DDSURFACEDESC sgDDSD;
 
 /* data */
 
+/** 1.09b keeps this (used by the asserts below) in .rdata */
+extern const char sgszUnknownAction[] = "unknown action";
+
 /* used in 1.00 debug */
 char *szMonModeAssert[18] = {
 	"standing",

@@ -38,12 +38,12 @@ int orgseed;
 /**
  * Specifies the increment used in the Borland C/C++ pseudo-random.
  */
-const int RndInc = 1;
+extern const int RndInc = 1; // 1.09b keeps the constant in .rdata
 
 /**
  * Specifies the multiplier used in the Borland C/C++ pseudo-random number generator algorithm.
  */
-const int RndMult = 0x015A4E35;
+extern const int RndMult = 0x015A4E35; // 1.09b keeps the constant in .rdata
 
 /**
  * @brief Find the start of a CEL frame

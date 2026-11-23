@@ -11,8 +11,7 @@ extern char gszProgKey[];
 
 /** 1.09b: space reserved for registration data (unused) */
 char sgszTblSig[128] = "REGISTRATION_TABLE";
-/** 1.09b: a named constant (in .rdata) */
-const char gszAppName[] = GAME_NAME;
+extern const char gszAppName[];
 
 /**
  * Specifies whether to give the game exclusive access to the

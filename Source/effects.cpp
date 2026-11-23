@@ -1088,7 +1088,7 @@ HANDLE sghStream = 0;
  * d: Death
  * s: Special
  */
-const char MonstSndChar[] = { 'a', 'h', 'd', 's' };
+const char MonstSndChar[] = "ahds";
 
 /* data */
 /** Specifies the sound file and the playback state of the current sound effect. */

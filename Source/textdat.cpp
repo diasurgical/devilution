@@ -1220,4 +1220,4 @@ const TextDataStruct alltext[] = {
 #endif
 };
 /** unused */
-const DWORD gdwAllTextEntries = 259;
+extern const DWORD gdwAllTextEntries = 259; // 1.09b keeps it in .rdata

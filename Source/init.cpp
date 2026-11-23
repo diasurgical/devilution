@@ -8,6 +8,7 @@
 #include "../DiabloUI/diabloui.h"
 
 /* in 1.09b these are named constants (they are in .rdata there) */
+const char gszAppName[] = GAME_NAME;
 static const char szScreenSaveActive[] = "ScreenSaveActive";
 
 char gszVersionNumber[MAX_PATH] = "internal version unknown";

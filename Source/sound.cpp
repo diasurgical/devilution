@@ -9,6 +9,8 @@
 /* in 1.09b these are named constants (they are in .rdata there) */
 static const char szSoundVolume[] = "Sound Volume";
 static const char szMusicVolume[] = "Music Volume";
+/** 1.09b: the registry key as a named constant (in .rdata) */
+static const char sgszAppName[] = APP_NAME;
 
 BOOLEAN gbMusicOn = TRUE;
 /** Specifies whether sound effects are enabled. */
@@ -106,7 +108,7 @@ static LPDIRECTSOUNDBUFFER sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 static void snd_get_volume(const char *value_name, int *value)
 {
 	int v = *value;
-	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
+	if (!SRegLoadValue(sgszAppName, value_name, 0, &v)) {
 		v = VOLUME_MAX;
 	}
 	*value = v;
@@ -121,7 +123,7 @@ static void snd_get_volume(const char *value_name, int *value)
 
 static void snd_set_volume(const char *key, int value)
 {
-	SRegSaveValue(APP_NAME, key, 0, value);
+	SRegSaveValue(sgszAppName, key, 0, value);
 }
 
 static BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
