@@ -87,7 +87,8 @@ TList<T>::TList()
 template <class T>
 void TList<T>::DeleteAll()
 {
-	while (T *node = m_link.Next()) {
+	T *node;
+	while ((node = m_link.Next()) != NULL) {
 		node->Delete(0x0);
 		SDelete(node);
 	}
@@ -140,7 +141,10 @@ void TList<T>::Insert(T *node, InsertPos pos, T *ref)
 
 	switch (pos) {
 	case AFTER:
-		i->InsertAfter(node, reflink, m_offset);
+		i->m_prevLink = reflink;
+		i->m_nextNode = reflink->m_nextNode;
+		reflink->NextLink(m_offset)->m_prevLink = i;
+		reflink->m_nextNode = node;
 		break;
 	case BEFORE:
 		i->InsertBefore(node, reflink);

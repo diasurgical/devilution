@@ -5,7 +5,6 @@
  */
 #include "all.h"
 
-BYTE SplTransTbl[256] = { 0 };
 /** Maps from font index to smaltext.cel frame number. */
 const BYTE fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -30,6 +29,31 @@ const BYTE fontkern[68] = {
 	3, 3, 4, 3, 6, 6, 3, 3, 3, 3,
 	3, 2, 7, 6, 3, 10, 10, 6, 6, 7,
 	4, 4, 9, 6, 6, 12, 3, 7
+};
+/**
+ * Maps ASCII character code to font index, as used by the
+ * small, medium and large sized fonts; which corresponds to smaltext.cel,
+ * medtexts.cel and bigtgold.cel respectively.
+ */
+const BYTE gbFontTransTbl[256] = {
+	// clang-format off
+	'\0', 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+	' ',  '!',  '\"', '#',  '$',  '%',  '&',  '\'', '(',  ')',  '*',  '+',  ',',  '-',  '.',  '/',
+	'0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',  '8',  '9',  ':',  ';',  '<',  '=',  '>',  '?',
+	'@',  'A',  'B',  'C',  'D',  'E',  'F',  'G',  'H',  'I',  'J',  'K',  'L',  'M',  'N',  'O',
+	'P',  'Q',  'R',  'S',  'T',  'U',  'V',  'W',  'X',  'Y',  'Z',  '[',  '\\', ']',  '^',  '_',
+	'`',  'a',  'b',  'c',  'd',  'e',  'f',  'g',  'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+	'p',  'q',  'r',  's',  't',  'u',  'v',  'w',  'x',  'y',  'z',  '{',  '|',  '}',  '~',  0x01,
+	'C',  'u',  'e',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'i',  'i',  'i',  'A',  'A',
+	'E',  'a',  'A',  'o',  'o',  'o',  'u',  'u',  'y',  'O',  'U',  'c',  'L',  'Y',  'P',  'f',
+	'a',  'i',  'o',  'u',  'n',  'N',  'a',  'o',  '?',  0x01, 0x01, 0x01, 0x01, '!',  '<',  '>',
+	'o',  '+',  '2',  '3',  '\'', 'u',  'P',  '.',  ',',  '1',  '0',  '>',  0x01, 0x01, 0x01, '?',
+	'A',  'A',  'A',  'A',  'A',  'A',  'A',  'C',  'E',  'E',  'E',  'E',  'I',  'I',  'I',  'I',
+	'D',  'N',  'O',  'O',  'O',  'O',  'O',  'X',  '0',  'U',  'U',  'U',  'U',  'Y',  'b',  'B',
+	'a',  'a',  'a',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'e',  'i',  'i',  'i',  'i',
+	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y',
+	// clang-format on
 };
 /**
  * Line start position for info box text when displaying 1, 2, 3, 4 and 5 lines respectivly
@@ -70,31 +94,6 @@ const int lineOffsets[5][5] = {
 	    SCREENXY(177, 446),
 	    SCREENXY(177, 457),
 	}
-};
-/**
- * Maps ASCII character code to font index, as used by the
- * small, medium and large sized fonts; which corresponds to smaltext.cel,
- * medtexts.cel and bigtgold.cel respectively.
- */
-const BYTE gbFontTransTbl[256] = {
-	// clang-format off
-	'\0', 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
-	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
-	' ',  '!',  '\"', '#',  '$',  '%',  '&',  '\'', '(',  ')',  '*',  '+',  ',',  '-',  '.',  '/',
-	'0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',  '8',  '9',  ':',  ';',  '<',  '=',  '>',  '?',
-	'@',  'A',  'B',  'C',  'D',  'E',  'F',  'G',  'H',  'I',  'J',  'K',  'L',  'M',  'N',  'O',
-	'P',  'Q',  'R',  'S',  'T',  'U',  'V',  'W',  'X',  'Y',  'Z',  '[',  '\\', ']',  '^',  '_',
-	'`',  'a',  'b',  'c',  'd',  'e',  'f',  'g',  'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-	'p',  'q',  'r',  's',  't',  'u',  'v',  'w',  'x',  'y',  'z',  '{',  '|',  '}',  '~',  0x01,
-	'C',  'u',  'e',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'i',  'i',  'i',  'A',  'A',
-	'E',  'a',  'A',  'o',  'o',  'o',  'u',  'u',  'y',  'O',  'U',  'c',  'L',  'Y',  'P',  'f',
-	'a',  'i',  'o',  'u',  'n',  'N',  'a',  'o',  '?',  0x01, 0x01, 0x01, 0x01, '!',  '<',  '>',
-	'o',  '+',  '2',  '3',  '\'', 'u',  'P',  '.',  ',',  '1',  '0',  '>',  0x01, 0x01, 0x01, '?',
-	'A',  'A',  'A',  'A',  'A',  'A',  'A',  'C',  'E',  'E',  'E',  'E',  'I',  'I',  'I',  'I',
-	'D',  'N',  'O',  'O',  'O',  'O',  'O',  'X',  '0',  'U',  'U',  'U',  'U',  'Y',  'b',  'B',
-	'a',  'a',  'a',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'e',  'i',  'i',  'i',  'i',
-	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y',
-	// clang-format on
 };
 /** Maps from spell_id to spelicon.cel frame number. */
 char SpellITbl[MAX_SPELLS] = {
@@ -170,6 +169,19 @@ int PanBtnPos[8][5] = {
 	{ PANEL_LEFT + 527, PANEL_TOP +  91, 33, 32, TRUE  }, // friendly fire button
 	// clang-format on
 };
+/** Maps from panel_button_id to hotkey name. */
+const char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
+/** Maps from panel_button_id to panel button description. */
+const char *PanBtnStr[8] = {
+	"Character Information",
+	"Quests log",
+	"Automap",
+	"Main Menu",
+	"Inventory",
+	"Spell book",
+	"Send Message",
+	"Player Attack"
+};
 /** Maps from attribute_id to the rectangle on screen used for attribute increment buttons. */
 RECT32 ChrBtnsRect[4] = {
 	{ 137, 138, 41, 22 },
@@ -239,29 +251,17 @@ BYTE *pSpellBkCel = NULL;
 char infostr[256] = { 0 };
 int numpanbtns = 0;
 BYTE *pStatusPanel = NULL;
+
 char panelstr[4][64] = { 0 };
 
 BOOL panelflag = 0;
 
-int initialDropGoldValue = 0;
-
 /* data */
 
+BYTE SplTransTbl[256] = { 0 };
+int initialDropGoldValue = 0;
 BYTE *pSpellCels = NULL;
 BOOL panbtndown = 0;
-/** Maps from panel_button_id to hotkey name. */
-const char *PanBtnHotKey[8] = { "'c'", "'q'", "Tab", "Esc", "'i'", "'b'", "Enter", NULL };
-/** Maps from panel_button_id to panel button description. */
-const char *PanBtnStr[8] = {
-	"Character Information",
-	"Quests log",
-	"Automap",
-	"Main Menu",
-	"Inventory",
-	"Spell book",
-	"Send Message",
-	"Player Attack"
-};
 BYTE *pTalkPanel = NULL;
 
 BOOL spselflag = 0;

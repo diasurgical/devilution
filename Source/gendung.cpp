@@ -48,7 +48,6 @@ char dDead[MAXDUNX][MAXDUNY] = { 0 };
 /** Specifies the dungeon piece information for a given coordinate and block number, optimized for diagonal access. */
 MICROS dpiece_defs_map_1[MAXDUNX * MAXDUNY] = { 0 };
 char dPreLight[MAXDUNX][MAXDUNY] = { 0 };
-BOOLEAN nTrapTable[MAXTILES + 1] = { 0 };
 char TransVal = 0;
 int MicroTileLen = 0;
 char dflags[DMAXX][DMAXY] = { 0 };
@@ -68,6 +67,7 @@ int gnDifficulty = 0;
 char block_lvid[MAXTILES + 1] = { 0 };
 /** Specifies the transparency at each coordinate of the map. */
 char dTransVal[MAXDUNX][MAXDUNY] = { 0 };
+BOOLEAN nTrapTable[MAXTILES + 1] = { 0 };
 /** Specifies the active dungeon type of the current game. */
 BYTE leveltype = 0;
 /** Specifies the active dungeon level of the current game. */
@@ -657,7 +657,7 @@ void SetDungeonMicros()
 	MakeSpeedCels();
 	SetSpeedCels();
 
-	if (zoomflag) {
+	if (svgamode) {
 		ViewDX = SCREEN_WIDTH;
 		ViewDY = VIEWPORT_HEIGHT;
 		ViewBX = SCREEN_WIDTH / TILE_WIDTH;

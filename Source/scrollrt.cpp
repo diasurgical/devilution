@@ -2548,7 +2548,7 @@ static void DrawZoom(int x, int y)
  */
 void DrawView(int StartX, int StartY)
 {
-	if (zoomflag) {
+	if (svgamode) {
 		DrawGame(StartX, StartY);
 	} else {
 		DrawZoom(StartX, StartY);

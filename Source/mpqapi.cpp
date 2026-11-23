@@ -12,8 +12,7 @@ BYTE mpq_buf[4096] = { 0 };
 _HASHENTRY *sgpHashTbl = NULL;
 /** Has the savegame-file been modified in memory. */
 BOOL save_archive_modified = 0;
-/** Is the savegame-file currently open. */
-BOOLEAN save_archive_open = 0;
+_BLOCKENTRY *sgpBlockTbl = NULL;
 
 #define INDEX_ENTRIES 2048
 #define BLOCK_TABLE_SIZE (INDEX_ENTRIES * sizeof(_BLOCKENTRY))
@@ -23,7 +22,8 @@ BOOLEAN save_archive_open = 0;
 
 /* data */
 
-_BLOCKENTRY *sgpBlockTbl = NULL;
+/** Is the savegame-file currently open. */
+BOOLEAN save_archive_open = 0;
 
 static void mpqapi_xor_buf(char *pbData)
 {

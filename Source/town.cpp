@@ -1346,7 +1346,7 @@ void T_DrawView(int StartX, int StartY)
 {
 	light_table_index = 0;
 	cel_transparency_active = 0;
-	if (zoomflag) {
+	if (svgamode) {
 		T_DrawGame(StartX, StartY);
 	} else {
 		T_DrawZoom(StartX, StartY);
@@ -1428,7 +1428,7 @@ void SetTownMicros()
 		}
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		ViewDX = SCREEN_WIDTH;
 		ViewDY = VIEWPORT_HEIGHT;
 		ViewBX = SCREEN_WIDTH / TILE_WIDTH;

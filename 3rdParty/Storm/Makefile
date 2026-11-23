@@ -48,7 +48,7 @@ STORM_SRC=$(sort $(wildcard Source/*.cpp))
 STORM_OBJS=$(STORM_SRC:.cpp=.obj)
 
 storm.lib: $(STORM_OBJS)
-	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) /def:"Source/storm.def" /out:storm.dll
+	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) /def:"Source/storm.def" /out:storm.dll
 
 %.obj: %.cpp
 	$(CL) $(CFLAGS) /Fo$@ $<

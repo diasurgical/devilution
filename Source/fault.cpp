@@ -13,9 +13,9 @@ typedef struct STACK_FRAME {
 	void *pCallRet;
 } STACK_FRAME;
 
-LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter = { 0 };
-
 int fault_unused = 0;
+
+LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter = { 0 };
 
 static void *fault_set_filter(void *unused);
 static LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused);

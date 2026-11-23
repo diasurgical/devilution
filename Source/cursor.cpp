@@ -245,7 +245,7 @@ void CheckCursMove()
 	if (sy > PANEL_TOP - 1 && track_isscrolling()) {
 		sy = PANEL_TOP - 1;
 	}
-	if (!zoomflag) {
+	if (!svgamode) {
 		sx >>= 1;
 		sy >>= 1;
 	}
@@ -285,7 +285,7 @@ void CheckCursMove()
 	py = sy & (TILE_HEIGHT - 1);
 
 	// Center player tile on screen
-	mx = ViewX + tx + ty - (zoomflag ? (SCREEN_WIDTH / TILE_WIDTH) : (SCREEN_WIDTH / 2 / TILE_WIDTH));
+	mx = ViewX + tx + ty - (svgamode ? (SCREEN_WIDTH / TILE_WIDTH) : (SCREEN_WIDTH / 2 / TILE_WIDTH));
 	my = ViewY + ty - tx;
 
 	// Shift position to match diamond grid aligment

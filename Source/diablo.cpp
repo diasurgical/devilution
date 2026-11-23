@@ -14,41 +14,49 @@
 BOOL fullscreen = TRUE;
 /** Specifies whether players are in non-PvP mode. */
 BOOL FriendlyMode = TRUE;
-HWND ghMainWnd = 0;
+// 1.09b declared most globals without an initialiser; the VC5 front end then lays them out in name-hash order,
+// ahead of the zero-initialised ones (which keep their order). Hence the unused gv1..gv5 and the names below.
+HWND ghMainWnd;
 #ifndef HELLFIRE
-int glEndSeed[NUMLEVELS] = { 0 };
-int glMid1Seed[NUMLEVELS] = { 0 };
-int glMid2Seed[NUMLEVELS] = { 0 };
-int glMid3Seed[NUMLEVELS] = { 0 };
+int glEndSeed[NUMLEVELS];
+int glMid1Seed[NUMLEVELS + 1]; // the original reserves one more entry here
+int glMid2Seed[NUMLEVELS];
+int glMid3Seed[NUMLEVELS];
 #else
-int glEndSeed[NUMLEVELS + 1] = { 0 };
-int glMid1Seed[NUMLEVELS + 1] = { 0 };
-int glMid2Seed[NUMLEVELS + 1] = { 0 };
-int glMid3Seed[NUMLEVELS + 1] = { 0 };
+int glEndSeed[NUMLEVELS + 1];
+int glMid1Seed[NUMLEVELS + 1];
+int glMid2Seed[NUMLEVELS + 1];
+int glMid3Seed[NUMLEVELS + 1];
 #endif
-int gnLevelTypeTbl[NUMLEVELS] = { 0 };
-int MouseY = 0;
-int MouseX = 0;
-BOOL gbGameLoopStartup = 0;
-DWORD glSeedTbl[NUMLEVELS] = { 0 };
-BOOL gbRunGame = 0;
-BOOL gbRunGameResult = 0;
-BOOL zoomflag = 0;
+int gnLevelTypeTbl[NUMLEVELS];
+int MouseX, MouseY;
+BOOL gbGameLoopStartup;
+DWORD glSeedTbl[NUMLEVELS];
+BOOL gbRunGame;
+BOOL gbRunGameResult;
+/** Zoom (the original name; toggled with Z) */
+BOOL svgamode;
 /** Enable updating of player character, set to false once Diablo dies */
-BOOL gbProcessPlayers = 0;
-BOOL gbLoadGame = 0;
-HINSTANCE ghInst = 0;
-int DebugMonsters[10] = { 0 };
-BOOLEAN cineflag = 0;
+BOOL gbProcessPlayers;
+BOOL gbLoadGame;
+HINSTANCE ghInst;
+int DebugMonsters[10];
 /** unused */
-BOOL scrollflag = 0;
+long gv1;
+long gv2;
+long gv3;
+long gv4;
+long gv5;
+BOOLEAN cineflag = 0;
 int force_redraw = 0;
 BOOL visiondebug = 0;
-BOOL light4flag = 0;
 /** unused */
-BOOL trigdebug = 0;
+BOOL scrollflag = 0;
+BOOL light4flag = 0;
 BOOL leveldebug = 0;
 BOOL monstdebug = 0;
+/** unused */
+BOOL trigdebug = 0;
 int setseed = 0;
 #ifdef HELLFIRE
 BOOLEAN UseTheoQuest = 0;
@@ -308,7 +316,7 @@ void FreeGameMem()
 
 static void start_game(unsigned int uMsg)
 {
-	zoomflag = TRUE;
+	svgamode = TRUE;
 	cineflag = FALSE;
 	InitCursor();
 	InitLightTable();
@@ -1344,7 +1352,7 @@ static void PressChar(WPARAM vkey)
 		return;
 	case 'Z':
 	case 'z':
-		zoomflag = !zoomflag;
+		svgamode = !svgamode;
 		return;
 	case 'S':
 	case 's':

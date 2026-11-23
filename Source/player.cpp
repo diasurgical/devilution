@@ -1573,7 +1573,7 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 		return;
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		if (abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3) {
 			ScrollInfo._sdir = SDIR_NONE;
 		} else {
@@ -1656,7 +1656,7 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		return;
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		if (abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3) {
 			ScrollInfo._sdir = SDIR_NONE;
 		} else {
@@ -1739,7 +1739,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		return;
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		if (abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3) {
 			ScrollInfo._sdir = SDIR_NONE;
 		} else {

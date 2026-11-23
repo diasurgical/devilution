@@ -5,10 +5,10 @@
  */
 #include "all.h"
 
+char msgtable[MAX_SEND_STR_LEN] = { 0 };
 char msgdelay = 0;
 char msgflag = 0;
 char msgcnt = 0;
-char msgtable[MAX_SEND_STR_LEN] = { 0 };
 
 /** Maps from error_id to error message. */
 const char *const MsgStrings[] = {

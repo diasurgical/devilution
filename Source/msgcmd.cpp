@@ -10,9 +10,15 @@
 
 #ifndef HELLFIRE
 
-#include <new>      // for placement new
 #include <stddef.h> // for offsetof
-#include <typeinfo> // for typeid
+// for typeid: the CRT's type_info
+class type_info {
+public:
+	virtual ~type_info();
+private:
+	void *_m_data;
+	char _m_d_name[1];
+};
 
 #include "list.h"
 
@@ -27,9 +33,6 @@ struct EXTERNMESSAGE {
 	void *operator new(size_t n, DWORD extralen, int flags)
 	{
 		return SMemAlloc(n + extralen, (char *)OBJECT_NAME(EXTERNMESSAGE), SLOG_OBJECT, flags | (1 << 3));
-	}
-	void operator delete(void *address, DWORD extralen, int flags)
-	{
 	}
 	void operator delete(void *address)
 	{

@@ -48,7 +48,7 @@ DIABLOUI_SRC=diabloui.cpp
 DIABLOUI_OBJS=$(DIABLOUI_SRC:.cpp=.obj)
 
 diabloui.lib: $(DIABLOUI_OBJS) ../3rdParty/Storm/storm.lib
-	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) /LIBPATH:../3rdParty/Storm diabloui.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib storm.lib /def:"diabloui.def" /out:diabloui.dll
+	$(VC5_LINK) $^ /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC5_LIB_DIR) /LIBPATH:../3rdParty/Storm diabloui.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib storm.lib /def:"diabloui.def" /out:diabloui.dll
 
 ../3rdParty/Storm/storm.lib:
 	make -C ../3rdParty/Storm
