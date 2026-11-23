@@ -148,7 +148,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 
 	assert(gpBuffer);
 
-	dst = &gpBuffer[X + PitchTbl[Y]];
+	dst = &gpBuffer[X + nBuffWTbl[Y]];
 
 #ifdef USE_ASM
 	__asm {
@@ -460,8 +460,8 @@ void DrawInv()
 			        && plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_MACE) {
 #endif
 				InvDrawSlotBack(RIGHT_PANEL_X + 247, 160 + SCREEN_Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
-				light_table_index = 0;
-				cel_transparency_active = TRUE;
+				nLVal = 0;
+				nTrans = TRUE;
 
 				pBuff = frame_width == INV_SLOT_SIZE_PX
 				    ? &gpBuffer[SCREENXY(RIGHT_PANEL_X + 197, SCREEN_Y)]
@@ -476,7 +476,7 @@ void DrawInv()
 				}
 #endif
 
-				cel_transparency_active = FALSE;
+				nTrans = FALSE;
 #ifdef HELLFIRE
 			}
 #endif
@@ -726,7 +726,7 @@ void DrawInvBelt()
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
 			ff = fontframe[gbFontTransTbl[fi]];
-			PrintChar(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + INV_SLOT_SIZE_PX, ff, 0);
+			PrintChar(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + nBuffWTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + INV_SLOT_SIZE_PX, ff, 0);
 		}
 	}
 }

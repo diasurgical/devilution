@@ -21,7 +21,7 @@ void town_clear_upper_buf(BYTE *pBuff)
 		mov		ebx, 1
 		xor		eax, eax
 	label1:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label4
 		add		edi, edx
 		mov		ecx, ebx
@@ -37,7 +37,7 @@ void town_clear_upper_buf(BYTE *pBuff)
 		mov		edx, 2
 		mov		ebx, TILE_HEIGHT / 2 - 1
 	label3:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label4
 		add		edi, edx
 		mov		ecx, ebx
@@ -57,13 +57,13 @@ void town_clear_upper_buf(BYTE *pBuff)
 
 	dst = pBuff;
 
-	for (i = TILE_HEIGHT - 2, j = 1; i >= 0 && dst >= gpBufEnd; i -= 2, j++, dst -= BUFFER_WIDTH + TILE_WIDTH) {
+	for (i = TILE_HEIGHT - 2, j = 1; i >= 0 && dst >= glClipY; i -= 2, j++, dst -= BUFFER_WIDTH + TILE_WIDTH) {
 		dst += i;
 		for (k = 0; k < 4 * j; k++)
 			*dst++ = 0;
 		dst += i;
 	}
-	for (i = 2, j = TILE_HEIGHT / 2 - 1; i != TILE_HEIGHT && dst >= gpBufEnd; i += 2, j--, dst -= BUFFER_WIDTH + TILE_WIDTH) {
+	for (i = 2, j = TILE_HEIGHT / 2 - 1; i != TILE_HEIGHT && dst >= glClipY; i += 2, j--, dst -= BUFFER_WIDTH + TILE_WIDTH) {
 		dst += i;
 		for (k = 0; k < 4 * j; k++)
 			*dst++ = 0;
@@ -88,7 +88,7 @@ void town_clear_low_buf(BYTE *pBuff)
 		mov		ebx, 1
 		xor		eax, eax
 	label1:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label2
 		add		edi, TILE_WIDTH
 		jmp		label3
@@ -108,7 +108,7 @@ void town_clear_low_buf(BYTE *pBuff)
 		mov		edx, 2
 		mov		ebx, TILE_HEIGHT / 2 - 1
 	label5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label6
 		add		edi, TILE_WIDTH
 		jmp		label7
@@ -131,7 +131,7 @@ void town_clear_low_buf(BYTE *pBuff)
 	dst = pBuff;
 
 	for (i = TILE_HEIGHT - 2, j = 1; i >= 0; i -= 2, j++, dst -= BUFFER_WIDTH + TILE_WIDTH) {
-		if (dst < gpBufEnd) {
+		if (dst < glClipY) {
 			dst += i;
 			for (k = 0; k < 4 * j; k++)
 				*dst++ = 0;
@@ -141,7 +141,7 @@ void town_clear_low_buf(BYTE *pBuff)
 		}
 	}
 	for (i = 2, j = TILE_HEIGHT / 2 - 1; i != TILE_HEIGHT; i += 2, j--, dst -= BUFFER_WIDTH + TILE_WIDTH) {
-		if (dst < gpBufEnd) {
+		if (dst < glClipY) {
 			dst += i;
 			for (k = 0; k < 4 * j; k++)
 				*dst++ = 0;
@@ -188,7 +188,7 @@ void town_special_lower(BYTE *pBuff, int nCel)
 		or		al, al
 		js		label7
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label3
 		add		esi, eax
 		add		edi, eax
@@ -235,7 +235,7 @@ void town_special_lower(BYTE *pBuff, int nCel)
 			width = *src++;
 			if(!(width & 0x80)) {
 				w -= width;
-				if(dst < gpBufEnd) {
+				if(dst < glClipY) {
 					if(width & 1) {
 						dst[0] = src[0];
 						src++;
@@ -307,7 +307,7 @@ void town_special_upper(BYTE *pBuff, int nCel)
 		or		al, al
 		js		label6
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label8
 		mov		ecx, eax
 		shr		ecx, 1
@@ -352,7 +352,7 @@ void town_special_upper(BYTE *pBuff, int nCel)
 			width = *src++;
 			if(!(width & 0x80)) {
 				w -= width;
-				if(dst < gpBufEnd) {
+				if(dst < glClipY) {
 					return;
 				}
 				if(width & 1) {
@@ -407,12 +407,12 @@ void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 	pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 12; i += 2) {
-		level_cel_block = pMap->mt[i];
-		if (level_cel_block != 0) {
+		gdwPNum = pMap->mt[i];
+		if (gdwPNum != 0) {
 			drawLowerScreen(dst);
 		}
-		level_cel_block = pMap->mt[i + 1];
-		if (level_cel_block != 0) {
+		gdwPNum = pMap->mt[i + 1];
+		if (gdwPNum != 0) {
 			drawLowerScreen(dst + TILE_WIDTH / 2);
 		}
 		dst -= BUFFER_WIDTH * TILE_HEIGHT;
@@ -437,7 +437,7 @@ void town_draw_clipped_town(BYTE *pBuff, int sx, int sy, int dx, int dy, int efl
 
 	assert(gpBuffer);
 
-	pBuff = &gpBuffer[dx + PitchTbl[dy]];
+	pBuff = &gpBuffer[dx + nBuffWTbl[dy]];
 
 	if (dItem[sx][sy] != 0) {
 		bv = dItem[sx][sy] - 1;
@@ -517,23 +517,23 @@ void town_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + TILE_WIDTH / 2 + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + TILE_WIDTH / 2 + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 1; i < 17; i += 2) {
-					level_cel_block = pMap->mt[i];
-					if (level_cel_block != 0) {
+					gdwPNum = pMap->mt[i];
+					if (gdwPNum != 0) {
 						drawLowerScreen(dst);
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 0);
+				town_draw_clipped_town(&gpBuffer[sx + nBuffWTbl[sy]], x, y, sx, sy, 0);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -542,27 +542,27 @@ void town_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 
 	for (j = 0; j < chunks - eflag; j++) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
-					level_cel_block = pMap->mt[i];
-					if (level_cel_block != 0) {
+					gdwPNum = pMap->mt[i];
+					if (gdwPNum != 0) {
 						drawLowerScreen(dst);
 					}
-					level_cel_block = pMap->mt[i + 1];
-					if (level_cel_block != 0) {
+					gdwPNum = pMap->mt[i + 1];
+					if (gdwPNum != 0) {
 						drawLowerScreen(dst + TILE_WIDTH / 2);
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 1);
+				town_draw_clipped_town(&gpBuffer[sx + nBuffWTbl[sy]], x, y, sx, sy, 1);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -571,23 +571,23 @@ void town_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
-					level_cel_block = pMap->mt[i];
-					if (level_cel_block != 0) {
+					gdwPNum = pMap->mt[i];
+					if (gdwPNum != 0) {
 						drawLowerScreen(dst);
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 0);
+				town_draw_clipped_town(&gpBuffer[sx + nBuffWTbl[sy]], x, y, sx, sy, 0);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 	}
 }
@@ -620,12 +620,12 @@ void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int row, int CelSkip,
 
 	for (i = 0; i < 6; i++) {
 		if (row <= i) {
-			level_cel_block = pMap->mt[2 * i + 2];
-			if (level_cel_block != 0) {
+			gdwPNum = pMap->mt[2 * i + 2];
+			if (gdwPNum != 0) {
 				drawLowerScreen(dst);
 			}
-			level_cel_block = pMap->mt[2 * i + 3];
-			if (level_cel_block != 0) {
+			gdwPNum = pMap->mt[2 * i + 3];
+			if (gdwPNum != 0) {
 				drawLowerScreen(dst + TILE_WIDTH / 2);
 			}
 		}
@@ -708,7 +708,7 @@ void town_draw_clipped_town_2(BYTE *pBuff, int sx, int sy, int row, int CelSkip,
 		DrawClippedMissile(sx, sy, dx, dy, CelSkip, 8, 0);
 	}
 	if (dSpecial[sx][sy] != 0) {
-		town_special_lower(&pBuff[PitchTbl[16 * CelSkip]], dSpecial[sx][sy]);
+		town_special_lower(&pBuff[nBuffWTbl[16 * CelSkip]], dSpecial[sx][sy]);
 	}
 }
 
@@ -734,27 +734,27 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int row, int ef
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + TILE_WIDTH / 2 - BUFFER_WIDTH * TILE_HEIGHT + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + TILE_WIDTH / 2 - BUFFER_WIDTH * TILE_HEIGHT + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (row <= i) {
-						level_cel_block = pMap->mt[2 * i + 3];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i + 3];
+						if (gdwPNum != 0) {
 							drawLowerScreen(dst);
 						}
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
 				if (CelSkip < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelSkip, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + nBuffWTbl[sy]], x, y, row, CelSkip, sx, sy, 0);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -763,31 +763,31 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int row, int ef
 
 	for (j = 0; j < chunks - eflag; j++) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - BUFFER_WIDTH * TILE_HEIGHT + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx - BUFFER_WIDTH * TILE_HEIGHT + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (row <= i) {
-						level_cel_block = pMap->mt[2 * i + 2];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i + 2];
+						if (gdwPNum != 0) {
 							drawLowerScreen(dst);
 						}
-						level_cel_block = pMap->mt[2 * i + 3];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i + 3];
+						if (gdwPNum != 0) {
 							drawLowerScreen(dst + TILE_WIDTH / 2);
 						}
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
 				if (CelSkip < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy] - BUFFER_WIDTH * 16 * CelSkip], x, y, row, CelSkip, sx, sy, 1);
+					town_draw_clipped_town_2(&gpBuffer[sx + nBuffWTbl[sy] - BUFFER_WIDTH * 16 * CelSkip], x, y, row, CelSkip, sx, sy, 1);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -796,27 +796,27 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int chunks, int row, int ef
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - BUFFER_WIDTH * TILE_HEIGHT + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx - BUFFER_WIDTH * TILE_HEIGHT + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (row <= i) {
-						level_cel_block = pMap->mt[2 * i + 2];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i + 2];
+						if (gdwPNum != 0) {
 							drawLowerScreen(dst);
 						}
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
 				if (CelSkip < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelSkip, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + nBuffWTbl[sy]], x, y, row, CelSkip, sx, sy, 0);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 	}
 }
@@ -844,12 +844,12 @@ void town_draw_e_flag(BYTE *pBuff, int x, int y, int row, int CelCap, int sx, in
 
 	for (i = 0; i < 7; i++) {
 		if (row >= i) {
-			level_cel_block = pMap->mt[2 * i];
-			if (level_cel_block != 0) {
+			gdwPNum = pMap->mt[2 * i];
+			if (gdwPNum != 0) {
 				drawUpperScreen(dst);
 			}
-			level_cel_block = pMap->mt[2 * i + 1];
-			if (level_cel_block != 0) {
+			gdwPNum = pMap->mt[2 * i + 1];
+			if (gdwPNum != 0) {
 				drawUpperScreen(dst + TILE_WIDTH / 2);
 			}
 		}
@@ -964,25 +964,25 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int row, int efla
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + TILE_WIDTH / 2 + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + TILE_WIDTH / 2 + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (row >= i) {
-						level_cel_block = pMap->mt[2 * i + 1];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i + 1];
+						if (gdwPNum != 0) {
 							drawUpperScreen(dst);
 						}
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
-				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelCap, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + nBuffWTbl[sy]], x, y, row, CelCap, sx, sy, 0);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -991,29 +991,29 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int row, int efla
 
 	for (j = 0; j < chunks - eflag; j++) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (row >= i) {
-						level_cel_block = pMap->mt[2 * i];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i];
+						if (gdwPNum != 0) {
 							drawUpperScreen(dst);
 						}
-						level_cel_block = pMap->mt[2 * i + 1];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i + 1];
+						if (gdwPNum != 0) {
 							drawUpperScreen(dst + TILE_WIDTH / 2);
 						}
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
-				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelCap, sx, sy, 1);
+				town_draw_town_all(&gpBuffer[sx + nBuffWTbl[sy]], x, y, row, CelCap, sx, sy, 1);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -1022,25 +1022,25 @@ void town_draw_upper(int x, int y, int sx, int sy, int chunks, int row, int efla
 
 	if (eflag) {
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-			level_cel_block = dPiece[x][y];
-			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + PitchTbl[sy]];
+			gdwPNum = dPiece[x][y];
+			if (gdwPNum != 0) {
+				dst = &gpBuffer[sx + nBuffWTbl[sy]];
 				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (row >= i) {
-						level_cel_block = pMap->mt[2 * i];
-						if (level_cel_block != 0) {
+						gdwPNum = pMap->mt[2 * i];
+						if (gdwPNum != 0) {
 							drawUpperScreen(dst);
 						}
 					}
 					dst -= BUFFER_WIDTH * TILE_HEIGHT;
 				}
-				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, row, CelCap, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + nBuffWTbl[sy]], x, y, row, CelCap, sx, sy, 0);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + nBuffWTbl[sy]]);
 		}
 	}
 }
@@ -1128,7 +1128,7 @@ void T_DrawGame(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[SCREEN_Y]];
+	glClipY = &gpBuffer[nBuffWTbl[SCREEN_Y]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -1140,7 +1140,7 @@ void T_DrawGame(int x, int y)
 		sy += TILE_HEIGHT / 2;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[VIEWPORT_HEIGHT + SCREEN_Y]];
+	glClipY = &gpBuffer[nBuffWTbl[VIEWPORT_HEIGHT + SCREEN_Y]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -1234,7 +1234,7 @@ void T_DrawZoom(int x, int y)
 	}
 
 	assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[-17 + SCREEN_Y]];
+	glClipY = &gpBuffer[nBuffWTbl[-17 + SCREEN_Y]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -1246,7 +1246,7 @@ void T_DrawZoom(int x, int y)
 		sy += TILE_HEIGHT / 2;
 	}
 	assert(gpBuffer);
-	gpBufEnd = &gpBuffer[PitchTbl[160 + SCREEN_Y]];
+	glClipY = &gpBuffer[nBuffWTbl[160 + SCREEN_Y]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -1344,8 +1344,8 @@ void T_DrawZoom(int x, int y)
  */
 void T_DrawView(int StartX, int StartY)
 {
-	light_table_index = 0;
-	cel_transparency_active = 0;
+	nLVal = 0;
+	nTrans = 0;
 	if (svgamode) {
 		T_DrawGame(StartX, StartY);
 	} else {

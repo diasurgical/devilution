@@ -657,7 +657,7 @@ void DrawAutomap()
 		return;
 	}
 
-	gpBufEnd = &gpBuffer[BUFFER_WIDTH * (SCREEN_Y + VIEWPORT_HEIGHT)];
+	glClipY = &gpBuffer[BUFFER_WIDTH * (SCREEN_Y + VIEWPORT_HEIGHT)];
 
 	AutoMapX = (ViewX - 16) >> 1;
 	while (AutoMapX + AutoMapXOfs < 0)

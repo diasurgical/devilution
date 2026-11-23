@@ -34,7 +34,7 @@ static void palette_update()
 	int nentries;
 	int max_entries;
 
-	if (lpDDPalette) {
+	if (lpDDPal) {
 		nentries = 0;
 		max_entries = 256;
 		if (!fullscreen) {
@@ -126,13 +126,13 @@ void palette_init()
 	memcpy(system_palette, orig_palette, sizeof(orig_palette));
 	LoadSysPal();
 #ifdef HELLFIRE
-	error_code = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_INITIALIZE | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	error_code = lpDD->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_INITIALIZE | DDPCAPS_8BIT, system_palette, &lpDDPal, NULL);
 #else
-	error_code = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	error_code = lpDD->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPal, NULL);
 #endif
 	if (error_code)
 		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
-	error_code = lpDDSPrimary->SetPalette(lpDDPalette);
+	error_code = lpDDSPrimary->SetPalette(lpDDPal);
 #ifndef RGBMODE
 	if (error_code)
 		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
@@ -229,14 +229,14 @@ static void SetFadeLevel(DWORD fadeval)
 {
 	int i;
 
-	if (lpDDInterface) {
+	if (lpDD) {
 		for (i = 0; i < 255; i++) { // BUGFIX: should be 256
 			system_palette[i].peRed = (fadeval * logical_palette[i].peRed) >> 8;
 			system_palette[i].peGreen = (fadeval * logical_palette[i].peGreen) >> 8;
 			system_palette[i].peBlue = (fadeval * logical_palette[i].peBlue) >> 8;
 		}
 		Sleep(3);
-		lpDDInterface->WaitForVerticalBlank(DDWAITVB_BLOCKBEGIN, NULL);
+		lpDD->WaitForVerticalBlank(DDWAITVB_BLOCKBEGIN, NULL);
 		palette_update();
 	}
 }

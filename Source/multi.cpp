@@ -264,7 +264,7 @@ static void multi_parse_turn(int pnum, int turn)
 		if (absTurns >= 0x7FFFFFFF)
 			absTurns &= 0xFFFF;
 		sgbSentThisCycle = absTurns + gdwTurnsInTransit;
-		sgdwGameLoops = 4 * absTurns * sgbNetUpdateRate;
+		sgdwGameLoops = 4 * absTurns * gbGameLoopsPerPacket;
 	}
 }
 

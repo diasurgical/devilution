@@ -202,7 +202,7 @@ void CelDraw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 		return;
 
 	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
-	CelBlit(&gpBuffer[sx + PitchTbl[sy]], pRLEBytes, nDataSize, nWidth);
+	CelBlit(&gpBuffer[sx + nBuffWTbl[sy]], pRLEBytes, nDataSize, nWidth);
 }
 
 /**
@@ -269,7 +269,7 @@ void CelClippedDraw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Ce
 		nDataSize -= nDataStart;
 
 	CelBlit(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
@@ -338,7 +338,7 @@ void CelBlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 
 #ifdef USE_ASM
 	__asm {
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		shl		eax, 8
 		add		eax, pLightTbl
 		mov		tbl, eax
@@ -438,7 +438,7 @@ void CelBlitLight(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[nLVal * 256];
 	w = nWidth;
 
 	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
@@ -499,7 +499,7 @@ void CelBlitLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWid
 
 #ifdef USE_ASM
 	__asm {
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		shl		eax, 8
 		add		eax, pLightTbl
 		mov		tbl, eax
@@ -608,7 +608,7 @@ void CelBlitLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWid
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[nLVal * 256];
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
@@ -692,9 +692,9 @@ void CelDrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 		return;
 
 	pRLEBytes = CelGetFrame(pCelBuff, nCel, &nDataSize);
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy]];
 
-	if (light_table_index)
+	if (nLVal)
 		CelBlitLight(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 	else
 		CelBlit(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -741,9 +741,9 @@ void CelClippedDrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
-	if (light_table_index)
+	if (nLVal)
 		CelBlitLight(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 	else
 		CelBlit(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -790,9 +790,9 @@ void CelClippedBlitLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth,
 
 	pRLEBytes += nDataStart;
 
-	if (cel_transparency_active)
+	if (nTrans)
 		CelBlitLightTrans(pBuff, pRLEBytes, nDataSize, nWidth);
-	else if (light_table_index)
+	else if (nLVal)
 		CelBlitLight(pBuff, pRLEBytes, nDataSize, nWidth);
 	else
 		CelBlit(pBuff, pRLEBytes, nDataSize, nWidth);
@@ -840,7 +840,7 @@ void CelDrawLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -960,7 +960,7 @@ void CelBlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 		or		al, al
 		js		label7
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label3
 		add		esi, eax
 		add		edi, eax
@@ -1006,7 +1006,7 @@ void CelBlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 			width = *src++;
 			if (!(width & 0x80)) {
 				i -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					if (width & 1) {
 						dst[0] = src[0];
 						src++;
@@ -1083,7 +1083,7 @@ void CelClippedDrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 		nDataSize -= nDataStart;
 
 	CelBlitSafe(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
@@ -1155,7 +1155,7 @@ void CelBlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidt
 
 #ifdef USE_ASM
 	__asm {
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		shl		eax, 8
 		add		eax, pLightTbl
 		mov		tbl, eax
@@ -1176,7 +1176,7 @@ void CelBlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidt
 		push	ebx
 		mov		ebx, tbl
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label3
 		add		esi, eax
 		add		edi, eax
@@ -1262,7 +1262,7 @@ void CelBlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidt
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[nLVal * 256];
 	w = nWidth;
 
 	for (; src != &pRLEBytes[nDataSize]; dst -= BUFFER_WIDTH + w) {
@@ -1270,7 +1270,7 @@ void CelBlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidt
 			width = *src++;
 			if (!(width & 0x80)) {
 				i -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					if (width & 1) {
 						dst[0] = tbl[src[0]];
 						src++;
@@ -1331,7 +1331,7 @@ void CelBlitLightTransSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int 
 
 #ifdef USE_ASM
 	__asm {
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		shl		eax, 8
 		add		eax, pLightTbl
 		mov		tbl, eax
@@ -1355,7 +1355,7 @@ void CelBlitLightTransSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int 
 		push	ebx
 		mov		ebx, tbl
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label3
 		add		esi, eax
 		add		edi, eax
@@ -1446,7 +1446,7 @@ void CelBlitLightTransSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int 
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[nLVal * 256];
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
@@ -1455,7 +1455,7 @@ void CelBlitLightTransSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int 
 			width = *src++;
 			if (!(width & 0x80)) {
 				i -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					if (((BYTE)dst & 1) == shift) {
 						if (!(width & 1)) {
 							goto L_ODD;
@@ -1555,9 +1555,9 @@ void CelDrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int 
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
-	if (light_table_index)
+	if (nLVal)
 		CelBlitLightSafe(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 	else
 		CelBlitSafe(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -1601,9 +1601,9 @@ void CelClippedBlitLightTransSafe(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWi
 
 	pRLEBytes += nDataStart;
 
-	if (cel_transparency_active)
+	if (nTrans)
 		CelBlitLightTransSafe(pBuff, pRLEBytes, nDataSize, nWidth);
-	else if (light_table_index)
+	else if (nLVal)
 		CelBlitLightSafe(pBuff, pRLEBytes, nDataSize, nWidth);
 	else
 		CelBlitSafe(pBuff, pRLEBytes, nDataSize, nWidth);
@@ -1651,7 +1651,7 @@ void CelDrawLightRedSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -1681,7 +1681,7 @@ void CelDrawLightRedSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 		js		label5
 		mov		ebx, tbl
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		label3
 		add		esi, eax
 		add		edi, eax
@@ -1720,7 +1720,7 @@ void CelDrawLightRedSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 			width = *pRLEBytes++;
 			if (!(width & 0x80)) {
 				w -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					while (width) {
 						*dst = tbl[*pRLEBytes];
 						pRLEBytes++;
@@ -1920,7 +1920,7 @@ void CelBlitOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	__asm {
 		mov		esi, pRLEBytes
@@ -1986,7 +1986,7 @@ void CelBlitOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 
 	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
-	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	for (; src != end; dst -= BUFFER_WIDTH + nWidth) {
 		for (w = nWidth; w;) {
@@ -2068,7 +2068,7 @@ void CelBlitOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	__asm {
 		mov		esi, pRLEBytes
@@ -2086,7 +2086,7 @@ void CelBlitOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
 		or		al, al
 		js		label10
 		sub		edx, eax
-		mov		ecx, gpBufEnd
+		mov		ecx, glClipY
 		cmp		edi, ecx
 		jb		label3
 		add		esi, eax
@@ -2159,15 +2159,15 @@ void CelBlitOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
 
 	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
-	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	for (; src != end; dst -= BUFFER_WIDTH + nWidth) {
 		for (w = nWidth; w;) {
 			width = *src++;
 			if (!(width & 0x80)) {
 				w -= width;
-				if (dst < gpBufEnd) {
-					if (dst >= gpBufEnd - BUFFER_WIDTH) {
+				if (dst < glClipY) {
+					if (dst >= glClipY - BUFFER_WIDTH) {
 						while (width) {
 							if (*src++) {
 								dst[-BUFFER_WIDTH] = col;
@@ -2218,19 +2218,19 @@ void ENG_set_pixel(int sx, int sy, BYTE col)
 	if (sy < 0 || sy >= SCREEN_HEIGHT + SCREEN_Y || sx < SCREEN_X || sx >= SCREEN_WIDTH + SCREEN_X)
 		return;
 
-	dst = &gpBuffer[sx + PitchTbl[sy]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy]];
 
 #ifdef USE_ASM
 	__asm {
 		mov		edi, dst
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jnb		label1
 		mov		al, col
 		mov		[edi], al
 	label1:
 	}
 #else
-	if (dst < gpBufEnd)
+	if (dst < glClipY)
 		*dst = col;
 #endif
 }
@@ -2249,24 +2249,24 @@ void engine_draw_pixel(int sx, int sy)
 	if (dlreverse) {
 		if (dlclipflag && (sx < 0 || sx >= SCREEN_HEIGHT + SCREEN_Y || sy < SCREEN_X || sy >= SCREEN_WIDTH + SCREEN_X))
 			return;
-		dst = &gpBuffer[sy + PitchTbl[sx]];
+		dst = &gpBuffer[sy + nBuffWTbl[sx]];
 	} else {
 		if (dlclipflag && (sy < 0 || sy >= SCREEN_HEIGHT + SCREEN_Y || sx < SCREEN_X || sx >= SCREEN_WIDTH + SCREEN_X))
 			return;
-		dst = &gpBuffer[sx + PitchTbl[sy]];
+		dst = &gpBuffer[sx + nBuffWTbl[sy]];
 	}
 
 #ifdef USE_ASM
 	__asm {
 		mov		edi, dst
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jnb		label1
 		mov		al, dlcolor
 		mov		[edi], al
 	label1:
 	}
 #else
-	if (dst < gpBufEnd)
+	if (dst < glClipY)
 		*dst = dlcolor;
 #endif
 }
@@ -3240,7 +3240,7 @@ static void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		dec		ecx
 		mov		dl, [esi]
 		inc		esi
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jge		label7
 		sub		ebx, eax
 	label2:
@@ -3251,7 +3251,7 @@ static void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 		jmp		label6
 	label3:
 		sub		ecx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jl		label4
 		add		esi, eax
 		jmp		label7
@@ -3317,7 +3317,7 @@ static void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 				width -= 65;
 				nDataSize--;
 				fill = *src++;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					w -= width;
 					while (width) {
 						*dst = fill;
@@ -3332,7 +3332,7 @@ static void Cl2BlitSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 				}
 			} else {
 				nDataSize -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					w -= width;
 					while (width) {
 						*dst = *src;
@@ -3406,7 +3406,7 @@ static void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 		inc		esi
 		test	dh, dh
 		jz		label9
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jge		label9
 		mov		[edi-1], dl
 		sub		ebx, eax
@@ -3420,7 +3420,7 @@ static void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 		jmp		label7
 	label3:
 		sub		ecx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jl		label4
 		add		esi, eax
 		jmp		label9
@@ -3491,7 +3491,7 @@ static void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 			if (width > 65) {
 				width -= 65;
 				nDataSize--;
-				if (*src++ && dst < gpBufEnd) {
+				if (*src++ && dst < glClipY) {
 					w -= width;
 					dst[-1] = col;
 					dst[width] = col;
@@ -3509,14 +3509,14 @@ static void Cl2BlitOutlineSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 				}
 			} else {
 				nDataSize -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					w -= width;
 					while (width) {
 						if (*src++) {
 							dst[-1] = col;
 							dst[1] = col;
 							dst[-BUFFER_WIDTH] = col;
-							// BUGFIX: only set `if (dst+BUFFER_WIDTH < gpBufEnd)`
+							// BUGFIX: only set `if (dst+BUFFER_WIDTH < glClipY)`
 							dst[BUFFER_WIDTH] = col;
 						}
 						dst++;
@@ -3590,7 +3590,7 @@ static void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, in
 		mov		dl, [esi]
 		inc		esi
 		mov		dl, [ebp+edx]
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jge		label7
 		sub		ebx, eax
 	label2:
@@ -3601,7 +3601,7 @@ static void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, in
 		jmp		label6
 	label3:
 		sub		ecx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jl		label4
 		add		esi, eax
 		jmp		label7
@@ -3670,7 +3670,7 @@ static void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, in
 				width -= 65;
 				nDataSize--;
 				fill = pTable[*src++];
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					w -= width;
 					while (width) {
 						*dst = fill;
@@ -3685,7 +3685,7 @@ static void Cl2BlitLightSafe(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, in
 				}
 			} else {
 				nDataSize -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					w -= width;
 					while (width) {
 						*dst = pTable[*src];
@@ -3763,7 +3763,7 @@ void Cl2Draw(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, 
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2Blit(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth);
@@ -3811,7 +3811,7 @@ void Cl2DrawOutline(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2BlitOutline(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
@@ -3861,7 +3861,7 @@ void Cl2DrawLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
 
 	nSize = nDataSize - nDataStart;
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -3919,10 +3919,10 @@ void Cl2DrawLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelS
 
 	nSize = nDataSize - nDataStart;
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
-	if (light_table_index)
-		Cl2BlitLight(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[light_table_index * 256]);
+	if (nLVal)
+		Cl2BlitLight(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[nLVal * 256]);
 	else
 		Cl2Blit(pDecodeTo, pRLEBytes, nSize, nWidth);
 }
@@ -3968,7 +3968,7 @@ void Cl2DrawSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSk
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2BlitSafe(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth);
@@ -4015,14 +4015,14 @@ void Cl2DrawOutlineSafe(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int 
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	gpBufEnd -= BUFFER_WIDTH;
+	glClipY -= BUFFER_WIDTH;
 	Cl2BlitOutlineSafe(
-	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
 	    col);
-	gpBufEnd += BUFFER_WIDTH;
+	glClipY += BUFFER_WIDTH;
 }
 
 /**
@@ -4068,7 +4068,7 @@ void Cl2DrawLightTblSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 
 	nSize = nDataSize - nDataStart;
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -4126,10 +4126,10 @@ void Cl2DrawLightSafe(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int 
 
 	nSize = nDataSize - nDataStart;
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + nBuffWTbl[sy - 16 * CelSkip]];
 
-	if (light_table_index)
-		Cl2BlitLightSafe(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[light_table_index * 256]);
+	if (nLVal)
+		Cl2BlitLightSafe(pDecodeTo, pRLEBytes, nSize, nWidth, &pLightTbl[nLVal * 256]);
 	else
 		Cl2BlitSafe(pDecodeTo, pRLEBytes, nSize, nWidth);
 }

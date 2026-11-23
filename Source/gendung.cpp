@@ -144,8 +144,14 @@ int ViewX = 0;
 int ViewY = 0;
 /** Specifies the active set level Y-coordinate of the map. */
 int setpc_y = 0;
+/** unused */
+int btmbx = 0;
+int btmby = 0;
 /** Contains the missile numbers (missiles array indices) of the map. */
 char dMissile[MAXDUNX][MAXDUNY] = { 0 };
+/** unused */
+int btmdx = 0;
+int btmdy = 0;
 /** Specifies the minimum X-coordinate of the map. */
 int dminx = 0;
 /** Specifies the minimum Y-coordinate of the map. */

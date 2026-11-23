@@ -6,13 +6,13 @@
 #ifndef __SCROLLRT_H__
 #define __SCROLLRT_H__
 
-extern int light_table_index;
-extern int PitchTbl[1024];
-extern BYTE *gpBufEnd;
-extern DWORD level_cel_block;
-extern char arch_draw_type;
-extern int cel_transparency_active;
-extern int level_piece_id;
+extern int nLVal;
+extern int nBuffWTbl[1024];
+extern BYTE *glClipY;
+extern DWORD gdwPNum;
+extern char gbPartialTrans;
+extern int nTrans;
+extern int gnPieceNum;
 #ifdef HELLFIRE
 extern BOOLEAN AutoMapShowItems;
 #endif

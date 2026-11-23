@@ -162,7 +162,7 @@ void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int v
 		xx = PANEL_X + 32;
 	else
 		xx = PANEL_X + 352;
-	off = xx + x + PitchTbl[s + 44 + SCREEN_Y];
+	off = xx + x + nBuffWTbl[s + 44 + SCREEN_Y];
 	len = strlen(str);
 	if (stextsize != 0)
 		yy = 577;
@@ -190,7 +190,7 @@ void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int v
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		off = PitchTbl[s + 44 + SCREEN_Y] + PANEL_X + 592 - x;
+		off = nBuffWTbl[s + 44 + SCREEN_Y] + PANEL_X + 592 - x;
 		len = strlen(valstr);
 		for (i = len - 1; i >= 0; i--) {
 			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
@@ -212,12 +212,12 @@ void DrawSLine(int y)
 	sy = SStringY[y];
 	if (stextsize == 1) {
 		xy = SCREENXY(PANEL_LEFT + 26, 25);
-		yy = PitchTbl[sy + 38 + SCREEN_Y] + 26 + PANEL_X;
+		yy = nBuffWTbl[sy + 38 + SCREEN_Y] + 26 + PANEL_X;
 		width = 586 / 4;           // BUGFIX: should be 587, not 586
 		line = BUFFER_WIDTH - 586; // BUGFIX: should be 587, not 586
 	} else {
 		xy = SCREENXY(PANEL_LEFT + 346, 25);
-		yy = PitchTbl[sy + 38 + SCREEN_Y] + 346 + PANEL_X;
+		yy = nBuffWTbl[sy + 38 + SCREEN_Y] + 346 + PANEL_X;
 		width = 266 / 4;           // BUGFIX: should be 267, not 266
 		line = BUFFER_WIDTH - 266; // BUGFIX: should be 267, not 266
 	}

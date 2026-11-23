@@ -290,7 +290,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 
 	assert(gpBuffer);
 
-	dst = &gpBuffer[xp + PitchTbl[yp]];
+	dst = &gpBuffer[xp + nBuffWTbl[yp]];
 	tbl = &SpellTrans[0];
 
 #ifdef USE_ASM
@@ -1899,7 +1899,7 @@ static void ADD_PlrStringXY(int x, int y, int width, const char *pszStr, char co
 	const char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
-	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
+	nOffset = x + nBuffWTbl[y + SCREEN_Y] + SCREEN_X;
 	widthOffset = width - x + 1;
 	line = 0;
 	screen_x = 0;
@@ -1927,7 +1927,7 @@ void PrintGameStr(int x, int y, const char *str, int color)
 {
 	BYTE c;
 	int off;
-	off = PitchTbl[y + SCREEN_Y] + x + SCREEN_X;
+	off = nBuffWTbl[y + SCREEN_Y] + x + SCREEN_X;
 	while (*str) {
 		c = gbFontTransTbl[(BYTE)*str++];
 		c = fontframe[c];
@@ -1952,7 +1952,7 @@ static void MY_PlrStringXY(int x, int y, int endX, const char *pszStr, char col,
 	const char *tmp;
 	int nOffset, screen_x, line, widthOffset;
 
-	nOffset = x + PitchTbl[y + SCREEN_Y] + SCREEN_X;
+	nOffset = x + nBuffWTbl[y + SCREEN_Y] + SCREEN_X;
 	widthOffset = endX - x + 1;
 	line = 0;
 	screen_x = 0;
@@ -2435,7 +2435,7 @@ static void PrintSBookStr(int x, int y, BOOL cjustflag, const char *pszStr, char
 	const char *tmp;
 	int screen_x, line, width;
 
-	width = PitchTbl[y] + x + RIGHT_PANEL_X + SPLICONLENGTH;
+	width = nBuffWTbl[y] + x + RIGHT_PANEL_X + SPLICONLENGTH;
 	line = 0;
 	if (cjustflag) {
 		screen_x = 0;
@@ -2722,7 +2722,7 @@ static char *control_print_talk_msg(char *msg, int x, int y, int *nOffset, int c
 	x += 200 + SCREEN_X;
 	y += 22 + PANEL_Y;
 	width = x;
-	*nOffset = PitchTbl[y] + x;
+	*nOffset = nBuffWTbl[y] + x;
 	while (*msg) {
 
 		c = gbFontTransTbl[(BYTE)*msg];

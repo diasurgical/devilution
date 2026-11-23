@@ -67,7 +67,7 @@ void gmenu_draw_pause()
 	if (currlevel != 0)
 		RedBack();
 	if (!sgpMenu) {
-		light_table_index = 0;
+		nLVal = 0;
 		gmenu_print_text(316 + PANEL_LEFT, 336, "Pause");
 	}
 }
@@ -165,7 +165,7 @@ static void gmenu_clear_buffer(int x, int y, int width, int height)
 {
 	BYTE *i;
 
-	i = gpBuffer + PitchTbl[y] + x;
+	i = gpBuffer + nBuffWTbl[y] + x;
 	while (height--) {
 		memset(i, 205, width);
 		i -= BUFFER_WIDTH;
@@ -216,7 +216,7 @@ static void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 		CelDraw(x + 2 + pos + PANEL_LEFT, y - 12, sgpSliderCels, 1, 27);
 	}
 	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
-	light_table_index = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
+	nLVal = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
 	gmenu_print_text(x, y, pItem->pszStr);
 	if (pItem == sgpCurrItem) {
 		CelDraw(x - 54, y + 1, sgpSpinCels, sgbGameSpin, 48);

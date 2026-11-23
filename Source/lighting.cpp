@@ -477,6 +477,8 @@ char *pCrawlTable[19] = {
 BYTE Dist[64][16][16];
 BYTE *pLightTbl;
 
+/** unused */
+int lnum = 0;
 BOOL lightflag = 0;
 
 void RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by)

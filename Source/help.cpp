@@ -453,7 +453,7 @@ static void DrawHelpLine(int x, int y, char *text, char color)
 	BYTE c;
 
 	width = 0;
-	off = PitchTbl[SStringY[y] + 44 + SCREEN_Y] + x + 32 + PANEL_X;
+	off = nBuffWTbl[SStringY[y] + 44 + SCREEN_Y] + x + 32 + PANEL_X;
 	while (*text) {
 		c = gbFontTransTbl[(BYTE)*text];
 		text++;

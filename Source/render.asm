@@ -16,6 +16,8 @@ _BSS	SEGMENT DWORD USE32 PUBLIC 'BSS'
 _BSS	ENDS
 $$SYMBOLS	SEGMENT BYTE USE32 'DEBSYM'
 $$SYMBOLS	ENDS
+$$TYPES	SEGMENT BYTE USE32 'DEBTYP'
+$$TYPES	ENDS
 _TLS	SEGMENT DWORD USE32 PUBLIC 'TLS'
 _TLS	ENDS
 CRT$XCU	SEGMENT DWORD USE32 PUBLIC ''
@@ -268,9 +270,9 @@ PUBLIC	?drawTopArchesUpperScreen@@YIXPAE@Z		; drawTopArchesUpperScreen
 EXTRN	_pDungeonCels:DWORD
 EXTRN	_pSpeedCels:DWORD
 EXTRN	_SpeedFrameTbl:BYTE
-EXTRN	_light_table_index:DWORD
-EXTRN	_gpBufEnd:DWORD
-EXTRN	_level_cel_block:DWORD
+EXTRN	_nLVal:DWORD
+EXTRN	_glClipY:DWORD
+EXTRN	_gdwPNum:DWORD
 EXTRN	_lightmax:BYTE
 EXTRN	_pLightTbl:DWORD
 ; Function compile flags: /Odsy
@@ -294,7 +296,7 @@ _TEXT	SEGMENT
 ; Line 10
 	mov	edi, ecx
 ; Line 11
-	mov	eax, DWORD PTR _light_table_index
+	mov	eax, DWORD PTR _nLVal
 ; Line 12
 	test	al, al
 ; Line 13
@@ -304,7 +306,7 @@ _TEXT	SEGMENT
 ; Line 15
 	je	$loc_4631CA$37752
 ; Line 16
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 17
 	and	eax, 32768				; 00008000H
 ; Line 18
@@ -314,7 +316,7 @@ _TEXT	SEGMENT
 ; Line 20
 	mov	esi, ebx
 ; Line 21
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 22
 	and	eax, 4095				; 00000fffH
 ; Line 23
@@ -324,13 +326,13 @@ _TEXT	SEGMENT
 ; Line 25
 	add	esi, DWORD PTR [ebx]
 ; Line 26
-	mov	ebx, DWORD PTR _light_table_index
+	mov	ebx, DWORD PTR _nLVal
 ; Line 27
 	shl	ebx, 8
 ; Line 28
 	add	ebx, DWORD PTR _pLightTbl
 ; Line 29
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 30
 	mov	al, ah
 ; Line 31
@@ -361,13 +363,13 @@ $loc_4630FE$37753:
 ; Line 44
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 45
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 46
 	and	eax, 4095				; 00000fffH
 ; Line 47
 	shl	eax, 4
 ; Line 48
-	add	eax, DWORD PTR _light_table_index
+	add	eax, DWORD PTR _nLVal
 ; Line 49
 	shl	eax, 2
 ; Line 50
@@ -379,7 +381,7 @@ $loc_4630FE$37753:
 ; Line 53
 	add	esi, eax
 ; Line 54
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 55
 	mov	al, ah
 ; Line 56
@@ -411,7 +413,7 @@ $loc_463133$37760:
 	jmp	$loc_464112$37766
 $loc_46316A$37751:
 ; Line 71
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 72
 	and	eax, 32768				; 00008000H
 ; Line 73
@@ -419,7 +421,7 @@ $loc_46316A$37751:
 ; Line 74
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 75
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 76
 	and	eax, 4095				; 00000fffH
 ; Line 77
@@ -427,20 +429,20 @@ $loc_46316A$37751:
 ; Line 78
 	add	esi, eax
 ; Line 79
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 80
 	and	eax, 61440				; 0000f000H
 ; Line 81
 	add	eax, DWORD PTR [esi]
 ; Line 82
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_46319C$37767:
 ; Line 84
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 85
 	mov	esi, ebx
 ; Line 86
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 87
 	and	eax, 4095				; 00000fffH
 ; Line 88
@@ -450,7 +452,7 @@ $loc_46319C$37767:
 ; Line 90
 	add	esi, DWORD PTR [ebx]
 ; Line 91
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 92
 	mov	al, ah
 ; Line 93
@@ -463,7 +465,7 @@ $loc_46319C$37767:
 	jmp	$loc_463133$37760
 $loc_4631CA$37752:
 ; Line 98
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 99
 	and	eax, 32768				; 00008000H
 ; Line 100
@@ -471,7 +473,7 @@ $loc_4631CA$37752:
 ; Line 101
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 102
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 103
 	and	eax, 4095				; 00000fffH
 ; Line 104
@@ -479,20 +481,20 @@ $loc_4631CA$37752:
 ; Line 105
 	add	esi, eax
 ; Line 106
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 107
 	and	eax, 61440				; 0000f000H
 ; Line 108
 	add	eax, DWORD PTR [esi]
 ; Line 109
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_4631FC$37768:
 ; Line 111
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 112
 	mov	esi, ebx
 ; Line 113
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 114
 	and	eax, 4095				; 00000fffH
 ; Line 115
@@ -502,7 +504,7 @@ $loc_4631FC$37768:
 ; Line 117
 	add	esi, DWORD PTR [ebx]
 ; Line 118
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 119
 	mov	al, ah
 ; Line 120
@@ -536,7 +538,7 @@ $loc_463255$37754:
 	mov	ebp, 16					; 00000010H
 $loc_46325B$37775:
 ; Line 136
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 137
 	jb	SHORT $loc_4632BF$37776
 ; Line 138
@@ -569,7 +571,7 @@ $loc_463268$37777:
 ; Line 152
 	sub	edi, 800				; 00000320H
 ; Line 153
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 154
 	jb	SHORT $loc_4632BF$37776
 ; Line 155
@@ -638,7 +640,7 @@ $loc_4632DA$37781:
 ; Line 189
 	sub	edx, eax
 ; Line 190
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 191
 	jb	$loc_46341F$37783
 ; Line 192
@@ -917,7 +919,7 @@ $loc_463425$37756:
 	mov	ebp, 30					; 0000001eH
 $loc_463432$37801:
 ; Line 340
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 341
 	jb	$loc_463692$37802
 ; Line 342
@@ -1169,7 +1171,7 @@ $loc_46354F$37815:
 	mov	ebp, 2
 $loc_463563$37818:
 ; Line 474
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 475
 	jb	$loc_463692$37802
 ; Line 476
@@ -1435,7 +1437,7 @@ $loc_463698$37757:
 	mov	ebp, 30					; 0000001eH
 $loc_4636A5$37834:
 ; Line 616
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 617
 	jb	$loc_463905$37835
 ; Line 618
@@ -1687,7 +1689,7 @@ $loc_4637B9$37848:
 	mov	ebp, 2
 $loc_4637D6$37851:
 ; Line 751
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 752
 	jb	$loc_463905$37835
 ; Line 753
@@ -1953,7 +1955,7 @@ $loc_46390B$37758:
 	mov	ebp, 30					; 0000001eH
 $loc_463918$37867:
 ; Line 894
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 895
 	jb	$loc_463AAD$37868
 ; Line 896
@@ -2205,7 +2207,7 @@ $loc_463A35$37881:
 	mov	ebp, 8
 $loc_463A49$37884:
 ; Line 1028
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1029
 	jb	SHORT $loc_463AAD$37868
 ; Line 1030
@@ -2238,7 +2240,7 @@ $loc_463A56$37885:
 ; Line 1044
 	sub	edi, 800				; 00000320H
 ; Line 1045
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1046
 	jb	SHORT $loc_463AAD$37868
 ; Line 1047
@@ -2290,7 +2292,7 @@ $loc_463AB3$37759:
 	mov	ebp, 30					; 0000001eH
 $loc_463AC0$37887:
 ; Line 1073
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1074
 	jb	$loc_463C55$37888
 ; Line 1075
@@ -2542,7 +2544,7 @@ $loc_463BD4$37901:
 	mov	ebp, 8
 $loc_463BF1$37904:
 ; Line 1208
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1209
 	jb	SHORT $loc_463C55$37888
 ; Line 1210
@@ -2575,7 +2577,7 @@ $loc_463BFE$37905:
 ; Line 1224
 	sub	edi, 800				; 00000320H
 ; Line 1225
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1226
 	jb	SHORT $loc_463C55$37888
 ; Line 1227
@@ -2621,7 +2623,7 @@ $loc_463C5B$37761:
 	mov	edx, 16					; 00000010H
 $loc_463C60$37907:
 ; Line 1250
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1251
 	jb	$loc_464688$37779
 ; Line 1252
@@ -2652,7 +2654,7 @@ $loc_463C71$37908:
 ; Line 1265
 	sub	edi, 800				; 00000320H
 ; Line 1266
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1267
 	jb	$loc_464688$37779
 ; Line 1268
@@ -2712,7 +2714,7 @@ $loc_463CD7$37911:
 ; Line 1297
 	sub	edx, eax
 ; Line 1298
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1299
 	jb	$loc_463D9D$37913
 ; Line 1300
@@ -2885,7 +2887,7 @@ $loc_463DA3$37763:
 	mov	edx, 30					; 0000001eH
 $loc_463DAF$37921:
 ; Line 1390
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1391
 	jb	$loc_464688$37779
 ; Line 1392
@@ -2996,7 +2998,7 @@ $loc_463E2E$37924:
 	mov	edx, 2
 $loc_463E42$37926:
 ; Line 1448
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1449
 	jb	$loc_464688$37779
 ; Line 1450
@@ -3118,7 +3120,7 @@ $loc_463ED8$37764:
 	mov	edx, 30					; 0000001eH
 $loc_463EE5$37931:
 ; Line 1512
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1513
 	jb	$loc_46400B$37932
 ; Line 1514
@@ -3233,7 +3235,7 @@ $loc_463F64$37936:
 	mov	edx, 2
 $loc_463F7A$37939:
 ; Line 1573
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1574
 	jb	$loc_46400B$37932
 ; Line 1575
@@ -3358,7 +3360,7 @@ $loc_464011$37765:
 	mov	edx, 30					; 0000001eH
 $loc_46401D$37946:
 ; Line 1640
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1641
 	jb	$loc_464688$37779
 ; Line 1642
@@ -3469,7 +3471,7 @@ $loc_46409C$37949:
 	mov	edx, 8
 $loc_4640B0$37951:
 ; Line 1698
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1699
 	jb	$loc_464688$37779
 ; Line 1700
@@ -3500,7 +3502,7 @@ $loc_4640C1$37952:
 ; Line 1713
 	sub	edi, 800				; 00000320H
 ; Line 1714
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1715
 	jb	$loc_464688$37779
 ; Line 1716
@@ -3543,7 +3545,7 @@ $loc_464112$37766:
 	mov	edx, 30					; 0000001eH
 $loc_46411F$37954:
 ; Line 1737
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1738
 	jb	$loc_464209$37955
 ; Line 1739
@@ -3658,7 +3660,7 @@ $loc_46419E$37959:
 	mov	edx, 8
 $loc_4641B4$37962:
 ; Line 1798
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1799
 	jb	SHORT $loc_464209$37955
 ; Line 1800
@@ -3689,7 +3691,7 @@ $loc_4641C1$37963:
 ; Line 1813
 	sub	edi, 800				; 00000320H
 ; Line 1814
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1815
 	jb	SHORT $loc_464209$37955
 ; Line 1816
@@ -3731,7 +3733,7 @@ $loc_46420F$37769:
 	xor	eax, eax
 $loc_464216$37965:
 ; Line 1837
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1838
 	jb	$loc_464688$37779
 ; Line 1839
@@ -3750,7 +3752,7 @@ $loc_464227$37966:
 ; Line 1846
 	sub	edi, 800				; 00000320H
 ; Line 1847
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1848
 	jb	$loc_464688$37779
 ; Line 1849
@@ -3802,7 +3804,7 @@ $loc_464278$37969:
 ; Line 1874
 	sub	edx, eax
 ; Line 1875
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1876
 	jb	$loc_46431B$37971
 ; Line 1877
@@ -3945,7 +3947,7 @@ $loc_464321$37771:
 	mov	edx, 30					; 0000001eH
 $loc_46432D$37979:
 ; Line 1952
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 1953
 	jb	$loc_464688$37779
 ; Line 1954
@@ -4035,7 +4037,7 @@ $loc_464399$37984:
 	mov	edx, 2
 $loc_46439E$37985:
 ; Line 2000
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2001
 	jb	$loc_464688$37779
 ; Line 2002
@@ -4129,7 +4131,7 @@ $loc_46440E$37772:
 	mov	edx, 30					; 0000001eH
 $loc_46441A$37990:
 ; Line 2050
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2051
 	jb	$loc_464688$37779
 ; Line 2052
@@ -4219,7 +4221,7 @@ $loc_464486$37995:
 	mov	edx, 2
 $loc_46448B$37996:
 ; Line 2098
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2099
 	jb	$loc_464688$37779
 ; Line 2100
@@ -4313,7 +4315,7 @@ $loc_4644FB$37773:
 	mov	edx, 30					; 0000001eH
 $loc_464507$38001:
 ; Line 2148
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2149
 	jb	$loc_464688$37779
 ; Line 2150
@@ -4405,7 +4407,7 @@ $loc_464573$38006:
 	xor	eax, eax
 $loc_46457A$38007:
 ; Line 2197
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2198
 	jb	$loc_464688$37779
 ; Line 2199
@@ -4424,7 +4426,7 @@ $loc_46458B$38008:
 ; Line 2206
 	sub	edi, 800				; 00000320H
 ; Line 2207
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2208
 	jb	$loc_464688$37779
 ; Line 2209
@@ -4457,7 +4459,7 @@ $loc_4645C7$37774:
 	mov	edx, 30					; 0000001eH
 $loc_4645D3$38010:
 ; Line 2225
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2226
 	jb	$loc_464688$37779
 ; Line 2227
@@ -4549,7 +4551,7 @@ $loc_46463F$38015:
 	xor	eax, eax
 $loc_464646$38016:
 ; Line 2274
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2275
 	jb	SHORT $loc_464688$37779
 ; Line 2276
@@ -4568,7 +4570,7 @@ $loc_464653$38017:
 ; Line 2283
 	sub	edi, 800				; 00000320H
 ; Line 2284
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2285
 	jb	SHORT $loc_464688$37779
 ; Line 2286
@@ -4627,7 +4629,7 @@ _TEXT	SEGMENT
 ; Line 2315
 	mov	DWORD PTR _gpDrawMask, edx
 ; Line 2316
-	mov	eax, DWORD PTR _light_table_index
+	mov	eax, DWORD PTR _nLVal
 ; Line 2317
 	test	al, al
 ; Line 2318
@@ -4637,7 +4639,7 @@ _TEXT	SEGMENT
 ; Line 2320
 	je	$loc_464802$38024
 ; Line 2321
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2322
 	and	eax, 32768				; 00008000H
 ; Line 2323
@@ -4647,7 +4649,7 @@ _TEXT	SEGMENT
 ; Line 2325
 	mov	esi, ebx
 ; Line 2326
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2327
 	and	eax, 4095				; 00000fffH
 ; Line 2328
@@ -4657,13 +4659,13 @@ _TEXT	SEGMENT
 ; Line 2330
 	add	esi, DWORD PTR [ebx]
 ; Line 2331
-	mov	ebx, DWORD PTR _light_table_index
+	mov	ebx, DWORD PTR _nLVal
 ; Line 2332
 	shl	ebx, 8
 ; Line 2333
 	add	ebx, DWORD PTR _pLightTbl
 ; Line 2334
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2335
 	mov	al, ah
 ; Line 2336
@@ -4696,13 +4698,13 @@ $loc_464736$38025:
 ; Line 2350
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 2351
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2352
 	and	eax, 4095				; 00000fffH
 ; Line 2353
 	shl	eax, 4
 ; Line 2354
-	add	eax, DWORD PTR _light_table_index
+	add	eax, DWORD PTR _nLVal
 ; Line 2355
 	shl	eax, 2
 ; Line 2356
@@ -4714,7 +4716,7 @@ $loc_464736$38025:
 ; Line 2359
 	add	esi, eax
 ; Line 2360
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2361
 	mov	al, ah
 ; Line 2362
@@ -4746,7 +4748,7 @@ $loc_46476B$38033:
 	jmp	$loc_464F19$38039
 $loc_4647A2$38023:
 ; Line 2377
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2378
 	and	eax, 32768				; 00008000H
 ; Line 2379
@@ -4754,7 +4756,7 @@ $loc_4647A2$38023:
 ; Line 2380
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 2381
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2382
 	and	eax, 4095				; 00000fffH
 ; Line 2383
@@ -4762,20 +4764,20 @@ $loc_4647A2$38023:
 ; Line 2384
 	add	esi, eax
 ; Line 2385
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2386
 	and	eax, 61440				; 0000f000H
 ; Line 2387
 	add	eax, DWORD PTR [esi]
 ; Line 2388
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_4647D4$38040:
 ; Line 2390
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 2391
 	mov	esi, ebx
 ; Line 2392
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2393
 	and	eax, 4095				; 00000fffH
 ; Line 2394
@@ -4785,7 +4787,7 @@ $loc_4647D4$38040:
 ; Line 2396
 	add	esi, DWORD PTR [ebx]
 ; Line 2397
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2398
 	mov	al, ah
 ; Line 2399
@@ -4798,7 +4800,7 @@ $loc_4647D4$38040:
 	jmp	$loc_46476B$38033
 $loc_464802$38024:
 ; Line 2404
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2405
 	and	eax, 32768				; 00008000H
 ; Line 2406
@@ -4806,7 +4808,7 @@ $loc_464802$38024:
 ; Line 2407
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 2408
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2409
 	and	eax, 4095				; 00000fffH
 ; Line 2410
@@ -4814,20 +4816,20 @@ $loc_464802$38024:
 ; Line 2411
 	add	esi, eax
 ; Line 2412
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2413
 	and	eax, 61440				; 0000f000H
 ; Line 2414
 	add	eax, DWORD PTR [esi]
 ; Line 2415
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_464834$38041:
 ; Line 2417
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 2418
 	mov	esi, ebx
 ; Line 2419
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2420
 	and	eax, 4095				; 00000fffH
 ; Line 2421
@@ -4837,7 +4839,7 @@ $loc_464834$38041:
 ; Line 2423
 	add	esi, DWORD PTR [ebx]
 ; Line 2424
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 2425
 	mov	al, ah
 ; Line 2426
@@ -4869,7 +4871,7 @@ $loc_46488D$38026:
 	mov	edx, 32					; 00000020H
 $loc_464892$38047:
 ; Line 2441
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2442
 	jb	$loc_4652C1$38048
 ; Line 2443
@@ -4944,7 +4946,7 @@ $loc_4648EC$38052:
 ; Line 2480
 	sub	edx, eax
 ; Line 2481
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2482
 	jb	$loc_4652C0$38054
 ; Line 2483
@@ -5031,7 +5033,7 @@ $loc_464964$38029:
 	mov	edx, 30					; 0000001eH
 $loc_464969$38059:
 ; Line 2528
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2529
 	jb	$loc_4652C1$38048
 ; Line 2530
@@ -5104,7 +5106,7 @@ $loc_4649BB$38061:
 	mov	edx, 2
 $loc_4649CB$38062:
 ; Line 2566
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2567
 	jb	$loc_4652C1$38048
 ; Line 2568
@@ -5184,7 +5186,7 @@ $loc_464A30$38030:
 	mov	edx, 30					; 0000001eH
 $loc_464A36$38065:
 ; Line 2608
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2609
 	jb	$loc_464AF8$38066
 ; Line 2610
@@ -5260,7 +5262,7 @@ $loc_464A88$38069:
 	mov	edx, 2
 $loc_464A9A$38070:
 ; Line 2648
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2649
 	jb	SHORT $loc_464AF8$38066
 ; Line 2650
@@ -5344,7 +5346,7 @@ $loc_464AFE$38031:
 	mov	edx, 30					; 0000001eH
 $loc_464B03$38074:
 ; Line 2693
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2694
 	jb	$loc_4652C1$38048
 ; Line 2695
@@ -5423,7 +5425,7 @@ $loc_464B55$38076:
 	mov	edx, 16					; 00000010H
 $loc_464B72$38077:
 ; Line 2734
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2735
 	jb	$loc_4652C1$38048
 ; Line 2736
@@ -5483,7 +5485,7 @@ $loc_464BBC$38032:
 	mov	edx, 30					; 0000001eH
 $loc_464BC2$38080:
 ; Line 2766
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2767
 	jb	$loc_464C74$38081
 ; Line 2768
@@ -5565,7 +5567,7 @@ $loc_464C14$38084:
 	mov	edx, 16					; 00000010H
 $loc_464C33$38085:
 ; Line 2809
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2810
 	jb	SHORT $loc_464C74$38081
 ; Line 2811
@@ -5626,7 +5628,7 @@ $loc_464C7A$38034:
 	mov	edx, 32					; 00000020H
 $loc_464C7F$38088:
 ; Line 2842
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2843
 	jb	$loc_4652C1$38048
 ; Line 2844
@@ -5699,7 +5701,7 @@ $loc_464CD8$38092:
 ; Line 2880
 	sub	edx, eax
 ; Line 2881
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2882
 	jb	$loc_4652C0$38054
 ; Line 2883
@@ -5780,7 +5782,7 @@ $loc_464D4B$38036:
 	mov	edx, 30					; 0000001eH
 $loc_464D50$38098:
 ; Line 2925
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2926
 	jb	$loc_4652C1$38048
 ; Line 2927
@@ -5829,7 +5831,7 @@ $loc_464D88$38100:
 	mov	edx, 2
 $loc_464D98$38101:
 ; Line 2951
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2952
 	jb	$loc_4652C1$38048
 ; Line 2953
@@ -5885,7 +5887,7 @@ $loc_464DE3$38037:
 	mov	edx, 30					; 0000001eH
 $loc_464DE9$38104:
 ; Line 2981
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 2982
 	jb	$loc_464E77$38105
 ; Line 2983
@@ -5937,7 +5939,7 @@ $loc_464E21$38108:
 	mov	edx, 2
 $loc_464E33$38109:
 ; Line 3009
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3010
 	jb	SHORT $loc_464E77$38105
 ; Line 3011
@@ -5997,7 +5999,7 @@ $loc_464E7D$38038:
 	mov	edx, 30					; 0000001eH
 $loc_464E82$38113:
 ; Line 3042
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3043
 	jb	$loc_4652C1$38048
 ; Line 3044
@@ -6052,7 +6054,7 @@ $loc_464EBA$38115:
 	mov	edx, 16					; 00000010H
 $loc_464ED7$38116:
 ; Line 3071
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3072
 	jb	$loc_4652C1$38048
 ; Line 3073
@@ -6104,7 +6106,7 @@ $loc_464F19$38039:
 	mov	edx, 30					; 0000001eH
 $loc_464F1F$38119:
 ; Line 3099
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3100
 	jb	$loc_464FB6$38120
 ; Line 3101
@@ -6162,7 +6164,7 @@ $loc_464F57$38123:
 	mov	edx, 16					; 00000010H
 $loc_464F76$38124:
 ; Line 3130
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3131
 	jb	SHORT $loc_464FB6$38120
 ; Line 3132
@@ -6221,7 +6223,7 @@ $loc_464FBC$38027:
 	mov	edx, 32					; 00000020H
 $loc_464FC1$38127:
 ; Line 3162
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3163
 	jb	$loc_4652C1$38048
 ; Line 3164
@@ -6292,7 +6294,7 @@ $loc_465019$38131:
 ; Line 3199
 	sub	edx, eax
 ; Line 3200
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3201
 	jb	$loc_4652C0$38054
 ; Line 3202
@@ -6375,7 +6377,7 @@ $loc_465091$38043:
 	xor	eax, eax
 $loc_465098$38137:
 ; Line 3245
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3246
 	jb	$loc_4652C1$38048
 ; Line 3247
@@ -6421,7 +6423,7 @@ $loc_4650D3$38140:
 	mov	edx, 2
 $loc_4650D8$38141:
 ; Line 3270
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3271
 	jb	$loc_4652C1$38048
 ; Line 3272
@@ -6469,7 +6471,7 @@ $loc_465117$38044:
 	xor	eax, eax
 $loc_46511E$38144:
 ; Line 3296
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3297
 	jb	$loc_4652C1$38048
 ; Line 3298
@@ -6515,7 +6517,7 @@ $loc_465159$38147:
 	mov	edx, 2
 $loc_46515E$38148:
 ; Line 3321
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3322
 	jb	$loc_4652C1$38048
 ; Line 3323
@@ -6563,7 +6565,7 @@ $loc_46519D$38045:
 	xor	eax, eax
 $loc_4651A4$38151:
 ; Line 3347
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3348
 	jb	$loc_4652C1$38048
 ; Line 3349
@@ -6615,7 +6617,7 @@ $loc_4651DF$38154:
 	mov	edx, 16					; 00000010H
 $loc_4651F1$38155:
 ; Line 3375
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3376
 	jb	$loc_4652C1$38048
 ; Line 3377
@@ -6665,7 +6667,7 @@ $loc_465232$38046:
 	xor	eax, eax
 $loc_465239$38158:
 ; Line 3402
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3403
 	jb	NEAR PTR $+130
 ; Line 3404
@@ -6717,7 +6719,7 @@ $loc_465274$38161:
 	mov	edx, 16					; 00000010H
 $loc_465286$38162:
 ; Line 3430
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3431
 	jb	SHORT $loc_4652C1$38048
 ; Line 3432
@@ -6776,9 +6778,9 @@ $loc_4652C1$38048:
 _TEXT	ENDS
 PUBLIC	@drawUpperScreen@4
 EXTRN	_block_lvid:BYTE
-EXTRN	_arch_draw_type:BYTE
-EXTRN	_cel_transparency_active:DWORD
-EXTRN	_level_piece_id:DWORD
+EXTRN	_gbPartialTrans:BYTE
+EXTRN	_nTrans:DWORD
+EXTRN	_gnPieceNum:DWORD
 ; Function compile flags: /Odsy
 ;	COMDAT @drawUpperScreen@4
 _TEXT	SEGMENT
@@ -6793,13 +6795,13 @@ _TEXT	SEGMENT
 ; Line 3469
 	push	esi
 ; Line 3470
-	mov	edx, DWORD PTR _cel_transparency_active
+	mov	edx, DWORD PTR _nTrans
 ; Line 3471
 	test	edx, edx
 ; Line 3472
 	je	$loc_465372$38167
 ; Line 3473
-	mov	dl, BYTE PTR _arch_draw_type
+	mov	dl, BYTE PTR _gbPartialTrans
 ; Line 3474
 	cmp	dl, 0
 ; Line 3475
@@ -6814,7 +6816,7 @@ $loc_4652EC$38168:
 ; Line 3480
 	jne	SHORT $loc_46532F$38170
 ; Line 3481
-	mov	ebx, DWORD PTR _level_piece_id
+	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 3482
 	mov	al, BYTE PTR _block_lvid[ebx]
 ; Line 3483
@@ -6854,7 +6856,7 @@ $loc_46532F$38170:
 ; Line 3501
 	jne	SHORT $loc_465372$38167
 ; Line 3502
-	mov	ebx, DWORD PTR _level_piece_id
+	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 3503
 	mov	al, BYTE PTR _block_lvid[ebx]
 ; Line 3504
@@ -6896,7 +6898,7 @@ $loc_465372$38167:
 ; Line 3523
 	mov	edi, ecx
 ; Line 3524
-	mov	eax, DWORD PTR _light_table_index
+	mov	eax, DWORD PTR _nLVal
 ; Line 3525
 	test	al, al
 ; Line 3526
@@ -6906,7 +6908,7 @@ $loc_465372$38167:
 ; Line 3528
 	je	$loc_4654D4$38174
 ; Line 3529
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3530
 	and	eax, 32768				; 00008000H
 ; Line 3531
@@ -6916,7 +6918,7 @@ $loc_465372$38167:
 ; Line 3533
 	mov	esi, ebx
 ; Line 3534
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3535
 	and	eax, 4095				; 00000fffH
 ; Line 3536
@@ -6926,13 +6928,13 @@ $loc_465372$38167:
 ; Line 3538
 	add	esi, DWORD PTR [ebx]
 ; Line 3539
-	mov	ebx, DWORD PTR _light_table_index
+	mov	ebx, DWORD PTR _nLVal
 ; Line 3540
 	shl	ebx, 8
 ; Line 3541
 	add	ebx, DWORD PTR _pLightTbl
 ; Line 3542
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3543
 	shr	eax, 12					; 0000000cH
 ; Line 3544
@@ -6961,13 +6963,13 @@ $loc_46540A$38175:
 ; Line 3556
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 3557
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3558
 	and	eax, 4095				; 00000fffH
 ; Line 3559
 	shl	eax, 4
 ; Line 3560
-	add	eax, DWORD PTR _light_table_index
+	add	eax, DWORD PTR _nLVal
 ; Line 3561
 	shl	eax, 2
 ; Line 3562
@@ -6979,7 +6981,7 @@ $loc_46540A$38175:
 ; Line 3565
 	add	esi, eax
 ; Line 3566
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3567
 	shr	eax, 12					; 0000000cH
 ; Line 3568
@@ -7009,7 +7011,7 @@ $loc_46543D$38182:
 	jmp	$loc_465C53$38188
 $loc_465474$38173:
 ; Line 3582
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3583
 	and	eax, 32768				; 00008000H
 ; Line 3584
@@ -7017,7 +7019,7 @@ $loc_465474$38173:
 ; Line 3585
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 3586
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3587
 	and	eax, 4095				; 00000fffH
 ; Line 3588
@@ -7025,20 +7027,20 @@ $loc_465474$38173:
 ; Line 3589
 	add	esi, eax
 ; Line 3590
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3591
 	and	eax, 61440				; 0000f000H
 ; Line 3592
 	add	eax, DWORD PTR [esi]
 ; Line 3593
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_4654A6$38189:
 ; Line 3595
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 3596
 	mov	esi, ebx
 ; Line 3597
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3598
 	and	eax, 4095				; 00000fffH
 ; Line 3599
@@ -7048,7 +7050,7 @@ $loc_4654A6$38189:
 ; Line 3601
 	add	esi, DWORD PTR [ebx]
 ; Line 3602
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3603
 	mov	al, ah
 ; Line 3604
@@ -7061,7 +7063,7 @@ $loc_4654A6$38189:
 	jmp	$loc_46543D$38182
 $loc_4654D4$38174:
 ; Line 3609
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3610
 	and	eax, 32768				; 00008000H
 ; Line 3611
@@ -7069,7 +7071,7 @@ $loc_4654D4$38174:
 ; Line 3612
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 3613
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3614
 	and	eax, 4095				; 00000fffH
 ; Line 3615
@@ -7077,20 +7079,20 @@ $loc_4654D4$38174:
 ; Line 3616
 	add	esi, eax
 ; Line 3617
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3618
 	and	eax, 61440				; 0000f000H
 ; Line 3619
 	add	eax, DWORD PTR [esi]
 ; Line 3620
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_465506$38190:
 ; Line 3622
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 3623
 	mov	esi, ebx
 ; Line 3624
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3625
 	and	eax, 4095				; 00000fffH
 ; Line 3626
@@ -7100,7 +7102,7 @@ $loc_465506$38190:
 ; Line 3628
 	add	esi, DWORD PTR [ebx]
 ; Line 3629
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 3630
 	shr	eax, 12					; 0000000cH
 ; Line 3631
@@ -7130,7 +7132,7 @@ $loc_46555D$38176:
 	mov	edx, 32					; 00000020H
 $loc_465562$38197:
 ; Line 3645
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3646
 	jb	$loc_465F33$38169
 ; Line 3647
@@ -7208,7 +7210,7 @@ $loc_4655C0$38200:
 ; Line 3685
 	sub	edx, eax
 ; Line 3686
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3687
 	jb	$loc_46565D$38202
 ; Line 3688
@@ -7331,7 +7333,7 @@ $loc_465663$38178:
 	mov	ebp, 30					; 0000001eH
 $loc_465669$38208:
 ; Line 3752
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3753
 	jb	$loc_46575F$38209
 ; Line 3754
@@ -7421,7 +7423,7 @@ $loc_4656D7$38212:
 	mov	ebp, 2
 $loc_4656E7$38213:
 ; Line 3799
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3800
 	jb	SHORT $loc_46575F$38209
 ; Line 3801
@@ -7521,7 +7523,7 @@ $loc_465765$38179:
 	mov	ebp, 30					; 0000001eH
 $loc_46576B$38217:
 ; Line 3852
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3853
 	jb	$loc_465861$38218
 ; Line 3854
@@ -7611,7 +7613,7 @@ $loc_4657D0$38221:
 	mov	ebp, 2
 $loc_4657E9$38222:
 ; Line 3899
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3900
 	jb	SHORT $loc_465861$38218
 ; Line 3901
@@ -7711,7 +7713,7 @@ $loc_465867$38180:
 	mov	ebp, 30					; 0000001eH
 $loc_46586D$38226:
 ; Line 3952
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 3953
 	jb	$loc_465933$38227
 ; Line 3954
@@ -7801,7 +7803,7 @@ $loc_4658DB$38230:
 	mov	ebp, 16					; 00000010H
 $loc_4658EB$38231:
 ; Line 3999
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4000
 	jb	SHORT $loc_465933$38227
 ; Line 4001
@@ -7863,7 +7865,7 @@ $loc_465939$38181:
 	mov	ebp, 30					; 0000001eH
 $loc_46593F$38233:
 ; Line 4032
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4033
 	jb	$loc_465A05$38234
 ; Line 4034
@@ -7953,7 +7955,7 @@ $loc_4659A4$38237:
 	mov	ebp, 16					; 00000010H
 $loc_4659BD$38238:
 ; Line 4079
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4080
 	jb	SHORT $loc_465A05$38234
 ; Line 4081
@@ -8013,7 +8015,7 @@ $loc_465A0B$38183:
 	mov	edx, 32					; 00000020H
 $loc_465A10$38240:
 ; Line 4111
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4112
 	jb	$loc_465F33$38169
 ; Line 4113
@@ -8061,7 +8063,7 @@ $loc_465A47$38243:
 ; Line 4136
 	sub	edx, eax
 ; Line 4137
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4138
 	jb	SHORT $loc_465AA2$38245
 ; Line 4139
@@ -8145,7 +8147,7 @@ $loc_465AA8$38185:
 	mov	edx, 30					; 0000001eH
 $loc_465AAD$38250:
 ; Line 4183
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4184
 	jb	$loc_465F33$38169
 ; Line 4185
@@ -8194,7 +8196,7 @@ $loc_465AE5$38252:
 	mov	edx, 2
 $loc_465AF5$38253:
 ; Line 4209
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4210
 	jb	$loc_465F33$38169
 ; Line 4211
@@ -8250,7 +8252,7 @@ $loc_465B40$38186:
 	mov	edx, 30					; 0000001eH
 $loc_465B46$38256:
 ; Line 4239
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4240
 	jb	$loc_465BD4$38257
 ; Line 4241
@@ -8302,7 +8304,7 @@ $loc_465B7E$38260:
 	mov	edx, 2
 $loc_465B90$38261:
 ; Line 4267
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4268
 	jb	SHORT $loc_465BD4$38257
 ; Line 4269
@@ -8362,7 +8364,7 @@ $loc_465BDA$38187:
 	mov	edx, 30					; 0000001eH
 $loc_465BDF$38265:
 ; Line 4300
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4301
 	jb	$loc_465F33$38169
 ; Line 4302
@@ -8411,7 +8413,7 @@ $loc_465C17$38267:
 	mov	edx, 16					; 00000010H
 $loc_465C27$38268:
 ; Line 4326
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4327
 	jb	$loc_465F33$38169
 ; Line 4328
@@ -8444,7 +8446,7 @@ $loc_465C53$38188:
 	mov	edx, 30					; 0000001eH
 $loc_465C59$38270:
 ; Line 4344
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4345
 	jb	SHORT $loc_465CC2$38271
 ; Line 4346
@@ -8496,7 +8498,7 @@ $loc_465C8D$38274:
 	mov	edx, 16					; 00000010H
 $loc_465C9F$38275:
 ; Line 4372
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4373
 	jb	SHORT $loc_465CC2$38271
 ; Line 4374
@@ -8532,7 +8534,7 @@ $loc_465CC8$38191:
 	xor	eax, eax
 $loc_465CCF$38277:
 ; Line 4392
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4393
 	jb	$loc_465F33$38169
 ; Line 4394
@@ -8576,7 +8578,7 @@ $loc_465D01$38280:
 ; Line 4415
 	sub	edx, eax
 ; Line 4416
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4417
 	jb	SHORT $loc_465D52$38282
 ; Line 4418
@@ -8654,7 +8656,7 @@ $loc_465D58$38193:
 	xor	eax, eax
 $loc_465D5F$38287:
 ; Line 4459
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4460
 	jb	$loc_465F33$38169
 ; Line 4461
@@ -8700,7 +8702,7 @@ $loc_465D9A$38290:
 	mov	edx, 2
 $loc_465D9F$38291:
 ; Line 4484
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4485
 	jb	$loc_465F33$38169
 ; Line 4486
@@ -8748,7 +8750,7 @@ $loc_465DDE$38194:
 	xor	eax, eax
 $loc_465DE5$38294:
 ; Line 4510
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4511
 	jb	$loc_465F33$38169
 ; Line 4512
@@ -8794,7 +8796,7 @@ $loc_465E20$38297:
 	mov	edx, 2
 $loc_465E25$38298:
 ; Line 4535
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4536
 	jb	$loc_465F33$38169
 ; Line 4537
@@ -8842,7 +8844,7 @@ $loc_465E64$38195:
 	xor	eax, eax
 $loc_465E6B$38301:
 ; Line 4561
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4562
 	jb	$loc_465F33$38169
 ; Line 4563
@@ -8888,7 +8890,7 @@ $loc_465EA6$38304:
 	mov	edx, 16					; 00000010H
 $loc_465EAB$38305:
 ; Line 4586
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4587
 	jb	NEAR PTR $+130
 ; Line 4588
@@ -8917,7 +8919,7 @@ $loc_465ECF$38196:
 	xor	eax, eax
 $loc_465ED6$38307:
 ; Line 4602
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4603
 	jb	SHORT $loc_465F33$38169
 ; Line 4604
@@ -8963,7 +8965,7 @@ $loc_465F0D$38310:
 	mov	edx, 16					; 00000010H
 $loc_465F12$38311:
 ; Line 4627
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4628
 	jb	SHORT $loc_465F33$38169
 ; Line 4629
@@ -9021,7 +9023,7 @@ _TEXT	SEGMENT
 ; Line 4658
 	mov	edi, ecx
 ; Line 4659
-	mov	eax, DWORD PTR _light_table_index
+	mov	eax, DWORD PTR _nLVal
 ; Line 4660
 	test	al, al
 ; Line 4661
@@ -9031,7 +9033,7 @@ _TEXT	SEGMENT
 ; Line 4663
 	je	$loc_4660A2$38317
 ; Line 4664
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4665
 	and	eax, 32768				; 00008000H
 ; Line 4666
@@ -9041,7 +9043,7 @@ _TEXT	SEGMENT
 ; Line 4668
 	mov	esi, ebx
 ; Line 4669
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4670
 	and	eax, 4095				; 00000fffH
 ; Line 4671
@@ -9051,13 +9053,13 @@ _TEXT	SEGMENT
 ; Line 4673
 	add	esi, DWORD PTR [ebx]
 ; Line 4674
-	mov	ebx, DWORD PTR _light_table_index
+	mov	ebx, DWORD PTR _nLVal
 ; Line 4675
 	shl	ebx, 8
 ; Line 4676
 	add	ebx, DWORD PTR _pLightTbl
 ; Line 4677
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4678
 	mov	al, ah
 ; Line 4679
@@ -9088,13 +9090,13 @@ $loc_465FD6$38318:
 ; Line 4692
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 4693
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4694
 	and	eax, 4095				; 00000fffH
 ; Line 4695
 	shl	eax, 4
 ; Line 4696
-	add	eax, DWORD PTR _light_table_index
+	add	eax, DWORD PTR _nLVal
 ; Line 4697
 	shl	eax, 2
 ; Line 4698
@@ -9106,7 +9108,7 @@ $loc_465FD6$38318:
 ; Line 4701
 	add	esi, eax
 ; Line 4702
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4703
 	mov	al, ah
 ; Line 4704
@@ -9138,7 +9140,7 @@ $loc_46600B$38325:
 	jmp	$loc_46732D$38331
 $loc_466042$38316:
 ; Line 4719
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4720
 	and	eax, 32768				; 00008000H
 ; Line 4721
@@ -9146,7 +9148,7 @@ $loc_466042$38316:
 ; Line 4722
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 4723
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4724
 	and	eax, 4095				; 00000fffH
 ; Line 4725
@@ -9154,20 +9156,20 @@ $loc_466042$38316:
 ; Line 4726
 	add	esi, eax
 ; Line 4727
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4728
 	and	eax, 61440				; 0000f000H
 ; Line 4729
 	add	eax, DWORD PTR [esi]
 ; Line 4730
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_466074$38332:
 ; Line 4732
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 4733
 	mov	esi, ebx
 ; Line 4734
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4735
 	and	eax, 4095				; 00000fffH
 ; Line 4736
@@ -9177,7 +9179,7 @@ $loc_466074$38332:
 ; Line 4738
 	add	esi, DWORD PTR [ebx]
 ; Line 4739
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4740
 	mov	al, ah
 ; Line 4741
@@ -9190,7 +9192,7 @@ $loc_466074$38332:
 	jmp	$loc_46600B$38325
 $loc_4660A2$38317:
 ; Line 4746
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4747
 	and	eax, 32768				; 00008000H
 ; Line 4748
@@ -9198,7 +9200,7 @@ $loc_4660A2$38317:
 ; Line 4749
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 4750
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4751
 	and	eax, 4095				; 00000fffH
 ; Line 4752
@@ -9206,20 +9208,20 @@ $loc_4660A2$38317:
 ; Line 4753
 	add	esi, eax
 ; Line 4754
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4755
 	and	eax, 61440				; 0000f000H
 ; Line 4756
 	add	eax, DWORD PTR [esi]
 ; Line 4757
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_4660D4$38333:
 ; Line 4759
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 4760
 	mov	esi, ebx
 ; Line 4761
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4762
 	and	eax, 4095				; 00000fffH
 ; Line 4763
@@ -9229,7 +9231,7 @@ $loc_4660D4$38333:
 ; Line 4765
 	add	esi, DWORD PTR [ebx]
 ; Line 4766
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 4767
 	mov	al, ah
 ; Line 4768
@@ -9263,7 +9265,7 @@ $loc_46612D$38319:
 	mov	ebp, 16					; 00000010H
 $loc_466133$38340:
 ; Line 4784
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4785
 	jb	SHORT $loc_466143$38341
 ; Line 4786
@@ -9304,7 +9306,7 @@ $loc_466166$38342:
 ; Line 4805
 	sub	edi, 800				; 00000320H
 ; Line 4806
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4807
 	jb	SHORT $loc_46617C$38344
 ; Line 4808
@@ -9382,7 +9384,7 @@ $loc_4661C3$38349:
 ; Line 4847
 	sub	ebp, eax
 ; Line 4848
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 4849
 	jb	SHORT $loc_4661E3$38351
 ; Line 4850
@@ -9661,7 +9663,7 @@ $loc_466310$38321:
 ; Line 4996
 	mov	eax, edi
 ; Line 4997
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 4998
 	jb	SHORT $loc_466370$38368
 ; Line 4999
@@ -9957,7 +9959,7 @@ $loc_466490$38370:
 ; Line 5153
 	mov	eax, edi
 ; Line 5154
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 5155
 	jb	SHORT $loc_4664E8$38386
 ; Line 5156
@@ -10266,7 +10268,7 @@ $loc_466611$38322:
 ; Line 5317
 	mov	eax, edi
 ; Line 5318
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 5319
 	jb	SHORT $loc_466671$38404
 ; Line 5320
@@ -10562,7 +10564,7 @@ $loc_466791$38406:
 ; Line 5475
 	mov	eax, edi
 ; Line 5476
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 5477
 	jb	SHORT $loc_4667E9$38422
 ; Line 5478
@@ -10871,7 +10873,7 @@ $loc_466912$38323:
 ; Line 5640
 	mov	eax, edi
 ; Line 5641
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 5642
 	jb	SHORT $loc_466972$38440
 ; Line 5643
@@ -11166,7 +11168,7 @@ $loc_466A92$38442:
 	mov	ebp, 8
 $loc_466A97$38458:
 ; Line 5798
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 5799
 	jb	SHORT $loc_466AA7$38459
 ; Line 5800
@@ -11207,7 +11209,7 @@ $loc_466ACA$38460:
 ; Line 5819
 	sub	edi, 800				; 00000320H
 ; Line 5820
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 5821
 	jb	SHORT $loc_466AE0$38462
 ; Line 5822
@@ -11267,7 +11269,7 @@ $loc_466B11$38324:
 ; Line 5851
 	mov	eax, edi
 ; Line 5852
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 5853
 	jb	SHORT $loc_466B71$38465
 ; Line 5854
@@ -11562,7 +11564,7 @@ $loc_466C91$38467:
 	mov	ebp, 8
 $loc_466C96$38483:
 ; Line 6010
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6011
 	jb	SHORT $loc_466CA6$38484
 ; Line 6012
@@ -11603,7 +11605,7 @@ $loc_466CC9$38485:
 ; Line 6031
 	sub	edi, 800				; 00000320H
 ; Line 6032
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6033
 	jb	SHORT $loc_466CDF$38487
 ; Line 6034
@@ -11656,7 +11658,7 @@ $loc_466D10$38326:
 	mov	edx, 16					; 00000010H
 $loc_466D15$38490:
 ; Line 6061
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6062
 	jb	SHORT $loc_466D25$38491
 ; Line 6063
@@ -11695,7 +11697,7 @@ $loc_466D41$38492:
 ; Line 6081
 	sub	edi, 800				; 00000320H
 ; Line 6082
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6083
 	jb	SHORT $loc_466D57$38494
 ; Line 6084
@@ -11763,7 +11765,7 @@ $loc_466D94$38498:
 ; Line 6118
 	sub	edx, eax
 ; Line 6119
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6120
 	jb	SHORT $loc_466DB1$38500
 ; Line 6121
@@ -11943,7 +11945,7 @@ $loc_466E62$38328:
 ; Line 6213
 	mov	eax, edi
 ; Line 6214
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 6215
 	jb	SHORT $loc_466EC1$38508
 ; Line 6216
@@ -12097,7 +12099,7 @@ $loc_466F34$38512:
 ; Line 6294
 	mov	eax, edi
 ; Line 6295
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 6296
 	jb	SHORT $loc_466F97$38514
 ; Line 6297
@@ -12262,7 +12264,7 @@ $loc_46701C$38329:
 ; Line 6380
 	mov	eax, edi
 ; Line 6381
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 6382
 	jb	SHORT $loc_46707C$38520
 ; Line 6383
@@ -12421,7 +12423,7 @@ $loc_4670FC$38522:
 ; Line 6464
 	mov	eax, edi
 ; Line 6465
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 6466
 	jb	SHORT $loc_467154$38529
 ; Line 6467
@@ -12591,7 +12593,7 @@ $loc_4671E1$38330:
 ; Line 6554
 	mov	eax, edi
 ; Line 6555
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 6556
 	jb	SHORT $loc_467240$38538
 ; Line 6557
@@ -12744,7 +12746,7 @@ $loc_4672B3$38542:
 	mov	edx, 8
 $loc_4672C3$38544:
 ; Line 6636
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6637
 	jb	SHORT $loc_4672D3$38545
 ; Line 6638
@@ -12783,7 +12785,7 @@ $loc_4672EF$38546:
 ; Line 6656
 	sub	edi, 800				; 00000320H
 ; Line 6657
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6658
 	jb	SHORT $loc_467305$38548
 ; Line 6659
@@ -12835,7 +12837,7 @@ $loc_46732D$38331:
 ; Line 6684
 	mov	eax, edi
 ; Line 6685
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 6686
 	jb	SHORT $loc_46738D$38551
 ; Line 6687
@@ -12993,7 +12995,7 @@ $loc_46740D$38553:
 	mov	edx, 8
 $loc_467412$38560:
 ; Line 6769
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6770
 	jb	SHORT $loc_467422$38561
 ; Line 6771
@@ -13032,7 +13034,7 @@ $loc_46743E$38562:
 ; Line 6789
 	sub	edi, 800				; 00000320H
 ; Line 6790
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6791
 	jb	SHORT $loc_467454$38564
 ; Line 6792
@@ -13081,7 +13083,7 @@ $loc_46747D$38334:
 	xor	eax, eax
 $loc_467484$38567:
 ; Line 6817
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6818
 	jb	SHORT $loc_467494$38568
 ; Line 6819
@@ -13108,7 +13110,7 @@ $loc_4674A5$38569:
 ; Line 6831
 	sub	edi, 800				; 00000320H
 ; Line 6832
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6833
 	jb	SHORT $loc_4674BB$38571
 ; Line 6834
@@ -13168,7 +13170,7 @@ $loc_4674EE$38575:
 ; Line 6864
 	sub	edx, eax
 ; Line 6865
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6866
 	jb	SHORT $loc_467507$38577
 ; Line 6867
@@ -13317,7 +13319,7 @@ $loc_467599$38336:
 	mov	edx, 30					; 0000001eH
 $loc_4675A5$38585:
 ; Line 6945
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6946
 	jb	SHORT $loc_4675B7$38586
 ; Line 6947
@@ -13416,7 +13418,7 @@ $loc_467617$38591:
 	mov	edx, 2
 $loc_46761C$38592:
 ; Line 6998
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 6999
 	jb	SHORT $loc_46762E$38593
 ; Line 7000
@@ -13519,7 +13521,7 @@ $loc_467692$38337:
 	mov	edx, 30					; 0000001eH
 $loc_46769E$38598:
 ; Line 7053
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7054
 	jb	SHORT $loc_4676B2$38599
 ; Line 7055
@@ -13620,7 +13622,7 @@ $loc_467712$38604:
 	mov	edx, 2
 $loc_467717$38605:
 ; Line 7107
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7108
 	jb	SHORT $loc_46772B$38606
 ; Line 7109
@@ -13725,7 +13727,7 @@ $loc_46778F$38338:
 	mov	edx, 30					; 0000001eH
 $loc_46779B$38611:
 ; Line 7163
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7164
 	jb	SHORT $loc_4677AD$38612
 ; Line 7165
@@ -13824,7 +13826,7 @@ $loc_46780D$38617:
 	mov	edx, 8
 $loc_467812$38618:
 ; Line 7216
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7217
 	jb	SHORT $loc_467822$38619
 ; Line 7218
@@ -13853,7 +13855,7 @@ $loc_467835$38620:
 ; Line 7231
 	sub	edi, 800				; 00000320H
 ; Line 7232
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7233
 	jb	SHORT $loc_46784B$38622
 ; Line 7234
@@ -13896,7 +13898,7 @@ $loc_46786B$38339:
 	mov	edx, 30					; 0000001eH
 $loc_467877$38625:
 ; Line 7256
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7257
 	jb	SHORT $loc_46788B$38626
 ; Line 7258
@@ -13997,7 +13999,7 @@ $loc_4678EB$38631:
 	mov	edx, 8
 $loc_4678F0$38632:
 ; Line 7310
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7311
 	jb	SHORT $loc_467900$38633
 ; Line 7312
@@ -14026,7 +14028,7 @@ $loc_467913$38634:
 ; Line 7325
 	sub	edi, 800				; 00000320H
 ; Line 7326
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7327
 	jb	SHORT $loc_467929$38636
 ; Line 7328
@@ -14093,7 +14095,7 @@ _TEXT	SEGMENT
 ; Line 7362
 	mov	DWORD PTR _gpDrawMask, edx
 ; Line 7363
-	mov	eax, DWORD PTR _light_table_index
+	mov	eax, DWORD PTR _nLVal
 ; Line 7364
 	test	al, al
 ; Line 7365
@@ -14103,7 +14105,7 @@ _TEXT	SEGMENT
 ; Line 7367
 	je	$loc_467AB8$38644
 ; Line 7368
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7369
 	and	eax, 32768				; 00008000H
 ; Line 7370
@@ -14113,7 +14115,7 @@ _TEXT	SEGMENT
 ; Line 7372
 	mov	esi, ebx
 ; Line 7373
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7374
 	and	eax, 4095				; 00000fffH
 ; Line 7375
@@ -14123,13 +14125,13 @@ _TEXT	SEGMENT
 ; Line 7377
 	add	esi, DWORD PTR [ebx]
 ; Line 7378
-	mov	ebx, DWORD PTR _light_table_index
+	mov	ebx, DWORD PTR _nLVal
 ; Line 7379
 	shl	ebx, 8
 ; Line 7380
 	add	ebx, DWORD PTR _pLightTbl
 ; Line 7381
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7382
 	mov	al, ah
 ; Line 7383
@@ -14160,13 +14162,13 @@ $loc_4679EC$38645:
 ; Line 7396
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 7397
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7398
 	and	eax, 4095				; 00000fffH
 ; Line 7399
 	shl	eax, 4
 ; Line 7400
-	add	eax, DWORD PTR _light_table_index
+	add	eax, DWORD PTR _nLVal
 ; Line 7401
 	shl	eax, 2
 ; Line 7402
@@ -14178,7 +14180,7 @@ $loc_4679EC$38645:
 ; Line 7405
 	add	esi, eax
 ; Line 7406
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7407
 	mov	al, ah
 ; Line 7408
@@ -14210,7 +14212,7 @@ $loc_467A21$38652:
 	jmp	$loc_468448$38658
 $loc_467A58$38643:
 ; Line 7423
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7424
 	and	eax, 32768				; 00008000H
 ; Line 7425
@@ -14218,7 +14220,7 @@ $loc_467A58$38643:
 ; Line 7426
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 7427
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7428
 	and	eax, 4095				; 00000fffH
 ; Line 7429
@@ -14226,20 +14228,20 @@ $loc_467A58$38643:
 ; Line 7430
 	add	esi, eax
 ; Line 7431
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7432
 	and	eax, 61440				; 0000f000H
 ; Line 7433
 	add	eax, DWORD PTR [esi]
 ; Line 7434
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_467A8A$38659:
 ; Line 7436
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 7437
 	mov	esi, ebx
 ; Line 7438
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7439
 	and	eax, 4095				; 00000fffH
 ; Line 7440
@@ -14249,7 +14251,7 @@ $loc_467A8A$38659:
 ; Line 7442
 	add	esi, DWORD PTR [ebx]
 ; Line 7443
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7444
 	mov	al, ah
 ; Line 7445
@@ -14262,7 +14264,7 @@ $loc_467A8A$38659:
 	jmp	$loc_467A21$38652
 $loc_467AB8$38644:
 ; Line 7450
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7451
 	and	eax, 32768				; 00008000H
 ; Line 7452
@@ -14270,7 +14272,7 @@ $loc_467AB8$38644:
 ; Line 7453
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 7454
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7455
 	and	eax, 4095				; 00000fffH
 ; Line 7456
@@ -14278,20 +14280,20 @@ $loc_467AB8$38644:
 ; Line 7457
 	add	esi, eax
 ; Line 7458
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7459
 	and	eax, 61440				; 0000f000H
 ; Line 7460
 	add	eax, DWORD PTR [esi]
 ; Line 7461
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_467AEA$38660:
 ; Line 7463
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 7464
 	mov	esi, ebx
 ; Line 7465
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7466
 	and	eax, 4095				; 00000fffH
 ; Line 7467
@@ -14301,7 +14303,7 @@ $loc_467AEA$38660:
 ; Line 7469
 	add	esi, DWORD PTR [ebx]
 ; Line 7470
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 7471
 	mov	al, ah
 ; Line 7472
@@ -14335,7 +14337,7 @@ $loc_467B43$38646:
 	mov	ebp, 32					; 00000020H
 $loc_467B49$38667:
 ; Line 7488
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7489
 	jb	SHORT $loc_467B59$38668
 ; Line 7490
@@ -14416,7 +14418,7 @@ $loc_467BA6$38674:
 ; Line 7531
 	sub	edx, eax
 ; Line 7532
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7533
 	jb	SHORT $loc_467BBF$38676
 ; Line 7534
@@ -14512,7 +14514,7 @@ $loc_467C20$38648:
 ; Line 7583
 	mov	eax, edi
 ; Line 7584
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 7585
 	jb	SHORT $loc_467C67$38682
 ; Line 7586
@@ -14621,7 +14623,7 @@ $loc_467CB8$38684:
 ; Line 7640
 	mov	eax, edi
 ; Line 7641
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 7642
 	jb	SHORT $loc_467D02$38687
 ; Line 7643
@@ -14736,7 +14738,7 @@ $loc_467D5B$38649:
 ; Line 7700
 	mov	eax, edi
 ; Line 7701
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 7702
 	jb	SHORT $loc_467DA3$38691
 ; Line 7703
@@ -14848,7 +14850,7 @@ $loc_467DF6$38693:
 ; Line 7759
 	mov	eax, edi
 ; Line 7760
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 7761
 	jb	SHORT $loc_467E3D$38697
 ; Line 7762
@@ -14967,7 +14969,7 @@ $loc_467E99$38650:
 ; Line 7822
 	mov	eax, edi
 ; Line 7823
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 7824
 	jb	SHORT $loc_467EE0$38703
 ; Line 7825
@@ -15081,7 +15083,7 @@ $loc_467F31$38705:
 	mov	edx, 16					; 00000010H
 $loc_467F43$38708:
 ; Line 7883
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7884
 	jb	SHORT $loc_467F53$38709
 ; Line 7885
@@ -15144,7 +15146,7 @@ $loc_467F8A$38651:
 ; Line 7916
 	mov	eax, edi
 ; Line 7917
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 7918
 	jb	SHORT $loc_467FD2$38713
 ; Line 7919
@@ -15261,7 +15263,7 @@ $loc_468025$38715:
 	mov	edx, 16					; 00000010H
 $loc_468037$38719:
 ; Line 7979
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 7980
 	jb	SHORT $loc_468047$38720
 ; Line 7981
@@ -15329,7 +15331,7 @@ $loc_468086$38653:
 	mov	edx, 32					; 00000020H
 $loc_46808B$38724:
 ; Line 8016
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8017
 	jb	SHORT $loc_46809B$38725
 ; Line 8018
@@ -15410,7 +15412,7 @@ $loc_4680E8$38730:
 ; Line 8059
 	sub	edx, eax
 ; Line 8060
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8061
 	jb	SHORT $loc_468101$38732
 ; Line 8062
@@ -15500,7 +15502,7 @@ $loc_468161$38655:
 ; Line 8108
 	mov	eax, edi
 ; Line 8109
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 8110
 	jb	SHORT $loc_4681A8$38738
 ; Line 8111
@@ -15585,7 +15587,7 @@ $loc_4681DF$38740:
 ; Line 8153
 	mov	eax, edi
 ; Line 8154
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 8155
 	jb	SHORT $loc_468229$38743
 ; Line 8156
@@ -15676,7 +15678,7 @@ $loc_468268$38656:
 ; Line 8201
 	mov	eax, edi
 ; Line 8202
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 8203
 	jb	SHORT $loc_4682B0$38747
 ; Line 8204
@@ -15764,7 +15766,7 @@ $loc_4682E9$38749:
 ; Line 8248
 	mov	eax, edi
 ; Line 8249
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 8250
 	jb	SHORT $loc_468330$38753
 ; Line 8251
@@ -15859,7 +15861,7 @@ $loc_468372$38657:
 ; Line 8299
 	mov	eax, edi
 ; Line 8300
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 8301
 	jb	SHORT $loc_4683B9$38759
 ; Line 8302
@@ -15949,7 +15951,7 @@ $loc_4683F0$38761:
 	mov	edx, 16					; 00000010H
 $loc_468402$38764:
 ; Line 8348
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8349
 	jb	SHORT $loc_468412$38765
 ; Line 8350
@@ -16010,7 +16012,7 @@ $loc_468448$38658:
 ; Line 8380
 	mov	eax, edi
 ; Line 8381
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 8382
 	jb	SHORT $loc_468490$38769
 ; Line 8383
@@ -16103,7 +16105,7 @@ $loc_4684C9$38771:
 	mov	edx, 16					; 00000010H
 $loc_4684DB$38775:
 ; Line 8431
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8432
 	jb	SHORT $loc_4684EB$38776
 ; Line 8433
@@ -16169,7 +16171,7 @@ $loc_468529$38661:
 	mov	edx, 32					; 00000020H
 $loc_46852E$38780:
 ; Line 8467
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8468
 	jb	SHORT $loc_46853E$38781
 ; Line 8469
@@ -16248,7 +16250,7 @@ $loc_46858A$38786:
 ; Line 8509
 	sub	edx, eax
 ; Line 8510
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8511
 	jb	SHORT $loc_4685A3$38788
 ; Line 8512
@@ -16339,7 +16341,7 @@ $loc_468604$38663:
 	xor	eax, eax
 $loc_46860B$38794:
 ; Line 8560
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8561
 	jb	SHORT $loc_46861D$38795
 ; Line 8562
@@ -16394,7 +16396,7 @@ $loc_46864C$38798:
 	mov	edx, 2
 $loc_468651$38799:
 ; Line 8590
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8591
 	jb	SHORT $loc_468663$38800
 ; Line 8592
@@ -16451,7 +16453,7 @@ $loc_468696$38664:
 	xor	eax, eax
 $loc_46869D$38803:
 ; Line 8621
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8622
 	jb	SHORT $loc_4686B1$38804
 ; Line 8623
@@ -16508,7 +16510,7 @@ $loc_4686E0$38807:
 	mov	edx, 2
 $loc_4686E5$38808:
 ; Line 8652
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8653
 	jb	SHORT $loc_4686F9$38809
 ; Line 8654
@@ -16567,7 +16569,7 @@ $loc_46872C$38665:
 	xor	eax, eax
 $loc_468733$38812:
 ; Line 8684
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8685
 	jb	SHORT $loc_468745$38813
 ; Line 8686
@@ -16628,7 +16630,7 @@ $loc_468774$38816:
 	mov	edx, 16					; 00000010H
 $loc_468786$38817:
 ; Line 8717
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8718
 	jb	SHORT $loc_468796$38818
 ; Line 8719
@@ -16686,7 +16688,7 @@ $loc_4687CB$38666:
 	xor	eax, eax
 $loc_4687D2$38822:
 ; Line 8749
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8750
 	jb	SHORT $loc_4687E6$38823
 ; Line 8751
@@ -16749,7 +16751,7 @@ $loc_468815$38826:
 	mov	edx, 16					; 00000010H
 $loc_468827$38827:
 ; Line 8783
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 8784
 	jb	SHORT $loc_468837$38828
 ; Line 8785
@@ -16824,13 +16826,13 @@ _TEXT	SEGMENT
 ; Line 8824
 	push	esi
 ; Line 8825
-	mov	edx, DWORD PTR _cel_transparency_active
+	mov	edx, DWORD PTR _nTrans
 ; Line 8826
 	test	edx, edx
 ; Line 8827
 	je	$loc_468918$38834
 ; Line 8828
-	mov	dl, BYTE PTR _arch_draw_type
+	mov	dl, BYTE PTR _gbPartialTrans
 ; Line 8829
 	cmp	dl, 0
 ; Line 8830
@@ -16845,7 +16847,7 @@ $loc_468892$38835:
 ; Line 8835
 	jne	SHORT $loc_4688D5$38837
 ; Line 8836
-	mov	ebx, DWORD PTR _level_piece_id
+	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 8837
 	mov	al, BYTE PTR _block_lvid[ebx]
 ; Line 8838
@@ -16885,7 +16887,7 @@ $loc_4688D5$38837:
 ; Line 8856
 	jne	SHORT $loc_468918$38834
 ; Line 8857
-	mov	ebx, DWORD PTR _level_piece_id
+	mov	ebx, DWORD PTR _gnPieceNum
 ; Line 8858
 	mov	al, BYTE PTR _block_lvid[ebx]
 ; Line 8859
@@ -16927,7 +16929,7 @@ $loc_468918$38834:
 ; Line 8878
 	mov	edi, ecx
 ; Line 8879
-	mov	eax, DWORD PTR _light_table_index
+	mov	eax, DWORD PTR _nLVal
 ; Line 8880
 	test	al, al
 ; Line 8881
@@ -16937,7 +16939,7 @@ $loc_468918$38834:
 ; Line 8883
 	je	$loc_468A78$38841
 ; Line 8884
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8885
 	and	eax, 32768				; 00008000H
 ; Line 8886
@@ -16947,7 +16949,7 @@ $loc_468918$38834:
 ; Line 8888
 	mov	esi, ebx
 ; Line 8889
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8890
 	and	eax, 4095				; 00000fffH
 ; Line 8891
@@ -16957,13 +16959,13 @@ $loc_468918$38834:
 ; Line 8893
 	add	esi, DWORD PTR [ebx]
 ; Line 8894
-	mov	ebx, DWORD PTR _light_table_index
+	mov	ebx, DWORD PTR _nLVal
 ; Line 8895
 	shl	ebx, 8
 ; Line 8896
 	add	ebx, DWORD PTR _pLightTbl
 ; Line 8897
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8898
 	shr	eax, 12					; 0000000cH
 ; Line 8899
@@ -16992,13 +16994,13 @@ $loc_4689B0$38842:
 ; Line 8911
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 8912
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8913
 	and	eax, 4095				; 00000fffH
 ; Line 8914
 	shl	eax, 4
 ; Line 8915
-	add	eax, DWORD PTR _light_table_index
+	add	eax, DWORD PTR _nLVal
 ; Line 8916
 	shl	eax, 2
 ; Line 8917
@@ -17010,7 +17012,7 @@ $loc_4689B0$38842:
 ; Line 8920
 	add	esi, eax
 ; Line 8921
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8922
 	shr	eax, 12					; 0000000cH
 ; Line 8923
@@ -17040,7 +17042,7 @@ $loc_4689E3$38849:
 	jmp	$loc_469358$38855
 $loc_468A1A$38840:
 ; Line 8937
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8938
 	and	eax, 32768				; 00008000H
 ; Line 8939
@@ -17048,7 +17050,7 @@ $loc_468A1A$38840:
 ; Line 8940
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 8941
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8942
 	and	eax, 4095				; 00000fffH
 ; Line 8943
@@ -17056,20 +17058,20 @@ $loc_468A1A$38840:
 ; Line 8944
 	add	esi, eax
 ; Line 8945
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8946
 	and	eax, 61440				; 0000f000H
 ; Line 8947
 	add	eax, DWORD PTR [esi]
 ; Line 8948
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_468A4C$38856:
 ; Line 8950
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 8951
 	mov	esi, ebx
 ; Line 8952
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8953
 	and	eax, 4095				; 00000fffH
 ; Line 8954
@@ -17079,7 +17081,7 @@ $loc_468A4C$38856:
 ; Line 8956
 	add	esi, DWORD PTR [ebx]
 ; Line 8957
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8958
 	shr	eax, 12					; 0000000cH
 ; Line 8959
@@ -17090,7 +17092,7 @@ $loc_468A4C$38856:
 	jmp	$loc_4689E3$38849
 $loc_468A78$38841:
 ; Line 8963
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8964
 	and	eax, 32768				; 00008000H
 ; Line 8965
@@ -17098,7 +17100,7 @@ $loc_468A78$38841:
 ; Line 8966
 	mov	esi, DWORD PTR _gpCelFrame
 ; Line 8967
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8968
 	and	eax, 4095				; 00000fffH
 ; Line 8969
@@ -17106,20 +17108,20 @@ $loc_468A78$38841:
 ; Line 8970
 	add	esi, eax
 ; Line 8971
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8972
 	and	eax, 61440				; 0000f000H
 ; Line 8973
 	add	eax, DWORD PTR [esi]
 ; Line 8974
-	mov	DWORD PTR _level_cel_block, eax
+	mov	DWORD PTR _gdwPNum, eax
 $loc_468AAA$38857:
 ; Line 8976
 	mov	ebx, DWORD PTR _pDungeonCels
 ; Line 8977
 	mov	esi, ebx
 ; Line 8978
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8979
 	and	eax, 4095				; 00000fffH
 ; Line 8980
@@ -17129,7 +17131,7 @@ $loc_468AAA$38857:
 ; Line 8982
 	add	esi, DWORD PTR [ebx]
 ; Line 8983
-	mov	eax, DWORD PTR _level_cel_block
+	mov	eax, DWORD PTR _gdwPNum
 ; Line 8984
 	mov	al, ah
 ; Line 8985
@@ -17165,7 +17167,7 @@ $loc_468B09$38864:
 ; Line 9001
 	push	edx
 ; Line 9002
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9003
 	jb	SHORT $loc_468B1A$38865
 ; Line 9004
@@ -17260,7 +17262,7 @@ $loc_468B78$38870:
 ; Line 9052
 	sub	ebp, eax
 ; Line 9053
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9054
 	jb	SHORT $loc_468B88$38872
 ; Line 9055
@@ -17376,7 +17378,7 @@ $loc_468C06$38845:
 ; Line 9113
 	mov	eax, edi
 ; Line 9114
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9115
 	jb	SHORT $loc_468C4E$38876
 ; Line 9116
@@ -17452,7 +17454,7 @@ $loc_468C75$38878:
 ; Line 9153
 	mov	eax, edi
 ; Line 9154
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9155
 	jb	SHORT $loc_468CBC$38880
 ; Line 9156
@@ -17537,7 +17539,7 @@ $loc_468CEC$38846:
 ; Line 9198
 	mov	eax, edi
 ; Line 9199
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9200
 	jb	SHORT $loc_468D34$38884
 ; Line 9201
@@ -17613,7 +17615,7 @@ $loc_468D5B$38886:
 ; Line 9238
 	mov	eax, edi
 ; Line 9239
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9240
 	jb	SHORT $loc_468DA2$38888
 ; Line 9241
@@ -17698,7 +17700,7 @@ $loc_468DD2$38847:
 ; Line 9283
 	mov	eax, edi
 ; Line 9284
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9285
 	jb	SHORT $loc_468E1A$38892
 ; Line 9286
@@ -17823,7 +17825,7 @@ $loc_468E87$38894:
 	mov	ebp, 16					; 00000010H
 $loc_468E8C$38898:
 ; Line 9350
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9351
 	jb	SHORT $loc_468E9C$38899
 ; Line 9352
@@ -17893,7 +17895,7 @@ $loc_468EE2$38848:
 ; Line 9386
 	mov	eax, edi
 ; Line 9387
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9388
 	jb	SHORT $loc_468F2A$38902
 ; Line 9389
@@ -18018,7 +18020,7 @@ $loc_468F97$38904:
 	mov	ebp, 16					; 00000010H
 $loc_468F9C$38908:
 ; Line 9453
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9454
 	jb	SHORT $loc_468FAC$38909
 ; Line 9455
@@ -18085,7 +18087,7 @@ $loc_468FF2$38850:
 	mov	edx, 32					; 00000020H
 $loc_468FF7$38912:
 ; Line 9489
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9490
 	jb	SHORT $loc_469007$38913
 ; Line 9491
@@ -18141,7 +18143,7 @@ $loc_469032$38917:
 ; Line 9519
 	sub	edx, eax
 ; Line 9520
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9521
 	jb	SHORT $loc_46904B$38919
 ; Line 9522
@@ -18232,7 +18234,7 @@ $loc_469099$38852:
 ; Line 9568
 	mov	eax, edi
 ; Line 9569
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9570
 	jb	SHORT $loc_4690E0$38924
 ; Line 9571
@@ -18317,7 +18319,7 @@ $loc_469117$38926:
 ; Line 9613
 	mov	eax, edi
 ; Line 9614
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9615
 	jb	SHORT $loc_46915E$38929
 ; Line 9616
@@ -18407,7 +18409,7 @@ $loc_46919D$38853:
 ; Line 9661
 	mov	eax, edi
 ; Line 9662
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9663
 	jb	SHORT $loc_4691E4$38934
 ; Line 9664
@@ -18495,7 +18497,7 @@ $loc_46921D$38936:
 ; Line 9708
 	mov	eax, edi
 ; Line 9709
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9710
 	jb	SHORT $loc_469264$38940
 ; Line 9711
@@ -18588,7 +18590,7 @@ $loc_4692A5$38854:
 ; Line 9758
 	mov	eax, edi
 ; Line 9759
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9760
 	jb	SHORT $loc_4692EC$38946
 ; Line 9761
@@ -18672,7 +18674,7 @@ $loc_469323$38948:
 	mov	edx, 16					; 00000010H
 $loc_469328$38951:
 ; Line 9804
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9805
 	jb	SHORT $loc_469338$38952
 ; Line 9806
@@ -18712,7 +18714,7 @@ $loc_469358$38855:
 ; Line 9825
 	mov	eax, edi
 ; Line 9826
-	sub	eax, DWORD PTR _gpBufEnd
+	sub	eax, DWORD PTR _glClipY
 ; Line 9827
 	jb	SHORT $loc_46939F$38955
 ; Line 9828
@@ -18799,7 +18801,7 @@ $loc_4693D8$38957:
 	mov	edx, 16					; 00000010H
 $loc_4693DD$38961:
 ; Line 9873
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9874
 	jb	SHORT $loc_4693ED$38962
 ; Line 9875
@@ -18840,7 +18842,7 @@ $loc_46940D$38858:
 	xor	eax, eax
 $loc_469414$38965:
 ; Line 9896
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9897
 	jb	SHORT $loc_469424$38966
 ; Line 9898
@@ -18892,7 +18894,7 @@ $loc_46944A$38970:
 ; Line 9924
 	sub	edx, eax
 ; Line 9925
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9926
 	jb	SHORT $loc_469463$38972
 ; Line 9927
@@ -18976,7 +18978,7 @@ $loc_4694A7$38860:
 	xor	eax, eax
 $loc_4694AE$38977:
 ; Line 9971
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 9972
 	jb	SHORT $loc_4694C0$38978
 ; Line 9973
@@ -19031,7 +19033,7 @@ $loc_4694EF$38981:
 	mov	edx, 2
 $loc_4694F4$38982:
 ; Line 10001
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10002
 	jb	SHORT $loc_469506$38983
 ; Line 10003
@@ -19088,7 +19090,7 @@ $loc_469539$38861:
 	xor	eax, eax
 $loc_469540$38986:
 ; Line 10032
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10033
 	jb	SHORT $loc_469554$38987
 ; Line 10034
@@ -19145,7 +19147,7 @@ $loc_469583$38990:
 	mov	edx, 2
 $loc_469588$38991:
 ; Line 10063
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10064
 	jb	SHORT $loc_46959C$38992
 ; Line 10065
@@ -19204,7 +19206,7 @@ $loc_4695CF$38862:
 	xor	eax, eax
 $loc_4695D6$38995:
 ; Line 10095
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10096
 	jb	SHORT $loc_4695E8$38996
 ; Line 10097
@@ -19259,7 +19261,7 @@ $loc_469617$38999:
 	mov	edx, 16					; 00000010H
 $loc_46961C$39000:
 ; Line 10125
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10126
 	jb	SHORT $loc_46962C$39001
 ; Line 10127
@@ -19296,7 +19298,7 @@ $loc_469644$38863:
 	xor	eax, eax
 $loc_46964B$39004:
 ; Line 10146
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10147
 	jb	SHORT $loc_46965F$39005
 ; Line 10148
@@ -19353,7 +19355,7 @@ $loc_46968E$39008:
 	mov	edx, 16					; 00000010H
 $loc_469693$39009:
 ; Line 10177
-	cmp	edi, DWORD PTR _gpBufEnd
+	cmp	edi, DWORD PTR _glClipY
 ; Line 10178
 	jb	SHORT $loc_4696A3$39010
 ; Line 10179

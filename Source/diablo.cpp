@@ -115,13 +115,13 @@ static void diablo_parse_flags(char *args)
 		}
 		static char de[] = "dd_emulate";
 		if (_strnicmp(de, args, strlen(de)) == 0) {
-			gbEmulate = TRUE;
+			gbUseDDEmulation = TRUE;
 			args += strlen(de);
 			continue;
 		}
 		static char db[] = "dd_backbuf";
 		if (_strnicmp(db, args, strlen(db)) == 0) {
-			gbBackBuf = TRUE;
+			gbForceBackBuf = TRUE;
 			args += strlen(db);
 			continue;
 		}
@@ -489,7 +489,7 @@ static void diablo_init_screen()
 	ScrollInfo._sdir = SDIR_NONE;
 
 	for (i = 0; i < 1024; i++)
-		PitchTbl[i] = i * BUFFER_WIDTH;
+		nBuffWTbl[i] = i * BUFFER_WIDTH;
 
 	ClrDiabloMsg();
 }

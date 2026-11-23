@@ -124,9 +124,9 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 
 	/// ASSERT: assert(gpBuffer);
 
-	dst = &gpBuffer[sx + PitchTbl[sy]];
-	pStart = &gpBuffer[PitchTbl[209]];
-	pEnd = &gpBuffer[PitchTbl[469]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy]];
+	pStart = &gpBuffer[nBuffWTbl[209]];
+	pEnd = &gpBuffer[nBuffWTbl[469]];
 
 #ifdef USE_ASM
 	__asm {
