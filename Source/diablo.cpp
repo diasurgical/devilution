@@ -7,12 +7,27 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
+extern char gszProgKey[];
+
+/** 1.09b: space reserved for registration data (unused) */
+char sgszTblSig[128] = "REGISTRATION_TABLE";
+extern const char gszAppName[];
+
+/**
+ * Specifies whether to give the game exclusive access to the
+ * screen, as needed for efficient rendering in fullscreen mode.
+ */
+BOOL fullscreen = TRUE;
+/** Specifies whether players are in non-PvP mode. */
+BOOL FriendlyMode = TRUE;
+// 1.09b declared most globals without an initialiser; the VC5 front end then lays them out in name-hash order,
+// ahead of the zero-initialised ones (which keep their order). Hence the unused gv1..gv5 and the names below.
 HWND ghMainWnd;
-DWORD glSeedTbl[NUMLEVELS];
-int gnLevelTypeTbl[NUMLEVELS];
+/** unused: 1.09b has 0x14 more bytes here whose names are unknown (these names hash into the same place) */
+DWORD sgdwUnused1, sgdwUnused2, sgdwUnused3, sgdwUnused4, sgdwUnused5;
 #ifndef HELLFIRE
 int glEndSeed[NUMLEVELS];
-int glMid1Seed[NUMLEVELS];
+int glMid1Seed[NUMLEVELS + 1]; // the original reserves one more entry here
 int glMid2Seed[NUMLEVELS];
 int glMid3Seed[NUMLEVELS];
 #else
@@ -21,78 +36,79 @@ int glMid1Seed[NUMLEVELS + 1];
 int glMid2Seed[NUMLEVELS + 1];
 int glMid3Seed[NUMLEVELS + 1];
 #endif
-int MouseX;
-int MouseY;
+int gnLevelTypeTbl[NUMLEVELS];
+int MouseX, MouseY;
 BOOL gbGameLoopStartup;
+DWORD glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
 BOOL gbRunGameResult;
-BOOL zoomflag;
+/** Zoom (the original name; toggled with Z) */
+BOOL svgamode;
 /** Enable updating of player character, set to false once Diablo dies */
 BOOL gbProcessPlayers;
 BOOL gbLoadGame;
 HINSTANCE ghInst;
 int DebugMonsters[10];
-BOOLEAN cineflag;
-int force_redraw;
-BOOL visiondebug;
 /** unused */
-BOOL scrollflag;
-BOOL light4flag;
-BOOL leveldebug;
-BOOL monstdebug;
+long gv1;
+long gv2;
+long gv3;
+long gv4;
+long gv5;
+BOOLEAN cineflag = 0;
+int force_redraw = 0;
+BOOL visiondebug = 0;
 /** unused */
-BOOL trigdebug;
-int setseed;
-int debugmonsttypes;
-int PauseMode;
+BOOL scrollflag = 0;
+BOOL light4flag = 0;
+BOOL leveldebug = 0;
+BOOL monstdebug = 0;
+/** unused */
+BOOL trigdebug = 0;
+int setseed = 0;
 #ifdef HELLFIRE
-BOOLEAN UseTheoQuest;
-BOOLEAN UseCowFarmer;
-BOOLEAN UseNestArt;
-BOOLEAN UseBardTest;
-BOOLEAN UseBarbarianTest;
-BOOLEAN UseMultiTest;
+BOOLEAN UseTheoQuest = 0;
+BOOLEAN UseCowFarmer = 0;
+BOOLEAN UseNestArt = 0;
+BOOLEAN UseBardTest = 0;
+BOOLEAN UseBarbarianTest = 0;
+BOOLEAN UseMultiTest = 0;
 #endif
-int sgnTimeoutCurs;
-char sgbMouseDown;
-int color_cycle_timer;
+int debugmonsttypes = 0;
+int PauseMode = 0;
+int sgnTimeoutCurs = 0;
 
 /* rdata */
 
-/**
- * Specifies whether to give the game exclusive access to the
- * screen, as needed for efficient rendering in fullscreen mode.
- */
-BOOL fullscreen = TRUE;
+char sgbMouseDown = 0;
 #ifdef _DEBUG
 int showintrodebug = 1;
 int questdebug = -1;
-int debug_mode_key_s;
-int debug_mode_key_w;
-int debug_mode_key_inverted_v;
-int debug_mode_dollar_sign;
-int debug_mode_key_d;
-int debug_mode_key_i;
-int dbgplr;
-int dbgqst;
-int dbgmon;
-int arrowdebug;
-int frameflag;
-int frameend;
-int framerate;
-int framestart;
+int debug_mode_key_s = 0;
+int debug_mode_key_w = 0;
+int debug_mode_key_inverted_v = 0;
+int debug_mode_dollar_sign = 0;
+int debug_mode_key_d = 0;
+int debug_mode_key_i = 0;
+int dbgplr = 0;
+int dbgqst = 0;
+int dbgmon = 0;
+int arrowdebug = 0;
+int frameflag = 0;
+int frameend = 0;
+int framerate = 0;
+int framestart = 0;
 #endif
-/** Specifies whether players are in non-PvP mode. */
-BOOL FriendlyMode = TRUE;
+int color_cycle_timer = 0;
 /** Default quick messages */
-const char *const spszMsgTbl[4] = {
+char *spszMsgTbl[4] = {
 	"I need help! Come Here!",
 	"Follow me.",
 	"Here's something for you.",
 	"Now you DIE!"
 };
 /** INI files variable names for quick message keys */
-const char *const spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
+char *spszMsgHotKeyTbl[4] = { "F9", "F10", "F11", "F12" };
 
 static void diablo_parse_flags(char *args)
 {
@@ -105,19 +121,19 @@ static void diablo_parse_flags(char *args)
 		while (isspace(*args)) {
 			args++;
 		}
-		static char de[] = "dd_emulate";
+		static const char de[] = "dd_emulate";
 		if (_strnicmp(de, args, strlen(de)) == 0) {
-			gbEmulate = TRUE;
+			gbUseDDEmulation = TRUE;
 			args += strlen(de);
 			continue;
 		}
-		static char db[] = "dd_backbuf";
+		static const char db[] = "dd_backbuf";
 		if (_strnicmp(db, args, strlen(db)) == 0) {
-			gbBackBuf = TRUE;
+			gbForceBackBuf = TRUE;
 			args += strlen(db);
 			continue;
 		}
-		static char ds[] = "ds_noduplicates";
+		static const char ds[] = "ds_noduplicates";
 		if (_strnicmp(ds, args, strlen(ds)) == 0) {
 			gbDupSounds = FALSE;
 			args += strlen(ds);
@@ -289,6 +305,29 @@ static void diablo_parse_flags(char *args)
 	}
 }
 
+/**
+ * @brief Throw away pending key and mouse messages.
+ * Unused in 1.09b: the linker drops the function, but the imports it references stay (and their order).
+ */
+void FlushMsgs()
+{
+	BOOL bLoop;
+	MSG msg;
+
+	track_repeat_walk(FALSE);
+	sgbMouseDown = CLICK_NONE;
+	ReleaseCapture();
+
+	bLoop = TRUE;
+	while (bLoop) {
+		bLoop = FALSE;
+		while (PeekMessage(&msg, NULL, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
+			bLoop = TRUE;
+		while (PeekMessage(&msg, NULL, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE))
+			bLoop = TRUE;
+	}
+}
+
 void FreeGameMem()
 {
 	music_stop();
@@ -308,7 +347,7 @@ void FreeGameMem()
 
 static void start_game(unsigned int uMsg)
 {
-	zoomflag = TRUE;
+	svgamode = TRUE;
 	cineflag = FALSE;
 	InitCursor();
 	InitLightTable();
@@ -481,7 +520,7 @@ static void diablo_init_screen()
 	ScrollInfo._sdir = SDIR_NONE;
 
 	for (i = 0; i < 1024; i++)
-		PitchTbl[i] = i * BUFFER_WIDTH;
+		nBuffWTbl[i] = i * BUFFER_WIDTH;
 
 	ClrDiabloMsg();
 }
@@ -660,7 +699,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	if (diablo_find_window("DIABLO"))
 		return 0;
 #endif
-	if (diablo_find_window(GAME_NAME) || !bNoEvent)
+	if (diablo_find_window(gszAppName) || !bNoEvent)
 		return 0;
 
 #ifdef _DEBUG
@@ -693,7 +732,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #ifndef SPAWN
 	{
 		char szValueName[] = "Intro";
-		if (!SRegLoadValue(APP_NAME, szValueName, 0, &nData))
+		if (!SRegLoadValue(gszProgKey, szValueName, 0, &nData))
 			nData = 1;
 #ifndef HELLFIRE
 		if (nData)
@@ -701,7 +740,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #else
 		play_movie("gendata\\Hellfire.smk", TRUE);
 #endif
-		SRegSaveValue(APP_NAME, szValueName, 0, 0);
+		SRegSaveValue(gszProgKey, szValueName, 0, 0);
 	}
 #endif
 
@@ -928,7 +967,7 @@ static void LeftMouseUp()
 	control_release_talk_btn();
 	if (panbtndown)
 		CheckBtnUp();
-	if (chrbtnactive)
+	if (chrbtndown)
 		ReleaseChrBtns();
 	if (lvlbtndown)
 		ReleaseLvlBtn();
@@ -961,6 +1000,12 @@ static void RightMouseDown()
 			}
 		}
 	}
+}
+
+/* In 1.09b this call goes through a one-line wrapper here (name not known). */
+static void j_gmenu_on_mouse_move()
+{
+	gmenu_on_mouse_move();
 }
 
 static void diablo_pause_game()
@@ -1338,7 +1383,7 @@ static void PressChar(WPARAM vkey)
 		return;
 	case 'Z':
 	case 'z':
-		zoomflag = !zoomflag;
+		svgamode = !svgamode;
 		return;
 	case 'S':
 	case 's':
@@ -1609,7 +1654,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed
 		MouseY = HIWORD(lParam); // BUGFIX (short)HIWORD coords are signed
-		gmenu_on_mouse_move();
+		j_gmenu_on_mouse_move();
 		return 0;
 	case WM_LBUTTONDOWN:
 		MouseX = LOWORD(lParam); // BUGFIX (short)LOWORD coords are signed

@@ -5,20 +5,6 @@
  */
 #include "all.h"
 
-LightListStruct VisionList[MAXVISION];
-BYTE lightactive[MAXLIGHTS];
-LightListStruct LightList[MAXLIGHTS];
-int numlights;
-BYTE lightradius[16][128];
-BOOL dovision;
-int numvision;
-char lightmax;
-BOOL dolighting;
-BYTE lightblock[64][16][16];
-int visionid;
-BYTE *pLightTbl;
-BOOL lightflag;
-
 /**
  * CrawlTable specifies X- and Y-coordinate deltas from a missile target coordinate.
  *
@@ -405,9 +391,8 @@ char CrawlTable[2749] = {
 	-18, -2, 18, -2, -18, 1, 18, 1,
 	-18, -1, 18, -1, -18, 0, 18, 0
 };
-
-/** pCrawlTable maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
-char *pCrawlTable[19] = {
+/** pCrawlEntry maps from circle radius to the X- and Y-coordinate deltas from the center of a circle. */
+char *pCrawlEntry[19] = {
 	CrawlTable,
 	CrawlTable + 3,
 	CrawlTable + 12,
@@ -428,6 +413,7 @@ char *pCrawlTable[19] = {
 	CrawlTable + 2187,
 	CrawlTable + 2460
 };
+
 /** vCrawlTable specifies the X- Y-coordinate offsets of lighting visions. */
 BYTE vCrawlTable[23][30] = {
 	{ 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0 },
@@ -475,9 +461,27 @@ BYTE byte_49463C[18][18] = {
 	{ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3 },
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 }
 };
-
 /** RadiusAdj maps from vCrawlTable index to lighting vision radius adjustment. */
 BYTE RadiusAdj[23] = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0 };
+LightListStruct LightList[MAXLIGHTS];
+BYTE lightactive[MAXLIGHTS];
+int numlights;
+BOOL dolighting;
+LightListStruct VisionList[MAXVISION];
+int numvision;
+BOOL dovision;
+char lightmax;
+int visionid;
+
+BYTE LightLvls[16][128];
+
+
+BYTE Dist[64][16][16];
+BYTE *pLightTbl;
+
+/** unused */
+int lnum = 0;
+BOOL lightflag = 0;
 
 void RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by)
 {
@@ -563,19 +567,19 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 #endif
 		dLight[nXPos][nYPos] = 0;
 #ifdef HELLFIRE
-	} else if (dLight[nXPos][nYPos] > lightradius[nRadius][0]) {
-		dLight[nXPos][nYPos] = lightradius[nRadius][0];
+	} else if (dLight[nXPos][nYPos] > LightLvls[nRadius][0]) {
+		dLight[nXPos][nYPos] = LightLvls[nRadius][0];
 #endif
 	}
 
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < max_x; x++) {
-			radius_block = lightblock[mult][y][x];
+			radius_block = Dist[mult][y][x];
 			if (radius_block < 128) {
 				temp_x = nXPos + x;
 				temp_y = nYPos + y;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -588,11 +592,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < max_y; y++) {
 		for (x = 1; x < max_x; x++) {
-			radius_block = lightblock[mult][y + block_y][x + block_x];
+			radius_block = Dist[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos + y;
 				temp_y = nYPos - x;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -605,11 +609,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < max_y; y++) {
 		for (x = 1; x < min_x; x++) {
-			radius_block = lightblock[mult][y + block_y][x + block_x];
+			radius_block = Dist[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos - x;
 				temp_y = nYPos - y;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -622,11 +626,11 @@ void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	mult = xoff + 8 * yoff;
 	for (y = 0; y < min_y; y++) {
 		for (x = 1; x < min_x; x++) {
-			radius_block = lightblock[mult][y + block_y][x + block_x];
+			radius_block = Dist[mult][y + block_y][x + block_x];
 			if (radius_block < 128) {
 				temp_x = nXPos - y;
 				temp_y = nYPos + x;
-				v = lightradius[nRadius][radius_block];
+				v = LightLvls[nRadius][radius_block];
 #ifndef HELLFIRE
 				if (temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY)
 #endif
@@ -972,10 +976,10 @@ void MakeLightTable()
 	for (j = 0; j < 16; j++) {
 		for (i = 0; i < 128; i++) {
 			if (i > (j + 1) * 8) {
-				lightradius[j][i] = 15;
+				LightLvls[j][i] = 15;
 			} else {
 				fs = (double)15 * i / ((double)8 * (j + 1));
-				lightradius[j][i] = (BYTE)(fs + 0.5);
+				LightLvls[j][i] = (BYTE)(fs + 0.5);
 			}
 		}
 	}
@@ -986,12 +990,12 @@ void MakeLightTable()
 			fa = (sqrt((double)(16 - j))) / 128;
 			fa *= fa;
 			for (i = 0; i < 128; i++) {
-				lightradius[15 - j][i] = 15 - (BYTE)(fa * (double)((128 - i) * (128 - i)));
-				if (lightradius[15 - j][i] > 15)
-					lightradius[15 - j][i] = 0;
-				lightradius[15 - j][i] = lightradius[15 - j][i] - (BYTE)((15 - j) / 2);
-				if (lightradius[15 - j][i] > 15)
-					lightradius[15 - j][i] = 0;
+				LightLvls[15 - j][i] = 15 - (BYTE)(fa * (double)((128 - i) * (128 - i)));
+				if (LightLvls[15 - j][i] > 15)
+					LightLvls[15 - j][i] = 0;
+				LightLvls[15 - j][i] = LightLvls[15 - j][i] - (BYTE)((15 - j) / 2);
+				if (LightLvls[15 - j][i] > 15)
+					LightLvls[15 - j][i] = 0;
 			}
 		}
 	}
@@ -1000,13 +1004,13 @@ void MakeLightTable()
 		for (i = 0; i < 8; i++) {
 			for (k = 0; k < 16; k++) {
 				for (l = 0; l < 16; l++) {
-					fs = (BYTE)sqrt((8 * l - j) * (8 * l - j) + (8 * k - i) * (8 * k - i));
+					fs = (BYTE)sqrt((8 * l - i) * (8 * l - i) + (8 * k - j) * (8 * k - j));
 					fs += fs < 0 ? -0.5 : 0.5;
 
 					// BUGFIX: This error causes a "jittery" effect when a light source moves.
 					// Swap the addition and multiplication operators to fix the lookup table.
-					// lightblock[j + 8 * i][k][l] = fs;
-					lightblock[j * 8 + i][k][l] = fs;
+					// Dist[j + 8 * i][k][l] = fs;
+					Dist[j * 8 + i][k][l] = fs;
 				}
 			}
 		}

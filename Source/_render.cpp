@@ -8,25 +8,25 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edi, offset SpeedFrameTbl
 		mov		gpCelFrame, edi
 		mov		edi, ecx
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		test	al, al
 		jz		loc_46316A
 		cmp		al, lightmax
 		jz		loc_4631CA
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jnz		loc_4630FE
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		ebx, light_table_index
+		mov		ebx, nLVal
 		shl		ebx, 8
 		add		ebx, pLightTbl
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -42,16 +42,16 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jmp		loc_463AB3
 	loc_4630FE:
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 4
-		add		eax, light_table_index
+		add		eax, nLVal
 		shl		eax, 2
 		add		esi, eax
 		mov		eax, [esi]
 		mov		esi, pSpeedCels
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -68,54 +68,54 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jz		loc_464011
 		jmp		loc_464112
 	loc_46316A:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_46319C
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_46319C:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
 		add		eax, 8
 		jmp		loc_463133
 	loc_4631CA:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_4631FC
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_4631FC:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
@@ -133,7 +133,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 10h
 	loc_46325B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4632BF
 		mov		ecx, 8
 	loc_463268:
@@ -150,7 +150,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		[edi-1], dl
 		jnz		loc_463268
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4632BF
 		mov		ecx, 8
 	loc_463299:
@@ -187,7 +187,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_4633F8
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46341F
 		mov		ecx, eax
 		mov		eax, edi
@@ -337,7 +337,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 	loc_463432:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463692
 		add		edi, ebp
 		mov		ecx, 20h
@@ -471,7 +471,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_463432
 		mov		ebp, 2
 	loc_463563:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463692
 		add		edi, ebp
 		mov		ecx, 20h
@@ -613,7 +613,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 	loc_4636A5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463905
 		mov		ecx, 20h
 		sub		ecx, ebp
@@ -748,7 +748,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_4636A5
 		mov		ebp, 2
 	loc_4637D6:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463905
 		mov		ecx, 20h
 		sub		ecx, ebp
@@ -891,7 +891,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 	loc_463918:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463AAD
 		add		edi, ebp
 		mov		ecx, 20h
@@ -1025,7 +1025,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_463918
 		mov		ebp, 8
 	loc_463A49:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463AAD
 		mov		ecx, 8
 	loc_463A56:
@@ -1042,7 +1042,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		[edi-1], dl
 		jnz		loc_463A56
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463AAD
 		mov		ecx, 8
 	loc_463A87:
@@ -1070,7 +1070,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 	loc_463AC0:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463C55
 		mov		ecx, 20h
 		sub		ecx, ebp
@@ -1205,7 +1205,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_463AC0
 		mov		ebp, 8
 	loc_463BF1:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463C55
 		mov		ecx, 8
 	loc_463BFE:
@@ -1222,7 +1222,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		[edi-1], dl
 		jnz		loc_463BFE
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463C55
 		mov		ecx, 8
 	loc_463C2F:
@@ -1247,7 +1247,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 	loc_463C5B:
 		mov		edx, 10h
 	loc_463C60:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_463C71:
@@ -1263,7 +1263,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		dec		ecx
 		jnz		loc_463C71
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_463C9F:
@@ -1295,7 +1295,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_463D76
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_463D9D
 		mov		ecx, eax
 		mov		eax, edi
@@ -1387,7 +1387,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_463DAF:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		add		edi, edx
 		mov		ecx, 20h
@@ -1445,7 +1445,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_463DAF
 		mov		edx, 2
 	loc_463E42:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		add		edi, edx
 		mov		ecx, 20h
@@ -1509,7 +1509,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_463EE5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46400B
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -1570,7 +1570,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_463EE5
 		mov		edx, 2
 	loc_463F7A:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46400B
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -1637,7 +1637,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_46401D:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		add		edi, edx
 		mov		ecx, 20h
@@ -1695,7 +1695,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_46401D
 		mov		edx, 8
 	loc_4640B0:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_4640C1:
@@ -1711,7 +1711,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		dec		ecx
 		jnz		loc_4640C1
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_4640EF:
@@ -1734,7 +1734,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_46411F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464209
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -1795,7 +1795,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		jge		loc_46411F
 		mov		edx, 8
 	loc_4641B4:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464209
 		mov		ecx, 8
 	loc_4641C1:
@@ -1811,7 +1811,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		dec		ecx
 		jnz		loc_4641C1
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464209
 		mov		ecx, 8
 	loc_4641EB:
@@ -1834,7 +1834,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edx, 10h
 		xor		eax, eax
 	loc_464216:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_464227:
@@ -1844,7 +1844,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		dec		ecx
 		jnz		loc_464227
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_46424A:
@@ -1872,7 +1872,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_4642F4
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46431B
 		mov		ecx, eax
 		add		esi, ecx
@@ -1949,7 +1949,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_46432D:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		add		edi, edx
 		mov		ecx, 20h
@@ -1997,7 +1997,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 	loc_464399:
 		mov		edx, 2
 	loc_46439E:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		add		edi, edx
 		mov		ecx, 20h
@@ -2047,7 +2047,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_46441A:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -2095,7 +2095,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 	loc_464486:
 		mov		edx, 2
 	loc_46448B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -2145,7 +2145,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_464507:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		add		edi, edx
 		mov		ecx, 20h
@@ -2194,7 +2194,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edx, 8
 		xor		eax, eax
 	loc_46457A:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_46458B:
@@ -2204,7 +2204,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		dec		ecx
 		jnz		loc_46458B
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_4645AE:
@@ -2222,7 +2222,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_4645D3:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -2271,7 +2271,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		mov		edx, 8
 		xor		eax, eax
 	loc_464646:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_464653:
@@ -2281,7 +2281,7 @@ __declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 		dec		ecx
 		jnz		loc_464653
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464688
 		mov		ecx, 8
 	loc_464672:
@@ -2313,25 +2313,25 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpCelFrame, edi
 		mov		edi, ecx
 		mov		gpDrawMask, edx
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		test	al, al
 		jz		loc_4647A2
 		cmp		al, lightmax
 		jz		loc_464802
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jnz		loc_464736
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		ebx, light_table_index
+		mov		ebx, nLVal
 		shl		ebx, 8
 		add		ebx, pLightTbl
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -2348,16 +2348,16 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		jmp		loc_464BBC
 	loc_464736:
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 4
-		add		eax, light_table_index
+		add		eax, nLVal
 		shl		eax, 2
 		add		esi, eax
 		mov		eax, [esi]
 		mov		esi, pSpeedCels
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -2374,54 +2374,54 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		jz		loc_464E7D
 		jmp		loc_464F19
 	loc_4647A2:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_4647D4
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_4647D4:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
 		add		eax, 8
 		jmp		loc_46476B
 	loc_464802:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_464834
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_464834:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
@@ -2438,7 +2438,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_46488D:
 		mov		edx, 20h
 	loc_464892:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -2478,7 +2478,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		test	al, al
 		js		loc_464927
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C0
 		mov		ecx, eax
 		push	edx
@@ -2525,7 +2525,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_464964:
 		mov		edx, 1Eh
 	loc_464969:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -2563,7 +2563,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		jge		loc_464969
 		mov		edx, 2
 	loc_4649CB:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -2605,7 +2605,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 	loc_464A36:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464AF8
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -2645,7 +2645,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		jge		loc_464A36
 		mov		edx, 2
 	loc_464A9A:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464AF8
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -2690,7 +2690,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_464AFE:
 		mov		edx, 1Eh
 	loc_464B03:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -2731,7 +2731,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_464B72:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -2763,7 +2763,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 	loc_464BC2:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464C74
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -2806,7 +2806,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_464C33:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464C74
 		push	edx
 		mov		eax, gpDrawMask
@@ -2839,7 +2839,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_464C7A:
 		mov		edx, 20h
 	loc_464C7F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -2878,7 +2878,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		test	al, al
 		js		loc_464D12
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C0
 		push	edx
 		mov		edx, gdwCurrentMask
@@ -2922,7 +2922,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_464D4B:
 		mov		edx, 1Eh
 	loc_464D50:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -2948,7 +2948,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		jge		loc_464D50
 		mov		edx, 2
 	loc_464D98:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -2978,7 +2978,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 	loc_464DE9:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464E77
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -3006,7 +3006,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		jge		loc_464DE9
 		mov		edx, 2
 	loc_464E33:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464E77
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -3039,7 +3039,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_464E7D:
 		mov		edx, 1Eh
 	loc_464E82:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -3068,7 +3068,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_464ED7:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -3096,7 +3096,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 	loc_464F1F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464FB6
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -3127,7 +3127,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_464F76:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_464FB6
 		push	edx
 		mov		eax, gpDrawMask
@@ -3159,7 +3159,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_464FBC:
 		mov		edx, 20h
 	loc_464FC1:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -3197,7 +3197,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		test	al, al
 		js		loc_465054
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C0
 		push	edx
 		mov		edx, gdwCurrentMask
@@ -3242,7 +3242,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_465098:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -3267,7 +3267,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_4650D3:
 		mov		edx, 2
 	loc_4650D8:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -3293,7 +3293,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_46511E:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -3318,7 +3318,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	loc_465159:
 		mov		edx, 2
 	loc_46515E:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -3344,7 +3344,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_4651A4:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		add		edi, edx
 		mov		ecx, 20h
@@ -3372,7 +3372,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_4651F1:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -3399,7 +3399,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_465239:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		$+82h
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -3427,7 +3427,7 @@ __declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_465286:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4652C1
 		push	edx
 		mov		eax, gpDrawMask
@@ -3467,10 +3467,10 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	edx
 		push	edi
 		push	esi
-		mov		edx, cel_transparency_active
+		mov		edx, nTrans
 		test	edx, edx
 		jz		loc_465372
-		mov		dl, arch_draw_type
+		mov		dl, gbPartialTrans
 		cmp		dl, 0
 		jnz		loc_4652EC
 		call	drawTopArchesUpperScreen
@@ -3478,7 +3478,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_4652EC:
 		cmp		dl, 1
 		jnz		loc_46532F
-		mov		ebx, level_piece_id
+		mov		ebx, gnPieceNum
 		mov		al, block_lvid[ebx]
 		cmp		al, 1
 		jz		loc_465307
@@ -3499,7 +3499,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_46532F:
 		cmp		dl, 2
 		jnz		loc_465372
-		mov		ebx, level_piece_id
+		mov		ebx, gnPieceNum
 		mov		al, block_lvid[ebx]
 		cmp		al, 2
 		jz		loc_46534A
@@ -3521,25 +3521,25 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		mov		edi, offset SpeedFrameTbl
 		mov		gpCelFrame, edi
 		mov		edi, ecx
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		test	al, al
 		jz		loc_465474
 		cmp		al, lightmax
 		jz		loc_4654D4
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jnz		loc_46540A
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		ebx, light_table_index
+		mov		ebx, nLVal
 		shl		ebx, 8
 		add		ebx, pLightTbl
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		shr		eax, 0Ch
 		and		eax, 0Fh
 		jz		loc_46555D
@@ -3554,16 +3554,16 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jmp		loc_465939
 	loc_46540A:
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 4
-		add		eax, light_table_index
+		add		eax, nLVal
 		shl		eax, 2
 		add		esi, eax
 		mov		eax, [esi]
 		mov		esi, pSpeedCels
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		shr		eax, 0Ch
 		and		eax, 0Fh
 	loc_46543D:
@@ -3579,54 +3579,54 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jz		loc_465BDA
 		jmp		loc_465C53
 	loc_465474:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_4654A6
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_4654A6:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
 		add		eax, 8
 		jmp		loc_46543D
 	loc_4654D4:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_465506
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_465506:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		shr		eax, 0Ch
 		and		eax, 7
 		jz		loc_465CC8
@@ -3642,7 +3642,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_46555D:
 		mov		edx, 20h
 	loc_465562:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 20h
 		push	edx
@@ -3683,7 +3683,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_465644
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46565D
 		mov		ecx, eax
 		push	edx
@@ -3749,7 +3749,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 	loc_465669:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46575F
 		add		edi, ebp
 		mov		ecx, 20h
@@ -3796,7 +3796,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_465669
 		mov		ebp, 2
 	loc_4656E7:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46575F
 		add		edi, ebp
 		mov		ecx, 20h
@@ -3849,7 +3849,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 	loc_46576B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465861
 		mov		ecx, 20h
 		sub		ecx, ebp
@@ -3896,7 +3896,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_46576B
 		mov		ebp, 2
 	loc_4657E9:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465861
 		mov		ecx, 20h
 		sub		ecx, ebp
@@ -3949,7 +3949,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 	loc_46586D:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465933
 		add		edi, ebp
 		mov		ecx, 20h
@@ -3996,7 +3996,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_46586D
 		mov		ebp, 10h
 	loc_4658EB:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465933
 		mov		ecx, 20h
 	loc_4658F8:
@@ -4029,7 +4029,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 	loc_46593F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465A05
 		mov		ecx, 20h
 		sub		ecx, ebp
@@ -4076,7 +4076,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_46593F
 		mov		ebp, 10h
 	loc_4659BD:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465A05
 		mov		ecx, 20h
 	loc_4659CA:
@@ -4108,7 +4108,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465A0B:
 		mov		edx, 20h
 	loc_465A10:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 8
 	loc_465A21:
@@ -4134,7 +4134,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_465A91
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465AA2
 		mov		ecx, eax
 		shr		ecx, 1
@@ -4180,7 +4180,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465AA8:
 		mov		edx, 1Eh
 	loc_465AAD:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		add		edi, edx
 		mov		ecx, 20h
@@ -4206,7 +4206,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_465AAD
 		mov		edx, 2
 	loc_465AF5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		add		edi, edx
 		mov		ecx, 20h
@@ -4236,7 +4236,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		edx, 1Eh
 	loc_465B46:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465BD4
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -4264,7 +4264,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_465B46
 		mov		edx, 2
 	loc_465B90:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465BD4
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -4297,7 +4297,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465BDA:
 		mov		edx, 1Eh
 	loc_465BDF:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		add		edi, edx
 		mov		ecx, 20h
@@ -4323,7 +4323,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_465BDF
 		mov		edx, 10h
 	loc_465C27:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 8
 	loc_465C38:
@@ -4341,7 +4341,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		push	ebp
 		mov		edx, 1Eh
 	loc_465C59:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465CC2
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -4369,7 +4369,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		jge		loc_465C59
 		mov		edx, 10h
 	loc_465C9F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465CC2
 		mov		ecx, 8
 	loc_465CAC:
@@ -4389,7 +4389,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		mov		edx, 20h
 		xor		eax, eax
 	loc_465CCF:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 8
 	loc_465CE0:
@@ -4413,7 +4413,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_465D41
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465D52
 		mov		ecx, eax
 		add		esi, ecx
@@ -4456,7 +4456,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_465D5F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		add		edi, edx
 		mov		ecx, 20h
@@ -4481,7 +4481,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465D9A:
 		mov		edx, 2
 	loc_465D9F:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		add		edi, edx
 		mov		ecx, 20h
@@ -4507,7 +4507,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_465DE5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -4532,7 +4532,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465E20:
 		mov		edx, 2
 	loc_465E25:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -4558,7 +4558,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_465E6B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		add		edi, edx
 		mov		ecx, 20h
@@ -4583,7 +4583,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465EA6:
 		mov		edx, 10h
 	loc_465EAB:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		$+82h
 		mov		ecx, 8
 	loc_465EBC:
@@ -4599,7 +4599,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_465ED6:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 20h
 		sub		ecx, edx
@@ -4624,7 +4624,7 @@ __declspec(naked) void drawUpperScreen(BYTE *pBuff)
 	loc_465F0D:
 		mov		edx, 10h
 	loc_465F12:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_465F33
 		mov		ecx, 8
 	loc_465F1F:
@@ -4656,25 +4656,25 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		edi, offset SpeedFrameTbl
 		mov		gpCelFrame, edi
 		mov		edi, ecx
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		test	al, al
 		jz		loc_466042
 		cmp		al, lightmax
 		jz		loc_4660A2
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jnz		loc_465FD6
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		ebx, light_table_index
+		mov		ebx, nLVal
 		shl		ebx, 8
 		add		ebx, pLightTbl
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -4690,16 +4690,16 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jmp		loc_466B11
 	loc_465FD6:
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 4
-		add		eax, light_table_index
+		add		eax, nLVal
 		shl		eax, 2
 		add		esi, eax
 		mov		eax, [esi]
 		mov		esi, pSpeedCels
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -4716,54 +4716,54 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jz		loc_4671E1
 		jmp		loc_46732D
 	loc_466042:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_466074
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_466074:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
 		add		eax, 8
 		jmp		loc_46600B
 	loc_4660A2:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_4660D4
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_4660D4:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
@@ -4781,7 +4781,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 10h
 	loc_466133:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466143
 		add		esi, 20h
 		add		edi, 20h
@@ -4803,7 +4803,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_466148
 	loc_466166:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46617C
 		add		esi, 20h
 		add		edi, 20h
@@ -4845,7 +4845,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_4662E2
 		sub		ebp, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4661E3
 		add		esi, eax
 		add		edi, eax
@@ -4994,7 +4994,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_466370
 		add		eax, 3FFh
 		shr		eax, 8
@@ -5151,7 +5151,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_466490:
 		mov		ebp, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4664E8
 		add		eax, 3FFh
 		shr		eax, 8
@@ -5315,7 +5315,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_466671
 		add		eax, 3FFh
 		shr		eax, 8
@@ -5473,7 +5473,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_466791:
 		mov		ebp, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4667E9
 		add		eax, 3FFh
 		shr		eax, 8
@@ -5638,7 +5638,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_466972
 		add		eax, 3FFh
 		shr		eax, 8
@@ -5795,7 +5795,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_466A92:
 		mov		ebp, 8
 	loc_466A97:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466AA7
 		add		esi, 20h
 		add		edi, 20h
@@ -5817,7 +5817,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_466AAC
 	loc_466ACA:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466AE0
 		add		esi, 20h
 		add		edi, 20h
@@ -5849,7 +5849,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_466B71
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6007,7 +6007,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_466C91:
 		mov		ebp, 8
 	loc_466C96:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466CA6
 		add		esi, 20h
 		add		edi, 20h
@@ -6029,7 +6029,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_466CAB
 	loc_466CC9:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466CDF
 		add		esi, 20h
 		add		edi, 20h
@@ -6058,7 +6058,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_466D10:
 		mov		edx, 10h
 	loc_466D15:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466D25
 		add		esi, 20h
 		add		edi, 20h
@@ -6079,7 +6079,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_466D2A
 	loc_466D41:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466D57
 		add		esi, 20h
 		add		edi, 20h
@@ -6116,7 +6116,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_466E35
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_466DB1
 		add		esi, eax
 		add		edi, eax
@@ -6211,7 +6211,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_466EC1
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6292,7 +6292,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		    // loc_466F3F:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_466F97
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6378,7 +6378,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_46707C
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6462,7 +6462,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_4670FC:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467154
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6552,7 +6552,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467240
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6633,7 +6633,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		    // loc_4672BE:
 		mov		edx, 8
 	loc_4672C3:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4672D3
 		add		esi, 20h
 		add		edi, 20h
@@ -6654,7 +6654,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_4672D8
 	loc_4672EF:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467305
 		add		esi, 20h
 		add		edi, 20h
@@ -6682,7 +6682,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_46738D
 		add		eax, 3FFh
 		shr		eax, 8
@@ -6766,7 +6766,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_46740D:
 		mov		edx, 8
 	loc_467412:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467422
 		add		esi, 20h
 		add		edi, 20h
@@ -6787,7 +6787,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_467427
 	loc_46743E:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467454
 		add		esi, 20h
 		add		edi, 20h
@@ -6814,7 +6814,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		edx, 10h
 		xor		eax, eax
 	loc_467484:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467494
 		add		esi, 20h
 		add		edi, 20h
@@ -6829,7 +6829,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_467499
 	loc_4674A5:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4674BB
 		add		esi, 20h
 		add		edi, 20h
@@ -6862,7 +6862,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_46756C
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467507
 		add		esi, eax
 		add		edi, eax
@@ -6942,7 +6942,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_4675A5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4675B7
 		add		esi, 20h
 		sub		esi, edx
@@ -6995,7 +6995,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_467617:
 		mov		edx, 2
 	loc_46761C:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46762E
 		add		esi, 20h
 		sub		esi, edx
@@ -7050,7 +7050,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_46769E:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4676B2
 		add		esi, 20h
 		sub		esi, edx
@@ -7104,7 +7104,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_467712:
 		mov		edx, 2
 	loc_467717:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46772B
 		add		esi, 20h
 		sub		esi, edx
@@ -7160,7 +7160,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_46779B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4677AD
 		add		esi, 20h
 		sub		esi, edx
@@ -7213,7 +7213,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_46780D:
 		mov		edx, 8
 	loc_467812:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467822
 		add		esi, 20h
 		add		edi, 20h
@@ -7229,7 +7229,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_467829
 	loc_467835:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46784B
 		add		esi, 20h
 		add		edi, 20h
@@ -7253,7 +7253,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		mov		WorldBoolFlag, eax
 		mov		edx, 1Eh
 	loc_467877:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46788B
 		add		esi, 20h
 		sub		esi, edx
@@ -7307,7 +7307,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 	loc_4678EB:
 		mov		edx, 8
 	loc_4678F0:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467900
 		add		esi, 20h
 		add		edi, 20h
@@ -7323,7 +7323,7 @@ __declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 		jnz		loc_467907
 	loc_467913:
 		sub		edi, 320h
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467929
 		add		esi, 20h
 		add		edi, 20h
@@ -7360,25 +7360,25 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpCelFrame, edi
 		mov		edi, ecx
 		mov		gpDrawMask, edx
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		test	al, al
 		jz		loc_467A58
 		cmp		al, lightmax
 		jz		loc_467AB8
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jnz		loc_4679EC
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		ebx, light_table_index
+		mov		ebx, nLVal
 		shl		ebx, 8
 		add		ebx, pLightTbl
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -7394,16 +7394,16 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		jmp		loc_467F8A
 	loc_4679EC:
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 4
-		add		eax, light_table_index
+		add		eax, nLVal
 		shl		eax, 2
 		add		esi, eax
 		mov		eax, [esi]
 		mov		esi, pSpeedCels
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 0Fh
@@ -7420,54 +7420,54 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		jz		loc_468372
 		jmp		loc_468448
 	loc_467A58:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_467A8A
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_467A8A:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
 		add		eax, 8
 		jmp		loc_467A21
 	loc_467AB8:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_467AEA
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_467AEA:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
@@ -7485,7 +7485,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		ebp, 20h
 	loc_467B49:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467B59
 		add		esi, 20h
 		add		edi, 20h
@@ -7529,7 +7529,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		test	al, al
 		js		loc_467BE3
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467BBF
 		add		esi, eax
 		add		edi, eax
@@ -7581,7 +7581,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_467C20:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467C67
 		add		eax, 3FFh
 		shr		eax, 8
@@ -7638,7 +7638,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_467CB8:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467D02
 		add		eax, 3FFh
 		shr		eax, 8
@@ -7698,7 +7698,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467DA3
 		add		eax, 3FFh
 		shr		eax, 8
@@ -7757,7 +7757,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_467DF6:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467E3D
 		add		eax, 3FFh
 		shr		eax, 8
@@ -7820,7 +7820,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_467E99:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467EE0
 		add		eax, 3FFh
 		shr		eax, 8
@@ -7880,7 +7880,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_467F43:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_467F53
 		add		esi, 20h
 		add		edi, 20h
@@ -7914,7 +7914,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_467FD2
 		add		eax, 3FFh
 		shr		eax, 8
@@ -7976,7 +7976,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_468037:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468047
 		add		esi, 20h
 		add		edi, 20h
@@ -8013,7 +8013,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_468086:
 		mov		edx, 20h
 	loc_46808B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46809B
 		add		esi, 20h
 		add		edi, 20h
@@ -8057,7 +8057,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		test	al, al
 		js		loc_468124
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468101
 		add		esi, eax
 		add		edi, eax
@@ -8106,7 +8106,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_468161:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4681A8
 		add		eax, 3FFh
 		shr		eax, 8
@@ -8151,7 +8151,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_4681DF:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468229
 		add		eax, 3FFh
 		shr		eax, 8
@@ -8199,7 +8199,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4682B0
 		add		eax, 3FFh
 		shr		eax, 8
@@ -8246,7 +8246,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_4682E9:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468330
 		add		eax, 3FFh
 		shr		eax, 8
@@ -8297,7 +8297,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_468372:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4683B9
 		add		eax, 3FFh
 		shr		eax, 8
@@ -8345,7 +8345,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_468402:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468412
 		add		esi, 20h
 		add		edi, 20h
@@ -8378,7 +8378,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		push	ebp
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468490
 		add		eax, 3FFh
 		shr		eax, 8
@@ -8428,7 +8428,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_4684DB:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4684EB
 		add		esi, 20h
 		add		edi, 20h
@@ -8464,7 +8464,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_468529:
 		mov		edx, 20h
 	loc_46852E:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46853E
 		add		esi, 20h
 		add		edi, 20h
@@ -8507,7 +8507,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		test	al, al
 		js		loc_4685C7
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4685A3
 		add		esi, eax
 		add		edi, eax
@@ -8557,7 +8557,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_46860B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46861D
 		add		esi, 20h
 		sub		esi, edx
@@ -8587,7 +8587,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_46864C:
 		mov		edx, 2
 	loc_468651:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468663
 		add		esi, 20h
 		sub		esi, edx
@@ -8618,7 +8618,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_46869D:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4686B1
 		add		esi, 20h
 		sub		esi, edx
@@ -8649,7 +8649,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	loc_4686E0:
 		mov		edx, 2
 	loc_4686E5:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4686F9
 		add		esi, 20h
 		sub		esi, edx
@@ -8681,7 +8681,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_468733:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468745
 		add		esi, 20h
 		sub		esi, edx
@@ -8714,7 +8714,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_468786:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468796
 		add		esi, 20h
 		add		edi, 20h
@@ -8746,7 +8746,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_4687D2:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4687E6
 		add		esi, 20h
 		sub		esi, edx
@@ -8780,7 +8780,7 @@ __declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		mov		gpDrawMask, eax
 		mov		edx, 10h
 	loc_468827:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468837
 		add		esi, 20h
 		add		edi, 20h
@@ -8822,10 +8822,10 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		push	edx
 		push	edi
 		push	esi
-		mov		edx, cel_transparency_active
+		mov		edx, nTrans
 		test	edx, edx
 		jz		loc_468918
-		mov		dl, arch_draw_type
+		mov		dl, gbPartialTrans
 		cmp		dl, 0
 		jnz		loc_468892
 		call	drawTopArchesLowerScreen
@@ -8833,7 +8833,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_468892:
 		cmp		dl, 1
 		jnz		loc_4688D5
-		mov		ebx, level_piece_id
+		mov		ebx, gnPieceNum
 		mov		al, block_lvid[ebx]
 		cmp		al, 1
 		jz		loc_4688AD
@@ -8854,7 +8854,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_4688D5:
 		cmp		dl, 2
 		jnz		loc_468918
-		mov		ebx, level_piece_id
+		mov		ebx, gnPieceNum
 		mov		al, block_lvid[ebx]
 		cmp		al, 2
 		jz		loc_4688F0
@@ -8876,25 +8876,25 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		mov		edi, offset SpeedFrameTbl
 		mov		gpCelFrame, edi
 		mov		edi, ecx
-		mov		eax, light_table_index
+		mov		eax, nLVal
 		test	al, al
 		jz		loc_468A1A
 		cmp		al, lightmax
 		jz		loc_468A78
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jnz		loc_4689B0
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		ebx, light_table_index
+		mov		ebx, nLVal
 		shl		ebx, 8
 		add		ebx, pLightTbl
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		shr		eax, 0Ch
 		and		eax, 0Fh
 		jz		loc_468B03
@@ -8909,16 +8909,16 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		jmp		loc_468EE2
 	loc_4689B0:
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 4
-		add		eax, light_table_index
+		add		eax, nLVal
 		shl		eax, 2
 		add		esi, eax
 		mov		eax, [esi]
 		mov		esi, pSpeedCels
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		shr		eax, 0Ch
 		and		eax, 0Fh
 	loc_4689E3:
@@ -8934,53 +8934,53 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		jz		loc_4692A5
 		jmp		loc_469358
 	loc_468A1A:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_468A4C
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_468A4C:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		shr		eax, 0Ch
 		and		eax, 7
 		add		eax, 8
 		jmp		loc_4689E3
 	loc_468A78:
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 8000h
 		jz		loc_468AAA
 		mov		esi, gpCelFrame
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 6
 		add		esi, eax
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0F000h
 		add		eax, [esi]
-		mov		level_cel_block, eax
+		mov		gdwPNum, eax
 	loc_468AAA:
 		mov		ebx, pDungeonCels
 		mov		esi, ebx
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		and		eax, 0FFFh
 		shl		eax, 2
 		add		ebx, eax
 		add		esi, [ebx]
-		mov		eax, level_cel_block
+		mov		eax, gdwPNum
 		mov		al, ah
 		shr		eax, 4
 		and		eax, 7
@@ -8999,7 +8999,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		push	ebp
 	loc_468B09:
 		push	edx
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468B1A
 		add		esi, 20h
 		add		edi, 20h
@@ -9050,7 +9050,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		jmp		loc_468BEA
 	loc_468B78:
 		sub		ebp, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468B88
 		add		esi, eax
 		add		edi, eax
@@ -9111,7 +9111,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468C4E
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9151,7 +9151,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_468C75:
 		mov		ebp, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468CBC
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9196,7 +9196,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468D34
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9236,7 +9236,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_468D5B:
 		mov		ebp, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468DA2
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9281,7 +9281,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468E1A
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9347,7 +9347,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_468E87:
 		mov		ebp, 10h
 	loc_468E8C:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468E9C
 		add		esi, 20h
 		add		edi, 20h
@@ -9384,7 +9384,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		push	ebp
 		mov		ebp, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_468F2A
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9450,7 +9450,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_468F97:
 		mov		ebp, 10h
 	loc_468F9C:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_468FAC
 		add		esi, 20h
 		add		edi, 20h
@@ -9486,7 +9486,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_468FF2:
 		mov		edx, 20h
 	loc_468FF7:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_469007
 		add		esi, 20h
 		add		edi, 20h
@@ -9517,7 +9517,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_469082
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46904B
 		add		esi, eax
 		add		edi, eax
@@ -9566,7 +9566,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_469099:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4690E0
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9611,7 +9611,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_469117:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_46915E
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9659,7 +9659,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_46919D:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4691E4
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9706,7 +9706,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_46921D:
 		mov		edx, 2
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_469264
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9756,7 +9756,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_4692A5:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_4692EC
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9801,7 +9801,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_469323:
 		mov		edx, 10h
 	loc_469328:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_469338
 		add		esi, 20h
 		add		edi, 20h
@@ -9823,7 +9823,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_469358:
 		mov		edx, 1Eh
 		mov		eax, edi
-		sub		eax, gpBufEnd
+		sub		eax, glClipY
 		jb		loc_46939F
 		add		eax, 3FFh
 		shr		eax, 8
@@ -9870,7 +9870,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_4693D8:
 		mov		edx, 10h
 	loc_4693DD:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4693ED
 		add		esi, 20h
 		add		edi, 20h
@@ -9893,7 +9893,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		mov		edx, 20h
 		xor		eax, eax
 	loc_469414:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_469424
 		add		esi, 20h
 		add		edi, 20h
@@ -9922,7 +9922,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		test	al, al
 		js		loc_469490
 		sub		edx, eax
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_469463
 		add		esi, eax
 		add		edi, eax
@@ -9968,7 +9968,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_4694AE:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4694C0
 		add		esi, 20h
 		sub		esi, edx
@@ -9998,7 +9998,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_4694EF:
 		mov		edx, 2
 	loc_4694F4:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_469506
 		add		esi, 20h
 		sub		esi, edx
@@ -10029,7 +10029,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_469540:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_469554
 		add		esi, 20h
 		sub		esi, edx
@@ -10060,7 +10060,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_469583:
 		mov		edx, 2
 	loc_469588:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46959C
 		add		esi, 20h
 		sub		esi, edx
@@ -10092,7 +10092,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_4695D6:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4695E8
 		add		esi, 20h
 		sub		esi, edx
@@ -10122,7 +10122,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_469617:
 		mov		edx, 10h
 	loc_46961C:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46962C
 		add		esi, 20h
 		add		edi, 20h
@@ -10143,7 +10143,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 		mov		edx, 1Eh
 		xor		eax, eax
 	loc_46964B:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_46965F
 		add		esi, 20h
 		sub		esi, edx
@@ -10174,7 +10174,7 @@ __declspec(naked) void drawLowerScreen(BYTE *pBuff)
 	loc_46968E:
 		mov		edx, 10h
 	loc_469693:
-		cmp		edi, gpBufEnd
+		cmp		edi, glClipY
 		jb		loc_4696A3
 		add		esi, 20h
 		add		edi, 20h

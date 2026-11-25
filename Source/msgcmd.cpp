@@ -5,19 +5,46 @@
  *
  * See http://classic.battle.net/info/commands.shtml for a list of commands.
  */
-#ifndef HELLFIRE
-#include <new>      // for placement new
-#include <stddef.h> // for offsetof
-#include <typeinfo> // for typeid
-
 #include "all.h"
+#include "../3rdParty/Storm/Source/storm.h"
+
+#ifndef HELLFIRE
+
+#include <stddef.h> // for offsetof
+// for typeid: the CRT's type_info
+class type_info {
+public:
+	virtual ~type_info();
+private:
+	void *_m_data;
+	char _m_d_name[1];
+};
+
 #include "list.h"
 
 #define COMMAND_LEN 128
 
 // static float msgcmd_init_cpp_value = 0x7F800000;
 
-struct EXTERNMESSAGE {
+struct EXTERNMESSAGE;
+// 1.09b: Delete comes from a template base (as with Storm's list nodes), so it is emitted with the
+// list functions, after its callers
+template <class T>
+struct TDeletable {
+	void *Delete(DWORD flags)
+	{
+		T *self = (T *)this;
+		// BUGFIX: this is already called by m_Link's destructor
+		self->m_Link.Unlink();
+		self->~T();
+		if ((flags & 0x1) && self) {
+			SMemFree(self, "delete", SLOG_FUNCTION, 0);
+		}
+		return self;
+	}
+};
+
+struct EXTERNMESSAGE : TDeletable<EXTERNMESSAGE> {
 	LIST_LINK(EXTERNMESSAGE)
 	m_Link;
 	char command[COMMAND_LEN];
@@ -25,25 +52,10 @@ struct EXTERNMESSAGE {
 	{
 		return SMemAlloc(n + extralen, (char *)OBJECT_NAME(EXTERNMESSAGE), SLOG_OBJECT, flags | (1 << 3));
 	}
-	void operator delete(void *address, DWORD extralen, int flags)
-	{
-	}
 	void operator delete(void *address)
 	{
 	}
-	void *Delete(DWORD flags);
 };
-
-void *EXTERNMESSAGE::Delete(DWORD flags)
-{
-	// BUGFIX: this is already called by m_Link's destructor
-	m_Link.Unlink();
-	this->~EXTERNMESSAGE();
-	if ((flags & 0x1) && this) {
-		SMemFree(this, "delete", SLOG_FUNCTION, 0);
-	}
-	return this;
-}
 
 static TList<EXTERNMESSAGE> sgChat_Cmd;
 
@@ -58,7 +70,7 @@ void msgcmd_send_chat()
 	struct EXTERNMESSAGE *msg = sgChat_Cmd.Head();
 
 	if (msg) {
-		static DWORD sgdwMsgCmdTimer;
+		static DWORD sgdwMsgCmdTimer = 0;
 		tick = GetTickCount();
 		if (tick - sgdwMsgCmdTimer >= 2000) {
 			sgdwMsgCmdTimer = tick;

@@ -7,12 +7,12 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
-char gszHero[16];
+/** The active music track id for the main menu. */
+int menu_music_track_id = TMUSIC_INTRO;
 
 /* data */
 
-/** The active music track id for the main menu. */
-int menu_music_track_id = TMUSIC_INTRO;
+char gszHero[16] = { 0 };
 
 void mainmenu_refresh_music()
 {
@@ -138,7 +138,7 @@ BOOL __stdcall mainmenu_select_hero_dialog(
     const _SNETPROGRAMDATA *client_info,
     const _SNETPLAYERDATA *user_info,
     const _SNETUIDATA *ui_info,
-    const _SNETVERSIONDATA *fileinfo,
+    const _SNETVERSIONDATA *gVersion,
     DWORD mode,
     char *cname, DWORD clen,
     char *cdesc, DWORD cdlen,
@@ -229,7 +229,7 @@ void mainmenu_loop()
 			done = FALSE;
 #endif
 #else
-			if (gbActive)
+			if (bActive)
 				mainmenu_play_intro();
 #endif
 			break;

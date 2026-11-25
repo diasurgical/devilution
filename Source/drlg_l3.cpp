@@ -6,13 +6,16 @@
 #ifndef SPAWN
 #include "all.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig4[128] = "REGISTRATION_BLOCK";
+
 /** This will be true if a lava pool has been generated for the level */
 
-BOOLEAN lavapool;
+BOOLEAN lavapool = 0;
 /** unused */
-int abyssx;
-int lockoutcnt;
-BOOLEAN lockout[DMAXX][DMAXY];
+int abyssx = 0;
+int lockoutcnt = 0;
+BOOLEAN lockout[DMAXX][DMAXY] = { 0 };
 
 /**
  * A lookup table for the 16 possible patterns of a 2x2 area,
@@ -1426,7 +1429,7 @@ static BOOL DRLG_L3Spawn(int x, int y, int *totarea);
 static BOOL DRLG_L3SpawnEdge(int x, int y, int *totarea)
 {
 	BYTE i;
-	static BYTE spawntable[15] = { 0x00, 0x0A, 0x43, 0x05, 0x2c, 0x06, 0x09, 0x00, 0x00, 0x1c, 0x83, 0x06, 0x09, 0x0A, 0x05 };
+	static const BYTE spawntable[15] = { 0x00, 0x0A, 0x43, 0x05, 0x2c, 0x06, 0x09, 0x00, 0x00, 0x1c, 0x83, 0x06, 0x09, 0x0A, 0x05 };
 
 	if (*totarea > 40) {
 		return TRUE;
@@ -1476,7 +1479,7 @@ static BOOL DRLG_L3SpawnEdge(int x, int y, int *totarea)
 static BOOL DRLG_L3Spawn(int x, int y, int *totarea)
 {
 	BYTE i;
-	static BYTE spawntable[15] = { 0x00, 0x0A, 0x03, 0x05, 0x0C, 0x06, 0x09, 0x00, 0x00, 0x0C, 0x03, 0x06, 0x09, 0x0A, 0x05 };
+	static const BYTE spawntable[15] = { 0x00, 0x0A, 0x03, 0x05, 0x0C, 0x06, 0x09, 0x00, 0x00, 0x0C, 0x03, 0x06, 0x09, 0x0A, 0x05 };
 
 	if (*totarea > 40) {
 		return TRUE;
@@ -1536,7 +1539,7 @@ static void DRLG_L3Pool()
 	int i, j, dunx, duny, totarea, poolchance;
 	BOOL found;
 	BYTE k;
-	static BYTE poolsub[15] = { 0, 35, 26, 36, 25, 29, 34, 7, 33, 28, 27, 37, 32, 31, 30 };
+	static const BYTE poolsub[15] = { 0, 35, 26, 36, 25, 29, 34, 7, 33, 28, 27, 37, 32, 31, 30 };
 
 	for (duny = 0; duny < DMAXY; duny++) {
 		for (dunx = 0; dunx < DMAXY; dunx++) {

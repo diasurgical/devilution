@@ -53,7 +53,11 @@ typedef struct _WSIZE
 } WSIZE, *PWSIZE;
 
 #ifdef __cplusplus
-static float infinity = std::numeric_limits<float>::infinity();
+// 1.09b: every file including this has its own infinity constant in .rdata, copied at startup.
+// Its name decides its place among the uninitialised globals (VC5 name-hash order); sginfinity is one of
+// the few names that fit every file (INFINITY and fltInf hash the same way).
+static const unsigned long infinity_bits = 0x7F800000;
+static float sginfinity = *(const float *)&infinity_bits;
 
 struct CCritSect {
 	CRITICAL_SECTION m_critsect;

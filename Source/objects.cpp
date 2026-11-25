@@ -5,28 +5,12 @@
  */
 #include "all.h"
 
-int trapid;
-int trapdir;
-BYTE *pObjCels[40];
-char ObjFileList[40];
-int objectactive[MAXOBJECTS];
-/** Specifies the number of active objects. */
-int nobjects;
-int leverid;
-int objectavail[MAXOBJECTS];
-ObjectStruct object[MAXOBJECTS];
-BOOL InitObjFlag;
-int numobjfiles;
-#ifdef HELLFIRE
-int dword_6DE0E0;
-#endif
-
 /** Specifies the X-coordinate delta between barrels. */
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 /** Specifies the Y-coordinate delta between barrels. */
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 /** Maps from shrine_id to shrine name. */
-const char *const shrinestrs[NUM_SHRINETYPE] = {
+char *shrinestrs[NUM_SHRINETYPE] = {
 	"Mysterious",
 	"Hidden",
 	"Gloomy",
@@ -142,13 +126,6 @@ char shrinemax[NUM_SHRINETYPE] = {
 	MAX_LVLS, // Murphy's
 #endif
 };
-/**
- * Specifies the game type for which each shrine may appear.
- * SHRINETYPE_ANY - 0 - sp & mp
- * SHRINETYPE_SINGLE - 1 - sp only
- * SHRINETYPE_MULTI - 2 - mp only
- */
-
 BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_ANY,    // SHRINE_MYSTERIOUS
 	SHRINETYPE_ANY,    // SHRINE_HIDDEN
@@ -187,8 +164,20 @@ BYTE shrineavail[NUM_SHRINETYPE] = {
 	SHRINETYPE_ANY,    // SHRINE_MURPHYS
 #endif
 };
+int trapid = 0;
+int trapdir = 0;
+BYTE *pObjCels[40] = { 0 };
+char ObjFileList[40] = { 0 };
+int objectactive[MAXOBJECTS] = { 0 };
+#ifdef HELLFIRE
+int dword_6DE0E0 = 0;
+#endif
+
+/** Specifies the number of active objects. */
+int nobjects = 0;
+int leverid = 0;
 /** Maps from book_id to book name. */
-const char *const StoryBookName[] = {
+char *StoryBookName[] = {
 	"The Great Conflict",
 	"The Wages of Sin are War",
 	"The Tale of the Horadrim",
@@ -208,12 +197,23 @@ const char *const StoryBookName[] = {
 	"A Spellbook",
 #endif
 };
+int objectavail[MAXOBJECTS] = { 0 };
+ObjectStruct object[MAXOBJECTS] = { 0 };
+/**
+ * Specifies the game type for which each shrine may appear.
+ * SHRINETYPE_ANY - 0 - sp & mp
+ * SHRINETYPE_SINGLE - 1 - sp only
+ * SHRINETYPE_MULTI - 2 - mp only
+ */
+
+BOOL InitObjFlag = 0;
 /** Specifies the speech IDs of each dungeon type narrator book, for each player class. */
 int StoryText[3][3] = {
 	{ TEXT_BOOK11, TEXT_BOOK12, TEXT_BOOK13 },
 	{ TEXT_BOOK21, TEXT_BOOK22, TEXT_BOOK23 },
 	{ TEXT_BOOK31, TEXT_BOOK32, TEXT_BOOK33 }
 };
+int numobjfiles = 0;
 
 void InitObjectGFX()
 {
@@ -295,17 +295,6 @@ DIABOOL RndLocOk(int xp, int yp)
 	if (leveltype != DTYPE_CATHEDRAL || dPiece[xp][yp] <= 126 || dPiece[xp][yp] >= 144)
 		return TRUE;
 	return FALSE;
-}
-
-static DIABOOL WallTrapLocOkK(int xp, int yp)
-{
-	if (dFlags[xp][yp] & BFLAG_POPULATED)
-		return FALSE;
-
-	if (nTrapTable[dPiece[xp][yp]] != FALSE)
-		return TRUE;
-	else
-		return FALSE;
 }
 
 void InitRndLocObj(int min, int max, int objtype)
@@ -644,6 +633,17 @@ void AddL2Torches()
 				AddObject(OBJ_TORCHR, i, j - 1);
 		}
 	}
+}
+
+DIABOOL WallTrapLocOkK(int xp, int yp)
+{
+	if (dFlags[xp][yp] & BFLAG_POPULATED)
+		return FALSE;
+
+	if (nTrapTable[dPiece[xp][yp]] != FALSE)
+		return TRUE;
+	else
+		return FALSE;
 }
 
 void AddObjTraps()
@@ -1476,17 +1476,20 @@ void AddBookcase(int i)
 	object[i]._oPreFlag = TRUE;
 }
 
-void AddBookstand(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddBloodFtn(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
 void AddPurifyingFountain(int i)
+{
+	int ox, oy;
+
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	dObject[ox][oy - 1] = -1 - i;
+	dObject[ox - 1][oy] = -1 - i;
+	dObject[ox - 1][oy - 1] = -1 - i;
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+/* Identical to AddPurifyingFountain; 1.09b keeps one copy there, so it is defined next to it. */
+void AddMurkyFountain(int i)
 {
 	int ox, oy;
 
@@ -1505,33 +1508,6 @@ void AddArmorStand(int i)
 		object[i]._oSelFlag = 0;
 	}
 
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddGoatShrine(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddCauldron(int i)
-{
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddMurkyFountain(int i)
-{
-	int ox, oy;
-
-	ox = object[i]._ox;
-	oy = object[i]._oy;
-	dObject[ox][oy - 1] = -1 - i;
-	dObject[ox - 1][oy] = -1 - i;
-	dObject[ox - 1][oy - 1] = -1 - i;
-	object[i]._oRndSeed = GetRndSeed();
-}
-
-void AddTearFountain(int i)
-{
 	object[i]._oRndSeed = GetRndSeed();
 }
 
@@ -1557,6 +1533,35 @@ void AddMagicCircle(int i)
 	object[i]._oVar5 = 1;
 }
 
+/*
+ * The next six have identical code; 1.09b keeps a single copy where AddBrnCross is, so they are
+ * defined together here and the linker's choice of copy does not move it.
+ */
+void AddBookstand(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddBloodFtn(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddGoatShrine(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddCauldron(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddTearFountain(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
 void AddBrnCross(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
@@ -1577,17 +1582,9 @@ void AddStoryBook(int i)
 	object[i]._oVar1 = random_(0, 3);
 	if (currlevel == 4)
 		object[i]._oVar2 = StoryText[object[i]._oVar1][0];
-#ifdef HELLFIRE
 	if (currlevel == 8)
-#else
-	else if (currlevel == 8)
-#endif
 		object[i]._oVar2 = StoryText[object[i]._oVar1][1];
-#ifdef HELLFIRE
 	if (currlevel == 12)
-#else
-	else if (currlevel == 12)
-#endif
 		object[i]._oVar2 = StoryText[object[i]._oVar1][2];
 	object[i]._oVar3 = (currlevel >> 2) + 3 * object[i]._oVar1 - 1;
 	object[i]._oAnimFrame = 5 - 2 * object[i]._oVar1;
@@ -2563,7 +2560,7 @@ void OperateL1RDoor(int pnum, int oi, DIABOOL sendflag)
 #else
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
-	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+	if (((dItem[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dDead[xp][yp] != 0 ? 0 : 1)) != 0) {
 #endif
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -2671,7 +2668,7 @@ void OperateL1LDoor(int pnum, int oi, DIABOOL sendflag)
 #else
 	if (!deltaload)
 		PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
-	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+	if (((dItem[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dDead[xp][yp] != 0 ? 0 : 1)) != 0) {
 #endif
 		if (pnum == myplr && sendflag)
 			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
@@ -3476,7 +3473,7 @@ void TryDisarm(int pnum, int i)
 	DIABOOL checkflag;
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 	if (object[i]._oTrapFlag) {
 		trapdisper = 2 * plr[pnum]._pDexterity - 5 * currlevel;
 		if (random_(154, 100) <= trapdisper) {
@@ -5022,7 +5019,7 @@ void BreakObject(int pnum, int oi)
 		mind = plr[pnum]._pIMinDam;
 		maxd = plr[pnum]._pIMaxDam;
 		objdam = random_(163, maxd - mind + 1) + mind;
-		objdam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + objdam * plr[pnum]._pIBonusDam / 100;
+		objdam += plr[pnum]._pIBonusDamMod + plr[pnum]._pDamageMod + objdam * plr[pnum]._pIBonusDam / 100;
 	} else {
 		objdam = 10;
 	}
@@ -5337,6 +5334,9 @@ void GetObjectStr(int i)
 	case OBJ_BLINDBOOK:
 		strcpy(infostr, "Book of the Blind");
 		break;
+	case OBJ_STEELTOME:
+		strcpy(infostr, "Steel Tome");
+		break;
 	case OBJ_BLOODBOOK:
 		strcpy(infostr, "Book of Blood");
 		break;
@@ -5361,9 +5361,6 @@ void GetObjectStr(int i)
 		break;
 	case OBJ_TEARFTN:
 		strcpy(infostr, "Fountain of Tears");
-		break;
-	case OBJ_STEELTOME:
-		strcpy(infostr, "Steel Tome");
 		break;
 	case OBJ_PEDISTAL:
 		strcpy(infostr, "Pedestal of Blood");

@@ -6,12 +6,12 @@
 #include "all.h"
 
 int diabquad1x;
-int diabquad1y;
 int diabquad2x;
-int diabquad2y;
 int diabquad3x;
-int diabquad3y;
 int diabquad4x;
+int diabquad1y;
+int diabquad2y;
+int diabquad3y;
 int diabquad4y;
 #ifndef SPAWN
 BOOL hallok[20];

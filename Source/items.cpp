@@ -3,60 +3,45 @@
  *
  * Implementation of item functionality.
  */
-#include "all.h"
+// 1.09b: items.cpp includes only the headers it needs (as in Blizzard's source); the set of declarations
+// the compiler has seen decides a register tie in SpawnHealer
+#include "../types.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "control.h"
+#include "cursor.h"
+#include "diablo.h"
+#include "doom.h"
+#include "drlg_l1.h"
+#include "dx.h"
+#include "effects.h"
+#include "engine.h"
+#include "gendung.h"
+#include "inv.h"
+#include "itemdat.h"
+#include "items.h"
+#include "lighting.h"
+#include "minitext.h"
+#include "missiles.h"
+#include "monstdat.h"
+#include "monster.h"
+#include "msg.h"
+#include "multi.h"
+#include "objects.h"
+#include "pack.h"
+#include "player.h"
+#include "quests.h"
+#include "scrollrt.h"
+#include "sound.h"
+#include "spelldat.h"
+#include "spells.h"
+#include "stores.h"
+#ifdef __cplusplus
+}
+#endif
 #ifdef HELLFIRE
 #include "../3rdParty/Storm/Source/storm.h"
-#endif
-
-int itemactive[MAXITEMS];
-BOOL uitemflag;
-int itemavail[MAXITEMS];
-ItemStruct curruitem;
-ItemGetRecordStruct itemrecord[MAXITEMS];
-/** Contains the items on ground in the current game. */
-ItemStruct item[MAXITEMS + 1];
-BOOL itemhold[3][3];
-#ifdef HELLFIRE
-CornerStoneStruct CornerStone;
-#endif
-BYTE *itemanims[ITEMTYPES];
-BOOL UniqueItemFlag[128];
-#ifdef HELLFIRE
-int auricGold = GOLD_MAX_LIMIT * 2;
-#endif
-int numitems;
-int gnNumGetRecords;
-
-/* data */
-
-#ifdef HELLFIRE
-int OilLevels[] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
-int OilValues[] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
-int OilMagic[] = {
-	IMISC_OILACC,
-	IMISC_OILMAST,
-	IMISC_OILSHARP,
-	IMISC_OILDEATH,
-	IMISC_OILSKILL,
-	IMISC_OILBSMTH,
-	IMISC_OILFORT,
-	IMISC_OILPERM,
-	IMISC_OILHARD,
-	IMISC_OILIMP,
-};
-char OilNames[10][25] = {
-	"Oil of Accuracy",
-	"Oil of Mastery",
-	"Oil of Sharpness",
-	"Oil of Death",
-	"Oil of Skill",
-	"Blacksmith Oil",
-	"Oil of Fortitude",
-	"Oil of Permanence",
-	"Oil of Hardening",
-	"Oil of Imperviousness"
-};
-int MaxGold = GOLD_MAX_LIMIT;
 #endif
 
 /** Maps from item_cursor_graphic to in-memory item type. */
@@ -104,9 +89,9 @@ BYTE ItemCAnimTbl[] = {
 	3, 1, 6, 6, 6, 1, 8, 6, 11, 3,
 	6, 8, 1, 6, 6, 17, 40, 0, 0
 #endif
-};
+};
 /** Map of item type .cel file names. */
-const char *const ItemDropNames[] = {
+char *ItemFiles[] = {
 	"Armor2",
 	"Axe",
 	"FBttle",
@@ -297,9 +282,6 @@ int ItemInvSnds[] = {
 	IS_ILARM,
 #endif
 };
-#ifdef HELLFIRE
-char *CornerStoneRegKey = "SItem";
-#endif
 /** Specifies the current Y-coordinate used for validation of items on ground. */
 int idoppely = 16;
 /** Maps from Griswold premium item number to a quality level delta as added to the base quality level. */
@@ -328,6 +310,63 @@ int premiumlvladd[SMITH_PREMIUM_ITEMS] = {
 #endif
 	// clang-format on
 };
+/** Contains the items on ground in the current game. */
+ItemStruct item[MAXITEMS + 1];
+#ifdef HELLFIRE
+CornerStoneStruct CornerStone;
+#endif
+int itemactive[MAXITEMS];
+int itemavail[MAXITEMS];
+#ifdef HELLFIRE
+int auricGold = GOLD_MAX_LIMIT * 2;
+#endif
+/** unused */
+int tem;
+ItemGetRecordStruct itemgets[MAXITEMS];
+
+/* data */
+
+#ifdef HELLFIRE
+int OilLevels[] = { 1, 10, 1, 10, 4, 1, 5, 17, 1, 10 };
+int OilValues[] = { 500, 2500, 500, 2500, 1500, 100, 2500, 15000, 500, 2500 };
+int OilMagic[] = {
+	IMISC_OILACC,
+	IMISC_OILMAST,
+	IMISC_OILSHARP,
+	IMISC_OILDEATH,
+	IMISC_OILSKILL,
+	IMISC_OILBSMTH,
+	IMISC_OILFORT,
+	IMISC_OILPERM,
+	IMISC_OILHARD,
+	IMISC_OILIMP,
+};
+char OilNames[10][25] = {
+	"Oil of Accuracy",
+	"Oil of Mastery",
+	"Oil of Sharpness",
+	"Oil of Death",
+	"Oil of Skill",
+	"Blacksmith Oil",
+	"Oil of Fortitude",
+	"Oil of Permanence",
+	"Oil of Hardening",
+	"Oil of Imperviousness"
+};
+int MaxGold = GOLD_MAX_LIMIT;
+#endif
+
+BOOL UniqueItemFlag[128];
+
+BOOL uitemflag;
+ItemStruct curruitem;
+BOOL itemhold[3][3];
+BYTE *itemanims[ITEMTYPES];
+#ifdef HELLFIRE
+char *CornerStoneRegKey = "SItem";
+#endif
+int numitems = 0;
+int gnNumGetRecords = 0;
 
 #ifdef HELLFIRE
 int get_ring_max_value(int i)
@@ -528,7 +567,7 @@ void InitItemGFX()
 	char arglist[64];
 
 	for (i = 0; i < ITEMTYPES; i++) {
-		sprintf(arglist, "Items\\%s.CEL", ItemDropNames[i]);
+		sprintf(arglist, "Items\\%s.CEL", ItemFiles[i]);
 		itemanims[i] = LoadFileInMem(arglist, NULL);
 	}
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
@@ -3564,7 +3603,7 @@ void CheckIdentify(int pnum, int cii)
 	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 }
 
 static void RepairItem(ItemStruct *i, int lvl)
@@ -3616,7 +3655,7 @@ void DoRepair(int pnum, int cii)
 	CalcPlrInv(pnum, TRUE);
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 }
 
 static void RechargeItem(ItemStruct *i, int r)
@@ -3654,7 +3693,7 @@ void DoRecharge(int pnum, int cii)
 	}
 
 	if (pnum == myplr)
-		SetCursor_(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 }
 
 #ifdef HELLFIRE
@@ -4308,7 +4347,7 @@ void PrintUString(int x, int y, BOOL cjustflag, const char *str, int col)
 	int len, width, off, i, k;
 	BYTE c;
 
-	off = x + PitchTbl[SStringY[y] + 44 + SCREEN_Y] + 32 + SCREEN_X;
+	off = x + nBuffWTbl[SStringY[y] + 44 + SCREEN_Y] + 32 + SCREEN_X;
 	len = strlen(str);
 	k = 0;
 	if (cjustflag) {
@@ -4337,7 +4376,7 @@ void DrawULine(int y)
 #ifdef USE_ASM
 	int yy;
 
-	yy = PitchTbl[SStringY[y] + 198] + 26 + PANEL_X;
+	yy = nBuffWTbl[SStringY[y] + 198] + 26 + PANEL_X;
 
 	__asm {
 		mov		esi, gpBuffer
@@ -4360,7 +4399,7 @@ void DrawULine(int y)
 	BYTE *src, *dst;
 
 	src = &gpBuffer[SCREENXY(PANEL_LEFT + 26, 25)];
-	dst = &gpBuffer[PitchTbl[SStringY[y] + 38 + SCREEN_Y] + 26 + PANEL_X];
+	dst = &gpBuffer[nBuffWTbl[SStringY[y] + 38 + SCREEN_Y] + 26 + PANEL_X];
 
 	for (i = 0; i < 3; i++, src += BUFFER_WIDTH, dst += BUFFER_WIDTH)
 		memcpy(dst, src, 266); // BUGFIX: should be 267
@@ -5017,9 +5056,9 @@ int RndPremiumItem(int minlvl, int maxlvl)
 }
 
 #ifdef HELLFIRE
-static void SpawnOnePremium(int i, int plvl, int myplr, bool noSpells)
+void SpawnOnePremium(int i, int plvl, int myplr, bool noSpells)
 #else
-static void SpawnOnePremium(int i, int plvl)
+void SpawnOnePremium(int i, int plvl)
 #endif
 {
 	int itype;
@@ -5987,10 +6026,10 @@ static void NextItemRecord(int i)
 		return;
 	}
 
-	itemrecord[i].dwTimestamp = itemrecord[gnNumGetRecords].dwTimestamp;
-	itemrecord[i].nSeed = itemrecord[gnNumGetRecords].nSeed;
-	itemrecord[i].wCI = itemrecord[gnNumGetRecords].wCI;
-	itemrecord[i].nIndex = itemrecord[gnNumGetRecords].nIndex;
+	itemgets[i].nIndex = itemgets[gnNumGetRecords].nIndex;
+	itemgets[i].nSeed = itemgets[gnNumGetRecords].nSeed;
+	itemgets[i].wCI = itemgets[gnNumGetRecords].wCI;
+	itemgets[i].dwTimestamp = itemgets[gnNumGetRecords].dwTimestamp;
 }
 
 BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
@@ -6001,11 +6040,11 @@ BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
 	dwTicks = GetTickCount();
 
 	for (i = 0; i < gnNumGetRecords; i++) {
-		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
+		if (dwTicks - itemgets[i].dwTimestamp > 6000) {
 			// BUGFIX: loot actions for multiple quest items with same seed (e.g. blood stone) performed within less then 6 seconds will be ignored.
 			NextItemRecord(i);
 			i--;
-		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemgets[i].nSeed && wCI == itemgets[i].wCI && nIndex == itemgets[i].nIndex) {
 			return FALSE;
 		}
 	}
@@ -6023,10 +6062,10 @@ void SetItemRecord(int nSeed, WORD wCI, int nIndex)
 		return;
 	}
 
-	itemrecord[gnNumGetRecords].dwTimestamp = dwTicks;
-	itemrecord[gnNumGetRecords].nSeed = nSeed;
-	itemrecord[gnNumGetRecords].wCI = wCI;
-	itemrecord[gnNumGetRecords].nIndex = nIndex;
+	itemgets[gnNumGetRecords].dwTimestamp = dwTicks;
+	itemgets[gnNumGetRecords].nSeed = nSeed;
+	itemgets[gnNumGetRecords].wCI = wCI;
+	itemgets[gnNumGetRecords].nIndex = nIndex;
 	gnNumGetRecords++;
 }
 
@@ -6038,10 +6077,10 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex)
 	dwTicks = GetTickCount();
 
 	for (i = 0; i < gnNumGetRecords; i++) {
-		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
+		if (dwTicks - itemgets[i].dwTimestamp > 6000) {
 			NextItemRecord(i);
 			i--;
-		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemgets[i].nSeed && wCI == itemgets[i].wCI && nIndex == itemgets[i].nIndex) {
 			NextItemRecord(i);
 			break;
 		}

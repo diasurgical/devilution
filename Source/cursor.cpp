@@ -5,44 +5,6 @@
  */
 #include "all.h"
 
-/** Pixel width of the current cursor image */
-int cursW;
-/** Pixel height of the current cursor image */
-int cursH;
-/** Current highlighted monster */
-int pcursmonst;
-/** Width of current cursor in inventory cells */
-int icursW28;
-/** Height of current cursor in inventory cells */
-int icursH28;
-/** Cursor images CEL */
-BYTE *pCursCels;
-#ifdef HELLFIRE
-BYTE *pCursCels2;
-#endif
-
-/** inv_item value */
-char pcursinvitem;
-/** Pixel width of the current cursor image */
-int icursW;
-/** Pixel height of the current cursor image */
-int icursH;
-/** Current highlighted item */
-char pcursitem;
-/** Current highlighted object */
-char pcursobj;
-/** Current highlighted player */
-char pcursplr;
-/** Current highlighted tile row */
-int cursmx;
-/** Current highlighted tile column */
-int cursmy;
-/** Previously highlighted monster */
-int pcurstemp;
-/** Index of current cursor image */
-int pcurs;
-
-/* rdata */
 /** Maps from objcurs.cel frame number to frame width. */
 const int InvItemWidth[] = {
 	// clang-format off
@@ -76,7 +38,6 @@ const int InvItemWidth[] = {
 #endif
 	// clang-format on
 };
-
 /** Maps from objcurs.cel frame number to frame height. */
 const int InvItemHeight[] = {
 	// clang-format off
@@ -110,6 +71,45 @@ const int InvItemHeight[] = {
 #endif
 	// clang-format on
 };
+/** Pixel height of the current cursor image */
+int cursH = 0;
+/** Height of current cursor in inventory cells */
+int icursH28 = 0;
+/** Pixel width of the current cursor image */
+int cursW = 0;
+/** Current highlighted monster */
+int pcursmonst = 0;
+#ifdef HELLFIRE
+BYTE *pCursCels2 = NULL;
+#endif
+
+/** Width of current cursor in inventory cells */
+int icursW28 = 0;
+/** Cursor images CEL */
+BYTE *pCursCels = NULL;
+/** Pixel height of the current cursor image */
+int icursH = 0;
+/** inv_item value */
+char pcursinvitem = 0;
+/** Pixel width of the current cursor image */
+int icursW = 0;
+/** Current highlighted item */
+char pcursitem = 0;
+/** Current highlighted object */
+char pcursobj = 0;
+/** Current highlighted player */
+char pcursplr = 0;
+/** Current highlighted tile row */
+int cursmx = 0;
+/** Current highlighted tile column */
+int cursmy = 0;
+
+/* rdata */
+/** Previously highlighted monster */
+int pcurstemp = 0;
+
+/** Index of current cursor image */
+int pcurs = 0;
 
 void InitCursor()
 {
@@ -245,7 +245,7 @@ void CheckCursMove()
 	if (sy > PANEL_TOP - 1 && track_isscrolling()) {
 		sy = PANEL_TOP - 1;
 	}
-	if (!zoomflag) {
+	if (!svgamode) {
 		sx >>= 1;
 		sy >>= 1;
 	}
@@ -285,7 +285,7 @@ void CheckCursMove()
 	py = sy & (TILE_HEIGHT - 1);
 
 	// Center player tile on screen
-	mx = ViewX + tx + ty - (zoomflag ? (SCREEN_WIDTH / TILE_WIDTH) : (SCREEN_WIDTH / 2 / TILE_WIDTH));
+	mx = ViewX + tx + ty - (svgamode ? (SCREEN_WIDTH / TILE_WIDTH) : (SCREEN_WIDTH / 2 / TILE_WIDTH));
 	my = ViewY + ty - tx;
 
 	// Shift position to match diamond grid aligment

@@ -6,7 +6,7 @@
 #include "all.h"
 #include "../3rdParty/PKWare/pkware.h"
 
-DWORD hashtable[5][256];
+DWORD hashtable[5][256] = { 0 };
 
 void Decrypt(DWORD *castBlock, DWORD size, DWORD key)
 {

@@ -7,6 +7,14 @@
 #include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
+/* in 1.09b these are named constants (they are in .rdata there) */
+static const char szGameName[] = "game";
+static const char szHeroName[] = "hero";
+static const char szPermLevel[] = "perml%02d";
+static const char szPermSetLevel[] = "perms%02d";
+static const char szTempLevel[] = "templ%02d";
+static const char szTempSetLevel[] = "temps%02d";
+
 #ifdef SPAWN
 #define PASSWORD_SINGLE "adslhfb1"
 #define PASSWORD_MULTI "lshbkfg1"
@@ -17,11 +25,11 @@
 
 /** List of character names for the character selection screen. */
 #ifdef HELLFIRE
-static char hero_names[MAX_CHARACTERS + 1][PLR_NAME_LEN];
+static char hero_names[MAX_CHARACTERS + 1][PLR_NAME_LEN] = { 0 };
 #else
-static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
+static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN] = { 0 };
 #endif
-BOOL gbValidSaveFile;
+BOOL gbValidSaveFile = 0;
 
 static void pfile_check_available_space(char *pszDir)
 {
@@ -177,7 +185,7 @@ static BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 	DWORD dwlen, nSize;
 	BYTE *buf;
 
-	if (!SFileOpenFileEx(archive, "hero", 0, &file)) {
+	if (!SFileOpenFileEx(archive, szHeroName, 0, &file)) {
 		return FALSE;
 	} else {
 		buf = NULL;
@@ -240,7 +248,7 @@ static void pfile_encode_hero(const PkPlayerStruct *pPack)
 	packed = (BYTE *)DiabloAllocPtr(packed_len);
 	memcpy(packed, pPack, sizeof(*pPack));
 	codec_encode(packed, sizeof(*pPack), packed_len, password);
-	mpqapi_write_file("hero", packed, packed_len);
+	mpqapi_write_file(szHeroName, packed, packed_len);
 	mem_free_dbg(packed);
 }
 
@@ -506,7 +514,7 @@ BOOL pfile_archive_contains_game(HANDLE hsArchive, DWORD save_num)
 	if (gbMaxPlayers != 1)
 		return FALSE;
 
-	if (!SFileOpenFileEx(hsArchive, "game", 0, &file))
+	if (!SFileOpenFileEx(hsArchive, szGameName, 0, &file))
 		return FALSE;
 
 #ifdef HELLFIRE
@@ -611,17 +619,17 @@ BOOL __stdcall pfile_get_file_name(DWORD lvl, char *dst)
 	if (gbMaxPlayers > 1) {
 		if (lvl)
 			return FALSE;
-		fmt = "hero";
+		fmt = szHeroName;
 	} else {
 		if (lvl < NUMLEVELS)
-			fmt = "perml%02d";
+			fmt = szPermLevel;
 		else if (lvl < NUMLEVELS * 2) {
 			lvl -= NUMLEVELS;
-			fmt = "perms%02d";
+			fmt = szPermSetLevel;
 		} else if (lvl == NUMLEVELS * 2)
-			fmt = "game";
+			fmt = szGameName;
 		else if (lvl == NUMLEVELS * 2 + 1)
-			fmt = "hero";
+			fmt = szHeroName;
 		else
 			return FALSE;
 	}
@@ -670,9 +678,9 @@ void GetTempLevelNames(char *szTemp)
 	// BUGFIX: function call has no purpose
 	pfile_get_save_num_from_name(plr[myplr]._pName);
 	if (setlevel)
-		sprintf(szTemp, "temps%02d", setlvlnum);
+		sprintf(szTemp, szTempSetLevel, setlvlnum);
 	else
-		sprintf(szTemp, "templ%02d", currlevel);
+		sprintf(szTemp, szTempLevel, currlevel);
 }
 
 void GetPermLevelNames(char *szPerm)
@@ -689,9 +697,9 @@ void GetPermLevelNames(char *szPerm)
 	pfile_flush(TRUE, save_num);
 	if (!has_file) {
 		if (setlevel)
-			sprintf(szPerm, "perms%02d", setlvlnum);
+			sprintf(szPerm, szPermSetLevel, setlvlnum);
 		else
-			sprintf(szPerm, "perml%02d", currlevel);
+			sprintf(szPerm, szPermLevel, currlevel);
 	}
 }
 
@@ -699,7 +707,7 @@ void pfile_get_game_name(char *dst)
 {
 	// BUGFIX: function call with no purpose
 	pfile_get_save_num_from_name(plr[myplr]._pName);
-	strcpy(dst, "game");
+	strcpy(dst, szGameName);
 }
 
 static BOOL __stdcall GetPermSaveNames(DWORD dwIndex, char *szPerm)
@@ -707,10 +715,10 @@ static BOOL __stdcall GetPermSaveNames(DWORD dwIndex, char *szPerm)
 	const char *fmt;
 
 	if (dwIndex < NUMLEVELS)
-		fmt = "perml%02d";
+		fmt = szPermLevel;
 	else if (dwIndex < NUMLEVELS * 2) {
 		dwIndex -= NUMLEVELS;
-		fmt = "perms%02d";
+		fmt = szPermSetLevel;
 	} else
 		return FALSE;
 
@@ -723,10 +731,10 @@ static BOOL __stdcall GetTempSaveNames(DWORD dwIndex, char *szTemp)
 	const char *fmt;
 
 	if (dwIndex < NUMLEVELS)
-		fmt = "templ%02d";
+		fmt = szTempLevel;
 	else if (dwIndex < NUMLEVELS * 2) {
 		dwIndex -= NUMLEVELS;
-		fmt = "temps%02d";
+		fmt = szTempSetLevel;
 	} else
 		return FALSE;
 
@@ -765,7 +773,7 @@ void pfile_rename_temp_to_perm()
 		dwIndex++;
 		if (mpqapi_has_file(szTemp)) {
 			if (mpqapi_has_file(szPerm))
-				mpqapi_remove_hash_entry(szPerm);
+				j_mpqapi_remove_hash_entry(szPerm);
 			mpqapi_rename(szTemp, szPerm);
 		}
 	}
@@ -801,7 +809,7 @@ void pfile_write_save_file(const char *pszName, BYTE *pbData, DWORD dwLen, DWORD
 		app_fatal("Unable to write to save file archive");
 	mpqapi_write_file(pszName, pbData, qwLen);
 #else
-		app_fatal("Unable to write so save file archive");
+		app_fatal("Unable to write to save file archive");
 	mpqapi_write_file(FileName, pbData, qwLen);
 #endif
 	pfile_flush(TRUE, save_num);
@@ -878,7 +886,7 @@ BYTE *pfile_read(const char *pszName, DWORD *pdwLen)
 void pfile_update(BOOL force_save)
 {
 	// BUGFIX: these tick values should be treated as unsigned to handle overflows correctly
-	static int save_prev_tc;
+	static int save_prev_tc = 0;
 
 	if (gbMaxPlayers != 1) {
 		int tick = GetTickCount();

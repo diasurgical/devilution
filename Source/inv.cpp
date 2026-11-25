@@ -5,10 +5,11 @@
  */
 #include "all.h"
 
-BOOL invflag;
-BYTE *pInvCels;
-BOOL drawsbarflag;
-int sgdwLastTime; // check name
+/** Specifies the starting inventory slots for placement of 2x2 items. */
+int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 };
+BOOL invflag = 0;
+BYTE *pInvCels = NULL;
+BOOL drawsbarflag = 0;
 
 /**
  * Maps from inventory slot to screen position. The inventory slots are
@@ -106,8 +107,7 @@ const InvXY InvRect[] = {
 };
 
 /* data */
-/** Specifies the starting inventory slots for placement of 2x2 items. */
-int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 };
+int sgdwLastTime = 0; // check name
 
 void FreeInvGFX()
 {
@@ -148,7 +148,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 
 	assert(gpBuffer);
 
-	dst = &gpBuffer[X + PitchTbl[Y]];
+	dst = &gpBuffer[X + nBuffWTbl[Y]];
 
 #ifdef USE_ASM
 	__asm {
@@ -460,8 +460,8 @@ void DrawInv()
 			        && plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_MACE) {
 #endif
 				InvDrawSlotBack(RIGHT_PANEL_X + 247, 160 + SCREEN_Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
-				light_table_index = 0;
-				cel_transparency_active = TRUE;
+				nLVal = 0;
+				nTrans = TRUE;
 
 				pBuff = frame_width == INV_SLOT_SIZE_PX
 				    ? &gpBuffer[SCREENXY(RIGHT_PANEL_X + 197, SCREEN_Y)]
@@ -476,7 +476,7 @@ void DrawInv()
 				}
 #endif
 
-				cel_transparency_active = FALSE;
+				nTrans = FALSE;
 #ifdef HELLFIRE
 			}
 #endif
@@ -726,7 +726,7 @@ void DrawInvBelt()
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
 			ff = fontframe[gbFontTransTbl[fi]];
-			PrintChar(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + PitchTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + INV_SLOT_SIZE_PX, ff, 0);
+			PrintChar(InvRect[i + SLOTXY_BELT_FIRST].X + SCREEN_X + nBuffWTbl[InvRect[i + SLOTXY_BELT_FIRST].Y + SCREEN_Y - 1] - fontkern[ff] + INV_SLOT_SIZE_PX, ff, 0);
 		}
 	}
 }
@@ -2076,7 +2076,7 @@ void InvGetItem(int pnum, int ii)
 #ifdef HELLFIRE
 		if (!cursor_updated)
 #endif
-			SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			NewCursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	}
 }
 
@@ -2696,11 +2696,7 @@ void RemoveScroll(int pnum)
 	for (i = 0; i < plr[pnum]._pNumInv; i++) {
 		if (plr[pnum].InvList[i]._itype != ITYPE_NONE
 		    && (plr[pnum].InvList[i]._iMiscId == IMISC_SCROLL || plr[pnum].InvList[i]._iMiscId == IMISC_SCROLLT)
-#ifndef HELLFIRE
-		    && plr[pnum].InvList[i]._iSpell == plr[pnum]._pRSpell) {
-#else
 		    && plr[pnum].InvList[i]._iSpell == plr[pnum]._pSpell) {
-#endif
 			RemoveInvItem(pnum, i);
 			CalcPlrScrolls(pnum);
 			return;
@@ -2709,11 +2705,7 @@ void RemoveScroll(int pnum)
 	for (i = 0; i < MAXBELTITEMS; i++) {
 		if (plr[pnum].SpdList[i]._itype != ITYPE_NONE
 		    && (plr[pnum].SpdList[i]._iMiscId == IMISC_SCROLL || plr[pnum].SpdList[i]._iMiscId == IMISC_SCROLLT)
-#ifndef HELLFIRE
-		    && plr[pnum].SpdList[i]._iSpell == plr[pnum]._pRSpell) {
-#else
 		    && plr[pnum].SpdList[i]._iSpell == plr[pnum]._pSpell) {
-#endif
 			RemoveSpdBarItem(pnum, i);
 			CalcPlrScrolls(pnum);
 			return;

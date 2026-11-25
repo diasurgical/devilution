@@ -8,6 +8,7 @@
 
 void mpqapi_store_default_time(DWORD dwChar);
 void mpqapi_remove_hash_entry(const char *pszName);
+void j_mpqapi_remove_hash_entry(const char *pszName);
 void mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, char *));
 BOOL mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen);
 void mpqapi_rename(char *pszOld, char *pszNew);

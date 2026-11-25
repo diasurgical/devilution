@@ -6,6 +6,9 @@
 #ifndef SPAWN
 #include "all.h"
 
+/** 1.09b: space reserved for registration data (unused) */
+char sgszRegSig3[128] = "REGISTRATION_BLOCK";
+
 int nSx1;
 int nSy1;
 int nSx2;

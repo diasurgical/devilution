@@ -6,21 +6,21 @@
 #include "all.h"
 
 /** Current y position of text in px */
-int qtexty;
+int qtexty = 0;
 /** Pointer to the current text being displayed */
-const char *qtextptr;
+const char *qtextptr = NULL;
 /** Time of last rendering of the text */
-int sgLastScroll;
+int sgLastScroll = 0;
 /** Specify if the quest dialog window is being shown */
-BOOLEAN qtextflag;
+BOOLEAN qtextflag = 0;
 /** Duplicate of qtextSpd */
-int qtextDelay;
-/** Vertical speed of the scrolling text, see qscroll_spd_tbl */
-int qtextSpd;
+int qtextDelay = 0;
+/** Vertical speed of the scrolling text, see qtextDelaySpd */
+int qtextSpd = 0;
 /** Graphics for the medium size font */
-BYTE *pMedTextCels;
+BYTE *pMedTextCels = NULL;
 /** Graphics for the window border */
-BYTE *pTextBoxCels;
+BYTE *pTextBoxCels = NULL;
 
 /** Maps from font index to medtexts.cel frame number. */
 const BYTE mfontframe[128] = {
@@ -58,7 +58,7 @@ const BYTE mfontkern[56] = {
  * Text scroll speeds. Positive numbers will delay scrolling 1 out of n frames,
  * negative numbers will scroll 1+(-n) pixels.
  */
-int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
+int qtextDelaySpd[10] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
 /**
  * @brief Free the resouces used by the quest dialog window
@@ -90,7 +90,7 @@ void InitQTextMsg(int m)
 		qtextptr = alltext[m].txtstr;
 		qtextflag = TRUE;
 		qtexty = 340 + SCREEN_Y;
-		qtextSpd = qscroll_spd_tbl[alltext[m].txtspd - 1];
+		qtextSpd = qtextDelaySpd[alltext[m].txtspd - 1];
 		qtextDelay = qtextSpd;
 		sgLastScroll = GetTickCount();
 	}
@@ -124,9 +124,9 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 
 	/// ASSERT: assert(gpBuffer);
 
-	dst = &gpBuffer[sx + PitchTbl[sy]];
-	pStart = &gpBuffer[PitchTbl[209]];
-	pEnd = &gpBuffer[PitchTbl[469]];
+	dst = &gpBuffer[sx + nBuffWTbl[sy]];
+	pStart = &gpBuffer[nBuffWTbl[209]];
+	pEnd = &gpBuffer[nBuffWTbl[469]];
 
 #ifdef USE_ASM
 	__asm {

@@ -5,13 +5,13 @@
  */
 #include "all.h"
 
-char msgtable[MAX_SEND_STR_LEN];
-char msgdelay;
-char msgflag;
-char msgcnt;
+char msgtable[MAX_SEND_STR_LEN] = { 0 };
+char msgdelay = 0;
+char msgflag = 0;
+char msgcnt = 0;
 
 /** Maps from error_id to error message. */
-const char *const MsgStrings[] = {
+char *MsgStrings[] = {
 	"",
 	"No automap available in town",
 	"No multiplayer functions in demo",
@@ -131,7 +131,7 @@ void DrawDiabloMsg()
 #include "asm_trans_rect.inc"
 
 	strcpy(tempstr, MsgStrings[msgflag]);
-	off = PANEL_X + 101 + PitchTbl[DIALOG_Y + 24];
+	off = PANEL_X + 101 + nBuffWTbl[DIALOG_Y + 24];
 	len = strlen(tempstr);
 	width = 0;
 

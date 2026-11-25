@@ -6,54 +6,6 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-int plr_lframe_size;
-int plr_wframe_size;
-BYTE plr_gfx_flag = 0;
-int plr_aframe_size;
-int myplr;
-#ifdef HELLFIRE
-PlayerStruct *plr;
-#else
-PlayerStruct plr[MAX_PLRS];
-#endif
-int plr_fframe_size;
-int plr_qframe_size;
-BOOL deathflag;
-int plr_hframe_size;
-int plr_bframe_size;
-BYTE plr_gfx_bflag = 0;
-int plr_sframe_size;
-int deathdelay;
-int plr_dframe_size;
-
-/** Maps from armor animation to letter used in graphic files. */
-const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
-/** Maps from weapon animation to letter used in graphic files. */
-const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
-/** Maps from player class to letter used in graphic files. */
-const char CharChar[] = {
-	'W',
-	'R',
-	'S',
-#ifdef HELLFIRE
-	'M',
-	'R',
-	'W',
-	0
-};
-const char CharCharHF[] = {
-	'W',
-	'R',
-	'S',
-	'M',
-	'B',
-	'C',
-#endif
-	0
-};
-
-/* data */
-
 /** Specifies the X-coordinate delta from the player start location in Tristram. */
 int plrxoff[9] = { 0, 2, 0, 2, 1, 0, 1, 2, 1 };
 /** Specifies the Y-coordinate delta from the player start location in Tristram. */
@@ -73,6 +25,9 @@ char PlrGFXAnimLens[NUM_CLASSES][11] = {
 	{ 10, 16, 8, 2, 20, 20, 6, 20, 8, 9, 14 },
 #endif
 };
+#ifdef HELLFIRE
+PlayerStruct *plr = NULL;
+#endif
 /** Maps from player class to player velocity. */
 int PWVel[NUM_CLASSES][3] = {
 	{ 2048, 1024, 512 },
@@ -152,7 +107,7 @@ int ToBlkTbl[NUM_CLASSES] = {
 	30,
 #endif
 };
-const char *const ClassStrTblOld[] = {
+const char *ClassStrTblOld[] = {
 	"Warrior",
 	"Rogue",
 	"Sorceror",
@@ -229,7 +184,36 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 	1310707109,
 	1583495809
 };
-const char *const ClassStrTbl[NUM_CLASSES] = {
+
+/** Maps from armor animation to letter used in graphic files. */
+const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
+/** Maps from weapon animation to letter used in graphic files. */
+const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
+/** Maps from player class to letter used in graphic files. */
+const char CharChar[] = {
+	'W',
+	'R',
+	'S',
+#ifdef HELLFIRE
+	'M',
+	'R',
+	'W',
+	0
+};
+const char CharCharHF[] = {
+	'W',
+	'R',
+	'S',
+	'M',
+	'B',
+	'C',
+#endif
+	0
+};
+
+/* data */
+
+const char *ClassStrTbl[NUM_CLASSES] = {
 	"Warrior",
 	"Rogue",
 	"Sorceror",
@@ -239,6 +223,25 @@ const char *const ClassStrTbl[NUM_CLASSES] = {
 	"Warrior",
 #endif
 };
+// 1.09b: uninitialised, so placed by name hash (ahead of storm.h's per-file static); the names are unknown,
+// these hash into the original order
+int sgnLFrame;
+int sgnWFrame;
+BYTE sgnGfxFlag;
+int plr_aframe_size = 0;
+int myplr = 0;
+#ifndef HELLFIRE
+PlayerStruct plr[MAX_PLRS] = { 0 };
+#endif
+int plr_fframe_size = 0;
+int plr_qframe_size = 0;
+BOOL deathflag = 0;
+int plr_hframe_size = 0;
+int plr_bframe_size = 0;
+BYTE plr_gfx_bflag = 0;
+int plr_sframe_size = 0;
+int deathdelay = 0;
+int plr_dframe_size = 0;
 /** Unused local of PM_ChangeLightOff, originally for computing light radius. */
 BYTE fix[9] = { 0, 0, 3, 3, 3, 6, 6, 6, 8 };
 
@@ -441,58 +444,58 @@ void InitPlrGFXMem(int pnum)
 		app_fatal("InitPlrGFXMem: illegal player %d", pnum);
 	}
 
-	if (!(plr_gfx_flag & 0x1)) { //STAND
-		plr_gfx_flag |= 0x1;
-		if (GetPlrGFXSize("ST") > GetPlrGFXSize("AS")) {
-			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
-		} else {
+	if (!(sgnGfxFlag & 0x1)) { //STAND
+		sgnGfxFlag |= 0x1;
+		if (GetPlrGFXSize("AS") > GetPlrGFXSize("ST")) {
 			plr_sframe_size = GetPlrGFXSize("AS"); //DUNGEON
+		} else {
+			plr_sframe_size = GetPlrGFXSize("ST"); //TOWN
 		}
 	}
 	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
 
-	if (!(plr_gfx_flag & 0x2)) { //WALK
-		plr_gfx_flag |= 0x2;
-		if (GetPlrGFXSize("WL") > GetPlrGFXSize("AW")) {
-			plr_wframe_size = GetPlrGFXSize("WL"); //TOWN
+	if (!(sgnGfxFlag & 0x2)) { //WALK
+		sgnGfxFlag |= 0x2;
+		if (GetPlrGFXSize("AW") > GetPlrGFXSize("WL")) {
+			sgnWFrame = GetPlrGFXSize("AW"); //DUNGEON
 		} else {
-			plr_wframe_size = GetPlrGFXSize("AW"); //DUNGEON
+			sgnWFrame = GetPlrGFXSize("WL"); //TOWN
 		}
 	}
-	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);
+	plr[pnum]._pWData = DiabloAllocPtr(sgnWFrame);
 
-	if (!(plr_gfx_flag & 0x4)) { //ATTACK
-		plr_gfx_flag |= 0x4;
+	if (!(sgnGfxFlag & 0x4)) { //ATTACK
+		sgnGfxFlag |= 0x4;
 		plr_aframe_size = GetPlrGFXSize("AT");
 	}
 	plr[pnum]._pAData = DiabloAllocPtr(plr_aframe_size);
 
-	if (!(plr_gfx_flag & 0x8)) { //HIT
-		plr_gfx_flag |= 0x8;
+	if (!(sgnGfxFlag & 0x8)) { //HIT
+		sgnGfxFlag |= 0x8;
 		plr_hframe_size = GetPlrGFXSize("HT");
 	}
 	plr[pnum]._pHData = DiabloAllocPtr(plr_hframe_size);
 
-	if (!(plr_gfx_flag & 0x10)) { //LIGHTNING
-		plr_gfx_flag |= 0x10;
-		plr_lframe_size = GetPlrGFXSize("LM");
+	if (!(sgnGfxFlag & 0x10)) { //LIGHTNING
+		sgnGfxFlag |= 0x10;
+		sgnLFrame = GetPlrGFXSize("LM");
 	}
-	plr[pnum]._pLData = DiabloAllocPtr(plr_lframe_size);
+	plr[pnum]._pLData = DiabloAllocPtr(sgnLFrame);
 
-	if (!(plr_gfx_flag & 0x20)) { //FIRE
-		plr_gfx_flag |= 0x20;
+	if (!(sgnGfxFlag & 0x20)) { //FIRE
+		sgnGfxFlag |= 0x20;
 		plr_fframe_size = GetPlrGFXSize("FM");
 	}
 	plr[pnum]._pFData = DiabloAllocPtr(plr_fframe_size);
 
-	if (!(plr_gfx_flag & 0x40)) { //MAGIC
-		plr_gfx_flag |= 0x40;
+	if (!(sgnGfxFlag & 0x40)) { //MAGIC
+		sgnGfxFlag |= 0x40;
 		plr_qframe_size = GetPlrGFXSize("QM");
 	}
 	plr[pnum]._pTData = DiabloAllocPtr(plr_qframe_size);
 
-	if (!(plr_gfx_flag & 0x80)) { //DEATH
-		plr_gfx_flag |= 0x80;
+	if (!(sgnGfxFlag & 0x80)) { //DEATH
+		sgnGfxFlag |= 0x80;
 		plr_dframe_size = GetPlrGFXSize("DT");
 	}
 	plr[pnum]._pDData = DiabloAllocPtr(plr_dframe_size);
@@ -1573,7 +1576,7 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 		return;
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		if (abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3) {
 			ScrollInfo._sdir = SDIR_NONE;
 		} else {
@@ -1656,7 +1659,7 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		return;
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		if (abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3) {
 			ScrollInfo._sdir = SDIR_NONE;
 		} else {
@@ -1739,7 +1742,7 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		return;
 	}
 
-	if (zoomflag) {
+	if (svgamode) {
 		if (abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3) {
 			ScrollInfo._sdir = SDIR_NONE;
 		} else {
@@ -2073,9 +2076,9 @@ void StartPlayerKill(int pnum, int earflag)
 #endif
 	}
 
-	if (p->_pgfxnum) {
-		p->_pgfxnum = 0;
-		p->_pGFXLoad = 0;
+	if (plr[pnum]._pgfxnum) {
+		plr[pnum]._pgfxnum = 0;
+		plr[pnum]._pGFXLoad = 0;
 		SetPlrAnims(pnum);
 	}
 
@@ -2110,7 +2113,7 @@ void StartPlayerKill(int pnum, int earflag)
 
 			if (pcurs >= CURSOR_FIRSTITEM) {
 				PlrDeadItem(pnum, &p->HoldItem, 0, 0);
-				SetCursor_(CURSOR_HAND);
+				NewCursor(CURSOR_HAND);
 			}
 
 			if (!diablolevel) {
@@ -2338,6 +2341,12 @@ void SyncPlrKill(int pnum, int earflag)
 	StartPlayerKill(pnum, earflag);
 }
 
+/* In 1.09b this call goes through a one-line wrapper here (name not known). */
+void j_StartPlayerKill(int pnum, int earflag)
+{
+	StartPlayerKill(pnum, earflag);
+}
+
 void RemovePlrMissiles(int pnum)
 {
 	int i, am;
@@ -2479,6 +2488,12 @@ void StartWarpLvl(int pnum, int pidx)
 }
 
 BOOL PM_DoStand(int pnum)
+{
+	return FALSE;
+}
+
+/* Identical to PM_DoStand; 1.09b keeps one copy there, so it is defined next to it. */
+BOOL PM_DoNewLvl(int pnum)
 {
 	return FALSE;
 }
@@ -3103,7 +3118,7 @@ BOOL PlrHitPlr(int pnum, char p)
 
 	hit = random_(4, 100);
 
-	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (plr[p]._pIBonusAC + plr[p]._pIAC + plr[p]._pDexterity / 5);
+	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (plr[p]._pIAC + plr[p]._pIBonusAC + plr[p]._pDexterity / 5);
 
 	if (plr[pnum]._pClass == PC_WARRIOR) {
 		hper += 20;
@@ -3608,11 +3623,6 @@ BOOL PM_DoDeath(int pnum)
 		plr[pnum]._pVar8++;
 	}
 
-	return FALSE;
-}
-
-BOOL PM_DoNewLvl(int pnum)
-{
 	return FALSE;
 }
 

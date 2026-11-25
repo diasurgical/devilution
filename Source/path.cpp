@@ -5,31 +5,6 @@
  */
 #include "all.h"
 
-/** Notes visisted by the path finding algorithm. */
-PATHNODE path_nodes[MAXPATHNODES];
-/** size of the pnode_tblptr stack */
-int gdwCurPathStep;
-/** the number of in-use nodes in path_nodes */
-int gdwCurNodes;
-/**
- * for reconstructing the path after the A* search is done. The longest
- * possible path is actually 24 steps, even though we can fit 25
- */
-int pnode_vals[MAX_PATH_LENGTH];
-/** A linked list of all visited nodes */
-PATHNODE *pnode_ptr;
-/** A stack for recursively searching nodes */
-PATHNODE *pnode_tblptr[MAXPATHNODES];
-/** A linked list of the A* frontier, sorted by distance */
-PATHNODE *path_2_nodes;
-PATHNODE path_unusednodes[MAXPATHNODES];
-
-/** For iterating over the 8 possible movement directions */
-const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
-const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
-
-/* data */
-
 /**
  * each step direction is assigned a number like this:
  *       dx
@@ -40,6 +15,31 @@ const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
  *    1|8 4 7
  */
 char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
+PATHNODE PNodePool[MAXPATHNODES];
+/** A linked list of the A* frontier, sorted by distance */
+PATHNODE *OPEN;
+/** A linked list of all visited nodes */
+PATHNODE *CLOSED;
+/**
+ * for reconstructing the path after the A* search is done. The longest
+ * possible path is actually 24 steps, even though we can fit 25
+ */
+int tempath[MAX_PATH_LENGTH];
+/** Notes visisted by the path finding algorithm. */
+PATHNODE pathnodes[MAXPATHNODES];
+/** the number of in-use nodes in pathnodes */
+int numpnodes;
+/** A stack for recursively searching nodes */
+PATHNODE *Stack[MAXPATHNODES];
+
+/** For iterating over the 8 possible movement directions */
+const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
+const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
+
+/* data */
+
+/** size of the Stack stack */
+int numstack;
 
 /**
  * find the shortest path from (sx,sy) to (dx,dy), using PosOk(PosOkArg,x,y) to
@@ -52,17 +52,17 @@ int FindPath(BOOL (*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx,
 	int path_length, i;
 
 	// clear all nodes, create root nodes for the visited/frontier linked lists
-	gdwCurNodes = 0;
-	path_2_nodes = path_new_step();
-	pnode_ptr = path_new_step();
-	gdwCurPathStep = 0;
+	numpnodes = 0;
+	OPEN = path_new_step();
+	CLOSED = path_new_step();
+	numstack = 0;
 	path_start = path_new_step();
 	path_start->g = 0;
 	path_start->h = path_get_h_cost(sx, sy, dx, dy);
 	path_start->x = sx;
 	path_start->f = path_start->h + path_start->g;
 	path_start->y = sy;
-	path_2_nodes->NextNode = path_start;
+	OPEN->NextNode = path_start;
 	// A* search until we find (dx,dy) or fail
 	while ((next_node = GetNextPath())) {
 		// reached the end, success!
@@ -72,12 +72,12 @@ int FindPath(BOOL (*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx,
 			while (current->Parent) {
 				if (path_length >= MAX_PATH_LENGTH)
 					break;
-				pnode_vals[path_length++] = path_directions[3 * (current->y - current->Parent->y) - current->Parent->x + 4 + current->x];
+				tempath[path_length++] = path_directions[3 * (current->y - current->Parent->y) - current->Parent->x + 4 + current->x];
 				current = current->Parent;
 			}
 			if (path_length != MAX_PATH_LENGTH) {
 				for (i = 0; i < path_length; i++)
-					path[i] = pnode_vals[path_length - i - 1];
+					path[i] = tempath[path_length - i - 1];
 				return i;
 			}
 			return 0;
@@ -131,14 +131,14 @@ PATHNODE *GetNextPath()
 {
 	PATHNODE *result;
 
-	result = path_2_nodes->NextNode;
+	result = OPEN->NextNode;
 	if (result == NULL) {
 		return result;
 	}
 
-	path_2_nodes->NextNode = result->NextNode;
-	result->NextNode = pnode_ptr->NextNode;
-	pnode_ptr->NextNode = result;
+	OPEN->NextNode = result->NextNode;
+	result->NextNode = CLOSED->NextNode;
+	CLOSED->NextNode = result;
 	return result;
 }
 
@@ -272,7 +272,7 @@ BOOL path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
  */
 PATHNODE *path_get_node1(int dx, int dy)
 {
-	PATHNODE *result = path_2_nodes->NextNode;
+	PATHNODE *result = OPEN->NextNode;
 	while (result != NULL) {
 		if (result->x == dx && result->y == dy)
 			return result;
@@ -286,7 +286,7 @@ PATHNODE *path_get_node1(int dx, int dy)
  */
 PATHNODE *path_get_node2(int dx, int dy)
 {
-	PATHNODE *result = pnode_ptr->NextNode;
+	PATHNODE *result = CLOSED->NextNode;
 	while (result != NULL) {
 		if (result->x == dx && result->y == dy)
 			return result;
@@ -303,12 +303,12 @@ void path_next_node(PATHNODE *pPath)
 	PATHNODE *next, *current;
 	int f;
 
-	next = path_2_nodes;
-	if (!path_2_nodes->NextNode) {
-		path_2_nodes->NextNode = pPath;
+	next = OPEN;
+	if (!OPEN->NextNode) {
+		OPEN->NextNode = pPath;
 	} else {
-		current = path_2_nodes;
-		next = path_2_nodes->NextNode;
+		current = OPEN;
+		next = OPEN->NextNode;
 		f = pPath->f;
 		while (next && next->f < f) {
 			current = next;
@@ -329,7 +329,7 @@ void path_set_coords(PATHNODE *pPath)
 	int i;
 
 	path_push_active_step(pPath);
-	while (gdwCurPathStep) {
+	while (numstack) {
 		PathOld = path_pop_active_step();
 		for (i = 0; i < 8; i++) {
 			PathAct = PathOld->Child[i];
@@ -349,22 +349,22 @@ void path_set_coords(PATHNODE *pPath)
 }
 
 /**
- * @brief push pPath onto the pnode_tblptr stack
+ * @brief push pPath onto the Stack stack
  */
 void path_push_active_step(PATHNODE *pPath)
 {
-	int stack_index = gdwCurPathStep;
-	gdwCurPathStep++;
-	pnode_tblptr[stack_index] = pPath;
+	int stack_index = numstack;
+	numstack++;
+	Stack[stack_index] = pPath;
 }
 
 /**
- * @brief pop and return a node from the pnode_tblptr stack
+ * @brief pop and return a node from the Stack stack
  */
 PATHNODE *path_pop_active_step()
 {
-	gdwCurPathStep--;
-	return pnode_tblptr[gdwCurPathStep];
+	numstack--;
+	return Stack[numstack];
 }
 
 /**
@@ -374,11 +374,11 @@ PATHNODE *path_new_step()
 {
 	PATHNODE *new_node;
 
-	if (gdwCurNodes == MAXPATHNODES)
+	if (numpnodes == MAXPATHNODES)
 		return NULL;
 
-	new_node = &path_nodes[gdwCurNodes];
-	gdwCurNodes++;
+	new_node = &pathnodes[numpnodes];
+	numpnodes++;
 	memset(new_node, 0, sizeof(PATHNODE));
 	return new_node;
 }

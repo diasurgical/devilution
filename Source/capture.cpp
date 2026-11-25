@@ -5,6 +5,10 @@
  */
 #include "all.h"
 
+/* in 1.09b these are named constants (they are in .rdata there) */
+static const char szScreenFind[] = "screen??.PCX";
+static const char szScreenName[] = "screen%02d.PCX";
+
 /**
  * @brief Write the PCX-file header
  * @param hFile File handler for the PCX file.
@@ -131,7 +135,7 @@ static HANDLE CaptureFile(char *dst_path)
 	struct _finddata_t finder;
 
 	memset(num_used, FALSE, sizeof(num_used));
-	hFind = _findfirst("screen??.PCX", &finder);
+	hFind = _findfirst(szScreenFind, &finder);
 	if (hFind != -1) {
 		do {
 			if (isdigit(finder.name[6]) && isdigit(finder.name[7])) {
@@ -144,7 +148,7 @@ static HANDLE CaptureFile(char *dst_path)
 
 	for (free_num = 0; free_num < 100; free_num++) {
 		if (!num_used[free_num]) {
-			sprintf(dst_path, "screen%02d.PCX", free_num);
+			sprintf(dst_path, szScreenName, free_num);
 			return CreateFile(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		}
 	}
@@ -168,7 +172,7 @@ static void RedPalette(PALETTEENTRY *pal)
 		red[i].peFlags = 0;
 	}
 
-	lpDDPalette->SetEntries(0, 0, 256, red);
+	lpDDPal->SetEntries(0, 0, 256, red);
 }
 
 /**
@@ -185,7 +189,7 @@ void CaptureScreen()
 	hObject = CaptureFile(FileName);
 	if (hObject != INVALID_HANDLE_VALUE) {
 		DrawAndBlit();
-		lpDDPalette->GetEntries(0, 0, 256, palette);
+		lpDDPal->GetEntries(0, 0, 256, palette);
 		RedPalette(palette);
 
 		lock_buf(2);
@@ -203,6 +207,6 @@ void CaptureScreen()
 			DeleteFile(FileName);
 
 		Sleep(300);
-		lpDDPalette->SetEntries(0, 0, 256, palette);
+		lpDDPal->SetEntries(0, 0, 256, palette);
 	}
 }

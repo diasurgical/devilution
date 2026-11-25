@@ -9,23 +9,23 @@
  * Maps from tile_id to automap type.
  * BUGFIX: only the first 256 elements are ever read
  */
-WORD automaptype[512];
-static int AutoMapX;
-static int AutoMapY;
+WORD automaptype[512] = { 0 };
+static int AutoMapX = 0;
+static int AutoMapY = 0;
 /** Specifies whether the automap is enabled. */
-BOOL automapflag;
-char AmShiftTab[32];
+BOOL automapflag = 0;
+char AmShiftTab[32] = { 0 };
 /** Tracks the explored areas of the map. */
-BOOLEAN automapview[DMAXX][DMAXY];
+BOOLEAN automapview[DMAXX][DMAXY] = { 0 };
 /** Specifies the scale of the automap. */
-int AutoMapScale;
-int AutoMapXOfs;
-int AutoMapYOfs;
-int AmLine64;
-int AmLine32;
-int AmLine16;
-int AmLine8;
-int AmLine4;
+int AutoMapScale = 0;
+int AutoMapXOfs = 0;
+int AutoMapYOfs = 0;
+int AmLine64 = 0;
+int AmLine32 = 0;
+int AmLine16 = 0;
+int AmLine8 = 0;
+int AmLine4 = 0;
 
 /** color used to draw the player's arrow */
 #define COLOR_PLAYER (PAL8_ORANGE + 1)
@@ -614,11 +614,11 @@ static void DrawAutomapText()
 	int nextline = 20;
 
 	if (gbMaxPlayers > 1) {
-		strcat(strcpy(desc, "game: "), szPlayerName);
+		strcat(strcpy(desc, "game: "), gszGameName);
 		PrintGameStr(8, 20, desc, COL_GOLD);
 		nextline = 35;
-		if (szPlayerDescript[0]) {
-			strcat(strcpy(desc, "password: "), szPlayerDescript);
+		if (gszGamePass[0]) {
+			strcat(strcpy(desc, "password: "), gszGamePass);
 			PrintGameStr(8, 35, desc, COL_GOLD);
 			nextline = 50;
 		}
@@ -657,7 +657,7 @@ void DrawAutomap()
 		return;
 	}
 
-	gpBufEnd = &gpBuffer[BUFFER_WIDTH * (SCREEN_Y + VIEWPORT_HEIGHT)];
+	glClipY = &gpBuffer[BUFFER_WIDTH * (SCREEN_Y + VIEWPORT_HEIGHT)];
 
 	AutoMapX = (ViewX - 16) >> 1;
 	while (AutoMapX + AutoMapXOfs < 0)

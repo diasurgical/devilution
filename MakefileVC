@@ -29,12 +29,14 @@ IDE_BIN_DIR = $(IDE_DIR)/bin
 ifeq ($(OS),Windows_NT)
 	CL5 = $(VC5_BIN_DIR)/CL.EXE
 	CL6 = $(VC6_BIN_DIR)/CL.EXE
+	ML = $(VC6_BIN_DIR)/ml.exe
 	RC = $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = $(VC5_BIN_DIR)/link.exe
 	VC6_LINK = $(VC6_BIN_DIR)/link.exe
 else
 	CL5 = wine $(VC5_BIN_DIR)/CL.EXE
 	CL6 = wine $(VC6_BIN_DIR)/CL.EXE
+	ML = wine $(VC6_BIN_DIR)/ml.exe
 	RC = wine $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = wine $(VC5_BIN_DIR)/link.exe
 	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
@@ -48,8 +50,26 @@ else
 	VC_INC_DIR = $(VC6_INC_DIR)
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
+CFLAGS=/nologo /c /W3 /O1 /I $(VC5_INC_DIR) /I $(VC_INC_DIR) /FD /Gr /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /G5 /Zi /FAs
+
+ifneq ($(HELLFIRE),1)
+# Diablo 1.09b: VC5 SP3 C++ front end (C1XX.DLL 11.00.7303) driven by VC6 cl.exe and its Processor Pack back end
+# (c2.dll 13.00.9044). For front-end output of this age the back end keeps the old data alignment (only
+# structures of 64 bytes or more on 8 bytes) and stamps the objects 0x30 (Rich header: Utc12_2_C b9044 x72).
+# VC5 knows no __forceinline, and the ALIGN_BY_1 workaround is only needed with the VC6 front end.
+	CFLAGS += /Bx$(VC5_BIN_DIR)/C1XX.DLL /D__forceinline=__inline /DNO_ALIGN_BY_1
+ifneq ($(OS),Windows_NT)
+# the VC5 front end needs MSPDB50.DLL from its own directory
+	export WINEPATH := Z:$(subst /,\,$(VC5_BIN_DIR))
+endif
+endif
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
+# Win32 import libraries of 1.09b: built by LIB 5.12.9049 (Rich header: Linker512 b9049 x12), e.g. from the
+# "Windows DDK October 2000" disc (x86 libraries). Not distributed; set DDK_LIB_DIR to a directory holding
+# kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib from it.
+ifneq ($(DDK_LIB_DIR),)
+	LINKFLAGS += /LIBPATH:$(DDK_LIB_DIR)
+endif
 
 VERSION := 109
 
@@ -76,6 +96,19 @@ else
 	LINKFLAGS += /LIBPATH:$(VC5_LIB_DIR)
 endif
 
+# The linker sorts the import thunks with qsort from MSVCRT.DLL, and qsort is not stable: Wine's own msvcrt uses
+# another algorithm, so under Wine the import tables come out in another order than on Windows. Set MSVCRT_DIR to a
+# directory holding Microsoft's MSVCRT.DLL (e.g. VC/REDIST of Visual C++ 5.0; not distributed). Wine takes a native
+# DLL only from the program's own directory, so the VC5 linker is copied next to it into vc5link/.
+ifneq ($(MSVCRT_DIR),)
+ifneq ($(OS),Windows_NT)
+ifeq ($(VC_LINK),$(VC5_LINK))
+	LINK_DEPS = vc5link/link.exe
+	VC_LINK = WINEDLLOVERRIDES=msvcrt=n,b wine vc5link/link.exe
+endif
+endif
+endif
+
 all: Diablo.exe
 
 debug: CFLAGS += /D "_DEBUG"
@@ -86,8 +119,39 @@ DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp Source/render.
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
-Diablo.exe: main_files diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib 3rdParty/PKWare/pkware.lib
-	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib 3rdParty/PKWare/pkware.lib
+# 1.09b: render was assembled with MASM into an OMF object (Rich header: one Cvtomf510 object next to the 72
+# compiled ones). Source/render.asm is generated from Source/render.cpp by tools/render_asm.py.
+ifneq ($(HELLFIRE),1)
+CC_SRC=$(filter-out Source/render.cpp, $(DIABLO_SRC))
+else
+CC_SRC=$(DIABLO_SRC)
+endif
+
+# 1.09b links PKWARE's own Data Compression Library (IMPLODE.LIB; not distributed) instead of the C version in
+# 3rdParty/PKWare. Set PKWARE_LIB to its path to link it; it asks for libc.lib, which the game does not use.
+ifneq ($(PKWARE_LIB),)
+	PKWARE = $(PKWARE_LIB) /NODEFAULTLIB:libc.lib
+	PKWARE_DEP =
+else
+	PKWARE = 3rdParty/PKWare/pkware.lib
+	PKWARE_DEP = 3rdParty/PKWare/pkware.lib
+endif
+
+# The linker stamps the exe with the current time; PE_TIMESTAMP=1 writes the time of 1.09b's link instead
+# (2001-05-18 23:10:56 UTC) into the header (offset 0xE8 = e_lfanew + 8).
+ifneq ($(PE_TIMESTAMP),)
+	STAMP_CMD = printf '\000\254\005\073' | dd of=$@ bs=1 seek=232 conv=notrunc 2>/dev/null
+endif
+
+# diablo.res before render.obj: the order of the Rich header entries (resource before the converted OMF object)
+Diablo.exe: main_files diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib $(PKWARE_DEP) $(LINK_DEPS)
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(filter-out Source/render.obj,$(OBJS)) diablo.res $(filter Source/render.obj,$(OBJS)) DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib libcmt.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib $(PKWARE)
+	$(STAMP_CMD)
+
+vc5link/link.exe:
+	mkdir -p vc5link
+	cp $(VC5_BIN_DIR)/LINK.EXE vc5link/link.exe
+	cp $(VC5_BIN_DIR)/MSPDB50.DLL $(VC5_BIN_DIR)/MSDIS100.DLL $(MSVCRT_DIR)/MSVCRT.DLL vc5link/
 
 DiabloUI/diabloui.lib:
 	make -C DiabloUI
@@ -98,9 +162,17 @@ DiabloUI/diabloui.lib:
 3rdParty/PKWare/pkware.lib:
 	make -C 3rdParty/PKWare
 
+# 1.09b was compiled without /GX: msgcmd's list destructor is inlined into its atexit handler only then
 # compiles all main source files with once compiler call
 main_files:
-	$(CL) $(CFLAGS) /FoSource/ $(DIABLO_SRC)
+	$(CL) $(CFLAGS) /FoSource/ $(CC_SRC)
+ifneq ($(HELLFIRE),1)
+	$(ML) /nologo /c /FoSource/render.obj Source/render.asm
+endif
+# the original appfat.obj was compiled with Diablo.pch already present (its static initialiser comes first)
+	$(CL) $(CFLAGS) /FoSource/ Source/appfat.cpp
+# the original loadsave.obj has no function-level linking: /O1 without /Gy (its identical WLoad/ILoad were not folded)
+	$(CL) $(subst /O1,/Og /Os /Oy /Ob1 /Gs /Gf,$(CFLAGS)) /FoSource/ Source/loadsave.cpp
 
 %.obj: %.cpp
 	$(CL) $(CFLAGS) /Fo$@ $<
@@ -113,5 +185,6 @@ clean:
 	make -C DiabloUI clean
 	make -C 3rdParty/Storm clean
 	make -C 3rdParty/PKWare clean
+	$(RM) -r vc5link
 
 .PHONY: clean all

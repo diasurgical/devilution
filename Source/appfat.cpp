@@ -7,11 +7,11 @@
 #include "../3rdParty/Storm/Source/storm.h"
 
 /** Buffer used by GetErrorStr for its return value */
-char sz_error_buf[256];
+char sz_error_buf[256] = { 0 };
 /** Set to true when a fatal error is encountered and the application should shut down. */
-BOOL terminating;
+BOOL terminating = 0;
 /** Thread id of the last callee to FreeDlg(). */
-int cleanup_thread_id;
+int cleanup_thread_id = 0;
 
 // delete overloads the delete operator.
 void __cdecl operator delete(void *ptr)
@@ -20,6 +20,14 @@ void __cdecl operator delete(void *ptr)
 		SMemFree(ptr, "delete", -1, 0);
 	}
 }
+
+#ifndef HELLFIRE
+// Unused, so the linker drops it, but in 1.09b its SMemAlloc reference is the second Storm import.
+void *__cdecl operator new(size_t size)
+{
+	return SMemAlloc(size, "new", -1, 0);
+}
+#endif
 
 #ifdef _DEBUG
 static LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
@@ -39,6 +47,7 @@ static LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
 }
 #endif
 
+#if defined(_DEBUG) || defined(HELLFIRE)
 void TriggerBreak()
 {
 #ifdef _DEBUG
@@ -55,6 +64,7 @@ void TriggerBreak()
 	SetUnhandledExceptionFilter(pFilter);
 #endif
 }
+#endif
 
 /**
  * @brief Generate a textual message for DirectDraw error codes

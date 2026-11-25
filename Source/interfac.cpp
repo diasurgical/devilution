@@ -256,7 +256,7 @@ static void DrawProgress(int screen_x, int screen_y, int progress_id)
 	BYTE *dst;
 	int i;
 
-	dst = &gpBuffer[screen_x + PitchTbl[screen_y]];
+	dst = &gpBuffer[screen_x + nBuffWTbl[screen_y]];
 	for (i = 0; i < 22; i++) {
 		*dst = BarColor[progress_id];
 		dst += BUFFER_WIDTH;

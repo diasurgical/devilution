@@ -211,7 +211,7 @@ ItemDataStruct AllItemsList[] = {
 #endif
 /*               */ {  IDROP_NEVER,   ICLASS_NONE,   ILOC_INVALID,     ICURS_POTION_OF_FULL_MANA,         ITYPE_MISC,   UITYPE_NONE,        NULL,                          NULL,          0,           0,       0,       0,      0,      0,       0,       0,       0, ISPL_NONE,         IMISC_NONE,      SPL_NULL,        FALSE,        0,         0 },
 	// clang-format on
-};
+};
 
 /** Contains the data related to each item prefix. */
 const PLStruct PL_Prefix[] = {
@@ -593,3 +593,5 @@ const UItemStruct UniqueItemList[] = {
 	{  "",                        UITYPE_INVALID,      0,       0,       0, IPL_TOHIT,           0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,             0,         0 },
 	// clang-format on
 };
+
+

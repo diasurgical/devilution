@@ -8,21 +8,21 @@
 #include "../DiabloUI/diabloui.h"
 
 static DWORD sgdwOwnerWait;
-static DWORD sgdwRecvOffset;
-static int sgnCurrMegaPlayer;
-static DLevel sgLevels[NUMLEVELS];
-static BYTE sbLastCmd;
-static TMegaPkt *sgpCurrPkt;
-static BYTE sgRecvBuf[sizeof(DLevel) + 1];
-static BYTE sgbRecvCmd;
-static LocalLevel sgLocals[NUMLEVELS];
-static DJunk sgJunk;
-static TMegaPkt *sgpMegaPkt;
-static BOOLEAN sgbDeltaChanged;
-static BYTE sgbDeltaChunks;
-BOOL deltaload;
-BYTE gbBufferMsgs;
-int dwRecCount;
+static DWORD sgdwRecvOffset = 0;
+static int sgnCurrMegaPlayer = 0;
+static DLevel sgLevels[NUMLEVELS] = { 0 };
+static BYTE sbLastCmd = 0;
+static TMegaPkt *sgpCurrPkt = NULL;
+static BYTE sgRecvBuf[sizeof(DLevel) + 1] = { 0 };
+static BYTE sgbRecvCmd = 0;
+static LocalLevel sgLocals[NUMLEVELS] = { 0 };
+static DJunk sgJunk = { 0 };
+static TMegaPkt *sgpMegaPkt = NULL;
+static BOOLEAN sgbDeltaChanged = 0;
+static BYTE sgbDeltaChunks = 0;
+BOOL deltaload = 0;
+BYTE gbBufferMsgs = 0;
+int dwRecCount = 0;
 
 static void msg_get_next_packet()
 {
@@ -1334,7 +1334,7 @@ static void check_update_plr(int pnum)
 
 static void __cdecl msg_errorf(const char *pszFmt, ...)
 {
-	static DWORD msg_err_timer;
+	static DWORD msg_err_timer = 0;
 	DWORD ticks;
 	char msg[256];
 	va_list va;
@@ -2132,7 +2132,7 @@ static DWORD On_PLRDEAD(TCmd *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, p, sizeof(*p));
 	else if (pnum != myplr)
-		StartPlayerKill(pnum, p->wParam1);
+		j_StartPlayerKill(pnum, p->wParam1);
 	else
 		check_update_plr(pnum);
 

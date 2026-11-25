@@ -41,6 +41,7 @@ void FixPlrWalkTags(int pnum);
 void RemovePlrFromMap(int pnum);
 void StartPlrHit(int pnum, int dam, BOOL forcehit);
 void StartPlayerKill(int pnum, int earflag);
+void j_StartPlayerKill(int pnum, int earflag);
 void DropHalfPlayersGold(int pnum);
 #ifdef HELLFIRE
 void StripTopGold(int pnum);
@@ -87,6 +88,6 @@ extern int MagicTbl[NUM_CLASSES];
 extern int DexterityTbl[NUM_CLASSES];
 extern int VitalityTbl[NUM_CLASSES];
 extern int MaxStats[NUM_CLASSES][4];
-extern const char *const ClassStrTbl[NUM_CLASSES];
+extern const char *ClassStrTbl[NUM_CLASSES];
 
 #endif /* __PLAYER_H__ */

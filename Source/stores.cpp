@@ -5,41 +5,6 @@
  */
 #include "all.h"
 
-int stextup;
-int storenumh;
-int stextlhold;
-ItemStruct boyitem;
-int stextshold;
-ItemStruct premiumitem[SMITH_PREMIUM_ITEMS];
-BYTE *pSTextBoxCels;
-int premiumlevel;
-int talker;
-STextStruct stext[STORE_LINES];
-char stextsize;
-
-int stextsmax;
-int InStoreFlag; /** current frame # for the pentagram selector */
-ItemStruct storehold[48];
-int gossipstart;
-ItemStruct witchitem[WITCH_ITEMS];
-BOOL stextscrl;
-int numpremium;
-ItemStruct healitem[20];
-ItemStruct golditem;
-char storehidx[48];
-BYTE *pSTextSlidCels;
-int stextvhold;
-int stextsel;
-char stextscrldbtn;
-int gossipend;
-BYTE *pSPentSpn2Cels;
-int stextsval;
-int boylevel;
-ItemStruct smithitem[SMITH_ITEMS];
-int stextdown;
-char stextscrlubtn;
-char stextflag;
-
 int SStringY[24] = {
 	0,
 	12,
@@ -66,8 +31,43 @@ int SStringY[24] = {
 	264,
 	276
 };
+int stextup = 0;
+int storenumh = 0;
+int stextlhold = 0;
+ItemStruct boyitem = { 0 };
+int stextshold = 0;
+ItemStruct premiumitem[SMITH_PREMIUM_ITEMS] = { 0 };
+BYTE *pSTextBoxCels = NULL;
+int premiumlevel = 0;
+int talker = 0;
+STextStruct stext[STORE_LINES] = { 0 };
+
+char stextsize = 0;
+int stextsmax = 0;
+int InStoreFlag = 0; /** current frame # for the pentagram selector */
+ItemStruct storehold[48] = { 0 };
+int gossipstart = 0;
+ItemStruct witchitem[WITCH_ITEMS] = { 0 };
+BOOL stextscrl = 0;
+int numpremium = 0;
+ItemStruct healitem[20] = { 0 };
+ItemStruct golditem = { 0 };
+char storehidx[48] = { 0 };
+BYTE *pSTextSlidCels = NULL;
+int stextvhold = 0;
+int stextsel = 0;
+char stextscrldbtn = 0;
+int gossipend = 0;
+BYTE *pSPentSpn2Cels = NULL;
+int stextsval = 0;
+int boylevel = 0;
+ItemStruct smithitem[SMITH_ITEMS] = { 0 };
+int stextdown = 0;
+char stextscrlubtn = 0;
+
+char stextflag = 0;
 /** Maps from towner IDs to NPC names. */
-const char *const talkname[9] = {
+char *talkname[9] = {
 	"Griswold",
 	"Pepin",
 	"",
@@ -162,7 +162,7 @@ void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int v
 		xx = PANEL_X + 32;
 	else
 		xx = PANEL_X + 352;
-	off = xx + x + PitchTbl[s + 44 + SCREEN_Y];
+	off = xx + x + nBuffWTbl[s + 44 + SCREEN_Y];
 	len = strlen(str);
 	if (stextsize != 0)
 		yy = 577;
@@ -190,7 +190,7 @@ void PrintSString(int x, int y, BOOL cjustflag, const char *str, char col, int v
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		off = PitchTbl[s + 44 + SCREEN_Y] + PANEL_X + 592 - x;
+		off = nBuffWTbl[s + 44 + SCREEN_Y] + PANEL_X + 592 - x;
 		len = strlen(valstr);
 		for (i = len - 1; i >= 0; i--) {
 			c = fontframe[gbFontTransTbl[(BYTE)valstr[i]]];
@@ -210,14 +210,14 @@ void DrawSLine(int y)
 	int xy, yy, width, line, sy;
 
 	sy = SStringY[y];
-	if (stextsize) {
+	if (stextsize == 1) {
 		xy = SCREENXY(PANEL_LEFT + 26, 25);
-		yy = PitchTbl[sy + 38 + SCREEN_Y] + 26 + PANEL_X;
+		yy = nBuffWTbl[sy + 38 + SCREEN_Y] + 26 + PANEL_X;
 		width = 586 / 4;           // BUGFIX: should be 587, not 586
 		line = BUFFER_WIDTH - 586; // BUGFIX: should be 587, not 586
 	} else {
 		xy = SCREENXY(PANEL_LEFT + 346, 25);
-		yy = PitchTbl[sy + 38 + SCREEN_Y] + 346 + PANEL_X;
+		yy = nBuffWTbl[sy + 38 + SCREEN_Y] + 346 + PANEL_X;
 		width = 266 / 4;           // BUGFIX: should be 267, not 266
 		line = BUFFER_WIDTH - 266; // BUGFIX: should be 267, not 266
 	}
@@ -1498,7 +1498,7 @@ void S_StartTalk()
 #else
 	sn = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
 
@@ -1513,7 +1513,7 @@ void S_StartTalk()
 	sn2 = sn - 2;
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			AddSText(0, sn, TRUE, questlist[i]._qlstr, COL_WHITE, TRUE);
 			sn += la;
 		}
@@ -2726,7 +2726,7 @@ void S_TalkEnter()
 
 	sn = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog)
 			sn++;
 	}
 	if (sn > 6) {
@@ -2745,9 +2745,9 @@ void S_TalkEnter()
 	}
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+		if (quests[i]._qactive == QUEST_ACTIVE && ((DWORD *)Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
 			if (sn == stextsel) {
-				InitQTextMsg(((DWORD *)&Qtalklist[talker])[i]);
+				InitQTextMsg(((DWORD *)Qtalklist[talker])[i]);
 			}
 			sn += la;
 		}
@@ -2817,11 +2817,11 @@ void STextEnter()
 		case STORE_SMITH:
 			S_SmithEnter();
 			break;
-		case STORE_SPBUY:
-			S_SPBuyEnter();
-			break;
 		case STORE_SBUY:
 			S_SBuyEnter();
+			break;
+		case STORE_SPBUY:
+			S_SPBuyEnter();
 			break;
 		case STORE_SSELL:
 			S_SSellEnter();
@@ -2874,14 +2874,14 @@ void STextEnter()
 		case STORE_IDSHOW:
 			StartStore(STORE_SIDENTIFY);
 			break;
-		case STORE_DRUNK:
-			S_DrunkEnter();
-			break;
 		case STORE_TAVERN:
 			S_TavernEnter();
 			break;
 		case STORE_BARMAID:
 			S_BarmaidEnter();
+			break;
+		case STORE_DRUNK:
+			S_DrunkEnter();
 			break;
 		}
 	}

@@ -8,7 +8,7 @@
 
 extern int ObjTypeConv[];
 extern ObjDataStruct AllObjects[];
-extern const char *const ObjMasterLoadList[];
+extern const char *ObjMasterLoadList[];
 #ifdef HELLFIRE
 extern char *ObjCryptLoadList[];
 extern char *ObjHiveLoadList[];

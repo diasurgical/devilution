@@ -14,5 +14,6 @@ int WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence);
 BOOL LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx);
 void AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos);
 BYTE *LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk);
+void j_mem_free_dbg(void *p);
 
 #endif /* __WAVE_H__ */

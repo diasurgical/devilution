@@ -27,16 +27,37 @@ class TLink;
  ***/
 
 //=============================================================================
+// The members are defined in the class, in this order: VC5 then emits them in the order of 1.09b
 template <class T>
 class TList {
 public:
-	TList();
-	~TList();
+	TList()
+	{
+		size_t offset = offsetof(T, m_Link);
+		// Mark this node as the end of the list, with the link offset set
+		m_link.m_prevLink = &m_link;
+		m_offset = offset;
+		m_link.m_nextNode = (T *)~((size_t)&m_link - offset);
+	}
+	~TList()
+	{
+		// BUGFIX: Unlinking does not free memory, should use DeleteAll()
+		UnlinkAll();
+	}
 
-	void UnlinkAll();
-	void DeleteAll();
+	void DeleteAll()
+	{
+		T *node;
+		while ((node = m_link.Next()) != NULL) {
+			node->Delete(0x0);
+			SDelete(node);
+		}
+	}
 
-	T *Head();
+	T *Head()
+	{
+		return m_link.Next();
+	}
 
 	enum InsertPos {
 		NONE = 0,
@@ -44,15 +65,62 @@ public:
 		BEFORE
 	};
 
-	void Insert(T *node, InsertPos pos, T *ref);
-	T *Remove(T *node);
-	T *Create(InsertPos pos = BEFORE, size_t extra = 0, int memflags = 0);
+	void Insert(T *node, InsertPos pos, T *ref)
+	{
+		TLink<T> *reflink;
+		TLink<T> *i = node ? GetLinkFromNode(node) : &m_link;
+		if (i->IsLinked())
+			i->Unlink();
+
+		reflink = ref ? GetLinkFromNode(ref) : &m_link;
+
+		switch (pos) {
+		case AFTER:
+			i->m_prevLink = reflink;
+			i->m_nextNode = reflink->m_nextNode;
+			reflink->NextLink(m_offset)->m_prevLink = i;
+			reflink->m_nextNode = node;
+			break;
+		case BEFORE:
+			i->InsertBefore(node, reflink);
+			break;
+		}
+	}
+	void UnlinkAll()
+	{
+		for (;;) {
+			T *node = m_link.Next();
+			if ((int)node <= 0)
+				break;
+			node->m_Link.Unlink();
+		}
+	}
+	T *Remove(T *node)
+	{
+		TLink<T> *link = node ? &node->m_Link : &m_link;
+		T *next = link->Next();
+		node->Delete(0x0);
+		SDelete(node);
+		return next;
+	}
+	T *Create(InsertPos pos = BEFORE, size_t extra = 0, int memflags = 0)
+	{
+		T *node = new (extra, memflags) T;
+		if (pos != NONE)
+			Insert(node, pos, NULL);
+		return node;
+	}
 
 private:
 	size_t m_offset;
 	TLink<T> m_link;
 
-	TLink<T> *GetLinkFromNode(T *node) const;
+	TLink<T> *GetLinkFromNode(T *node) const
+	{
+		//    assert(m_offset != (size_t) -1);
+		//    return (TLink<T> *) ((size_t) node + m_offset);
+		return &node->m_Link;
+	}
 
 	// Hide copy-constructor and assignment operator
 	TList(const TList &);
@@ -64,101 +132,14 @@ private:
 	}
 };
 
-//=============================================================================
-template <class T>
-TList<T>::~TList()
-{
-	// BUGFIX: Unlinking does not free memory, should use DeleteAll()
-	UnlinkAll();
-}
 
-//=============================================================================
-template <class T>
-TList<T>::TList()
-{
-	size_t offset = offsetof(T, m_Link);
-	// Mark this node as the end of the list, with the link offset set
-	m_link.m_prevLink = &m_link;
-	m_offset = offset;
-	m_link.m_nextNode = (T *)~((size_t)&m_link - offset);
-}
 
-//=============================================================================
-template <class T>
-void TList<T>::DeleteAll()
-{
-	while (T *node = m_link.Next()) {
-		node->Delete(0x0);
-		SDelete(node);
-	}
-}
 
-//=============================================================================
-template <class T>
-__forceinline T *TList<T>::Head()
-{
-	return m_link.Next();
-}
 
-//=============================================================================
-template <class T>
-__forceinline TLink<T> *TList<T>::GetLinkFromNode(T *node) const
-{
-	//    assert(m_offset != (size_t) -1);
-	//    return (TLink<T> *) ((size_t) node + m_offset);
-	return &node->m_Link;
-}
 
-template <class T>
-T *TList<T>::Remove(T *node)
-{
-	TLink<T> *link = node ? &node->m_Link : &m_link;
-	T *next = link->Next();
-	node->Delete(0x0);
-	SDelete(node);
-	return next;
-}
 
-template <class T>
-T *TList<T>::Create(InsertPos pos, size_t extra, int memflags)
-{
-	T *node = new (extra, memflags) T;
-	if (pos != NONE)
-		Insert(node, pos, NULL);
-	return node;
-}
 
-template <class T>
-void TList<T>::Insert(T *node, InsertPos pos, T *ref)
-{
-	TLink<T> *reflink;
-	TLink<T> *i = node ? GetLinkFromNode(node) : &m_link;
-	if (i->IsLinked())
-		i->Unlink();
 
-	reflink = ref ? GetLinkFromNode(ref) : &m_link;
-
-	switch (pos) {
-	case AFTER:
-		i->InsertAfter(node, reflink, m_offset);
-		break;
-	case BEFORE:
-		i->InsertBefore(node, reflink);
-		break;
-	}
-}
-
-//=============================================================================
-template <class T>
-void TList<T>::UnlinkAll()
-{
-	for (;;) {
-		T *node = m_link.Next();
-		if ((int)node <= 0)
-			break;
-		node->m_Link.Unlink();
-	}
-}
 
 /******************************************************************************
  *

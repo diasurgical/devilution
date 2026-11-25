@@ -6,9 +6,10 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-static BYTE sgbIsScrolling;
-static DWORD sgdwLastWalk;
-static BOOL sgbIsWalking;
+/** 1.09b name (Hellfire source); uninitialised, so it is placed by name */
+static BYTE sgbTrackMode;
+static DWORD sgdwLastWalk = 0;
+static BOOL sgbIsWalking = 0;
 
 void track_process()
 {
@@ -26,8 +27,8 @@ void track_process()
 		if ((int)(tick - sgdwLastWalk) >= 300) {
 			sgdwLastWalk = tick;
 			NetSendCmdLoc(TRUE, CMD_WALKXY, cursmx, cursmy);
-			if (!sgbIsScrolling)
-				sgbIsScrolling = TRUE;
+			if (!sgbTrackMode)
+				sgbTrackMode = TRUE;
 		}
 	}
 }
@@ -39,15 +40,15 @@ void track_repeat_walk(BOOL rep)
 
 	sgbIsWalking = rep;
 	if (rep) {
-		sgbIsScrolling = FALSE;
+		sgbTrackMode = FALSE;
 		sgdwLastWalk = GetTickCount() - 50;
 		NetSendCmdLoc(TRUE, CMD_WALKXY, cursmx, cursmy);
-	} else if (sgbIsScrolling) {
-		sgbIsScrolling = FALSE;
+	} else if (sgbTrackMode) {
+		sgbTrackMode = FALSE;
 	}
 }
 
 BOOL track_isscrolling()
 {
-	return sgbIsScrolling;
+	return sgbTrackMode;
 }

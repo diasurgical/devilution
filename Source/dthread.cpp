@@ -7,10 +7,10 @@
 #include "../3rdParty/Storm/Source/storm.h"
 
 static CCritSect sgMemCrit;
-unsigned int glpDThreadId;
-TMegaPkt *sgpInfoHead; /* may not be right struct */
-BOOLEAN dthread_running;
-HANDLE sghWorkToDoEvent;
+unsigned int glpDThreadId = 0;
+TMegaPkt *sgpInfoHead = NULL; /* may not be right struct */
+BOOLEAN dthread_running = 0;
+HANDLE sghWorkToDoEvent = 0;
 
 /* rdata */
 static HANDLE sghThread = INVALID_HANDLE_VALUE;

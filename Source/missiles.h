@@ -103,7 +103,9 @@ void AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 void AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void AddWave(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
+#ifdef HELLFIRE
 void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
+#endif
 void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);
 void AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam);

@@ -6,12 +6,12 @@
 #ifndef __NTHREAD_H__
 #define __NTHREAD_H__
 
-extern BYTE sgbNetUpdateRate;
+extern BYTE gbGameLoopsPerPacket;
 extern DWORD gdwMsgLenTbl[MAX_PLRS];
 extern DWORD gdwDeltaBytesSec;
 extern DWORD gdwTurnsInTransit;
 extern int glpMsgTbl[MAX_PLRS];
-extern int turn_upper_bit;
+extern int sgdwRequestDeltaFlag;
 extern DWORD gdwLargestMsgSize;
 extern DWORD gdwNormalMsgSize;
 

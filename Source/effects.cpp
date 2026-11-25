@@ -6,23 +6,6 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-int sfxdelay;
-int sfxdnum;
-/** A handle to the current sound effect playing. */
-HANDLE sghStream;
-/** Specifies the sound file and the playback state of the current sound effect. */
-TSFX *sgpStreamSFX;
-
-/**
- * Monster sound type prefix
- * a: Attack
- * h: Hit
- * d: Death
- * s: Special
- */
-const char MonstSndChar[] = { 'a', 'h', 'd', 's' };
-
-/* data */
 /** List of all sounds, except monsters and music */
 TSFX sgSFX[] = {
 	// clang-format off
@@ -1093,6 +1076,23 @@ TSFX sgSFX[] = {
 #endif
 	// clang-format on
 };
+int sfxdelay = 0;
+int sfxdnum = 0;
+/** A handle to the current sound effect playing. */
+HANDLE sghStream = 0;
+
+/**
+ * Monster sound type prefix
+ * a: Attack
+ * h: Hit
+ * d: Death
+ * s: Special
+ */
+const char MonstSndChar[] = "ahds";
+
+/* data */
+/** Specifies the sound file and the playback state of the current sound effect. */
+TSFX *sgpStreamSFX = NULL;
 
 #ifdef HELLFIRE
 #define PLRSFXS (sfx_WARRIOR | sfx_ROGUE | sfx_SORCEROR | sfx_MONK)

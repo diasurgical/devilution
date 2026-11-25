@@ -5,11 +5,13 @@
  */
 #include "all.h"
 
-WORD sync_word_6AA708[MAXMONSTERS];
-int sgnMonsters;
+WORD sgwDelta[MAXMONSTERS];
 WORD sgwLRU[MAXMONSTERS];
-int sgnSyncItem;
-int sgnSyncPInv;
+int sgnLRUScan;
+int sgnSyncItem = 0;
+/** unused */
+int sgnSyncObj = 0;
+int sgnSyncPInv = 0;
 
 static void sync_one_monster()
 {
@@ -17,9 +19,9 @@ static void sync_one_monster()
 
 	for (i = 0; i < nummonsters; i++) {
 		m = monstactive[i];
-		sync_word_6AA708[m] = abs(plr[myplr]._px - monster[m]._mx) + abs(plr[myplr]._py - monster[m]._my);
+		sgwDelta[m] = abs(plr[myplr]._px - monster[m]._mx) + abs(plr[myplr]._py - monster[m]._my);
 		if (monster[m]._msquelch == 0) {
-			sync_word_6AA708[m] += 0x1000;
+			sgwDelta[m] += 0x1000;
 		} else if (sgwLRU[m] != 0) {
 			sgwLRU[m]--;
 		}
@@ -32,9 +34,9 @@ static void sync_monster_pos(TSyncMonster *p, int ndx)
 	p->_mx = monster[ndx]._mx;
 	p->_my = monster[ndx]._my;
 	p->_menemy = encode_enemy(ndx);
-	p->_mdelta = sync_word_6AA708[ndx] > 255 ? 255 : sync_word_6AA708[ndx];
+	p->_mdelta = sgwDelta[ndx] > 255 ? 255 : sgwDelta[ndx];
 
-	sync_word_6AA708[ndx] = 0xFFFF;
+	sgwDelta[ndx] = 0xFFFF;
 	sgwLRU[ndx] = monster[ndx]._msquelch == 0 ? 0xFFFF : 0xFFFE;
 }
 
@@ -48,8 +50,8 @@ static BOOL sync_monster_active(TSyncMonster *p)
 
 	for (i = 0; i < nummonsters; i++) {
 		m = monstactive[i];
-		if (sync_word_6AA708[m] < lru && sgwLRU[m] < 0xFFFE) {
-			lru = sync_word_6AA708[m];
+		if (sgwDelta[m] < lru && sgwLRU[m] < 0xFFFE) {
+			lru = sgwDelta[m];
 			ndx = monstactive[i];
 		}
 	}
@@ -71,15 +73,15 @@ static BOOL sync_monster_active2(TSyncMonster *p)
 	lru = 0xFFFE;
 
 	for (i = 0; i < nummonsters; i++) {
-		if (sgnMonsters >= nummonsters) {
-			sgnMonsters = 0;
+		if (sgnLRUScan >= nummonsters) {
+			sgnLRUScan = 0;
 		}
-		m = monstactive[sgnMonsters];
+		m = monstactive[sgnLRUScan];
 		if (sgwLRU[m] < lru) {
 			lru = sgwLRU[m];
-			ndx = monstactive[sgnMonsters];
+			ndx = monstactive[sgnLRUScan];
 		}
-		sgnMonsters++;
+		sgnLRUScan++;
 	}
 
 	if (ndx == -1) {
@@ -289,6 +291,6 @@ DWORD sync_update(int pnum, const BYTE *pbBuf)
 
 void sync_init()
 {
-	sgnMonsters = 16 * myplr;
+	sgnLRUScan = 16 * myplr;
 	memset(sgwLRU, 255, sizeof(sgwLRU));
 }

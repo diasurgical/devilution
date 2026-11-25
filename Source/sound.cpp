@@ -6,19 +6,11 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-/** Contains the audio channels used for playback of sounds. */
-LPDIRECTSOUNDBUFFER DSBs[8];
-LPDIRECTSOUND sglpDS;
-BOOLEAN gbSndInited;
-int sglMusicVolume;
-int sglSoundVolume;
-/** Provides a handle to the dynamic library dsound.dll. */
-HMODULE hDsound_dll;
-/** Specifies whether background music is enabled. */
-HANDLE sghMusic;
-LPDIRECTSOUNDBUFFER sglpDSB;
-
-/* data */
+/* in 1.09b these are named constants (they are in .rdata there) */
+static const char szSoundVolume[] = "Sound Volume";
+static const char szMusicVolume[] = "Music Volume";
+/** 1.09b: the registry key as a named constant (in .rdata) */
+static const char sgszAppName[] = APP_NAME;
 
 BOOLEAN gbMusicOn = TRUE;
 /** Specifies whether sound effects are enabled. */
@@ -27,8 +19,22 @@ BOOLEAN gbSoundOn = TRUE;
 BOOLEAN gbDupSounds = TRUE;
 /** Specifies the active background music track id. */
 int sgnMusicTrack = NUM_MUSIC;
+/** Contains the audio channels used for playback of sounds. */
+LPDIRECTSOUNDBUFFER DSBs[8] = { 0 };
+LPDIRECTSOUND sglpDS = { 0 };
+BOOLEAN gbSndInited = 0;
+int sglMusicVolume = 0;
+
+/* data */
+
+int sglSoundVolume = 0;
+/** Provides a handle to the dynamic library dsound.dll. */
+HMODULE hDsound_dll = 0;
+/** Specifies whether background music is enabled. */
+HANDLE sghMusic = 0;
+LPDIRECTSOUNDBUFFER sglpDSB = { 0 };
 /** Maps from track ID to track name. */
-const char *const sgszMusicTracks[NUM_MUSIC] = {
+const char *sgszMusicTracks[NUM_MUSIC] = {
 #ifdef SPAWN
 	"Music\\sTowne.wav",
 	"Music\\sLvlA.wav",
@@ -102,7 +108,7 @@ static LPDIRECTSOUNDBUFFER sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 static void snd_get_volume(const char *value_name, int *value)
 {
 	int v = *value;
-	if (!SRegLoadValue(APP_NAME, value_name, 0, &v)) {
+	if (!SRegLoadValue(sgszAppName, value_name, 0, &v)) {
 		v = VOLUME_MAX;
 	}
 	*value = v;
@@ -117,7 +123,7 @@ static void snd_get_volume(const char *value_name, int *value)
 
 static void snd_set_volume(const char *key, int value)
 {
-	SRegSaveValue(APP_NAME, key, 0, value);
+	SRegSaveValue(sgszAppName, key, 0, value);
 }
 
 static BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
@@ -270,7 +276,7 @@ TSnd *sound_file_load(const char *path)
 	if (error_code != DS_OK)
 		DSErrMsg(error_code, 325, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
-	mem_free_dbg((void *)wave_file);
+	j_mem_free_dbg((void *)wave_file);
 	WCloseFile(file);
 
 	return pSnd;
@@ -351,10 +357,10 @@ static HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNK
 void snd_init(HWND hWnd)
 {
 	int error_code;
-	snd_get_volume("Sound Volume", &sglSoundVolume);
+	snd_get_volume(szSoundVolume, &sglSoundVolume);
 	gbSoundOn = sglSoundVolume > VOLUME_MIN;
 
-	snd_get_volume("Music Volume", &sglMusicVolume);
+	snd_get_volume(szMusicVolume, &sglMusicVolume);
 	gbMusicOn = sglMusicVolume > VOLUME_MIN;
 
 	error_code = sound_DirectSoundCreate(NULL, &sglpDS, NULL);
@@ -383,8 +389,8 @@ void sound_cleanup()
 
 	if (gbSndInited) {
 		gbSndInited = FALSE;
-		snd_set_volume("Sound Volume", sglSoundVolume);
-		snd_set_volume("Music Volume", sglMusicVolume);
+		snd_set_volume(szSoundVolume, sglSoundVolume);
+		snd_set_volume(szMusicVolume, sglMusicVolume);
 	}
 }
 

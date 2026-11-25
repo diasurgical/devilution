@@ -6,26 +6,59 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-/** Tracks which missile files are already loaded */
-int MissileFileFlag;
+/** 1.09b: a named string, first in this file's .data */
+static char sgszInvalidMonstName[] = "Invalid Monster";
+
+/** Maps from monster walk animation frame num to monster velocity. */
+int MWVel[24][3] = {
+	{ 256, 512, 1024 },
+	{ 128, 256, 512 },
+	{ 85, 170, 341 },
+	{ 64, 128, 256 },
+	{ 51, 102, 204 },
+	{ 42, 85, 170 },
+	{ 36, 73, 146 },
+	{ 32, 64, 128 },
+	{ 28, 56, 113 },
+	{ 26, 51, 102 },
+	{ 23, 46, 93 },
+	{ 21, 42, 85 },
+	{ 19, 39, 78 },
+	{ 18, 36, 73 },
+	{ 17, 34, 68 },
+	{ 16, 32, 64 },
+	{ 15, 30, 60 },
+	{ 14, 28, 57 },
+	{ 13, 26, 54 },
+	{ 12, 25, 51 },
+	{ 12, 24, 48 },
+	{ 11, 23, 46 },
+	{ 11, 22, 44 },
+	{ 10, 21, 42 }
+};
 
 // BUGFIX: replace monstkills[MAXMONSTERS] with monstkills[NUM_MTYPES].
-/** Tracks the total number of monsters killed per monster_id. */
-int monstkills[MAXMONSTERS];
-int monstactive[MAXMONSTERS];
-int nummonsters;
-BOOLEAN sgbSaveSoundOn;
+/** Maps from monster action to monster animation letter. */
+char animletter[7] = "nwahds";
+/** Maps from direction to a left turn from the direction. */
+int left[8] = { 7, 0, 1, 2, 3, 4, 5, 6 };
+/** Maps from direction to a right turn from the direction. */
+int right[8] = { 1, 2, 3, 4, 5, 6, 7, 0 };
+/** Maps from direction to the opposite direction. */
+int opposite[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
+/** Maps from direction to delta X-offset. */
+int offset_x[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
+/** Maps from direction to delta Y-offset. */
+int offset_y[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 MonsterStruct monster[MAXMONSTERS];
-int totalmonsters;
-CMonster Monsters[MAX_LVLMTYPES];
 #ifdef HELLFIRE
-int GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
+int mleveltypes[NUMLEVELS][MAX_LVLMTYPES];
 #else
-BYTE GraphicTable[NUMLEVELS][MAX_LVLMTYPES];
+BYTE mleveltypes[NUMLEVELS][MAX_LVLMTYPES];
 #endif
-int monstimgtot;
-int uniquetrans;
-int nummtypes;
+int nummonsters;
+int totalmonsters;
+int monstactive[MAXMONSTERS];
 
 /** Maps from walking path step to facing direction. */
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
@@ -71,45 +104,15 @@ const BYTE counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL
 //      { 11, 21, 43 }
 //   };
 
-/** Maps from monster walk animation frame num to monster velocity. */
-int MWVel[24][3] = {
-	{ 256, 512, 1024 },
-	{ 128, 256, 512 },
-	{ 85, 170, 341 },
-	{ 64, 128, 256 },
-	{ 51, 102, 204 },
-	{ 42, 85, 170 },
-	{ 36, 73, 146 },
-	{ 32, 64, 128 },
-	{ 28, 56, 113 },
-	{ 26, 51, 102 },
-	{ 23, 46, 93 },
-	{ 21, 42, 85 },
-	{ 19, 39, 78 },
-	{ 18, 36, 73 },
-	{ 17, 34, 68 },
-	{ 16, 32, 64 },
-	{ 15, 30, 60 },
-	{ 14, 28, 57 },
-	{ 13, 26, 54 },
-	{ 12, 25, 51 },
-	{ 12, 24, 48 },
-	{ 11, 23, 46 },
-	{ 11, 22, 44 },
-	{ 10, 21, 42 }
-};
-/** Maps from monster action to monster animation letter. */
-char animletter[7] = "nwahds";
-/** Maps from direction to a left turn from the direction. */
-int left[8] = { 7, 0, 1, 2, 3, 4, 5, 6 };
-/** Maps from direction to a right turn from the direction. */
-int right[8] = { 1, 2, 3, 4, 5, 6, 7, 0 };
-/** Maps from direction to the opposite direction. */
-int opposite[8] = { 4, 5, 6, 7, 0, 1, 2, 3 };
-/** Maps from direction to delta X-offset. */
-int offset_x[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
-/** Maps from direction to delta Y-offset. */
-int offset_y[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+int monstimgtot;
+/** Tracks which missile files are already loaded */
+int gfxflags;
+int uniquetrans;
+/** Tracks the total number of monsters killed per monster_id. */
+int monstkills[MAXMONSTERS];
+BOOLEAN sgbSaveSoundOn;
+CMonster Monsters[MAX_LVLMTYPES];
+int nummtypes = 0;
 
 #ifdef HELLFIRE
 int HorkXAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 }; // CODEFIX: same values as offset_x, remove it and use offset_x instead
@@ -200,7 +203,7 @@ void InitLevelMonsters()
 
 	nummtypes = 0;
 	monstimgtot = 0;
-	MissileFileFlag = 0;
+	gfxflags = 0;
 
 	for (i = 0; i < MAX_LVLMTYPES; i++) {
 		Monsters[i].mPlaceFlags = 0;
@@ -407,85 +410,85 @@ void InitMonsterGFX(int monst)
 		MemFreeDbg(Monsters[monst].trans_file);
 	}
 
-	if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1)) {
-		MissileFileFlag |= 1;
+	if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(gfxflags & 1)) {
+		gfxflags |= 1;
 		LoadMissileGFX(MFILE_MAGBALL);
 	}
-	if (mtype >= MT_STORM && mtype <= MT_MAEL && !(MissileFileFlag & 2)) {
-		MissileFileFlag |= 2;
+	if (mtype >= MT_STORM && mtype <= MT_MAEL && !(gfxflags & 2)) {
+		gfxflags |= 2;
 		LoadMissileGFX(MFILE_THINLGHT);
 	}
-	if (mtype == MT_SUCCUBUS && !(MissileFileFlag & 4)) {
-		MissileFileFlag |= 4;
+	if (mtype == MT_SUCCUBUS && !(gfxflags & 4)) {
+		gfxflags |= 4;
 #ifndef HELLFIRE
 		LoadMissileGFX(MFILE_FLARE);
 		LoadMissileGFX(MFILE_FLAREEXP);
 #endif
 	}
 #ifdef HELLFIRE
-	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
-		MissileFileFlag |= 8;
+	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(gfxflags & 8)) {
+		gfxflags |= 8;
 		LoadMissileGFX(MFILE_KRULL);
 	}
-	if ((mtype >= MT_NACID && mtype <= MT_XACID || mtype == MT_SPIDLORD) && !(MissileFileFlag & 0x10)) {
-		MissileFileFlag |= 0x10;
+	if ((mtype >= MT_NACID && mtype <= MT_XACID || mtype == MT_SPIDLORD) && !(gfxflags & 0x10)) {
+		gfxflags |= 0x10;
 		LoadMissileGFX(MFILE_ACIDBF);
 		LoadMissileGFX(MFILE_ACIDSPLA);
 		LoadMissileGFX(MFILE_ACIDPUD);
 	}
 #endif
-	if (mtype == MT_SNOWWICH && !(MissileFileFlag & 0x20)) {
-		MissileFileFlag |= 0x20;
+	if (mtype == MT_SNOWWICH && !(gfxflags & 0x20)) {
+		gfxflags |= 0x20;
 		LoadMissileGFX(MFILE_SCUBMISB);
 		LoadMissileGFX(MFILE_SCBSEXPB);
 	}
-	if (mtype == MT_HLSPWN && !(MissileFileFlag & 0x40)) {
-		MissileFileFlag |= 0x40;
+	if (mtype == MT_HLSPWN && !(gfxflags & 0x40)) {
+		gfxflags |= 0x40;
 		LoadMissileGFX(MFILE_SCUBMISD);
 		LoadMissileGFX(MFILE_SCBSEXPD);
 	}
-	if (mtype == MT_SOLBRNR && !(MissileFileFlag & 0x80)) {
-		MissileFileFlag |= 0x80;
+	if (mtype == MT_SOLBRNR && !(gfxflags & 0x80)) {
+		gfxflags |= 0x80;
 		LoadMissileGFX(MFILE_SCUBMISC);
 		LoadMissileGFX(MFILE_SCBSEXPC);
 	}
 #ifndef HELLFIRE
-	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
-		MissileFileFlag |= 8;
+	if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(gfxflags & 8)) {
+		gfxflags |= 8;
 		LoadMissileGFX(MFILE_KRULL);
 	}
-	if (mtype >= MT_NACID && mtype <= MT_XACID && !(MissileFileFlag & 0x10)) {
-		MissileFileFlag |= 0x10;
+	if (mtype >= MT_NACID && mtype <= MT_XACID && !(gfxflags & 0x10)) {
+		gfxflags |= 0x10;
 		LoadMissileGFX(MFILE_ACIDBF);
 		LoadMissileGFX(MFILE_ACIDSPLA);
 		LoadMissileGFX(MFILE_ACIDPUD);
 	}
 #else
-	if (mtype == MT_LICH && !(MissileFileFlag & 0x100)) {
-		MissileFileFlag |= 0x100u;
+	if (mtype == MT_LICH && !(gfxflags & 0x100)) {
+		gfxflags |= 0x100u;
 		LoadMissileGFX(MFILE_LICH);
 		LoadMissileGFX(MFILE_EXORA1);
 	}
-	if (mtype == MT_ARCHLICH && !(MissileFileFlag & 0x200)) {
-		MissileFileFlag |= 0x200u;
+	if (mtype == MT_ARCHLICH && !(gfxflags & 0x200)) {
+		gfxflags |= 0x200u;
 		LoadMissileGFX(MFILE_ARCHLICH);
 		LoadMissileGFX(MFILE_EXYEL2);
 	}
-	if ((mtype == MT_PSYCHORB || mtype == MT_BONEDEMN) && !(MissileFileFlag & 0x400)) {
-		MissileFileFlag |= 0x400u;
+	if ((mtype == MT_PSYCHORB || mtype == MT_BONEDEMN) && !(gfxflags & 0x400)) {
+		gfxflags |= 0x400u;
 		LoadMissileGFX(MFILE_BONEDEMON);
 	}
-	if (mtype == MT_NECRMORB && !(MissileFileFlag & 0x800)) {
-		MissileFileFlag |= 0x800u;
+	if (mtype == MT_NECRMORB && !(gfxflags & 0x800)) {
+		gfxflags |= 0x800u;
 		LoadMissileGFX(MFILE_NECROMORB);
 		LoadMissileGFX(MFILE_EXRED3);
 	}
-	if (mtype == MT_PSYCHORB && !(MissileFileFlag & 0x1000)) {
-		MissileFileFlag |= 0x1000u;
+	if (mtype == MT_PSYCHORB && !(gfxflags & 0x1000)) {
+		gfxflags |= 0x1000u;
 		LoadMissileGFX(MFILE_EXBL2);
 	}
-	if (mtype == MT_BONEDEMN && !(MissileFileFlag & 0x2000)) {
-		MissileFileFlag |= 0x2000u;
+	if (mtype == MT_BONEDEMN && !(gfxflags & 0x2000)) {
+		gfxflags |= 0x2000u;
 		LoadMissileGFX(MFILE_EXBL3);
 	}
 #endif
@@ -634,7 +637,7 @@ void ClrAllMonsters()
 	for (i = 0; i < MAXMONSTERS; i++) {
 		Monst = &monster[i];
 		ClearMVars(i);
-		Monst->mName = "Invalid Monster";
+		Monst->mName = sgszInvalidMonstName;
 		Monst->_mgoal = 0;
 		Monst->_mmode = MM_STAND;
 		Monst->_mVar1 = 0;
@@ -2628,7 +2631,7 @@ void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	if (debug_mode_dollar_sign || debug_mode_key_inverted_v)
 		hper = 1000;
 #endif
-	ac = plr[pnum]._pIBonusAC + plr[pnum]._pIAC;
+	ac = plr[pnum]._pIAC + plr[pnum]._pIBonusAC;
 #ifdef HELLFIRE
 	if (plr[pnum].pDamAcFlags & ISPLHF_ACDEMON && monster[i].MData->mMonstClass == MC_DEMON)
 		ac += 40;
@@ -5615,6 +5618,9 @@ void ProcessMonsters()
 			case MM_ATTACK:
 				raflag = M_DoAttack(mi);
 				break;
+			case MM_RATTACK:
+				raflag = M_DoRAttack(mi);
+				break;
 			case MM_GOTHIT:
 				raflag = M_DoGotHit(mi);
 				break;
@@ -5629,9 +5635,6 @@ void ProcessMonsters()
 				break;
 			case MM_FADEOUT:
 				raflag = M_DoFadeout(mi);
-				break;
-			case MM_RATTACK:
-				raflag = M_DoRAttack(mi);
 				break;
 			case MM_SPSTAND:
 				raflag = M_DoSpStand(mi);

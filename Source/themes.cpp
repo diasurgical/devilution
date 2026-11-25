@@ -5,23 +5,6 @@
  */
 #include "all.h"
 
-int numthemes;
-BOOL armorFlag;
-BOOL ThemeGoodIn[4];
-BOOL weaponFlag;
-BOOL treasureFlag;
-BOOL mFountainFlag;
-BOOL cauldronFlag;
-BOOL tFountainFlag;
-int zharlib;
-int themex;
-int themey;
-int themeVar1;
-ThemeStruct themes[MAXTHEMES];
-BOOL pFountainFlag;
-BOOL bFountainFlag;
-BOOL bCrossFlag;
-
 /** Specifies the set of special theme IDs from which one will be selected at random. */
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
 /** Specifies a 5x5 area to fit theme objects. */
@@ -52,6 +35,23 @@ int trm3y[] = {
 	0, 0, 0,
 	1, 1, 1
 };
+int numthemes = 0;
+BOOL armorFlag = 0;
+BOOL ThemeGoodIn[4] = { 0 };
+BOOL weaponFlag = 0;
+BOOL treasureFlag = 0;
+BOOL mFountainFlag = 0;
+BOOL cauldronFlag = 0;
+BOOL tFountainFlag = 0;
+int zharlib = 0;
+int themex = 0;
+int themey = 0;
+
+int themeVar1 = 0;
+ThemeStruct themes[MAXTHEMES] = { 0 };
+BOOL pFountainFlag = 0;
+BOOL bFountainFlag = 0;
+BOOL bCrossFlag = 0;
 
 BOOL TFit_Shrine(int i)
 {
@@ -1058,11 +1058,11 @@ void CreateThemeRooms()
 		case THEME_CAULDRON:
 			Theme_Cauldron(i);
 			break;
-		case THEME_MURKYFOUNTAIN:
-			Theme_MurkyFountain(i);
-			break;
 		case THEME_TEARFOUNTAIN:
 			Theme_TearFountain(i);
+			break;
+		case THEME_MURKYFOUNTAIN:
+			Theme_MurkyFountain(i);
 			break;
 		case THEME_BRNCROSS:
 			Theme_BrnCross(i);

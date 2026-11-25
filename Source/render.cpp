@@ -14,7 +14,7 @@ DWORD *gpDrawMask = NULL;
 // char world_4B326D[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /** Specifies the draw masks used to render transparency of the right side of tiles. */
-DWORD RightMask[TILE_WIDTH] = {
+DWORD RightMask[TILE_WIDTH / 2] = {
 	0xEAAAAAAA, 0xF5555555,
 	0xFEAAAAAA, 0xFF555555,
 	0xFFEAAAAA, 0xFFF55555,
@@ -33,7 +33,7 @@ DWORD RightMask[TILE_WIDTH] = {
 	0xFFFFFFFF, 0xFFFFFFFF
 };
 /** Specifies the draw masks used to render transparency of the left side of tiles. */
-DWORD LeftMask[TILE_WIDTH] = {
+DWORD LeftMask[TILE_WIDTH / 2] = {
 	0xAAAAAAAB, 0x5555555F,
 	0xAAAAAABF, 0x555555FF,
 	0xAAAAABFF, 0x55555FFF,
@@ -52,7 +52,7 @@ DWORD LeftMask[TILE_WIDTH] = {
 	0xFFFFFFFF, 0xFFFFFFFF
 };
 /** Specifies the draw masks used to render transparency of wall tiles. */
-DWORD WallMask[TILE_WIDTH] = {
+DWORD WallMask[TILE_WIDTH / 2] = {
 	0xAAAAAAAA, 0x55555555,
 	0xAAAAAAAA, 0x55555555,
 	0xAAAAAAAA, 0x55555555,
@@ -140,28 +140,28 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
-	if (!(BYTE)light_table_index) {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = ((level_cel_block >> 12) & 7) + 8;
+	if (!(BYTE)nLVal) {
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = ((gdwPNum >> 12) & 7) + 8;
 		goto LABEL_11;
 	}
-	if ((BYTE)light_table_index != lightmax) {
-		if (!(level_cel_block & 0x8000)) {
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = &pLightTbl[256 * light_table_index];
-			cel_type_16 = (BYTE)(level_cel_block >> 12);
+	if ((BYTE)nLVal != lightmax) {
+		if (!(gdwPNum & 0x8000)) {
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			tbl = &pLightTbl[256 * nLVal];
+			cel_type_16 = (BYTE)(gdwPNum >> 12);
 			switch (cel_type_16) {
 			case 0: // upper (top transparent), with lighting
 				i = 16;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					asm_trans_light_square_1_3(8, tbl, &dst, &src);
 					dst -= (SCREEN_WIDTH + 160);
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					asm_trans_light_square_0_2(8, tbl, &dst, &src);
 					dst -= (SCREEN_WIDTH + 160);
@@ -184,7 +184,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 							if (!yy_32)
 								goto LABEL_67;
 						}
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							return;
 						if (((BYTE)dst & 1) == WorldBoolFlag) {
 							asm_trans_light_cel_0_2(width, tbl, &dst, &src);
@@ -202,7 +202,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			case 2: // upper (top transparent), with lighting
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					dst += xx_32;
 					src += (32 - (BYTE)xx_32) & 2;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -216,7 +216,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						yy_32 = 2;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							dst += yy_32;
 							src += (32 - (BYTE)yy_32) & 2;
@@ -236,7 +236,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			case 3: // upper (top transparent), with lighting
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
 						asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
@@ -249,7 +249,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						yy_32 = 2;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 							if (WorldBoolFlag) {
@@ -268,7 +268,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			case 4: // upper (top transparent), with lighting
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					dst += xx_32;
 					src += (32 - (BYTE)xx_32) & 2;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -282,11 +282,11 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						i = 8;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 							dst -= (SCREEN_WIDTH + 160);
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 							dst -= (SCREEN_WIDTH + 160);
@@ -299,7 +299,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			default: // upper (top transparent), with lighting
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
 						asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
@@ -312,11 +312,11 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						i = 8;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 							dst -= (SCREEN_WIDTH + 160);
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 							dst -= (SCREEN_WIDTH + 160);
@@ -330,15 +330,15 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 			return;
 		}
 		src = pSpeedCels
-		    + *(DWORD *)&gpCelFrame[4 * (light_table_index + 16 * (level_cel_block & 0xFFF))];
-		cel_type_16 = (BYTE)(level_cel_block >> 12);
+		    + *(DWORD *)&gpCelFrame[4 * (nLVal + 16 * (gdwPNum & 0xFFF))];
+		cel_type_16 = (BYTE)(gdwPNum >> 12);
 	LABEL_11:
 
 		switch (cel_type_16) {
 		case 8: // upper (top transparent), without lighting
 			i = 16;
 			do {
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					break;
 				j = 8;
 				do {
@@ -349,7 +349,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					--j;
 				} while (j);
 				dst -= (SCREEN_WIDTH + 160);
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					break;
 				j = 8;
 				do {
@@ -386,7 +386,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					}
 				}
 				xx_32 -= width;
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					return;
 				if (((BYTE)dst & 1) == WorldBoolFlag) {
 					chk_sh_and = width >> 1;
@@ -446,7 +446,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		case 10: // upper (top transparent), without lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				dst += xx_32;
 				x_minus = 32 - xx_32;
 				WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -488,7 +488,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					yy_32 = 2;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						dst += yy_32;
 						y_minus = 32 - yy_32;
@@ -536,7 +536,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		case 11: // upper (top transparent), without lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				x_minus = 32 - xx_32;
 				WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 				if (WorldBoolFlag) {
@@ -569,7 +569,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					yy_32 = 2;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						y_minus = 32 - yy_32;
 						WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -610,7 +610,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		case 12: // upper (top transparent), without lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				dst += xx_32;
 				x_minus = 32 - xx_32;
 				WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -652,7 +652,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					i = 8;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						j = 8;
 						do {
@@ -663,7 +663,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 							--j;
 						} while (j);
 						dst -= (SCREEN_WIDTH + 160);
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						j = 8;
 						do {
@@ -683,7 +683,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		default: // upper (top transparent), without lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				x_minus = 32 - xx_32;
 				WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 				if (WorldBoolFlag) {
@@ -716,7 +716,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					i = 8;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						j = 8;
 						do {
@@ -727,7 +727,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 							--j;
 						} while (j);
 						dst -= (SCREEN_WIDTH + 160);
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						j = 8;
 						do {
@@ -747,16 +747,16 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		}
 		return;
 	}
-	if (level_cel_block & 0x8000)
-		level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-		    + (WORD)(level_cel_block & 0xF000);
-	src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-	cel_type_16 = (level_cel_block >> 12) & 7;
+	if (gdwPNum & 0x8000)
+		gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+		    + (WORD)(gdwPNum & 0xF000);
+	src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+	cel_type_16 = (gdwPNum >> 12) & 7;
 	switch (cel_type_16) {
 	case 0: // upper (top transparent), black
 		i = 16;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -766,7 +766,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				--j;
 			} while (j);
 			dst -= (SCREEN_WIDTH + 160);
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -790,7 +790,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 					if ((width & 0x80) != 0)
 						break;
 					yy_32 -= width;
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						return;
 					src += width;
 					if (((BYTE)dst & 1) == WorldBoolFlag) {
@@ -855,7 +855,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 	case 2: // upper (top transparent), black
 		WorldBoolFlag = 0;
 		for (xx_32 = 30;; xx_32 -= 2) {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				return;
 			dst += xx_32;
 			x_minus = 32 - xx_32;
@@ -895,7 +895,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		}
 		yy_32 = 2;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			dst += yy_32;
 			y_minus = 32 - yy_32;
@@ -936,7 +936,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 	case 3: // upper (top transparent), black
 		WorldBoolFlag = 0;
 		for (xx_32 = 30;; xx_32 -= 2) {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				return;
 			x_minus = 32 - xx_32;
 			WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -976,7 +976,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		}
 		yy_32 = 2;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			y_minus = 32 - yy_32;
 			WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -1016,7 +1016,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 	case 4: // upper (top transparent), black
 		WorldBoolFlag = 0;
 		for (xx_32 = 30;; xx_32 -= 2) {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				return;
 			dst += xx_32;
 			x_minus = 32 - xx_32;
@@ -1056,7 +1056,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		}
 		i = 8;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -1066,7 +1066,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				--j;
 			} while (j);
 			dst -= (SCREEN_WIDTH + 160);
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -1082,7 +1082,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 	default: // upper (top transparent), black
 		WorldBoolFlag = 0;
 		for (xx_32 = 30;; xx_32 -= 2) {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				return;
 			x_minus = 32 - xx_32;
 			WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -1122,7 +1122,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 		}
 		i = 8;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -1132,7 +1132,7 @@ void drawTopArchesUpperScreen(BYTE *pBuff)
 				--j;
 			} while (j);
 			dst -= (SCREEN_WIDTH + 160);
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -1169,18 +1169,18 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
 	gpDrawMask = pMask;
-	if ((BYTE)light_table_index == 0) {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = ((level_cel_block >> 12) & 7) + 8;
+	if ((BYTE)nLVal == 0) {
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = ((gdwPNum >> 12) & 7) + 8;
 	LABEL_12:
 		switch (cel_type_16) {
 		case 8: // upper (bottom transparent), without lighting
 			xx_32 = 32;
 			do {
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					break;
 				left_shift = *gpDrawMask;
 				i = 32;
@@ -1216,7 +1216,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 							goto LABEL_129;
 					}
 					yy_32 -= width;
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						return;
 					left_shift = gdwCurrentMask;
 					and80_i = width;
@@ -1238,7 +1238,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			break;
 		case 10: // upper (bottom transparent), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				dst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ((32 - xx_32) & 2) {
@@ -1259,7 +1259,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				if (xx_32 < 0) {
 					yy_32 = 2;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						dst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -1285,7 +1285,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			break;
 		case 11: // upper (bottom transparent), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				for (n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift) {
 					*(DWORD *)dst = *(DWORD *)src;
 					src += 4;
@@ -1301,7 +1301,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				if (xx_32 < 0) {
 					yy_32 = 2;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						for (n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift) {
 							*(DWORD *)dst = *(DWORD *)src;
@@ -1322,7 +1322,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			break;
 		case 12: // upper (bottom transparent), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				dst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ((32 - xx_32) & 2) {
@@ -1344,7 +1344,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 					gpDrawMask -= 16;
 					yy_32 = 16;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						left_shift = *gpDrawMask;
 						i = 32;
@@ -1366,7 +1366,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			break;
 		default: // upper (bottom transparent), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				for (n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift) {
 					*(DWORD *)dst = *(DWORD *)src;
 					src += 4;
@@ -1383,7 +1383,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 					gpDrawMask -= 16;
 					yy_32 = 16;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						left_shift = *gpDrawMask;
 						i = 32;
@@ -1407,16 +1407,16 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		}
 		return;
 	}
-	if ((BYTE)light_table_index != lightmax) {
-		if (!(level_cel_block & 0x8000)) {
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = &pLightTbl[256 * light_table_index];
-			cel_type_16 = (BYTE)(level_cel_block >> 12);
+	if ((BYTE)nLVal != lightmax) {
+		if (!(gdwPNum & 0x8000)) {
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			tbl = &pLightTbl[256 * nLVal];
+			cel_type_16 = (BYTE)(gdwPNum >> 12);
 			switch (cel_type_16) {
 			case 0: // upper (bottom transparent), with lighting
 				xx_32 = 32;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 					dst -= (SCREEN_WIDTH + 160);
@@ -1443,7 +1443,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 								goto LABEL_50;
 						}
 						yy_32 -= width;
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							return;
 						gdwCurrentMask = asm_trans_light_mask(width, tbl, &dst, &src, gdwCurrentMask);
 					} while (yy_32);
@@ -1455,7 +1455,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 2: // upper (bottom transparent), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					dst += xx_32;
 					src += (32 - (BYTE)xx_32) & 2;
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
@@ -1464,7 +1464,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 					if (xx_32 < 0) {
 						yy_32 = 2;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							dst += yy_32;
 							src += (32 - (BYTE)yy_32) & 2;
@@ -1478,7 +1478,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 3: // upper (bottom transparent), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (BYTE)src & 2;
 					dst = &dst[xx_32 - (SCREEN_WIDTH + 160)];
@@ -1486,7 +1486,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 					if (xx_32 < 0) {
 						yy_32 = 2;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							src += (BYTE)src & 2;
@@ -1499,7 +1499,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 4: // upper (bottom transparent), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					dst += xx_32;
 					src += (32 - (BYTE)xx_32) & 2;
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
@@ -1509,7 +1509,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 						gpDrawMask -= 16;
 						yy_32 = 16;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							src += (BYTE)src & 2;
 							asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
@@ -1523,7 +1523,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			default: // upper (bottom transparent), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (BYTE)src & 2;
 					dst = &dst[xx_32 - (SCREEN_WIDTH + 160)];
@@ -1532,7 +1532,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 						gpDrawMask -= 16;
 						yy_32 = 16;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 							src += (BYTE)src & 2;
@@ -1548,20 +1548,20 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			return;
 		}
 		src = pSpeedCels
-		    + *(DWORD *)&gpCelFrame[4 * (light_table_index + 16 * (level_cel_block & 0xFFF))];
-		cel_type_16 = (BYTE)(level_cel_block >> 12);
+		    + *(DWORD *)&gpCelFrame[4 * (nLVal + 16 * (gdwPNum & 0xFFF))];
+		cel_type_16 = (BYTE)(gdwPNum >> 12);
 		goto LABEL_12;
 	}
-	if (level_cel_block & 0x8000)
-		level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-		    + (WORD)(level_cel_block & 0xF000);
-	src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-	cel_type_16 = (level_cel_block >> 12) & 7;
+	if (gdwPNum & 0x8000)
+		gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+		    + (WORD)(gdwPNum & 0xF000);
+	src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+	cel_type_16 = (gdwPNum >> 12) & 7;
 	switch (cel_type_16) {
 	case 0: // upper (bottom transparent), black
 		xx_32 = 32;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			left_shift = *gpDrawMask;
 			i = 32;
@@ -1596,7 +1596,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 						goto LABEL_208;
 				}
 				yy_32 -= width;
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					return;
 				left_shift = gdwCurrentMask;
 				and80_i = width;
@@ -1618,7 +1618,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		break;
 	case 2: // upper (bottom transparent), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			dst += xx_32;
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
@@ -1636,7 +1636,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			if (!xx_32) {
 				yy_32 = 2;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					dst += yy_32;
 					n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -1661,7 +1661,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		break;
 	case 3: // upper (bottom transparent), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
 				*(WORD *)dst = 0;
@@ -1678,7 +1678,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 			if (!xx_32) {
 				yy_32 = 2;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
 					if ((32 - yy_32) & 2) {
@@ -1703,7 +1703,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		break;
 	case 4: // upper (bottom transparent), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			dst += xx_32;
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
@@ -1722,7 +1722,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				gpDrawMask -= 16;
 				yy_32 = 16;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					left_shift = *gpDrawMask;
 					i = 32;
@@ -1744,7 +1744,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 		break;
 	default: // upper (bottom transparent), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
 				*(WORD *)dst = 0;
@@ -1762,7 +1762,7 @@ void drawBottomArchesUpperScreen(BYTE *pBuff, DWORD *pMask)
 				gpDrawMask -= 16;
 				yy_32 = 16;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					left_shift = *gpDrawMask;
 					i = 32;
@@ -1802,19 +1802,19 @@ void drawUpperScreen(BYTE *pBuff)
 	int i, j;
 	int xx_32, yy_32;
 
-	if (cel_transparency_active) {
-		if (!arch_draw_type) {
+	if (nTrans) {
+		if (!gbPartialTrans) {
 			drawTopArchesUpperScreen(pBuff);
 			return;
 		}
-		if (arch_draw_type == 1) {
-			if (block_lvid[level_piece_id] == 1 || block_lvid[level_piece_id] == 3) {
+		if (gbPartialTrans == 1) {
+			if (block_lvid[gnPieceNum] == 1 || block_lvid[gnPieceNum] == 3) {
 				drawBottomArchesUpperScreen(pBuff, &LeftMask[31]);
 				return;
 			}
 		}
-		if (arch_draw_type == 2) {
-			if (block_lvid[level_piece_id] == 2 || block_lvid[level_piece_id] == 3) {
+		if (gbPartialTrans == 2) {
+			if (block_lvid[gnPieceNum] == 2 || block_lvid[gnPieceNum] == 3) {
 				drawBottomArchesUpperScreen(pBuff, &RightMask[31]);
 				return;
 			}
@@ -1822,18 +1822,18 @@ void drawUpperScreen(BYTE *pBuff)
 	}
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
-	if ((BYTE)light_table_index == 0) {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = ((level_cel_block >> 12) & 7) + 8;
+	if ((BYTE)nLVal == 0) {
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = ((gdwPNum >> 12) & 7) + 8;
 	LABEL_22:
 		switch (cel_type_16) {
 		case 8: // upper (solid), without lighting
 			i = 32;
 			do {
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					break;
 				j = 8;
 				do {
@@ -1862,7 +1862,7 @@ void drawUpperScreen(BYTE *pBuff)
 							goto LABEL_133;
 					}
 					yy_32 -= width;
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						return;
 					chk_sh_and = width >> 1;
 					if (width & 1) {
@@ -1892,7 +1892,7 @@ void drawUpperScreen(BYTE *pBuff)
 			break;
 		case 10: // upper (solid), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				dst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ((32 - xx_32) & 2) {
@@ -1913,7 +1913,7 @@ void drawUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					yy_32 = 2;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						dst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -1939,7 +1939,7 @@ void drawUpperScreen(BYTE *pBuff)
 			break;
 		case 11: // upper (solid), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				for (n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift) {
 					*(DWORD *)dst = *(DWORD *)src;
 					src += 4;
@@ -1955,7 +1955,7 @@ void drawUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					yy_32 = 2;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						for (n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift) {
 							*(DWORD *)dst = *(DWORD *)src;
@@ -1976,7 +1976,7 @@ void drawUpperScreen(BYTE *pBuff)
 			break;
 		case 12: // upper (solid), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				dst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ((32 - xx_32) & 2) {
@@ -1997,7 +1997,7 @@ void drawUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					i = 16;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						j = 8;
 						do {
@@ -2015,7 +2015,7 @@ void drawUpperScreen(BYTE *pBuff)
 			break;
 		default: // upper (solid), without lighting
 			xx_32 = 30;
-			while (dst >= gpBufEnd) {
+			while (dst >= glClipY) {
 				for (n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift) {
 					*(DWORD *)dst = *(DWORD *)src;
 					src += 4;
@@ -2031,7 +2031,7 @@ void drawUpperScreen(BYTE *pBuff)
 				if (xx_32 < 0) {
 					i = 16;
 					do {
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							break;
 						j = 8;
 						do {
@@ -2050,16 +2050,16 @@ void drawUpperScreen(BYTE *pBuff)
 		}
 		return;
 	}
-	if ((BYTE)light_table_index != lightmax) {
-		if (!(level_cel_block & 0x8000)) {
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = &pLightTbl[256 * light_table_index];
-			cel_type_16 = (WORD)level_cel_block >> 12;
+	if ((BYTE)nLVal != lightmax) {
+		if (!(gdwPNum & 0x8000)) {
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			tbl = &pLightTbl[256 * nLVal];
+			cel_type_16 = (WORD)gdwPNum >> 12;
 			switch (cel_type_16) {
 			case 0: // upper (solid), with lighting
 				xx_32 = 32;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					asm_cel_light_square(8, tbl, &dst, &src);
 					dst -= (SCREEN_WIDTH + 160);
@@ -2082,7 +2082,7 @@ void drawUpperScreen(BYTE *pBuff)
 								goto LABEL_58;
 						}
 						yy_32 -= width;
-						if (dst < gpBufEnd)
+						if (dst < glClipY)
 							return;
 						asm_cel_light_edge(width, tbl, &dst, &src);
 					} while (yy_32);
@@ -2093,7 +2093,7 @@ void drawUpperScreen(BYTE *pBuff)
 				break;
 			case 2: // upper (solid), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					dst += xx_32;
 					src += (32 - (BYTE)xx_32) & 2;
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
@@ -2102,7 +2102,7 @@ void drawUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						yy_32 = 2;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							dst += yy_32;
 							src += (32 - (BYTE)yy_32) & 2;
@@ -2116,7 +2116,7 @@ void drawUpperScreen(BYTE *pBuff)
 				break;
 			case 3: // upper (solid), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (BYTE)src & 2;
 					dst = &dst[xx_32 - (SCREEN_WIDTH + 160)];
@@ -2124,7 +2124,7 @@ void drawUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						yy_32 = 2;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							src += (BYTE)src & 2;
@@ -2137,7 +2137,7 @@ void drawUpperScreen(BYTE *pBuff)
 				break;
 			case 4: // upper (solid), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					dst += xx_32;
 					src += (32 - (BYTE)xx_32) & 2;
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
@@ -2146,7 +2146,7 @@ void drawUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						yy_32 = 16;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_cel_light_square(8, tbl, &dst, &src);
 							dst -= (SCREEN_WIDTH + 160);
@@ -2158,7 +2158,7 @@ void drawUpperScreen(BYTE *pBuff)
 				break;
 			default: // upper (solid), with lighting
 				xx_32 = 30;
-				while (dst >= gpBufEnd) {
+				while (dst >= glClipY) {
 					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (BYTE)src & 2;
 					dst = &dst[xx_32 - (SCREEN_WIDTH + 160)];
@@ -2166,7 +2166,7 @@ void drawUpperScreen(BYTE *pBuff)
 					if (xx_32 < 0) {
 						yy_32 = 16;
 						do {
-							if (dst < gpBufEnd)
+							if (dst < glClipY)
 								break;
 							asm_cel_light_square(8, tbl, &dst, &src);
 							dst -= (SCREEN_WIDTH + 160);
@@ -2180,20 +2180,20 @@ void drawUpperScreen(BYTE *pBuff)
 			return;
 		}
 		src = pSpeedCels
-		    + *(DWORD *)&gpCelFrame[4 * (light_table_index + 16 * (level_cel_block & 0xFFF))];
-		cel_type_16 = (WORD)level_cel_block >> 12;
+		    + *(DWORD *)&gpCelFrame[4 * (nLVal + 16 * (gdwPNum & 0xFFF))];
+		cel_type_16 = (WORD)gdwPNum >> 12;
 		goto LABEL_22;
 	}
-	if (level_cel_block & 0x8000)
-		level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-		    + (WORD)(level_cel_block & 0xF000);
-	src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-	cel_type_16 = ((unsigned int)level_cel_block >> 12) & 7;
+	if (gdwPNum & 0x8000)
+		gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+		    + (WORD)(gdwPNum & 0xF000);
+	src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+	cel_type_16 = ((unsigned int)gdwPNum >> 12) & 7;
 	switch (cel_type_16) {
 	case 0: // upper (solid), black
 		i = 32;
 		do {
-			if (dst < gpBufEnd)
+			if (dst < glClipY)
 				break;
 			j = 8;
 			do {
@@ -2221,7 +2221,7 @@ void drawUpperScreen(BYTE *pBuff)
 						goto LABEL_205;
 				}
 				yy_32 -= width;
-				if (dst < gpBufEnd)
+				if (dst < glClipY)
 					return;
 				src += width;
 				chk_sh_and = width >> 1;
@@ -2250,7 +2250,7 @@ void drawUpperScreen(BYTE *pBuff)
 		break;
 	case 2: // upper (solid), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			dst += xx_32;
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
@@ -2268,7 +2268,7 @@ void drawUpperScreen(BYTE *pBuff)
 			if (!xx_32) {
 				yy_32 = 2;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					dst += yy_32;
 					n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -2293,7 +2293,7 @@ void drawUpperScreen(BYTE *pBuff)
 		break;
 	case 3: // upper (solid), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
 				*(WORD *)dst = 0;
@@ -2310,7 +2310,7 @@ void drawUpperScreen(BYTE *pBuff)
 			if (!xx_32) {
 				yy_32 = 2;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
 					if ((32 - yy_32) & 2) {
@@ -2335,7 +2335,7 @@ void drawUpperScreen(BYTE *pBuff)
 		break;
 	case 4: // upper (solid), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			dst += xx_32;
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
@@ -2353,7 +2353,7 @@ void drawUpperScreen(BYTE *pBuff)
 			if (!xx_32) {
 				i = 16;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					j = 8;
 					do {
@@ -2371,7 +2371,7 @@ void drawUpperScreen(BYTE *pBuff)
 		break;
 	default: // upper (solid), black
 		xx_32 = 30;
-		while (dst >= gpBufEnd) {
+		while (dst >= glClipY) {
 			n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 			if ((32 - xx_32) & 2) {
 				*(WORD *)dst = 0;
@@ -2388,7 +2388,7 @@ void drawUpperScreen(BYTE *pBuff)
 			if (!xx_32) {
 				i = 16;
 				do {
-					if (dst < gpBufEnd)
+					if (dst < glClipY)
 						break;
 					j = 8;
 					do {
@@ -2430,25 +2430,25 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
-	if ((BYTE)light_table_index == 0) {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = ((level_cel_block >> 12) & 7) + 8;
+	if ((BYTE)nLVal == 0) {
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = ((gdwPNum >> 12) & 7) + 8;
 		goto LABEL_11;
 	}
-	if ((BYTE)light_table_index == lightmax) {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = (level_cel_block >> 12) & 7;
+	if ((BYTE)nLVal == lightmax) {
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = (gdwPNum >> 12) & 7;
 		switch (cel_type_16) {
 		case 0: // lower (top transparent), black
 			i = 16;
 			do {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					j = 8;
 					do {
 						dst[1] = 0;
@@ -2461,7 +2461,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 					dst += 32;
 				}
 				dst -= (SCREEN_WIDTH + 160);
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					j = 8;
 					do {
 						dst[0] = 0;
@@ -2500,7 +2500,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 					}
 				}
 				yy_32 -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					src += width;
 					if (((BYTE)dst & 1) == WorldBoolFlag) {
 						chk_sh_and = width >> 1;
@@ -2559,7 +2559,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		case 2: // lower (top transparent), black
 			WorldBoolFlag = 0;
 			for (xx_32 = 30;; xx_32 -= 2) {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					dst += xx_32;
 					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -2602,7 +2602,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 			}
 			yy_32 = 2;
 			do {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					dst += yy_32;
 					y_minus = 32 - yy_32;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -2646,7 +2646,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		case 3: // lower (top transparent), black
 			WorldBoolFlag = 0;
 			for (xx_32 = 30;; xx_32 -= 2) {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
@@ -2689,7 +2689,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 			}
 			yy_32 = 2;
 			do {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					y_minus = 32 - yy_32;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
@@ -2732,7 +2732,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		case 4: // lower (top transparent), black
 			WorldBoolFlag = 0;
 			for (xx_32 = 30;; xx_32 -= 2) {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					dst += xx_32;
 					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
@@ -2775,7 +2775,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 			}
 			i = 8;
 			do {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					j = 8;
 					do {
 						dst[1] = 0;
@@ -2788,7 +2788,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 					dst += 32;
 				}
 				dst -= (SCREEN_WIDTH + 160);
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					j = 8;
 					do {
 						dst[0] = 0;
@@ -2807,7 +2807,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		default: // lower (top transparent), black
 			WorldBoolFlag = 0;
 			for (xx_32 = 30;; xx_32 -= 2) {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
@@ -2850,7 +2850,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 			}
 			i = 8;
 			do {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					j = 8;
 					do {
 						dst[1] = 0;
@@ -2863,7 +2863,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 					dst += 32;
 				}
 				dst -= (SCREEN_WIDTH + 160);
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					j = 8;
 					do {
 						dst[0] = 0;
@@ -2882,22 +2882,22 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		}
 		return;
 	}
-	if (!(level_cel_block & 0x8000)) {
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		tbl = &pLightTbl[256 * light_table_index];
-		cel_type_16 = (BYTE)(level_cel_block >> 12);
+	if (!(gdwPNum & 0x8000)) {
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		tbl = &pLightTbl[256 * nLVal];
+		cel_type_16 = (BYTE)(gdwPNum >> 12);
 		switch (cel_type_16) {
 		case 0: // lower (top transparent), with lighting
 			i = 16;
 			do {
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					asm_trans_light_square_1_3(8, tbl, &dst, &src);
 				} else {
 					src += 32;
 					dst += 32;
 				}
 				dst -= (SCREEN_WIDTH + 160);
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					asm_trans_light_square_0_2(8, tbl, &dst, &src);
 				} else {
 					src += 32;
@@ -2924,7 +2924,7 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 							goto LABEL_69;
 					}
 					yy_32 -= width;
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						if (((BYTE)dst & 1) == WorldBoolFlag) {
 							asm_trans_light_cel_0_2(width, tbl, &dst, &src);
 						} else {
@@ -2944,15 +2944,15 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		case 2: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pBuff >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+			if (pBuff >= glClipY) {
+				tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 				if (tile_42_45 > 45) {
 					dst = pBuff - 12288;
 					src += 288;
 				LABEL_98:
 					yy_32 = 2;
-					if (dst >= gpBufEnd) {
-						tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+					if (dst >= glClipY) {
+						tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 						if (tile_42_45 > 42)
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
@@ -2999,15 +2999,15 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		case 3: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pBuff >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+			if (pBuff >= glClipY) {
+				tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 				if (tile_42_45 > 45) {
 					dst = pBuff - 12288;
 					src += 288;
 				LABEL_154:
 					yy_32 = 2;
-					if (dst >= gpBufEnd) {
-						tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+					if (dst >= glClipY) {
+						tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 						if (tile_42_45 > 42)
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
@@ -3052,22 +3052,22 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		case 4: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pBuff >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+			if (pBuff >= glClipY) {
+				tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 				if (tile_42_45 > 45) {
 					dst = pBuff - 12288;
 					src += 288;
 				LABEL_210:
 					i = 8;
 					do {
-						if (dst < gpBufEnd) {
+						if (dst < glClipY) {
 							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 						} else {
 							src += 32;
 							dst += 32;
 						}
 						dst -= (SCREEN_WIDTH + 160);
-						if (dst < gpBufEnd) {
+						if (dst < glClipY) {
 							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 						} else {
 							src += 32;
@@ -3101,22 +3101,22 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		default: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pBuff >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+			if (pBuff >= glClipY) {
+				tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 				if (tile_42_45 > 45) {
 					dst = pBuff - 12288;
 					src += 288;
 				LABEL_249:
 					i = 8;
 					do {
-						if (dst < gpBufEnd) {
+						if (dst < glClipY) {
 							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 						} else {
 							src += 32;
 							dst += 32;
 						}
 						dst -= (SCREEN_WIDTH + 160);
-						if (dst < gpBufEnd) {
+						if (dst < glClipY) {
 							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 						} else {
 							src += 32;
@@ -3149,14 +3149,14 @@ void drawTopArchesLowerScreen(BYTE *pBuff)
 		}
 		return;
 	}
-	src = pSpeedCels + *(DWORD *)&gpCelFrame[4 * (light_table_index + 16 * (level_cel_block & 0xFFF))];
-	cel_type_16 = (BYTE)(level_cel_block >> 12);
+	src = pSpeedCels + *(DWORD *)&gpCelFrame[4 * (nLVal + 16 * (gdwPNum & 0xFFF))];
+	cel_type_16 = (BYTE)(gdwPNum >> 12);
 LABEL_11:
 	switch (cel_type_16) {
 	case 8: // lower (top transparent), without lighting
 		i = 16;
 		do {
-			if (dst < gpBufEnd) {
+			if (dst < glClipY) {
 				j = 8;
 				do {
 					dst[1] = src[1];
@@ -3170,7 +3170,7 @@ LABEL_11:
 				dst += 32;
 			}
 			dst -= (SCREEN_WIDTH + 160);
-			if (dst < gpBufEnd) {
+			if (dst < glClipY) {
 				j = 8;
 				do {
 					dst[0] = src[0];
@@ -3198,7 +3198,7 @@ LABEL_11:
 					if ((width & 0x80) != 0)
 						break;
 					yy_32 -= width;
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						if (((BYTE)dst & 1) == WorldBoolFlag) {
 							chk_sh_and = width >> 1;
 							if (!(width & 1))
@@ -3270,15 +3270,15 @@ LABEL_11:
 	case 10: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_308:
 				yy_32 = 2;
-				if (dst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+				if (dst >= glClipY) {
+					tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 					if (tile_42_45 > 42)
 						return;
 					world_tbl = WorldTbl3x16[tile_42_45];
@@ -3382,9 +3382,9 @@ LABEL_11:
 	case 11: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pBuff < gpBufEnd)
+		if (pBuff < glClipY)
 			goto LABEL_326;
-		tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 		if (tile_42_45 <= 45) {
 			world_tbl = WorldTbl3x16[tile_42_45];
 			src += WorldTbl17_1[world_tbl >> 2];
@@ -3430,8 +3430,8 @@ LABEL_11:
 		src += 288;
 	LABEL_336:
 		yy_32 = 2;
-		if (dst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+		if (dst >= glClipY) {
+			tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 			if (tile_42_45 > 42)
 				return;
 			world_tbl = WorldTbl3x16[tile_42_45];
@@ -3476,15 +3476,15 @@ LABEL_11:
 	case 12: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_364:
 				i = 8;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							dst[1] = src[1];
@@ -3498,7 +3498,7 @@ LABEL_11:
 						dst += 32;
 					}
 					dst -= (SCREEN_WIDTH + 160);
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							dst[0] = src[0];
@@ -3567,15 +3567,15 @@ LABEL_11:
 	default: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_389:
 				i = 8;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							dst[1] = src[1];
@@ -3589,7 +3589,7 @@ LABEL_11:
 						dst += 32;
 					}
 					dst -= (SCREEN_WIDTH + 160);
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							dst[0] = src[0];
@@ -3672,18 +3672,18 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
 	gpDrawMask = pMask;
-	if ((BYTE)light_table_index) {
-		if ((BYTE)light_table_index == lightmax) {
-			if (level_cel_block & 0x8000)
-				level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-				    + (WORD)(level_cel_block & 0xF000);
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			cel_type_16 = (level_cel_block >> 12) & 7;
+	if ((BYTE)nLVal) {
+		if ((BYTE)nLVal == lightmax) {
+			if (gdwPNum & 0x8000)
+				gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+				    + (WORD)(gdwPNum & 0xF000);
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			cel_type_16 = (gdwPNum >> 12) & 7;
 			switch (cel_type_16) {
 			case 0: // lower (bottom transparent), black
 				yy_32 = 32;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						left_shift = *gpDrawMask;
 						i = 32;
 						do {
@@ -3713,7 +3713,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 							if ((width & 0x80) != 0)
 								break;
 							yy_32 -= width;
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								and80_i = width;
 								src += width;
 								left_shift = gdwCurrentMask;
@@ -3746,7 +3746,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 2: // lower (bottom transparent), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						dst += i;
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
@@ -3770,7 +3770,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				}
 				i = 2;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						dst += i;
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
@@ -3794,7 +3794,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 3: // lower (bottom transparent), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
 							*(WORD *)dst = 0;
@@ -3818,7 +3818,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				}
 				i = 2;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
 							*(WORD *)dst = 0;
@@ -3841,7 +3841,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 4: // lower (bottom transparent), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						dst += i;
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
@@ -3866,7 +3866,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				gpDrawMask -= 16;
 				yy_32 = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						left_shift = *gpDrawMask;
 						i = 32;
 						do {
@@ -3887,7 +3887,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			default: // lower (bottom transparent), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
 							*(WORD *)dst = 0;
@@ -3912,7 +3912,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				gpDrawMask -= 16;
 				yy_32 = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						left_shift = *gpDrawMask;
 						i = 32;
 						do {
@@ -3934,15 +3934,15 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 			}
 			return;
 		}
-		if (!(level_cel_block & 0x8000)) {
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = &pLightTbl[256 * light_table_index];
-			cel_type_16 = (BYTE)(level_cel_block >> 12);
+		if (!(gdwPNum & 0x8000)) {
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			tbl = &pLightTbl[256 * nLVal];
+			cel_type_16 = (BYTE)(gdwPNum >> 12);
 			switch (cel_type_16) {
 			case 0: // lower (bottom transparent), with lighting
 				yy_32 = 32;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 					} else {
 						src += 32;
@@ -3964,7 +3964,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 							if ((width & 0x80) != 0)
 								break;
 							yy_32 -= width;
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								gdwCurrentMask = asm_trans_light_mask(width, tbl, &dst, &src, gdwCurrentMask);
 							} else {
 								src += width;
@@ -3987,15 +3987,15 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				break;
 			case 2: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
 					LABEL_62:
 						yy_32 = 2;
-						if (dst >= gpBufEnd) {
-							tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+						if (dst >= glClipY) {
+							tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 							if (tile_42_45 > 42)
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
@@ -4027,15 +4027,15 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				goto LABEL_62;
 			case 3: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
 					LABEL_80:
 						yy_32 = 2;
-						if (dst >= gpBufEnd) {
-							tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+						if (dst >= glClipY) {
+							tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 							if (tile_42_45 > 42)
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
@@ -4066,8 +4066,8 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				goto LABEL_80;
 			case 4: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
@@ -4075,7 +4075,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 						gpDrawMask -= 16;
 						yy_32 = 16;
 						do {
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 							} else {
 								src += 32;
@@ -4102,8 +4102,8 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				goto LABEL_98;
 			default: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
@@ -4111,7 +4111,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 						gpDrawMask -= 16;
 						yy_32 = 16;
 						do {
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 								src += (BYTE)src & 2;
 							} else {
@@ -4140,20 +4140,20 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 			return;
 		}
 		src = pSpeedCels
-		    + *(DWORD *)&gpCelFrame[4 * (light_table_index + 16 * (level_cel_block & 0xFFF))];
-		cel_type_16 = (BYTE)(level_cel_block >> 12);
+		    + *(DWORD *)&gpCelFrame[4 * (nLVal + 16 * (gdwPNum & 0xFFF))];
+		cel_type_16 = (BYTE)(gdwPNum >> 12);
 	} else {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = ((level_cel_block >> 12) & 7) + 8;
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = ((gdwPNum >> 12) & 7) + 8;
 	}
 	switch (cel_type_16) {
 	case 8: // lower (bottom transparent), without lighting
 		yy_32 = 32;
 		do {
-			if (dst < gpBufEnd) {
+			if (dst < glClipY) {
 				left_shift = *gpDrawMask;
 				i = 32;
 				do {
@@ -4184,7 +4184,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 					if ((width & 0x80) != 0)
 						break;
 					yy_32 -= width;
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						and80_i = width;
 						left_shift = gdwCurrentMask;
 						do {
@@ -4217,15 +4217,15 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		break;
 	case 10: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_162:
 				yy_32 = 2;
-				if (dst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+				if (dst >= glClipY) {
+					tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 					if (tile_42_45 > 42)
 						return;
 					world_tbl = WorldTbl3x16[tile_42_45];
@@ -4281,9 +4281,9 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		goto LABEL_162;
 	case 11: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pBuff < gpBufEnd)
+		if (pBuff < glClipY)
 			goto LABEL_175;
-		tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 		if (tile_42_45 <= 45) {
 			world_tbl = WorldTbl3x16[tile_42_45];
 			src += WorldTbl17_1[world_tbl >> 2];
@@ -4310,8 +4310,8 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		src += 288;
 	LABEL_180:
 		yy_32 = 2;
-		if (dst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+		if (dst >= glClipY) {
+			tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 			if (tile_42_45 > 42)
 				return;
 			world_tbl = WorldTbl3x16[tile_42_45];
@@ -4336,8 +4336,8 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		break;
 	case 12: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
@@ -4345,7 +4345,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				gpDrawMask -= 16;
 				yy_32 = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						left_shift = *gpDrawMask;
 						i = 32;
 						do {
@@ -4393,8 +4393,8 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 		goto LABEL_198;
 	default: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
@@ -4402,7 +4402,7 @@ void drawBottomArchesLowerScreen(BYTE *pBuff, DWORD *pMask)
 				gpDrawMask -= 16;
 				yy_32 = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						left_shift = *gpDrawMask;
 						i = 32;
 						do {
@@ -4465,19 +4465,19 @@ void drawLowerScreen(BYTE *pBuff)
 	int xx_32, yy_32;
 	int i, j;
 
-	if (cel_transparency_active) {
-		if (!arch_draw_type) {
+	if (nTrans) {
+		if (!gbPartialTrans) {
 			drawTopArchesLowerScreen(pBuff);
 			return;
 		}
-		if (arch_draw_type == 1) {
-			if (block_lvid[level_piece_id] == 1 || block_lvid[level_piece_id] == 3) {
+		if (gbPartialTrans == 1) {
+			if (block_lvid[gnPieceNum] == 1 || block_lvid[gnPieceNum] == 3) {
 				drawBottomArchesLowerScreen(pBuff, &LeftMask[31]);
 				return;
 			}
 		}
-		if (arch_draw_type == 2) {
-			if (block_lvid[level_piece_id] == 2 || block_lvid[level_piece_id] == 3) {
+		if (gbPartialTrans == 2) {
+			if (block_lvid[gnPieceNum] == 2 || block_lvid[gnPieceNum] == 3) {
 				drawBottomArchesLowerScreen(pBuff, &RightMask[31]);
 				return;
 			}
@@ -4485,18 +4485,18 @@ void drawLowerScreen(BYTE *pBuff)
 	}
 	gpCelFrame = (BYTE *)SpeedFrameTbl;
 	dst = pBuff;
-	if ((BYTE)light_table_index) {
-		if ((BYTE)light_table_index == lightmax) {
-			if (level_cel_block & 0x8000)
-				level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-				    + (WORD)(level_cel_block & 0xF000);
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			cel_type_16 = (level_cel_block >> 12) & 7;
+	if ((BYTE)nLVal) {
+		if ((BYTE)nLVal == lightmax) {
+			if (gdwPNum & 0x8000)
+				gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+				    + (WORD)(gdwPNum & 0xF000);
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			cel_type_16 = (gdwPNum >> 12) & 7;
 			switch (cel_type_16) {
 			case 0: // lower (solid), black
 				i = 32;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							*(DWORD *)dst = 0;
@@ -4527,7 +4527,7 @@ void drawLowerScreen(BYTE *pBuff)
 								goto LABEL_232;
 						}
 						yy_32 -= width;
-						if (dst < gpBufEnd) {
+						if (dst < glClipY) {
 							src += width;
 							chk_sh_and = width >> 1;
 							if (width & 1) {
@@ -4560,7 +4560,7 @@ void drawLowerScreen(BYTE *pBuff)
 				break;
 			case 2: // lower (solid), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						dst += i;
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
@@ -4584,7 +4584,7 @@ void drawLowerScreen(BYTE *pBuff)
 				}
 				i = 2;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						dst += i;
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
@@ -4608,7 +4608,7 @@ void drawLowerScreen(BYTE *pBuff)
 				break;
 			case 3: // lower (solid), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
 							*(WORD *)dst = 0;
@@ -4632,7 +4632,7 @@ void drawLowerScreen(BYTE *pBuff)
 				}
 				i = 2;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
 							*(WORD *)dst = 0;
@@ -4655,7 +4655,7 @@ void drawLowerScreen(BYTE *pBuff)
 				break;
 			case 4: // lower (solid), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						dst += i;
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
@@ -4679,7 +4679,7 @@ void drawLowerScreen(BYTE *pBuff)
 				}
 				i = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							*(DWORD *)dst = 0;
@@ -4696,7 +4696,7 @@ void drawLowerScreen(BYTE *pBuff)
 				break;
 			default: // lower (solid), black
 				for (i = 30;; i -= 2) {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						n_draw_shift = (unsigned int)(32 - i) >> 2;
 						if ((32 - i) & 2) {
 							*(WORD *)dst = 0;
@@ -4720,7 +4720,7 @@ void drawLowerScreen(BYTE *pBuff)
 				}
 				i = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							*(DWORD *)dst = 0;
@@ -4738,15 +4738,15 @@ void drawLowerScreen(BYTE *pBuff)
 			}
 			return;
 		}
-		if (!(level_cel_block & 0x8000)) {
-			src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = &pLightTbl[256 * light_table_index];
-			cel_type_16 = (WORD)level_cel_block >> 12;
+		if (!(gdwPNum & 0x8000)) {
+			src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+			tbl = &pLightTbl[256 * nLVal];
+			cel_type_16 = (WORD)gdwPNum >> 12;
 			switch (cel_type_16) {
 			case 0: // lower (solid), with lighting
 				xx_32 = 32;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						asm_cel_light_square(8, tbl, &dst, &src);
 					} else {
 						src += 32;
@@ -4764,7 +4764,7 @@ void drawLowerScreen(BYTE *pBuff)
 						width = *src++;
 						if ((width & 0x80) == 0) {
 							yy_32 -= width;
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								asm_cel_light_edge(width, tbl, &dst, &src);
 							} else {
 								src += width;
@@ -4782,15 +4782,15 @@ void drawLowerScreen(BYTE *pBuff)
 				break;
 			case 2: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
 					LABEL_68:
 						yy_32 = 2;
-						if (dst >= gpBufEnd) {
-							tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+						if (dst >= glClipY) {
+							tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 							if (tile_42_45 > 42)
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
@@ -4822,15 +4822,15 @@ void drawLowerScreen(BYTE *pBuff)
 				goto LABEL_68;
 			case 3: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
 					LABEL_83:
 						yy_32 = 2;
-						if (dst >= gpBufEnd) {
-							tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+						if (dst >= glClipY) {
+							tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 							if (tile_42_45 > 42)
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
@@ -4860,15 +4860,15 @@ void drawLowerScreen(BYTE *pBuff)
 				goto LABEL_83;
 			case 4: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
 					LABEL_100:
 						i = 16;
 						do {
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								asm_cel_light_square(8, tbl, &dst, &src);
 							} else {
 								src += 32;
@@ -4894,15 +4894,15 @@ void drawLowerScreen(BYTE *pBuff)
 				goto LABEL_100;
 			default: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pBuff >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+				if (pBuff >= glClipY) {
+					tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 					if (tile_42_45 > 45) {
 						dst = pBuff - 12288;
 						src += 288;
 					LABEL_116:
 						j = 16;
 						do {
-							if (dst < gpBufEnd) {
+							if (dst < glClipY) {
 								asm_cel_light_square(8, tbl, &dst, &src);
 							} else {
 								src += 32;
@@ -4929,20 +4929,20 @@ void drawLowerScreen(BYTE *pBuff)
 			return;
 		}
 		src = pSpeedCels
-		    + *(DWORD *)&gpCelFrame[4 * (light_table_index + 16 * (level_cel_block & 0xFFF))];
-		cel_type_16 = (WORD)level_cel_block >> 12;
+		    + *(DWORD *)&gpCelFrame[4 * (nLVal + 16 * (gdwPNum & 0xFFF))];
+		cel_type_16 = (WORD)gdwPNum >> 12;
 	} else {
-		if (level_cel_block & 0x8000)
-			level_cel_block = *(DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
-			    + (WORD)(level_cel_block & 0xF000);
-		src = pDungeonCels + *((DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		cel_type_16 = (((unsigned int)level_cel_block >> 12) & 7) + 8;
+		if (gdwPNum & 0x8000)
+			gdwPNum = *(DWORD *)&gpCelFrame[64 * (gdwPNum & 0xFFF)]
+			    + (WORD)(gdwPNum & 0xF000);
+		src = pDungeonCels + *((DWORD *)pDungeonCels + (gdwPNum & 0xFFF));
+		cel_type_16 = (((unsigned int)gdwPNum >> 12) & 7) + 8;
 	}
 	switch (cel_type_16) {
 	case 8: // lower (solid), without lighting
 		i = 32;
 		do {
-			if (dst < gpBufEnd) {
+			if (dst < glClipY) {
 				j = 8;
 				do {
 					*(DWORD *)dst = *(DWORD *)src;
@@ -4974,7 +4974,7 @@ void drawLowerScreen(BYTE *pBuff)
 						goto LABEL_143;
 				}
 				yy_32 -= width;
-				if (dst < gpBufEnd) {
+				if (dst < glClipY) {
 					chk_sh_and = width >> 1;
 					if (width & 1) {
 						dst[0] = src[0];
@@ -5009,15 +5009,15 @@ void drawLowerScreen(BYTE *pBuff)
 		break;
 	case 10: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_153:
 				yy_32 = 2;
-				if (dst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+				if (dst >= glClipY) {
+					tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 					if (tile_42_45 > 42)
 						return;
 					world_tbl = WorldTbl3x16[tile_42_45];
@@ -5073,9 +5073,9 @@ void drawLowerScreen(BYTE *pBuff)
 		goto LABEL_153;
 	case 11: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pBuff < gpBufEnd)
+		if (pBuff < glClipY)
 			goto LABEL_166;
-		tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 		if (tile_42_45 <= 45) {
 			world_tbl = WorldTbl3x16[tile_42_45];
 			src += WorldTbl17_1[world_tbl >> 2];
@@ -5102,8 +5102,8 @@ void drawLowerScreen(BYTE *pBuff)
 		src += 288;
 	LABEL_171:
 		yy_32 = 2;
-		if (dst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(dst - gpBufEnd + 1023) >> 8;
+		if (dst >= glClipY) {
+			tile_42_45 = (unsigned int)(dst - glClipY + 1023) >> 8;
 			if (tile_42_45 > 42)
 				return;
 			world_tbl = WorldTbl3x16[tile_42_45];
@@ -5129,15 +5129,15 @@ void drawLowerScreen(BYTE *pBuff)
 		break;
 	case 12: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_189:
 				i = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							*(DWORD *)dst = *(DWORD *)src;
@@ -5181,15 +5181,15 @@ void drawLowerScreen(BYTE *pBuff)
 		goto LABEL_189;
 	default: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pBuff >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
+		if (pBuff >= glClipY) {
+			tile_42_45 = (unsigned int)(pBuff - glClipY + 1023) >> 8;
 			if (tile_42_45 > 45) {
 				dst = pBuff - 12288;
 				src += 288;
 			LABEL_205:
 				i = 16;
 				do {
-					if (dst < gpBufEnd) {
+					if (dst < glClipY) {
 						j = 8;
 						do {
 							*(DWORD *)dst = *(DWORD *)src;

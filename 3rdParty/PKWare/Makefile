@@ -30,13 +30,13 @@ ifeq ($(OS),Windows_NT)
 	VC5_LINK = $(VC5_DIR)/bin/link.exe
 	VC6_LINK = $(VC6_BIN_DIR)/link.exe
 else
-	CL = wine $(VC6_BIN_DIR)/CL.EXE
+	CL = wine $(VC5_DIR)/bin/CL.EXE
 	RC = wine $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = wine $(VC5_DIR)/bin/link.exe
 	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /YX /Gm /Zi
+CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC5_DIR)/include /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /YX /Gm /Zi
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
 VC_LINK=$(VC5_LINK)

@@ -5,22 +5,22 @@
  */
 #include "all.h"
 
-BYTE *optbar_cel;
-BOOLEAN mouseNavigation;
-BYTE *PentSpin_cel;
-TMenuItem *sgpCurrItem;
-BYTE *BigTGold_cel;
+BYTE sgbGameSpin;
+BYTE *sgpLogo;
+BYTE *sgpSpinCels;
+BYTE *sgpMenuCels;
+BYTE *sgpSliderCels;
 #ifdef HELLFIRE
 int LogoAnim_tick;
 BYTE LogoAnim_frame;
 #endif
-int PentSpin_tick;
-BYTE PentSpin_frame;
-void (*gmenu_current_option)(TMenuItem *);
-TMenuItem *sgpCurrentMenu;
-BYTE *option_cel;
-BYTE *sgpLogo;
-int sgCurrentMenuIdx;
+BYTE *sgpBarCels;
+TMenuItem *sgpMenu;
+void (*sgfnMenuUpdateFcn)(TMenuItem *);
+TMenuItem *sgpCurrItem;
+int sgdwMenuItems;
+int sglSpinnerTime;
+BOOLEAN sgbTracking;
 
 /** Maps from font index to bigtgold.cel frame number. */
 const BYTE lfontframe[] = {
@@ -57,7 +57,7 @@ static void gmenu_print_text(int x, int y, const char *pszStr)
 		c = gbFontTransTbl[(BYTE)*pszStr++];
 		c = lfontframe[c];
 		if (c != 0)
-			CelDrawLight(x, y, BigTGold_cel, c, 46);
+			CelDrawLight(x, y, sgpMenuCels, c, 46);
 		x += lfontkern[c] + 2;
 	}
 }
@@ -66,8 +66,8 @@ void gmenu_draw_pause()
 {
 	if (currlevel != 0)
 		RedBack();
-	if (!sgpCurrentMenu) {
-		light_table_index = 0;
+	if (!sgpMenu) {
+		nLVal = 0;
 		gmenu_print_text(316 + PANEL_LEFT, 336, "Pause");
 	}
 }
@@ -75,37 +75,37 @@ void gmenu_draw_pause()
 void FreeGMenu()
 {
 	MemFreeDbg(sgpLogo);
-	MemFreeDbg(BigTGold_cel);
-	MemFreeDbg(PentSpin_cel);
-	MemFreeDbg(option_cel);
-	MemFreeDbg(optbar_cel);
+	MemFreeDbg(sgpMenuCels);
+	MemFreeDbg(sgpSpinCels);
+	MemFreeDbg(sgpSliderCels);
+	MemFreeDbg(sgpBarCels);
 }
 
 void gmenu_init_menu()
 {
-	PentSpin_frame = 1;
+	sgbGameSpin = 1;
 #ifdef HELLFIRE
 	LogoAnim_frame = 1;
 #endif
-	sgpCurrentMenu = NULL;
+	sgpMenu = NULL;
 	sgpCurrItem = NULL;
-	gmenu_current_option = NULL;
-	sgCurrentMenuIdx = 0;
-	mouseNavigation = FALSE;
+	sgfnMenuUpdateFcn = NULL;
+	sgdwMenuItems = 0;
+	sgbTracking = FALSE;
 #ifdef HELLFIRE
 	sgpLogo = LoadFileInMem("Data\\hf_logo3.CEL", NULL);
 #else
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", NULL);
 #endif
-	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", NULL);
-	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", NULL);
-	option_cel = LoadFileInMem("Data\\option.CEL", NULL);
-	optbar_cel = LoadFileInMem("Data\\optbar.CEL", NULL);
+	sgpMenuCels = LoadFileInMem("Data\\BigTGold.CEL", NULL);
+	sgpSpinCels = LoadFileInMem("Data\\PentSpin.CEL", NULL);
+	sgpSliderCels = LoadFileInMem("Data\\option.CEL", NULL);
+	sgpBarCels = LoadFileInMem("Data\\optbar.CEL", NULL);
 }
 
 BOOL gmenu_is_active()
 {
-	return sgpCurrentMenu != NULL;
+	return sgpMenu != NULL;
 }
 
 static void gmenu_up_down(BOOL isDown)
@@ -115,18 +115,18 @@ static void gmenu_up_down(BOOL isDown)
 	if (!sgpCurrItem) {
 		return;
 	}
-	mouseNavigation = FALSE;
-	i = sgCurrentMenuIdx;
-	if (sgCurrentMenuIdx) {
+	sgbTracking = FALSE;
+	i = sgdwMenuItems;
+	if (sgdwMenuItems) {
 		while (i) {
 			i--;
 			if (isDown) {
 				sgpCurrItem++;
 				if (!sgpCurrItem->fnMenu)
-					sgpCurrItem = &sgpCurrentMenu[0];
+					sgpCurrItem = &sgpMenu[0];
 			} else {
-				if (sgpCurrItem == sgpCurrentMenu)
-					sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx];
+				if (sgpCurrItem == sgpMenu)
+					sgpCurrItem = &sgpMenu[sgdwMenuItems];
 				sgpCurrItem--;
 			}
 			if ((sgpCurrItem->dwFlags & GMENU_ENABLED) != 0) {
@@ -143,21 +143,21 @@ void gmenu_set_items(TMenuItem *pItem, void (*gmFunc)(TMenuItem *))
 	int i;
 
 	PauseMode = 0;
-	mouseNavigation = FALSE;
-	sgpCurrentMenu = pItem;
-	gmenu_current_option = gmFunc;
+	sgbTracking = FALSE;
+	sgpMenu = pItem;
+	sgfnMenuUpdateFcn = gmFunc;
 	if (gmFunc) {
-		gmenu_current_option(sgpCurrentMenu);
-		pItem = sgpCurrentMenu;
+		sgfnMenuUpdateFcn(sgpMenu);
+		pItem = sgpMenu;
 	}
-	sgCurrentMenuIdx = 0;
-	if (sgpCurrentMenu) {
-		for (i = 0; sgpCurrentMenu[i].fnMenu; i++) {
-			sgCurrentMenuIdx++;
+	sgdwMenuItems = 0;
+	if (sgpMenu) {
+		for (i = 0; sgpMenu[i].fnMenu; i++) {
+			sgdwMenuItems++;
 		}
 	}
-	// BUGFIX: OOB access when sgCurrentMenuIdx is 0; should be set to NULL instead.
-	sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx - 1];
+	// BUGFIX: OOB access when sgdwMenuItems is 0; should be set to NULL instead.
+	sgpCurrItem = &sgpMenu[sgdwMenuItems - 1];
 	gmenu_up_down(TRUE);
 }
 
@@ -165,7 +165,7 @@ static void gmenu_clear_buffer(int x, int y, int width, int height)
 {
 	BYTE *i;
 
-	i = gpBuffer + PitchTbl[y] + x;
+	i = gpBuffer + nBuffWTbl[y] + x;
 	while (height--) {
 		memset(i, 205, width);
 		i -= BUFFER_WIDTH;
@@ -199,9 +199,9 @@ static void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 	if (pItem->dwFlags & GMENU_SLIDER) {
 		x = 16 + w / 2 + SCREEN_X;
 #ifdef HELLFIRE
-		CelDraw(x + PANEL_LEFT, y - 10, optbar_cel, 1, 287);
+		CelDraw(x + PANEL_LEFT, y - 10, sgpBarCels, 1, 287);
 #else
-		CelDraw(x + PANEL_LEFT, t - 8, optbar_cel, 1, 287);
+		CelDraw(x + PANEL_LEFT, t - 8, sgpBarCels, 1, 287);
 #endif
 		step = pItem->dwFlags & 0xFFF;
 		nSteps = (pItem->dwFlags & 0xFFF000) >> 12;
@@ -213,14 +213,14 @@ static void gmenu_draw_menu_item(TMenuItem *pItem, int y)
 #else
 		gmenu_clear_buffer(x + 2 + PANEL_LEFT, t - 10, pos + 13, 28);
 #endif
-		CelDraw(x + 2 + pos + PANEL_LEFT, y - 12, option_cel, 1, 27);
+		CelDraw(x + 2 + pos + PANEL_LEFT, y - 12, sgpSliderCels, 1, 27);
 	}
 	x = SCREEN_WIDTH / 2 - w / 2 + SCREEN_X;
-	light_table_index = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
+	nLVal = (pItem->dwFlags & GMENU_ENABLED) ? 0 : 15;
 	gmenu_print_text(x, y, pItem->pszStr);
 	if (pItem == sgpCurrItem) {
-		CelDraw(x - 54, y + 1, PentSpin_cel, PentSpin_frame, 48);
-		CelDraw(x + 4 + w, y + 1, PentSpin_cel, PentSpin_frame, 48);
+		CelDraw(x - 54, y + 1, sgpSpinCels, sgbGameSpin, 48);
+		CelDraw(x + 4 + w, y + 1, sgpSpinCels, sgbGameSpin, 48);
 	}
 }
 
@@ -230,9 +230,9 @@ void gmenu_draw()
 	TMenuItem *i;
 	DWORD ticks;
 
-	if (sgpCurrentMenu) {
-		if (gmenu_current_option)
-			gmenu_current_option(sgpCurrentMenu);
+	if (sgpMenu) {
+		if (sgfnMenuUpdateFcn)
+			sgfnMenuUpdateFcn(sgpMenu);
 #ifdef HELLFIRE
 		ticks = GetTickCount();
 		if ((int)(ticks - LogoAnim_tick) > 25) {
@@ -246,8 +246,8 @@ void gmenu_draw()
 		CelDraw((SCREEN_WIDTH - 296) / 2 + SCREEN_X, 102 + SCREEN_Y, sgpLogo, 1, 296);
 #endif
 		y = 160 + SCREEN_Y;
-		i = sgpCurrentMenu;
-		if (sgpCurrentMenu->fnMenu) {
+		i = sgpMenu;
+		if (sgpMenu->fnMenu) {
 			while (i->fnMenu) {
 				gmenu_draw_menu_item(i, y);
 				i++;
@@ -258,11 +258,11 @@ void gmenu_draw()
 #ifndef HELLFIRE
 		ticks = GetTickCount();
 #endif
-		if ((int)(ticks - PentSpin_tick) > 25) { // BUGFIX: thould be 50ms
-			PentSpin_frame++;
-			if (PentSpin_frame == 9)
-				PentSpin_frame = 1;
-			PentSpin_tick = ticks;
+		if ((int)(ticks - sglSpinnerTime) > 25) { // BUGFIX: thould be 50ms
+			sgbGameSpin++;
+			if (sgbGameSpin == 9)
+				sgbGameSpin = 1;
+			sglSpinnerTime = ticks;
 		}
 	}
 }
@@ -292,7 +292,7 @@ static void gmenu_left_right(BOOL isRight)
 
 BOOL gmenu_presskeys(int vkey)
 {
-	if (!sgpCurrentMenu)
+	if (!sgpMenu)
 		return FALSE;
 	switch (vkey) {
 	case VK_RETURN:
@@ -342,7 +342,7 @@ BOOL gmenu_on_mouse_move()
 {
 	int step, nSteps;
 
-	if (!mouseNavigation)
+	if (!sgbTracking)
 		return FALSE;
 	gmenu_get_mouse_slider(&step);
 	nSteps = (int)(sgpCurrItem->dwFlags & 0xFFF000) >> 12;
@@ -362,15 +362,15 @@ BOOL gmenu_left_mouse(BOOL isDown)
 	int dummy;
 
 	if (!isDown) {
-		if (mouseNavigation) {
-			mouseNavigation = FALSE;
+		if (sgbTracking) {
+			sgbTracking = FALSE;
 			return TRUE;
 		} else {
 			return FALSE;
 		}
 	}
 
-	if (!sgpCurrentMenu) {
+	if (!sgpMenu) {
 		return FALSE;
 	}
 	if (MouseY >= PANEL_TOP) {
@@ -380,11 +380,11 @@ BOOL gmenu_left_mouse(BOOL isDown)
 		return TRUE;
 	}
 	i = (MouseY - 117) / 45;
-	if (i >= sgCurrentMenuIdx) {
+	if (i >= sgdwMenuItems) {
 		return TRUE;
 	}
-	pItem = &sgpCurrentMenu[i];
-	if (!(sgpCurrentMenu[i].dwFlags & GMENU_ENABLED)) {
+	pItem = &sgpMenu[i];
+	if (!(sgpMenu[i].dwFlags & GMENU_ENABLED)) {
 		return TRUE;
 	}
 	w = gmenu_get_lfont(pItem);
@@ -397,7 +397,7 @@ BOOL gmenu_left_mouse(BOOL isDown)
 	sgpCurrItem = pItem;
 	PlaySFX(IS_TITLEMOV);
 	if (pItem->dwFlags & GMENU_SLIDER) {
-		mouseNavigation = gmenu_get_mouse_slider(&dummy);
+		sgbTracking = gmenu_get_mouse_slider(&dummy);
 		gmenu_on_mouse_move();
 	} else {
 		sgpCurrItem->fnMenu(TRUE);

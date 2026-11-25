@@ -260,8 +260,9 @@ typedef void (*_PVFV)(void);
 #define SEG_ALLOCATE(SEGMENT)
 #endif
 
-// To apply to certain functions which have local variables aligned by 1 for unknown yet reason
-#if (_MSC_VER == 1200)
+// To apply to certain functions which have local variables aligned by 1: needed with the Processor Pack back end
+// (c2.dll 13.00), which aligns larger objects to 8; the original VC6 back end (12.00) does not
+#if (_MSC_VER == 1200) && !defined(NO_ALIGN_BY_1)
 #define ALIGN_BY_1 __declspec(align(1))
 #else
 #define ALIGN_BY_1

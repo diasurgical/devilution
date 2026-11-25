@@ -5,19 +5,19 @@
  */
 #include "all.h"
 
-int missileactive[MAXMISSILES];
-int missileavail[MAXMISSILES];
-MissileStruct missile[MAXMISSILES];
-int nummissiles;
-BOOL ManashieldFlag;
-ChainStruct chain[MAXMISSILES];
-BOOL MissilePreFlag;
-int numchains;
-
 /** Maps from direction to X-offset. */
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 /** Maps from direction to Y-offset. */
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+int missileactive[MAXMISSILES] = { 0 };
+int missileavail[MAXMISSILES] = { 0 };
+MissileStruct missile[MAXMISSILES] = { 0 };
+int nummissiles = 0;
+BOOL ManashieldFlag = 0;
+ChainStruct chain[MAXMISSILES] = { 0 };
+
+BOOL MissilePreFlag = 0;
+int numchains = 0;
 #ifdef HELLFIRE
 int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
 #endif
@@ -681,16 +681,21 @@ BOOL MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, BOOLE
 	if (pnum != -1) {
 #endif
 		if (missiledata[t].mType == 0) {
+#ifdef HELLFIRE
 			hper = plr[pnum]._pDexterity;
 			hper += plr[pnum]._pIBonusToHit;
 			hper += plr[pnum]._pLevel;
 			hper -= monster[m].mArmorClass;
 			hper -= (dist * dist) >> 1;
-#ifdef HELLFIRE
 			hper -= plr[pnum]._pIEnAc; // BUGFIX: armor piercing DECREASES hit chance here, probably a 1.04 bug that got fixed in 1.09, go with +=
-#endif
-#ifndef HELLFIRE
-			hper += plr[pnum]._pIEnAc;
+#else
+			// 1.09b term order (the compiler keeps it when it regroups the sum)
+			hper = plr[pnum]._pIEnAc;
+			hper += plr[pnum]._pDexterity;
+			hper += plr[pnum]._pIBonusToHit;
+			hper += plr[pnum]._pLevel;
+			hper -= monster[m].mArmorClass;
+			hper -= (dist * dist) >> 1;
 #endif
 			hper += 50;
 			if (plr[pnum]._pClass == PC_ROGUE)
@@ -1030,13 +1035,13 @@ BOOL Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, B
 	}
 	hper = random_(69, 100);
 	if (missiledata[mtype].mType == 0) {
-		hit = plr[pnum]._pIBonusToHit
+		hit = plr[pnum]._pDexterity
 		    + plr[pnum]._pLevel
 		    - (dist * dist >> 1)
 		    - plr[p]._pDexterity / 5
-		    - plr[p]._pIBonusAC
 		    - plr[p]._pIAC
-		    + plr[pnum]._pDexterity + 50;
+		    - plr[p]._pIBonusAC
+		    + plr[pnum]._pIBonusToHit + 50;
 		if (plr[pnum]._pClass == PC_ROGUE)
 			hit += 20;
 #ifdef HELLFIRE
@@ -2647,7 +2652,7 @@ void AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 				ty = dy + CrawlTable[k];
 				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
 					dp = dPiece[tx][ty];
-					if ((dMissile[tx][ty] | nSolidTable[dp] | nMissileTable[dp] | dObject[tx][ty] | dPlayer[tx][ty]) == 0) {
+					if ((dObject[tx][ty] | nSolidTable[dp] | nMissileTable[dp] | dPlayer[tx][ty] | dMissile[tx][ty]) == 0) {
 						if (!CheckIfTrig(tx, ty)) {
 							missile[mi]._mix = tx;
 							missile[mi]._miy = ty;
@@ -3173,7 +3178,7 @@ void AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, SPL_HEALOTHER);
 	if (id == myplr)
-		SetCursor_(CURSOR_HEALOTHER);
+		NewCursor(CURSOR_HEALOTHER);
 }
 
 void AddElement(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3210,7 +3215,7 @@ void AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			sbookflag = FALSE;
 		if (!invflag)
 			invflag = TRUE;
-		SetCursor_(CURSOR_IDENTIFY);
+		NewCursor(CURSOR_IDENTIFY);
 	}
 }
 
@@ -3305,9 +3310,10 @@ void AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, in
 	missile[mi]._mirange = 1;
 }
 
+/* Diablo 1.09b has no AddBlodboil of its own: misdat uses miss_null_1F for MIS_BLODBOIL. */
+#ifdef HELLFIRE
 void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-#ifdef HELLFIRE
 	int lvl;
 
 	if (id == -1 || plr[id]._pSpellFlags & 6 || plr[id]._pHitPoints <= plr[id]._pLevel << 6) {
@@ -3343,10 +3349,8 @@ void AddBlodboil(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 		force_redraw = 255;
 		PlaySfxLoc(blodboilSFX[plr[id]._pClass], plr[id]._px, plr[id]._py);
 	}
-#else
-	missile[mi]._miDelFlag = 1;
-#endif
 }
+#endif
 
 void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
@@ -3357,7 +3361,7 @@ void AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 			sbookflag = FALSE;
 		if (!invflag)
 			invflag = TRUE;
-		SetCursor_(CURSOR_REPAIR);
+		NewCursor(CURSOR_REPAIR);
 	}
 }
 
@@ -3370,7 +3374,7 @@ void AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy
 			sbookflag = FALSE;
 		if (!invflag)
 			invflag = TRUE;
-		SetCursor_(CURSOR_RECHARGE);
+		NewCursor(CURSOR_RECHARGE);
 	}
 }
 
@@ -3379,7 +3383,7 @@ void AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, 
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, SPL_DISARM);
 	if (id == myplr)
-		SetCursor_(CURSOR_DISARM);
+		NewCursor(CURSOR_DISARM);
 }
 
 void AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3509,7 +3513,7 @@ void AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 {
 	UseMana(id, SPL_RESURRECT);
 	if (id == myplr)
-		SetCursor_(CURSOR_RESURRECT);
+		NewCursor(CURSOR_RESURRECT);
 	missile[mi]._miDelFlag = TRUE;
 }
 
@@ -3529,7 +3533,7 @@ void AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, char mien
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, SPL_TELEKINESIS);
 	if (id == myplr)
-		SetCursor_(CURSOR_TELEKINESIS);
+		NewCursor(CURSOR_TELEKINESIS);
 }
 
 void AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3679,6 +3683,29 @@ int Sentfire(int i, int sx, int sy)
 
 	return ex;
 }
+
+#if !defined(_DEBUG) && !defined(HELLFIRE)
+/*
+ * In 1.09b the linker folded every empty function into one copy and kept it here,
+ * so no empty function can have come from an object linked before missiles.obj.
+ * Which files these really lived in is not visible in the binary.
+ */
+void TriggerBreak()
+{
+}
+
+void engine_debug_trap(BOOL show_cursor)
+{
+}
+
+void mpqapi_store_default_time(DWORD dwChar)
+{
+}
+
+void tmsg_start()
+{
+}
+#endif
 
 void MI_Dummy(int i)
 {

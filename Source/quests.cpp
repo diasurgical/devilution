@@ -5,22 +5,6 @@
  */
 #include "all.h"
 
-int qtopline;
-BOOL questlog;
-BYTE *pQLogCel;
-/** Contains the quests of the current game. */
-QuestStruct quests[MAXQUESTS];
-int qline;
-int qlist[MAXQUESTS];
-int numqlines;
-int WaterDone;
-int ReturnLvlX;
-int ReturnLvlY;
-int ReturnLvlT;
-/** current frame # for the quest pentagram selector */
-int questpentframe;
-int ReturnLvl;
-
 /** Contains the data related to each quest_id. */
 QuestData questlist[MAXQUESTS] = {
 	// clang-format off
@@ -63,7 +47,7 @@ char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };
  * which the hover text of the cursor will be visible.
  */
 char questyoff[7] = { 0, 0, -1, -1, -1, -2, -2 };
-const char *const questtrigstr[5] = {
+char *questtrigstr[5] = {
 	"King Leoric's Tomb",
 	"The Chamber of Bone",
 	"Maze",
@@ -88,12 +72,30 @@ int QuestGroup2[3] = { Q_BLIND, Q_ROCK, Q_BLOOD };
  * two of these three quests appear in any single player game.
  */
 int QuestGroup3[3] = { Q_MUSHROOM, Q_ZHAR, Q_ANVIL };
+/** Contains the quests of the current game. */
+QuestStruct quests[MAXQUESTS];
+int ReturnLvlX;
+int ReturnLvlY;
+int ReturnLvl;
+int ReturnLvlT;
+/** unused */
+int rporttest;
+
+BOOL questlog;
+/** current frame # for the quest pentagram selector */
+int qspin;
+int qline;
+int numqlines;
 /**
  * A quest group containing the two quests Lachdanan and Warlord
  * of Blood, which ensures that exactly one of these two quests
  * appears in any single player game.
  */
 int QuestGroup4[2] = { Q_VEIL, Q_WARLORD };
+int qtopline;
+int qlist[MAXQUESTS];
+int qfade;
+BYTE *pQLogCel;
 
 void InitQuests()
 {
@@ -113,8 +115,8 @@ void InitQuests()
 	}
 
 	questlog = FALSE;
-	questpentframe = 1;
-	WaterDone = 0;
+	qspin = 1;
+	qfade = 0;
 	initiatedQuests = 0;
 
 	for (z = 0; z < MAXQUESTS; z++) {
@@ -227,11 +229,11 @@ void CheckQuests()
 			quests[Q_PWATER]._qactive = QUEST_DONE;
 			PlaySfxLoc(IS_QUESTDN, plr[myplr]._px, plr[myplr]._py);
 			LoadPalette("Levels\\L3Data\\L3pwater.pal");
-			WaterDone = 32;
+			qfade = 32;
 		}
-		if (WaterDone > 0) {
-			palette_update_quest_palette(WaterDone);
-			WaterDone--;
+		if (qfade > 0) {
+			palette_update_quest_palette(qfade);
+			qfade--;
 		}
 	} else if (plr[myplr]._pmode == PM_STAND) {
 		for (i = 0; i < MAXQUESTS; i++) {
@@ -755,16 +757,16 @@ void ResyncQuests()
 	if (QuestStatus(Q_LTBANNER)) {
 		if (quests[Q_LTBANNER]._qvar1 == 1)
 			ObjChangeMapResync(
-			    setpc_w + setpc_x - 2,
-			    setpc_h + setpc_y - 2,
-			    setpc_w + setpc_x + 1,
-			    setpc_h + setpc_y + 1);
+			    setpc_x + setpc_w - 2,
+			    setpc_y + setpc_h - 2,
+			    setpc_x + setpc_w + 1,
+			    setpc_y + setpc_h + 1);
 		if (quests[Q_LTBANNER]._qvar1 == 2) {
 			ObjChangeMapResync(
-			    setpc_w + setpc_x - 2,
-			    setpc_h + setpc_y - 2,
-			    setpc_w + setpc_x + 1,
-			    setpc_h + setpc_y + 1);
+			    setpc_x + setpc_w - 2,
+			    setpc_y + setpc_h - 2,
+			    setpc_x + setpc_w + 1,
+			    setpc_y + setpc_h + 1);
 			ObjChangeMapResync(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
 			for (i = 0; i < nobjects; i++)
 				SyncObjectAnim(objectactive[i]);
@@ -792,10 +794,10 @@ void ResyncQuests()
 		} else {
 			if (quests[Q_MUSHROOM]._qactive == QUEST_ACTIVE) {
 				if (quests[Q_MUSHROOM]._qvar1 >= QS_MUSHGIVEN) {
-					Qtalklist[TOWN_WITCH]._qblkm = -1;
-					Qtalklist[TOWN_HEALER]._qblkm = TEXT_MUSH3;
+					Qtalklist[TOWN_WITCH][Q_MUSHROOM] = -1;
+					Qtalklist[TOWN_HEALER][Q_MUSHROOM] = TEXT_MUSH3;
 				} else if (quests[Q_MUSHROOM]._qvar1 >= QS_BRAINGIVEN) {
-					Qtalklist[TOWN_HEALER]._qblkm = -1;
+					Qtalklist[TOWN_HEALER][Q_MUSHROOM] = -1;
 				}
 			}
 		}
@@ -829,7 +831,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, const char *str, int col)
 	BYTE c;
 
 	s = SStringY[y];
-	off = x + PitchTbl[SStringY[y] + 44 + SCREEN_Y] + 32 + SCREEN_X;
+	off = x + nBuffWTbl[SStringY[y] + 44 + SCREEN_Y] + 32 + SCREEN_X;
 	len = strlen(str);
 	k = 0;
 	if (cjustflag) {
@@ -841,7 +843,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, const char *str, int col)
 		off += k;
 	}
 	if (qline == y) {
-		CelDraw(cjustflag ? x + k + 12 + SCREEN_X : x + 12 + SCREEN_X, s + 205, pSPentSpn2Cels, questpentframe, 12);
+		CelDraw(cjustflag ? x + k + 12 + SCREEN_X : x + 12 + SCREEN_X, s + 205, pSPentSpn2Cels, qspin, 12);
 	}
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
@@ -852,7 +854,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, const char *str, int col)
 		off += fontkern[c] + 1;
 	}
 	if (qline == y) {
-		CelDraw(cjustflag ? x + k + 36 + SCREEN_X : 276 + SCREEN_X - x, s + 205, pSPentSpn2Cels, questpentframe, 12);
+		CelDraw(cjustflag ? x + k + 36 + SCREEN_X : 276 + SCREEN_X - x, s + 205, pSPentSpn2Cels, qspin, 12);
 	}
 }
 
@@ -868,7 +870,7 @@ void DrawQuestLog()
 		y += 2;
 	}
 	PrintQLString(0, 22, TRUE, "Close Quest Log", 0);
-	questpentframe = (questpentframe & 7) + 1;
+	qspin = (qspin & 7) + 1;
 }
 
 void StartQuestlog()
@@ -891,7 +893,7 @@ void StartQuestlog()
 	if (numqlines != 0)
 		qline = qtopline;
 	questlog = TRUE;
-	questpentframe = 1;
+	qspin = 1;
 }
 
 void QuestlogUp()

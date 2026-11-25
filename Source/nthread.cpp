@@ -6,22 +6,22 @@
 #include "all.h"
 #include "../3rdParty/Storm/Source/storm.h"
 
-BYTE sgbNetUpdateRate;
-DWORD gdwMsgLenTbl[MAX_PLRS];
-static CCritSect sgMemCrit;
-DWORD gdwDeltaBytesSec;
-BOOLEAN nthread_should_run;
+BYTE gbGameLoopsPerPacket;
 DWORD gdwTurnsInTransit;
-int glpMsgTbl[MAX_PLRS];
-unsigned int glpNThreadId;
-char sgbSyncCountdown;
-int turn_upper_bit;
-BOOLEAN sgbTicsOutOfSync;
-char sgbPacketCountdown;
-BOOLEAN sgbThreadIsRunning;
-DWORD gdwLargestMsgSize;
 DWORD gdwNormalMsgSize;
-int last_tick;
+DWORD gdwLargestMsgSize;
+DWORD gdwDeltaBytesSec;
+DWORD gdwMsgLenTbl[MAX_PLRS];
+int glpMsgTbl[MAX_PLRS];
+unsigned int sgThreadID;
+int sgdwRequestDeltaFlag;
+BOOLEAN sgbRunThread;
+BOOLEAN sgbThreadIsRunning;
+static CCritSect sgCrit;
+BOOLEAN sgbGotPacketOK;
+char sgbPacketCountdown;
+char sgbSyncCountdown;
+int sglGameClock = 0;
 
 /* data */
 static HANDLE sghThread = INVALID_HANDLE_VALUE;
@@ -55,8 +55,8 @@ DWORD nthread_send_and_recv_turn(DWORD cur_turn, int turn_delta)
 	}
 	while (curTurnsInTransit++ < gdwTurnsInTransit) {
 
-		turn_tmp = turn_upper_bit | new_cur_turn & 0x7FFFFFFF;
-		turn_upper_bit = 0;
+		turn_tmp = sgdwRequestDeltaFlag | new_cur_turn & 0x7FFFFFFF;
+		sgdwRequestDeltaFlag = 0;
 		turn = turn_tmp;
 
 		if (!SNetSendTurn((char *)&turn, sizeof(turn))) {
@@ -76,33 +76,33 @@ BOOL nthread_recv_turns(BOOL *pfSendAsync)
 	*pfSendAsync = FALSE;
 	sgbPacketCountdown--;
 	if (sgbPacketCountdown) {
-		last_tick += 50;
+		sglGameClock += 50;
 		return TRUE;
 	}
 	sgbSyncCountdown--;
-	sgbPacketCountdown = sgbNetUpdateRate;
+	sgbPacketCountdown = gbGameLoopsPerPacket;
 	if (sgbSyncCountdown != 0) {
 
 		*pfSendAsync = TRUE;
-		last_tick += 50;
+		sglGameClock += 50;
 		return TRUE;
 	}
 	if (!SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, gdwMsgLenTbl, (LPDWORD)player_state)) {
 		if (DERROR() != STORM_ERROR_NO_MESSAGES_WAITING)
 			nthread_terminate_game("SNetReceiveTurns");
-		sgbTicsOutOfSync = FALSE;
+		sgbGotPacketOK = FALSE;
 		sgbSyncCountdown = 1;
 		sgbPacketCountdown = 1;
 		return FALSE;
 	} else {
-		if (!sgbTicsOutOfSync) {
-			sgbTicsOutOfSync = TRUE;
-			last_tick = GetTickCount();
+		if (!sgbGotPacketOK) {
+			sgbGotPacketOK = TRUE;
+			sglGameClock = GetTickCount();
 		}
 		sgbSyncCountdown = 4;
 		multi_msg_countdown();
 		*pfSendAsync = TRUE;
-		last_tick += 50;
+		sglGameClock += 50;
 		return TRUE;
 	}
 }
@@ -112,30 +112,30 @@ static unsigned int __stdcall nthread_handler(void *data)
 	int delta;
 	BOOL received;
 
-	if (nthread_should_run) {
+	if (sgbRunThread) {
 		while (1) {
-			sgMemCrit.Enter();
-			if (!nthread_should_run)
+			sgCrit.Enter();
+			if (!sgbRunThread)
 				break;
 			nthread_send_and_recv_turn(0, 0);
 			if (nthread_recv_turns(&received))
-				delta = last_tick - GetTickCount();
+				delta = sglGameClock - GetTickCount();
 			else
 				delta = 50;
-			sgMemCrit.Leave();
+			sgCrit.Leave();
 			if (delta > 0)
 				Sleep(delta);
-			if (!nthread_should_run)
+			if (!sgbRunThread)
 				return 0;
 		}
-		sgMemCrit.Leave();
+		sgCrit.Leave();
 	}
 	return 0;
 }
 
 void nthread_set_turn_upper_bit()
 {
-	turn_upper_bit = 0x80000000;
+	sgdwRequestDeltaFlag = 0x80000000;
 }
 
 void nthread_start(BOOL set_turn_upper_bit)
@@ -144,14 +144,14 @@ void nthread_start(BOOL set_turn_upper_bit)
 	DWORD largestMsgSize;
 	_SNETCAPS caps;
 
-	last_tick = GetTickCount();
+	sglGameClock = GetTickCount();
 	sgbPacketCountdown = 1;
 	sgbSyncCountdown = 1;
-	sgbTicsOutOfSync = TRUE;
+	sgbGotPacketOK = TRUE;
 	if (set_turn_upper_bit)
 		nthread_set_turn_upper_bit();
 	else
-		turn_upper_bit = 0;
+		sgdwRequestDeltaFlag = 0;
 	caps.size = 36;
 	if (!SNetGetProviderCaps(&caps)) {
 		err = TraceLastError();
@@ -161,15 +161,15 @@ void nthread_start(BOOL set_turn_upper_bit)
 	if (!caps.defaultturnsintransit)
 		gdwTurnsInTransit = 1;
 	if (caps.defaultturnssec <= 20 && caps.defaultturnssec)
-		sgbNetUpdateRate = 20 / caps.defaultturnssec;
+		gbGameLoopsPerPacket = 20 / caps.defaultturnssec;
 	else
-		sgbNetUpdateRate = 1;
+		gbGameLoopsPerPacket = 1;
 	largestMsgSize = 512;
 	if (caps.maxmessagesize < 0x200)
 		largestMsgSize = caps.maxmessagesize;
 	gdwDeltaBytesSec = caps.bytessec >> 2;
 	gdwLargestMsgSize = largestMsgSize;
-	gdwNormalMsgSize = caps.bytessec * sgbNetUpdateRate / 20;
+	gdwNormalMsgSize = caps.bytessec * gbGameLoopsPerPacket / 20;
 	gdwNormalMsgSize *= 3;
 	gdwNormalMsgSize >>= 2;
 	if (caps.maxplayers > MAX_PLRS)
@@ -177,15 +177,15 @@ void nthread_start(BOOL set_turn_upper_bit)
 	gdwNormalMsgSize /= caps.maxplayers;
 	while (gdwNormalMsgSize < 0x80) {
 		gdwNormalMsgSize *= 2;
-		sgbNetUpdateRate *= 2;
+		gbGameLoopsPerPacket *= 2;
 	}
 	if (gdwNormalMsgSize > largestMsgSize)
 		gdwNormalMsgSize = largestMsgSize;
 	if (gbMaxPlayers > 1) {
 		sgbThreadIsRunning = FALSE;
-		sgMemCrit.Enter();
-		nthread_should_run = TRUE;
-		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &glpNThreadId);
+		sgCrit.Enter();
+		sgbRunThread = TRUE;
+		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &sgThreadID);
 		if (sghThread == INVALID_HANDLE_VALUE) {
 			err2 = TraceLastError();
 			app_fatal("nthread2:\n%s", err2);
@@ -196,13 +196,13 @@ void nthread_start(BOOL set_turn_upper_bit)
 
 void nthread_cleanup()
 {
-	nthread_should_run = FALSE;
+	sgbRunThread = FALSE;
 	gdwTurnsInTransit = 0;
 	gdwNormalMsgSize = 0;
 	gdwLargestMsgSize = 0;
-	if (sghThread != INVALID_HANDLE_VALUE && glpNThreadId != GetCurrentThreadId()) {
+	if (sghThread != INVALID_HANDLE_VALUE && sgThreadID != GetCurrentThreadId()) {
 		if (!sgbThreadIsRunning)
-			sgMemCrit.Leave();
+			sgCrit.Leave();
 		if (WaitForSingleObject(sghThread, INFINITE) == -1) {
 			app_fatal("nthread3:\n(%s)", TraceLastError());
 		}
@@ -215,9 +215,9 @@ void nthread_ignore_mutex(BOOL bStart)
 {
 	if (sghThread != INVALID_HANDLE_VALUE) {
 		if (bStart)
-			sgMemCrit.Leave();
+			sgCrit.Leave();
 		else
-			sgMemCrit.Enter();
+			sgCrit.Enter();
 		sgbThreadIsRunning = bStart;
 	}
 }
@@ -234,9 +234,9 @@ BOOL nthread_has_500ms_passed(BOOL unused)
 	int ticksElapsed;
 
 	currentTickCount = GetTickCount();
-	ticksElapsed = currentTickCount - last_tick;
+	ticksElapsed = currentTickCount - sglGameClock;
 	if (gbMaxPlayers == 1 && ticksElapsed > 500) {
-		last_tick = currentTickCount;
+		sglGameClock = currentTickCount;
 		ticksElapsed = 0;
 	}
 	return ticksElapsed >= 0;

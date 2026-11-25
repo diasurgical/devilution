@@ -5,7 +5,7 @@
  */
 #include "all.h"
 
-static TMsg *sgpTimedMsgHead;
+static TMsg *sgpTimedMsgHead = NULL;
 
 int tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
 {
@@ -41,10 +41,12 @@ void tmsg_add(BYTE *pbMsg, BYTE bLen)
 	*tail = msg;
 }
 
+#if defined(_DEBUG) || defined(HELLFIRE)
 void tmsg_start()
 {
 	assert(!sgpTimedMsgHead);
 }
+#endif
 
 void tmsg_cleanup()
 {
